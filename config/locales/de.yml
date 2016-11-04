@@ -30,3 +30,8 @@ de:
     settings: "Einstellungen"
     login: "Einloggen"
     logout: "Ausloggen"
+  users:
+    sessions:
+      new:
+        sign_in: "Einloggen"
+        remember_me: "Eingeloggt bleiben"

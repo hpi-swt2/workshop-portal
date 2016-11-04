@@ -30,3 +30,8 @@ en:
     settings: "Settings"
     login: "Log in"
     logout: "Log out"
+  users:
+    sessions:
+      new:
+        sign_in: "Sign In"
+        remember_me: "Remember me"
