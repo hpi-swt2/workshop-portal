@@ -1,5 +1,11 @@
 require 'rails_helper'
 
-RSpec.describe Workshop, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+describe Workshop do
+
+  it "dummy test, add real test" do
+    workshop = Workshop.create!(
+      name: "best workshop ever"
+    )
+    expect(workshop.name).to_not be_empty
+  end
 end

@@ -1,5 +1,11 @@
 require 'rails_helper'
 
-RSpec.describe Request, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+describe Request do
+
+  it "dummy test, add real one" do
+    request = Request.create!(
+                         user: FactoryGirl.create(:user)
+    )
+    expect(request).to_not be_nil
+  end
 end
