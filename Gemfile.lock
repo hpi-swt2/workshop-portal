@@ -52,9 +52,6 @@ GEM
       rack (>= 0.9.0)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
-    bootstrap-tooltip-rails (0.1)
-      rails (>= 3.1)
-      thor
     builder (3.2.2)
     byebug (9.0.6)
     cancancan (1.15.0)
@@ -272,7 +269,6 @@ DEPENDENCIES
   american_date
   better_errors (~> 2.1.1)
   binding_of_caller (~> 0.7.2)
-  bootstrap-tooltip-rails
   byebug
   cancancan
   capybara (~> 2.5)
