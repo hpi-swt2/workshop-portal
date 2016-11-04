@@ -1,19 +1,23 @@
-<p id="notice"><%= notice %></p>
+<%- model_class = Application -%>
+<div class="page-header">
+  <h1><%=t '.title', :default => model_class.model_name.human.titleize %></h1>
+</div>
 
-<p>
-  <strong>Motivation:</strong>
-  <%= @application.motivation %>
-</p>
+<dl class="dl-horizontal">
+  <dt><strong><%= model_class.human_attribute_name(:motivation) %>:</strong></dt>
+  <dd><%= @application.motivation %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:user_id) %>:</strong></dt>
+  <dd><%= @application.user_id %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:workshop_id) %>:</strong></dt>
+  <dd><%= @application.workshop_id %></dd>
+</dl>
 
-<p>
-  <strong>User:</strong>
-  <%= @application.user %>
-</p>
-
-<p>
-  <strong>Workshop:</strong>
-  <%= @application.workshop %>
-</p>
-
-<%= link_to 'Edit', edit_application_path(@application) %> |
-<%= link_to 'Back', applications_path %>
+<%= link_to t('.back', :default => t("helpers.links.back")),
+              applications_path, :class => 'btn btn-default'  %>
+<%= link_to t('.edit', :default => t("helpers.links.edit")),
+              edit_application_path(@application), :class => 'btn btn-default' %>
+<%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+              application_path(@application),
+              :method => 'delete',
+              :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+              :class => 'btn btn-danger' %>

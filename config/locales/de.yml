@@ -20,5 +20,5 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
-  welcome: "Welcome! This is Workshop Portal"
+  hello: "Hallo"
+  welcome: "Willkommen beim Workshop Portal"

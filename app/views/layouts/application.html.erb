@@ -8,11 +8,41 @@
 </head>
 <body>
 <div class="container">
-  <p class="notice"><%= notice %></p>
-  <p class="alert"><%= alert %></p>
+  <% flash.each do |key, value| %>
+    <div class="alert alert-<%= key %>">
+      <a href="#" data-dismiss="alert" class="close">×</a>
+      <ul>
+        <li>
+          <%= value %>
+        </li>
+      </ul>
+    </div>
+  <% end %>
+  <div class="masthead">
+    <h3 class="text-muted"><%=t :welcome %></h3>
+    <nav>
+      <ul class="nav nav-justified">
+        <li class="active"><a href="<%= root_path %>">Home</a></li>
+        <li><a href="<%= workshops_path %>">Workshops</a></li>
+        <li><a href="<%= profiles_path %>">Profile</a></li>
+        <li><a href="<%= requests_path %>">Requests</a></li>
+        <li><a href="<%= applications_path %>">Applications</a></li>
+        <% if user_signed_in? %>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><%= current_user.name %><span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><%= link_to t(:settings), edit_user_registration_path %></li>
+              <li><%= link_to t(:logout), destroy_user_session_path, :method => :delete %></li>
+            </ul>
+          </li>
+        <% else %>
+          <li><a href="<%= new_user_session_path %>">Anmelden</a></li>
+        <% end %>
+      </ul>
+    </nav>
+  </div>
+  <%= yield %>
 </div>
-
-<%= yield %>
 
 </body>
 </html>
