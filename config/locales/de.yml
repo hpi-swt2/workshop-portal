@@ -21,7 +21,7 @@
 
 de:
   hello: "Hallo"
-  welcome: "Willkommen beim Workshop Portal"
+  welcome: "Willkommen beim Workshop-Portal"
   layout:
     workshops: "Workshops"
     home: "Home"

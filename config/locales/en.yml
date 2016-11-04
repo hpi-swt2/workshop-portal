@@ -20,5 +20,11 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
-  welcome: "Welcome! This is Workshop Portal"
+  hello: "Hello"
+  welcome: "Welcome to the Workshop-Portal"
+  layout:
+    workshops: "Workshops"
+    home: "Home"
+    profiles: "Profile"
+    applications: "Applications"
+    requests: "Requests"
