@@ -18,28 +18,26 @@
       </ul>
     </div>
   <% end %>
-  <div class="masthead">
-    <nav>
-      <ul class="nav nav-justified">
-        <li class="active"><%= link_to t(:home, scope: 'layout'), root_path %></li>
-        <li><%= link_to t(:workshops, scope: 'layout'), workshops_path %></li>
-        <li><%= link_to t(:profiles, scope: 'layout'), profiles_path %></li>
-        <li><%= link_to t(:requests, scope: 'layout'), requests_path %></li>
-        <li><%= link_to t(:applications, scope: 'layout'), applications_path %></li>
-        <% if user_signed_in? %>
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><%= current_user.name %><span class="caret"></span></a>
-            <ul class="dropdown-menu">
-              <li><%= link_to t(:settings), edit_user_registration_path %></li>
-              <li><%= link_to t(:logout), destroy_user_session_path, :method => :delete %></li>
-            </ul>
-          </li>
-        <% else %>
-          <li><a href="<%= new_user_session_path %>">Anmelden</a></li>
+
+  <%# https://github.com/seyhunak/twitter-bootstrap-rails#using-helpers %>
+  <%= nav_bar do %>
+    <%= menu_group do %>
+      <%= menu_item t(:home, scope: 'navbar'), root_path %>
+      <%= menu_item t(:workshops, scope: 'navbar'), workshops_path %>
+      <%= menu_item t(:profiles, scope: 'navbar'), profiles_path %>
+      <%= menu_item t(:requests, scope: 'navbar'), requests_path %>
+      <%= menu_item t(:applications, scope: 'navbar'), applications_path %>
+      <% if user_signed_in? %>
+        <%= drop_down current_user.name do %>
+            <%= menu_item t(:settings, scope: 'navbar'), edit_user_registration_path %>
+            <%= menu_item t(:logout, scope: 'navbar'), destroy_user_session_path, :method => :delete %>
         <% end %>
-      </ul>
-    </nav>
-  </div>
+      <% else %>
+        <%= menu_item t(:login, scope: 'navbar'), new_user_session_path %>
+      <% end %>
+    <% end %>
+  <% end %>
+
   <%= yield %>
 </div>
 

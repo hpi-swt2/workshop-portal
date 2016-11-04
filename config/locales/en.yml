@@ -21,9 +21,12 @@
 
 en:
   hello: "Welcome to the Workshop-Portal"
-  layout:
-    workshops: "Workshops"
+  navbar:
     home: "Home"
+    workshops: "Workshops"
     profiles: "Profiles"
     applications: "Applications"
     requests: "Requests"
+    settings: "Settings"
+    login: "Log in"
+    logout: "Log out"
