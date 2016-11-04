@@ -20,8 +20,7 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello"
-  welcome: "Welcome to the Workshop-Portal"
+  hello: "Welcome to the Workshop-Portal"
   layout:
     workshops: "Workshops"
     home: "Home"
