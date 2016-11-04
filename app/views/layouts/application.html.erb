@@ -22,11 +22,11 @@
     <h3 class="text-muted"><%=t :welcome %></h3>
     <nav>
       <ul class="nav nav-justified">
-        <li class="active"><a href="<%= root_path %>">Home</a></li>
-        <li><a href="<%= workshops_path %>">Workshops</a></li>
-        <li><a href="<%= profiles_path %>">Profile</a></li>
-        <li><a href="<%= requests_path %>">Requests</a></li>
-        <li><a href="<%= applications_path %>">Applications</a></li>
+        <li class="active"><%= link_to t(:home, scope: 'layout'), root_path %></li>
+        <li><%= link_to t(:workshops, scope: 'layout'), workshops_path %></li>
+        <li><%= link_to t(:profiles, scope: 'layout'), profiles_path %></li>
+        <li><%= link_to t(:requests, scope: 'layout'), requests_path %></li>
+        <li><%= link_to t(:applications, scope: 'layout'), applications_path %></li>
         <% if user_signed_in? %>
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><%= current_user.name %><span class="caret"></span></a>
