@@ -253,8 +253,6 @@ GEM
       railties (>= 3.1)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
-    uglifier (3.0.3)
-      execjs (>= 0.3.0, < 3)
     unicode-display_width (1.1.1)
     warden (1.2.6)
       rack (>= 1.0)
@@ -302,11 +300,10 @@ DEPENDENCIES
   sqlite3
   turbolinks
   twitter-bootstrap-rails
-  uglifier (>= 1.3.0)
   web-console (~> 2.0)
 
 RUBY VERSION
    ruby 2.2.2p95
 
 BUNDLED WITH
-   1.13.5
+   1.13.6

@@ -7,7 +7,10 @@ gem 'rails', '4.2.4'
 # Use SCSS for stylesheets
 #gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
-gem 'uglifier', '>= 1.3.0'
+# gem 'uglifier', '>= 1.3.0'
+# Uglifier requires a JavaScript runtime, e.g. therubyracer
+# See https://github.com/rails/execjs for a list of available runtimes.
+# gem 'therubyracer', '~> 0.12.2', platforms: :ruby
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
@@ -32,7 +35,6 @@ gem 'devise'
 gem 'devise_openid_authenticatable'
 
 # Use Bootstrap (app/assets/stylesheets)
-#gem 'therubyracer', '~> 0.12.2', platforms: :ruby
 gem 'twitter-bootstrap-rails'
 gem 'devise-bootstrap-views'
 #use Bootstrap Tooltips
