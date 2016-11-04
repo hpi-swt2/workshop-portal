@@ -24,7 +24,7 @@ de:
   welcome: "Willkommen beim Workshop-Portal"
   layout:
     workshops: "Workshops"
-    home: "Home"
-    profiles: "Profile"
+    home: "Start"
+    profiles: "Nutzer"
     applications: "Bewerbungen"
     requests: "Anfragen"
