@@ -8,17 +8,6 @@
 </head>
 <body>
 <div class="container">
-  <% flash.each do |key, value| %>
-    <div class="alert alert-<%= key %>">
-      <a href="#" data-dismiss="alert" class="close">×</a>
-      <ul>
-        <li>
-          <%= value %>
-        </li>
-      </ul>
-    </div>
-  <% end %>
-
   <%# https://github.com/seyhunak/twitter-bootstrap-rails#using-helpers %>
   <%= nav_bar do %>
     <%= menu_group do %>
@@ -37,6 +26,9 @@
       <% end %>
     <% end %>
   <% end %>
+
+  <%# https://github.com/seyhunak/twitter-bootstrap-rails#flash-helper %>
+  <%= bootstrap_flash %>
 
   <%= yield %>
 </div>
