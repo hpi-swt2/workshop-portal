@@ -16,6 +16,12 @@
 # users commonly want.
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
+
+# Track code coverage (also used for CodeClimate)
+require "simplecov"
+  add_filter "spec/" # Ignores any file containing "spec/" in its path.
+SimpleCov.start
+
 RSpec.configure do |config|
   
   # Use color in STDOUT

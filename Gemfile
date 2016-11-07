@@ -113,9 +113,9 @@ group :development do
 end
 
 group :test do
-  gem "codeclimate-test-reporter", require: nil
   # Coverage information
-  gem 'simplecov', require: false
+  gem 'simplecov'
+  gem "codeclimate-test-reporter", "~> 1.0.0"
   # Explicitly set parser version, to remove warnings
   # Might lead to problems with other gems that require higher parser versions
   # In that case, update to a newer Ruby version
