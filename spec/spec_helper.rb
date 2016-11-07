@@ -24,7 +24,7 @@
 
 # Track code coverage for Coveralls.io
 require 'coveralls'
-Coveralls.wear!
+Coveralls.wear!('rails')
 
 RSpec.configure do |config|
   
