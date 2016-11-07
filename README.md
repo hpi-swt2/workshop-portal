@@ -96,13 +96,3 @@ Please request a login from @chrisma or @derari
 ### NewRelic
 ```
 http://newrelic.com/
-```
-
-## Deploy
-
-The following environment variables should be set:
-
-* `HOST`
-* `SECRET_KEY_BASE`
-* `EMAIL_PW`
-* `EMAIL_USER`
