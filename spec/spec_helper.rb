@@ -17,17 +17,20 @@
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 
-# Track code coverage (also used for CodeClimate)
-# https://github.com/colszowka/simplecov#profiles
-# require "simplecov"
-# SimpleCov.start 'rails'
-
-# Track code coverage for Coveralls.io
+# Track code coverage
 require 'coveralls'
-Coveralls.wear!('rails')
+require "simplecov"
+
+# Use coveralls.io alongside normal simplecov formatter
+# HTMLFormatter produces output to coverage/ directory
+# https://coveralls.zendesk.com/hc/en-us/articles/201769485-Ruby-Rails
+SimpleCov.formatters = [
+  SimpleCov.formatter = Coveralls::SimpleCov::Formatter,
+  SimpleCov::Formatter::HTMLFormatter
+]
+SimpleCov.start 'rails'
 
 RSpec.configure do |config|
-  
   # Use color in STDOUT
   config.color = true
 
