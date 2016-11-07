@@ -20,12 +20,47 @@ RSpec.feature "Account creation", :type => :feature do
     expect(page).to have_css(".alert-success")
   end
 
-  scenario "User visits the 'user settings' page without being logged in" do
+  scenario "User logs in with valid credentials and is redirected to the index page" do
+    user = FactoryGirl.create(:user)
+    visit new_user_session_path
+    fill_in "user_email", :with => user.email
+    fill_in "user_password", :with => user.password
+    find('input[name="commit"]').click
+    # Redirected to index page
+    expect(page.current_path).to eq(root_path)
+    expect(page).to have_css(".alert-success")
+  end
+
+  scenario "User changes name on user settings page" do
+    user = FactoryGirl.create(:user)
+    login_as(user)
+    new_name = "xXACoolAliasXx"
+
+    # Go to /users/edit
     visit edit_user_registration_path
+    fill_in "user_name", :with => new_name
+    fill_in "user_current_password", :with => user.password
+    find('input[name="commit"]').click
+    expect(page).to have_css(".alert-success")
+
+    visit edit_user_registration_path
+    expect(page).to have_content(new_name)
+  end
+
+  scenario "User visits the 'user settings' page after having already logged off" do
+    user = FactoryGirl.create(:user)
+    login_as(user)
+    logout(:user)
+
+    visit edit_user_registration_path
+    # Redirect to sign in page
     expect(page.current_path).to eq(new_user_session_path)
+
     # http://www.rubydoc.info/github/jnicklas/capybara/Capybara%2FSession%3Asave_and_open_page
     # Save a snapshot of the page and open it in a browser for inspection.
     # save_and_open_page
+
+    # Error message
     expect(page).to have_css('.alert-danger')
   end
 end
