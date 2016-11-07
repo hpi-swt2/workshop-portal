@@ -14,9 +14,10 @@ deploy:
     secure: Bmhk+hyGJTqqRwrEGSTfyHRgsCphBvsqm3QBCV+3gNCKSASqpCyVIyuECtiih6mGpgKDHF7KsHM89gYnmP8/xkMVdDg/G5smUfJJZ1kO8seaP9oR2PkomPwYG99SSG7C/+NOXaTSRXMqsdCwpxQWu6NPMVGC9aRGlBDQdxK4b+GAOnvGe/7Ivrw10DCB8oSiUW09H2yAufpB2bRQHGR2IF4zKendYpboRr1GzgY1PzmN7sT3hmnvoQ+xFYdet6xfWW8SMw7Tz6aOS44w2OSauRyalw5jVQ8lejOBMfe78NfKSv6VWA/+YAQXWLcYN6ov9EKvowIq59e6YTgLGwn6HZTbQW0WTbQ9UTJGVH7QLH5sAAguYUar9D6T0I5kJ6emMqmqPnHBPxVLK7S+ba3aFkESQhBeQbgFdKp8jr3JpZiSD2Ok48U/bCO3wTQ7nXHscs88qkctjNPwGBRdlfC/3DrFcEF0ST9QhMj3oamCaHZ0dopE31hdpBJgnpzkFByELIcyx7uzBqYBqZd16THZqtB7hPNKhE4TskVGK0WJdq5TQ9fjIQhU/HMIIxXoaC+LJPMJ45AonunY9JmeI6jwdPMoOSChZv0d8ZAhlemtTNxurYp7Llv+j7ODYJNitDG/VEc2+LjgiHjM0uSvyBiit0bShpX3zGgNV+qeXxA4dBw=
   app:
     master: workshop-portal
+    dev:  workshop-portal-dev
   on:
     repo: hpi-swt2/workshop-portal
   run:
-  - rake db:migrate
+  - rake db:schema:load
   - rake db:seed
   - restart
