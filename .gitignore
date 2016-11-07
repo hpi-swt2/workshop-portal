@@ -42,3 +42,4 @@ bower.json
 .idea/
 config/database.yml
 /nbproject/private/
+/.DS_Store
