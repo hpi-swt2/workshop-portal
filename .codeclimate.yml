@@ -1,12 +1,34 @@
-languages:
-  Ruby: true
-  JavaScript: true
+---
+engines:
+  brakeman:
+    enabled: true
+  csslint:
+    enabled: true
+  duplication:
+    enabled: true
+    config:
+      languages:
+      - ruby
+      - javascript
+  eslint:
+    enabled: true
+  fixme:
+    enabled: true
+  rubocop:
+    enabled: true
+ratings:
+  paths:
+  - "**.erb"
+  - "**.rb"
+  - "**.haml"
+  - "**.css"
+  - "**.js"
 exclude_paths:
-- "Gemfile.lock"
-- "bin/"
-- "db/"
-- "lib/"
-- "public/"
-- "spec/"
-- "tmp/"
-- "vendor/"
+- Gemfile.lock
+- bin/
+- db/
+- lib/
+- public/
+- spec/
+- tmp/
+- vendor/
