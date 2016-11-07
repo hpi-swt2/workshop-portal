@@ -19,9 +19,8 @@
 
 # Track code coverage (also used for CodeClimate)
 require "simplecov"
-SimpleCov.start do
-  add_filter "spec/" # Ignores any file containing "spec/" in its path.
-end
+# https://github.com/colszowka/simplecov#profiles
+SimpleCov.start 'rails'
 
 # Track code coverage for Coveralls.io
 require 'coveralls'
