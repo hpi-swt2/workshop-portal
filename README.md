@@ -1,9 +1,9 @@
-# wimi-portal
+# workshop-portal
 
-[![Code Climate](https://codeclimate.com/github/hpi-swt2/wimi-portal/badges/gpa.svg)](https://codeclimate.com/github/hpi-swt2/workshop-portal)
-[![Test Coverage](https://codeclimate.com/github/hpi-swt2/wimi-portal/badges/coverage.svg)](https://codeclimate.com/github/hpi-swt2/workshop-portal/coverage)
-[![Build Status](https://travis-ci.org/hpi-swt2/wimi-portal.svg?branch=dev)](https://travis-ci.org/hpi-swt2/workshop-portal)
-[![Heroku](https://heroku-badge.herokuapp.com/?app=wimi-portal)](http://workshop-portal.herokuapp.com/)
+[![Code Climate](https://codeclimate.com/github/hpi-swt2/workshop-portal/badges/gpa.svg)](https://codeclimate.com/github/hpi-swt2/workshop-portal)
+[![Test Coverage](https://codeclimate.com/github/hpi-swt2/workshop-portal/badges/coverage.svg)](https://codeclimate.com/github/hpi-swt2/workshop-portal/coverage)
+[![Build Status](https://travis-ci.org/hpi-swt2/workshop-portal.svg?branch=dev)](https://travis-ci.org/hpi-swt2/workshop-portal)
+[![Heroku](https://heroku-badge.herokuapp.com/?app=workshop-portal)](http://workshop-portal.herokuapp.com/)
 [![License](http://img.shields.io/badge/license-AGPL-blue.svg)](https://github.com/hpi-swt2/workshop-portal/blob/master/LICENSE)
 
 ## Building Status
