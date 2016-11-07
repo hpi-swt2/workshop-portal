@@ -4,7 +4,7 @@
 [![Test Coverage](https://codeclimate.com/github/hpi-swt2/workshop-portal/badges/coverage.svg)](https://codeclimate.com/github/hpi-swt2/workshop-portal/coverage)
 [![Build Status](https://travis-ci.org/hpi-swt2/workshop-portal.svg?branch=dev)](https://travis-ci.org/hpi-swt2/workshop-portal)
 [![Heroku](https://heroku-badge.herokuapp.com/?app=workshop-portal)](http://workshop-portal.herokuapp.com/)
-[![License](http://img.shields.io/badge/license-AGPL-blue.svg)](https://github.com/hpi-swt2/workshop-portal/blob/master/LICENSE)
+[![License](http://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/hpi-swt2/workshop-portal/blob/master/LICENSE)
 
 ## Building Status
 
