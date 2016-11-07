@@ -1,3 +1,22 @@
 language: ruby
 rvm:
-  - 2.2.2
+- 2.2.2
+sudo: false
+before_script:
+- cp config/database.travis.yml config/database.yml
+- psql -c 'create database hpi_swt2_test;' -U postgres
+script:
+- RAILS_ENV=test bundle exec rake db:migrate
+- xvfb-run bundle exec rspec spec/
+deploy:
+  provider: heroku
+  api_key:
+    secure: LUIKT0s72vXgSWuxonVL5ZDkeJLaQTlPXlaFXFGwiD6BCfhQ4K3UsyyHCayWAdrkiIiYF+gokpDEQBTkYClqRaUpsFh0WTuZ6Um+mRkEL7aJZZCMtKzCszSiLNjkM64SAoMtmzl32Txv9mIprVBckBZu4BTe14qeHI5mXDl+B2e9aIcMlkGm7elgoeu0oxWj8CGp6EGEN1EOn9UzofT8ZHj0mu2ZU+rQG2nJ41m0tf/zIsJOYBdSva7hx5cwPtYOuwydcQazyyV3al1038UVtqxHOzu1f85GrSJZSo9wEqjxwqe0InxW8ZznYuoQYpMiW+3B3+DUzA1Zrw+oyaYsS6LRiFH8pu9k5td1Nbxxs4ZHIxCmxANCTint47JofYDxk+nLFiVmcl41m5zoIIjA1dxW2G8CMw//W9tzxoZW0x9OzDawRXuRM3jZau+oIayhe/9rg5h50+cbzOoSy1l+fz5/E1JCTgM2QpIg2sNw3LKCwQ9uXRdH9gN89a4+eORaTxXZsW6mZL+khCyiSVCvZ8ZaKmQEVXb5fIeND7uT9zYig43UKoFGC0hh1UJ6be2Cr1xExRhdB38ddHCNFgue954qFTzACjozSeVG0KC4OC4ijcUoub/ODcsfslGwxxOJyWal0lBhzoQXT7rWOcqkHRDE5HvZ3ExAyDpzpabPeKI=
+  app:
+    master: workshop-portal
+  on:
+    repo: hpi-swt2/workshop-portal
+  run:
+  - rake db:migrate
+  - rake db:seed
+  - restart
