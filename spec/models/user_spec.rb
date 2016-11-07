@@ -20,4 +20,15 @@
 
 require 'rails_helper'
 
+describe User do
 
+  it "is created by user factory" do
+    user = FactoryGirl.create(:user)
+    expect(user).to be_valid
+  end
+
+  it "cannot create a user without an email address" do
+    user = FactoryGirl.build(:user, email: nil)
+    expect(user).to_not be_valid
+  end
+end

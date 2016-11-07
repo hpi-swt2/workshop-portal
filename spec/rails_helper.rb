@@ -1,4 +1,21 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
+
+# Track code coverage
+# REALLY needs to go to the top of the file
+# See: http://stackoverflow.com/questions/35476814/simplecov-calculate-0-coverage-for-user-model#36966852
+require "simplecov"
+require 'coveralls'
+
+# Use coveralls.io alongside normal simplecov formatter
+# HTMLFormatter produces output to coverage/ directory
+# https://coveralls.zendesk.com/hc/en-us/articles/201769485-Ruby-Rails
+SimpleCov.formatters = [
+  SimpleCov.formatter = Coveralls::SimpleCov::Formatter,
+  SimpleCov::Formatter::HTMLFormatter
+]
+SimpleCov.start 'rails'
+
+# Start of standard rails_helper.rb
 ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path('../../config/environment', __FILE__)
 # Prevent database truncation if the environment is production

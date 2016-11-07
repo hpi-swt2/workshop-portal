@@ -20,8 +20,8 @@
 
 FactoryGirl.define do
   factory :user do
-    sequence(:email) { |n| "person#{n}@example.com" }
     sequence(:name) { |n| "First Last #{n}" }
+    email { "#{name}@example.com".downcase.tr(" ","_") }
     password "test123"
   end
 end

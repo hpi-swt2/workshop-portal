@@ -14,7 +14,7 @@ require 'rails_helper'
 
 describe ApplicationLetter do
 
-  it "dummy test, add real one" do
+  it "is created by application_letter factory" do
     application = FactoryGirl.build(:application_letter)
     expect(application).to be_valid
   end

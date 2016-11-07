@@ -15,7 +15,7 @@ require 'rails_helper'
 
 describe Workshop do
 
-  it "dummy test, add real test" do
+  it "is created by workshop factory" do
     workshop = FactoryGirl.build(:workshop)
     expect(workshop).to be_valid
   end

@@ -28,5 +28,8 @@ class Ability
     #
     # See the wiki for details:
     # https://github.com/CanCanCommunity/cancancan/wiki/Defining-Abilities
+
+    # Users can only edit their own profiles
+    can :edit, Profile, user: { id: user.id }
   end
 end

@@ -13,7 +13,7 @@ require 'rails_helper'
 
 describe Request do
 
-  it "dummy test, add real one" do
+  it "is created by request factory" do
     request = FactoryGirl.build(:request)
     expect(request).to be_valid
   end
