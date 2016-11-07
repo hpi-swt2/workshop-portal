@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 ruby '2.2.2'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.2.4'
+gem 'rails', '4.2.7.1'
 # Use SCSS for stylesheets
 # gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
@@ -84,15 +84,14 @@ group :development, :test do
   gem 'capybara', '~> 2.5'
   # gem 'database_cleaner'
   gem 'factory_girl_rails'
-
-  gem 'i18n-tasks', '~> 0.9.5'
 end
 
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console', '~> 2.0'
 
-  # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
+  # Spring speeds up development by keeping your application running in the background.
+  # See https://github.com/rails/spring
   gem 'spring'
 
   gem 'better_errors', '~> 2.1.1'
@@ -110,13 +109,17 @@ group :development do
   gem 'annotate'
   
   # opens sent emails in a new browser tab
-  #gem "letter_opener"
+  # gem "letter_opener"
 end
 
 group :test do
   gem "codeclimate-test-reporter", require: nil
   # Coverage information
   gem 'simplecov', require: false
+  # Explicitly set parser version, to remove warnings
+  # Might lead to problems with other gems that require higher parser versions
+  # In that case, update to a newer Ruby version
+  gem 'parser', '~> 2.2.2.5'
   # Stubbing external calls by blocking traffic with WebMock.disable_net_connect! or allow:
   # gem 'webmock'
 end
