@@ -18,9 +18,9 @@
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 
 # Track code coverage (also used for CodeClimate)
-require "simplecov"
 # https://github.com/colszowka/simplecov#profiles
-SimpleCov.start 'rails'
+# require "simplecov"
+# SimpleCov.start 'rails'
 
 # Track code coverage for Coveralls.io
 require 'coveralls'
