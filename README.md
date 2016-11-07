@@ -1,26 +1,24 @@
 # workshop-portal
 
-[![Code Climate](https://codeclimate.com/github/hpi-swt2/workshop-portal/badges/gpa.svg)](https://codeclimate.com/github/hpi-swt2/workshop-portal)
-[![Test Coverage](https://codeclimate.com/github/hpi-swt2/workshop-portal/badges/coverage.svg)](https://codeclimate.com/github/hpi-swt2/workshop-portal/coverage)
-[![Build Status](https://travis-ci.org/hpi-swt2/workshop-portal.svg?branch=dev)](https://travis-ci.org/hpi-swt2/workshop-portal)
-[![Heroku](https://heroku-badge.herokuapp.com/?app=workshop-portal)](http://workshop-portal.herokuapp.com/)
-[![License](http://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/hpi-swt2/workshop-portal/blob/master/LICENSE)
+A Ruby on Rails app to manage workshops
 
-## Building Status
+## Project Status
 
 Branch      | Status
 ----------- | ----------
-master  | [![Build Status](https://travis-ci.org/hpi-swt2/workshop-portal.svg?branch=master)](https://travis-ci.org/hpi-swt2/wprkshop-portal)
-dev  | [![Build Status](https://travis-ci.org/hpi-swt2/workshop-portal.svg?branch=dev)](https://travis-ci.org/hpi-swt2/workshop-portal)
+master  | [![Build Status](https://travis-ci.org/hpi-swt2/workshop-portal.svg?branch=master)](https://travis-ci.org/hpi-swt2/wprkshop-portal) [![Coverage Status](https://coveralls.io/repos/github/hpi-swt2/workshop-portal/badge.svg?branch=master)](https://coveralls.io/github/hpi-swt2/workshop-portal?branch=master) [![Code Climate](https://codeclimate.com/github/hpi-swt2/workshop-portal/badges/gpa.svg)](https://codeclimate.com/github/hpi-swt2/workshop-portal/issues)
+dev  | [![Build Status](https://travis-ci.org/hpi-swt2/workshop-portal.svg?branch=dev)](https://travis-ci.org/hpi-swt2/workshop-portal) [![Coverage Status](https://coveralls.io/repos/github/hpi-swt2/workshop-portal/badge.svg?branch=dev)](https://coveralls.io/github/hpi-swt2/workshop-portal?branch=dev)
+
+(Click the badges for detailed info)
 
 ## Heroku Deployment
 
-When TravisCI run all tests successfully, the build is deployed to heroku. This is done for the master branch as well as the dev branch.
+When TravisCI run all tests successfully, the build is deployed to Heroku, for the master as well as the dev branch.
 
 Branch      | Heroku App | Status
 ----------- | ---------- | ----------
-master  |  [click here](http://workshop-portal.herokuapp.com/)  | [![Heroku](https://heroku-badge.herokuapp.com/?app=workshop-portal)](http://workshop-portal.herokuapp.com/)
-dev  |  [click here](http://workshop-portal-dev.herokuapp.com/)  | [![Heroku](https://heroku-badge.herokuapp.com/?app=workshop-portal-dev)](http://workshop-portal-dev.herokuapp.com/)
+master  |  [link](http://workshop-portal.herokuapp.com/)  | [![Heroku](https://heroku-badge.herokuapp.com/?app=workshop-portal)](http://workshop-portal.herokuapp.com/)
+dev  |  [link](http://workshop-portal-dev.herokuapp.com/)  | [![Heroku](https://heroku-badge.herokuapp.com/?app=workshop-portal-dev)](http://workshop-portal-dev.herokuapp.com/)
 
 ## Setup
 
