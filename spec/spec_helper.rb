@@ -19,8 +19,9 @@
 
 # Track code coverage (also used for CodeClimate)
 require "simplecov"
+SimpleCov.start do
   add_filter "spec/" # Ignores any file containing "spec/" in its path.
-SimpleCov.start
+end
 
 RSpec.configure do |config|
   
