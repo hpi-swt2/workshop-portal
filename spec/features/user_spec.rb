@@ -1,8 +1,10 @@
 require "rails_helper"
 
+# https://www.relishapp.com/rspec/rspec-rails/v/3-5/docs/feature-specs/feature-spec
 RSpec.feature "Account creation", :type => :feature do
   scenario "User visits for the first time and creates an account" do
-    visit "/users/sign_up"
+    # Look at the output of the 'rake routes' command
+    visit new_user_registration_path
 
     password = "mybirthdate"
     # http://www.rubydoc.info/github/jnicklas/capybara/Capybara/Node/Actions:fill_in
@@ -16,5 +18,14 @@ RSpec.feature "Account creation", :type => :feature do
     # Show success alert
     # http://www.rubydoc.info/github/jnicklas/capybara/master/Capybara/RSpecMatchers#have_css-instance_method
     expect(page).to have_css(".alert-success")
+  end
+
+  scenario "User visits the 'user settings' page without being logged in" do
+    visit edit_user_registration_path
+    expect(page.current_path).to eq(new_user_session_path)
+    # http://www.rubydoc.info/github/jnicklas/capybara/Capybara%2FSession%3Asave_and_open_page
+    # Save a snapshot of the page and open it in a browser for inspection.
+    # save_and_open_page
+    expect(page).to have_css('.alert-danger')
   end
 end
