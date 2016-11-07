@@ -2,19 +2,13 @@ require 'rails_helper'
 
 RSpec.describe "workshops/show", type: :view do
   before(:each) do
-    @workshop = assign(:workshop, Workshop.create!(
-      :name => "Name",
-      :description => "Description",
-      :max_participants => 2,
-      :active => false
-    ))
+    @workshop = assign(:workshop, FactoryGirl.create(:workshop))
   end
 
-  it "renders attributes in <p>" do
+  it "renders attributes" do
     render
-    expect(rendered).to match(/Name/)
-    expect(rendered).to match(/Description/)
-    expect(rendered).to match(/2/)
-    expect(rendered).to match(/false/)
+    expect(rendered).to have_text(@workshop.name)
+    expect(rendered).to have_text(@workshop.description)
+    expect(rendered).to have_text(@workshop.max_participants)
   end
 end

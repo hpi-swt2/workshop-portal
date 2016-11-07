@@ -1,4 +1,4 @@
-<%- model_class = Application -%>
+<%- model_class = ApplicationLetter -%>
 <div class="page-header">
   <h1><%=t '.title', :default => model_class.model_name.human.pluralize.titleize %></h1>
 </div>
@@ -14,18 +14,18 @@
     </tr>
   </thead>
   <tbody>
-    <% @applications.each do |application| %>
+    <% @application_letters.each do |application| %>
       <tr>
-        <td><%= link_to application.id, application_path(application) %></td>
+        <td><%= link_to application.id, application_letter_path(application) %></td>
         <td><%= application.motivation %></td>
         <td><%= application.user_id %></td>
         <td><%= application.workshop_id %></td>
         <td><%=l application.created_at %></td>
         <td>
           <%= link_to t('.edit', :default => t("helpers.links.edit")),
-                      edit_application_path(application), :class => 'btn btn-default btn-xs' %>
+                      edit_application_letter_path(application), :class => 'btn btn-default btn-xs' %>
           <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-                      application_path(application),
+                      application_letter_path(application),
                       :method => :delete,
                       :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
                       :class => 'btn btn-xs btn-danger' %>
@@ -36,5 +36,5 @@
 </table>
 
 <%= link_to t('.new', :default => t("helpers.links.new")),
-            new_application_path,
+            new_application_letter_path,
             :class => 'btn btn-primary' %>

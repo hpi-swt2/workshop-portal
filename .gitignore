@@ -41,3 +41,4 @@ bower.json
 .byebug_history
 .idea/
 config/database.yml
+/nbproject/private/

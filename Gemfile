@@ -105,6 +105,10 @@ group :development do
   # Use sqlite3 as the database for Active Record
   gem 'sqlite3'
 
+  # Add a comment summarizing the current schema for models and others
+  # usage: annotate
+  gem 'annotate'
+  
   # opens sent emails in a new browser tab
   #gem "letter_opener"
 end

@@ -18,20 +18,14 @@ require 'rails_helper'
 # Message expectations are only used when there is no simpler way to specify
 # that an instance is receiving a specific message.
 
-RSpec.describe ApplicationsController, type: :controller do
+RSpec.describe ApplicationLettersController, type: :controller do
 
   # This should return the minimal set of attributes required to create a valid
-  # Application. As you add validations to Application, be sure to
+  # ApplicationLetter. As you add validations to Application, be sure to
   # adjust the attributes here as well.
-  let(:valid_attributes) {
-    {
-        motivation: "This is my motivation"
-    }
-  }
+  let(:valid_attributes) { FactoryGirl.build(:application_letter).attributes }
 
-  let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
-  }
+  let(:invalid_attributes) { FactoryGirl.build(:application_letter, user_id: nil).attributes }
 
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
@@ -40,32 +34,32 @@ RSpec.describe ApplicationsController, type: :controller do
 
   describe "GET #index" do
     it "assigns all applications as @applications" do
-      application = Application.create! valid_attributes
+      application = ApplicationLetter.create! valid_attributes
       get :index, session: valid_session
-      expect(assigns(:applications)).to eq([application])
+      expect(assigns(:application_letters)).to eq([application])
     end
   end
 
   describe "GET #show" do
     it "assigns the requested application as @application" do
-      application = Application.create! valid_attributes
+      application = ApplicationLetter.create! valid_attributes
       get :show, id: application.to_param, session: valid_session
-      expect(assigns(:application)).to eq(application)
+      expect(assigns(:application_letter)).to eq(application)
     end
   end
 
   describe "GET #new" do
     it "assigns a new application as @application" do
       get :new, session: valid_session
-      expect(assigns(:application)).to be_a_new(Application)
+      expect(assigns(:application_letter)).to be_a_new(ApplicationLetter)
     end
   end
 
   describe "GET #edit" do
     it "assigns the requested application as @application" do
-      application = Application.create! valid_attributes
+      application = ApplicationLetter.create! valid_attributes
       get :edit, id: application.to_param, session: valid_session
-      expect(assigns(:application)).to eq(application)
+      expect(assigns(:application_letter)).to eq(application)
     end
   end
 
@@ -73,30 +67,30 @@ RSpec.describe ApplicationsController, type: :controller do
     context "with valid params" do
       it "creates a new Application" do
         expect {
-          post :create, application: valid_attributes, session: valid_session
-        }.to change(Application, :count).by(1)
+          post :create, application_letter: valid_attributes, session: valid_session
+        }.to change(ApplicationLetter, :count).by(1)
       end
 
       it "assigns a newly created application as @application" do
-        post :create, application: valid_attributes, session: valid_session
-        expect(assigns(:application)).to be_a(Application)
-        expect(assigns(:application)).to be_persisted
+        post :create, application_letter: valid_attributes, session: valid_session
+        expect(assigns(:application_letter)).to be_a(ApplicationLetter)
+        expect(assigns(:application_letter)).to be_persisted
       end
 
       it "redirects to the created application" do
-        post :create, application: valid_attributes, session: valid_session
-        expect(response).to redirect_to(Application.last)
+        post :create, application_letter: valid_attributes, session: valid_session
+        expect(response).to redirect_to(ApplicationLetter.last)
       end
     end
 
     context "with invalid params" do
-      it "assigns a newly created but unsaved application as @application" do
-        post :create, application: invalid_attributes, session: valid_session
-        expect(assigns(:application)).to be_a_new(Application)
+      it "assigns a newly created but unsaved application as @application_letter" do
+        post :create, application_letter: invalid_attributes, session: valid_session
+        expect(assigns(:application_letter)).to be_a_new(ApplicationLetter)
       end
 
       it "re-renders the 'new' template" do
-        post :create, application: invalid_attributes, session: valid_session
+        post :create, application_letter: invalid_attributes, session: valid_session
         expect(response).to render_template("new")
       end
     end
@@ -111,35 +105,35 @@ RSpec.describe ApplicationsController, type: :controller do
       }
 
       it "updates the requested application" do
-        application = Application.create! valid_attributes
-        put :update, id: application.to_param, application: new_attributes, session: valid_session
+        application = ApplicationLetter.create! valid_attributes
+        put :update, id: application.to_param, application_letter: new_attributes, session: valid_session
         application.reload
         expect(application.motivation).to eq(new_attributes[:motivation])
       end
 
       it "assigns the requested application as @application" do
-        application = Application.create! valid_attributes
-        put :update, id: application.to_param, application: valid_attributes, session: valid_session
-        expect(assigns(:application)).to eq(application)
+        application = ApplicationLetter.create! valid_attributes
+        put :update, id: application.to_param, application_letter: valid_attributes, session: valid_session
+        expect(assigns(:application_letter)).to eq(application)
       end
 
       it "redirects to the application" do
-        application = Application.create! valid_attributes
-        put :update, id: application.to_param, application: valid_attributes, session: valid_session
+        application = ApplicationLetter.create! valid_attributes
+        put :update, id: application.to_param, application_letter: valid_attributes, session: valid_session
         expect(response).to redirect_to(application)
       end
     end
 
     context "with invalid params" do
       it "assigns the application as @application" do
-        application = Application.create! valid_attributes
-        put :update, id: application.to_param, application: invalid_attributes, session: valid_session
-        expect(assigns(:application)).to eq(application)
+        application = ApplicationLetter.create! valid_attributes
+        put :update, id: application.to_param, application_letter: invalid_attributes, session: valid_session
+        expect(assigns(:application_letter)).to eq(application)
       end
 
       it "re-renders the 'edit' template" do
-        application = Application.create! valid_attributes
-        put :update, id: application.to_param, application: invalid_attributes, session: valid_session
+        application = ApplicationLetter.create! valid_attributes
+        put :update, id: application.to_param, application_letter: invalid_attributes, session: valid_session
         expect(response).to render_template("edit")
       end
     end
@@ -147,16 +141,16 @@ RSpec.describe ApplicationsController, type: :controller do
 
   describe "DELETE #destroy" do
     it "destroys the requested application" do
-      application = Application.create! valid_attributes
+      application = ApplicationLetter.create! valid_attributes
       expect {
         delete :destroy, id: application.to_param, session: valid_session
-      }.to change(Application, :count).by(-1)
+      }.to change(ApplicationLetter, :count).by(-1)
     end
 
     it "redirects to the applications list" do
-      application = Application.create! valid_attributes
+      application = ApplicationLetter.create! valid_attributes
       delete :destroy, id: application.to_param, session: valid_session
-      expect(response).to redirect_to(applications_url)
+      expect(response).to redirect_to(application_letters_url)
     end
   end
 

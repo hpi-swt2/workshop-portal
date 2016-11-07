@@ -1,0 +1,21 @@
+# == Schema Information
+#
+# Table name: application_letters
+#
+#  id          :integer          not null, primary key
+#  motivation  :string
+#  user_id     :integer          not null
+#  workshop_id :integer          not null
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#
+
+require 'rails_helper'
+
+describe ApplicationLetter do
+
+  it "dummy test, add real one" do
+    application = FactoryGirl.build(:application_letter)
+    expect(application).to be_valid
+  end
+end

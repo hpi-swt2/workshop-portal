@@ -2,26 +2,13 @@ require 'rails_helper'
 
 RSpec.describe "workshops/index", type: :view do
   before(:each) do
-    assign(:workshops, [
-      Workshop.create!(
-        :name => "Name",
-        :description => "Description",
-        :max_participants => 2,
-        :active => false
-      ),
-      Workshop.create!(
-        :name => "Name",
-        :description => "Description",
-        :max_participants => 2,
-        :active => false
-      )
-    ])
+    @ws = FactoryGirl.create(:workshop)
+    assign(:workshops, [@ws, @ws])
   end
 
   it "renders a list of workshops" do
     render
-    assert_select "td", :text => "Name".to_s, :count => 2
-    assert_select "td", :text => "Description".to_s, :count => 2
-    assert_select "td", :text => false.to_s, :count => 2
+    assert_select "td", :text => @ws.name, :count => 2
+    assert_select "td", :text => @ws.description, :count => 2
   end
 end

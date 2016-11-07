@@ -1,13 +1,13 @@
-<%= form_for @application, :html => { :class => "form-horizontal application" } do |f| %>
+<%= form_for @application_letter, :html => { :class => "form-horizontal application" } do |f| %>
 
-  <% if @application.errors.any? %>
+  <% if @application_letter.errors.any? %>
     <div id="error_expl" class="panel panel-danger">
       <div class="panel-heading">
-        <h3 class="panel-title"><%= pluralize(@application.errors.count, "error") %> prohibited this application from being saved:</h3>
+        <h3 class="panel-title"><%= pluralize(@application_letter.errors.count, "error") %> prohibited this application from being saved:</h3>
       </div>
       <div class="panel-body">
         <ul>
-        <% @application.errors.full_messages.each do |msg| %>
+        <% @application_letter.errors.full_messages.each do |msg| %>
           <li><%= msg %></li>
         <% end %>
         </ul>
@@ -41,7 +41,7 @@
     <div class="col-lg-offset-2 col-lg-10">
       <%= f.submit nil, :class => 'btn btn-primary' %>
       <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
-                applications_path, :class => 'btn btn-default' %>
+                application_letters_path, :class => 'btn btn-default' %>
     </div>
   </div>
 

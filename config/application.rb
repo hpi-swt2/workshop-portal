@@ -7,9 +7,9 @@ require 'rails/all'
 Bundler.require(*Rails.groups)
 
 module WorkshopPortal
-  class Application < Rails::Application
+  class ApplicationLetter < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.
-    # Application configuration should go into files in config/initializers
+    # ApplicationLetter configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
 
     # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.

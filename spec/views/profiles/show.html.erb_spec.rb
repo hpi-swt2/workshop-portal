@@ -2,19 +2,11 @@ require 'rails_helper'
 
 RSpec.describe "profiles/show", type: :view do
   before(:each) do
-    @profile = assign(:profile, Profile.create!(
-        :cv => "MyString",
-        :user => User.create!(
-            email: "bla@keks.de",
-            name: "Bla Keks",
-            password: "123456"
-        )
-    ))
+    @profile = assign(:profile, FactoryGirl.create(:profile))
   end
 
-  it "renders attributes in <p>" do
+  it "renders attributes" do
     render
-    expect(rendered).to match(/Cv/)
-    expect(rendered).to match(//)
+    expect(rendered).to have_text(@profile.cv)
   end
 end

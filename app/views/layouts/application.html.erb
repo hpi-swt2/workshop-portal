@@ -15,7 +15,7 @@
       <%= menu_item t(:workshops, scope: 'navbar'), workshops_path %>
       <%= menu_item t(:profiles, scope: 'navbar'), profiles_path %>
       <%= menu_item t(:requests, scope: 'navbar'), requests_path %>
-      <%= menu_item t(:applications, scope: 'navbar'), applications_path %>
+      <%= menu_item t(:applications, scope: 'navbar'), application_letters_path %>
       <% if user_signed_in? %>
         <%= drop_down current_user.name do %>
             <%= menu_item t(:settings, scope: 'navbar'), edit_user_registration_path %>

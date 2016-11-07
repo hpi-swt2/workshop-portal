@@ -11,22 +11,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161103103151) do
+ActiveRecord::Schema.define(version: 20161107131407) do
 
-  create_table "applications", force: :cascade do |t|
+  create_table "application_letters", force: :cascade do |t|
     t.string   "motivation"
-    t.integer  "user_id"
-    t.integer  "workshop_id"
+    t.integer  "user_id",     null: false
+    t.integer  "workshop_id", null: false
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
   end
 
-  add_index "applications", ["user_id"], name: "index_applications_on_user_id"
-  add_index "applications", ["workshop_id"], name: "index_applications_on_workshop_id"
+  add_index "application_letters", ["user_id"], name: "index_application_letters_on_user_id"
+  add_index "application_letters", ["workshop_id"], name: "index_application_letters_on_workshop_id"
 
   create_table "profiles", force: :cascade do |t|
     t.string   "cv"
-    t.integer  "user_id"
+    t.integer  "user_id",    null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -35,7 +35,7 @@ ActiveRecord::Schema.define(version: 20161103103151) do
 
   create_table "requests", force: :cascade do |t|
     t.string   "topics"
-    t.integer  "user_id"
+    t.integer  "user_id",    null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

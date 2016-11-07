@@ -69,8 +69,8 @@ Devise.setup do |config|
   # If 401 status code should be returned for AJAX requests. True by default.
   # config.http_authenticatable_on_xhr = true
 
-  # The realm used in Http Basic Authentication. 'Application' by default.
-  # config.http_authentication_realm = 'Application'
+  # The realm used in Http Basic Authentication. 'ApplicationLetter' by default.
+  # config.http_authentication_realm = 'ApplicationLetter'
 
   # It will change confirmation, password recovery and other workflows
   # to behave the same regardless if the e-mail provided was right or wrong.

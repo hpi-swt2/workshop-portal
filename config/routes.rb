@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   resources :requests
-  resources :applications
+  resources :application_letters, path: 'applications'
   resources :workshops
   resources :profiles
   devise_for :users
