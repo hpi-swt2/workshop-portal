@@ -20,9 +20,6 @@ require 'rails_helper'
 
 RSpec.describe RequestsController, type: :controller do
 
-  # This should return the minimal set of attributes required to create a valid
-  # Request. As you add validations to Request, be sure to
-  # adjust the attributes here as well.
   let(:valid_attributes) { FactoryGirl.build(:request).attributes }
 
   let(:invalid_attributes) { FactoryGirl.build(:request, user: nil).attributes }
