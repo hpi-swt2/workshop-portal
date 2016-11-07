@@ -77,6 +77,9 @@ gem 'rubocop', '~> 0.29.1'
 # See https://github.com/plataformatec/simple_form
 # gem 'simple_form'
 
+# coveralls.io
+gem 'coveralls', require: false
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'

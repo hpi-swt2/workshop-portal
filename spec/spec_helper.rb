@@ -23,6 +23,10 @@ SimpleCov.start do
   add_filter "spec/" # Ignores any file containing "spec/" in its path.
 end
 
+# Track code coverage for Coveralls.io
+require 'coveralls'
+Coveralls.wear!
+
 RSpec.configure do |config|
   
   # Use color in STDOUT
