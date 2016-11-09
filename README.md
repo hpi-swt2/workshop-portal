@@ -7,7 +7,7 @@ Branch | Travis CI  | Code Analysis | Heroku Deploy
 master  | [![Build Status](https://travis-ci.org/hpi-swt2/workshop-portal.svg?branch=master)](https://travis-ci.org/hpi-swt2/workshop-portal) | [![Coverage Status](https://coveralls.io/repos/github/hpi-swt2/workshop-portal/badge.svg?branch=master)](https://coveralls.io/github/hpi-swt2/workshop-portal?branch=master) [![Code Climate](https://codeclimate.com/github/hpi-swt2/workshop-portal/badges/gpa.svg)](https://codeclimate.com/github/hpi-swt2/workshop-portal/issues) | [![Heroku](https://heroku-badge.herokuapp.com/?app=workshop-portal)](http://workshop-portal.herokuapp.com/) [[link to app]](http://workshop-portal.herokuapp.com/)
 dev  | [![Build Status](https://travis-ci.org/hpi-swt2/workshop-portal.svg?branch=dev)](https://travis-ci.org/hpi-swt2/workshop-portal) | [![Coverage Status](https://coveralls.io/repos/github/hpi-swt2/workshop-portal/badge.svg?branch=dev)](https://coveralls.io/github/hpi-swt2/workshop-portal?branch=dev) | [![Heroku](https://heroku-badge.herokuapp.com/?app=workshop-portal-dev)](http://workshop-portal-dev.herokuapp.com/) [[link to app]](http://workshop-portal-dev.herokuapp.com/)
 
-(When TravisCI run all tests successfully, the build is deployed to Heroku, for the master as well as the dev branch. Click the badges for detailed info)
+When all tests succeed on Travis CI, the application is deployed to Heroku. Click the badges for detailed info.
 
 ## Local Setup
 
@@ -23,34 +23,24 @@ dev  | [![Build Status](https://travis-ci.org/hpi-swt2/workshop-portal.svg?branc
 
 ## Setup using Vagrant (Virtual Machine)
 
-In case you want to setup this project via windows, you may want to use vagrant like described in the following. Please keep in mind, that vagrant will be slower since it is handled via VM.
+If you want to use a VM to setup the project (e.g. when on Windows), we recommend [Vagrant](https://www.vagrantup.com/).
+Please keep in mind that this method may lead to a loss in performance, due to the added abstraction layer.
 
 ```
-vagrant up
-vagrant ssh
+vagrant up # bring up the VM
+vagrant ssh # login using SSH
 cd hpi-swt2
-# disable docs for gems
-echo “gem: --no-document” >> ~/.gemrc
-bundle install
-gem install pg
-cp config/database.psql.yml config/database.yml
-# restarting the session
-exit
-```
-
-in case you want to use sqlite
-
-```
-bundle install --without=production
-cp config/database.sqlite.yml config/database.yml
-```
-
-And finally starting the server with
-
-```
-vagrant ssh #connect with VM
+echo "gem: --no-document" >> ~/.gemrc # disable docs for gems
+bundle install # install dependencies
+gem install pg # required for Postgres usage
+cp config/database.psql.yml config/database.yml # in case you want to use Postgres
+cp config/database.sqlite.yml config/database.yml # in case you want to user SQLite
+exit # restart the session, required step
+vagrant ssh # reconnect to the VM
 cd hpi-swt2
-rails s -b 0 #starting rails server, the -b part is necessary since the app is running in a VM and would otherwise drop the requests coming from the host OS
+rails s -b 0 # start the rails server
+# the -b part is necessary since the app is running in a VM and would
+# otherwise drop the requests coming from the host OS
 ```
 
 ## Debugging
