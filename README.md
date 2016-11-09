@@ -11,37 +11,19 @@ dev  | [![Build Status](https://travis-ci.org/hpi-swt2/workshop-portal.svg?branc
 
 (When TravisCI run all tests successfully, the build is deployed to Heroku, for the master as well as the dev branch. Click the badges for detailed info)
 
-## Setup
+## Local Setup
 
-Install gem bundle with
+* `bundle install` Install the required Ruby gem dependencies defined in the [Gemfile](https://github.com/hpi-swt2/workshop-portal/blob/master/Gemfile)
 
-```bundle install```
+* `cp database.sqlite.yml database.yml` Select database config (for development we recommend SQLite) 
 
-select database config (in this case we take the sqlite)
+* `rake db:create db:migrate db:seed` Setup database, run migrations, seed the database with defaults
 
-```cp database.sqlite.yml database.yml```
+* `rails s` Start the Rails development server (By default runs on _localhost:3000_)
 
-create a database, run the available migrations and seed the database with mandatory default values
+* `rspec` Run all the tests (using the [RSpec](http://rspec.info/) test framework)
 
-```rake db:create db:migrate db:seed```
-
-then we can run either the rails console with
-
-```rails c```
-
-or the rails server with
-
-```rails s```
-
-in case you want to run all tests go ahead and execute
-
-```rspec ```
-
-or by specifing the exact spec file with
-
-```rspec spec/controller/expenses_controller_spec.rb```
-
-## Vagrant
+## Setup using Vagrant (Virtual Machine)
 
 In case you want to setup this project via windows, you may want to use vagrant like described in the following. Please keep in mind, that vagrant will be slower since it is handled via VM.
 
@@ -83,5 +65,8 @@ http://swt2-2016-errbit.herokuapp.com/
 Please request a login from @chrisma or @derari
 
 ### NewRelic
-```
-http://newrelic.com/
+`http://newrelic.com/`
+
+## Tips & Tricks
+* `rails c` Run the Rails console
+* `rspec spec/controller/expenses_controller_spec.rb` Specify a folder or test file to run
