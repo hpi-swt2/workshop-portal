@@ -128,6 +128,9 @@ group :test do
 end
 
 group :production do
+  # Use Puma web server
+  # https://devcenter.heroku.com/articles/deploying-rails-applications-with-the-puma-web-server
+  gem 'puma'
   # Use Postgresql in production
   gem 'pg'
   # Logging on Heroku with Rails 4
