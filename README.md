@@ -12,13 +12,9 @@ When all tests succeed on Travis CI, the application is deployed to Heroku. Clic
 ## Local Setup
 
 * `bundle install` Install the required Ruby gem dependencies defined in the [Gemfile](https://github.com/hpi-swt2/workshop-portal/blob/master/Gemfile)
-
 * `cp database.sqlite.yml database.yml` Select database config (for development we recommend SQLite) 
-
 * `rake db:create db:migrate db:seed` Setup database, run migrations, seed the database with defaults
-
 * `rails s` Start the Rails development server (By default runs on _localhost:3000_)
-
 * `rspec` Run all the tests (using the [RSpec](http://rspec.info/) test framework)
 
 ## Setup using Vagrant (Virtual Machine)
@@ -55,6 +51,7 @@ Please request a login from @chrisma or @derari
 ### NewRelic
 `http://newrelic.com/`
 
-## Tips & Tricks
+## Important Development Commands
 * `rails c` Run the Rails console
 * `rspec spec/controller/expenses_controller_spec.rb` Specify a folder or test file to run
+* `rake routes` Show all the routes (and their names) of the application
