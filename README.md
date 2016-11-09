@@ -52,6 +52,11 @@ Please request a login from @chrisma or @derari
 `http://newrelic.com/`
 
 ## Important Development Commands
-* `rails c` Run the Rails console
 * `rspec spec/controller/expenses_controller_spec.rb` Specify a folder or test file to run
+* `rails c` Run the Rails console
+* `rails c --sandbox` Test out some code without changing any data
+* `rails g migration DoSomething` Create migration _db/migrate/*_DoSomething.rb_.
+* `rails dbconsole` Starts the CLI of the database you're using
 * `rake routes` Show all the routes (and their names) of the application
+* `rails assets:precompile` Precompile the assets in app/assets to public/assets
+* `rake about` Show stats on current Rails installation, including version numbers
