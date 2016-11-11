@@ -2,12 +2,13 @@
 
 A Ruby on Rails app to manage workshops
 
-Branch | Travis CI  | Code Analysis | Heroku Deploy
------- | ---------- | ------------- | -------------
-master  | [![Build Status](https://travis-ci.org/hpi-swt2/workshop-portal.svg?branch=master)](https://travis-ci.org/hpi-swt2/workshop-portal) | [![Coverage Status](https://coveralls.io/repos/github/hpi-swt2/workshop-portal/badge.svg?branch=master)](https://coveralls.io/github/hpi-swt2/workshop-portal?branch=master) [![Code Climate](https://codeclimate.com/github/hpi-swt2/workshop-portal/badges/gpa.svg)](https://codeclimate.com/github/hpi-swt2/workshop-portal/issues) | [![Heroku](https://heroku-badge.herokuapp.com/?app=workshop-portal)](http://workshop-portal.herokuapp.com/) [[link to app]](http://workshop-portal.herokuapp.com/)
-dev  | [![Build Status](https://travis-ci.org/hpi-swt2/workshop-portal.svg?branch=dev)](https://travis-ci.org/hpi-swt2/workshop-portal) | [![Coverage Status](https://coveralls.io/repos/github/hpi-swt2/workshop-portal/badge.svg?branch=dev)](https://coveralls.io/github/hpi-swt2/workshop-portal?branch=dev) | [![Heroku](https://heroku-badge.herokuapp.com/?app=workshop-portal-dev)](http://workshop-portal-dev.herokuapp.com/) [[link to app]](http://workshop-portal-dev.herokuapp.com/)
+Branch | Travis CI  | Code Analysis | Heroku Deploy | Errbit
+------ | ---------- | ------------- | ------------- | ------
+master  | [![Build Status](https://travis-ci.org/hpi-swt2/workshop-portal.svg?branch=master)](https://travis-ci.org/hpi-swt2/workshop-portal) | [![Coverage Status](https://coveralls.io/repos/github/hpi-swt2/workshop-portal/badge.svg?branch=master)](https://coveralls.io/github/hpi-swt2/workshop-portal?branch=master) [![Code Climate](https://codeclimate.com/github/hpi-swt2/workshop-portal/badges/gpa.svg)](https://codeclimate.com/github/hpi-swt2/workshop-portal/issues) | [![Heroku](https://heroku-badge.herokuapp.com/?app=workshop-portal)](http://workshop-portal.herokuapp.com/) [[link]](http://workshop-portal.herokuapp.com/) | [[link]](http://swt2-errbit-2016.herokuapp.com/)
+dev  | [![Build Status](https://travis-ci.org/hpi-swt2/workshop-portal.svg?branch=dev)](https://travis-ci.org/hpi-swt2/workshop-portal) | [![Coverage Status](https://coveralls.io/repos/github/hpi-swt2/workshop-portal/badge.svg?branch=dev)](https://coveralls.io/github/hpi-swt2/workshop-portal?branch=dev) | [![Heroku](https://heroku-badge.herokuapp.com/?app=workshop-portal-dev)](http://workshop-portal-dev.herokuapp.com/) [[link]](http://workshop-portal-dev.herokuapp.com/) |
 
 When all tests succeed on Travis CI, the application is deployed to Heroku. Click the badges for detailed info.
+Errors that occurwhile using the deployed master branch on Heroku are logged to the [Errbit](http://swt2-errbit-2016.herokuapp.com/) error catcher, you can sign in with your Github account.
 
 ## Local Setup
 
@@ -38,15 +39,6 @@ rails s -b 0 # start the rails server
 # the -b part is necessary since the app is running in a VM and would
 # otherwise drop the requests coming from the host OS
 ```
-
-## Debugging
-
-### Errbit
-```
-http://swt2-errbit-2016.herokuapp.com/
-```
-
-Please request a login from @chrisma or @derari
 
 ### NewRelic
 `http://newrelic.com/`
