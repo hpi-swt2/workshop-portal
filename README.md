@@ -43,7 +43,7 @@ rails s -b 0 # start the rails server
 
 ### Errbit
 ```
-http://swt2-2016-errbit.herokuapp.com/
+http://swt2-errbit-2016.herokuapp.com/
 ```
 
 Please request a login from @chrisma or @derari
