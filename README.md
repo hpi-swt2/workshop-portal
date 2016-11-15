@@ -11,7 +11,6 @@ When all tests succeed on Travis CI, the application is deployed to Heroku. Clic
 The uptime of the deployed applications can be tracked [here](https://stats.uptimerobot.com/pg2gDuQZQ). <br>
 Errors that occur while using the deployed master branch on Heroku are logged to the [Errbit](http://swt2-errbit-2016.herokuapp.com/) error catcher, you can sign in with your Github account. <br>
 [NewRelic](https://rpm.newrelic.com/accounts/1114162/applications/27552951) monitors statistics of the deployed application, such as response time. Please login using the provided credentials.
-The 
 
 ## Local Setup
 
