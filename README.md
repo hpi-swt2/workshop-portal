@@ -8,8 +8,10 @@ master  | [![Build Status](https://travis-ci.org/hpi-swt2/workshop-portal.svg?br
 dev  | [![Build Status](https://travis-ci.org/hpi-swt2/workshop-portal.svg?branch=dev)](https://travis-ci.org/hpi-swt2/workshop-portal) | [![Coverage Status](https://coveralls.io/repos/github/hpi-swt2/workshop-portal/badge.svg?branch=dev)](https://coveralls.io/github/hpi-swt2/workshop-portal?branch=dev) | [![Heroku](https://heroku-badge.herokuapp.com/?app=workshop-portal-dev)](http://workshop-portal-dev.herokuapp.com/) [[link]](http://workshop-portal-dev.herokuapp.com/) |
 
 When all tests succeed on Travis CI, the application is deployed to Heroku. Click the badges for detailed info. <br>
+The uptime of the deployed applications can be tracked [here](https://stats.uptimerobot.com/pg2gDuQZQ). <br>
 Errors that occur while using the deployed master branch on Heroku are logged to the [Errbit](http://swt2-errbit-2016.herokuapp.com/) error catcher, you can sign in with your Github account. <br>
 [NewRelic](https://rpm.newrelic.com/accounts/1114162/applications/27552951) monitors statistics of the deployed application, such as response time. Please login using the provided credentials.
+The 
 
 ## Local Setup
 
