@@ -10,7 +10,6 @@ RSpec.describe "profiles/edit", type: :view do
 
     assert_select "form[action=?][method=?]", profile_path(@profile), "post" do
       assert_select "input#profile_cv[name=?]", "profile[cv]"
-      assert_select "input#profile_user_id[name=?]", "profile[user_id]"
     end
   end
 end

@@ -92,7 +92,7 @@ RSpec.describe ApplicationLettersController, type: :controller do
         user = FactoryGirl.create(:user)
         sign_in user
         post :create, application_letter: invalid_attributes, session: valid_session
-        expect(assigns(:application_letter)).to be_a_new(ApplicationLetter).with(:user_id => user.id)
+        expect(assigns(:application_letter)).to be_a_new(ApplicationLetter)
       end
 
       it "re-renders the 'new' template" do
