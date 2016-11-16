@@ -18,6 +18,10 @@ RSpec.feature "Account creation", :type => :feature do
     # Show success alert
     # http://www.rubydoc.info/github/jnicklas/capybara/master/Capybara/RSpecMatchers#have_css-instance_method
     expect(page).to have_css(".alert-success")
+
+    # Make sure the user has the pupil role after registration.
+    user = User.find_by_name('First Last')
+    expect(user.role).to eq('pupil')
   end
 
   scenario "User logs in with valid credentials and is redirected to the index page" do
