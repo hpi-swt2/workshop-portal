@@ -1,6 +1,5 @@
 class ApplicationLettersController < ApplicationController
-  #load_and_authorize_resource
-  authorize_resource
+  load_and_authorize_resource param_method: :application_params
 
   before_action :set_application, only: [:show, :edit, :update, :destroy]
 
@@ -25,7 +24,7 @@ class ApplicationLettersController < ApplicationController
   # POST /applications
   def create
     @application_letter = ApplicationLetter.new(application_params)
-    #@application_letter.user_id = current_user.id
+    @application_letter.user_id = current_user.id
 
     if @application_letter.save
       redirect_to @application_letter, notice: 'Application was successfully created.'
@@ -57,6 +56,6 @@ class ApplicationLettersController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def application_params
-      params.require(:application_letter).permit(:motivation, :user_id, :workshop_id)
+      params.require(:application_letter).permit(:motivation, :workshop_id)
     end
 end
