@@ -5,3 +5,12 @@ Airbrake.configure do |config|
   config.environment = Rails.env
   config.ignore_environments = %w(development test cucumber)
 end
+
+Airbrake.add_filter do |notice|
+  # The library supports nested exceptions, so one notice can carry several
+  # exceptions.
+
+  if notice[:context][:url].include? "://localhost:"
+    notice.ignore!
+  end
+end
