@@ -48,8 +48,7 @@ class Ability
       # ...
     end
     if user.role? :admin
-      can :manage, Profile
-      can :manage, ApplicationLetter
+      can :manage, :all
     end
   end
 end
