@@ -22,9 +22,10 @@ RSpec.describe "profiles/edit", type: :view do
       assert_select "input#profile_city[name=?]", "profile[city]"
       assert_select "input#profile_state[name=?]", "profile[state]"
       assert_select "input#profile_country[name=?]", "profile[country]"
-      assert_select "input#profile_graduates_school_in[name=?]", "profile[graduates_school_in]"
+      assert_select "select#profile_graduates_school_in[name=?]", "profile[graduates_school_in]"
     end
   end
+
   it "contains all required fields " do
       render :template => '/profiles/edit.html.erb'
       expect(rendered).to have_css('.required', minimum: 11)
