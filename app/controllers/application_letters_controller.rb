@@ -1,4 +1,7 @@
 class ApplicationLettersController < ApplicationController
+  #load_and_authorize_resource
+  authorize_resource
+
   before_action :set_application, only: [:show, :edit, :update, :destroy]
 
   # GET /applications
@@ -22,6 +25,7 @@ class ApplicationLettersController < ApplicationController
   # POST /applications
   def create
     @application_letter = ApplicationLetter.new(application_params)
+    #@application_letter.user_id = current_user.id
 
     if @application_letter.save
       redirect_to @application_letter, notice: 'Application was successfully created.'

@@ -29,7 +29,27 @@ class Ability
     # See the wiki for details:
     # https://github.com/CanCanCommunity/cancancan/wiki/Defining-Abilities
 
-    # Users can only edit their own profiles
-    can :edit, Profile, user: { id: user.id }
+    user ||= User.new # guest user (not logged in)
+
+    if user.role? :pupil
+      # Pupils can only edit their own profiles
+      can [:new, :create], Profile
+      can [:index, :show, :edit, :update, :destroy], Profile, user: { id: user.id }
+      # Pupils can only edit their own applications
+      can [:new, :create], ApplicationLetter
+      can [:index, :show, :edit, :update, :destroy], ApplicationLetter, user: { id: user.id }
+    end
+    if user.role? :tutor
+      # ...
+    end
+    if user.role? :organizer
+      can [:index, :show], Profile
+      can [:index, :show], ApplicationLetter
+      # ...
+    end
+    if user.role? :admin
+      can :manage, Profile
+      can :manage, ApplicationLetter
+    end
   end
 end
