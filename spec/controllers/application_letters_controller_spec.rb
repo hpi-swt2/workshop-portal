@@ -22,7 +22,7 @@ RSpec.describe ApplicationLettersController, type: :controller do
 
   let(:valid_attributes) { FactoryGirl.build(:application_letter).attributes }
 
-  let(:invalid_attributes) { FactoryGirl.build(:application_letter, user_id: nil).attributes }
+  let(:invalid_attributes) { FactoryGirl.build(:application_letter, workshop_id: nil).attributes }
 
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
@@ -113,6 +113,7 @@ RSpec.describe ApplicationLettersController, type: :controller do
 
       it "updates the requested application" do
         application = ApplicationLetter.create! valid_attributes
+        sign_in application.user
         put :update, id: application.to_param, application_letter: new_attributes, session: valid_session
         application.reload
         expect(application.motivation).to eq(new_attributes[:motivation])
@@ -120,12 +121,14 @@ RSpec.describe ApplicationLettersController, type: :controller do
 
       it "assigns the requested application as @application" do
         application = ApplicationLetter.create! valid_attributes
+        sign_in application.user
         put :update, id: application.to_param, application_letter: valid_attributes, session: valid_session
         expect(assigns(:application_letter)).to eq(application)
       end
 
       it "redirects to the application" do
         application = ApplicationLetter.create! valid_attributes
+        sign_in application.user
         put :update, id: application.to_param, application_letter: valid_attributes, session: valid_session
         expect(response).to redirect_to(application)
       end
@@ -134,12 +137,14 @@ RSpec.describe ApplicationLettersController, type: :controller do
     context "with invalid params" do
       it "assigns the application as @application" do
         application = ApplicationLetter.create! valid_attributes
+        sign_in application.user
         put :update, id: application.to_param, application_letter: invalid_attributes, session: valid_session
         expect(assigns(:application_letter)).to eq(application)
       end
 
       it "re-renders the 'edit' template" do
         application = ApplicationLetter.create! valid_attributes
+        sign_in application.user
         put :update, id: application.to_param, application_letter: invalid_attributes, session: valid_session
         expect(response).to render_template("edit")
       end
@@ -149,6 +154,7 @@ RSpec.describe ApplicationLettersController, type: :controller do
   describe "DELETE #destroy" do
     it "destroys the requested application" do
       application = ApplicationLetter.create! valid_attributes
+      sign_in application.user
       expect {
         delete :destroy, id: application.to_param, session: valid_session
       }.to change(ApplicationLetter, :count).by(-1)
@@ -156,6 +162,7 @@ RSpec.describe ApplicationLettersController, type: :controller do
 
     it "redirects to the applications list" do
       application = ApplicationLetter.create! valid_attributes
+      sign_in application.user
       delete :destroy, id: application.to_param, session: valid_session
       expect(response).to redirect_to(application_letters_url)
     end
