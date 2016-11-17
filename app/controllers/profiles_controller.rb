@@ -56,6 +56,6 @@ class ProfilesController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def profile_params
-      params.require(:profile).permit(:cv)
+      params.require(:profile).permit(:cv, :first_name, :last_name, :gender, :birth_date, :email, :school, :street_name, :zip_code, :city, :state, :country, :graduates_school_in)
     end
 end
