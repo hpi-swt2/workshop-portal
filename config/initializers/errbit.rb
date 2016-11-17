@@ -10,7 +10,7 @@ Airbrake.add_filter do |notice|
   # The library supports nested exceptions, so one notice can carry several
   # exceptions.
 
-  if notice[:context][:url].include? "://localhost:"
+  unless notice[:context][:url].starts_with? "https://workshop-portal.herokuapp.com"
     notice.ignore!
   end
 end
