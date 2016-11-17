@@ -4,7 +4,6 @@ class WorkshopsController < ApplicationController
   # GET /workshops
   def index
     @workshops = Workshop.all
-    intentional_exploding.initiated()
   end
 
   # GET /workshops/1

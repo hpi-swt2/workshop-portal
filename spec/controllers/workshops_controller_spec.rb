@@ -33,7 +33,7 @@ RSpec.describe WorkshopsController, type: :controller do
   let(:valid_session) { {} }
 
   describe "GET #index" do
-    xit "assigns all workshops as @workshops" do
+    it "assigns all workshops as @workshops" do
       workshop = Workshop.create! valid_attributes
       get :index, session: valid_session
       expect(assigns(:workshops)).to eq([workshop])
