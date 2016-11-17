@@ -3,6 +3,7 @@ require "rails_helper"
 RSpec.feature "Profile adaptation", :type => :feature do
   scenario "user leaves out required fields" do
     @profile = FactoryGirl.create(:profile)
+    login_as(@profile.user, :scope => :user)
     visit edit_profile_path(@profile)
     fill_in "profile_first_name", with:   ""
     fill_in "profile_last_name", with:   "Doe"

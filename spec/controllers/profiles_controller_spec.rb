@@ -25,7 +25,7 @@ RSpec.describe ProfilesController, type: :controller do
   # adjust the attributes here as well.
   let(:valid_attributes) { FactoryGirl.build(:profile).attributes }
 
-  let(:invalid_attributes) { FactoryGirl.build(:profile, user: nil).attributes } #TODO: we need another required field for a profile
+  let(:invalid_attributes) { FactoryGirl.build(:profile, school: nil).attributes }
 
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
