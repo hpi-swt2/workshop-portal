@@ -63,6 +63,14 @@ RSpec.describe WorkshopsController, type: :controller do
     end
   end
 
+  describe "GET #badges" do
+    it "assigns the requested workshop as @workshop" do
+      workshop = Workshop.create! valid_attributes
+      get :badges, workshop_id: workshop.to_param, session: valid_session
+      expect(assigns(:workshop)).to eq(workshop)
+    end
+  end
+
   describe "POST #create" do
     context "with valid params" do
       it "creates a new Workshop" do
