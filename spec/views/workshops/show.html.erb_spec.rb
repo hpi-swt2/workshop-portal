@@ -10,5 +10,8 @@ RSpec.describe "workshops/show", type: :view do
     expect(rendered).to have_text(@workshop.name)
     expect(rendered).to have_text(@workshop.description)
     expect(rendered).to have_text(@workshop.max_participants)
+    expect(rendered).to have_text(@workshop.organizer)
+    expect(rendered).to have_text(@workshop.knowledge_level)
+  end
   end
 end

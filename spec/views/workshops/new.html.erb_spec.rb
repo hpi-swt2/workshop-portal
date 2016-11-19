@@ -13,6 +13,8 @@ RSpec.describe "workshops/new", type: :view do
       assert_select "input#workshop_description[name=?]", "workshop[description]"
       assert_select "input#workshop_max_participants[name=?]", "workshop[max_participants]"
       assert_select "input#workshop_active[name=?]", "workshop[active]"
+      assert_select "input#workshop_organizer[name=?]", "workshop[organizer]"
+      assert_select "input#workshop_knowledge_level[name=?]", "workshop[knowledge_level]"
     end
   end
 end
