@@ -10,6 +10,8 @@
       <th><%= model_class.human_attribute_name(:description) %></th>
       <th><%= model_class.human_attribute_name(:max_participants) %></th>
       <th><%= model_class.human_attribute_name(:active) %></th>
+      <th><%= model_class.human_attribute_name(:veranstalter) %></th>
+      <th><%= model_class.human_attribute_name(:kenntnisstand) %></th>
       <th><%= model_class.human_attribute_name(:created_at) %></th>
       <th><%=t '.actions', :default => t("helpers.actions") %></th>
     </tr>
@@ -22,6 +24,8 @@
         <td><%= workshop.description %></td>
         <td><%= workshop.max_participants %></td>
         <td><%= workshop.active %></td>
+        <td><%= workshop.organizer %></td>
+        <td><%= workshop.knowledge_level %></td>
         <td><%=l workshop.created_at %></td>
         <td>
           <%= link_to t('.edit', :default => t("helpers.links.edit")),

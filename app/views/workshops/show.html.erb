@@ -12,6 +12,10 @@
   <dd><%= @workshop.max_participants %></dd>
   <dt><strong><%= model_class.human_attribute_name(:active) %>:</strong></dt>
   <dd><%= @workshop.active %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:veranstalter) %>:</strong></dt>
+  <dd><%= @workshop.organizer %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:kenntnisstand) %>:</strong></dt>
+  <dd><%= @workshop.knowledge_level %></dd>
 </dl>
 
 <%= link_to t('.back', :default => t("helpers.links.back")),
