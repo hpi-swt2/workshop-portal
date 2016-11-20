@@ -97,9 +97,18 @@ RSpec.describe ApplicationLettersController, type: :controller do
     context "with valid params" do
       let(:new_attributes) {
         {
-            motivation: "Awesome new Motivation"
+            motivation: "Awesome new Motivation",
+            status: true
         }
       }
+
+      it "updates the requested application" do
+        application = ApplicationLetter.create! valid_attributes
+        put :update, id: application.to_param, application_letter: new_attributes, session: valid_session
+        application.reload
+        expect(application.motivation).to eq(new_attributes[:motivation])
+        expect(application.status).to eq(new_attributes[:status])
+      end
 
       it "updates the requested application" do
         application = ApplicationLetter.create! valid_attributes

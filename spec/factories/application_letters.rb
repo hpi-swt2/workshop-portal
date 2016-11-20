@@ -15,5 +15,6 @@ FactoryGirl.define do
     motivation "MyString"
     user
     workshop
+    status nil
   end
 end
