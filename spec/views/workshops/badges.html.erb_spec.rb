@@ -12,6 +12,6 @@ RSpec.describe "workshops/badges", type: :view do
 
   it "renders the generate pdf button" do
     render
-    assert_select "button", :text => 'generate PDF'
+    assert_select "a", :text => 'generate PDF'
   end
 end

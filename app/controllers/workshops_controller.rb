@@ -1,3 +1,5 @@
+require "prawn"
+
 class WorkshopsController < ApplicationController
   before_action :set_workshop, only: [:show, :edit, :update, :destroy]
 
@@ -48,6 +50,13 @@ class WorkshopsController < ApplicationController
   # GET /workshops/1/badges
   def badges
     @workshop = Workshop.find(params[:workshop_id])
+  end
+
+  # POST /workshops/1/badges
+  def print_badges
+    pdf = Prawn::Document.new
+    pdf.text "Name badges"
+    send_data pdf.render, :filename => "x.pdf", :type => "application/pdf", disposition: "inline"
   end
 
   private
