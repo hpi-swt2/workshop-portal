@@ -14,12 +14,47 @@
   <dd><%= @workshop.active %></dd>
 </dl>
 
+<h3>Bewerber für <%= @workshop.name %></h3>
+<div>Noch [Anzahl] freie Plätze (#29 US_3.6 Counter)</div>
+
+<table id="applicants" class="table table-striped">
+  <thead>
+  <tr>
+    <th><%= User.human_attribute_name(:name) %></th>
+    <th>Geschlecht<%#= User.human_attribute_name(:sex) TODO: Add sex to User Model%></th>
+    <th>Alter<%#= User.human_attribute_name(:age) TODO: Add age to User Model%></th>
+    <th>Camp-Teilnahmen<%#= User.human_attribute_name(:participation_count) TODO: Add participation_count to User Model%></th>
+    <th>Status</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @workshop.application_letters.each do | application_letter | %>
+      <tr>
+        <td><%= application_letter.user.name %></td>
+        <td><%#= application_letter.user.sex %></td>
+        <td><%#= application_letter.user.age %></td>
+        <td><%#= application_letter.user.participation_count %></td>
+        <td>
+          Radio Buttons (#45 US_3.11: Mark as accepted/rejected)
+          <%= link_to "Details", application_letter_path(application_letter), :class => 'btn btn-default' %>
+        </td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<!-- TODO: Write view tests for buttons -->
+<%= link_to "Alle annehmen (#16 US_3.1 Accept-All-Button)",
+            workshops_path, :class => 'btn btn-default'%>
+
+<%= link_to "Alle drucken (#30 US_3.7 Print all at once)",
+            workshops_path, :class => 'btn btn-default'%>
+
+<%= link_to "Zusagen verschicken (#22 US_3.2 Send emails in a bundle)",
+            workshops_path, :class => 'btn btn-default'%>
+
+<%= link_to "Absagen verschicken (#22 US_3.2 Send emails in a bundle)",
+            workshops_path, :class => 'btn btn-default'%>
+
 <%= link_to t('.back', :default => t("helpers.links.back")),
-              workshops_path, :class => 'btn btn-default'  %>
-<%= link_to t('.edit', :default => t("helpers.links.edit")),
-              edit_workshop_path(@workshop), :class => 'btn btn-default' %>
-<%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-              workshop_path(@workshop),
-              :method => 'delete',
-              :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
-              :class => 'btn btn-danger' %>
+            workshops_path, :class => 'btn btn-default'  %>
