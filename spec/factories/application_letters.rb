@@ -13,7 +13,15 @@
 FactoryGirl.define do
   factory :application_letter do
     motivation "MyString"
-    user
-    workshop
+
+    ignore do
+      user
+      workshop
+    end
+
+    after(:create) do | application_letter, evalutor |
+      application_letter.user = evalutor.user
+      application_letter.workshop = evalutor.workshop
+    end
   end
 end
