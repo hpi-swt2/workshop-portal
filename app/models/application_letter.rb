@@ -12,6 +12,7 @@
 class ApplicationLetter < ActiveRecord::Base
   belongs_to :user
   belongs_to :workshop
+  has_many :application_notes
   
   validates :user, :workshop, presence: true
 end
