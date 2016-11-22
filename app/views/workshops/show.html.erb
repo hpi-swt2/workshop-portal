@@ -20,9 +20,9 @@
 <table id="applicants" class="table table-striped">
   <thead>
   <tr>
-    <th><%= User.human_attribute_name(:name) %></th>
-    <th>Geschlecht<%#= User.human_attribute_name(:sex) TODO: Add sex to User Model%></th>
-    <th>Alter<%#= User.human_attribute_name(:age) TODO: Add age to User Model%></th>
+    <th><%= Profile.human_attribute_name(:name) %></th>
+    <th><%= Profile.human_attribute_name(:gender) %></th>
+    <th><%= Profile.human_attribute_name(:age) %></th>
     <th>Camp-Teilnahmen<%#= User.human_attribute_name(:participation_count) TODO: Add participation_count to User Model%></th>
     <th>Status</th>
   </tr>
@@ -30,9 +30,9 @@
   <tbody>
   <% @workshop.application_letters.each do | application_letter | %>
       <tr>
-        <td><%= application_letter.user.name %></td>
-        <td><%#= application_letter.user.sex %></td>
-        <td><%#= application_letter.user.age %></td>
+        <td><%= application_letter.user.profile.name %></td>
+        <td><%= application_letter.user.profile.gender %></td>
+        <td><%= application_letter.user.profile.age  %></td>
         <td><%#= application_letter.user.participation_count %></td>
         <td>
           Radio Buttons (#45 US_3.11: Mark as accepted/rejected)
