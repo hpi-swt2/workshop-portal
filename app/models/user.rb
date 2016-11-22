@@ -42,12 +42,25 @@ class User < ActiveRecord::Base
   has_many :application_letters
   has_many :requests
 
+  def participation_count
+    ApplicationLetter.where(:user_id => id).count()
+  end
+
   def accepted_application_count
     ApplicationLetter.where(:user_id => id, :status => true).count()
   end
 
   def rejected_application_count
     ApplicationLetter.where(:user_id => id, :status => false).count()
+  end
+
+  def self.human_attribute_name(*args)
+    case args[0].to_s
+      when "participation_count"
+        return "Camp-Teilnahmen"
+      else
+        super
+    end
   end
        
 end

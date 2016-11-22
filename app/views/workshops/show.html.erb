@@ -23,7 +23,7 @@
     <th><%= Profile.human_attribute_name(:name) %></th>
     <th><%= Profile.human_attribute_name(:gender) %></th>
     <th><%= Profile.human_attribute_name(:age) %></th>
-    <th>Camp-Teilnahmen<%#= User.human_attribute_name(:participation_count) TODO: Add participation_count to User Model%></th>
+    <th><%= User.human_attribute_name(:participation_count)%></th>
     <th>Status</th>
   </tr>
   </thead>
