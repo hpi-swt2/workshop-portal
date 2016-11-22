@@ -56,6 +56,6 @@ class ApplicationLettersController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def application_params
-      params.require(:application_letter).permit(:motivation, :user_id, :workshop_id)
+      params.require(:application_letter).permit(:motivation, :user_id, :workshop_id, :status)
     end
 end

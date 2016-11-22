@@ -123,6 +123,7 @@ RSpec.describe ApplicationLettersController, type: :controller do
 
       it "updates the requested application" do
         application = ApplicationLetter.create! valid_attributes
+        sign_in application.user
         put :update, id: application.to_param, application_letter: new_attributes, session: valid_session
         application.reload
         expect(application.motivation).to eq(new_attributes[:motivation])
