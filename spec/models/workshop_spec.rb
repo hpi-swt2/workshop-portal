@@ -25,6 +25,14 @@ describe Workshop do
     application_letter = FactoryGirl.create(:application_letter, user: FactoryGirl.create(:user), workshop: workshop)
     workshop.application_letters.push(application_letter)
 
-    expect(workshop.compute_free_places).to eq(workshop.max_participants - workshop.application_letters.count) #TODO: count only those that are accepted
+    expect(workshop.compute_free_places).to eq(workshop.max_participants - workshop.compute_occupied_places)
+  end
+
+  it "computes the number of occupied places" do
+    workshop = FactoryGirl.create(:workshop)
+    application_letter = FactoryGirl.create(:application_letter, user: FactoryGirl.create(:user), workshop: workshop)
+    workshop.application_letters.push(application_letter)
+
+    expect(workshop.compute_occupied_places).to eq(workshop.application_letters.count) #TODO: count only those that are accepted
   end
 end

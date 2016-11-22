@@ -18,8 +18,10 @@ RSpec.describe "workshops/show", type: :view do
 
   it "displays counter" do
     free_places = assign(:free_places, @workshop.compute_free_places)
+    occupied_places = assign(:occupied_places, @workshop.compute_occupied_places)
     render
     expect(rendered).to have_text(free_places.to_s + " Plätze frei")
+    expect(rendered).to have_text(occupied_places.to_s + " Plätze belegt")
   end
 
   it "renders applicants table" do
