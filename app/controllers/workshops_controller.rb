@@ -8,6 +8,7 @@ class WorkshopsController < ApplicationController
 
   # GET /workshops/1
   def show
+    @free_places = @workshop.compute_free_places
   end
 
   # GET /workshops/new

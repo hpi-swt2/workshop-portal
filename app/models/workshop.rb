@@ -14,4 +14,8 @@ class Workshop < ActiveRecord::Base
   has_many :application_letters
   
   validates :max_participants, numericality: { only_integer: true, greater_than: 0 }
+
+  def compute_free_places
+    max_participants - application_letters.count # TODO: only count free places
+  end
 end
