@@ -15,7 +15,8 @@ RSpec.feature "ApplicationLetters", type: :feature do
   end
 
    it "should save" do
-   	@application = FactoryGirl.create(:application_letter)
+    @workshop = FactoryGirl.create(:workshop)
+    @user = FactoryGirl.create(:user)
     visit new_application_letter_path
     fill_in "application_letter_grade", with:   "10"
     fill_in "application_letter_experience", with:   "None"
@@ -24,9 +25,10 @@ RSpec.feature "ApplicationLetters", type: :feature do
     fill_in "application_letter_emergency_number", with:   "01234567891"
     check "application_letter_allergic"
     fill_in "application_letter_allergies", with:   "Many"
-
+    fill_in "application_letter_user_id", with: @user.id
+    fill_in "application_letter_workshop_id", with: @workshop.id
+    expect(ApplicationLetter.where(emergency_number:"01234567891")).to_not exist
     find('input[name=commit]').click
-
-    expect(@application).to exist
+    expect(ApplicationLetter.where(emergency_number:"01234567891")).to exist
   end
 end
