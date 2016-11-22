@@ -18,4 +18,11 @@ describe ApplicationLetter do
     application = FactoryGirl.build(:application_letter)
     expect(application).to be_valid
   end
+
+  it "can't be created without mandatory fields" do
+  	[:grade, :experience, :motivation, :coding_skills, :emergency_number, :vegeterian, :vegan, :allergic].each do |attr|
+ 	    application = FactoryGirl.build(:application_letter, attr => nil)
+ 	    expect(application).to_not be_valid
+ 	  end
+  end
 end

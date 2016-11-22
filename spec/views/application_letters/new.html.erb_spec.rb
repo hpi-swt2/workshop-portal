@@ -12,6 +12,15 @@ RSpec.describe "application_letters/new", type: :view do
       assert_select "input#application_letter_motivation[name=?]", "application_letter[motivation]"
       assert_select "input#application_letter_user_id[name=?]", "application_letter[user_id]"
       assert_select "input#application_letter_workshop_id[name=?]", "application_letter[workshop_id]"
+      assert_select "input#application_letter_experience[name=?]", "application_letter[experience]"
+      assert_select "input#application_letter_coding_skills[name=?]", "application_letter[coding_skills]"
+      assert_select "input#application_letter_emergency_number[name=?]", "application_letter[emergency_number]"
+      assert_select "input#application_letter_vegeterian[name=?]", "application_letter[vegeterian]"
+      assert_select "input#application_letter_vegan[name=?]", "application_letter[vegan]"
+      assert_select "input#application_letter_allergic[name=?]", "application_letter[allergic]"
+      assert_select "input#application_letter_allergies[name=?]", "application_letter[allergies]"
+      assert_select "input#application_letter_grade[name=?]", "application_letter[grade]"
+
     end
   end
 end
