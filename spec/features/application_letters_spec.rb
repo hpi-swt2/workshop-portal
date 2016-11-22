@@ -15,7 +15,7 @@ RSpec.feature "ApplicationLetters", type: :feature do
   end
 
    it "should save" do
-   	@application = create(:application_letter)
+   	@application = FactoryGirl.create(:application_letter)
     visit new_application_letter_path
     fill_in "application_letter_grade", with:   "10"
     fill_in "application_letter_experience", with:   "None"
