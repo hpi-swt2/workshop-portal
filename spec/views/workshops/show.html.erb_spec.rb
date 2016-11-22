@@ -4,6 +4,7 @@ RSpec.describe "workshops/show", type: :view do
   before(:each) do
     @workshop = assign(:workshop, FactoryGirl.create(:workshop))
     @application_letter = FactoryGirl.create(:application_letter, user: FactoryGirl.create(:user), workshop: @workshop)
+    @application_letter.user.profile = FactoryGirl.build(:profile)
     @workshop.application_letters.push(@application_letter)
   end
 
@@ -32,7 +33,9 @@ RSpec.describe "workshops/show", type: :view do
 
   it "displays applicants information" do
     render
-    expect(rendered).to have_css("td", :text => @workshop.application_letters.first.user.name)
+    expect(rendered).to have_css("td", :text => @application_letter.user.profile.name)
+    expect(rendered).to have_css("td", :text => @application_letter.user.profile.gender)
+    expect(rendered).to have_css("td", :text => @application_letter.user.profile.age)
   end
 
   it "displays application details button" do
