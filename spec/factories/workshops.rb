@@ -17,5 +17,6 @@ FactoryGirl.define do
     description "Workshop-Description"
     max_participants 1
     active false
+    DateRanges {build_list :dateRange, 1}
   end
 end
