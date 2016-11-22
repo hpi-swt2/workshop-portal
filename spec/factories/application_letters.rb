@@ -13,6 +13,7 @@
 FactoryGirl.define do
   factory :application_letter do
     motivation "MyString"
+    status nil
 
     ignore do
       user
