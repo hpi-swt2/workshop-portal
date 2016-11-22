@@ -46,6 +46,12 @@ RSpec.describe WorkshopsController, type: :controller do
       get :show, id: workshop.to_param, session: valid_session
       expect(assigns(:workshop)).to eq(workshop)
     end
+
+    it "assigns the number of free places as @free_places" do
+      workshop = Workshop.create! valid_attributes
+      get :show, id: workshop.to_param, session: valid_session
+      expect(assigns(:free_places)).to eq(workshop.compute_free_places)
+    end
   end
 
   describe "GET #new" do
