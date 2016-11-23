@@ -23,7 +23,7 @@ en:
   hello: "Welcome to the Workshop-Portal"
   navbar:
     home: "Home"
-    workshops: "Workshops"
+    events: "Events"
     profiles: "Profiles"
     application_letters: "Applications"
     requests: "Requests"
