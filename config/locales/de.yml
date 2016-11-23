@@ -35,3 +35,15 @@ de:
       new:
         sign_in: "Einloggen"
         remember_me: "Eingeloggt bleiben"
+  helpers:
+    label:
+      application_letter:
+          grade: "Klassenstufe"
+          experience: "Wie hast du von uns Erfahren?"
+          motivation: "Motivationsschreiben"
+          coding_skills: "Programmiersprachen"
+          emergency_number: "Telefonnummer für Notfälle"
+          vegeterian: "Vegetarisch"
+          vegan: "Vegan"
+          allergic: "Allergien vorhanden"
+          allergies: "Falls Allergien vorhanden, welche?"
