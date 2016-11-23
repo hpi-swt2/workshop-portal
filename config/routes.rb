@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   resources :requests
-  resources :application_letters, path: 'applications'
+  resources :application_letters, path: 'applications' do
+    resources :application_notes #TODO: don't allow new, edit etc routes for notes (only create)
+  end
   resources :workshops
   resources :profiles
   devise_for :users

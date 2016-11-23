@@ -8,6 +8,7 @@ class ApplicationLettersController < ApplicationController
 
   # GET /applications/1
   def show
+    @application_note = ApplicationNote.new
   end
 
   # GET /applications/new
