@@ -52,8 +52,27 @@ class EventsController < ApplicationController
 
   # POST /events/1/badges
   def print_badges
-    pdf = Prawn::Document.new
-    pdf.text "Name badges"
+    @event = Event.find(params[:event_id])
+
+    # pdf document initialization
+    pdf = Prawn::Document.new(:page_size => 'A4')
+    pdf.stroke_color "000000"
+
+    # create badge edges as rectangles left-upper-bound[x,y], width, height
+
+    # TODO: create dynamically from participants
+    create_badge(pdf, 0, 750)
+    create_badge(pdf, 0, 600)
+    create_badge(pdf, 0, 450)
+    create_badge(pdf, 0, 300)
+    create_badge(pdf, 0, 150)
+
+    create_badge(pdf, 260, 750)
+    create_badge(pdf, 260, 600)
+    create_badge(pdf, 260, 450)
+    create_badge(pdf, 260, 300)
+    create_badge(pdf, 260, 150)
+
     send_data pdf.render, :filename => "x.pdf", :type => "application/pdf", disposition: "inline"
   end
 
@@ -66,5 +85,13 @@ class EventsController < ApplicationController
     # Only allow a trusted parameter "white list" through.
     def event_params
       params.require(:event).permit(:name, :description, :max_participants, :active)
+    end
+
+    def create_badge(pdf, x, y)
+      width = 260
+      height = 150
+      pdf.stroke_rectangle [x, y], width, height
+      # TODO: the position is very hacky, make it better
+      pdf.draw_text "Max Mustermann", :at => [x + width / 2 - 50 , y - 20]
     end
 end
