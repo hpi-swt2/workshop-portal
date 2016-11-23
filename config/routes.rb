@@ -1,9 +1,9 @@
 Rails.application.routes.draw do
   resources :requests
   resources :application_letters, path: 'applications'
-  resources :workshops do
+  resources :events do
     get 'badges'
-    post 'badges' => 'workshops#print_badges', as: :print_badges
+    post 'badges' => 'events#print_badges', as: :print_badges
   end
   resources :profiles
   devise_for :users

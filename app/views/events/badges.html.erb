@@ -1,7 +1,7 @@
-<h1>Print name badges for workshop '<%= @workshop.name %>'</h1>
+<h1>Print name badges for event '<%= @event.name %>'</h1>
 <h3>Participants:</h3>
 
 <%= link_to 'generate PDF',
-            workshop_print_badges_path(@workshop),
+            event_print_badges_path(@event),
             :method => :post,
             :class => 'btn btn-primary' %>

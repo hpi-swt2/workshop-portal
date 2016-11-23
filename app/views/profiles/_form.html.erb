@@ -22,13 +22,27 @@
     </div>
     <%=f.error_span(:cv) %>
   </div>
-  <div class="form-group">
-    <%= f.label :user_id, :class => 'control-label col-lg-2' %>
-    <div class="col-lg-10">
-      <%= f.text_field :user_id, :class => 'form-control' %>
+
+  <%# Create an input field for each of the mandatory attributes%>
+  <% [:first_name, :last_name, :gender, :birth_date, :email, :school, :street_name, :zip_code, :city, :state, :country].each do |attr_name| %>
+    <div class="form-group">
+      <%= f.label attr_name, :class => 'control-label col-lg-2 required'%>
+      <div class="col-lg-10">
+        <%= f.text_field attr_name, :class => 'form-control' %>
+      </div>
+      <%=f.error_span(attr_name) %>
     </div>
-    <%=f.error_span(:user_id) %>
+  <% end %>
+
+  <%# Create a special drop-down for likely graduation year%>
+  <div class="form-group">
+    <%= f.label :graduates_school_in, :class => 'control-label col-lg-2' %>
+    <div class="col-lg-10">
+      <%= f.collection_select(:graduates_school_in, Array(Time.now.year..Time.now.year+15).unshift(I18n.t('helpers.label.profile.already_graduated')), :to_s, :to_s) %>
+    </div>
+    <%=f.error_span(:graduates_school_in) %>
   </div>
+
 
   <div class="form-group">
     <div class="col-lg-offset-2 col-lg-10">
