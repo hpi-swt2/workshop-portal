@@ -23,7 +23,7 @@ de:
   hello: "Willkommen beim Workshop-Portal"
   navbar:
     home: "Start"
-    workshops: "Workshops"
+    events: "Veranstaltungen"
     profiles: "Nutzer"
     application_letters: "Bewerbungen"
     requests: "Anfragen"

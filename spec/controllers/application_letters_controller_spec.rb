@@ -22,7 +22,7 @@ RSpec.describe ApplicationLettersController, type: :controller do
 
   let(:valid_attributes) { FactoryGirl.build(:application_letter).attributes }
 
-  let(:invalid_attributes) { FactoryGirl.build(:application_letter, workshop_id: nil).attributes }
+  let(:invalid_attributes) { FactoryGirl.build(:application_letter, event_id: nil).attributes }
 
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in

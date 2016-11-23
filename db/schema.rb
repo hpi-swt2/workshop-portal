@@ -11,18 +11,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161116092838) do
+ActiveRecord::Schema.define(version: 20161123124500) do
 
   create_table "application_letters", force: :cascade do |t|
     t.string   "motivation"
-    t.integer  "user_id",     null: false
-    t.integer  "workshop_id", null: false
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.integer  "user_id",    null: false
+    t.integer  "event_id",   null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
+  add_index "application_letters", ["event_id"], name: "index_application_letters_on_event_id"
   add_index "application_letters", ["user_id"], name: "index_application_letters_on_user_id"
-  add_index "application_letters", ["workshop_id"], name: "index_application_letters_on_workshop_id"
+
+  create_table "events", force: :cascade do |t|
+    t.string   "name"
+    t.string   "description"
+    t.integer  "max_participants"
+    t.boolean  "active"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+  end
 
   create_table "profiles", force: :cascade do |t|
     t.string   "cv"
@@ -73,14 +82,5 @@ ActiveRecord::Schema.define(version: 20161116092838) do
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
-
-  create_table "workshops", force: :cascade do |t|
-    t.string   "name"
-    t.string   "description"
-    t.integer  "max_participants"
-    t.boolean  "active"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
-  end
 
 end
