@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   resources :requests
   resources :application_letters, path: 'applications'
-  resources :workshops
+  resources :events
   resources :profiles
   devise_for :users
   # The priority is based upon order of creation: first created -> highest priority.

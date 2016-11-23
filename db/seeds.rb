@@ -30,33 +30,33 @@ users.each do |user|
   user.save!
 end
 
-# A workshop
-workshop = Workshop.find_or_create_by!(
+# An event
+event = Event.find_or_create_by!(
     name: "Messung und Verarbeitung von Umweltdaten",
-    description: "Workshop mit Phidgets und Etoys",
+    description: "Veranstaltung mit Phidgets und Etoys",
     max_participants: 20,
     active: true
 )
 
 # Pupil's profile
 Profile.find_or_create_by!(
-    cv: "Ich habe mich zu keinem Workshop beworben",
+    cv: "Ich habe mich zu keiner Veranstaltung beworben",
     user: pupil
 )
 
 # Teacher's profile
 Profile.find_or_create_by!(
-    cv: "Ich bin ein Lehrer. Ich frage Workshops für meine Schüler an.",
+    cv: "Ich bin ein Lehrer. Ich frage Veranstaltungen für meine Schüler an.",
     user: teacher
 )
 
 # Applicant's profile
 Profile.find_or_create_by!(
-    cv: "Ich bin ein Schüler, der an Workshops teilnehmen möchte.",
+    cv: "Ich bin ein Schüler, der an Veranstaltungen teilnehmen möchte.",
     user: applicant
 )
 
-# Teacher's workshop request
+# Teacher's event request
 Request.find_or_create_by!(
     topics: "Hardware-Entwicklung mit einem CAD-System",
     user: teacher
@@ -64,7 +64,7 @@ Request.find_or_create_by!(
 
 # Applicant's application letter
 ApplicationLetter.find_or_create_by!(
-    motivation: "Ich würde sehr gerne an eurem Workshop teilnehmen",
+    motivation: "Ich würde sehr gerne an eurer Veranstaltung teilnehmen",
     user: applicant,
-    workshop: workshop
+    event: event
 )
