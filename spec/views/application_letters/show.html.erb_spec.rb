@@ -15,4 +15,9 @@ RSpec.describe "application_letters/show", type: :view do
     render
     expect(rendered).to have_selector("textarea", :id => "application_note_note")
   end
+
+  it "shows saved notes" do
+    render
+    expect(rendered).to have_text(@application_note.note)
+  end
 end
