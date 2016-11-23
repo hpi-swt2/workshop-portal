@@ -52,4 +52,13 @@ describe User do
     expect(user.accepted_application_count).to eq(2)
     expect(user.rejected_application_count).to eq(1)
   end
+
+  it "return correct participation count" do
+    user = FactoryGirl.create(:user)
+    # Add two participations
+    user.application_letters.push(FactoryGirl.create(:application_letter, status: true))
+    user.application_letters.push(FactoryGirl.create(:application_letter, status: true))
+
+    expect(user.participation_count).to eq(2)
+  end
 end
