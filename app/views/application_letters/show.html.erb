@@ -21,6 +21,12 @@
               :method => 'delete',
               :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
               :class => 'btn btn-danger' %>
+
+<div>
+  <% @application_letter.application_notes.each do |note| %>
+      <div> <%= note.note %> </div>
+  <% end %>
+</div>
 <%= form_for [@application_letter, @application_letter.application_notes.build], :html => { :class => "form-horizontal application" } do |f| %>
 
     <% if @application_note.errors.any? %>
