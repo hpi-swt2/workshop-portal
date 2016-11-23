@@ -43,6 +43,27 @@
     </div>
     <%=f.error_span(:active) %>
   </div>
+  <div class="form-group">
+    <%= f.label "Zeitspanne", :class => 'control-label col-lg-2' %>
+    <div class="col-lg-10" id="workshop-date-pickers">
+      <% date_picker_template =
+        '<div>' +
+        (select_date Date.today, prefix: :start_date_XXX).gsub("\n", "") +
+        ' bis ' +
+        (select_date Date.today, prefix: :end_date_XXX).gsub("\n", "") +
+        '</div>' %>
+
+      <input type="hidden" value="1<%# TODO use correct number %>" name="date_ranges_count">
+      <%= date_picker_template.gsub("_XXX", "_0").html_safe %>
+      <a class="btn btn-sm btn-default" id="workshop-add-date-picker">
+        <span class="glyphicon glyphicon-plus"></span> Zeitspanne hinzufügen
+      </a>
+    </div>
+    <script>
+      var WORKSHOP_DATE_PICKER_TEMPLATE = '<%= date_picker_template.html_safe %>';
+    </script>
+    <%=f.error_span(:active) %>
+  </div>
 
   <div class="form-group">
     <div class="col-lg-offset-2 col-lg-10">
