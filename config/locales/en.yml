@@ -35,3 +35,7 @@ en:
       new:
         sign_in: "Sign In"
         remember_me: "Remember me"
+  helpers:
+    label:
+      profile:
+        already_graduated: "Already graduated"

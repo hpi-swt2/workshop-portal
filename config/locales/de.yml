@@ -12,7 +12,7 @@
 #
 # To use a different locale, set it with `I18n.locale`:
 #
-#     I18n.locale = :es
+#     I18n.locale = :es:
 #
 # This would use the information in config/locales/es.yml.
 #
@@ -35,3 +35,19 @@ de:
       new:
         sign_in: "Einloggen"
         remember_me: "Eingeloggt bleiben"
+  helpers:
+    label:
+      profile:
+        first_name: "Vorname"
+        last_name: "Nachname"
+        gender: "Geschlecht"
+        birth_date: Geburtsdatum 
+        email: "E-Mail"
+        school: "Schule"
+        street_name: "Straße"
+        zip_code: "Postleitzahl"
+        city: "Stadt"
+        state: "Bundesland"
+        country: "Land"
+        graduates_school_in: "Abitur vorraussichtlich in"
+        already_graduated: "Bereits Abitur"
