@@ -44,7 +44,7 @@ class EventsController < ApplicationController
     @event.destroy
     redirect_to events_url, notice: 'Event was successfully destroyed.'
   end
-
+  
   # GET /events/1/badges
   def badges
     @event = Event.find(params[:event_id])
@@ -74,6 +74,12 @@ class EventsController < ApplicationController
     create_badge(pdf, 260, 150)
 
     send_data pdf.render, :filename => "x.pdf", :type => "application/pdf", disposition: "inline"
+  end
+
+  # GET /events/1/participants
+  def participants
+	@event = Event.find(params[:id])
+	@participants = @event.participants
   end
 
   private
