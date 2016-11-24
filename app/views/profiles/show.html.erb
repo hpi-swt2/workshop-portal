@@ -19,3 +19,10 @@
               :method => 'delete',
               :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
               :class => 'btn btn-danger' %>
+
+<%= form_tag({controller: :agreement_letters, action: :upload}, multipart: true) do %>
+  <%= file_field_tag "letter_upload", class: 'btn btn-default btn-file' %>
+  <%= submit_tag t('.upload', default: t("agreement_letters.upload")),
+                 class: 'btn btn-default',
+                 id: 'upload_btn' %>
+<% end %>

@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  post 'agreement_letters/upload'
+  get 'agreement_letters/download'
+
   resources :requests
   resources :application_letters, path: 'applications'
   resources :workshops
