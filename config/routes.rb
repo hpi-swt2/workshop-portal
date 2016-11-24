@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   resources :requests
   resources :application_letters, path: 'applications'
-  resources :workshops
+  resources :events
   resources :profiles
   devise_for :users
   # The priority is based upon order of creation: first created -> highest priority.
@@ -12,7 +12,7 @@ Rails.application.routes.draw do
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
-  get 'workshops/:id/participants' => 'workshops#participants'
+  get 'events/:id/participants' => 'events#participants'
 
   # Example of named route that can be invoked with purchase_url(id: product.id)
   #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase

@@ -22,4 +22,11 @@ describe Profile do
     profile = FactoryGirl.build(:profile, user: nil)
     expect(profile).to_not be_valid
   end
+
+  it "cannot create Profile without mandatory fields" do
+  	[:first_name, :last_name, :gender, :birth_date, :email, :school, :street_name, :zip_code, :city, :state, :country].each do |attr|
+	    profile = FactoryGirl.build(:profile, attr => nil)
+	    expect(profile).to_not be_valid
+	  end
+  end
 end

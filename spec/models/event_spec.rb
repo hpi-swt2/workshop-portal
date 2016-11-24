@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: workshops
+# Table name: events
 #
 #  id               :integer          not null, primary key
 #  name             :string
@@ -13,10 +13,10 @@
 
 require 'rails_helper'
 
-describe Workshop do
+describe Event do
 
-  it "is created by workshop factory" do
-    workshop = FactoryGirl.build(:workshop)
-    expect(workshop).to be_valid
+  it "is created by event factory" do
+    event = FactoryGirl.build(:event)
+    expect(event).to be_valid
   end
 end
