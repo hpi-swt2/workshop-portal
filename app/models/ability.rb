@@ -38,6 +38,8 @@ class Ability
       # Pupils can only edit their own applications
       can [:new, :create], ApplicationLetter
       can [:index, :show, :edit, :update, :destroy], ApplicationLetter, user: { id: user.id }
+      # Only pupils can upload or download their letters of agreement
+      can [:upload, :download], :agreement_letter
     end
     if user.role? :tutor
       # ...
