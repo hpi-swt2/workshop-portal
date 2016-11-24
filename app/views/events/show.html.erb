@@ -14,7 +14,7 @@
   <dd><%= @event.active %></dd>
 </dl>
 
-<h3>Bewerber für <%= @workshop.name %></h3>
+<h3>Bewerber für <%= @event.name %></h3>
 <div>Noch [Anzahl] freie Plätze (#29 US_3.6 Counter)</div>
 
 <table id="applicants" class="table table-striped">
@@ -28,7 +28,7 @@
   </tr>
   </thead>
   <tbody>
-  <% @workshop.application_letters.each do | application_letter | %>
+  <% @event.application_letters.each do | application_letter | %>
       <tr>
         <td><%= application_letter.user.profile.name %></td>
         <td><%= application_letter.user.profile.gender %></td>
@@ -45,16 +45,16 @@
 
 <!-- TODO: Write view tests for buttons -->
 <%= link_to "Alle annehmen (#16 US_3.1 Accept-All-Button)",
-            workshops_path, :class => 'btn btn-default'%>
+            events_path, :class => 'btn btn-default'%>
 
 <%= link_to "Alle drucken (#30 US_3.7 Print all at once)",
-            workshops_path, :class => 'btn btn-default'%>
+            events_path, :class => 'btn btn-default'%>
 
 <%= link_to "Zusagen verschicken (#22 US_3.2 Send emails in a bundle)",
-            workshops_path, :class => 'btn btn-default'%>
+            events_path, :class => 'btn btn-default'%>
 
 <%= link_to "Absagen verschicken (#22 US_3.2 Send emails in a bundle)",
-            workshops_path, :class => 'btn btn-default'%>
+            events_path, :class => 'btn btn-default'%>
 
 <%= link_to t('.back', :default => t("helpers.links.back")),
               events_path, :class => 'btn btn-default'  %>
