@@ -17,19 +17,22 @@ FactoryGirl.define do
     description "Workshop-Description"
     max_participants 1
     active false
-  end
-  
-  factory :workshop_with_accepted_applications do
-	name "Workshop-Name"
-    description "Workshop-Description"
-    max_participants 20
-    active false
-	transient do
-		application_letters_count 5
+	
+	factory :workshop_with_accepted_applications do
+		name "Workshop-Name"
+		description "Workshop-Description"
+		max_participants 20
+		active false
+		transient do
+			application_letters_count 5
+		end
+		
+		after(:create) do |workshop, evaluator|
+			create_list(:accepted_application_letter, evaluator.application_letters_count, workshop: workshop)
+		end
 	end
 	
-	after(:create) do |workshop, evaluator|
-		create_list(:accepted_application_letter, evaluator.application_letters_count, workshop: workshop)
-	end
   end
+  
+  
 end

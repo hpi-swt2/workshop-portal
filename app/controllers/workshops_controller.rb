@@ -45,6 +45,12 @@ class WorkshopsController < ApplicationController
     redirect_to workshops_url, notice: 'Workshop was successfully destroyed.'
   end
 
+  # GET /workshops/1/participants
+  def participants
+	@workshop = Workshop.find(params[:id])
+	@participants = @workshop.participants
+  end
+  
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_workshop
