@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: workshops
+# Table name: events
 #
 #  id               :integer          not null, primary key
 #  name             :string
@@ -10,8 +10,12 @@
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #
-class Workshop < ActiveRecord::Base
-  has_many :application_letters
-  
-  validates :max_participants, numericality: { only_integer: true, greater_than: 0 }
+
+FactoryGirl.define do
+  factory :event do
+    name "Event-Name"
+    description "Event-Description"
+    max_participants 1
+    active false
+  end
 end

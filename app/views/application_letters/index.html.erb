@@ -8,7 +8,7 @@
       <th><%= model_class.human_attribute_name(:id) %></th>
       <th><%= model_class.human_attribute_name(:motivation) %></th>
       <th><%= model_class.human_attribute_name(:user_id) %></th>
-      <th><%= model_class.human_attribute_name(:workshop_id) %></th>
+      <th><%= model_class.human_attribute_name(:event_id) %></th>
       <th><%= model_class.human_attribute_name(:created_at) %></th>
       <th><%=t '.actions', :default => t("helpers.actions") %></th>
     </tr>
@@ -20,7 +20,7 @@
           <td><%= link_to application.id, application_letter_path(application) %></td>
           <td><%= application.motivation %></td>
           <td><%= application.user_id %></td>
-          <td><%= application.workshop_id %></td>
+          <td><%= application.event_id %></td>
           <td><%=l application.created_at %></td>
           <td>
             <%= link_to t('.edit', :default => t("helpers.links.edit")),
