@@ -8,8 +8,6 @@ RSpec.describe "events/show", type: :view do
     @event.application_letters.push(@application_letter)
   end
 
-
-
   it "renders attributes" do
     render
     expect(rendered).to have_text(@event.name)
