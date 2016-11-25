@@ -81,7 +81,7 @@ RSpec.configure do |config|
 end
 
 # Selects a given date object for a select matched by css_selector
-# copied from http://stackoverflow.com/questions/6729786/how-to-select-date-from-a-select-box-using-capybara-in-rails-3
+# adapted from http://stackoverflow.com/questions/6729786/how-to-select-date-from-a-select-box-using-capybara-in-rails-3
 #
 # @param date [Date] the date to be selected
 # @param locator [string] locator to match for the surronding date picker element
