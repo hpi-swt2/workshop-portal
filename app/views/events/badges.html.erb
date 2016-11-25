@@ -1,5 +1,25 @@
 <h1>Print name badges for event '<%= @event.name %>'</h1>
-<h3>Participants:</h3>
+<h1>Teilnehmer</h1>
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Print</th>
+  </tr>
+
+  <% @participants.each do |participant| %>
+      <tr>
+
+        <td>
+          <%= participant.name %>
+        </td>
+        <td>
+          <input type="checkbox" checked="checked">
+        </td>
+        <td>
+        </td>
+      </tr>
+  <% end %>
+</table>
 
 <%= link_to 'generate PDF',
             event_print_badges_path(@event),
