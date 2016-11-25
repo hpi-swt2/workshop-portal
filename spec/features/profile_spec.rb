@@ -1,14 +1,29 @@
 require "rails_helper"
 
 RSpec.feature "Upload letter of agreement", :type => :feature do
-  scenario "user uploads letter of agreement for the first time" do
+  before :each do
     @user = FactoryGirl.create(:user, role: :pupil)
     @user.profile ||= FactoryGirl.create(:profile)
     login_as(@user, scope: :user)
     visit profile_path(@user.profile)
-    attach_file(:letter_upload, './spec/testfiles/letter_of_agreement.pdf')
+  end
+  scenario "user uploads letter of agreement for the first time" do
+    attach_file(:letter_upload, './spec/testfiles/actual.pdf')
     click_button :upload_btn
     expect(page).to have_current_path profile_path(@user.profile)
+  end
+
+  scenario "user uploads a file with the wrong extension" do
+    attach_file(:letter_upload, './spec/testfiles/not_a_pd.f')
+    click_button :upload_btn
+    expect(page).to have_text(I18n.t("agreement_letters.wrong_filetype"))
+  end
+
+  scenario "user uploads a file that is too big" do
+    stub_const("AgreementLettersController::MAX_SIZE", 5)
+    attach_file(:letter_upload, './spec/testfiles/actual.pdf')
+    click_button :upload_btn
+    expect(page).to have_text(I18n.t("agreement_letters.file_too_big"))
   end
 end
 

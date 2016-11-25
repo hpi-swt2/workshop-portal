@@ -38,6 +38,9 @@ de:
   agreement_letters:
     upload: "Hochladen"
     update: "Aktualisieren"
+    file_too_big: "Die Datei ist zu groß."
+    wrong_filetype: "Ungültiger Datentyp."
+    upload_success: "Datei erfolgreich hochgeladen."
   helpers:
     label:
       profile:
