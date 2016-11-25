@@ -37,6 +37,11 @@ describe Profile do
 
   it "returns full name" do
     profile = FactoryGirl.build(:profile)
-    expect(profile.name).to eq("Karl Doe")
+    expect(profile.name).to eq("#{profile.first_name} #{profile.last_name}")
+  end
+
+  it "returns full address" do
+    profile = FactoryGirl.build(:profile)
+    expect(profile.address).to eq("#{profile.street_name}, #{profile.zip_code} #{profile.city}, #{profile.state}, #{profile.country}")
   end
 end
