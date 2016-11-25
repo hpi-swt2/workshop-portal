@@ -2,3 +2,7 @@
   Place all the styles related to the matching controller here.
   They will automatically be included in application.css.
 */
+
+.event-date-picker-start, .event-date-picker-end {
+	display: inline-block;
+}
