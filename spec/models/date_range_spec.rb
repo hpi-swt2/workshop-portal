@@ -9,12 +9,12 @@ describe DateRange do
   end
 
   it "does not validate with dateRanges in the past" do
-    pastDates = build(:dateRange, :with_past_dates)
+    pastDates = FactoryGirl.create(:dateRange, :with_past_dates)
     expect(pastDates).to_not be_valid
   end
 
   it "should not have a negative range" do
-		negativeDates = build(:dateRange, :with_negative_range)
-    expect(negativeDates.to_not be_valid)
+		negativeDates = FactoryGirl.create(:dateRange, :with_negative_range)
+    expect(negativeDates).to_not be_valid
   end
 end

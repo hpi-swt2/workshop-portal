@@ -16,7 +16,7 @@ FactoryGirl.define do
     name "Event-Name"
     description "Event-Description"
     max_participants 100
-    published false
+    active false
 
     trait :with_two_date_ranges do
       after (:create) do |event|

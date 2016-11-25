@@ -2,9 +2,10 @@
 #
 # Table name: dateRange
 #
-# id					:integer
+# id							:integer
 # startDate				:date
 # endDate 				:date
+# event_id 				:integer
 #
 
 
