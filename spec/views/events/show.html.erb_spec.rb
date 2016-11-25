@@ -27,7 +27,7 @@ RSpec.describe "events/show", type: :view do
     expect(rendered).to have_css("th", :text => t(:gender, scope:'activerecord.attributes.profile'))
     expect(rendered).to have_css("th", :text => t(:age, scope:'activerecord.attributes.profile'))
     expect(rendered).to have_css("th", :text => t(:participation_count, scope:'activerecord.attributes.user'))
-    expect(rendered).to have_css("th", :text => t(:status, scope: 'events.participation'))
+    expect(rendered).to have_css("th", :text => t(:status, scope: 'events.applicants_overview'))
   end
 
   it "displays applicants information" do
@@ -39,6 +39,6 @@ RSpec.describe "events/show", type: :view do
 
   it "displays application details button" do
     render
-    expect(rendered).to have_link(t(:details, scope: 'events.participation'))
+    expect(rendered).to have_link(t(:details, scope: 'events.applicants_overview'))
   end
 end
