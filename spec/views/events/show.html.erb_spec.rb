@@ -3,9 +3,10 @@ require 'rails_helper'
 RSpec.describe "events/show", type: :view do
   before(:each) do
     @event = assign(:event, FactoryGirl.create(:event))
-    @application_letter = FactoryGirl.create(:application_letter, user: FactoryGirl.create(:user), event: @event)
+    @application_letter = FactoryGirl.create(:application_letter, user: FactoryGirl.create(:user, role: :admin), event: @event)
     @application_letter.user.profile = FactoryGirl.build(:profile)
     @event.application_letters.push(@application_letter)
+    sign_in(@application_letter.user)
   end
 
   it "renders attributes" do

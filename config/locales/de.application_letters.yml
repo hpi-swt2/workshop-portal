@@ -2,7 +2,8 @@
 
 de:
   application_letters:
-    title: "Bewerbung für"
+    show:
+      application_title: "Bewerber für %{title}"
 
   activerecord:
     models:
