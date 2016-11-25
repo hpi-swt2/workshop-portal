@@ -17,6 +17,7 @@ class DateRange < ActiveRecord::Base
 
   validate :validate_start_date_not_in_past
   validate :validate_end_not_before_start
+  validate :validate_reasonable_timespan
 
   def validate_start_date_not_in_past
     if start_date < Date.today
@@ -29,13 +30,22 @@ class DateRange < ActiveRecord::Base
 
   def validate_end_not_before_start
     if end_date < start_date
-      errors.add(:start_date, "muss vor Enddatum liegen.")
+      errors.add(:end_date, "kann nicht vor Start-Datum liegen.")
+    end
+  end
+
+  def validate_reasonable_timespan
+    if end_date > start_date.next_year
+      errors.add(:end_date, "liegt ungewöhnlich weit vom Start-Datum entfernt.")
     end
   end
 
   def self.human_attribute_name(*args)
     if args[0].to_s == "start_date"
       return "Anfangs-Datum"
+    end
+    if args[0].to_s == "end_date"
+      return "End-Datum"
     end
 
     super

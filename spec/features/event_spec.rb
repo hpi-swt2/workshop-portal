@@ -3,6 +3,7 @@ require "rails_helper"
 describe "Event creation", :type => :feature do
   it "should not allow dates in the past" do
     visit new_event_path
+   # fill_in 'max_participants', :with =>  25
     select_date_within_selector(Date.yesterday.prev_day, '.event-date-picker-start')
     select_date_within_selector(Date.yesterday, '.event-date-picker-end')
     click_button "Event erstellen"
@@ -11,10 +12,11 @@ describe "Event creation", :type => :feature do
 
   it "should not allow unreasonable time spans" do
     visit new_event_path
+   # fill_in 'max_participants', :with =>  25
     select_date_within_selector(Date.today, '.event-date-picker-start')
     select_date_within_selector(Date.today.next_year(3), '.event-date-picker-end')
     click_button "Event erstellen"
-    expect(page).to have_text("Die angegebene Zeitspanne umfasst einen ungewöhnlich langen Zeitraum")
+    expect(page).to have_text("End-Datum liegt ungewöhnlich weit vom Start-Datum entfernt.")
   end
 
   # we currently don't have js support
@@ -42,8 +44,9 @@ describe "Event creation", :type => :feature do
 
   it "should not allow an end date before a start date" do
     visit new_event_path
+   # fill_in 'max_participants', :with =>  25
     select_date_within_selector(Date.today, '.event-date-picker-start')
-    select_date_within_selector(Date.today.prev_day(-2), '.event-date-picker-end')
+    select_date_within_selector(Date.today.prev_day(2), '.event-date-picker-end')
     click_button "Event erstellen"
 
     expect(page).to have_text("End-Datum kann nicht vor Start-Datum liegen")
