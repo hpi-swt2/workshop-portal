@@ -6,7 +6,8 @@
 #  name             :string
 #  description      :string
 #  max_participants :integer
-#  published         :boolean
+#  date_ranges      :collection
+#  published        :boolean
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #
@@ -20,12 +21,12 @@ FactoryGirl.define do
 
     trait :with_two_date_ranges do
       after (:create) do |event|
-        event.date_ranges << FactoryGirl.create(:dateRange, start_date: Date.new(2016, 1, 1), end_date: Date.new(2016, 2, 1))
-        event.date_ranges << FactoryGirl.create(:dateRange, start_date: Date.new(2017, 1, 1), end_date: Date.new(2017, 2, 1))
+        event.date_ranges << FactoryGirl.create(:date_range, start_date: Date.tomorrow, end_date: Date.tomorrow.next_day(5))
+        event.date_ranges << FactoryGirl.create(:date_range, start_date: Date.tomorrow, end_date: Date.tomorrow.next_day(10))
       end
     end
 
-    trait :without_date_ranges do
+    trait :without_date_ranges do #stub to make context in actual tests more readable
     end
   end
 end

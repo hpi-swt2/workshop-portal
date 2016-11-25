@@ -10,13 +10,13 @@
 
 
 FactoryGirl.define do
-	factory :dateRange  do
-		start_date Date.new(2016, 1, 1)
-    end_date Date.new(2016, 2, 2)
+	factory :date_range  do
+		start_date Date.tomorrow
+    end_date Date.tomorrow.next_day(10)
 
     trait :with_negative_range do
-      start_date Date.tomorrow
-      end_date Date.today
+      start_date Date.today.next_day(10)
+      end_date Date.today.next_day(9)
     end
 
     trait :with_past_dates do
