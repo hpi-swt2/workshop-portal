@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161107131407) do
+ActiveRecord::Schema.define(version: 20161120123250) do
 
   create_table "application_letters", force: :cascade do |t|
     t.string   "motivation"
@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(version: 20161107131407) do
     t.integer  "workshop_id", null: false
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+    t.boolean  "status"
   end
 
   add_index "application_letters", ["user_id"], name: "index_application_letters_on_user_id"
