@@ -4,6 +4,7 @@ RSpec.describe "events/show", type: :view do
   before(:each) do
     @event = assign(:event, FactoryGirl.create(:event))
     @application_letter = FactoryGirl.create(:application_letter, user: FactoryGirl.create(:user), event: @event)
+    @application_letter.user.profile = FactoryGirl.build(:profile)
     @event.application_letters.push(@application_letter)
   end
 
@@ -38,7 +39,9 @@ RSpec.describe "events/show", type: :view do
 
   it "displays applicants information" do
     render
-    expect(rendered).to have_css("td", :text => @event.application_letters.first.user.name)
+    expect(rendered).to have_css("td", :text => @application_letter.user.profile.name)
+    expect(rendered).to have_css("td", :text => @application_letter.user.profile.gender)
+    expect(rendered).to have_css("td", :text => @application_letter.user.profile.age)
   end
 
   it "displays application details button" do

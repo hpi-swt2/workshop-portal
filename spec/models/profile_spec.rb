@@ -29,4 +29,14 @@ describe Profile do
 	    expect(profile).to_not be_valid
 	  end
   end
+
+  it "returns correct age" do
+    profile = FactoryGirl.build(:profile)
+    expect(profile.age).to eq(15)
+  end
+
+  it "returns full name" do
+    profile = FactoryGirl.build(:profile)
+    expect(profile.name).to eq("Karl Doe")
+  end
 end

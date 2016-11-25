@@ -31,4 +31,34 @@ describe User do
     user = FactoryGirl.build(:user, email: nil)
     expect(user).to_not be_valid
   end
+
+  it "returns users accepted application count" do
+    user = FactoryGirl.build(:user)
+    expect(user.accepted_application_count).to eq(0)
+  end
+
+  it "returns users rejected application count" do
+    user = FactoryGirl.build(:user)
+    expect(user.rejected_application_count).to eq(0)
+  end
+
+  it "returns correct accepted and rejected application count" do
+    user = FactoryGirl.create(:user)
+    # Add two accepted and one rejected application
+    user.application_letters.push(FactoryGirl.create(:application_letter, status: true))
+    user.application_letters.push(FactoryGirl.create(:application_letter, status: false))
+    user.application_letters.push(FactoryGirl.create(:application_letter, status: true))
+
+    expect(user.accepted_application_count).to eq(2)
+    expect(user.rejected_application_count).to eq(1)
+  end
+
+  it "return correct participation count" do
+    user = FactoryGirl.create(:user)
+    # Add two participations
+    user.application_letters.push(FactoryGirl.create(:application_letter, status: true))
+    user.application_letters.push(FactoryGirl.create(:application_letter, status: true))
+
+    expect(user.participation_count).to eq(2)
+  end
 end
