@@ -1,0 +1,14 @@
+# German translations for the application letters
+
+de:
+  application_letters:
+    show:
+      application_title: "Bewerbung für"
+      new_note: "Neue Anmerkung:"
+
+  activerecord:
+    models:
+      application_letter: "Bewerbung"
+      application_note:
+        one: "Anmerkung"
+        other: "Anmerkungen"

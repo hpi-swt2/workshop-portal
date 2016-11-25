@@ -38,7 +38,7 @@
   <div class="form-group">
     <%= f.label :graduates_school_in, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
-      <%= f.collection_select(:graduates_school_in, Array(Time.now.year..Time.now.year+15).unshift(I18n.t('helpers.label.profile.already_graduated')), :to_s, :to_s) %>
+      <%= f.collection_select(:graduates_school_in, Array(Time.now.year..Time.now.year+15).unshift(t(:already_graduated, scope: 'profiles')), :to_s, :to_s) %>
     </div>
     <%=f.error_span(:graduates_school_in) %>
   </div>

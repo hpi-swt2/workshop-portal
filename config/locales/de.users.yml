@@ -1,0 +1,9 @@
+# German translation for the users
+
+de:
+  activerecord:
+    attributes:
+      user:
+        participation_count: "Anzahl der Bewerbungen"
+        accepted_application_count: "Angenommene Bewerbungen"
+        rejected_application_count: "Abgelehnte Bewerbungen"
