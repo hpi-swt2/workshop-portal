@@ -26,6 +26,14 @@ FactoryGirl.define do
       end
     end
 
+    trait :with_multiple_date_ranges do
+      after (:create) do |event|
+        event.date_ranges << FactoryGirl.create(:date_range, start_date: Date.today.next_day(3), end_date: Date.tomorrow.next_day(5))
+        event.date_ranges << FactoryGirl.create(:date_range, start_date: Date.today.next_day(12), end_date: Date.today.next_day(16))
+        event.date_ranges << FactoryGirl.create(:date_range, start_date: Date.today, end_date: Date.tomorrow)
+      end
+    end
+
     trait :without_date_ranges do #stub to make context in actual tests more readable
     end
   end
