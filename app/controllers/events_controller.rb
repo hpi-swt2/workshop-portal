@@ -29,6 +29,8 @@ class EventsController < ApplicationController
                     end_date: Date.new(e[:year].to_i, e[:month].to_i, e[:day].to_i))
     end
 
+    @date_ranges = @event.date_ranges
+
     if @event.save
       redirect_to @event, notice: 'Event was successfully created.'
     else

@@ -12,6 +12,14 @@
   <dd><%= @event.max_participants %></dd>
   <dt><strong><%= model_class.human_attribute_name(:active) %>:</strong></dt>
   <dd><%= @event.active %></dd>
+  <dt><strong>Zeitspanne:</strong></dt>
+  <dd>
+    <ul>
+    <% @event.date_ranges.each do |r| %>
+      <li><%= r.start_date.to_s %> bis <%= r.end_date.to_s %></li>
+    <% end %>
+    </ul>
+  </dd>
 </dl>
 
 <%= link_to t('.back', :default => t("helpers.links.back")),

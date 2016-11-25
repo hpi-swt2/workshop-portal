@@ -33,4 +33,12 @@ class DateRange < ActiveRecord::Base
     end
   end
 
+  def self.human_attribute_name(*args)
+    if args[0].to_s == "start_date"
+      return "Anfangs-Datum"
+    end
+
+    super
+  end
+
 end
