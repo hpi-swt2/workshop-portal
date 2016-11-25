@@ -21,18 +21,18 @@ describe Event do
     expect(event).to be_valid
   end
 
-  it "should have one ore more date-ranges" do
+  it "should have one or more date-ranges" do
 
     #checking if the event model can handle date_ranges
     expect(event.date_ranges.size).to eq 2
     expect(event.date_ranges.first.start_date).to eq(Date.new(2016, 1, 1))
     expect(event.date_ranges.first.end_date).to eq(Date.new(2016, 2, 1))
-    expect(event.date_ranges.second.start_date).to eq(Date.new(2016, 1, 1))
-    expect(event.date_ranges.second.end_date).to eq(Date.new(2017, 1, 1))
-    expect(event.date_ranges.first).to eq(event.date_ranges.last)
+    expect(event.date_ranges.second.start_date).to eq(Date.new(2017, 1, 1))
+    expect(event.date_ranges.second.end_date).to eq(Date.new(2017, 2, 1))
+    expect(event.date_ranges.second).to eq(event.date_ranges.last)
 
     #making sure that every event has at least one date range
-    let(event1) { FactoryGirl.create :event, :without_date_ranges}
+    event1 = FactoryGirl.create( :event, :without_date_ranges )
     expect(event1).to_not be_valid
   end
 end

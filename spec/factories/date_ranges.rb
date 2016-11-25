@@ -15,8 +15,8 @@ FactoryGirl.define do
     end_date Date.new(2016, 2, 2)
 
     trait :with_negative_range do
-      start_date Date.today
-      end_date Date.yesterday
+      start_date Date.tomorrow
+      end_date Date.today
     end
 
     trait :with_past_dates do
