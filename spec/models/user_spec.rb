@@ -32,13 +32,13 @@ describe User do
     expect(user).to_not be_valid
   end
 
-  it "returns users accepted application count" do
-    user = FactoryGirl.build(:user)
+  it "returns correct default accepted application count" do
+    user = FactoryGirl.create(:user)
     expect(user.accepted_application_count).to eq(0)
   end
 
-  it "returns users rejected application count" do
-    user = FactoryGirl.build(:user)
+  it "returns correct default rejected application count" do
+    user = FactoryGirl.create(:user)
     expect(user.rejected_application_count).to eq(0)
   end
 
