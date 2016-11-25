@@ -2,6 +2,9 @@
 
 de:
   events:
+    show:
+      free_places: '%{places} Plätze frei'
+      occupied_places: '%{places} Plätze belegt'
     participation:
       title: "Bewerber für"
       accepted_rejected: "angenommen / abgelehnt"

@@ -15,8 +15,8 @@
 </dl>
 
 <h3><%= t(:title, scope: 'events.participation') %> <%= @event.name %></h3>
-<div><%= @free_places %> Plätze frei</div>
-<div><%= @occupied_places %> Plätze belegt</div>
+<div><%= t '.free_places', places: @free_places %></div>
+<div><%= t '.occupied_places', places: @occupied_places %></div>
 
 <table id="applicants" class="table table-striped">
   <thead>
