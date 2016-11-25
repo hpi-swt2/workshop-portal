@@ -51,8 +51,6 @@ gem 'devise-bootstrap-views'
 # Select2 dropdown replacement featuring autocomplete
 # gem 'select2-rails'
 
-# performance management
-gem 'newrelic_rpm'
 # Exception Tracking using Errbit
 gem 'airbrake'
 

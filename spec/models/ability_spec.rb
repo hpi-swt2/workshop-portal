@@ -4,21 +4,98 @@ require 'rails_helper'
 require "cancan/matchers"
 
 describe User do
+  %i[pupil tutor].each do |role|
+    it "can create its profile" do
+      user = FactoryGirl.create(:user, role: role)
+      ability = Ability.new(user)
 
-  it "can edit its profile" do
-    user = FactoryGirl.create(:user)
-    profile = FactoryGirl.create(:profile, user: user)
-    ability = Ability.new(user)
+      expect(ability).to be_able_to(:new, Profile)
+      expect(ability).to be_able_to(:create, Profile)
+    end
 
-    expect(ability).to be_able_to(:edit, profile) 
+    it "can access its profile" do
+      user = FactoryGirl.create(:user, role: role)
+      profile = FactoryGirl.create(:profile, user: user)
+      ability = Ability.new(user)
+
+      expect(ability).to be_able_to(:edit, profile)
+      expect(ability).to be_able_to(:edit, profile)
+      expect(ability).to be_able_to(:show, profile)
+      expect(ability).to be_able_to(:index, profile)
+      expect(ability).to be_able_to(:update, profile)
+      expect(ability).to be_able_to(:destroy, profile)
+    end
+
+    it "cannot access another user's profile" do
+      user = FactoryGirl.create(:user, role: role)
+      another_user = FactoryGirl.create(:user)
+      another_profile = FactoryGirl.create(:profile, user: another_user)
+      ability = Ability.new(user)
+
+      expect(ability).to_not be_able_to(:edit, another_profile)
+      expect(ability).to_not be_able_to(:show, another_profile)
+      expect(ability).to_not be_able_to(:update, another_profile)
+      expect(ability).to_not be_able_to(:destroy, another_profile)
+    end
+
+    it "can create its application" do
+      user = FactoryGirl.create(:user, role: role)
+      ability = Ability.new(user)
+
+      expect(ability).to be_able_to(:new, ApplicationLetter)
+      expect(ability).to be_able_to(:create, ApplicationLetter)
+    end
+
+    it "can access its application" do
+      user = FactoryGirl.create(:user, role: role)
+      application = FactoryGirl.create(:application_letter, user: user)
+      ability = Ability.new(user)
+
+      expect(ability).to be_able_to(:edit, application)
+      expect(ability).to be_able_to(:show, application)
+      expect(ability).to be_able_to(:index, application)
+      expect(ability).to be_able_to(:update, application)
+      expect(ability).to be_able_to(:destroy, application)
+    end
+
+    it "cannot access another user's application" do
+      user = FactoryGirl.create(:user, role: role)
+      another_user = FactoryGirl.create(:user)
+      another_application = FactoryGirl.create(:application_letter, user: another_user)
+      ability = Ability.new(user)
+
+      expect(ability).to_not be_able_to(:edit, another_application)
+      expect(ability).to_not be_able_to(:show, another_application)
+      expect(ability).to_not be_able_to(:update, another_application)
+      expect(ability).to_not be_able_to(:destroy, another_application)
+    end
   end
 
-  it "cannot edit another user's profile" do
-    user = FactoryGirl.create(:user)
-    another_user = FactoryGirl.create(:user)
-    another_profile = FactoryGirl.create(:profile, user: another_user)
+  it "can do everything as admin" do
+    user = FactoryGirl.create(:user, role: :admin)
     ability = Ability.new(user)
 
-    expect(ability).to_not be_able_to(:edit, another_profile) 
+    expect(ability).to be_able_to(:manage, :all)
+  end
+
+  it "can only read profiles and applications as organizer" do
+    user = FactoryGirl.create(:user, role: :organizer)
+    another_user = FactoryGirl.create(:user)
+    another_profile = FactoryGirl.create(:profile, user: another_user)
+    another_application = FactoryGirl.create(:application_letter, user: another_user)
+    ability = Ability.new(user)
+
+    expect(ability).to be_able_to(:index, Profile)
+    expect(ability).to be_able_to(:show, another_profile)
+    expect(ability).to be_able_to(:index, ApplicationLetter)
+    expect(ability).to be_able_to(:show, another_application)
+
+    expect(ability).to_not be_able_to(:edit, another_profile)
+    expect(ability).to_not be_able_to(:update, another_profile)
+    expect(ability).to_not be_able_to(:destroy, another_profile)
+
+    expect(ability).to_not be_able_to(:edit, another_application)
+    expect(ability).to_not be_able_to(:update, another_application)
+    expect(ability).to_not be_able_to(:destroy, another_application)
   end
 end

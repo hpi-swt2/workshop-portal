@@ -1,13 +1,13 @@
-<%= form_for @workshop, :html => { :class => "form-horizontal workshop" } do |f| %>
+<%= form_for @event, :html => { :class => "form-horizontal event" } do |f| %>
 
-  <% if @workshop.errors.any? %>
+  <% if @event.errors.any? %>
     <div id="error_expl" class="panel panel-danger">
       <div class="panel-heading">
-        <h3 class="panel-title"><%= pluralize(@workshop.errors.count, "error") %> prohibited this workshop from being saved:</h3>
+        <h3 class="panel-title"><%= pluralize(@event.errors.count, "error") %> prohibited this event from being saved:</h3>
       </div>
       <div class="panel-body">
         <ul>
-        <% @workshop.errors.full_messages.each do |msg| %>
+        <% @event.errors.full_messages.each do |msg| %>
           <li><%= msg %></li>
         <% end %>
         </ul>
@@ -48,7 +48,7 @@
     <div class="col-lg-offset-2 col-lg-10">
       <%= f.submit nil, :class => 'btn btn-primary' %>
       <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
-                workshops_path, :class => 'btn btn-default' %>
+                events_path, :class => 'btn btn-default' %>
     </div>
   </div>
 

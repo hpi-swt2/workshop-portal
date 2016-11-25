@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   resources :application_letters, path: 'applications' do
     resources :application_notes #TODO: don't allow new, edit etc routes for notes (only create)
   end
-  resources :workshops
+  resources :events
   resources :profiles
   devise_for :users
   # The priority is based upon order of creation: first created -> highest priority.
