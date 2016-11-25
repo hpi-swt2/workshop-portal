@@ -36,9 +36,4 @@ describe Event do
     let(event1) { FactoryGirl.create :event, :without_date_ranges}
     expect(event1).to_not be_valid
   end
-
-  end
-
-
-
 end
