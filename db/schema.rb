@@ -11,19 +11,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161122144126) do
+ActiveRecord::Schema.define(version: 20161123124500) do
 
   create_table "application_letters", force: :cascade do |t|
     t.string   "motivation"
-    t.integer  "user_id",     null: false
-    t.integer  "workshop_id", null: false
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.integer  "user_id",    null: false
+    t.integer  "event_id",   null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.boolean  "status"
   end
 
+  add_index "application_letters", ["event_id"], name: "index_application_letters_on_event_id"
   add_index "application_letters", ["user_id"], name: "index_application_letters_on_user_id"
-  add_index "application_letters", ["workshop_id"], name: "index_application_letters_on_workshop_id"
 
   create_table "application_notes", force: :cascade do |t|
     t.text     "note"
@@ -34,11 +34,32 @@ ActiveRecord::Schema.define(version: 20161122144126) do
 
   add_index "application_notes", ["application_letter_id"], name: "index_application_notes_on_application_letter_id"
 
+  create_table "events", force: :cascade do |t|
+    t.string   "name"
+    t.string   "description"
+    t.integer  "max_participants"
+    t.boolean  "active"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+  end
+
   create_table "profiles", force: :cascade do |t|
     t.string   "cv"
-    t.integer  "user_id",    null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer  "user_id",             null: false
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "gender"
+    t.date     "birth_date"
+    t.string   "email"
+    t.string   "school"
+    t.string   "street_name"
+    t.string   "zip_code"
+    t.string   "city"
+    t.string   "state"
+    t.string   "country"
+    t.string   "graduates_school_in"
   end
 
   add_index "profiles", ["user_id"], name: "index_profiles_on_user_id"
@@ -66,18 +87,10 @@ ActiveRecord::Schema.define(version: 20161122144126) do
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
     t.string   "name"
+    t.string   "role"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
-
-  create_table "workshops", force: :cascade do |t|
-    t.string   "name"
-    t.string   "description"
-    t.integer  "max_participants"
-    t.boolean  "active"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
-  end
 
 end

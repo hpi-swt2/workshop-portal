@@ -1,20 +1,20 @@
-<%- model_class = Workshop -%>
+<%- model_class = Event -%>
 <div class="page-header">
   <h1><%=t '.title', :default => model_class.model_name.human.titleize %></h1>
 </div>
 
 <dl class="dl-horizontal">
   <dt><strong><%= model_class.human_attribute_name(:name) %>:</strong></dt>
-  <dd><%= @workshop.name %></dd>
+  <dd><%= @event.name %></dd>
   <dt><strong><%= model_class.human_attribute_name(:description) %>:</strong></dt>
-  <dd><%= @workshop.description %></dd>
+  <dd><%= @event.description %></dd>
   <dt><strong><%= model_class.human_attribute_name(:max_participants) %>:</strong></dt>
-  <dd><%= @workshop.max_participants %></dd>
+  <dd><%= @event.max_participants %></dd>
   <dt><strong><%= model_class.human_attribute_name(:active) %>:</strong></dt>
-  <dd><%= @workshop.active %></dd>
+  <dd><%= @event.active %></dd>
 </dl>
 
-<h3>Bewerber für <%= @workshop.name %></h3>
+<h3>Bewerber für <%= @event.name %></h3>
 <div><%= @free_places %> Plätze frei</div>
 <div><%= @occupied_places %> Plätze belegt</div>
 
@@ -29,7 +29,7 @@
   </tr>
   </thead>
   <tbody>
-  <% @workshop.application_letters.each do | application_letter | %>
+  <% @event.application_letters.each do | application_letter | %>
       <tr>
         <td><%= application_letter.user.name %></td>
         <td><%#= application_letter.user.sex %></td>
@@ -46,16 +46,24 @@
 
 <!-- TODO: Write view tests for buttons -->
 <%= link_to "Alle annehmen (#16 US_3.1 Accept-All-Button)",
-            workshops_path, :class => 'btn btn-default'%>
+            events_path, :class => 'btn btn-default'%>
 
 <%= link_to "Alle drucken (#30 US_3.7 Print all at once)",
-            workshops_path, :class => 'btn btn-default'%>
+            events_path, :class => 'btn btn-default'%>
 
 <%= link_to "Zusagen verschicken (#22 US_3.2 Send emails in a bundle)",
-            workshops_path, :class => 'btn btn-default'%>
+            events_path, :class => 'btn btn-default'%>
 
 <%= link_to "Absagen verschicken (#22 US_3.2 Send emails in a bundle)",
-            workshops_path, :class => 'btn btn-default'%>
+            events_path, :class => 'btn btn-default'%>
 
 <%= link_to t('.back', :default => t("helpers.links.back")),
-            workshops_path, :class => 'btn btn-default'  %>
+              events_path, :class => 'btn btn-default'  %>
+<%= link_to t('.edit', :default => t("helpers.links.edit")),
+              edit_event_path(@event), :class => 'btn btn-default' %>
+<%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+              event_path(@event),
+              :method => 'delete',
+              :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+              :class => 'btn btn-danger' %>
+>>>>>>> origin/dev:app/views/events/show.html.erb
