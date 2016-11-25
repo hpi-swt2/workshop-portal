@@ -22,6 +22,12 @@ class EventsController < ApplicationController
   # POST /events
   def create
     @event = Event.new(event_params)
+    dateRanges = params[:date_ranges] || {start_date: [], end_date: []}
+
+    @event.date_ranges = dateRanges[:start_date].zip(dateRanges[:end_date]).map do |s, e|
+      DateRange.new(start_date: Date.new(s[:year].to_i, s[:month].to_i, s[:day].to_i),
+                    end_date: Date.new(e[:year].to_i, e[:month].to_i, e[:day].to_i))
+    end
 
     if @event.save
       redirect_to @event, notice: 'Event was successfully created.'

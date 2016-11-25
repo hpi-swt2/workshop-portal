@@ -94,6 +94,39 @@ RSpec.describe EventsController, type: :controller do
         expect(response).to render_template("new")
       end
     end
+
+    it "should attach date ranges to the event entity" do
+      date1 = Date.today
+      date2 = Date.today.next_day
+      date3 = Date.today.next_day(2)
+      date4 = Date.today.next_day(2)
+      post :create, {
+        event: {
+          name: 'Test',
+          description: 'Test',
+          max_participants: 1,
+          active: false,
+        },
+        date_ranges: {
+          start_date: [
+            {day: date1.day, month: date1.month, year: date1.year},
+            {day: date3.day, month: date3.month, year: date3.year}
+          ],
+          end_date: [
+            {day: date2.day, month: date2.month, year: date2.year},
+            {day: date4.day, month: date4.month, year: date4.year}
+          ]
+        }
+      }, session: valid_session
+      expect(assigns(:event)).to be_a(Event)
+      expect(assigns(:event)).to be_persisted
+      expect(assigns(:event).date_ranges).to_not be_empty
+      expect(assigns(:event).date_ranges.first.event_id).to eq(assigns(:event).id)
+      expect(assigns(:event).date_ranges.first.start_date).to eq(date1)
+      expect(assigns(:event).date_ranges.first.end_date).to eq(date2)
+      expect(assigns(:event).date_ranges.second.start_date).to eq(date3)
+      expect(assigns(:event).date_ranges.second.end_date).to eq(date4)
+    end
   end
 
   describe "PUT #update" do
