@@ -14,7 +14,7 @@
   <dd><%= @event.active %></dd>
 </dl>
 
-<h3>Bewerber für <%= @event.name %></h3>
+<h3><%= t(:title, scope: 'events.participation') %> <%= @event.name %></h3>
 <div>Noch [Anzahl] freie Plätze (#29 US_3.6 Counter)</div>
 
 <table id="applicants" class="table table-striped">
@@ -23,8 +23,11 @@
     <th><%= Profile.human_attribute_name(:name) %></th>
     <th><%= Profile.human_attribute_name(:gender) %></th>
     <th><%= Profile.human_attribute_name(:age) %></th>
-    <th><%= User.human_attribute_name(:participation_count)%></th>
-    <th>Status</th>
+    <th>
+      <%= User.human_attribute_name(:participation_count)%> <br>
+      <%= t(:accepted_rejected, scope: 'events.participation') %>
+    </th>
+    <th><%= t(:status, scope: 'events.participation') %></th>
   </tr>
   </thead>
   <tbody>
@@ -36,7 +39,7 @@
         <td><%= application_letter.user.accepted_application_count %> / <%= application_letter.user.rejected_application_count %></td>
         <td>
           Radio Buttons (#45 US_3.11: Mark as accepted/rejected)
-          <%= link_to "Details", application_letter_path(application_letter), :class => 'btn btn-default' %>
+          <%= link_to t(:details, scope: 'events.participation'), application_letter_path(application_letter), :class => 'btn btn-default' %>
         </td>
       </tr>
   <% end %>

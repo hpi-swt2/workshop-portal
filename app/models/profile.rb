@@ -23,16 +23,4 @@ class Profile < ActiveRecord::Base
     first_name + " " +  last_name
   end
 
-  def self.human_attribute_name(*args)
-    case args[0].to_s
-      when "name"
-        return "Name"
-      when "gender"
-        return "Geschlecht"
-      when "age"
-        return "Alter"
-      else
-        super
-    end
-  end
 end

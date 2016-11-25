@@ -1,0 +1,24 @@
+# German translations for the user profiles
+
+de:
+  profiles:
+    already_graduated: "Bereits Abitur"
+
+  activerecord:
+    attributes:
+      profile:
+        first_name: "Vorname"
+        last_name: "Nachname"
+        name: "Name"
+        gender: "Geschlecht"
+        birth_date: "Geburtsdatum"
+        age: "Alter"
+        email: "E-Mail"
+        school: "Schule"
+        street_name: "Straße"
+        zip_code: "Postleitzahl"
+        city: "Stadt"
+        state: "Bundesland"
+        country: "Land"
+        graduates_school_in: "Abitur vorraussichtlich in"
+

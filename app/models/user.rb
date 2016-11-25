@@ -53,13 +53,4 @@ class User < ActiveRecord::Base
     ApplicationLetter.where(:user_id => id, :status => false).count()
   end
 
-  def self.human_attribute_name(*args)
-    case args[0].to_s
-      when "participation_count"
-        return "Camp-Teilnahmen"
-      else
-        super
-    end
-  end
-
 end

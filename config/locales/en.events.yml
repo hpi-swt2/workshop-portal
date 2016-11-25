@@ -1,0 +1,20 @@
+# English translation for events
+
+en:
+  events:
+    participation:
+      title: "Applicants for"
+
+      accepted_rejected: "accepted / rejected"
+      status: "Status"
+      details: "Details"
+
+  activerecord:
+    models:
+      event: "Event"
+    attributes:
+      event:
+        name: "Name"
+        description: "Description"
+        max_participants: "Maximum Participants"
+        active: "Active"
