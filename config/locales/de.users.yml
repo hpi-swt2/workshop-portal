@@ -4,6 +4,5 @@ de:
   activerecord:
     attributes:
       user:
-        participation_count: "Anzahl der Bewerbungen"
-        accepted_application_count: "Angenommene Bewerbungen"
-        rejected_application_count: "Abgelehnte Bewerbungen"
+        accepted_application_count: "Anzahl der angenommene Bewerbungen"
+        rejected_application_count: "Anzahl der abgelehnte Bewerbungen"

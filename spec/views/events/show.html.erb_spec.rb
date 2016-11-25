@@ -26,7 +26,7 @@ RSpec.describe "events/show", type: :view do
     expect(rendered).to have_css("th", :text => t(:name, scope:'activerecord.attributes.profile'))
     expect(rendered).to have_css("th", :text => t(:gender, scope:'activerecord.attributes.profile'))
     expect(rendered).to have_css("th", :text => t(:age, scope:'activerecord.attributes.profile'))
-    expect(rendered).to have_css("th", :text => t(:participation_count, scope:'activerecord.attributes.user'))
+    expect(rendered).to have_css("th", :text => t(:participations, scope: 'events.applicants_overview'))
     expect(rendered).to have_css("th", :text => t(:status, scope: 'events.applicants_overview'))
   end
 
