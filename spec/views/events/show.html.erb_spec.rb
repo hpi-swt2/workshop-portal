@@ -30,11 +30,11 @@ RSpec.describe "events/show", type: :view do
 
   it "renders applicants table header fields" do
     render
-    expect(rendered).to have_css("th", :text => "Name")
-    expect(rendered).to have_css("th", :text => "Geschlecht")
-    expect(rendered).to have_css("th", :text => "Alter")
-    expect(rendered).to have_css("th", :text => "Camp-Teilnahmen")
-    expect(rendered).to have_css("th", :text => "Status")
+    expect(rendered).to have_css("th", :text => t(:name, scope:'activerecord.attributes.profile'))
+    expect(rendered).to have_css("th", :text => t(:gender, scope:'activerecord.attributes.profile'))
+    expect(rendered).to have_css("th", :text => t(:age, scope:'activerecord.attributes.profile'))
+    expect(rendered).to have_css("th", :text => t(:participation_count, scope:'activerecord.attributes.user'))
+    expect(rendered).to have_css("th", :text => t(:status, scope: 'events.participation'))
   end
 
   it "displays applicants information" do
@@ -46,6 +46,6 @@ RSpec.describe "events/show", type: :view do
 
   it "displays application details button" do
     render
-    expect(rendered).to have_link("Details")
+    expect(rendered).to have_link(t(:details, scope: 'events.participation'))
   end
 end
