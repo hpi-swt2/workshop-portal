@@ -10,7 +10,7 @@
         <% @event.errors.full_messages.each do |msg| %>
           <li><%= msg %></li>
         <% end %>
-        <% @date_ranges.each do |range|
+        <% @event.date_ranges.each do |range|
           range.errors.full_messages.each do |msg| %>
           <li><%= msg %></li>
           <% end

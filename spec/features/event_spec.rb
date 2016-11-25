@@ -79,8 +79,12 @@ describe "Event", type: :feature do
 
       visit edit_event_path(event.id)
 
-      select_date_within_selector(dateStart, '.event-date-picker-start')
-      select_date_within_selector(dateEnd, '.event-date-picker-end')
+      picker = page.all('.event-date-picker')[0]
+      startPicker = picker.find('.event-date-picker-start')
+      endPicker = picker.find('.event-date-picker-end')
+
+      select_date_within_selector(dateStart, startPicker)
+      select_date_within_selector(dateEnd, endPicker)
 
       click_button 'Event aktualisieren'
 
