@@ -13,6 +13,8 @@
 #
 
 class Event < ActiveRecord::Base
+  UNREASONABLY_LONG_DATE_SPAN = 300
+
   has_many :application_letters
   has_many :date_ranges
 
@@ -29,6 +31,12 @@ class Event < ActiveRecord::Base
     (date_ranges.max { |a,b| a.end_date <=> b.end_date }).end_date
   end
 
+  # @return whether this event appears unreasonably long as defined by
+  #         the corresponding constant
+  def unreasonably_long
+    end_date - start_date > UNREASONABLY_LONG_DATE_SPAN
+  end
+
 
   #TODO: This validation kills things.
   # validate :has_date_ranges
@@ -36,4 +44,12 @@ class Event < ActiveRecord::Base
   #def has_date_ranges
   #   errors.add(:base, 'Bitte mindestens eine Zeitspanne auswählen!') if date_ranges.blank?
   #  end
+
+  def self.human_attribute_name(*args)
+    if args[0].to_s == "max_participants"
+      return "Maximale Teilnehmerzahl"
+    end
+
+    super
+  end
 end

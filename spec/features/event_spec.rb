@@ -10,9 +10,9 @@ describe "Event creation", :type => :feature do
     expect(page).to have_text("Anfangs-Datum darf nicht in der Vergangenheit liegen.")
   end
 
-  it "should not allow unreasonable time spans" do
+  it "should warn about unreasonably long time spans" do
     visit new_event_path
-   # fill_in 'max_participants', :with =>  25
+    fill_in 'Maximale Teilnehmerzahl', :with => 25
     select_date_within_selector(Date.today, '.event-date-picker-start')
     select_date_within_selector(Date.today.next_year(3), '.event-date-picker-end')
     click_button "Event erstellen"

@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "events/show", type: :view do
   before(:each) do
-    @event = assign(:event, FactoryGirl.create(:event))
+    @event = assign(:event, FactoryGirl.create(:event, :with_two_date_ranges))
   end
 
   it "renders attributes" do

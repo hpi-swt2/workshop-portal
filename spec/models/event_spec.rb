@@ -49,4 +49,11 @@ describe Event do
       expect(event.end_date).to eq(Date.today.next_day(16))
     end
   end
+
+  describe "#unreasonably_long" do
+    it "should be true if the event is longer than defined" do
+      event = FactoryGirl.create :event, :with_unreasonably_long_range
+      expect(event.unreasonably_long).to be true
+    end
+  end
 end

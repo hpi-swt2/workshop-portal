@@ -34,6 +34,14 @@ FactoryGirl.define do
       end
     end
 
+    trait :with_unreasonably_long_range do
+      after (:create) do |event|
+        event.date_ranges << FactoryGirl.create(:date_range,
+          start_date: Date.today,
+          end_date: Date.tomorrow.next_day(Event::UNREASONABLY_LONG_DATE_SPAN))
+      end
+    end
+
     trait :without_date_ranges do #stub to make context in actual tests more readable
     end
   end

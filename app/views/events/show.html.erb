@@ -3,6 +3,14 @@
   <h1><%=t '.title', :default => model_class.model_name.human.titleize %></h1>
 </div>
 
+<% if @event.unreasonably_long %>
+  <div class="panel panel-warning">
+    <div class="panel-body">
+      End-Datum liegt ungewöhnlich weit vom Start-Datum entfernt.
+    </div>
+  </div>
+<% end %>
+
 <dl class="dl-horizontal">
   <dt><strong><%= model_class.human_attribute_name(:name) %>:</strong></dt>
   <dd><%= @event.name %></dd>
