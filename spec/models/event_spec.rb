@@ -36,14 +36,16 @@ describe Event do
     #expect(event1).to_not be_valid
   end
 
-  describe "#min" do
+  describe "#start_date" do
     it "should return return its minimum over all date ranges" do
+      event = FactoryGirl.create :event, :with_multiple_date_ranges
       expect(event.start_date).to eq(Date.today)
     end
   end
 
-  describe "#max" do
+  describe "#end_date" do
     it "should return return its maximum over all date ranges" do
+      event = FactoryGirl.create :event, :with_multiple_date_ranges
       expect(event.end_date).to eq(Date.today.next_day(16))
     end
   end

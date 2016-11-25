@@ -19,6 +19,15 @@ class Event < ActiveRecord::Base
   validates :max_participants, numericality: { only_integer: true, greater_than: 0 }
 
 
+  # @return the minimum start_date over all date ranges
+  def start_date
+    (date_ranges.min { |a,b| a.start_date <=> b.start_date }).start_date
+  end
+
+  # @return the minimum end_date over all date ranges
+  def end_date
+    (date_ranges.max { |a,b| a.end_date <=> b.end_date }).end_date
+  end
 
 
   #TODO: This validation kills things.
