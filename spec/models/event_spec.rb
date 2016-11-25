@@ -21,18 +21,22 @@ describe Event do
   end
 
   it "computes the number of free places" do
-    workshop = FactoryGirl.create(:event)
-    application_letter = FactoryGirl.create(:application_letter, user: FactoryGirl.create(:user), event: workshop)
-    workshop.application_letters.push(application_letter)
+    event = FactoryGirl.create(:event)
+    application_letter = FactoryGirl.create(:application_letter, user: FactoryGirl.create(:user), event: event)
+    event.application_letters.push(application_letter)
 
-    expect(workshop.compute_free_places).to eq(workshop.max_participants - workshop.compute_occupied_places)
+    expect(event.compute_free_places).to eq(event.max_participants - event.compute_occupied_places)
   end
 
   it "computes the number of occupied places" do
-    workshop = FactoryGirl.create(:event)
-    application_letter = FactoryGirl.create(:application_letter, user: FactoryGirl.create(:user), event: workshop)
-    workshop.application_letters.push(application_letter)
-
-    expect(workshop.compute_occupied_places).to eq(workshop.application_letters.where(status: 1).count)
+    event = FactoryGirl.create(:event)
+    application_letter = FactoryGirl.create(:application_letter, user: FactoryGirl.create(:user), event: event)
+    application_letter_accepted = FactoryGirl.create(:application_letter_accepted, user: FactoryGirl.create(:user), event: event)
+    event.application_letters.push(application_letter)
+    event.application_letters.push(application_letter_accepted)
+    expect(event.compute_occupied_places).to eq(1)
+    application_letter_accepted_2 = FactoryGirl.create(:application_letter_accepted, user: FactoryGirl.create(:user), event: event)
+    event.application_letters.push(application_letter_accepted_2)
+    expect(event.compute_occupied_places).to eq(2)
   end
 end

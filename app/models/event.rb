@@ -20,6 +20,6 @@ class Event < ActiveRecord::Base
   end
 
   def compute_occupied_places
-    application_letters.where(status: 1).count
+    application_letters.where(status: true).count
   end
 end

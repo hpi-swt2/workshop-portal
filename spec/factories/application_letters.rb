@@ -17,4 +17,11 @@ FactoryGirl.define do
     event
     status nil
   end
+
+  factory :application_letter_accepted, class: :application_letter do
+    motivation "MyString"
+    user
+    event
+    status true
+  end
 end
