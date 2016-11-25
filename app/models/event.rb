@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: workshops
+# Table name: events
 #
 #  id               :integer          not null, primary key
 #  name             :string
@@ -10,13 +10,8 @@
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #
+class Event < ActiveRecord::Base
+  has_many :application_letters
 
-require 'rails_helper'
-
-describe Workshop do
-
-  it "is created by workshop factory" do
-    workshop = FactoryGirl.build(:workshop)
-    expect(workshop).to be_valid
-  end
+  validates :max_participants, numericality: { only_integer: true, greater_than: 0 }
 end
