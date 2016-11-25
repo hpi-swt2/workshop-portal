@@ -20,6 +20,6 @@ class Workshop < ActiveRecord::Base
   end
 
   def compute_occupied_places
-    application_letters.count # TODO: only count free places
+    application_letters.where(status: 1).count
   end
 end
