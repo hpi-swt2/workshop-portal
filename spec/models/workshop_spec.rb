@@ -33,6 +33,6 @@ describe Workshop do
     application_letter = FactoryGirl.create(:application_letter, user: FactoryGirl.create(:user), workshop: workshop)
     workshop.application_letters.push(application_letter)
 
-    expect(workshop.compute_occupied_places).to eq(workshop.application_letters.count) #TODO: count only those that are accepted
+    expect(workshop.compute_occupied_places).to eq(workshop.application_letters.where(status: 1).count)
   end
 end
