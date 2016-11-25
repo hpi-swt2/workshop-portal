@@ -20,5 +20,5 @@ de:
         city: "Stadt"
         state: "Bundesland"
         country: "Land"
+        address: "Adresse"
         graduates_school_in: "Abitur vorraussichtlich in"
-

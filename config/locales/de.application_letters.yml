@@ -1,0 +1,9 @@
+# German translations for the application letters
+
+de:
+  application_letters:
+    title: "Bewerbung für"
+
+  activerecord:
+    models:
+      application_letter: "Bewerbung"

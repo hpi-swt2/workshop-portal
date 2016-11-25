@@ -23,4 +23,8 @@ class Profile < ActiveRecord::Base
     first_name + " " +  last_name
   end
 
+  def address
+    street_name + ", " + zip_code + " " +  city + ", " + state + ", " + country
+  end
+
 end
