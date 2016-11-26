@@ -13,9 +13,9 @@
   <dt><strong><%= Profile.human_attribute_name(:address) %>:</strong></dt>
   <dd><%= @application_letter.user.profile.address %></dd>
   <dt><strong><%= User.human_attribute_name(:accepted_application_count) %>:</strong></dt>
-  <dd><%= @application_letter.user.accepted_application_count %></dd>
+  <dd><%= @application_letter.accepted_applications_count %></dd>
   <dt><strong><%= User.human_attribute_name(:rejected_application_count) %>:</strong></dt>
-  <dd><%= @application_letter.user.rejected_application_count %></dd>
+  <dd><%= @application_letter.rejected_applications_count %></dd>
 </dl>
 
 <%= link_to t('.back', :default => t("helpers.links.back")),

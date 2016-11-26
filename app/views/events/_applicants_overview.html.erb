@@ -20,7 +20,7 @@
         <td><%= application_letter.user.profile.name %></td>
         <td><%= application_letter.user.profile.gender %></td>
         <td><%= application_letter.user.profile.age  %></td>
-        <td><%= application_letter.user.accepted_application_count %> / <%= application_letter.user.rejected_application_count %></td>
+        <td><%= application_letter.accepted_applications_count %> / <%= application_letter.rejected_applications_count %></td>
         <td>
           Radio Buttons (#45 US_3.11: Mark as accepted/rejected)
           <%= link_to t('.details'), application_letter_path(application_letter), :class => 'btn btn-default' %>
