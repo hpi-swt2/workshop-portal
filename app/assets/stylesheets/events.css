@@ -1,0 +1,16 @@
+/*
+  Place all the styles related to the matching controller here.
+  They will automatically be included in application.css.
+*/
+
+p.missing_agreement_letter {
+	color: red
+}
+
+p.available_agreement_letter {
+	color: green
+}
+
+p.unnecessary_agreement_letter {
+	color: gray
+}
