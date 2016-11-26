@@ -50,7 +50,7 @@ RSpec.describe EventsController, type: :controller do
   let(:valid_attributes) { FactoryGirl.attributes_for(:event) }
   let(:invalid_attributes) { FactoryGirl.build(:event, max_participants: "twelve").attributes }
 
-  let(:valid_attributes_for_having_participants) { FactoryGirl.build(:event_with_accepted_applications).attributes }
+  let(:valid_attributes_for_having_participants) { FactoryGirl.attributes_for(:event_with_accepted_applications) }
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
   # EventsController. Be sure to keep this updated too.
