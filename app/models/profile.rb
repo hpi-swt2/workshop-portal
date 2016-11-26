@@ -19,8 +19,8 @@ class Profile < ActiveRecord::Base
   # @param none
   # @return [Int] for age as number of years
   def age
-    now = Date.today
-    now.year - birth_date.year - (birth_date.to_date.change(:year => now.year) > now ? 1 : 0)
+    now = Time.now.utc.to_date
+    now.year - birth_date.year - ((now.month > birth_date.month || (now.month == birth_date.month && now.day >= birth_date.day)) ? 0 : 1)
   end
 
   # Returns the Full Name of the user
