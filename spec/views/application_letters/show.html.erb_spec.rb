@@ -12,7 +12,7 @@ RSpec.describe "application_letters/show", type: :view do
     expect(rendered).to have_text(@application_letter.motivation)
   end
 
-  it "renders appllicant's attributes" do
+  it "renders applicant's attributes" do
     expect(rendered).to have_text(@application_letter.user.profile.name)
     expect(rendered).to have_text(@application_letter.user.profile.gender)
     expect(rendered).to have_text(@application_letter.user.profile.age)
