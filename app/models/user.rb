@@ -20,7 +20,6 @@
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
-  
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
@@ -64,5 +63,21 @@ class User < ActiveRecord::Base
   has_one :profile
   has_many :application_letters
   has_many :requests
-       
+
+  # Returns the number of previously accepted applications from the user
+  #
+  # @param none
+  # @return [Int] of number of accepted applications
+  def accepted_application_count
+    ApplicationLetter.where(:user_id => id, :status => true).count()
+  end
+
+  # Returns the number of previously rejected applications from the user
+  #
+  # @param none
+  # @return [Int] of number of rejected applications
+  def rejected_application_count
+    ApplicationLetter.where(:user_id => id, :status => false).count()
+  end
+
 end

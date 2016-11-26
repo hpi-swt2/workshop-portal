@@ -50,4 +50,26 @@ describe User do
 	other_event = FactoryGirl.create(:event)
 	expect(user.agreement_letter_for_event?(other_event)).to eq false
   end
+
+  it "returns correct default accepted application count" do
+    user = FactoryGirl.create(:user)
+    expect(user.accepted_application_count).to eq(0)
+  end
+
+  it "returns correct default rejected application count" do
+    user = FactoryGirl.create(:user)
+    expect(user.rejected_application_count).to eq(0)
+  end
+
+  it "returns correct accepted and rejected application count" do
+    user = FactoryGirl.create(:user)
+    # Add two accepted and one rejected application
+    user.application_letters.push(FactoryGirl.create(:application_letter, status: true))
+    user.application_letters.push(FactoryGirl.create(:application_letter, status: false))
+    user.application_letters.push(FactoryGirl.create(:application_letter, status: true))
+
+    expect(user.accepted_application_count).to eq(2)
+    expect(user.rejected_application_count).to eq(1)
+  end
+
 end
