@@ -11,18 +11,9 @@
 #  status      :boolean
 
 FactoryGirl.define do
-  factory :application_letter do
-    motivation "MyString"
+  factory :agreement_letter do
+    path { Rails.root.join('storage/agreement_letters/foo.pdf').to_s }
     user
-	event
-	status nil
-  end
-
-  factory :accepted_application_letter, parent: :application_letter do
-    status true
-  end
-
-  factory :rejected_application_letter, parent: :application_letter do
-    status false
+    event
   end
 end

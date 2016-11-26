@@ -31,4 +31,12 @@ describe User do
     user = FactoryGirl.build(:user, email: nil)
     expect(user).to_not be_valid
   end
+
+  it "returns the user's events" do
+    true_letter = FactoryGirl.create(:accepted_application_letter)
+    false_letter = FactoryGirl.create(:rejected_application_letter)
+    application_letters = [true_letter, false_letter]
+    user = FactoryGirl.build(:user, application_letters: application_letters)
+    expect(user.events).to eq [true_letter.event]
+  end
 end

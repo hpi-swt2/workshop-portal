@@ -12,6 +12,7 @@
 #
 class Event < ActiveRecord::Base
   has_many :application_letters
+  has_many :agreement_letters
 
   validates :max_participants, numericality: { only_integer: true, greater_than: 0 }
   

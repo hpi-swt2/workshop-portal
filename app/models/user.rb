@@ -24,6 +24,8 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
+  has_many :agreement_letters
+
   before_create :set_default_role
 
   ROLES = %i[pupil tutor organizer admin]
@@ -36,6 +38,11 @@ class User < ActiveRecord::Base
 
   def set_default_role
     self.role ||= :pupil
+  end
+
+  def events
+    accepted_applications = self.application_letters.select { |a| a.status == true }
+    accepted_applications.collect { |a| a.event }
   end
 
   has_one :profile

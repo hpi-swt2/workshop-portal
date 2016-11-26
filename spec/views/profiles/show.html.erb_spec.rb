@@ -9,4 +9,9 @@ RSpec.describe "profiles/show", type: :view do
     render
     expect(rendered).to have_text(@profile.cv)
   end
+
+  it "renders the events table" do
+    render
+    expect(rendered).to have_table("events_table")
+  end
 end
