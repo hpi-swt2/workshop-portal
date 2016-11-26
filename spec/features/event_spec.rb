@@ -18,5 +18,25 @@ describe "Event", type: :feature do
       expect(page).to have_text('Workshop')
     end
   end
+
+  describe "show page" do
+    it "should display the event kind" do
+      event = FactoryGirl.create(:event, kind: :workshop)
+      visit event_path(event)
+      expect(page).to have_text('Workshop')
+
+      event = FactoryGirl.create(:event, kind: :camp)
+      visit event_path(event)
+      expect(page).to have_text('Camp')
+    end
+  end
+
+  describe "edit page" do
+    it "should preselect the event kind" do
+      event = FactoryGirl.create(:event, kind: :camp)
+      visit edit_event_path(event)
+      expect(find_field('Camp')[:checked]).to_not be_nil
+    end
+  end
 end
 

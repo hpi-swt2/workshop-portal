@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161123124500) do
+ActiveRecord::Schema.define(version: 20161126113138) do
 
   create_table "application_letters", force: :cascade do |t|
     t.string   "motivation"
@@ -29,8 +29,9 @@ ActiveRecord::Schema.define(version: 20161123124500) do
     t.string   "description"
     t.integer  "max_participants"
     t.boolean  "active"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+    t.integer  "kind",             default: 0
   end
 
   create_table "profiles", force: :cascade do |t|
