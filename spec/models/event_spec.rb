@@ -19,4 +19,10 @@ describe Event do
     event = FactoryGirl.build(:event)
     expect(event).to be_valid
   end
+  
+  it "has as many participants as accepted applications" do
+    event = FactoryGirl.create(:event_with_accepted_applications, accepted_application_letters_count: 10, rejected_application_letters_count: 7)
+	expect(event.participants.length).to eq 10
+  end
+  
 end

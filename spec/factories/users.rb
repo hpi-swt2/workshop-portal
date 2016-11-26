@@ -24,5 +24,10 @@ FactoryGirl.define do
     email { "#{name}@example.com".downcase.tr(" ","_") }
     password "test123"
     role :pupil
+	
+	factory :user_under_18 do
+	  profile
+	end
+	
   end
 end
