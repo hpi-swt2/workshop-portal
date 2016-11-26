@@ -41,6 +41,7 @@ de:
     file_too_big: "Die Datei ist zu groß."
     wrong_filetype: "Ungültiger Datentyp."
     upload_success: "Datei erfolgreich hochgeladen."
+    upload_failed: "Fehler beim Hochladen."
   helpers:
     label:
       profile:

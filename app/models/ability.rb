@@ -39,7 +39,7 @@ class Ability
       can [:new, :create], ApplicationLetter
       can [:index, :show, :edit, :update, :destroy], ApplicationLetter, user: { id: user.id }
       # Only pupils can upload or download their letters of agreement
-      can [:create, :show], :agreement_letter
+      can [:create, :show], AgreementLetter
     end
     if user.role? :tutor
       # ...

@@ -1,5 +1,5 @@
 class AgreementLettersController < ApplicationController
-  authorize_resource :class => false
+  load_and_authorize_resource
   MAX_SIZE = 300_000
   ALLOWED_MIMETYPE = "application/pdf"
 
@@ -15,9 +15,13 @@ class AgreementLettersController < ApplicationController
         redirect_to profile_path(current_user.profile),
                     alert: t("agreement_letters.file_too_big")
       else
-        save(file)
-        redirect_to profile_path(current_user.profile),
-                    notice: t("agreement_letters.upload_success")
+        if save(file)
+          redirect_to profile_path(current_user.profile),
+                      notice: t("agreement_letters.upload_success")
+        else
+          redirect_to profile_path(current_user.profile),
+                      alert: t("agreement_letters.upload_failed")
+        end
       end
     else
       render(file: File.join(Rails.root, 'public/422'), formats: [:html], status: 422, layout: false)
@@ -25,10 +29,18 @@ class AgreementLettersController < ApplicationController
   end
 
   def show
+    #send_file @agreement_letter.path, type: @agreement_letter.content_type, disposition: 'inline'
     redirect_to profile_path(current_user.profile)
   end
 
   private
     def save(file)
+      @agreement_letter.user = current_user
+      FactoryGirl.create(:event).save
+      @agreement_letter.event = Event.find(1) #TODO
+      path = Rails.root.join('storage/agreement_letters', @agreement_letter.filename).to_s
+      File.open(path, 'wb') { |f| f.write(file.read) }
+      @agreement_letter.path = path
+      @agreement_letter.save
     end
 end

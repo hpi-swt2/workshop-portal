@@ -3,8 +3,11 @@ Rails.application.routes.draw do
   get 'agreement_letters/show'
 
   resources :requests
+  resources :agreement_letters, only: [:show]
   resources :application_letters, path: 'applications'
-  resources :events
+  resources :events do
+    resources :agreement_letters, only: [:create]
+  end
   resources :profiles
   devise_for :users
   # The priority is based upon order of creation: first created -> highest priority.

@@ -15,9 +15,28 @@ RSpec.describe AgreementLettersController, type: :controller do
       expect(response).to have_http_status(:redirect)
     end
 
-    it "show error when POSTed with wrong parameters" do
+    it "shows error when POSTed with wrong parameters" do
       post :create
       expect(response).to have_http_status(422)
+    end
+
+    it "saves a file on the server" do
+      file = fixture_file_upload(Rails.root.join('spec/testfiles/actual.pdf'), 'application/pdf')
+      post :create, { letter_upload: file }
+      @agreement_letter = assigns(:agreement_letter)
+      filepath = Rails.root.join('storage/agreement_letters', @agreement_letter.filename)
+      expect(File.exists?(filepath)).to be true
+    end
+
+    it "saves a file's path in the database" do
+      file = fixture_file_upload(Rails.root.join('spec/testfiles/actual.pdf'), 'application/pdf')
+      post :create, { letter_upload: file }
+      @agreement_letter = assigns(:agreement_letter)
+      AgreementLetter.where(
+        user: @user,
+        event: Event.find(1), #TODO
+        path: Rails.root.join('storage/agreement_letters', @agreement_letter.filename).to_s)
+          .take!
     end
   end
 

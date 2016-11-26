@@ -25,6 +25,13 @@ RSpec.feature "Upload letter of agreement", :type => :feature do
     click_button :upload_btn
     expect(page).to have_text(I18n.t("agreement_letters.file_too_big"))
   end
+
+  #scenario "user upload fails" do
+    #ObjectSpace.each_object(AgreementLetter) { |o| o.readonly! }
+    #attach_file(:letter_upload, './spec/testfiles/actual.pdf')
+    #click_button :upload_btn
+    #expect(page).to have_text(I18n.t("agreement_letters.upload_failed"))
+  #end
 end
 
 RSpec.feature "Profile adaptation", :type => :feature do
