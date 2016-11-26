@@ -20,10 +20,26 @@
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
+  
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
+
+  before_create :set_default_role
+
+  ROLES = %i[pupil tutor organizer admin]
+
+  def role?(base_role)
+    return false unless role
+
+    ROLES.index(base_role) <= ROLES.index(role.to_sym)
+  end
+
+  def set_default_role
+    self.role ||= :pupil
+  end
 
   has_one :profile
   has_many :application_letters
   has_many :requests
+       
 end

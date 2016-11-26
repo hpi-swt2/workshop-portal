@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: workshops
+# Table name: events
 #
 #  id               :integer          not null, primary key
 #  name             :string
@@ -11,13 +11,12 @@
 #  updated_at       :datetime         not null
 #
 
-FactoryGirl.define do
-  factory :workshop do
-    name "Workshop-Name"
-    description "Workshop-Description"
-    max_participants 1
-    active false
-    organizer "Workshop-Organizer"
-    knowledge_level "Workshop-Knowledge Level"
+require 'rails_helper'
+
+describe Event do
+
+  it "is created by event factory" do
+    event = FactoryGirl.build(:event)
+    expect(event).to be_valid
   end
 end

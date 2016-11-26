@@ -1,4 +1,6 @@
 class ProfilesController < ApplicationController
+  load_and_authorize_resource
+
   before_action :set_profile, only: [:show, :edit, :update, :destroy]
 
   # GET /profiles
@@ -22,6 +24,7 @@ class ProfilesController < ApplicationController
   # POST /profiles
   def create
     @profile = Profile.new(profile_params)
+    @profile.user_id = current_user.id
 
     if @profile.save
       redirect_to @profile, notice: 'Profile was successfully created.'
@@ -53,6 +56,6 @@ class ProfilesController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def profile_params
-      params.require(:profile).permit(:cv, :user_id)
+      params.require(:profile).permit(:cv, :first_name, :last_name, :gender, :birth_date, :email, :school, :street_name, :zip_code, :city, :state, :country, :graduates_school_in)
     end
 end
