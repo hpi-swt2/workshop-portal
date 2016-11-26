@@ -17,4 +17,10 @@ RSpec.describe "events/edit", type: :view do
       assert_select "input#event_knowledge_level[name=?]", "event[knowledge_level]"
     end
   end
+
+  it "shows that organizer and knowledge_level are optional" do
+    render
+    expect(rendered).to have_field("event_organizer", :placeholder => "optional")
+    expect(rendered).to have_field("event_knowledge_level", :placeholder => "optional")
+  end
 end
