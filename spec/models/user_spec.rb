@@ -45,6 +45,8 @@ describe User do
 	user = FactoryGirl.create(:user)
 	application_letter = FactoryGirl.create(:accepted_application_letter, event: event, user: user)
 	agreement_letter = FactoryGirl.create(:agreement_letter, event: event, user: user)
-	expect(user.agreement_letter_for_event(event)).to eq event
+	expect(user.agreement_letter_for_event?(event)).to eq true
+	other_event = FactoryGirl.create(:event)
+	expect(user.agreement_letter_for_event?(other_event)).to eq false
   end
 end

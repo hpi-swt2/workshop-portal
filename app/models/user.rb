@@ -45,6 +45,12 @@ class User < ActiveRecord::Base
     accepted_applications.collect { |a| a.event }
   end
 
+  def agreement_letter_for_event?(given_event)
+    fitting_agreement_letters = self.agreement_letters.select { |letter| letter.event == given_event }
+	return false unless fitting_agreement_letters.length == 1
+	return true
+  end
+  
   has_one :profile
   has_many :application_letters
   has_many :requests
