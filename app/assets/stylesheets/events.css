@@ -6,3 +6,7 @@
 .event-date-picker-start, .event-date-picker-end {
 	display: inline-block;
 }
+
+#event-add-date-picker {
+	margin-top: 6px;
+}

@@ -11,7 +11,6 @@ $(document).on('turbolinks:load', function() {
       .append(' <a style="float: none" class="close">&times;</a>')
       .find('.close')
       .click(function() {
-        // remove our template and decrement our count field
         $(this).parent('div').remove();
       });
   });

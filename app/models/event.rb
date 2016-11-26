@@ -48,6 +48,8 @@ class Event < ActiveRecord::Base
   def self.human_attribute_name(*args)
     if args[0].to_s == "max_participants"
       return "Maximale Teilnehmerzahl"
+    elsif args[0].to_s == "date_ranges"
+      return "Zeitspannen"
     end
 
     super
