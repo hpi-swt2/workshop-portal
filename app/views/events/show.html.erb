@@ -3,6 +3,14 @@
   <h1><%= t '.title', :default => model_class.model_name.human.titleize %></h1>
 </div>
 
+<% if @event.unreasonably_long %>
+  <div class="panel panel-warning">
+    <div class="panel-body">
+      End-Datum liegt ungewöhnlich weit vom Start-Datum entfernt.
+    </div>
+  </div>
+<% end %>
+
 <dl class="dl-horizontal">
   <dt><strong><%= model_class.human_attribute_name(:name) %>:</strong></dt>
   <dd><%= @event.name %></dd>
@@ -12,6 +20,14 @@
   <dd><%= @event.max_participants %></dd>
   <dt><strong><%= model_class.human_attribute_name(:active) %>:</strong></dt>
   <dd><%= @event.active %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:date_ranges) %>:</strong></dt>
+  <dd>
+    <ul>
+    <% @event.date_ranges.each do |r| %>
+      <li><%= r.start_date.to_s %> bis <%= r.end_date.to_s %></li>
+    <% end %>
+    </ul>
+  </dd>
 </dl>
 
 <% if can? :view_applicants, Event %>
@@ -20,3 +36,10 @@
 
 <%= link_to t('.back', :default => t("helpers.links.back")),
               events_path, :class => 'btn btn-default'  %>
+<%= link_to t('.edit', :default => t("helpers.links.edit")),
+              edit_event_path(@event), :class => 'btn btn-default' %>
+<%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+              event_path(@event),
+              :method => 'delete',
+              :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Sicher, dass das Event gelöscht werden soll?')) },
+              :class => 'btn btn-danger' %>

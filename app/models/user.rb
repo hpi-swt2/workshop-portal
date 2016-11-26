@@ -56,7 +56,7 @@ class User < ActiveRecord::Base
 	return fitting_agreement_letters[0]
   end
   
-  def older_than_18_at_start_date_of_event(given_event)?
+  def older_than_18_at_start_date_of_event?(given_event)
     event_start = given_event.start
     event_start_is_before_birthday = event_start.month > self.profile.birth_date.month || (event_start.month == self.profile.birth_date.month && event_start.day >= self.profile.birth_date.day)
     age_at_event_start event_start.year - self.profile.birth_date.year - (event_start_is_before_birthday ? 0 : 1)
