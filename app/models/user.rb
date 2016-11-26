@@ -41,14 +41,6 @@ class User < ActiveRecord::Base
   has_many :application_letters
   has_many :requests
 
-  # Returns the number of application previously written by the user
-  #
-  # @param none
-  # @return [Int] of number of applications
-  def participation_count
-    ApplicationLetter.where(:user_id => id).count()
-  end
-
   # Returns the number of previously accepted applications from the user
   #
   # @param none
