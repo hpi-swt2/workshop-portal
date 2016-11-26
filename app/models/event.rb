@@ -19,6 +19,7 @@ class Event < ActiveRecord::Base
   has_many :date_ranges
 
   validates :max_participants, numericality: { only_integer: true, greater_than: 0 }
+  validate :has_date_ranges
 
 
   # @return the minimum start_date over all date ranges
@@ -37,13 +38,10 @@ class Event < ActiveRecord::Base
     end_date - start_date > UNREASONABLY_LONG_DATE_SPAN
   end
 
-
-  #TODO: This validation kills things.
-  # validate :has_date_ranges
-  #
-  #def has_date_ranges
-  #   errors.add(:base, 'Bitte mindestens eine Zeitspanne auswählen!') if date_ranges.blank?
-  #  end
+  # validation function on whether we have at least one date range
+  def has_date_ranges
+    errors.add(:base, 'Bitte mindestens eine Zeitspanne auswählen!') if date_ranges.blank?
+  end
 
   def self.human_attribute_name(*args)
     if args[0].to_s == "max_participants"

@@ -18,16 +18,19 @@ FactoryGirl.define do
     description "Event-Description"
     max_participants 100
     active false
+    date_ranges { build_list :date_range, 1 }
 
     trait :with_two_date_ranges do
-      after (:create) do |event|
+      after(:build) do |event|
+        event.date_ranges = []
         event.date_ranges << FactoryGirl.create(:date_range, start_date: Date.tomorrow, end_date: Date.tomorrow.next_day(5))
         event.date_ranges << FactoryGirl.create(:date_range, start_date: Date.tomorrow, end_date: Date.tomorrow.next_day(10))
       end
     end
 
     trait :with_multiple_date_ranges do
-      after (:create) do |event|
+      after(:build) do |event|
+        event.date_ranges = []
         event.date_ranges << FactoryGirl.create(:date_range, start_date: Date.today.next_day(3), end_date: Date.tomorrow.next_day(5))
         event.date_ranges << FactoryGirl.create(:date_range, start_date: Date.today.next_day(12), end_date: Date.today.next_day(16))
         event.date_ranges << FactoryGirl.create(:date_range, start_date: Date.today, end_date: Date.tomorrow)
@@ -35,14 +38,15 @@ FactoryGirl.define do
     end
 
     trait :with_unreasonably_long_range do
-      after (:create) do |event|
+      after(:build) do |event|
         event.date_ranges << FactoryGirl.create(:date_range,
           start_date: Date.today,
           end_date: Date.tomorrow.next_day(Event::UNREASONABLY_LONG_DATE_SPAN))
       end
     end
 
-    trait :without_date_ranges do #stub to make context in actual tests more readable
+    trait :without_date_ranges do
+      date_ranges {}
     end
   end
 end

@@ -35,7 +35,10 @@ class EventsController < ApplicationController
   # PATCH/PUT /events/1
   def update
     attrs = event_params
-    attrs[:date_ranges] = date_range_params
+
+    if params[:date_ranges]
+      attrs[:date_ranges] = date_range_params
+    end
 
     if @event.update(attrs)
       redirect_to @event, notice: 'Event wurde aktualisiert.'

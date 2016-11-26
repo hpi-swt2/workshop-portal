@@ -19,12 +19,35 @@ require 'rails_helper'
 # that an instance is receiving a specific message.
 
 RSpec.describe EventsController, type: :controller do
+  let(:date1) { Date.today }
+  let(:date2) { Date.today.next_day }
+  let(:date3) { Date.today.next_day(2) }
+  let(:date4) { Date.today.next_day(2) }
 
-  # This should return the minimal set of attributes required to create a valid
-  # Event. As you add validations to Event, be sure to
-  # adjust the attributes here as well.
-  let(:valid_attributes) { FactoryGirl.build(:event).attributes }
+  # this is the format expected by our controller due to reasons outlined
+  # in EventsController#date_range_params
+  let(:valid_attributes_post) {
+    {
+        event: {
+          name: 'Test',
+          description: 'Test',
+          max_participants: 1,
+          active: false,
+        },
+        date_ranges: {
+          start_date: [
+            {day: date1.day, month: date1.month, year: date1.year},
+            {day: date3.day, month: date3.month, year: date3.year}
+          ],
+          end_date: [
+            {day: date2.day, month: date2.month, year: date2.year},
+            {day: date4.day, month: date4.month, year: date4.year}
+          ]
+        }
+      }
+  }
 
+  let(:valid_attributes) { FactoryGirl.attributes_for(:event) }
   let(:invalid_attributes) { FactoryGirl.build(:event, max_participants: "twelve").attributes }
 
   # This should return the minimal set of values that should be in the session
@@ -67,18 +90,18 @@ RSpec.describe EventsController, type: :controller do
     context "with valid params" do
       it "creates a new Event" do
         expect {
-          post :create, event: valid_attributes, session: valid_session
+          post :create, valid_attributes_post, session: valid_session
         }.to change(Event, :count).by(1)
       end
 
       it "assigns a newly created event as @event" do
-        post :create, event: valid_attributes, session: valid_session
+        post :create, valid_attributes_post, session: valid_session
         expect(assigns(:event)).to be_a(Event)
         expect(assigns(:event)).to be_persisted
       end
 
       it "redirects to the created event" do
-        post :create, event: valid_attributes, session: valid_session
+        post :create, valid_attributes_post, session: valid_session
         expect(response).to redirect_to(Event.last)
       end
     end
@@ -95,29 +118,8 @@ RSpec.describe EventsController, type: :controller do
       end
     end
 
-    it "should attach date ranges to the event entity" do
-      date1 = Date.today
-      date2 = Date.today.next_day
-      date3 = Date.today.next_day(2)
-      date4 = Date.today.next_day(2)
-      post :create, {
-        event: {
-          name: 'Test',
-          description: 'Test',
-          max_participants: 1,
-          active: false,
-        },
-        date_ranges: {
-          start_date: [
-            {day: date1.day, month: date1.month, year: date1.year},
-            {day: date3.day, month: date3.month, year: date3.year}
-          ],
-          end_date: [
-            {day: date2.day, month: date2.month, year: date2.year},
-            {day: date4.day, month: date4.month, year: date4.year}
-          ]
-        }
-      }, session: valid_session
+    it "should attach correct date ranges to the event entity" do
+      post :create, valid_attributes_post, session: valid_session
       expect(assigns(:event)).to be_a(Event)
       expect(assigns(:event)).to be_persisted
       expect(assigns(:event).date_ranges).to_not be_empty
