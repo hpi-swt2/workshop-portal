@@ -31,6 +31,8 @@ ActiveRecord::Schema.define(version: 20161123124500) do
     t.boolean  "active"
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
+    t.string   "organizer"
+    t.string   "knowledge_level"
   end
 
   create_table "profiles", force: :cascade do |t|
