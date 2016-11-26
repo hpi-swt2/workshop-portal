@@ -12,6 +12,10 @@
   <dd><%= @event.max_participants %></dd>
   <dt><strong><%= model_class.human_attribute_name(:active) %>:</strong></dt>
   <dd><%= @event.active %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:veranstalter) %>:</strong></dt>
+  <dd><%= @event.organizer %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:kenntnisstand) %>:</strong></dt>
+  <dd><%= @event.knowledge_level %></dd>
 </dl>
 
 <%= link_to t('.back', :default => t("helpers.links.back")),
