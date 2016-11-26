@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(version: 20161123124500) do
     t.integer  "event_id",   null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean  "status"
   end
 
   add_index "application_letters", ["event_id"], name: "index_application_letters_on_event_id"

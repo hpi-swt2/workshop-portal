@@ -20,7 +20,6 @@
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
-  
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
@@ -41,5 +40,21 @@ class User < ActiveRecord::Base
   has_one :profile
   has_many :application_letters
   has_many :requests
-       
+
+  # Returns the number of accepted applications from the user without counting status of current event application
+  #
+  # @param current event (which application status will be excluded)
+  # @return [Int] of number of currently accepted applications
+  def accepted_applications_count(event)
+    ApplicationLetter.where(user_id: id, status: true).where.not(event: event).count()
+  end
+
+  # Returns the number of accepted applications from the user without counting status of current event application
+  #
+  # @param current event (which application status will be excluded)
+  # @return [Int] of number of currently accepted applications
+  def rejected_applications_count(event)
+    ApplicationLetter.where(user_id: id, status: false).where.not(event: event).count()
+  end
+
 end
