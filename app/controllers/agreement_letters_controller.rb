@@ -1,6 +1,6 @@
 class AgreementLettersController < ApplicationController
   load_and_authorize_resource
-  MAX_SIZE = 300_000
+  MAX_SIZE = 300_000_000
   ALLOWED_MIMETYPE = "application/pdf"
 
   def create

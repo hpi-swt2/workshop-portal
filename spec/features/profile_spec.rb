@@ -14,6 +14,7 @@ RSpec.feature "Upload letter of agreement", :type => :feature do
     attach_file(:letter_upload, './spec/testfiles/actual.pdf')
     click_button "upload_btn_#{@event_id}"
     expect(page).to have_current_path profile_path(@user.profile)
+    expect(page).to have_text(I18n.t("agreement_letters.upload_success"))
   end
 
   scenario "user uploads a file with the wrong extension" do
@@ -27,6 +28,15 @@ RSpec.feature "Upload letter of agreement", :type => :feature do
     attach_file(:letter_upload, './spec/testfiles/actual.pdf')
     click_button "upload_btn_#{@event_id}"
     expect(page).to have_text(I18n.t("agreement_letters.file_too_big"))
+  end
+
+  scenario "user uploads letter of agreement a second time" do
+    attach_file(:letter_upload, './spec/testfiles/actual.pdf')
+    click_button "upload_btn_#{@event_id}"
+    attach_file(:letter_upload, './spec/testfiles/actual.pdf')
+    click_button "upload_btn_#{@event_id}"
+    expect(page).to have_current_path profile_path(@user.profile)
+    expect(page).to have_text(I18n.t("agreement_letters.upload_success"))
   end
 
   #scenario "user upload fails" do

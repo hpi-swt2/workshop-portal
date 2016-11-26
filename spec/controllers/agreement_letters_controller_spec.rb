@@ -46,6 +46,37 @@ RSpec.describe AgreementLettersController, type: :controller do
     end
   end
 
+  describe "POST #create when file was already created" do
+    before :each do
+      @user = FactoryGirl.create(:user, role: :pupil)
+      @user.profile ||= FactoryGirl.create(:profile)
+      @event = FactoryGirl.create(:event)
+      filepath = Rails.root.join('spec/testfiles/actual.pdf')
+      @file = fixture_file_upload(filepath, 'application/pdf')
+      another_filepath = Rails.root.join('spec/testfiles/another_actual.pdf')
+      @another_file = fixture_file_upload(another_filepath, 'application/pdf')
+      sign_in @user
+    end
+
+    it "updates existing db entry when replacing a file" do
+      AgreementLetter.where(user: @user, event: @event).each { |a| File.delete.a.path }
+      post :create, { letter_upload: @file, event_id: @event.id }
+      expect(AgreementLetter.where(user: @user, event: @event).size).to eq 1
+      post :create, { letter_upload: @another_file, event_id: @event.id }
+      expect(AgreementLetter.where(user: @user, event: @event).size).to eq 1
+    end
+
+    it "overwrites file when user uploads to same event twice" do
+      AgreementLetter.where(user: @user, event: @event).each { |a| a.delete }
+      post :create, { letter_upload: @file, event_id: @event.id }
+      @agreement_letter = assigns(:agreement_letter)
+      expect(File.size(@agreement_letter.path)).to eq @file.size
+      post :create, { letter_upload: @another_file, event_id: @event.id }
+      expect(File.exists?(@agreement_letter.path)).to be true
+      expect(File.size(@agreement_letter.path)).to eq @another_file.size
+    end
+  end
+
   describe "GET #show" do
     it "redirects to user profile" do
       @user = FactoryGirl.create(:user, role: :pupil)
