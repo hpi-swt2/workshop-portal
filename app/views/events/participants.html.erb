@@ -32,9 +32,12 @@
       <%= participant.email %>
     </td>
 	<td>
-	  <% if participant.older_than_18? %>
+	  <% if participant.older_than_18_at_start_date_of_event?(@event) %>
+	    <p> unnötig </p>
 	  <% elsif participant.agreement_letter_for_event?(@event) %>
+	    <p> vorhanden </p>
 	  <% else %>
+	    <p> nicht vorhanden </p>
 	  <% end %>
 	</td>
   </tr>
