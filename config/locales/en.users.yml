@@ -1,9 +1,0 @@
-# English translation for the users
-
-en:
-  activerecord:
-    attributes:
-      user:
-        participation_count: "Number of Applications"
-        accpected_application_count: "Number of accepted Applications"
-        rejected_application_count: "Number of accepted Applications"
