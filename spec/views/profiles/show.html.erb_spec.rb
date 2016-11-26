@@ -10,8 +10,8 @@ RSpec.describe "profiles/show", type: :view do
     expect(rendered).to have_text(@profile.cv)
   end
 
-  it "renders the upload form for the letter of agreement" do
+  it "renders the events table" do
     render
-    expect(rendered).to have_button(I18n.t('.upload', default: I18n.t("agreement_letters.upload")))
+    expect(rendered).to have_table("events_table")
   end
 end

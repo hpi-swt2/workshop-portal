@@ -4,18 +4,17 @@ class AgreementLettersController < ApplicationController
   ALLOWED_MIMETYPE = "application/pdf"
 
   def create
-    file = params[:letter_upload]
-    if file.respond_to?(:open) and
-       file.respond_to?(:content_type) and
-       file.respond_to?(:size)
-      if file.content_type != ALLOWED_MIMETYPE
+    @event_id = params[:event_id]
+    @file = params[:letter_upload]
+    if params_valid?
+      if @file.content_type != ALLOWED_MIMETYPE
         redirect_to profile_path(current_user.profile),
                     alert: t("agreement_letters.wrong_filetype")
-      elsif file.size > MAX_SIZE
+      elsif @file.size > MAX_SIZE
         redirect_to profile_path(current_user.profile),
                     alert: t("agreement_letters.file_too_big")
       else
-        if save(file)
+        if save_file
           redirect_to profile_path(current_user.profile),
                       notice: t("agreement_letters.upload_success")
         else
@@ -34,13 +33,20 @@ class AgreementLettersController < ApplicationController
   end
 
   private
-    def save(file)
+    def params_valid?
+      Event.exists?(@event_id) and
+        @file.respond_to?(:open) and
+        @file.respond_to?(:content_type) and
+        @file.respond_to?(:size)
+    end
+
+    def save_file
       @agreement_letter.user = current_user
-      FactoryGirl.create(:event).save
-      @agreement_letter.event = Event.find(1) #TODO
+      @agreement_letter.event = Event.find(@event_id)
       path = Rails.root.join('storage/agreement_letters', @agreement_letter.filename).to_s
-      File.open(path, 'wb') { |f| f.write(file.read) }
+      File.open(path, 'wb') { |f| f.write(@file.read) }
       @agreement_letter.path = path
       @agreement_letter.save
     end
+
 end

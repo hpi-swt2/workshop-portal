@@ -2,34 +2,37 @@ require "rails_helper"
 
 RSpec.feature "Upload letter of agreement", :type => :feature do
   before :each do
-    @user = FactoryGirl.create(:user, role: :pupil)
+    @application_letter = FactoryGirl.create(:accepted_application_letter)
+    @user = FactoryGirl.create(:user, role: :pupil, application_letters: [@application_letter])
+    @event_id = @application_letter.event.id
     @user.profile ||= FactoryGirl.create(:profile)
     login_as(@user, scope: :user)
     visit profile_path(@user.profile)
   end
+
   scenario "user uploads letter of agreement for the first time" do
     attach_file(:letter_upload, './spec/testfiles/actual.pdf')
-    click_button :upload_btn
+    click_button "upload_btn_#{@event_id}"
     expect(page).to have_current_path profile_path(@user.profile)
   end
 
   scenario "user uploads a file with the wrong extension" do
     attach_file(:letter_upload, './spec/testfiles/not_a_pd.f')
-    click_button :upload_btn
+    click_button "upload_btn_#{@event_id}"
     expect(page).to have_text(I18n.t("agreement_letters.wrong_filetype"))
   end
 
   scenario "user uploads a file that is too big" do
     stub_const("AgreementLettersController::MAX_SIZE", 5)
     attach_file(:letter_upload, './spec/testfiles/actual.pdf')
-    click_button :upload_btn
+    click_button "upload_btn_#{@event_id}"
     expect(page).to have_text(I18n.t("agreement_letters.file_too_big"))
   end
 
   #scenario "user upload fails" do
     #ObjectSpace.each_object(AgreementLetter) { |o| o.readonly! }
     #attach_file(:letter_upload, './spec/testfiles/actual.pdf')
-    #click_button :upload_btn
+    #click_button :upload_btn_#{@event_id}"
     #expect(page).to have_text(I18n.t("agreement_letters.upload_failed"))
   #end
 end
