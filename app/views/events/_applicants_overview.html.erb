@@ -1,5 +1,6 @@
 <h3><%= t('.title', title: @event.name) %></h3>
-<div>Noch [Anzahl] freie Plätze (#29 US_3.6 Counter)</div>
+<div id="free_places"><%= t '.free_places', count: @free_places %></div>
+<div id="occupied_places"><%= t '.occupied_places', count: @occupied_places %></div>
 
 <table id="applicants" class="table table-striped">
   <thead>

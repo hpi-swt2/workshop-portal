@@ -25,6 +25,15 @@ ActiveRecord::Schema.define(version: 20161123124500) do
   add_index "application_letters", ["event_id"], name: "index_application_letters_on_event_id"
   add_index "application_letters", ["user_id"], name: "index_application_letters_on_user_id"
 
+  create_table "application_notes", force: :cascade do |t|
+    t.text     "note"
+    t.integer  "application_letter_id"
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
+  end
+
+  add_index "application_notes", ["application_letter_id"], name: "index_application_notes_on_application_letter_id"
+
   create_table "events", force: :cascade do |t|
     t.string   "name"
     t.string   "description"
