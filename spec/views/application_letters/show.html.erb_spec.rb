@@ -16,8 +16,8 @@ RSpec.describe "application_letters/show", type: :view do
     expect(rendered).to have_text(@application_letter.user.profile.gender)
     expect(rendered).to have_text(@application_letter.user.profile.age)
     expect(rendered).to have_text(@application_letter.user.profile.address)
-    expect(rendered).to have_text(@application_letter.user.accepted_application_count)
-    expect(rendered).to have_text(@application_letter.user.rejected_application_count)
+    expect(rendered).to have_text(@application_letter.user.accepted_applications_count(@application_letter.event))
+    expect(rendered).to have_text(@application_letter.user.rejected_applications_count(@application_letter.event))
   end
 
 end
