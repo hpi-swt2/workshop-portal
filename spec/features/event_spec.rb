@@ -6,7 +6,7 @@ describe "Event", type: :feature do
       visit new_event_path
       select_date_within_selector(Date.yesterday.prev_day, '.event-date-picker-start')
       select_date_within_selector(Date.yesterday, '.event-date-picker-end')
-      click_button "Event erstellen"
+      find("input[name='commit']").click
       expect(page).to have_text("Anfangs-Datum darf nicht in der Vergangenheit liegen.")
     end
 
@@ -15,7 +15,7 @@ describe "Event", type: :feature do
       fill_in 'Maximale Teilnehmerzahl', :with => 25
       select_date_within_selector(Date.today, '.event-date-picker-start')
       select_date_within_selector(Date.today.next_year(3), '.event-date-picker-end')
-      click_button "Event erstellen"
+      find("input[name='commit']").click
       expect(page).to have_text("End-Datum liegt ungewöhnlich weit vom Start-Datum entfernt.")
     end
 
@@ -46,8 +46,7 @@ describe "Event", type: :feature do
       visit new_event_path
       select_date_within_selector(Date.today, '.event-date-picker-start')
       select_date_within_selector(Date.today.prev_day(2), '.event-date-picker-end')
-      click_button "Event erstellen"
-
+      find("input[name='commit']").click
       expect(page).to have_text("End-Datum kann nicht vor Start-Datum liegen")
     end
   end
@@ -86,7 +85,7 @@ describe "Event", type: :feature do
       select_date_within_selector(dateStart, startPicker)
       select_date_within_selector(dateEnd, endPicker)
 
-      click_button 'Event aktualisieren'
+      find("input[name='commit']").click
 
       expect(page).to have_text(dateStart.to_s + ' bis ' + dateEnd.to_s)
     end
