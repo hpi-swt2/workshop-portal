@@ -31,9 +31,8 @@ RSpec.feature "Event Applicant Overview", :type => :feature do
 
   scenario "Clicking on sending emails button opens a modal" do
     login(:organizer)
-    page.choose("Accept")
-    expect(page).to have_button("Zusagen verschicken", disabled: false)
-    expect(page).to have_button("Absagen verschicken", disabled: false)
+    click_button "Zusagen verschicken"
+    expect(page).to have_selector('div', :id => 'send-emails-modal')
   end
 
 
