@@ -31,6 +31,20 @@ describe Event do
     expect(event.applicationsClassified?).to eq(false)
   end
 
+  it "computes the email addreses of the accepted and the rejected applications" do
+    event = FactoryGirl.create(:event)
+    acceptedApplicationLetter1 = FactoryGirl.create(:application_letter, :event => event, :user => FactoryGirl.create(:user), :status => true)
+    acceptedApplicationLetter2 = FactoryGirl.create(:application_letter, :event => event, :user => FactoryGirl.create(:user), :status => true)
+    acceptedApplicationLetter3 = FactoryGirl.create(:application_letter, :event => event, :user => FactoryGirl.create(:user), :status => true)
+    rejectedApplicationLetter = FactoryGirl.create(:application_letter, :event => event, :user => FactoryGirl.create(:user), :status => false)
+    event.application_letters.push(acceptedApplicationLetter1)
+    event.application_letters.push(acceptedApplicationLetter2)
+    event.application_letters.push(acceptedApplicationLetter3)
+    event.application_letters.push(rejectedApplicationLetter)
+    expect(event.compute_accepted_applications_emails).to eq([acceptedApplicationLetter1.user.email, acceptedApplicationLetter2.user.email, acceptedApplicationLetter3.user.email].join(','))
+    expect(event.compute_rejected_applications_emails).to eq([rejectedApplicationLetter.user.email].join(','))
+  end
+
   it "computes the number of free places" do
     event = FactoryGirl.create(:event)
     application_letter = FactoryGirl.create(:application_letter, user: FactoryGirl.create(:user), event: event)

@@ -55,12 +55,13 @@ RSpec.feature "Event Applicant Overview", :type => :feature do
     @pupil2 = FactoryGirl.create(:profile, :email => 'pupil1@hpi.de')
     @pupil2.user.role = :pupil
     @acceptedApplication = FactoryGirl.create(:application_letter, :event => @event, :user => @pupil1.user, :status => true)
-    @acceptedApplication2 = FactoryGirl.create(:application_letter, :event => @event, :user => @pupil2.user, :status => false)
+    @acceptedApplication2 = FactoryGirl.create(:application_letter, :event => @event, :user => @pupil2.user, :status => true)
     visit event_path(@event)
     click_button "Zusagen verschicken"
     expect(page).to have_selector('div', :id => 'send-emails-modal')
-    #expect(find_link('Senden')[:href]).to eq('mailto:pupil1@hpi.de,pupil2@hpi.de')
-    #click_button "In die Zwischenablage kopieren"
+    expect(find('#send-emails-list', :visible => false).value).to eq(@event.compute_accepted_applications_emails)
+    expect(find_link('Senden')[:href]).to eq('mailto:pupil1@hpi.de,pupil2@hpi.de')
+    click_button "In die Zwischenablage kopieren"
     #expect(Clipboard.data).to eq('pupil1@hpi.de,pupil2@hpi.de')
   end
 
