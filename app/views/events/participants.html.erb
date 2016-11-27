@@ -33,11 +33,11 @@
     </td>
 	<td>
 	  <% if participant.older_than_18_at_start_date_of_event?(@event) %>
-	    <p> unnötig </p>
+	    <p class="agreement-letter-unnecessary"> unnötig </p>
 	  <% elsif participant.agreement_letter_for_event?(@event) %>
-	    <p> vorhanden </p>
+	    <p class="agreement-letter-available"> vorhanden </p>
 	  <% else %>
-	    <p> nicht vorhanden </p>
+	    <p class="agreement-letter-missing"> nicht vorhanden </p>
 	  <% end %>
 	</td>
   </tr>
@@ -47,10 +47,3 @@
 
 <%= link_to t('.back', :default => t("helpers.links.back")),
               events_path, :class => 'btn btn-default'  %>
-<%= link_to t('.edit', :default => t("helpers.links.edit")),
-              edit_event_path(@event), :class => 'btn btn-default' %>
-<%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-              event_path(@event),
-              :method => 'delete',
-              :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
-              :class => 'btn btn-danger' %>

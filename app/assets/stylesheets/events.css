@@ -10,3 +10,15 @@
 #event-add-date-picker {
 	margin-top: 6px;
 }
+
+.agreement-letter-missing {
+	color: red;
+}
+
+.agreement-letter-available {
+	color: green;
+}
+
+.agreement-letter-unnecessary {
+	color: gray;
+}
