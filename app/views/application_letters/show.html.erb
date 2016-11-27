@@ -13,9 +13,9 @@
   <dt><strong><%= Profile.human_attribute_name(:address) %>:</strong></dt>
   <dd><%= @application_letter.user.profile.address %></dd>
   <dt><strong><%= User.human_attribute_name(:accepted_application_count) %>:</strong></dt>
-  <dd><%= @application_letter.user.accepted_application_count %></dd>
+  <dd><%= @application_letter.user.accepted_applications_count(@application_letter.event) %></dd>
   <dt><strong><%= User.human_attribute_name(:rejected_application_count) %>:</strong></dt>
-  <dd><%= @application_letter.user.rejected_application_count %></dd>
+  <dd><%= @application_letter.user.rejected_applications_count(@application_letter.event) %></dd>
 </dl>
 
 <%= link_to t('.back', :default => t("helpers.links.back")),
@@ -28,16 +28,14 @@
               :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
               :class => 'btn btn-danger' %>
 
-<h3><%= t(".application_title") %> <%= @application_letter.event.name %></h3>
+<h3><%= t('.application_title', title: @application_letter.event.name) %></h3>
 <dl class="dl-vertical">
   <dt><strong> Radio Buttons (#45 US_3.11: Mark as accepted/rejected) </strong></dt>
 </dl>
 
-<body>
 <p>
   <%= @application_letter.motivation %>
 </p>
-</body>
 
 <dl class="dl-horizontal">
   <dt><strong><%= ApplicationNote.model_name.human(count: @application_letter.application_notes.count) %>:</strong></dt>

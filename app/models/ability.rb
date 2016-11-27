@@ -40,12 +40,14 @@ class Ability
       can [:index, :show, :edit, :update, :destroy], ApplicationLetter, user: { id: user.id }
     end
     if user.role? :tutor
-      # ...
+      # Tutors can view Applications for Event
+      can [:view_applicants], Event
     end
     if user.role? :organizer
       can [:index, :show], Profile
       can [:index, :show], ApplicationLetter
-      # ...
+      # Organizers can view and edit Applications for Events
+      can [:view_applicants, :edit_applicants], Event
     end
     if user.role? :admin
       can :manage, :all

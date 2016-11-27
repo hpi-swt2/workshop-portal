@@ -3,7 +3,7 @@
 de:
   application_letters:
     show:
-      application_title: "Bewerbung für"
+      application_title: "Bewerber für %{title}"
       new_note: "Neue Anmerkung:"
 
   activerecord:

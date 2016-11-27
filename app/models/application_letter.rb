@@ -15,4 +15,5 @@ class ApplicationLetter < ActiveRecord::Base
   has_many :application_notes
   
   validates :user, :event, presence: true
+
 end

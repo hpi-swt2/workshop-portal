@@ -2,8 +2,9 @@
 
 de:
   events:
-    participation:
-      title: "Bewerber für"
+    applicants_overview:
+      title: "Bewerber für %{title}"
+      participations: "Anzahl der Bewerbungen"
       accepted_rejected: "angenommen / abgelehnt"
       status: "Status"
       details: "Details"
