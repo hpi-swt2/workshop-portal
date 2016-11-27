@@ -8,6 +8,7 @@
 #  event_id    :integer          not null
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
+#  status      :integer
 #
 
 FactoryGirl.define do
@@ -15,6 +16,5 @@ FactoryGirl.define do
     motivation "MyString"
     user
     event
-    status nil
   end
 end

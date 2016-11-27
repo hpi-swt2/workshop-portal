@@ -8,3 +8,8 @@ de:
   activerecord:
     models:
       application_letter: "Bewerbung"
+
+  application_status:
+    accepted: "Angenommen"
+    rejected: "Abgelehnt"
+    pending: "Ausstehend"

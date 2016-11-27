@@ -45,9 +45,9 @@ describe User do
   it "returns correct accepted and rejected application count" do
     user = FactoryGirl.create(:user)
     # Add two accepted and one rejected application
-    user.application_letters.push(FactoryGirl.create(:application_letter, status: true))
-    user.application_letters.push(FactoryGirl.create(:application_letter, status: false))
-    user.application_letters.push(FactoryGirl.create(:application_letter, status: true))
+    user.application_letters.push(FactoryGirl.create(:application_letter, status: :accepted))
+    user.application_letters.push(FactoryGirl.create(:application_letter, status: :rejected))
+    user.application_letters.push(FactoryGirl.create(:application_letter, status: :accepted))
 
     expect(user.accepted_application_count).to eq(2)
     expect(user.rejected_application_count).to eq(1)
