@@ -38,17 +38,20 @@
   <!-- TODO for Implementers of Button Functionality: Write view tests for buttons -->
 
   <div class="container-fluid no-padding">
-    <%= link_to "Alle annehmen",
-                events_path, :class => 'btn btn-default'%>
+    <div class="btn-group" role="group">
+      <%= link_to "Alle annehmen",
+                  events_path, :class => 'btn btn-default'%>
 
-    <%= link_to "Alle drucken",
-                events_path, :class => 'btn btn-default'%>
+      <%= link_to "Alle drucken",
+                  events_path, :class => 'btn btn-default'%>
+    </div>
+    <div class="btn-group pull-right" role="group">
+      <%= link_to "Zusagen verschicken",
+                  events_path, :class => 'btn btn-default'%>
 
-    <%= link_to "Zusagen verschicken",
-                events_path, :class => 'btn btn-default pull-right'%>
-
-    <%= link_to "Absagen verschicken",
-                events_path, :class => 'btn btn-default pull-right'%>
+      <%= link_to "Absagen verschicken",
+                  events_path, :class => 'btn btn-default'%>
+    </div>
   </div>
 
 </div>
