@@ -37,41 +37,43 @@
   <%= @application_letter.motivation %>
 </p>
 
-<dl class="dl-horizontal">
-  <dt><strong><%= ApplicationNote.model_name.human(count: @application_letter.application_notes.count) %>:</strong></dt>
-  <dd><% @application_letter.application_notes.each do |note| %>
-        <div> <%= note.note %> </div>
-    <% end %></dd>
-</dl>
+<% if can? :view_and_add_notes, ApplicationLetter  %>
+  <dl class="dl-horizontal">
+    <dt><strong><%= ApplicationNote.model_name.human(count: @application_letter.application_notes.count) %>:</strong></dt>
+    <dd><% @application_letter.application_notes.each do |note| %>
+          <div> <%= note.note %> </div>
+      <% end %></dd>
+  </dl>
 
-<%= form_for [@application_letter, @application_letter.application_notes.build], :html => { :class => "form-horizontal application" } do |f| %>
+  <%= form_for [@application_letter, @application_letter.application_notes.build], :html => { :class => "form-horizontal application" } do |f| %>
 
-    <% if @application_note.errors.any? %>
-        <div id="error_expl" class="panel panel-danger">
-          <div class="panel-heading">
-            <h3 class="panel-title"><%= pluralize(@application_note.errors.count, "error") %> prohibited this application from being saved:</h3>
+      <% if @application_note.errors.any? %>
+          <div id="error_expl" class="panel panel-danger">
+            <div class="panel-heading">
+              <h3 class="panel-title"><%= pluralize(@application_note.errors.count, "error") %> prohibited this application from being saved:</h3>
+            </div>
+            <div class="panel-body">
+              <ul>
+                <% @application_note.errors.full_messages.each do |msg| %>
+                    <li><%= msg %></li>
+                <% end %>
+              </ul>
+            </div>
           </div>
-          <div class="panel-body">
-            <ul>
-              <% @application_note.errors.full_messages.each do |msg| %>
-                  <li><%= msg %></li>
-              <% end %>
-            </ul>
-          </div>
+      <% end %>
+
+      <div class="form-group">
+        <%= f.label :note, t(".new_note"), :class => 'control-label col-lg-2' %>
+        <div class="col-lg-10">
+          <%= f.text_area :note, :class => 'form-control' %>
         </div>
+        <%=f.error_span(:note) %>
+      </div>
+
+      <div class="form-group">
+        <div class="col-lg-offset-2 col-lg-10">
+          <%= f.submit nil, :class => 'btn btn-primary' %>
+        </div>
+      </div>
     <% end %>
-
-    <div class="form-group">
-      <%= f.label :note, t(".new_note"), :class => 'control-label col-lg-2' %>
-      <div class="col-lg-10">
-        <%= f.text_area :note, :class => 'form-control' %>
-      </div>
-      <%=f.error_span(:note) %>
-    </div>
-
-    <div class="form-group">
-      <div class="col-lg-offset-2 col-lg-10">
-        <%= f.submit nil, :class => 'btn btn-primary' %>
-      </div>
-    </div>
 <% end %>
