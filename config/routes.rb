@@ -1,12 +1,8 @@
 Rails.application.routes.draw do
-  post 'agreement_letters/create'
-  get 'agreement_letters/show'
-
   resources :requests
-  resources :agreement_letters, only: [:show]
   resources :application_letters, path: 'applications'
   resources :events do
-    resources :agreement_letters, only: [:create]
+    resources :agreement_letters, only: [:create], shallow: true
   end
   resources :profiles
   devise_for :users

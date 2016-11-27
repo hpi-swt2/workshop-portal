@@ -8,6 +8,7 @@
 #  event_id    :integer          not null
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
+#  status      :boolean
 #
 class ApplicationLetter < ActiveRecord::Base
   belongs_to :user

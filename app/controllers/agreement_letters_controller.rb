@@ -25,11 +25,6 @@ class AgreementLettersController < ApplicationController
     end
   end
 
-  def show
-    #send_file @agreement_letter.path, type: @agreement_letter.content_type, disposition: 'inline'
-    redirect_to profile_path(current_user.profile)
-  end
-
   private
     def params_valid?
       Event.exists?(@event_id) and

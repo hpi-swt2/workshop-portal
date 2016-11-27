@@ -74,15 +74,4 @@ RSpec.describe AgreementLettersController, type: :controller do
       expect(File.size(@agreement_letter.path)).to eq @another_file.size
     end
   end
-
-  describe "GET #show" do
-    it "redirects to user profile" do
-      @user = FactoryGirl.create(:user, role: :pupil)
-      @user.profile ||= FactoryGirl.create(:profile)
-      sign_in @user
-      get :show
-      expect(response).to have_http_status(:redirect)
-    end
-  end
-
 end

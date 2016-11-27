@@ -10,7 +10,8 @@
   <%= file_field_tag "letter_upload",
     class: "btn btn-default btn-file",
     style: 'display:inline',
-    id: "letter_upload_#{event_id}" %>
+    id: "letter_upload_#{event_id}",
+    accept: "application/pdf" %>
   <%= submit_tag upload_message,
     class: 'btn btn-default',
     id: "upload_btn_#{event_id}" %>
