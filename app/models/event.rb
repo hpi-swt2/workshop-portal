@@ -19,6 +19,16 @@ class Event < ActiveRecord::Base
     application_letters.all? { |application_letter| !application_letter.status.nil? }
   end
 
+  def compute_rejected_applications_emails
+    rejected_applications = application_letters.select { |application_letter| !application_letter.status }
+    rejected_applications.map{ |applications_letter| applications_letter.user.email }.join(',')
+  end
+
+  def compute_accepted_applications_emails
+    accepted_applications = application_letters.select { |application_letter| application_letter.status }
+    accepted_applications.map{ |application_letter| application_letter.user.email }.join(',')
+  end
+
   # Returns the number of free places of the event, this value may be negative
   #
   # @param none
