@@ -14,4 +14,8 @@ class Event < ActiveRecord::Base
   has_many :application_letters
 
   validates :max_participants, numericality: { only_integer: true, greater_than: 0 }
+
+  def applicationsClassified?
+    application_letters.all? &:blank?
+  end
 end

@@ -36,9 +36,29 @@
 
 <%= link_to "Alle drucken (#30 US_3.7 Print all at once)",
             events_path, :class => 'btn btn-default'%>
+<%= button_tag "Zusagen verschicken", type: 'button', class: 'btn btn-default', data: {toggle: 'modal', target: '#send-emails-modal', header: 'Zusagen verschicken', list: 'zusage1@hpi.de,zusage2@hpi.de,zusage3@hpi.de'}, disabled: @event.applicationsClassified? %>
 
-<%= link_to "Zusagen verschicken",
-            events_path, :class => 'btn btn-default'%>
+<%= button_tag "Absagen verschicken", type: 'button', class: 'btn btn-default', data: {toggle: 'modal', target: '#send-emails-modal', header: 'Absagen verschicken', list: 'absage1@hpi.de,absage2@hpi.de,absage3@hpi.de'}, disabled: @event.applicationsClassified? %>
 
-<%= link_to "Absagen verschicken",
-            events_path, :class => 'btn btn-default'%>
+<!-- Bootstrap Modal for sending emails -->
+<div id="send-emails-modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Emails verschicken</h4>
+      </div>
+      <div class="modal-body">
+        <%= link_to "Senden", '#', :id => 'send-emails-mailto', :class => 'btn btn-default' %>
+        <%= button_tag "In die Zwischenablage kopieren", type: 'button', id: 'send-emails-clipboard', class: 'btn btn-default' %>
+        <%= text_field_tag "send-emails-list", '', :type => 'hidden' %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
