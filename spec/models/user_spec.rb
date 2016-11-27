@@ -33,10 +33,9 @@ describe User do
   end
 
   it "returns the user's events" do
-    true_letter = FactoryGirl.create(:accepted_application_letter)
-    false_letter = FactoryGirl.create(:rejected_application_letter)
-    application_letters = [true_letter, false_letter]
-    user = FactoryGirl.build(:user, application_letters: application_letters)
+    user = FactoryGirl.build(:user)
+    FactoryGirl.create(:rejected_application_letter, user: user)
+    true_letter = FactoryGirl.create(:accepted_application_letter, user: user)
     expect(user.events).to eq [true_letter.event]
   end
 end

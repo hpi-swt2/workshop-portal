@@ -1,16 +1,14 @@
 class AgreementLettersController < ApplicationController
-  load_and_authorize_resource
-  MAX_SIZE = 300_000_000
-  ALLOWED_MIMETYPE = "application/pdf"
+  authorize_resource
 
   def create
     @event_id = params[:event_id]
     @file = params[:letter_upload]
     if params_valid?
-      if @file.content_type != ALLOWED_MIMETYPE
+      if @file.content_type != AgreementLetter::ALLOWED_MIMETYPE
         redirect_to profile_path(current_user.profile),
                     alert: t("agreement_letters.wrong_filetype")
-      elsif @file.size > MAX_SIZE
+      elsif @file.size > AgreementLetter::MAX_SIZE
         redirect_to profile_path(current_user.profile),
                     alert: t("agreement_letters.file_too_big")
       else
@@ -41,12 +39,17 @@ class AgreementLettersController < ApplicationController
     end
 
     def save_file
-      @agreement_letter.user = current_user
-      @agreement_letter.event = Event.find(@event_id)
-      path = Rails.root.join('storage/agreement_letters', @agreement_letter.filename).to_s
-      File.open(path, 'wb') { |f| f.write(@file.read) }
-      @agreement_letter.path = path
-      @agreement_letter.save
+      @agreement_letter = AgreementLetter.where(user: current_user, event_id: @event_id).take
+      if @agreement_letter.nil?
+        @agreement_letter = AgreementLetter.new
+        @agreement_letter.user = current_user
+        @agreement_letter.event_id = @event_id
+        @agreement_letter.path = Rails.root.join('storage/agreement_letters', @agreement_letter.filename).to_s
+        File.open(@agreement_letter.path, 'wb') { |f| f.write(@file.read) }
+        @agreement_letter.save
+      else
+        File.open(@agreement_letter.path, 'wb') { |f| f.write(@file.read) }
+        @agreement_letter.touch
+      end
     end
-
 end

@@ -59,7 +59,6 @@ RSpec.describe AgreementLettersController, type: :controller do
     end
 
     it "updates existing db entry when replacing a file" do
-      AgreementLetter.where(user: @user, event: @event).each { |a| File.delete.a.path }
       post :create, { letter_upload: @file, event_id: @event.id }
       expect(AgreementLetter.where(user: @user, event: @event).size).to eq 1
       post :create, { letter_upload: @another_file, event_id: @event.id }
@@ -67,7 +66,6 @@ RSpec.describe AgreementLettersController, type: :controller do
     end
 
     it "overwrites file when user uploads to same event twice" do
-      AgreementLetter.where(user: @user, event: @event).each { |a| a.delete }
       post :create, { letter_upload: @file, event_id: @event.id }
       @agreement_letter = assigns(:agreement_letter)
       expect(File.size(@agreement_letter.path)).to eq @file.size

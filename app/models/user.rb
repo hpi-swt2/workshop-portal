@@ -24,8 +24,6 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  has_many :agreement_letters
-
   before_create :set_default_role
 
   ROLES = %i[pupil tutor organizer admin]
@@ -47,6 +45,7 @@ class User < ActiveRecord::Base
 
   has_one :profile
   has_many :application_letters
+  has_many :agreement_letters
   has_many :requests
        
 end
