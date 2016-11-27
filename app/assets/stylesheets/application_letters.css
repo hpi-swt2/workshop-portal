@@ -3,6 +3,11 @@
   They will automatically be included in application.css.
 */
 
-#applicants_overview {
-    margin-bottom: 20px;
+#applicant_details dt {
+    width: 200px;
+    white-space: normal;
+}
+
+#applicant_details dd {
+    margin-left: 220px;
 }
