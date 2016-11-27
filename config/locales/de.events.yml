@@ -2,14 +2,14 @@
 
 de:
   events:
-    show:
-      free_places: '%{places} Plätze frei'
-      occupied_places: '%{places} Plätze belegt'
-    participation:
-      title: "Bewerber für"
+    applicants_overview:
+      title: "Bewerber für %{title}"
+      participations: "Anzahl der Bewerbungen"
       accepted_rejected: "angenommen / abgelehnt"
       status: "Status"
       details: "Details"
+      free_places: '%{places} Plätze frei'
+      occupied_places: '%{places} Plätze belegt'
 
   activerecord:
       models:

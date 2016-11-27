@@ -2,7 +2,8 @@
 
 de:
   profiles:
-    already_graduated: "Bereits Abitur"
+    form:
+      already_graduated: "Bereits Abitur"
 
   activerecord:
     attributes:
@@ -20,5 +21,5 @@ de:
         city: "Stadt"
         state: "Bundesland"
         country: "Land"
+        address: "Adresse"
         graduates_school_in: "Abitur vorraussichtlich in"
-

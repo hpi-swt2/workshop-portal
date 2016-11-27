@@ -32,33 +32,36 @@ describe User do
     expect(user).to_not be_valid
   end
 
-  it "returns users accepted application count" do
-    user = FactoryGirl.build(:user)
-    expect(user.accepted_application_count).to eq(0)
+  it "returns correct default accepted applications count" do
+    application_letter = FactoryGirl.create(:application_letter)
+    expect(application_letter.user.accepted_applications_count(application_letter.event)).to eq(0)
   end
 
-  it "returns users rejected application count" do
-    user = FactoryGirl.build(:user)
-    expect(user.rejected_application_count).to eq(0)
+  it "returns correct default rejected applications count" do
+    application_letter = FactoryGirl.create(:application_letter)
+    expect(application_letter.user.rejected_applications_count(application_letter.event)).to eq(0)
   end
 
-  it "returns correct accepted and rejected application count" do
+  it "only counts the accepted application of other events and ignores status of current event application" do
     user = FactoryGirl.create(:user)
-    # Add two accepted and one rejected application
-    user.application_letters.push(FactoryGirl.create(:application_letter, status: true))
-    user.application_letters.push(FactoryGirl.create(:application_letter, status: false))
-    user.application_letters.push(FactoryGirl.create(:application_letter, status: true))
+    other_event = FactoryGirl.create(:event)
+    current_event = FactoryGirl.create(:event)
 
-    expect(user.accepted_application_count).to eq(2)
-    expect(user.rejected_application_count).to eq(1)
+    other_application_letter = FactoryGirl.create(:application_letter, user: user, event: other_event, status: true)
+    current_application_letter = FactoryGirl.create(:application_letter, user: user, event: current_event, status: true)
+
+    expect(current_application_letter.user.accepted_applications_count(current_event)).to eq(1)
   end
 
-  it "return correct participation count" do
+  it "only counts the rejected application of other events and ignores status of current event application" do
     user = FactoryGirl.create(:user)
-    # Add two participations
-    user.application_letters.push(FactoryGirl.create(:application_letter, status: true))
-    user.application_letters.push(FactoryGirl.create(:application_letter, status: true))
+    other_event = FactoryGirl.create(:event)
+    current_event = FactoryGirl.create(:event)
 
-    expect(user.participation_count).to eq(2)
+    other_application_letter = FactoryGirl.create(:application_letter, user: user, event: other_event, status: false)
+    current_application_letter = FactoryGirl.create(:application_letter, user: user, event: current_event, status: false)
+
+    expect(current_application_letter.user.rejected_applications_count(current_event)).to eq(1)
   end
+
 end

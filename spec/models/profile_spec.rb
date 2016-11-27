@@ -31,12 +31,28 @@ describe Profile do
   end
 
   it "returns correct age" do
-    profile = FactoryGirl.build(:profile)
-    expect(profile.age).to eq(15)
+    @age = 20
+    profile = FactoryGirl.build(:profile, birth_date: @age.years.ago())
+
+    expect(profile.age).to eq(@age)
+  end
+
+  it "returns correct age in leap year edge case" do
+    # Mock Date today method to return fixed (non leap year) date
+    allow(Time).to receive(:now).and_return(Time.new(2017, 2, 28))
+    # Birthday on leap year
+    profile = FactoryGirl.build(:profile, birth_date: Time.new(1996, 2, 29))
+
+    expect(profile.age).to eq(20)
   end
 
   it "returns full name" do
     profile = FactoryGirl.build(:profile)
-    expect(profile.name).to eq("Karl Doe")
+    expect(profile.name).to eq("#{profile.first_name} #{profile.last_name}")
+  end
+
+  it "returns full address" do
+    profile = FactoryGirl.build(:profile)
+    expect(profile.address).to eq("#{profile.street_name}, #{profile.zip_code} #{profile.city}, #{profile.state}, #{profile.country}")
   end
 end

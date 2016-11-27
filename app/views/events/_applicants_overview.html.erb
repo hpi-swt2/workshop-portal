@@ -1,0 +1,45 @@
+<h3><%= t('.title', title: @event.name) %></h3>
+<div><%= t '.free_places', places: @free_places %></div>
+<div><%= t '.occupied_places', places: @occupied_places %></div>
+
+<table id="applicants" class="table table-striped">
+  <thead>
+  <tr>
+    <th><%= Profile.human_attribute_name(:name) %></th>
+    <th><%= Profile.human_attribute_name(:gender) %></th>
+    <th><%= Profile.human_attribute_name(:age) %></th>
+    <th>
+      <%= t '.participations' %> <br>
+      <%= t '.accepted_rejected' %>
+    </th>
+    <th><%= t '.status' %></th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @event.application_letters.each do | application_letter | %>
+      <tr>
+        <td><%= application_letter.user.profile.name %></td>
+        <td><%= application_letter.user.profile.gender %></td>
+        <td><%= application_letter.user.profile.age  %></td>
+        <td><%= application_letter.user.accepted_applications_count(@event) %> / <%= application_letter.user.rejected_applications_count(@event) %></td>
+        <td>
+          Radio Buttons (#45 US_3.11: Mark as accepted/rejected)
+          <%= link_to t('.details'), application_letter_path(application_letter), :class => 'btn btn-default' %>
+        </td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<!-- TODO for Implementers of Button Functionality: Write view tests for buttons -->
+<%= link_to "Alle annehmen (#16 US_3.1 Accept-All-Button)",
+            events_path, :class => 'btn btn-default'%>
+
+<%= link_to "Alle drucken (#30 US_3.7 Print all at once)",
+            events_path, :class => 'btn btn-default'%>
+
+<%= link_to "Zusagen verschicken (#22 US_3.2 Send emails in a bundle)",
+            events_path, :class => 'btn btn-default'%>
+
+<%= link_to "Absagen verschicken (#22 US_3.2 Send emails in a bundle)",
+            events_path, :class => 'btn btn-default'%>

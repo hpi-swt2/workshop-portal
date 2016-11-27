@@ -1,6 +1,6 @@
 <%- model_class = Event -%>
 <div class="page-header">
-  <h1><%=t '.title', :default => model_class.model_name.human.titleize %></h1>
+  <h1><%= t '.title', :default => model_class.model_name.human.titleize %></h1>
 </div>
 
 <dl class="dl-horizontal">
@@ -14,51 +14,9 @@
   <dd><%= @event.active %></dd>
 </dl>
 
-<h3><%= t(:title, scope: 'events.participation') %> <%= @event.name %></h3>
-<div><%= t '.free_places', places: @free_places %></div>
-<div><%= t '.occupied_places', places: @occupied_places %></div>
-
-<table id="applicants" class="table table-striped">
-  <thead>
-  <tr>
-    <th><%= Profile.human_attribute_name(:name) %></th>
-    <th><%= Profile.human_attribute_name(:gender) %></th>
-    <th><%= Profile.human_attribute_name(:age) %></th>
-    <th>
-      <%= User.human_attribute_name(:participation_count)%> <br>
-      <%= t(:accepted_rejected, scope: 'events.participation') %>
-    </th>
-    <th><%= t(:status, scope: 'events.participation') %></th>
-  </tr>
-  </thead>
-  <tbody>
-  <% @event.application_letters.each do | application_letter | %>
-      <tr>
-        <td><%= application_letter.user.profile.name %></td>
-        <td><%= application_letter.user.profile.gender %></td>
-        <td><%= application_letter.user.profile.age  %></td>
-        <td><%= application_letter.user.accepted_application_count %> / <%= application_letter.user.rejected_application_count %></td>
-        <td>
-          Radio Buttons (#45 US_3.11: Mark as accepted/rejected)
-          <%= link_to t(:details, scope: 'events.participation'), application_letter_path(application_letter), :class => 'btn btn-default' %>
-        </td>
-      </tr>
-  <% end %>
-  </tbody>
-</table>
-
-<!-- TODO: Write view tests for buttons -->
-<%= link_to "Alle annehmen (#16 US_3.1 Accept-All-Button)",
-            events_path, :class => 'btn btn-default'%>
-
-<%= link_to "Alle drucken (#30 US_3.7 Print all at once)",
-            events_path, :class => 'btn btn-default'%>
-
-<%= link_to "Zusagen verschicken (#22 US_3.2 Send emails in a bundle)",
-            events_path, :class => 'btn btn-default'%>
-
-<%= link_to "Absagen verschicken (#22 US_3.2 Send emails in a bundle)",
-            events_path, :class => 'btn btn-default'%>
+<% if can? :view_applicants, Event %>
+  <%= render :partial => 'applicants_overview' %>
+<% end %>
 
 <%= link_to t('.back', :default => t("helpers.links.back")),
             events_path, :class => 'btn btn-default'  %>

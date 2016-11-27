@@ -1,0 +1,10 @@
+# German translations for the application letters
+
+de:
+  application_letters:
+    show:
+      application_title: "Bewerber für %{title}"
+
+  activerecord:
+    models:
+      application_letter: "Bewerbung"
