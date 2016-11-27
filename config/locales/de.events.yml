@@ -8,8 +8,12 @@ de:
       accepted_rejected: "angenommen / abgelehnt"
       status: "Status"
       details: "Details"
-      free_places: '%{places} Plätze frei'
-      occupied_places: '%{places} Plätze belegt'
+      free_places:
+        one: '%{count} Platz frei'
+        other: '%{count} Plätze frei'
+      occupied_places:
+        one: '%{count} Platz belegt'
+        other: '%{count} Plätze belegt'
 
   activerecord:
       models:
