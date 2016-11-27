@@ -20,6 +20,7 @@ class Event < ActiveRecord::Base
 
   validates :max_participants, numericality: { only_integer: true, greater_than: 0 }
   
+  # Returns all users that applied to this event and were accepted.
   def participants
 	@accepted_applications = self.application_letters.select { |application_letter| application_letter.status == true }
 	@participants = []
@@ -28,6 +29,16 @@ class Event < ActiveRecord::Base
 	end
 	@participants
   end
+  
+  # Returns all participants for this event in following order:
+  # 1. All participants that have to submit an letter of agreement but did not yet do so, ordered by name.
+  # 2. All participants that have to submit an letter of agreement and did do so, ordered by name.
+  # 3. All participants that do not have to submit an letter of agreement, ordered by name.
+  def participants_by_agreement_letter
+    @participants = self.participants
+	@participants.sort { |x, y| self.compare_participants_by_agreement(x,y) }
+  end
+  
   has_many :date_ranges
 
   validates :max_participants, numericality: { only_integer: true, greater_than: 0 }
@@ -64,4 +75,28 @@ class Event < ActiveRecord::Base
 
     super
   end
+  
+  protected
+  def compare_participants_by_agreement(participant1, participant2)
+    if participant1.older_than_18_at_start_date_of_event?(self)
+	  if participant2.older_than_18_at_start_date_of_event?(self)
+	    return participant1.name <=> participant2.name
+      end
+	  return 1
+	end
+	if participant2.older_than_18_at_start_date_of_event?(self)
+	  return -1
+	end
+	if participant1.agreement_letter_for_event?(self)
+	  if participant2.agreement_letter_for_event?(self)
+	    return participant1.name <=> participant2.name
+	  end
+	  return 1
+	end
+	if participant2.agreement_letter_for_event?(self)
+	  return -1
+	end
+	return participant1.name <=> participant2.name
+  end
+  
 end

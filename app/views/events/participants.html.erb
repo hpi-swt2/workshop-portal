@@ -35,7 +35,7 @@
 	  <% if participant.older_than_18_at_start_date_of_event?(@event) %>
 	    <p class="agreement-letter-unnecessary"> unnötig </p>
 	  <% elsif participant.agreement_letter_for_event?(@event) %>
-	    <p class="agreement-letter-available"> vorhanden </p>
+	    <p class="agreement-letter-available" title="<%= participant.agreement_letter_for_event(@event).updated_at %>"> vorhanden </p>
 	  <% else %>
 	    <p class="agreement-letter-missing"> nicht vorhanden </p>
 	  <% end %>

@@ -44,19 +44,23 @@ class User < ActiveRecord::Base
     accepted_applications.collect { |a| a.event }
   end
 
+  # Returns true iff. user has submitted an agreement_letter for the given event
   def agreement_letter_for_event?(given_event)
     fitting_agreement_letters = self.agreement_letters.select { |letter| letter.event == given_event }
 	return false unless fitting_agreement_letters.length == 1
 	return true
   end
   
+  # Returns the agreement letter the user has submitted for given_event. Returns false if no such letter exists.
   def agreement_letter_for_event(given_event)
     fitting_agreement_letters = self.agreement_letters.select { |letter| letter.event == given_event }
 	return false unless fitting_agreement_letters.length == 1
 	return fitting_agreement_letters[0]
   end
   
+  # Returns true iff. the age of user is 18 or more at the start_date of given_event. Returns false if age of user is unknown.
   def older_than_18_at_start_date_of_event?(given_event)
+    return false unless self.profile
     event_start = given_event.start_date
     event_start_is_before_birthday = event_start.month > self.profile.birth_date.month || (event_start.month == self.profile.birth_date.month && event_start.day >= self.profile.birth_date.day)
     age_at_event_start = event_start.year - self.profile.birth_date.year - (event_start_is_before_birthday ? 0 : 1)
