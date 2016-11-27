@@ -40,9 +40,6 @@ RSpec.feature "Event Applicant Overview", :type => :feature do
     @pupil1.user.role = :pupil
     @pupil2 = FactoryGirl.create(:profile)
     @pupil2.user.role = :pupil
-    @pupil3 = FactoryGirl.create(:profile)
-    @pupil3.user.role = :pupil
-    @nilApplication = FactoryGirl.create(:application_letter, :event => @event, :user => @pupil1.user, :status => nil)
     @acceptedApplication = FactoryGirl.create(:application_letter, :event => @event, :user => @pupil1.user, :status => true)
     @acceptedApplication2 = FactoryGirl.create(:application_letter, :event => @event, :user => @pupil2.user, :status => true)
     visit event_path(@event)
@@ -52,16 +49,19 @@ RSpec.feature "Event Applicant Overview", :type => :feature do
 
   scenario "logged in as Organizer I want to open a modal by clicking on sending emails" do
     login(:organizer)
-    @event.update!(max_participants: 3)
-    @pupil1 = FactoryGirl.create(:profile)
+    @event.update!(max_participants: 2)
+    @pupil1 = FactoryGirl.create(:profile, :email => 'pupil1@hpi.de')
     @pupil1.user.role = :pupil
-    @pupil2 = FactoryGirl.create(:profile)
+    @pupil2 = FactoryGirl.create(:profile, :email => 'pupil1@hpi.de')
     @pupil2.user.role = :pupil
     @acceptedApplication = FactoryGirl.create(:application_letter, :event => @event, :user => @pupil1.user, :status => true)
-    @rejectedApplication = FactoryGirl.create(:application_letter, :event => @event, :user => @pupil2.user, :status => false)
+    @acceptedApplication2 = FactoryGirl.create(:application_letter, :event => @event, :user => @pupil2.user, :status => false)
     visit event_path(@event)
     click_button "Zusagen verschicken"
     expect(page).to have_selector('div', :id => 'send-emails-modal')
+    #expect(find_link('Senden')[:href]).to eq('mailto:pupil1@hpi.de,pupil2@hpi.de')
+    #click_button "In die Zwischenablage kopieren"
+    #expect(Clipboard.data).to eq('pupil1@hpi.de,pupil2@hpi.de')
   end
 
   scenario "logged in as Organizer I can see the correct count of free/occupied places" do

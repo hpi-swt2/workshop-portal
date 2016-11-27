@@ -18,6 +18,7 @@ class Event < ActiveRecord::Base
   def applicationsClassified?
     application_letters.all? { |application_letter| !application_letter.status.nil? }
   end
+
   # Returns the number of free places of the event, this value may be negative
   #
   # @param none

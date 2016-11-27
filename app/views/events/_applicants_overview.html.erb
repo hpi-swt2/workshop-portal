@@ -37,9 +37,9 @@
 
 <%= link_to "Alle drucken (#30 US_3.7 Print all at once)",
             events_path, :class => 'btn btn-default'%>
-<%= button_tag "Zusagen verschicken", type: 'button', class: 'btn btn-default', data: {toggle: 'modal', target: '#send-emails-modal', header: 'Zusagen verschicken', list: 'zusage1@hpi.de,zusage2@hpi.de,zusage3@hpi.de'}, disabled: @event.applicationsClassified? %>
+<%= button_tag "Zusagen verschicken", type: 'button', class: 'btn btn-default', data: {toggle: 'modal', target: '#send-emails-modal', header: 'Zusagen verschicken', list: 'zusage1@hpi.de,zusage2@hpi.de,zusage3@hpi.de'}, disabled: !@event.applicationsClassified? || @event.compute_free_places < 0 %>
 
-<%= button_tag "Absagen verschicken", type: 'button', class: 'btn btn-default', data: {toggle: 'modal', target: '#send-emails-modal', header: 'Absagen verschicken', list: 'absage1@hpi.de,absage2@hpi.de,absage3@hpi.de'}, disabled: @event.applicationsClassified? %>
+<%= button_tag "Absagen verschicken", type: 'button', class: 'btn btn-default', data: {toggle: 'modal', target: '#send-emails-modal', header: 'Absagen verschicken', list: 'absage1@hpi.de,absage2@hpi.de,absage3@hpi.de'}, disabled: !@event.applicationsClassified? || @event.compute_free_places < 0 %>
 
 <!-- Bootstrap Modal for sending emails -->
 <div id="send-emails-modal" class="modal fade" role="dialog">
