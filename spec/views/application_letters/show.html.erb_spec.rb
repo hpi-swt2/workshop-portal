@@ -13,16 +13,6 @@ RSpec.describe "application_letters/show", type: :view do
     expect(rendered).to have_text(@application_letter.motivation)
   end
 
-  it "has notes text area" do
-    render
-    expect(rendered).to have_selector("textarea", :id => "application_note_note")
-  end
-
-  it "shows saved notes" do
-    render
-    expect(rendered).to have_text(@application_note.note)
-  end
-
   it "renders applicant's attributes" do
     expect(rendered).to have_text(@application_letter.user.profile.name)
     expect(rendered).to have_text(@application_letter.user.profile.gender)
