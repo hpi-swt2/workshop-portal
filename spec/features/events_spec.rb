@@ -16,21 +16,44 @@ RSpec.feature "Event Applicant Overview", :type => :feature do
     expect(page).to have_table("applicants")
   end
 
-  scenario "Emails can not be send if there is any unclassified application left" do
+  scenario "logged in as Organizer I want to be unable to send emails if there is any unclassified application left" do
     login(:organizer)
+    @event.update!(max_participants: 1)
+    @pupil1 = FactoryGirl.create(:profile)
+    @pupil1.user.role = :pupil
+    @nilApplication = FactoryGirl.create(:application_letter, :event => @event, :user => @pupil1.user, :status => nil)
+    visit event_path(@event)
     expect(page).to have_button("Zusagen verschicken", disabled: true)
     expect(page).to have_button("Absagen verschicken", disabled: true)
   end
 
-  scenario "Emails can not be send if there is a negative number of free places left" do
+  scenario "logged in as Organizer I want to be unable to send emails if there is a negative number of free places left" do
     login(:organizer)
-    page.choose("Accept")
+    @event.update!(max_participants: 1)
+    @pupil1 = FactoryGirl.create(:profile)
+    @pupil1.user.role = :pupil
+    @pupil2 = FactoryGirl.create(:profile)
+    @pupil2.user.role = :pupil
+    @pupil3 = FactoryGirl.create(:profile)
+    @pupil3.user.role = :pupil
+    @nilApplication = FactoryGirl.create(:application_letter, :event => @event, :user => @pupil1.user, :status => nil)
+    @acceptedApplication = FactoryGirl.create(:application_letter, :event => @event, :user => @pupil1.user, :status => true)
+    @acceptedApplication2 = FactoryGirl.create(:application_letter, :event => @event, :user => @pupil2.user, :status => true)
+    visit event_path(@event)
     expect(page).to have_button("Zusagen verschicken", disabled: true)
     expect(page).to have_button("Absagen verschicken", disabled: true)
   end
 
-  scenario "Clicking on sending emails button opens a modal" do
+  scenario "logged in as Organizer I want to open a modal by clicking on sending emails" do
     login(:organizer)
+    @event.update!(max_participants: 3)
+    @pupil1 = FactoryGirl.create(:profile)
+    @pupil1.user.role = :pupil
+    @pupil2 = FactoryGirl.create(:profile)
+    @pupil2.user.role = :pupil
+    @acceptedApplication = FactoryGirl.create(:application_letter, :event => @event, :user => @pupil1.user, :status => true)
+    @rejectedApplication = FactoryGirl.create(:application_letter, :event => @event, :user => @pupil2.user, :status => false)
+    visit event_path(@event)
     click_button "Zusagen verschicken"
     expect(page).to have_selector('div', :id => 'send-emails-modal')
   end

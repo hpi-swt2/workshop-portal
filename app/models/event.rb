@@ -16,6 +16,6 @@ class Event < ActiveRecord::Base
   validates :max_participants, numericality: { only_integer: true, greater_than: 0 }
 
   def applicationsClassified?
-    application_letters.all? &:blank?
+    application_letters.all? { |application_letter| !application_letter.status.nil? }
   end
 end
