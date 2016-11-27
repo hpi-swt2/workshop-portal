@@ -42,7 +42,7 @@ class Ability
     if user.role? :tutor
       # Tutors can view Applications for Event
       can [:view_applicants], Event
-      can [:index, :show, :view_and_add_notes], ApplicationLetter
+      can [:view_and_add_notes], ApplicationLetter
     end
     if user.role? :organizer
       can [:index, :show], Profile
