@@ -5,7 +5,7 @@
 
 <h3><%= @application_letter.user.profile.name %></h3>
 
-<dl class="dl-horizontal">
+<dl class="dl-horizontal" id="applicant_details">
   <dt><strong><%= Profile.human_attribute_name(:gender) %>:</strong></dt>
   <dd><%= @application_letter.user.profile.gender %></dd>
   <dt><strong><%= Profile.human_attribute_name(:age) %>:</strong></dt>
