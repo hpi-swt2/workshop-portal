@@ -13,7 +13,7 @@
 FactoryGirl.define do
   factory :application_letter do
     motivation "MyString"
-    user
+    association :user, factory: :user_with_profile
 	event
 	status nil
   end
