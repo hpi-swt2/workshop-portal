@@ -4,16 +4,22 @@ RSpec.feature "Event Applicant Overview", :type => :feature do
   scenario "logged in as Pupil can not see overview" do
     login(:pupil)
     expect(page).to_not have_table("applicants")
+    expect(page).to_not have_css("div#free_places")
+    expect(page).to_not have_css("div#occupied_places")
   end
 
   scenario "logged in as Coach can see overview" do
     login(:tutor)
     expect(page).to have_table("applicants")
+    expect(page).to have_css("div#free_places")
+    expect(page).to have_css("div#occupied_places")
   end
 
   scenario "logged in as Organizer can see overview" do
     login(:organizer)
     expect(page).to have_table("applicants")
+    expect(page).to have_css("div#free_places")
+    expect(page).to have_css("div#occupied_places")
   end
 
 
