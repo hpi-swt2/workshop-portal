@@ -12,6 +12,8 @@
 class ApplicationLetter < ActiveRecord::Base
   belongs_to :user
   belongs_to :event
+  has_many :application_notes
   
   validates :user, :event, presence: true
+
 end

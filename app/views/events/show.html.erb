@@ -1,6 +1,6 @@
 <%- model_class = Event -%>
 <div class="page-header">
-  <h1><%=t '.title', :default => model_class.model_name.human.titleize %></h1>
+  <h1><%= t '.title', :default => model_class.model_name.human.titleize %></h1>
 </div>
 
 <% if @event.unreasonably_long %>
@@ -21,6 +21,10 @@
   <dt><strong><%= model_class.human_attribute_name(:active) %>:</strong></dt>
   <dd><%= @event.active %></dd>
   <dt><strong><%= model_class.human_attribute_name(:date_ranges) %>:</strong></dt>
+  <dt><strong><%= model_class.human_attribute_name(:organizer) %>:</strong></dt>
+  <dd><%= @event.organizer %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:knowledge_level) %>:</strong></dt>
+  <dd><%= @event.knowledge_level %></dd>
   <dd>
     <ul>
     <% @event.date_ranges.each do |r| %>
@@ -30,12 +34,9 @@
   </dd>
 </dl>
 
+<% if can? :view_applicants, Event %>
+  <%= render :partial => 'applicants_overview' %>
+<% end %>
+
 <%= link_to t('.back', :default => t("helpers.links.back")),
               events_path, :class => 'btn btn-default'  %>
-<%= link_to t('.edit', :default => t("helpers.links.edit")),
-              edit_event_path(@event), :class => 'btn btn-default' %>
-<%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-              event_path(@event),
-              :method => 'delete',
-              :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Sicher, dass das Event gelöscht werden soll?')) },
-              :class => 'btn btn-danger' %>

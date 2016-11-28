@@ -18,6 +18,8 @@ FactoryGirl.define do
     description "Event-Description"
     max_participants 100
     active false
+    organizer "Workshop-Organizer"
+    knowledge_level "Workshop-Knowledge Level"
     date_ranges { build_list :date_range, 1 }
 
     trait :with_two_date_ranges do
