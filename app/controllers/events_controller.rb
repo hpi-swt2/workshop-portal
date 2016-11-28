@@ -23,6 +23,8 @@ class EventsController < ApplicationController
   def create
     @event = Event.new(event_params)
 
+    @event.draft = (params[:commit] == "draft")
+
     if @event.save
       redirect_to @event, notice: 'Event was successfully created.'
     else
@@ -32,6 +34,8 @@ class EventsController < ApplicationController
 
   # PATCH/PUT /events/1
   def update
+    @event.draft = (params[:commit] == "draft")
+
     if @event.update(event_params)
       redirect_to @event, notice: 'Event was successfully updated.'
     else
