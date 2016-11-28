@@ -8,7 +8,8 @@ de:
       accepted_rejected: "angenommen / abgelehnt"
       status: "Status"
       details: "Details"
-
+    form:
+      draft: "Als Entwurf speichern"
   activerecord:
       models:
         event: "Veranstaltung"
@@ -20,3 +21,7 @@ de:
           active: "Aktiv"
           organizer: "Veranstalter"
           knowledge_level: "Kenntnisstand"
+  helpers:
+    submit:
+      event:
+        create: "%{model} veröffentlichen"

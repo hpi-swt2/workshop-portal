@@ -60,8 +60,8 @@
 
   <div class="form-group">
     <div class="col-lg-offset-2 col-lg-10">
-      <%= f.submit nil, :value => 'publish', :class => 'btn btn-primary' %>
-      <%= f.submit :draft, :value => 'draft', :class => 'btn btn-default' %>
+      <%= f.submit nil, :name => 'publish', :class => 'btn btn-primary' %>
+      <%= f.submit t('.draft'), :name => 'draft', :class => 'btn btn-default' %>
       <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
                 events_path, :class => 'btn btn-default' %>
     </div>
