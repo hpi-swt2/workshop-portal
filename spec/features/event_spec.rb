@@ -12,7 +12,7 @@ RSpec.feature "Draft events", :type => :feature do
   end
 
   scenario "User saves a draft event, but doesn't publish it" do
-    click_button("draft")
+    draft_button.click()
 
     # Show success alert
     expect(page).to have_css(".alert-success")
@@ -22,11 +22,11 @@ RSpec.feature "Draft events", :type => :feature do
     expect(page).to_not have_text(@event.name)
   end
 
-  scenario "User revisits a draft event and publishes it" do
-    click_button("draft")
+  scenario "User revisits a saved draft event and publishes it" do
+    draft_button.click()
 
     visit edit_event_path(@event)
-    click_button("publish")
+    publish_button.click()
 
     expect(page).to have_css(".alert-success")
 
@@ -34,4 +34,12 @@ RSpec.feature "Draft events", :type => :feature do
     visit events_path
     expect(page).to have_text(@event.name)
   end
+end
+
+def draft_button
+  find(:xpath, "//input[contains(@name, 'draft')]")
+end
+
+def publish_button
+  find(:xpath, "//input[contains(@name, 'publish')]")
 end
