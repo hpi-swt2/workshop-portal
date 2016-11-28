@@ -15,7 +15,7 @@ FactoryGirl.define do
     first_name  "Karl"
     last_name  "Doe"
     gender  "männlich"
-    birth_date  15.years.ago 
+    birth_date  15.years.ago
     email  "karl@doe.com"
     school  "Schule am Griebnitzsee"
     street_name  "Rudolf-Breitscheid-Str. 52"
