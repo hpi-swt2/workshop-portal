@@ -17,5 +17,6 @@ FactoryGirl.define do
     description "Event-Description"
     max_participants 1
     active false
+    draft false
   end
 end
