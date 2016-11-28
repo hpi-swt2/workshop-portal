@@ -51,8 +51,3 @@ de:
         country: "Land"
         graduates_school_in: "Abitur vorraussichtlich in"
         already_graduated: "Bereits Abitur"
-  activerecord:
-    attributes:
-      event:
-        organizer: "Veranstalter"
-        knowledge_level: "Kenntnisstand"

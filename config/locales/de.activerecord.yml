@@ -1,0 +1,6 @@
+de:
+  activerecord:
+    attributes:
+      event:
+        organizer: "Veranstalter"
+        knowledge_level: "Kenntnisstand"
