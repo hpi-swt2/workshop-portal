@@ -48,7 +48,7 @@ FactoryGirl.define do
     end
 
     trait :without_date_ranges do
-      date_ranges {}
+      date_ranges { [] }
     end
   end
 end

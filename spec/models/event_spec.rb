@@ -31,9 +31,9 @@ describe Event do
     expect(event.date_ranges.second.end_date).to eq(Date.tomorrow.next_day(10))
     expect(event.date_ranges.second).to eq(event.date_ranges.last)
 
-    #making sure that every event has at least one date range...later...
-    #event1 = FactoryGirl.create( :event, :without_date_ranges )
-    #expect(event1).to_not be_valid
+    #making sure that every event has at least one date range
+    event1 = FactoryGirl.build(:event, :without_date_ranges)
+    expect(event1).to_not be_valid
   end
 
   describe "#start_date" do
