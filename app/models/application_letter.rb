@@ -16,4 +16,14 @@ class ApplicationLetter < ActiveRecord::Base
   
   validates :user, :event, presence: true
 
+  def after_deadline?
+
+    # hardcode deadline until
+    # event model is ready in #18 - US_1.4: Application deadline
+    deadline = DateTime.new(2016,9,1,17)
+
+    now = Time.now.utc.to_datetime
+    now > deadline
+  end
+
 end

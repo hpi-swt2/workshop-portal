@@ -5,6 +5,8 @@ de:
     show:
       application_title: "Bewerber für %{title}"
       new_note: "Neue Anmerkung:"
+    form:
+      warning: "Die Deadline ist schon vorbei. Du kannst deine Bewerbung nicht mehr ändern."
 
   activerecord:
     models:
