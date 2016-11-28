@@ -23,7 +23,7 @@ class EventsController < ApplicationController
   def create
     @event = Event.new(event_params)
 
-    @event.draft = (params[:commit] == "draft")
+    @event.draft = (params[:draft] != nil)
 
     if @event.save
       redirect_to @event, notice: 'Event was successfully created.'
