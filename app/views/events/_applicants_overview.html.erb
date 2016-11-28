@@ -24,11 +24,9 @@
         <td>
           <% if can? :edit_applicants, Event %>
             <%= render :partial => 'application_letters/application_selective', locals: {application_letter: application_letter} %>
-          <% end %>
-          <% if can? :view_applicants, Event %>
+          <% elsif can? :view_applicants, Event %>
             <%= t("application_status.#{application_letter.status}") %>
-          <% end %>
-          <% if cannot? :view_applicants, Event %>
+          <% else %>
             <%= t("application_status.#{:pending}") %>
           <% end %>
         </td>
