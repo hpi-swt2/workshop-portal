@@ -24,3 +24,5 @@ de:
           description: "Beschreibung"
           max_participants: "Maximale Bewerber"
           active: "Aktiv"
+          organizer: "Veranstalter"
+          knowledge_level: "Kenntnisstand"

@@ -4,7 +4,11 @@ de:
   application_letters:
     show:
       application_title: "Bewerber für %{title}"
+      new_note: "Neue Anmerkung:"
 
   activerecord:
     models:
       application_letter: "Bewerbung"
+      application_note:
+        one: "Anmerkung"
+        other: "Anmerkungen"
