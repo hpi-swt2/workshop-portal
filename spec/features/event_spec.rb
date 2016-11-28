@@ -2,8 +2,7 @@ require "rails_helper"
 
 RSpec.feature "Draft events", :type => :feature do
   before(:each) do
-    @event = FactoryGirl.create(:event)
-    @event.draft = nil
+    @event = FactoryGirl.create(:event, draft: nil)
 
     visit new_event_path
     fill_in "event_name", :with => @event.name
