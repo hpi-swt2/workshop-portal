@@ -10,6 +10,7 @@ class ApplicationLettersController < ApplicationController
 
   # GET /applications/1
   def show
+    @application_note = ApplicationNote.new
   end
 
   # GET /applications/new
@@ -56,6 +57,6 @@ class ApplicationLettersController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def application_params
-      params.require(:application_letter).permit(:motivation, :event_id)
+      params.require(:application_letter).permit(:motivation, :event_id, :status)
     end
 end
