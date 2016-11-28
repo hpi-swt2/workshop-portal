@@ -16,6 +16,10 @@ class ApplicationLetter < ActiveRecord::Base
   
   validates :user, :event, presence: true
 
+  # Checks if the deadline is over
+  #
+  # @param none
+  # @return [Boolean] true if deadline is over
   def after_deadline?
 
     # hardcode deadline until
