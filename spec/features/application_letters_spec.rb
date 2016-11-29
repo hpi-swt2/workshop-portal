@@ -68,6 +68,15 @@ RSpec.feature "Application Letter Overview", :type => :feature do
     expect(ApplicationLetter.where(grade:"11")).to exist
   end
 
+
+
+  it "displays help text for motivation textarea" do
+    login(:pupil)
+    visit new_application_letter_path(:event_id => @event.id, :locale => :de)
+
+    expect(page).to have_text(I18n.t 'application_letters.form.help_text_coding_skills')
+  end
+
   def login(role)
 
     @event = FactoryGirl.create(:event)
