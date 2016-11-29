@@ -5,16 +5,19 @@
 #  id          :integer          not null, primary key
 #  motivation  :string
 #  user_id     :integer          not null
-#  workshop_id :integer          not null
+#  event_id    :integer          not null
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #
 class ApplicationLetter < ActiveRecord::Base
   belongs_to :user
-  belongs_to :workshop
+  belongs_to :event
 
-  validates :user, :workshop, :experience, :motivation, :coding_skills, :emergency_number, presence: true
+	has_many :application_notes
+
+  validates :user, :event, :experience, :motivation, :coding_skills, :emergency_number, presence: true
 	validates :grade, presence: true, numericality: { only_integer: true }
   validates  :vegeterian, :vegan, :allergic, inclusion: { in: [true, false] }
   validates  :vegeterian, :vegan, :allergic, exclusion: { in: [nil] }
+
 end

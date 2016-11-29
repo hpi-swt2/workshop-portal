@@ -23,7 +23,38 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
+  before_create :set_default_role
+
+  ROLES = %i[pupil tutor organizer admin]
+
+  def role?(base_role)
+    return false unless role
+
+    ROLES.index(base_role) <= ROLES.index(role.to_sym)
+  end
+
+  def set_default_role
+    self.role ||= :pupil
+  end
+
   has_one :profile
   has_many :application_letters
   has_many :requests
+
+  # Returns the number of accepted applications from the user without counting status of current event application
+  #
+  # @param current event (which application status will be excluded)
+  # @return [Int] of number of currently accepted applications
+  def accepted_applications_count(event)
+    ApplicationLetter.where(user_id: id, status: true).where.not(event: event).count()
+  end
+
+  # Returns the number of accepted applications from the user without counting status of current event application
+  #
+  # @param current event (which application status will be excluded)
+  # @return [Int] of number of currently accepted applications
+  def rejected_applications_count(event)
+    ApplicationLetter.where(user_id: id, status: false).where.not(event: event).count()
+  end
+
 end

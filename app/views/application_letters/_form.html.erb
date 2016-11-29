@@ -78,14 +78,7 @@
     </div>
     <%=f.error_span(:allergies) %>
   </div>
-	<%= hidden_field_tag 'workshop_id', params[:workshop_id] %>
-  <div class="form-group">
-    <%= f.label :user_id, :class => 'control-label col-lg-2' %>
-    <div class="col-lg-10">
-      <%= f.text_field :user_id, :class => 'form-control' %>
-    </div>
-    <%=f.error_span(:user_id) %>
-  </div>
+	<%= hidden_field_tag 'event_id', params[:event_id] %>
 
   <div class="form-group">
     <div class="col-lg-offset-2 col-lg-10">

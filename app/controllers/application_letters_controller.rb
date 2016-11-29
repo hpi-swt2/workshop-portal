@@ -1,4 +1,6 @@
 class ApplicationLettersController < ApplicationController
+  load_and_authorize_resource param_method: :application_params
+
   before_action :set_application, only: [:show, :edit, :update, :destroy]
 
   # GET /applications
@@ -8,6 +10,7 @@ class ApplicationLettersController < ApplicationController
 
   # GET /applications/1
   def show
+    @application_note = ApplicationNote.new
   end
 
   # GET /applications/new
@@ -22,10 +25,11 @@ class ApplicationLettersController < ApplicationController
   # POST /applications
   def create
     @application_letter = ApplicationLetter.new(application_params)
-		#workshop_id must be param to new_application_letter_path
-		if params[:workshop_id]
-			@application_letter.workshop_id = params[:workshop_id]
+		#event must be param to new_application_letter_path
+		if params[:event_id]
+			@application_letter.event_id = params[:event_id]
 		end
+    @application_letter.user_id = current_user.id
 
     if @application_letter.save
       redirect_to @application_letter, notice: 'Application was successfully created.'
@@ -56,7 +60,8 @@ class ApplicationLettersController < ApplicationController
     end
 
     # Only allow a trusted parameter "white list" through.
+    # Don't allow user_id as you shouldn't be able to set the user from outside of create/update.
     def application_params
-      params.require(:application_letter).permit(:grade, :experience, :motivation, :coding_skills, :emergency_number, :vegeterian, :vegan, :allergic, :allergies, :user_id, :workshop_id)
+      params.require(:application_letter).permit(:grade, :experience, :motivation, :coding_skills, :emergency_number, :vegeterian, :vegan, :allergic, :allergies, :user_id, :event_id, :status)
     end
 end

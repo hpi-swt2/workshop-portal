@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: workshops
+# Table name: events
 #
 #  id               :integer          not null, primary key
 #  name             :string
@@ -12,10 +12,12 @@
 #
 
 FactoryGirl.define do
-  factory :workshop do
-    name "Workshop-Name"
-    description "Workshop-Description"
+  factory :event do
+    name "Event-Name"
+    description "Event-Description"
     max_participants 1
     active false
+    organizer "Workshop-Organizer"
+    knowledge_level "Workshop-Knowledge Level"
   end
 end

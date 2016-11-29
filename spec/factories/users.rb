@@ -23,5 +23,6 @@ FactoryGirl.define do
     sequence(:name) { |n| "First Last #{n}" }
     email { "#{name}@example.com".downcase.tr(" ","_") }
     password "test123"
+    role :pupil
   end
 end

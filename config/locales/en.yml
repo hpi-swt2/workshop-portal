@@ -23,7 +23,7 @@ en:
   hello: "Welcome to the Workshop-Portal"
   navbar:
     home: "Home"
-    workshops: "Workshops"
+    events: "Events"
     profiles: "Profiles"
     application_letters: "Applications"
     requests: "Requests"
@@ -35,3 +35,7 @@ en:
       new:
         sign_in: "Sign In"
         remember_me: "Remember me"
+  helpers:
+    label:
+      profile:
+        already_graduated: "Already graduated"

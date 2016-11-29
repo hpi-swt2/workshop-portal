@@ -10,7 +10,6 @@ RSpec.describe "application_letters/new", type: :view do
 
     assert_select "form[action=?][method=?]", application_letters_path, "post" do
       assert_select "textarea#application_letter_motivation[name=?]", "application_letter[motivation]"
-      assert_select "input#application_letter_user_id[name=?]", "application_letter[user_id]"
       assert_select "textarea#application_letter_experience[name=?]", "application_letter[experience]"
       assert_select "textarea#application_letter_coding_skills[name=?]", "application_letter[coding_skills]"
       assert_select "input#application_letter_emergency_number[name=?]", "application_letter[emergency_number]"
@@ -19,7 +18,6 @@ RSpec.describe "application_letters/new", type: :view do
       assert_select "input#application_letter_allergic[name=?]", "application_letter[allergic]"
       assert_select "input#application_letter_allergies[name=?]", "application_letter[allergies]"
       assert_select "input#application_letter_grade[name=?]", "application_letter[grade]"
-
     end
   end
 
