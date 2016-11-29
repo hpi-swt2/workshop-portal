@@ -39,4 +39,16 @@ describe Event do
     event.application_letters.push(application_letter_accepted_2)
     expect(event.compute_occupied_places).to eq(2)
   end
+
+  it "generates an email list" do
+    event = FactoryGirl.create(:event)
+    application_letter = FactoryGirl.create(:application_letter, user: FactoryGirl.create(:user), event: event)
+    application_letter_accepted = FactoryGirl.create(:application_letter_accepted, user: FactoryGirl.create(:user), event: event)
+    event.application_letters.push(application_letter)
+    event.application_letters.push(application_letter_accepted)
+    expect(event.get_email_list).to include(application_letter_accepted.user.email)
+    application_letter_accepted_2 = FactoryGirl.create(:application_letter_accepted, user: FactoryGirl.create(:user), event: event)
+    event.application_letters.push(application_letter_accepted_2)
+    expect(event.get_email_list).to include(application_letter_accepted.user.email, application_letter_accepted_2.user.email)
+  end
 end

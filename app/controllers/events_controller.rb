@@ -1,5 +1,5 @@
 class EventsController < ApplicationController
-  before_action :set_event, only: [:show, :edit, :update, :destroy]
+  before_action :set_event, only: [:show, :edit, :update, :destroy, :email_list]
 
   # GET /events
   def index
@@ -45,6 +45,11 @@ class EventsController < ApplicationController
   def destroy
     @event.destroy
     redirect_to events_url, notice: 'Event was successfully destroyed.'
+  end
+
+  # GET /events/1/email_list
+  def email_list
+    render :text => @event.get_email_list, :content_type => 'text/csv'
   end
 
   private

@@ -166,4 +166,18 @@ RSpec.describe EventsController, type: :controller do
     end
   end
 
+  describe "GET #email_list" do
+    it "assigns the requested event as @event" do
+      event = Event.create! valid_attributes
+      get :email_list, id: event.to_param, session: valid_session
+      expect(assigns(:event)).to eq(event)
+    end
+
+    it "renders an text-response" do
+      event = Event.create! valid_attributes
+      get :email_list, id: event.to_param, session: valid_session
+      expect(response.content_type).to eq('text/csv')
+    end
+  end
+
 end

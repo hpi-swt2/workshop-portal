@@ -45,6 +45,9 @@
 
       <%= link_to "Alle drucken",
                   events_path, :class => 'btn btn-default'%>
+
+      <%= link_to "E-Mail-Addressen",
+                  email_list_event_path(@event), :class => 'btn btn-default' %>
     </div>
     <div class="btn-group pull-right" role="group">
       <%= link_to "Zusagen verschicken",

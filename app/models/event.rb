@@ -30,4 +30,12 @@ class Event < ActiveRecord::Base
   def compute_occupied_places
     application_letters.where(status: true).count
   end
+
+  # Returns an semicolon-separated-list of email addresses of all accepted participants.
+  #
+  # @param none
+  # @return [String] for list of email-addresses
+  def get_email_list
+    application_letters.where(status: true).reduce('') {|list, letter| list << letter.user.email << ';'}
+  end
 end
