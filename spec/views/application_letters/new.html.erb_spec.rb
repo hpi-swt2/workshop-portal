@@ -28,6 +28,6 @@ RSpec.describe "application_letters/new", type: :view do
     render :template => "application_letters/_form.html.erb"
 
     expect(rendered).to have_selector("textarea[rows='10'][name='application_letter\[motivation\]']")
-    expect(rendered).to have_selector("textarea[rows='5'][name='coding_skills\[motivation\]']")
+    expect(rendered).to have_selector("textarea[rows='5'][name='application_letter\[coding_skills\]']")
   end
 end

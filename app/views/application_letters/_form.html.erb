@@ -31,14 +31,14 @@
   <div class="form-group">
     <%= f.label :motivation, :class => 'control-label col-lg-2 required' %>
     <div class="col-lg-10">
-      <%= f.text_area :motivation, :class => 'form-control' %>
+      <%= f.text_area :motivation,:rows => 10, :class => 'form-control' %>
     </div>
     <%=f.error_span(:motivation) %>
   </div>
   <div class="form-group">
     <%= f.label :coding_skills, :class => 'control-label col-lg-2 required' %>
     <div class="col-lg-10">
-      <%= f.text_area :coding_skills, :class => 'form-control' %>
+      <%= f.text_area :coding_skills,:rows => 5, :class => 'form-control' %>
     </div>
     <%=f.error_span(:coding_skills) %>
   </div>
