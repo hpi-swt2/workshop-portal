@@ -47,7 +47,7 @@ RSpec.feature "Application Letter Overview", :type => :feature do
 
       visit application_letter_path(id: another_application.id)
 
-      expect(page).to have_text("Nicht authorisiert für die Aktion show auf dem application letter.")
+      expect(page).to have_text(I18n.t('unauthorized.manage.all'))
     end
   end
 
