@@ -39,7 +39,7 @@ RSpec.feature "Application Letter Overview", :type => :feature do
     expect(page).to have_text("Hate him! Hate him!")
   end
 
-	it "should highlight wrong or missing insertions from user" do
+  it "should highlight wrong or missing insertions from user" do
 		login(:pupil)
     visit new_application_letter_path
     fill_in "application_letter_grade", with:   ""
@@ -65,7 +65,7 @@ RSpec.feature "Application Letter Overview", :type => :feature do
     fill_in "application_letter_allergies", with:   "Many"
     expect(ApplicationLetter.where(grade:"11")).to_not exist
     find('input[name=commit]').click
-		expect(ApplicationLetter.where(grade:"11")).to exist
+    expect(ApplicationLetter.where(grade:"11")).to exist
   end
 
   def login(role)
