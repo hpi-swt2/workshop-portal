@@ -39,6 +39,18 @@ RSpec.feature "Application Letter Overview", :type => :feature do
     expect(page).to have_text("Hate him! Hate him!")
   end
 
+  %i[pupil tutor].each do |role|
+    it "shows an error if the site of another application letter is accessed by url" do
+      user = FactoryGirl.create(:user, role: role)
+      another_user = FactoryGirl.create(:user)
+      another_application = FactoryGirl.create(:application_letter, user: another_user)
+
+      visit application_letter_path(id: another_application.id)
+
+      expect(page).to have_text("Nicht authorisiert für die Aktion show auf dem application letter.")
+    end
+  end
+
   def login(role)
 
     @event = FactoryGirl.create(:event)
