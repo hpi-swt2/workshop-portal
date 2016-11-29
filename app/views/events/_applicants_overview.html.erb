@@ -1,7 +1,8 @@
 <div class="container-fluid" id="applicants_overview">
 
   <h3><%= t('.title', title: @event.name) %></h3>
-  <div>Noch [Anzahl] freie Plätze</div>
+  <div id="free_places"><%= t '.free_places', count: @free_places %></div>
+  <div id="occupied_places"><%= t '.occupied_places', count: @occupied_places %></div>
 
   <table id="applicants" class="table table-striped">
     <thead>
@@ -55,6 +56,3 @@
   </div>
 
 </div>
-
-
-
