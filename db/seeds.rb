@@ -7,7 +7,7 @@ users = []
 
 pupil = User.find_or_initialize_by(
     name: "Schueler",
-    email: "schueler@example.com",
+    email: "schueler@example.com"
 )
 users.push(pupil)
 
