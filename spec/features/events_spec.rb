@@ -38,7 +38,7 @@ RSpec.feature "Event Applicant Overview", :type => :feature do
   end
 
   scenario "logged in as Coach can see application status" do
-    login(:coach)
+    login(:tutor)
 
     @pupil = FactoryGirl.create(:profile)
     @application_letter = FactoryGirl.create(:application_letter, event: @event, user: @pupil.user)
