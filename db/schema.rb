@@ -34,21 +34,9 @@ ActiveRecord::Schema.define(version: 20161122151522) do
 
   create_table "profiles", force: :cascade do |t|
     t.string   "cv"
-    t.integer  "user_id",             null: false
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
-    t.string   "first_name"
-    t.string   "last_name"
-    t.string   "gender"
-    t.date     "birth_date"
-    t.string   "email"
-    t.string   "school"
-    t.string   "street_name"
-    t.string   "zip_code"
-    t.string   "city"
-    t.string   "state"
-    t.string   "country"
-    t.string   "graduates_school_in"
+    t.integer  "user_id",    null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   add_index "profiles", ["user_id"], name: "index_profiles_on_user_id"
@@ -76,7 +64,6 @@ ActiveRecord::Schema.define(version: 20161122151522) do
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
     t.string   "name"
-    t.string   "role"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true
