@@ -40,20 +40,50 @@ event = Event.find_or_create_by!(
 
 # Pupil's profile
 Profile.find_or_create_by!(
-    cv: "Ich habe mich zu keiner Veranstaltung beworben",
-    user: pupil
+    user: pupil,
+    first_name: "Karl",
+    last_name: "Doe",
+    gender: "männlich",
+    birth_date: Date.parse('2000.11.29'),
+    school: "Schule am Griebnitzsee",
+    street_name: "Rudolf-Breitscheid-Str. 52",
+    zip_code: "14482",
+    city: "Potsdam",
+    state: "Brandenburg",
+    country: "Deutschland",
+    graduates_school_in: "2019"
 )
 
 # Teacher's profile
 Profile.find_or_create_by!(
-    cv: "Ich bin ein Lehrer. Ich frage Veranstaltungen für meine Schüler an.",
-    user: teacher
+    user: teacher,
+    first_name: "Ernst",
+    last_name: "Teacher",
+    gender: "männlich",
+    birth_date: Date.parse('1970.1.1'),
+    school: "Schule am Griebnitzsee",
+    street_name: "Domstraße 14",
+    zip_code: "14482",
+    city: "Potsdam",
+    state: "Brandenburg",
+    country: "Deutschland",
+    graduates_school_in: "Bereits Abitur"
 )
 
 # Applicant's profile
 Profile.find_or_create_by!(
-    cv: "Ich bin ein Schüler, der an Veranstaltungen teilnehmen möchte.",
-    user: applicant
+    user: applicant,
+    first_name: "Erika",
+    last_name: "Mustermann",
+    gender: "weiblich",
+    birth_date: Date.parse('1999.08.14'),
+    school: "Schule am Griebnitzsee",
+    street_name: "Rudolf-Breitscheid-Str. 52",
+    zip_code: "14482",
+    city: "Potsdam",
+    state: "Brandenburg",
+    country: "Deutschland",
+    graduates_school_in: "2017"
 )
 
 # Teacher's event request
