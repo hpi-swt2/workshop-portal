@@ -8,6 +8,8 @@ class EventsController < ApplicationController
 
   # GET /events/1
   def show
+    @free_places = @event.compute_free_places
+    @occupied_places = @event.compute_occupied_places
   end
 
   # GET /events/new

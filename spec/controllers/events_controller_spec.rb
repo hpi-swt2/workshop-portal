@@ -46,6 +46,18 @@ RSpec.describe EventsController, type: :controller do
       get :show, id: event.to_param, session: valid_session
       expect(assigns(:event)).to eq(event)
     end
+
+    it "assigns the number of free places as @free_places" do
+      event = Event.create! valid_attributes
+      get :show, id: event.to_param, session: valid_session
+      expect(assigns(:free_places)).to eq(event.compute_free_places)
+    end
+
+    it "assigns the number of occupied places as @occupied_places" do
+      event = Event.create! valid_attributes
+      get :show, id: event.to_param, session: valid_session
+      expect(assigns(:occupied_places)).to eq(event.compute_occupied_places)
+    end
   end
 
   describe "GET #new" do
