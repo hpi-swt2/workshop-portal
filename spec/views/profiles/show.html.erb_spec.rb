@@ -25,4 +25,23 @@ RSpec.describe "profiles/show", type: :view do
     render
     expect(rendered).to have_selector('tr', count: event_count + 1) # add 1 for thead
   end
+
+  it "should show an upload form for an agreement letter for profiles with an age of <18" do
+    @profile.user = FactoryGirl.create(:user)
+    event = FactoryGirl.create(:event)
+    letter = FactoryGirl.create(:accepted_application_letter, user: @profile.user, event: event)
+    render
+    expect(rendered).to have_selector("input[type='file']")
+    expect(rendered).to have_selector("input[type='submit']")
+  end
+
+  it "should hide the upload form for profiles with an age of 18+" do
+    @profile = assign(:profile, FactoryGirl.create(:adult_profile))
+    @profile.user = FactoryGirl.create(:user)
+    event = FactoryGirl.create(:event)
+    letter = FactoryGirl.create(:accepted_application_letter, user: @profile.user, event: event)
+    render
+    expect(rendered).to_not have_selector("input[type='file']")
+    expect(rendered).to_not have_selector("input[type='submit']")
+  end
 end

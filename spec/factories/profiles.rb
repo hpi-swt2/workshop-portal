@@ -15,7 +15,7 @@ FactoryGirl.define do
     first_name  "Karl"
     last_name  "Doe"
     gender  "männlich"
-    birth_date  15.years.ago 
+    birth_date  15.years.ago
     email  "karl@doe.com"
     school  "Schule am Griebnitzsee"
     street_name  "Rudolf-Breitscheid-Str. 52"
@@ -26,4 +26,9 @@ FactoryGirl.define do
     graduates_school_in "Bereits Abitur"
     user
   end
+
+  factory :adult_profile, parent: :profile do
+    birth_date  18.years.ago
+  end
+
 end
