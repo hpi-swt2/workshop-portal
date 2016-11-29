@@ -5,7 +5,7 @@
 
 <h3><%= @application_letter.user.profile.name %></h3>
 
-<dl class="dl-horizontal">
+<dl class="dl-horizontal" id="applicant_details">
   <dt><strong><%= Profile.human_attribute_name(:gender) %>:</strong></dt>
   <dd><%= @application_letter.user.profile.gender %></dd>
   <dt><strong><%= Profile.human_attribute_name(:age) %>:</strong></dt>
@@ -13,9 +13,9 @@
   <dt><strong><%= Profile.human_attribute_name(:address) %>:</strong></dt>
   <dd><%= @application_letter.user.profile.address %></dd>
   <dt><strong><%= User.human_attribute_name(:accepted_application_count) %>:</strong></dt>
-  <dd><%= @application_letter.user.accepted_application_count %></dd>
+  <dd><%= @application_letter.user.accepted_applications_count(@application_letter.event) %></dd>
   <dt><strong><%= User.human_attribute_name(:rejected_application_count) %>:</strong></dt>
-  <dd><%= @application_letter.user.rejected_application_count %></dd>
+  <dd><%= @application_letter.user.rejected_applications_count(@application_letter.event) %></dd>
 </dl>
 
 <%= link_to t('.back', :default => t("helpers.links.back")),
@@ -28,13 +28,11 @@
               :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
               :class => 'btn btn-danger' %>
 
-  <h3><%= t('.application_title', title: @application_letter.event.name) %></h3>
-  <dl class="dl-vertical">
-    <dt><%= render partial: 'application_letters/application_selective', locals: {application_letter: @application_letter} %></dt>
-  </dl>
+<h3><%= t('.application_title', title: @application_letter.event.name) %></h3>
+<dl class="dl-vertical">
+  <dt><%= render partial: 'application_letters/application_selective', locals: {application_letter: @application_letter} %></dt>
+</dl>
 
-  <body>
-    <p>
-      <%= @application_letter.motivation %>
-    </p>
-  </body>
+<p>
+  <%= @application_letter.motivation %>
+</p>

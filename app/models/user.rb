@@ -41,20 +41,20 @@ class User < ActiveRecord::Base
   has_many :application_letters
   has_many :requests
 
-  # Returns the number of previously accepted applications from the user
+  # Returns the number of accepted applications from the user without counting status of current event application
   #
-  # @param none
-  # @return [Int] of number of accepted applications
-  def accepted_application_count
-    ApplicationLetter.where(:user_id => id, :status => true).count()
+  # @param current event (which application status will be excluded)
+  # @return [Int] of number of currently accepted applications
+  def accepted_applications_count(event)
+    ApplicationLetter.where(user_id: id, status: true).where.not(event: event).count()
   end
 
-  # Returns the number of previously rejected applications from the user
+  # Returns the number of accepted applications from the user without counting status of current event application
   #
-  # @param none
-  # @return [Int] of number of rejected applications
-  def rejected_application_count
-    ApplicationLetter.where(:user_id => id, :status => false).count()
+  # @param current event (which application status will be excluded)
+  # @return [Int] of number of currently accepted applications
+  def rejected_applications_count(event)
+    ApplicationLetter.where(user_id: id, status: false).where.not(event: event).count()
   end
 
 end
