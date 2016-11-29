@@ -25,6 +25,10 @@ class ApplicationLettersController < ApplicationController
   # POST /applications
   def create
     @application_letter = ApplicationLetter.new(application_params)
+		#event must be param to new_application_letter_path
+		if params[:event_id]
+			@application_letter.event_id = params[:event_id]
+		end
     @application_letter.user_id = current_user.id
 
     if @application_letter.save
@@ -58,6 +62,6 @@ class ApplicationLettersController < ApplicationController
     # Only allow a trusted parameter "white list" through.
     # Don't allow user_id as you shouldn't be able to set the user from outside of create/update.
     def application_params
-      params.require(:application_letter).permit(:motivation, :event_id, :status)
+      params.require(:application_letter).permit(:grade, :experience, :motivation, :coding_skills, :emergency_number, :vegeterian, :vegan, :allergic, :allergies, :user_id, :event_id, :status)
     end
 end

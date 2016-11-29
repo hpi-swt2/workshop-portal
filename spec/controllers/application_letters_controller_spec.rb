@@ -111,8 +111,16 @@ RSpec.describe ApplicationLettersController, type: :controller do
     context "with valid params" do
       let(:new_attributes) {
         {
-            motivation: "Awesome new Motivation",
-            status: 'accepted'
+            grade: 10,
+            experience: "None",
+            motivation: "None",
+            coding_skills: "None",
+            emergency_number: "01234567891",
+            vegeterian: true,
+            vegan: true,
+            allergic: true,
+            allergys: "Many",
+            status: true
         }
       }
 
@@ -138,7 +146,6 @@ RSpec.describe ApplicationLettersController, type: :controller do
         put :update, id: application.to_param, application_letter: valid_attributes, session: valid_session
         expect(response).to redirect_to(request.env['HTTP_REFERER'])
       end
-
     end
 
     context "with invalid params" do
