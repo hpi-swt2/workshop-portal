@@ -11,15 +11,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161126210403) do
+ActiveRecord::Schema.define(version: 20161129120651) do
 
   create_table "application_letters", force: :cascade do |t|
     t.string   "motivation"
-    t.integer  "user_id",    null: false
-    t.integer  "event_id",   null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer  "status"
+    t.integer  "user_id",                null: false
+    t.integer  "event_id",               null: false
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+    t.integer  "status",     default: 2, null: false
   end
 
   add_index "application_letters", ["event_id"], name: "index_application_letters_on_event_id"
