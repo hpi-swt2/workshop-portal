@@ -10,7 +10,7 @@ RSpec.feature "Application Letter Overview", :type => :feature do
   end
 
   scenario "logged in as Coach I can see notes" do
-    login(:tutor)
+    login(:coach)
     expect(page).to have_css("textarea#application_note_note")
     @application_letter.application_notes.each do | note |
       expect(page).to have_text(note.note)
@@ -33,7 +33,7 @@ RSpec.feature "Application Letter Overview", :type => :feature do
   end
 
   scenario "logged in as Coach I can create new notes" do
-    login(:tutor)
+    login(:coach)
     fill_in("application_note_note", with: "Hate him! Hate him!")
     click_button I18n.t "helpers.titles.new", model: ApplicationNote.model_name.human
     expect(page).to have_text("Hate him! Hate him!")
