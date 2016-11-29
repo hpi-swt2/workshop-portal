@@ -9,7 +9,6 @@ RSpec.feature "Profile adaptation", :type => :feature do
     fill_in "profile_last_name", with:   "Doe"
     fill_in "profile_gender", with:   "männlich"
     fill_in "profile_birth_date", with: ""
-    fill_in "profile_email", with:   "karl@doe.com"
     fill_in "profile_school", with: ""
     fill_in "profile_street_name", with:   "Rudolf-Breitscheid-Str. 52"
     fill_in "profile_zip_code", with:   "14482"
