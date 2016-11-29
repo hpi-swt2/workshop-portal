@@ -12,14 +12,30 @@
 
 FactoryGirl.define do
   factory :application_letter do
-    motivation "MyString"
+    grade 10
+    experience "None"
+    motivation "None"
+    coding_skills "None"
+    emergency_number "01234567891"
+    vegeterian false
+    vegan false
+    allergic true
+    allergies "Many"
     user
     event
     status nil
   end
 
   factory :application_letter_accepted, class: :application_letter do
-    motivation "MyString"
+		grade 10
+    experience "None"
+    motivation "None"
+    coding_skills "None"
+    emergency_number "01234567891"
+    vegeterian false
+    vegan false
+    allergic true
+    allergies "Many"
     user
     event
     status true
