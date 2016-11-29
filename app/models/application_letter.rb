@@ -13,7 +13,8 @@ class ApplicationLetter < ActiveRecord::Base
   belongs_to :user
   belongs_to :workshop
 
-  validates :user, :workshop, :experience, :motivation, :grade, :coding_skills, :emergency_number, presence: true
+  validates :user, :workshop, :experience, :motivation, :coding_skills, :emergency_number, presence: true
+	validates :grade, presence: true, numericality: { only_integer: true }
   validates  :vegeterian, :vegan, :allergic, inclusion: { in: [true, false] }
   validates  :vegeterian, :vegan, :allergic, exclusion: { in: [nil] }
 end
