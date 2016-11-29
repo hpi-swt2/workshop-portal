@@ -24,4 +24,11 @@ FactoryGirl.define do
     event
     status :accepted
   end
+
+  factory :application_letter_rejected, class: :application_letter do
+    motivation "MyString"
+    user
+    event
+    status :rejected
+  end
 end
