@@ -27,19 +27,14 @@ RSpec.feature "Event Applicant Overview", :type => :feature do
     @event.update!(max_participants: 1)
     expect(page).to have_text(I18n.t "free_places", count: (@event.max_participants).to_i, scope: [:events, :applicants_overview])
     expect(page).to have_text(I18n.t "occupied_places", count: 0, scope: [:events, :applicants_overview])
-    @pupil = FactoryGirl.create(:profile)
-    @pupil.user.role = :pupil
-    @application_letter = FactoryGirl.create(:application_letter_accepted, event: @event, user: @pupil.user)
-    visit event_path(@event)
-    expect(page).to have_text(I18n.t "free_places", count: @event.max_participants - 1, scope: [:events, :applicants_overview])
-    expect(page).to have_text(I18n.t "occupied_places", count: 1, scope: [:events, :applicants_overview])
-    # test negative amount of free places
-    @pupil = FactoryGirl.create(:profile)
-    @pupil.user.role = :pupil
-    @application_letter = FactoryGirl.create(:application_letter_accepted, event: @event, user: @pupil.user)
-    visit event_path(@event)
-    expect(page).to have_text(I18n.t "free_places", count: @event.max_participants - 2, scope: [:events, :applicants_overview])
-    expect(page).to have_text(I18n.t "occupied_places", count: 2, scope: [:events, :applicants_overview])
+    2.times do |i| #2 to also test negative free places, those are fine
+      @pupil = FactoryGirl.create(:profile)
+      @pupil.user.role = :pupil
+      @application_letter = FactoryGirl.create(:application_letter_accepted, event: @event, user: @pupil.user)
+      visit event_path(@event)
+      expect(page).to have_text(I18n.t "free_places", count: (@event.max_participants).to_i - (i+1), scope: [:events, :applicants_overview])
+      expect(page).to have_text(I18n.t "occupied_places", count: (i+1), scope: [:events, :applicants_overview])
+    end 
   end
 
   def login(role)
