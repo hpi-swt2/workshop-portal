@@ -14,21 +14,73 @@
       </div>
     </div>
   <% end %>
-
   <div class="form-group">
-    <%= f.label :motivation, :class => 'control-label col-lg-2' %>
+    <%= f.label :grade, :class => 'control-label col-lg-2 required' %>
     <div class="col-lg-10">
-      <%= f.text_field :motivation, :class => 'form-control' %>
+      <%= f.text_field :grade, :class => 'form-control' %>
+    </div>
+    <%=f.error_span(:grade) %>
+  </div>
+  <div class="form-group">
+    <%= f.label :experience, :class => 'control-label col-lg-2 required' %>
+    <div class="col-lg-10">
+      <%= f.text_area :experience, :class => 'form-control' %>
+    </div>
+    <%=f.error_span(:experience) %>
+  </div>
+  <div class="form-group">
+    <%= f.label :motivation, :class => 'control-label col-lg-2 required' %>
+    <div class="col-lg-10">
+      <%= f.text_area :motivation,:rows => 10, :class => 'form-control' %>
     </div>
     <%=f.error_span(:motivation) %>
   </div>
   <div class="form-group">
-    <%= f.label :event_id, :class => 'control-label col-lg-2' %>
+    <%= f.label :coding_skills, :class => 'control-label col-lg-2 required' %>
     <div class="col-lg-10">
-      <%= f.text_field :event_id, :class => 'form-control' %>
+      <%= f.text_area :coding_skills,:rows => 5, :class => 'form-control' %>
+      <p class="help-block"><%= t '.help_text_coding_skills' %></p>
+
+      <p ></p>
     </div>
-    <%=f.error_span(:event_id) %>
+    <%=f.error_span(:coding_skills) %>
   </div>
+  <div class="form-group">
+    <%= f.label :emergency_number, :class => 'control-label col-lg-2 required' %>
+    <div class="col-lg-10">
+      <%= f.text_field :emergency_number, :class => 'form-control' %>
+    </div>
+    <%=f.error_span(:emergency_number) %>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <%= f.check_box :vegeterian%>
+      <%= f.label :vegeterian, :class => 'control-label' %>
+      <%=f.error_span(:vegeterian) %>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <%= f.check_box :vegan%>
+      <%= f.label :vegan, :class => 'control-label' %>
+      <%=f.error_span(:vegan) %>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <%= f.check_box :allergic%>
+      <%= f.label :allergic, :class => 'control-label' %>
+      <%=f.error_span(:allergic) %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :allergies, :class => 'control-label col-lg-2' %>
+    <div class="col-lg-10">
+      <%= f.text_field :allergies, :class => 'form-control' %>
+    </div>
+    <%=f.error_span(:allergies) %>
+  </div>
+	<%= hidden_field_tag 'event_id', params[:event_id] %>
 
   <div class="form-group">
     <div class="col-lg-offset-2 col-lg-10">

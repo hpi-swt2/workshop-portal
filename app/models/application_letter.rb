@@ -12,8 +12,12 @@
 class ApplicationLetter < ActiveRecord::Base
   belongs_to :user
   belongs_to :event
+
   has_many :application_notes
-  
-  validates :user, :event, presence: true
+
+  validates :user, :event, :experience, :motivation, :coding_skills, :emergency_number, presence: true
+  validates :grade, presence: true, numericality: { only_integer: true }
+  validates :vegeterian, :vegan, :allergic, inclusion: { in: [true, false] }
+  validates :vegeterian, :vegan, :allergic, exclusion: { in: [nil] }
 
 end
