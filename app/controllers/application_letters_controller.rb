@@ -22,6 +22,10 @@ class ApplicationLettersController < ApplicationController
   # POST /applications
   def create
     @application_letter = ApplicationLetter.new(application_params)
+		#workshop_id must be param to new_application_letter_path
+		if params[:workshop_id]
+			@application_letter.workshop_id = params[:workshop_id]
+		end
 
     if @application_letter.save
       redirect_to @application_letter, notice: 'Application was successfully created.'
