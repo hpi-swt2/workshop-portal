@@ -50,25 +50,25 @@
     <%=f.error_span(:emergency_number) %>
   </div>
   <div class="form-group">
-    <%= f.label :vegeterian, :class => 'control-label col-lg-2' %>
-    <div class="col-lg-10">
-      <%= f.check_box :vegeterian, :class => 'form-control' %>
+    <div class="col-sm-offset-2 col-sm-10">
+      <%= f.check_box :vegeterian%>
+      <%= f.label :vegeterian, :class => 'control-label' %>
+      <%=f.error_span(:vegeterian) %>
     </div>
-    <%=f.error_span(:vegeterian) %>
   </div>
   <div class="form-group">
-    <%= f.label :vegan, :class => 'control-label col-lg-2' %>
-    <div class="col-lg-10">
-      <%= f.check_box :vegan, :class => 'form-control' %>
+    <div class="col-sm-offset-2 col-sm-10">
+      <%= f.check_box :vegan%>
+      <%= f.label :vegan, :class => 'control-label' %>
+      <%=f.error_span(:vegan) %>
     </div>
-    <%=f.error_span(:vegan) %>
   </div>
   <div class="form-group">
-    <%= f.label :allergic, :class => 'control-label col-lg-2' %>
-    <div class="col-lg-10">
-      <%= f.check_box :allergic, :class => 'form-control' %>
+    <div class="col-sm-offset-2 col-sm-10">
+      <%= f.check_box :allergic%>
+      <%= f.label :allergic, :class => 'control-label' %>
+      <%=f.error_span(:allergic) %>
     </div>
-    <%=f.error_span(:allergic) %>
   </div>
   <div class="form-group">
     <%= f.label :allergies, :class => 'control-label col-lg-2' %>
