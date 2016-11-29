@@ -23,4 +23,11 @@ RSpec.describe "application_letters/new", type: :view do
 
     end
   end
+
+  it "renders large enough textareas" do
+    render :template => "application_letters/_form.html.erb"
+
+    expect(rendered).to have_selector("textarea[rows='10'][name='application_letter\[motivation\]']")
+    expect(rendered).to have_selector("textarea[rows='5'][name='coding_skills\[motivation\]']")
+  end
 end
