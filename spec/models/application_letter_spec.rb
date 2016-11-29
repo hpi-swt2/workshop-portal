@@ -5,7 +5,7 @@
 #  id          :integer          not null, primary key
 #  motivation  :string
 #  user_id     :integer          not null
-#  workshop_id :integer          not null
+#  event_id    :integer          not null
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #
@@ -17,5 +17,10 @@ describe ApplicationLetter do
   it "is created by application_letter factory" do
     application = FactoryGirl.build(:application_letter)
     expect(application).to be_valid
+  end
+
+  it "has application_notes" do
+    application = FactoryGirl.build(:application_letter)
+    expect(application).to respond_to(:application_notes)
   end
 end
