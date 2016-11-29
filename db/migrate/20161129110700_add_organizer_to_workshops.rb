@@ -1,5 +1,5 @@
 class AddOrganizerToWorkshops < ActiveRecord::Migration
   def change
-    add_column :workshops, :organizer, :string
+    add_column :events, :organizer, :string
   end
 end
