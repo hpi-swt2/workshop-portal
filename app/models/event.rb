@@ -24,4 +24,20 @@ class Event < ActiveRecord::Base
   def agreement_letter_for(user)
     self.agreement_letters.where(user: user).take
   end
+
+  # Returns the number of free places of the event, this value may be negative
+  #
+  # @param none
+  # @return [Int] for number of free places available
+  def compute_free_places
+    max_participants - compute_occupied_places
+  end
+
+  # Returns the number of already occupied places of the event
+  #
+  # @param none
+  # @return [Int] for number of occupied places
+  def compute_occupied_places
+    application_letters.where(status: true).count
+  end
 end

@@ -36,7 +36,7 @@ de:
         sign_in: "Einloggen"
         remember_me: "Eingeloggt bleiben"
   agreement_letters:
-    agreement_letters: "Jasagungs-Briefe oder so"
+    agreement_letters: "Einverständniserklärung"
     upload: "Hochladen"
     update: "Aktualisieren"
     file_too_big: "Die Datei ist zu groß."
@@ -44,19 +44,3 @@ de:
     upload_success: "Datei erfolgreich hochgeladen."
     upload_failed: "Fehler beim Hochladen."
     already_uploaded: "Datei hochgeladen am %{timestamp}"
-  helpers:
-    label:
-      profile:
-        first_name: "Vorname"
-        last_name: "Nachname"
-        gender: "Geschlecht"
-        birth_date: Geburtsdatum 
-        email: "E-Mail"
-        school: "Schule"
-        street_name: "Straße"
-        zip_code: "Postleitzahl"
-        city: "Stadt"
-        state: "Bundesland"
-        country: "Land"
-        graduates_school_in: "Abitur vorraussichtlich in"
-        already_graduated: "Bereits Abitur"

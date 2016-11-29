@@ -34,8 +34,41 @@ describe User do
 
   it "returns the user's events" do
     user = FactoryGirl.build(:user)
-    FactoryGirl.create(:rejected_application_letter, user: user)
-    true_letter = FactoryGirl.create(:accepted_application_letter, user: user)
+    FactoryGirl.create(:application_letter_rejected, user: user)
+    true_letter = FactoryGirl.create(:application_letter_accepted, user: user)
     expect(user.events).to eq [true_letter.event]
   end
+
+  it "returns correct default accepted applications count" do
+    application_letter = FactoryGirl.create(:application_letter)
+    expect(application_letter.user.accepted_applications_count(application_letter.event)).to eq(0)
+  end
+
+  it "returns correct default rejected applications count" do
+    application_letter = FactoryGirl.create(:application_letter)
+    expect(application_letter.user.rejected_applications_count(application_letter.event)).to eq(0)
+  end
+
+  it "only counts the accepted application of other events and ignores status of current event application" do
+    user = FactoryGirl.create(:user)
+    other_event = FactoryGirl.create(:event)
+    current_event = FactoryGirl.create(:event)
+
+    other_application_letter = FactoryGirl.create(:application_letter, user: user, event: other_event, status: true)
+    current_application_letter = FactoryGirl.create(:application_letter, user: user, event: current_event, status: true)
+
+    expect(current_application_letter.user.accepted_applications_count(current_event)).to eq(1)
+  end
+
+  it "only counts the rejected application of other events and ignores status of current event application" do
+    user = FactoryGirl.create(:user)
+    other_event = FactoryGirl.create(:event)
+    current_event = FactoryGirl.create(:event)
+
+    other_application_letter = FactoryGirl.create(:application_letter, user: user, event: other_event, status: false)
+    current_application_letter = FactoryGirl.create(:application_letter, user: user, event: current_event, status: false)
+
+    expect(current_application_letter.user.rejected_applications_count(current_event)).to eq(1)
+  end
+
 end

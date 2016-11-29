@@ -35,7 +35,7 @@
       <tr>
         <td><%= event.id %></td>
         <td>
-          <% if @profile.adult?(@profile) %>
+          <% if @profile.adult? %>
             <%= render('upload_form',
               event_id: event.id,
               agreement_letter: event.agreement_letter_for(@profile.user)) %>

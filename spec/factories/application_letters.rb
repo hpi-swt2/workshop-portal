@@ -14,15 +14,15 @@ FactoryGirl.define do
   factory :application_letter do
     motivation "MyString"
     user
-	event
-	status nil
+    event
+    status nil
   end
 
-  factory :accepted_application_letter, parent: :application_letter do
+  factory :application_letter_accepted, parent: :application_letter do
     status true
   end
 
-  factory :rejected_application_letter, parent: :application_letter do
+  factory :application_letter_rejected, parent: :application_letter do
     status false
   end
 end

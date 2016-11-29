@@ -5,7 +5,7 @@ RSpec.feature "Upload letter of agreement", :type => :feature do
     @profile = FactoryGirl.create(:profile)
     @user = FactoryGirl.create(:user, role: :pupil, profile: @profile)
     @event = FactoryGirl.create(:event)
-    @application_letter = FactoryGirl.create(:accepted_application_letter, user: @user, event: @event)
+    @application_letter = FactoryGirl.create(:application_letter_accepted, user: @user, event: @event)
     login_as(@user, scope: :user)
     visit profile_path(@user.profile)
   end

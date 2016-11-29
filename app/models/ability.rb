@@ -42,12 +42,15 @@ class Ability
       can [:create], AgreementLetter
     end
     if user.role? :tutor
-      # ...
+      # Tutors can view Applications for Event
+      can [:view_applicants], Event
+      can [:view_and_add_notes], ApplicationLetter
     end
     if user.role? :organizer
       can [:index, :show], Profile
-      can [:index, :show], ApplicationLetter
-      # ...
+      can [:index, :show, :view_and_add_notes], ApplicationLetter
+      # Organizers can view and edit Applications for Events
+      can [:view_applicants, :edit_applicants], Event
     end
     if user.role? :admin
       can :manage, :all

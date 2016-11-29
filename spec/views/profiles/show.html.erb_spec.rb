@@ -19,7 +19,7 @@ RSpec.describe "profiles/show", type: :view do
     @profile.user = FactoryGirl.create(:user)
     20.times do
       event = FactoryGirl.create(:event)
-      FactoryGirl.create(:accepted_application_letter, user: @profile.user, event: event)
+      FactoryGirl.create(:application_letter_accepted, user: @profile.user, event: event)
     end
     event_count = @profile.user.events.count
     render
@@ -29,7 +29,7 @@ RSpec.describe "profiles/show", type: :view do
   it "should show an upload form for an agreement letter for profiles with an age of <18" do
     @profile.user = FactoryGirl.create(:user)
     event = FactoryGirl.create(:event)
-    letter = FactoryGirl.create(:accepted_application_letter, user: @profile.user, event: event)
+    letter = FactoryGirl.create(:application_letter_accepted, user: @profile.user, event: event)
     render
     expect(rendered).to have_selector("input[type='file']")
     expect(rendered).to have_selector("input[type='submit']")
@@ -39,7 +39,7 @@ RSpec.describe "profiles/show", type: :view do
     @profile = assign(:profile, FactoryGirl.create(:adult_profile))
     @profile.user = FactoryGirl.create(:user)
     event = FactoryGirl.create(:event)
-    letter = FactoryGirl.create(:accepted_application_letter, user: @profile.user, event: event)
+    letter = FactoryGirl.create(:application_letter_accepted, user: @profile.user, event: event)
     render
     expect(rendered).to_not have_selector("input[type='file']")
     expect(rendered).to_not have_selector("input[type='submit']")
