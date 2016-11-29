@@ -14,6 +14,10 @@ class Profile < ActiveRecord::Base
   validates_presence_of :first_name, :last_name, :gender, :birth_date, :school, :street_name, :zip_code, :city, :state, :country
 
 
+  # Returns true if the user is 18 years old or older
+  #
+  # @param none
+  # @return [Boolean] whether the user is an adult
   def adult?()
     self.birth_date >= 18.years.ago
   end

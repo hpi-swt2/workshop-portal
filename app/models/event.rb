@@ -16,11 +16,19 @@ class Event < ActiveRecord::Base
 
   validates :max_participants, numericality: { only_integer: true, greater_than: 0 }
   
+  # Returns the participants whose application for this Event has been accepted
+  #
+  # @param none
+  # @return [Array<User>] the event's participants
   def participants
     accepted_applications = self.application_letters.select { |a| a.status == true }
     accepted_applications.collect { |a| a.user }
   end
 
+  # Returns the agreement letter a user submitted for this event
+  #
+  # @param user [User] the user whose agreement letter we want
+  # @return [AgreementLetter, nil] the user's agreement letter or nil
   def agreement_letter_for(user)
     self.agreement_letters.where(user: user).take
   end

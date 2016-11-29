@@ -37,6 +37,10 @@ class User < ActiveRecord::Base
     self.role ||= :pupil
   end
 
+  # Returns the events for which the user's application has been accepted
+  #
+  # @param none
+  # @return [Array<Event>] the user's events
   def events
     accepted_applications = self.application_letters.select { |a| a.status == true }
     accepted_applications.collect { |a| a.event }
