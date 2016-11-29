@@ -120,7 +120,7 @@ RSpec.describe ApplicationLettersController, type: :controller do
             vegan: true,
             allergic: true,
             allergys: "Many",
-            status: true
+            status: "accepted"
         }
       }
 
