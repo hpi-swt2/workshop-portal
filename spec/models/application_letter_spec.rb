@@ -18,4 +18,9 @@ describe ApplicationLetter do
     application = FactoryGirl.build(:application_letter)
     expect(application).to be_valid
   end
+
+  it "has application_notes" do
+    application = FactoryGirl.build(:application_letter)
+    expect(application).to respond_to(:application_notes)
+  end
 end

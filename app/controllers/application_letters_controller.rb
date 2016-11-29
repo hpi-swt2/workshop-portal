@@ -10,6 +10,7 @@ class ApplicationLettersController < ApplicationController
 
   # GET /applications/1
   def show
+    @application_note = ApplicationNote.new
   end
 
   # GET /applications/new
@@ -35,8 +36,8 @@ class ApplicationLettersController < ApplicationController
 
   # PATCH/PUT /applications/1
   def update
-    if @application_letter.update(application_params)
-      redirect_to @application_letter, notice: 'Application was successfully updated.'
+    if @application_letter.update_attributes(application_params)
+      redirect_to :back, notice: 'Application was successfully updated.'
     else
       render :edit
     end
@@ -56,6 +57,6 @@ class ApplicationLettersController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def application_params
-      params.require(:application_letter).permit(:motivation, :event_id)
+      params.require(:application_letter).permit(:motivation, :event_id, :status)
     end
 end
