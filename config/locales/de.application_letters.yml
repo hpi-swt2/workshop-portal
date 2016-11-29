@@ -14,6 +14,6 @@ de:
         other: "Anmerkungen"
 
   application_status:
-    accepted: "Angenommen"
-    rejected: "Abgelehnt"
-    pending: "Ausstehend"
+    accepted: "angenommen"
+    rejected: "abgelehnt"
+    pending: "ausstehend"

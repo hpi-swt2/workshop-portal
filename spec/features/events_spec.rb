@@ -45,7 +45,7 @@ RSpec.feature "Event Applicant Overview", :type => :feature do
     visit event_path(@event)
     ApplicationLetter.statuses.keys.each do |new_status|
       choose(I18n.t "application_status.#{new_status}")
-      ApplicationLetter.where(id: @application_letter.id, status: new_status)
+      expect(ApplicationLetter.where(id: @application_letter.id)).to exist
     end
   end
 

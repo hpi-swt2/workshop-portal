@@ -132,6 +132,13 @@ RSpec.describe ApplicationLettersController, type: :controller do
         expect(assigns(:application_letter)).to eq(application)
       end
 
+      it "redirects back" do
+        application = ApplicationLetter.create! valid_attributes
+        sign_in application.user
+        put :update, id: application.to_param, application_letter: valid_attributes, session: valid_session
+        expect(response).to redirect_to(request.env['HTTP_REFERER'])
+      end
+
     end
 
     context "with invalid params" do
