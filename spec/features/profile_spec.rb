@@ -39,13 +39,12 @@ RSpec.feature "Upload letter of agreement", :type => :feature do
     expect(page).to have_text(I18n.t("agreement_letters.upload_success"))
   end
 
-  #scenario "user upload fails" do
-    #@agreement_letter = FactoryGirl.create(:agreement_letter, user: @user, event: @event)
-    #@agreement_letter.readonly!
-    #attach_file(:letter_upload, './spec/testfiles/actual.pdf')
-    #click_button "upload_btn_#{@event.id}"
-    #expect(page).to have_text(I18n.t("agreement_letters.upload_failed"))
-  #end
+  scenario "user upload fails" do
+    allow_any_instance_of(AgreementLettersController).to receive(:save_file).and_return(false)
+    attach_file(:letter_upload, './spec/testfiles/actual.pdf')
+    click_button "upload_btn_#{@event.id}"
+    expect(page).to have_text(I18n.t("agreement_letters.upload_failed"))
+  end
 end
 
 RSpec.feature "Profile adaptation", :type => :feature do
