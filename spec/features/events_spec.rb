@@ -27,7 +27,7 @@ RSpec.feature "Event Applicant Overview", :type => :feature do
     @event.update!(max_participants: 1)
     @pupil1 = FactoryGirl.create(:profile)
     @pupil1.user.role = :pupil
-    @nilApplication = FactoryGirl.create(:application_letter, :event => @event, :user => @pupil1.user, :status => nil)
+    @nilApplication = FactoryGirl.create(:application_letter, :event => @event, :user => @pupil1.user, :status => 2)
     visit event_path(@event)
     expect(page).to have_button("Zusagen verschicken", disabled: true)
     expect(page).to have_button("Absagen verschicken", disabled: true)
@@ -40,8 +40,8 @@ RSpec.feature "Event Applicant Overview", :type => :feature do
     @pupil1.user.role = :pupil
     @pupil2 = FactoryGirl.create(:profile)
     @pupil2.user.role = :pupil
-    @acceptedApplication = FactoryGirl.create(:application_letter, :event => @event, :user => @pupil1.user, :status => true)
-    @acceptedApplication2 = FactoryGirl.create(:application_letter, :event => @event, :user => @pupil2.user, :status => true)
+    @acceptedApplication = FactoryGirl.create(:application_letter, :event => @event, :user => @pupil1.user, :status => 1)
+    @acceptedApplication2 = FactoryGirl.create(:application_letter, :event => @event, :user => @pupil2.user, :status => 1)
     visit event_path(@event)
     expect(page).to have_button("Zusagen verschicken", disabled: true)
     expect(page).to have_button("Absagen verschicken", disabled: true)
@@ -54,8 +54,8 @@ RSpec.feature "Event Applicant Overview", :type => :feature do
     @pupil1.user.role = :pupil
     @pupil2 = FactoryGirl.create(:profile)
     @pupil2.user.role = :pupil
-    @acceptedApplication = FactoryGirl.create(:application_letter, :event => @event, :user => @pupil1.user, :status => true)
-    @acceptedApplication2 = FactoryGirl.create(:application_letter, :event => @event, :user => @pupil2.user, :status => true)
+    @acceptedApplication = FactoryGirl.create(:application_letter, :event => @event, :user => @pupil1.user, :status => 1)
+    @acceptedApplication2 = FactoryGirl.create(:application_letter, :event => @event, :user => @pupil2.user, :status => 1)
     visit event_path(@event)
     click_button "Zusagen verschicken"
     expect(page).to have_selector('div', :id => 'send-emails-modal')
@@ -78,6 +78,27 @@ RSpec.feature "Event Applicant Overview", :type => :feature do
       expect(page).to have_text(I18n.t "free_places", count: (@event.max_participants).to_i - (i+1), scope: [:events, :applicants_overview])
       expect(page).to have_text(I18n.t "occupied_places", count: (i+1), scope: [:events, :applicants_overview])
     end
+  end
+
+  scenario "logged in as Organizer I can change application status with radio buttons" do
+    login(:organizer)
+
+    @pupil = FactoryGirl.create(:profile)
+    @application_letter = FactoryGirl.create(:application_letter, event: @event, user: @pupil.user)
+    visit event_path(@event)
+    ApplicationLetter.statuses.keys.each do |new_status|
+      choose(I18n.t "application_status.#{new_status}")
+      expect(ApplicationLetter.where(id: @application_letter.id)).to exist
+    end
+  end
+
+  scenario "logged in as Coach I can see application status" do
+    login(:tutor)
+
+    @pupil = FactoryGirl.create(:profile)
+    @application_letter = FactoryGirl.create(:application_letter, event: @event, user: @pupil.user)
+    visit event_path(@event)
+    expect(page).to have_text(I18n.t "application_status.#{@application_letter.status}")
   end
 
   def login(role)
