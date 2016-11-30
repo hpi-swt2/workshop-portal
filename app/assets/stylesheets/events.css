@@ -3,6 +3,9 @@
   They will automatically be included in application.css.
 */
 
+#applicants_overview {
+    margin-bottom: 20px;
+}
 .tooltip-wrapper {
     display: inline-block;
 }

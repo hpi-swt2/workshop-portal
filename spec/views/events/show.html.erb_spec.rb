@@ -14,6 +14,16 @@ RSpec.describe "events/show", type: :view do
     expect(rendered).to have_text(@event.name)
     expect(rendered).to have_text(@event.description)
     expect(rendered).to have_text(@event.max_participants)
+    expect(rendered).to have_text(@event.organizer)
+    expect(rendered).to have_text(@event.knowledge_level)
+  end
+
+  it "displays counter" do
+    free_places = assign(:free_places, @event.compute_free_places)
+    occupied_places = assign(:occupied_places, @event.compute_occupied_places)
+    render
+    expect(rendered).to have_text(I18n.t 'free_places', count: free_places, scope: [:events, :applicants_overview])
+    expect(rendered).to have_text(I18n.t 'occupied_places', count: occupied_places, scope: [:events, :applicants_overview])
   end
 
   it "displays counter" do

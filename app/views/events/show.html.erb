@@ -12,6 +12,10 @@
   <dd><%= @event.max_participants %></dd>
   <dt><strong><%= model_class.human_attribute_name(:active) %>:</strong></dt>
   <dd><%= @event.active %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:organizer) %>:</strong></dt>
+  <dd><%= @event.organizer %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:knowledge_level) %>:</strong></dt>
+  <dd><%= @event.knowledge_level %></dd>
 </dl>
 
 <% if can? :view_applicants, Event %>
@@ -19,4 +23,4 @@
 <% end %>
 
 <%= link_to t('.back', :default => t("helpers.links.back")),
-            events_path, :class => 'btn btn-default'  %>
+              events_path, :class => 'btn btn-default'  %>

@@ -2,5 +2,12 @@
   Place all the styles related to the matching controller here.
   They will automatically be included in application.css.
 */
-label.required:after{content:" *";
-					 color: red}
+
+#applicant_details dt {
+    width: 200px;
+    white-space: normal;
+}
+
+#applicant_details dd {
+    margin-left: 220px;
+}

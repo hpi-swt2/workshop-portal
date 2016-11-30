@@ -50,9 +50,9 @@ RSpec.feature "Event Applicant Overview", :type => :feature do
   scenario "logged in as Organizer I want to open a modal by clicking on sending emails" do
     login(:organizer)
     @event.update!(max_participants: 2)
-    @pupil1 = FactoryGirl.create(:profile, :email => 'pupil1@hpi.de')
+    @pupil1 = FactoryGirl.create(:profile)
     @pupil1.user.role = :pupil
-    @pupil2 = FactoryGirl.create(:profile, :email => 'pupil1@hpi.de')
+    @pupil2 = FactoryGirl.create(:profile)
     @pupil2.user.role = :pupil
     @acceptedApplication = FactoryGirl.create(:application_letter, :event => @event, :user => @pupil1.user, :status => true)
     @acceptedApplication2 = FactoryGirl.create(:application_letter, :event => @event, :user => @pupil2.user, :status => true)
@@ -60,7 +60,7 @@ RSpec.feature "Event Applicant Overview", :type => :feature do
     click_button "Zusagen verschicken"
     expect(page).to have_selector('div', :id => 'send-emails-modal')
     expect(find('#send-emails-list', :visible => false).value).to eq(@event.compute_accepted_applications_emails)
-    expect(find_link('Senden')[:href]).to eq('mailto:pupil1@hpi.de,pupil2@hpi.de')
+    expect(find_link('Senden')[:href]).to eq("mailto:#{@pupil1.user.email},#{@pupil2.user.email}")
     click_button "In die Zwischenablage kopieren"
     #expect(Clipboard.data).to eq('pupil1@hpi.de,pupil2@hpi.de')
   end
@@ -70,19 +70,14 @@ RSpec.feature "Event Applicant Overview", :type => :feature do
     @event.update!(max_participants: 1)
     expect(page).to have_text(I18n.t "free_places", count: (@event.max_participants).to_i, scope: [:events, :applicants_overview])
     expect(page).to have_text(I18n.t "occupied_places", count: 0, scope: [:events, :applicants_overview])
-    @pupil = FactoryGirl.create(:profile)
-    @pupil.user.role = :pupil
-    @application_letter = FactoryGirl.create(:application_letter_accepted, event: @event, user: @pupil.user)
-    visit event_path(@event)
-    expect(page).to have_text(I18n.t "free_places", count: @event.max_participants - 1, scope: [:events, :applicants_overview])
-    expect(page).to have_text(I18n.t "occupied_places", count: 1, scope: [:events, :applicants_overview])
-    # test negative amount of free places
-    @pupil = FactoryGirl.create(:profile)
-    @pupil.user.role = :pupil
-    @application_letter = FactoryGirl.create(:application_letter_accepted, event: @event, user: @pupil.user)
-    visit event_path(@event)
-    expect(page).to have_text(I18n.t "free_places", count: @event.max_participants - 2, scope: [:events, :applicants_overview])
-    expect(page).to have_text(I18n.t "occupied_places", count: 2, scope: [:events, :applicants_overview])
+    2.times do |i| #2 to also test negative free places, those are fine
+      @pupil = FactoryGirl.create(:profile)
+      @pupil.user.role = :pupil
+      @application_letter = FactoryGirl.create(:application_letter_accepted, event: @event, user: @pupil.user)
+      visit event_path(@event)
+      expect(page).to have_text(I18n.t "free_places", count: (@event.max_participants).to_i - (i+1), scope: [:events, :applicants_overview])
+      expect(page).to have_text(I18n.t "occupied_places", count: (i+1), scope: [:events, :applicants_overview])
+    end
   end
 
   def login(role)

@@ -107,7 +107,15 @@ RSpec.describe ApplicationLettersController, type: :controller do
     context "with valid params" do
       let(:new_attributes) {
         {
-            motivation: "Awesome new Motivation",
+            grade: 10,
+            experience: "None",
+            motivation: "None",
+            coding_skills: "None",
+            emergency_number: "01234567891",
+            vegeterian: true,
+            vegan: true,
+            allergic: true,
+            allergys: "Many",
             status: true
         }
       }
