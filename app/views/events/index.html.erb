@@ -35,6 +35,9 @@
                       :method => :delete,
                       :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
                       :class => 'btn btn-xs btn-danger' %>
+					<%= link_to t('.new', :default => t("helpers.links.apply")),
+                      new_application_letter_path(:event_id => event.id),
+                      :class => 'btn btn-xs btn-primary' %>
         </td>
       </tr>
     <% end %>

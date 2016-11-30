@@ -42,6 +42,7 @@ en:
       default: "%Y-%m-%d"
       long: "%B %d, %Y"
       short: "%b %d"
+      datepicker: "yyyy-mm-dd"
     month_names:
     -
     - January

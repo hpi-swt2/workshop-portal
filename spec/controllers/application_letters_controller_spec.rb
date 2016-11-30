@@ -107,7 +107,15 @@ RSpec.describe ApplicationLettersController, type: :controller do
     context "with valid params" do
       let(:new_attributes) {
         {
-            motivation: "Awesome new Motivation",
+            grade: 10,
+            experience: "None",
+            motivation: "None",
+            coding_skills: "None",
+            emergency_number: "01234567891",
+            vegeterian: true,
+            vegan: true,
+            allergic: true,
+            allergys: "Many",
             status: true
         }
       }
@@ -119,14 +127,6 @@ RSpec.describe ApplicationLettersController, type: :controller do
         application.reload
         expect(application.motivation).to eq(new_attributes[:motivation])
         expect(application.status).to eq(new_attributes[:status])
-      end
-
-      it "updates the requested application" do
-        application = ApplicationLetter.create! valid_attributes
-        sign_in application.user
-        put :update, id: application.to_param, application_letter: new_attributes, session: valid_session
-        application.reload
-        expect(application.motivation).to eq(new_attributes[:motivation])
       end
 
       it "assigns the requested application as @application" do

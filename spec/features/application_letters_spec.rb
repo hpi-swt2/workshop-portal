@@ -39,6 +39,54 @@ RSpec.feature "Application Letter Overview", :type => :feature do
     expect(page).to have_text("Hate him! Hate him!")
   end
 
+  it "should highlight wrong or missing insertions from user" do
+		login(:pupil)
+    visit new_application_letter_path
+    fill_in "application_letter_grade", with:   ""
+    fill_in "application_letter_experience", with:   ""
+    fill_in "application_letter_motivation", with:   ""
+    fill_in "application_letter_coding_skills", with:   ""
+    fill_in "application_letter_emergency_number", with:   ""
+
+    find('input[name=commit]').click
+
+    expect(page).to have_css(".has-error", count: 5)
+  end
+
+   it "should save" do
+		login(:pupil)
+    visit new_application_letter_path(:event_id => @event.id)
+		fill_in "application_letter_grade", with:   "11"
+    fill_in "application_letter_experience", with:   "None"
+    fill_in "application_letter_motivation", with:   "None"
+    fill_in "application_letter_coding_skills", with:   "None"
+    fill_in "application_letter_emergency_number", with:   "0123456789"
+    check "application_letter_allergic"
+    fill_in "application_letter_allergies", with:   "Many"
+    expect(ApplicationLetter.where(grade:"11")).to_not exist
+    find('input[name=commit]').click
+    expect(ApplicationLetter.where(grade:"11")).to exist
+  end
+
+  it "displays help text for motivation textarea" do
+    login(:pupil)
+    visit new_application_letter_path(:event_id => @event.id, :locale => :de)
+
+    expect(page).to have_text(I18n.t 'application_letters.form.help_text_coding_skills')
+  end
+
+  %i[pupil tutor].each do |role|
+    it "shows an error if the site of another application letter is accessed by url" do
+      user = FactoryGirl.create(:user, role: role)
+      another_user = FactoryGirl.create(:user)
+      another_application = FactoryGirl.create(:application_letter, user: another_user)
+
+      visit application_letter_path(id: another_application.id)
+
+      expect(page).to have_text(I18n.t('unauthorized.manage.all'))
+    end
+  end
+
   def login(role)
 
     @event = FactoryGirl.create(:event)
