@@ -2,3 +2,10 @@
   Place all the styles related to the matching controller here.
   They will automatically be included in application.css.
 */
+
+.tooltip-wrapper {
+    display: inline-block;
+}
+.tooltip .btn[disabled] {
+    pointer-events: none;
+}

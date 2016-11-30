@@ -2,9 +2,10 @@
 // All this logic will automatically be available in application.js.
 
 jQuery(function() {
+
     $('#send-emails-modal').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget);
-        var header = button.data('header');
+        var header = button.data('title');
         var list = button.data('list');
         var modal = $(this);
         modal.find('.modal-title').text(header);
