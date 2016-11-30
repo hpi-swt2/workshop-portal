@@ -71,7 +71,7 @@ describe User do
     end
   end
 
-  %i[tutor organizer].each do |role|
+  %i[coach organizer].each do |role|
     it "can view applicants for an event" do
       user = FactoryGirl.create(:user, role: role)
       ability = Ability.new(user)

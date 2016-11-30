@@ -75,7 +75,7 @@ RSpec.feature "Application Letter Overview", :type => :feature do
     expect(page).to have_text(I18n.t 'application_letters.form.help_text_coding_skills')
   end
 
-  %i[pupil tutor].each do |role|
+  %i[pupil coach].each do |role|
     it "shows an error if the site of another application letter is accessed by url" do
       user = FactoryGirl.create(:user, role: role)
       another_user = FactoryGirl.create(:user)
