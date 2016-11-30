@@ -22,5 +22,4 @@ class ApplicationLetter < ActiveRecord::Base
   validates :vegeterian, :vegan, :allergic, exclusion: { in: [nil] }
 
   enum status: {accepted: 1, rejected: 0, pending: 2}
-
 end

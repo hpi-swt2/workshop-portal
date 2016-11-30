@@ -18,9 +18,9 @@ class Event < ActiveRecord::Base
   # Returns whether all application_letters are classified or not
   #
   # @param none
-  # @return [Boolean] if all application_letter are classified
+  # @return [Boolean] if status of all application_letters is not equal 2
   def applicationsClassified?
-    application_letters.all? { |application_letter| !application_letter.status.nil? }
+    application_letters.all? { |application_letter| application_letter.status != 'pending' }
   end
 
   # Returns a string of all email addresses of rejected applications
@@ -28,7 +28,7 @@ class Event < ActiveRecord::Base
   # @param none
   # @return [String] Concatenation of all email addresses of rejected applications, seperated by ','
   def compute_rejected_applications_emails
-    rejected_applications = application_letters.select { |application_letter| !application_letter.status }
+    rejected_applications = application_letters.select { |application_letter| application_letter.status == 'rejected' }
     rejected_applications.map{ |applications_letter| applications_letter.user.email }.join(',')
   end
 
@@ -37,7 +37,7 @@ class Event < ActiveRecord::Base
   # @param none
   # @return [String] Concatenation of all email addresses of accepted applications, seperated by ','
   def compute_accepted_applications_emails
-    accepted_applications = application_letters.select { |application_letter| application_letter.status }
+    accepted_applications = application_letters.select { |application_letter| application_letter.status == 'accepted' }
     accepted_applications.map{ |application_letter| application_letter.user.email }.join(',')
   end
 

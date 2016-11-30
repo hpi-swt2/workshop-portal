@@ -103,7 +103,7 @@ ApplicationLetter.find_or_create_by!(
     vegan: false,
     allergic: false,
     allergies: "",
-    status: nil,
+    status: 2,
     user: applicant,
     event: event
 )
