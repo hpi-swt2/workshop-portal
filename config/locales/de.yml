@@ -21,6 +21,9 @@
 
 de:
   hello: "Willkommen beim Workshop-Portal"
+  unauthorized:
+      manage:
+        all: "Du bist nicht authorisiert diese Aktion auszuführen."
   navbar:
     home: "Start"
     events: "Veranstaltungen"
