@@ -2,32 +2,24 @@ require "rails_helper"
 
 describe "Event", type: :feature do
   describe "create page" do
-    it "should allow picking the event kind camp" do
-      visit new_event_path
-      fill_in "Maximale Bewerber", :with => 25
-      choose('Camp')
-      click_button "Veranstaltung erstellen"
-      expect(page).to have_text('Camp')
-    end
-
-    it "should allow picking the event kind workshop" do
-      visit new_event_path
-      fill_in "Maximale Bewerber", :with => 25
-      choose('Workshop')
-      click_button "Veranstaltung erstellen"
-      expect(page).to have_text('Workshop')
+    ['Camp', 'Workshop'].each do |kind|
+      it "should allow picking the #{kind} kind camp" do
+        visit new_event_path
+        fill_in "Maximale Bewerber", :with => 25
+        choose(kind)
+        click_button "Veranstaltung erstellen"
+        expect(page).to have_text(kind)
+      end
     end
   end
 
   describe "show page" do
     it "should display the event kind" do
-      event = FactoryGirl.create(:event, kind: :workshop)
-      visit event_path(event)
-      expect(page).to have_text('Workshop')
-
-      event = FactoryGirl.create(:event, kind: :camp)
-      visit event_path(event)
-      expect(page).to have_text('Camp')
+      %i[camp workshop].each do |kind|
+        event = FactoryGirl.create(:event, kind: kind)
+        visit event_path(event)
+        expect(page).to have_text(kind.to_s.humanize)
+      end
     end
   end
 
