@@ -25,6 +25,10 @@ class ApplicationLettersController < ApplicationController
   # POST /applications
   def create
     @application_letter = ApplicationLetter.new(application_params)
+		#event must be param to new_application_letter_path
+		if params[:event_id]
+			@application_letter.event_id = params[:event_id]
+		end
     @application_letter.user_id = current_user.id
 
     if @application_letter.save
@@ -36,8 +40,8 @@ class ApplicationLettersController < ApplicationController
 
   # PATCH/PUT /applications/1
   def update
-    if @application_letter.update(application_params)
-      redirect_to @application_letter, notice: 'Application was successfully updated.'
+    if @application_letter.update_attributes(application_params)
+      redirect_to :back, notice: 'Application was successfully updated.' rescue ActionController::RedirectBackError redirect_to root_path
     else
       render :edit
     end
@@ -56,7 +60,8 @@ class ApplicationLettersController < ApplicationController
     end
 
     # Only allow a trusted parameter "white list" through.
+    # Don't allow user_id as you shouldn't be able to set the user from outside of create/update.
     def application_params
-      params.require(:application_letter).permit(:motivation, :event_id, :status)
+      params.require(:application_letter).permit(:grade, :experience, :motivation, :coding_skills, :emergency_number, :vegeterian, :vegan, :allergic, :allergies, :user_id, :event_id, :status)
     end
 end

@@ -109,14 +109,12 @@ RSpec.describe ProfilesController, type: :controller do
     context "with valid params" do
       let(:new_attributes) {
         {
-            cv: "Awesome new CV",
             first_name: "Karl",
             last_name: "Doe",
             gender: "männlich",
             birth_date: 15.years.ago,
-            email: "karl@doe.com",
             school: "Schule am Griebnitzsee",
-            street_name: "Rudolf-Breitscheid-Str. 52",
+            street_name: "August-Bebel-Str. 88",
             zip_code: "14482",
             city: "Potsdam",
             state: "Babelsberg",
@@ -130,7 +128,7 @@ RSpec.describe ProfilesController, type: :controller do
         sign_in profile.user
         put :update, id: profile.to_param, profile: new_attributes, session: valid_session
         profile.reload
-        expect(profile.cv).to eq(new_attributes[:cv])
+        expect(profile.street_name).to eq(new_attributes[:street_name])
       end
 
       it "assigns the requested profile as @profile" do
