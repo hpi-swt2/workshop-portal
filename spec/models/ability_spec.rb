@@ -73,14 +73,14 @@ describe User do
 
   %i[tutor organizer].each do |role|
 
-    it "can view and add notes to application letters" do
+    it "can view and add notes to application letters as #{role}" do
       user = FactoryGirl.create(:user, role: role)
       ability = Ability.new(user)
 
       expect(ability).to be_able_to(:view_and_add_notes, ApplicationLetter)
       end
 
-    it "can view applicants for an event" do
+    it "can view applicants for an event as #{role}" do
       user = FactoryGirl.create(:user, role: role)
       ability = Ability.new(user)
 
