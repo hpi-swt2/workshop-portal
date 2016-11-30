@@ -22,21 +22,21 @@ describe Event do
 
   it "checks if there are unclassified applications_letters" do
     event = FactoryGirl.create(:event)
-    acceptedApplicationLetter = FactoryGirl.create(:application_letter, :event => event, :user => FactoryGirl.create(:user), :status => true)
+    acceptedApplicationLetter = FactoryGirl.create(:application_letter, :event => event, :user => FactoryGirl.create(:user), :status => 1)
     event.application_letters.push(acceptedApplicationLetter)
     expect(event.applicationsClassified?).to eq(true)
 
-    rejectedApplicationLetter = FactoryGirl.create(:application_letter, :event => event, :user => FactoryGirl.create(:user), :status => nil)
+    rejectedApplicationLetter = FactoryGirl.create(:application_letter, :event => event, :user => FactoryGirl.create(:user), :status => 2)
     event.application_letters.push(rejectedApplicationLetter)
     expect(event.applicationsClassified?).to eq(false)
   end
 
   it "computes the email addreses of the accepted and the rejected applications" do
     event = FactoryGirl.create(:event)
-    acceptedApplicationLetter1 = FactoryGirl.create(:application_letter, :event => event, :user => FactoryGirl.create(:user), :status => true)
-    acceptedApplicationLetter2 = FactoryGirl.create(:application_letter, :event => event, :user => FactoryGirl.create(:user), :status => true)
-    acceptedApplicationLetter3 = FactoryGirl.create(:application_letter, :event => event, :user => FactoryGirl.create(:user), :status => true)
-    rejectedApplicationLetter = FactoryGirl.create(:application_letter, :event => event, :user => FactoryGirl.create(:user), :status => false)
+    acceptedApplicationLetter1 = FactoryGirl.create(:application_letter, :event => event, :user => FactoryGirl.create(:user), :status => 1)
+    acceptedApplicationLetter2 = FactoryGirl.create(:application_letter, :event => event, :user => FactoryGirl.create(:user), :status => 1)
+    acceptedApplicationLetter3 = FactoryGirl.create(:application_letter, :event => event, :user => FactoryGirl.create(:user), :status => 1)
+    rejectedApplicationLetter = FactoryGirl.create(:application_letter, :event => event, :user => FactoryGirl.create(:user), :status => 0)
     event.application_letters.push(acceptedApplicationLetter1)
     event.application_letters.push(acceptedApplicationLetter2)
     event.application_letters.push(acceptedApplicationLetter3)
