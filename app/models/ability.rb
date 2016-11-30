@@ -39,8 +39,8 @@ class Ability
       can [:new, :create], ApplicationLetter
       can [:index, :show, :edit, :update, :destroy], ApplicationLetter, user: { id: user.id }
     end
-    if user.role? :tutor
-      # Tutors can view Applications for Event
+    if user.role? :coach
+      # Coaches can view Applications for Event
       can [:view_applicants], Event
       can [:view_and_add_notes], ApplicationLetter
     end
