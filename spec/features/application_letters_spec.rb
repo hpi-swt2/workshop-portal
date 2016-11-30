@@ -10,7 +10,7 @@ RSpec.feature "Application Letter Overview", :type => :feature do
   end
 
   scenario "logged in as Coach I can see notes" do
-    login(:tutor)
+    login(:coach)
     expect(page).to have_css("textarea#application_note_note")
     @application_letter.application_notes.each do | note |
       expect(page).to have_text(note.note)
@@ -33,7 +33,7 @@ RSpec.feature "Application Letter Overview", :type => :feature do
   end
 
   scenario "logged in as Coach I can create new notes" do
-    login(:tutor)
+    login(:coach)
     fill_in("application_note_note", with: "Hate him! Hate him!")
     click_button I18n.t "helpers.titles.new", model: ApplicationNote.model_name.human
     expect(page).to have_text("Hate him! Hate him!")
@@ -68,13 +68,23 @@ RSpec.feature "Application Letter Overview", :type => :feature do
     expect(ApplicationLetter.where(grade:"11")).to exist
   end
 
-
-
   it "displays help text for motivation textarea" do
     login(:pupil)
     visit new_application_letter_path(:event_id => @event.id, :locale => :de)
 
     expect(page).to have_text(I18n.t 'application_letters.form.help_text_coding_skills')
+  end
+
+  %i[pupil coach].each do |role|
+    it "shows an error if the site of another application letter is accessed by url" do
+      user = FactoryGirl.create(:user, role: role)
+      another_user = FactoryGirl.create(:user)
+      another_application = FactoryGirl.create(:application_letter, user: another_user)
+
+      visit application_letter_path(id: another_application.id)
+
+      expect(page).to have_text(I18n.t('unauthorized.manage.all'))
+    end
   end
 
   def login(role)

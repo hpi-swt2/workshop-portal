@@ -40,8 +40,8 @@ class ApplicationLettersController < ApplicationController
 
   # PATCH/PUT /applications/1
   def update
-    if @application_letter.update(application_params)
-      redirect_to @application_letter, notice: 'Application was successfully updated.'
+    if @application_letter.update_attributes(application_params)
+      redirect_to :back, notice: 'Application was successfully updated.' rescue ActionController::RedirectBackError redirect_to root_path
     else
       render :edit
     end

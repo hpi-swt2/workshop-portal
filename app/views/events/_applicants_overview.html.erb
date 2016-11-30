@@ -26,7 +26,7 @@
           <td><%= application_letter.user.profile.age  %></td>
           <td><%= application_letter.user.accepted_applications_count(@event) %> / <%= application_letter.user.rejected_applications_count(@event) %></td>
           <td>
-            Radio Buttons
+            <%= render :partial => 'application_letters/application_selective', locals: {application_letter: application_letter} %>
           </td>
           <td>
             <%= link_to t('.details'), application_letter_path(application_letter), :class => 'btn btn-default' %>
