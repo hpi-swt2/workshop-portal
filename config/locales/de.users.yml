@@ -1,0 +1,8 @@
+# German translation for the users
+
+de:
+  activerecord:
+    attributes:
+      user:
+        accepted_application_count: "Anzahl der angenommenen Bewerbungen"
+        rejected_application_count: "Anzahl der abgelehnten Bewerbungen"
