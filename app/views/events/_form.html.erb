@@ -16,18 +16,6 @@
   <% end %>
 
   <div class="form-group">
-    <div class="btn-group col-lg-10 col-lg-offset-2" data-toggle="buttons">
-      <% Event.kinds.keys.each do |key| %>
-        <label class="btn btn-default <%= 'active' if @event.kind == key %>">
-          <%= f.radio_button :kind, key %>
-          <%= key.humanize %>
-        </label>
-      <% end %>
-    </div>
-    <%=f.error_span(:kind) %>
-  </div>
-
-  <div class="form-group">
     <%= f.label :name, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
       <%= f.text_field :name, :class => 'form-control' %>
