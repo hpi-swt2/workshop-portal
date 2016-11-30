@@ -34,7 +34,28 @@ RSpec.feature "Event Applicant Overview", :type => :feature do
       visit event_path(@event)
       expect(page).to have_text(I18n.t "free_places", count: (@event.max_participants).to_i - (i+1), scope: [:events, :applicants_overview])
       expect(page).to have_text(I18n.t "occupied_places", count: (i+1), scope: [:events, :applicants_overview])
-    end 
+    end
+  end
+
+  scenario "logged in as Organizer I can change application status with radio buttons" do
+    login(:organizer)
+
+    @pupil = FactoryGirl.create(:profile)
+    @application_letter = FactoryGirl.create(:application_letter, event: @event, user: @pupil.user)
+    visit event_path(@event)
+    ApplicationLetter.statuses.keys.each do |new_status|
+      choose(I18n.t "application_status.#{new_status}")
+      expect(ApplicationLetter.where(id: @application_letter.id)).to exist
+    end
+  end
+
+  scenario "logged in as Coach I can see application status" do
+    login(:tutor)
+
+    @pupil = FactoryGirl.create(:profile)
+    @application_letter = FactoryGirl.create(:application_letter, event: @event, user: @pupil.user)
+    visit event_path(@event)
+    expect(page).to have_text(I18n.t "application_status.#{@application_letter.status}")
   end
 
   def login(role)
