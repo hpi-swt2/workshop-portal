@@ -9,7 +9,7 @@ RSpec.feature "Event Applicant Overview", :type => :feature do
   end
 
   scenario "logged in as Coach I can see overview" do
-    login(:tutor)
+    login(:coach)
     expect(page).to have_table("applicants")
     expect(page).to have_css("div#free_places")
     expect(page).to have_css("div#occupied_places")
@@ -50,7 +50,7 @@ RSpec.feature "Event Applicant Overview", :type => :feature do
   end
 
   scenario "logged in as Coach I can see application status" do
-    login(:tutor)
+    login(:coach)
 
     @pupil = FactoryGirl.create(:profile)
     @application_letter = FactoryGirl.create(:application_letter, event: @event, user: @pupil.user)
