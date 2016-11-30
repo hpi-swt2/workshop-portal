@@ -89,6 +89,13 @@ RSpec.describe EventsController, type: :controller do
         expect(assigns(:event)).to be_persisted
       end
 
+      it "saves optional attributes" do
+        post :create, event: valid_attributes, session: valid_session
+        event = Event.create! valid_attributes
+        expect(assigns(:event).organizer).to eq(event.organizer)
+        expect(assigns(:event).knowledge_level).to eq(event.knowledge_level)
+      end
+
       it "redirects to the created event" do
         post :create, event: valid_attributes, session: valid_session
         expect(response).to redirect_to(Event.last)
