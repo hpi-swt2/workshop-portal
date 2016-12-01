@@ -53,6 +53,16 @@ ActiveRecord::Schema.define(version: 20161129131315) do
 
   add_index "application_notes", ["application_letter_id"], name: "index_application_notes_on_application_letter_id"
 
+  create_table "date_ranges", force: :cascade do |t|
+    t.date     "start_date"
+    t.date     "end_date"
+    t.integer  "event_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "date_ranges", ["event_id"], name: "index_date_ranges_on_event_id"
+
   create_table "events", force: :cascade do |t|
     t.string   "name"
     t.string   "description"
