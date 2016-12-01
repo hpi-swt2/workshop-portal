@@ -4,7 +4,7 @@ require 'rails_helper'
 require "cancan/matchers"
 
 describe User do
-  %i[pupil tutor].each do |role|
+  %i[pupil coach].each do |role|
     it "can create its profile" do
       user = FactoryGirl.create(:user, role: role)
       ability = Ability.new(user)
@@ -65,19 +65,53 @@ describe User do
       ability = Ability.new(user)
 
       expect(ability).to_not be_able_to(:edit, another_application)
-      expect(ability).to_not be_able_to(:show, another_application)
       expect(ability).to_not be_able_to(:update, another_application)
       expect(ability).to_not be_able_to(:destroy, another_application)
     end
   end
 
-  %i[tutor organizer].each do |role|
-    it "can view applicants for an event" do
+  it "cannot see another user's application as pupil" do
+    user = FactoryGirl.create(:user, role: :pupil)
+    another_user = FactoryGirl.create(:user)
+    another_application = FactoryGirl.create(:application_letter, user: another_user)
+    ability = Ability.new(user)
+
+
+    expect(ability).to_not be_able_to(:show, another_application)
+  end
+
+  it "can see another user's application as coach" do
+    user = FactoryGirl.create(:user, role: :coach)
+    another_user = FactoryGirl.create(:user)
+    another_application = FactoryGirl.create(:application_letter, user: another_user)
+    ability = Ability.new(user)
+
+
+    expect(ability).to be_able_to(:show, another_application)
+  end
+
+  %i[coach organizer].each do |role|
+
+    it "can view and add notes to application letters as #{role}" do
+      user = FactoryGirl.create(:user, role: role)
+      ability = Ability.new(user)
+
+      expect(ability).to be_able_to(:view_and_add_notes, ApplicationLetter)
+      end
+
+    it "can view applicants for an event as #{role}" do
       user = FactoryGirl.create(:user, role: role)
       ability = Ability.new(user)
 
       expect(ability).to be_able_to(:view_applicants, Event)
     end
+  end
+
+  it "cannot view and add notes to application letters as pupil" do
+    user = FactoryGirl.create(:user, role: :pupil)
+    ability = Ability.new(user)
+
+    expect(ability).to_not be_able_to(:view_and_add_notes, ApplicationLetter)
   end
 
   it "cannot view applicants for an event as pupil" do
@@ -114,5 +148,4 @@ describe User do
     expect(ability).to_not be_able_to(:update, another_application)
     expect(ability).to_not be_able_to(:destroy, another_application)
   end
-
 end

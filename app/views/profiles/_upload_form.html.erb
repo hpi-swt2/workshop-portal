@@ -1,0 +1,19 @@
+<%= form_tag(event_agreement_letters_path(event_id), multipart: true) do %>
+  <% if agreement_letter.nil? %>
+    <% upload_message = t("agreement_letters.upload") %>
+  <% else %>
+    <% upload_message = t('.update', default: t("agreement_letters.update")) %>
+    <% already_uploaded_msg = t("agreement_letters.already_uploaded", timestamp: l(agreement_letter.updated_at)) %>
+  <% end %>
+
+  <span class="help-block bg-success"><%= already_uploaded_msg %></span>
+  <%= file_field_tag "letter_upload",
+    class: "btn btn-default btn-file",
+    style: 'display:inline',
+    id: "letter_upload_#{event_id}",
+    accept: "application/pdf" %>
+  <%= submit_tag upload_message,
+    class: 'btn btn-default',
+    id: "upload_btn_#{event_id}" %>
+<% end %>
+
