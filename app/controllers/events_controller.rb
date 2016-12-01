@@ -55,6 +55,12 @@ class EventsController < ApplicationController
     redirect_to events_url, notice: 'Event wurde gelöscht.'
   end
 
+  # GET /events/1/participants
+  def participants
+	@event = Event.find(params[:id])
+	@participants = @event.participants
+  end
+  
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_event

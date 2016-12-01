@@ -13,6 +13,17 @@
 
 ActiveRecord::Schema.define(version: 20161129131315) do
 
+  create_table "agreement_letters", force: :cascade do |t|
+    t.integer  "user_id",    null: false
+    t.integer  "event_id",   null: false
+    t.string   "path",       null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "agreement_letters", ["event_id"], name: "index_agreement_letters_on_event_id"
+  add_index "agreement_letters", ["user_id"], name: "index_agreement_letters_on_user_id"
+
   create_table "application_letters", force: :cascade do |t|
     t.string   "motivation"
     t.integer  "user_id",                      null: false

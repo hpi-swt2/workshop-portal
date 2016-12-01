@@ -107,3 +107,9 @@ ApplicationLetter.find_or_create_by!(
     user: applicant,
     event: event
 )
+
+AgreementLetter.find_or_create_by!(
+  user: applicant,
+  event: event,
+  path: "/storage/agreement_letters/foo.pdf"
+)

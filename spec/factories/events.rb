@@ -50,5 +50,22 @@ FactoryGirl.define do
     trait :without_date_ranges do
       date_ranges { [] }
     end
+  
+    factory :event_with_accepted_applications do
+      name "Event-Name"
+      description "Event-Description"
+      max_participants 20
+      active false
+      date_ranges { build_list :date_range, 1 }
+      transient do
+        application_letters_count 5
+      end
+      organizer "Workshop-Organizer"
+      knowledge_level "Workshop-Knowledge Level"
+      
+      after(:create) do |event, evaluator|
+        create_list(:application_letter_accepted, evaluator.application_letters_count, event: event)
+      end
+    end
   end
 end

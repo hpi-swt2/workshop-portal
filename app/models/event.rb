@@ -14,6 +14,7 @@
 
 class Event < ActiveRecord::Base
   has_many :application_letters
+  has_many :agreement_letters
   has_many :date_ranges
 
   validates :max_participants, numericality: { only_integer: true, greater_than: 0 }
@@ -49,6 +50,23 @@ class Event < ActiveRecord::Base
     end
 
     super
+  end
+  
+  # Returns the participants whose application for this Event has been accepted
+  #
+  # @param none
+  # @return [Array<User>] the event's participants
+  def participants
+    accepted_applications = application_letters.where(status: ApplicationLetter.statuses[:accepted])
+    accepted_applications.collect { |a| a.user }
+  end
+
+  # Returns the agreement letter a user submitted for this event
+  #
+  # @param user [User] the user whose agreement letter we want
+  # @return [AgreementLetter, nil] the user's agreement letter or nil
+  def agreement_letter_for(user)
+    self.agreement_letters.where(user: user).take
   end
 
   # Returns the number of free places of the event, this value may be negative
