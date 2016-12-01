@@ -9,10 +9,12 @@ RSpec.describe "profiles/edit", type: :view do
     render
 
     assert_select "form[action=?][method=?]", profile_path(@profile), "post" do
+      assert_select "input#profile_cv[name=?]", "profile[cv]"
       assert_select "input#profile_first_name[name=?]", "profile[first_name]"
       assert_select "input#profile_last_name[name=?]", "profile[last_name]"
       assert_select "input#profile_gender[name=?]", "profile[gender]"
       assert_select "input#profile_birth_date[name=?]", "profile[birth_date]"
+      assert_select "input#profile_email[name=?]", "profile[email]"
       assert_select "input#profile_school[name=?]", "profile[school]"
       assert_select "input#profile_street_name[name=?]", "profile[street_name]"
       assert_select "input#profile_zip_code[name=?]", "profile[zip_code]"

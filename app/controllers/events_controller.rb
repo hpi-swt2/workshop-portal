@@ -8,8 +8,6 @@ class EventsController < ApplicationController
 
   # GET /events/1
   def show
-    @free_places = @event.compute_free_places
-    @occupied_places = @event.compute_occupied_places
   end
 
   # GET /events/new
@@ -55,6 +53,6 @@ class EventsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def event_params
-      params.require(:event).permit(:name, :description, :max_participants, :active, :organizer, :knowledge_level)
+      params.require(:event).permit(:name, :description, :max_participants, :active)
     end
 end

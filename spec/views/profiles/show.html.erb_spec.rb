@@ -7,6 +7,6 @@ RSpec.describe "profiles/show", type: :view do
 
   it "renders attributes" do
     render
-    expect(rendered).to have_text(@profile.graduates_school_in)
+    expect(rendered).to have_text(@profile.cv)
   end
 end

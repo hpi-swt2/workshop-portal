@@ -21,9 +21,6 @@
 
 de:
   hello: "Willkommen beim Workshop-Portal"
-  unauthorized:
-      manage:
-        all: "Du bist nicht authorisiert diese Aktion auszuführen."
   navbar:
     home: "Start"
     events: "Veranstaltungen"
@@ -38,3 +35,19 @@ de:
       new:
         sign_in: "Einloggen"
         remember_me: "Eingeloggt bleiben"
+  helpers:
+    label:
+      profile:
+        first_name: "Vorname"
+        last_name: "Nachname"
+        gender: "Geschlecht"
+        birth_date: Geburtsdatum 
+        email: "E-Mail"
+        school: "Schule"
+        street_name: "Straße"
+        zip_code: "Postleitzahl"
+        city: "Stadt"
+        state: "Bundesland"
+        country: "Land"
+        graduates_school_in: "Abitur vorraussichtlich in"
+        already_graduated: "Bereits Abitur"

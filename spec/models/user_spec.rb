@@ -31,37 +31,4 @@ describe User do
     user = FactoryGirl.build(:user, email: nil)
     expect(user).to_not be_valid
   end
-
-  it "returns correct default accepted applications count" do
-    application_letter = FactoryGirl.create(:application_letter)
-    expect(application_letter.user.accepted_applications_count(application_letter.event)).to eq(0)
-  end
-
-  it "returns correct default rejected applications count" do
-    application_letter = FactoryGirl.create(:application_letter)
-    expect(application_letter.user.rejected_applications_count(application_letter.event)).to eq(0)
-  end
-
-  it "only counts the accepted application of other events and ignores status of current event application" do
-    user = FactoryGirl.create(:user)
-    other_event = FactoryGirl.create(:event)
-    current_event = FactoryGirl.create(:event)
-
-    other_application_letter = FactoryGirl.create(:application_letter_accepted, user: user, event: other_event)
-    current_application_letter = FactoryGirl.create(:application_letter_accepted, user: user, event: current_event)
-
-    expect(current_application_letter.user.accepted_applications_count(current_event)).to eq(1)
-  end
-
-  it "only counts the rejected application of other events and ignores status of current event application" do
-    user = FactoryGirl.create(:user)
-    other_event = FactoryGirl.create(:event)
-    current_event = FactoryGirl.create(:event)
-
-    other_application_letter = FactoryGirl.create(:application_letter_rejected, user: user, event: other_event)
-    current_application_letter = FactoryGirl.create(:application_letter_rejected, user: user, event: current_event)
-
-    expect(current_application_letter.user.rejected_applications_count(current_event)).to eq(1)
-  end
-
 end
