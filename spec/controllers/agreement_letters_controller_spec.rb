@@ -14,7 +14,7 @@ RSpec.describe AgreementLettersController, type: :controller do
 
     it "redirects to user profile" do
       post :create, { letter_upload: @file, event_id: @event.id }
-      expect(response).to have_http_status(:redirect)
+      expect(response).to redirect_to(profile_path(@user.profile))
     end
 
     it "shows error when POSTed without a file" do
