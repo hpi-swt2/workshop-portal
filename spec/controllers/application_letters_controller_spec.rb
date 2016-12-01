@@ -20,14 +20,18 @@ require 'rails_helper'
 
 RSpec.describe ApplicationLettersController, type: :controller do
 
-  let(:valid_attributes) { FactoryGirl.build(:application_letter).attributes }
+  let(:valid_attributes) { FactoryGirl.build(:application_letter).attributes.merge(status: :pending) }
 
-  let(:invalid_attributes) { FactoryGirl.build(:application_letter, event_id: nil).attributes }
+  let(:invalid_attributes) { FactoryGirl.build(:application_letter, event_id: nil).attributes.merge(status: :pending)}
 
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
   # ApplicationsController. Be sure to keep this updated too.
   let(:valid_session) { {} }
+
+  before(:each) do
+    request.env['HTTP_REFERER'] = root_url
+  end
 
   describe "GET #index" do
     it "assigns all applications as @applications" do
@@ -107,7 +111,16 @@ RSpec.describe ApplicationLettersController, type: :controller do
     context "with valid params" do
       let(:new_attributes) {
         {
-            motivation: "Awesome new Motivation"
+            grade: 10,
+            experience: "None",
+            motivation: "None",
+            coding_skills: "None",
+            emergency_number: "01234567891",
+            vegeterian: true,
+            vegan: true,
+            allergic: true,
+            allergys: "Many",
+            status: "accepted"
         }
       }
 
@@ -117,6 +130,7 @@ RSpec.describe ApplicationLettersController, type: :controller do
         put :update, id: application.to_param, application_letter: new_attributes, session: valid_session
         application.reload
         expect(application.motivation).to eq(new_attributes[:motivation])
+        expect(application.status).to eq(new_attributes[:status])
       end
 
       it "assigns the requested application as @application" do
@@ -126,11 +140,11 @@ RSpec.describe ApplicationLettersController, type: :controller do
         expect(assigns(:application_letter)).to eq(application)
       end
 
-      it "redirects to the application" do
+      it "redirects back" do
         application = ApplicationLetter.create! valid_attributes
         sign_in application.user
         put :update, id: application.to_param, application_letter: valid_attributes, session: valid_session
-        expect(response).to redirect_to(application)
+        expect(response).to redirect_to(request.env['HTTP_REFERER'])
       end
     end
 

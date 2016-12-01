@@ -1,0 +1,37 @@
+# German translations for the application letters
+
+de:
+  application_letters:
+    show:
+      application_title: "Bewerber für %{title}"
+      new_note: "Neue Anmerkung:"
+    form:
+      help_text_coding_skills: "Wie gut beherrscht du sie deiner Meinung nach (Anfänger,
+      Fortgeschrittener, Experte)? Was kannst du in den Programmiersprachen
+      realisieren/hast du realisiert? Je ausführlicher du diese Beschreibst, desto
+      besser können wir schon in der Vorbereitung der Veranstaltung darauf eingehen.
+      Programmierkenntnisse sind keine  Voraussetzung zur Teilnahme. Diese Information
+      wird zur Gruppeneinteilung benötigt."
+
+  activerecord:
+    models:
+      application_letter: "Bewerbung"
+      application_note:
+        one: "Anmerkung"
+        other: "Anmerkungen"
+    attributes:
+      application_letter:
+          grade: "Klassenstufe"
+          experience: "Wie hast du von uns Erfahren?"
+          motivation: "Motivationsschreiben"
+          coding_skills: "Mit welchen Programmiersprachen hast du bereits Erfahrungen gesammelt?"
+          emergency_number: "Telefonnummer für Notfälle"
+          vegeterian: "Vegetarisch"
+          vegan: "Vegan"
+          allergic: "Allergien vorhanden"
+          allergies: "Falls Allergien vorhanden, welche?"
+
+  application_status:
+    accepted: "angenommen"
+    rejected: "abgelehnt"
+    pending: "ausstehend"

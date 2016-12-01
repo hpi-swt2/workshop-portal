@@ -46,6 +46,18 @@ RSpec.describe EventsController, type: :controller do
       get :show, id: event.to_param, session: valid_session
       expect(assigns(:event)).to eq(event)
     end
+
+    it "assigns the number of free places as @free_places" do
+      event = Event.create! valid_attributes
+      get :show, id: event.to_param, session: valid_session
+      expect(assigns(:free_places)).to eq(event.compute_free_places)
+    end
+
+    it "assigns the number of occupied places as @occupied_places" do
+      event = Event.create! valid_attributes
+      get :show, id: event.to_param, session: valid_session
+      expect(assigns(:occupied_places)).to eq(event.compute_occupied_places)
+    end
   end
 
   describe "GET #new" do
@@ -75,6 +87,13 @@ RSpec.describe EventsController, type: :controller do
         post :create, event: valid_attributes, session: valid_session
         expect(assigns(:event)).to be_a(Event)
         expect(assigns(:event)).to be_persisted
+      end
+
+      it "saves optional attributes" do
+        post :create, event: valid_attributes, session: valid_session
+        event = Event.create! valid_attributes
+        expect(assigns(:event).organizer).to eq(event.organizer)
+        expect(assigns(:event).knowledge_level).to eq(event.knowledge_level)
       end
 
       it "redirects to the created event" do

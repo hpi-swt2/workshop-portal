@@ -6,7 +6,6 @@
   <thead>
     <tr>
       <th><%= model_class.human_attribute_name(:id) %></th>
-      <th><%= model_class.human_attribute_name(:cv) %></th>
       <th><%= model_class.human_attribute_name(:user_id) %></th>
       <th><%= model_class.human_attribute_name(:created_at) %></th>
       <th><%=t '.actions', :default => t("helpers.actions") %></th>
@@ -17,7 +16,6 @@
       <% if can? :destroy, profile %>
         <tr>
           <td><%= link_to profile.id, profile_path(profile) %></td>
-          <td><%= profile.cv %></td>
           <td><%= profile.user_id %></td>
           <td><%= profile.created_at %></td>
           <td>
