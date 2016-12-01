@@ -43,7 +43,7 @@ FactoryGirl.define do
       after(:build) do |event|
         event.date_ranges << FactoryGirl.create(:date_range,
           start_date: Date.today,
-          end_date: Date.tomorrow.next_day(Event::UNREASONABLY_LONG_DATE_SPAN))
+          end_date: Date.tomorrow.next_day(Rails.configuration.unreasonably_long_event_time_span))
       end
     end
 

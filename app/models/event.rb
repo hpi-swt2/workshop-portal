@@ -13,8 +13,6 @@
 #
 
 class Event < ActiveRecord::Base
-  UNREASONABLY_LONG_DATE_SPAN = 300
-
   has_many :application_letters
   has_many :date_ranges
 
@@ -35,7 +33,7 @@ class Event < ActiveRecord::Base
   # @return whether this event appears unreasonably long as defined by
   #         the corresponding constant
   def unreasonably_long
-    end_date - start_date > UNREASONABLY_LONG_DATE_SPAN
+    end_date - start_date > Rails.configuration.unreasonably_long_event_time_span
   end
 
   # validation function on whether we have at least one date range

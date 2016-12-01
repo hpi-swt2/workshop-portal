@@ -69,9 +69,16 @@ class EventsController < ApplicationController
       dateRanges = params[:date_ranges] || {start_date: [], end_date: []}
 
       dateRanges[:start_date].zip(dateRanges[:end_date]).map do |s, e|
-        DateRange.new(start_date: Date.new(s[:year].to_i, s[:month].to_i, s[:day].to_i),
-                      end_date: Date.new(e[:year].to_i, e[:month].to_i, e[:day].to_i))
+        DateRange.new(start_date: date_from_form(s), end_date: date_from_form(e))
       end
+    end
+
+    # Extract date object from given date_info as returned by a form
+    #
+    # @param date_info [Hash] hash containing year, month and day keys
+    # @return [Date] the extracted date
+    def date_from_form(date_info)
+      Date.new(date_info[:year].to_i, date_info[:month].to_i, date_info[:day].to_i)
     end
 
     # Only allow a trusted parameter "white list" through.

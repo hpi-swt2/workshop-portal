@@ -52,11 +52,13 @@
     <%= f.label :date_ranges, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10" id="event-date-pickers">
       <% def date_picker_template(startDate = Date.today, endDate = Date.today)
-          '<div class="event-date-picker"><div class="event-date-picker-start">' + 
-          select_date(startDate, {prefix: 'date_ranges[start_date][]'}).gsub("\n", "") +
-          '</div> bis <div class="event-date-picker-end">' +
-          select_date(endDate, {prefix: 'date_ranges[end_date][]'}).gsub("\n", "") +
-          '</div></div>'
+          start_picker = select_date(startDate, {prefix: 'date_ranges[start_date][]'}).gsub("\n", "")
+          end_picker = select_date(endDate, {prefix: 'date_ranges[end_date][]'}).gsub("\n", "") 
+          "<div class=\"event-date-picker\">
+            <div class=\"event-date-picker-start\">#{start_picker}</div>
+            bis
+            <div class=\"event-date-picker-end\">#{end_picker}</div>
+          </div>"
         end %>
 
       <%=
