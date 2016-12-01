@@ -25,9 +25,9 @@ RSpec.feature "Event Applicant Overview", :type => :feature do
   scenario "logged in as Organizer I want to be unable to send emails if there is any unclassified application left" do
     login(:organizer)
     @event.update!(max_participants: 1)
-    @pupil1 = FactoryGirl.create(:profile)
-    @pupil1.user.role = :pupil
-    @nilApplication = FactoryGirl.create(:application_letter, :event => @event, :user => @pupil1.user, :status => 2)
+    @pupil = FactoryGirl.create(:profile)
+    @pupil.user.role = :pupil
+    @pending_application = FactoryGirl.create(:application_letter, :event => @event, :user => @pupil.user)
     visit event_path(@event)
     expect(page).to have_button("Zusagen verschicken", disabled: true)
     expect(page).to have_button("Absagen verschicken", disabled: true)
@@ -40,8 +40,8 @@ RSpec.feature "Event Applicant Overview", :type => :feature do
     @pupil1.user.role = :pupil
     @pupil2 = FactoryGirl.create(:profile)
     @pupil2.user.role = :pupil
-    @acceptedApplication = FactoryGirl.create(:application_letter, :event => @event, :user => @pupil1.user, :status => 1)
-    @acceptedApplication2 = FactoryGirl.create(:application_letter, :event => @event, :user => @pupil2.user, :status => 1)
+    @accepted_application = FactoryGirl.create(:application_letter_accepted, :event => @event, :user => @pupil1.user)
+    @accepted_application_2 = FactoryGirl.create(:application_letter_accepted, :event => @event, :user => @pupil2.user)
     visit event_path(@event)
     expect(page).to have_button("Zusagen verschicken", disabled: true)
     expect(page).to have_button("Absagen verschicken", disabled: true)
@@ -54,15 +54,11 @@ RSpec.feature "Event Applicant Overview", :type => :feature do
     @pupil1.user.role = :pupil
     @pupil2 = FactoryGirl.create(:profile)
     @pupil2.user.role = :pupil
-    @acceptedApplication = FactoryGirl.create(:application_letter, :event => @event, :user => @pupil1.user, :status => 1)
-    @acceptedApplication2 = FactoryGirl.create(:application_letter, :event => @event, :user => @pupil2.user, :status => 1)
+    @accepted_application = FactoryGirl.create(:application_letter_accepted, :event => @event, :user => @pupil1.user)
+    @accepted_application_2 = FactoryGirl.create(:application_letter_accepted, :event => @event, :user => @pupil2.user)
     visit event_path(@event)
     click_button "Zusagen verschicken"
     expect(page).to have_selector('div', :id => 'send-emails-modal')
-    #expect(find('#send-emails-list', :visible => false).value).to eq(@event.compute_accepted_applications_emails)
-    #expect(find_link('Senden')[:href]).to eq("mailto:#{@pupil1.user.email},#{@pupil2.user.email}")
-    #click_button "In die Zwischenablage kopieren"
-    #expect(Clipboard.data).to eq('pupil1@hpi.de,pupil2@hpi.de')
   end
 
   scenario "logged in as Organizer I can see the correct count of free/occupied places" do

@@ -46,7 +46,7 @@
           events_path, :class => 'btn btn-default'%>
     </div>
     <div class="btn-group pull-right" role="group">
-      <% if (!@event.applicationsClassified?) %>
+      <% if (!@event.applications_classified?) %>
           <div class="tooltip-wrapper disabled has-tooltip" data-toggle="tooltip" title="Bewerbung(en) wurden noch nicht klassifiziert">
             <%= button_tag "Zusagen verschicken", type: 'button', class: 'send-emails-button btn btn-default', disabled: true %>
           </div>
@@ -61,8 +61,8 @@
             <%= button_tag "Absagen verschicken", type: 'button', class: 'send-emails-button btn btn-default', disabled: true %>
           </div>
       <% else %>
-          <%= button_tag "Zusagen verschicken", type: 'button', class: 'btn btn-default', data: {toggle: 'modal', target: '#send-emails-modal', title: 'Zusagen verschicken', list: @event.compute_accepted_applications_emails} %>
-          <%= button_tag "Absagen verschicken", type: 'button', class: 'btn btn-default', data: {toggle: 'modal', target: '#send-emails-modal', title: 'Absagen verschicken', list: @event.compute_rejected_applications_emails} %>
+          <%= button_tag "Zusagen verschicken", type: 'button', class: 'btn btn-default', data: {toggle: 'modal', target: '#send-emails-modal', title: 'Zusagen verschicken', list: @event.accepted_applications_emails} %>
+          <%= button_tag "Absagen verschicken", type: 'button', class: 'btn btn-default', data: {toggle: 'modal', target: '#send-emails-modal', title: 'Absagen verschicken', list: @event.rejected_applications_emails} %>
       <% end %>
     </div>
   </div>
