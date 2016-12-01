@@ -11,15 +11,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161125123712) do
+ActiveRecord::Schema.define(version: 20161129131315) do
 
   create_table "application_letters", force: :cascade do |t|
     t.string   "motivation"
-    t.integer  "user_id",    null: false
-    t.integer  "event_id",   null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.boolean  "status"
+    t.integer  "user_id",                      null: false
+    t.integer  "event_id",                     null: false
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+    t.integer  "status",           default: 2, null: false
+    t.integer  "grade"
+    t.string   "experience"
+    t.string   "coding_skills"
+    t.string   "emergency_number"
+    t.boolean  "vegeterian"
+    t.boolean  "vegan"
+    t.boolean  "allergic"
+    t.string   "allergies"
   end
 
   add_index "application_letters", ["event_id"], name: "index_application_letters_on_event_id"
@@ -56,7 +64,6 @@ ActiveRecord::Schema.define(version: 20161125123712) do
   end
 
   create_table "profiles", force: :cascade do |t|
-    t.string   "cv"
     t.integer  "user_id",             null: false
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
@@ -64,7 +71,6 @@ ActiveRecord::Schema.define(version: 20161125123712) do
     t.string   "last_name"
     t.string   "gender"
     t.date     "birth_date"
-    t.string   "email"
     t.string   "school"
     t.string   "street_name"
     t.string   "zip_code"
