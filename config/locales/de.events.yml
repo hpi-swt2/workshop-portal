@@ -17,6 +17,7 @@ de:
 
     form:
       draft: "Als Entwurf speichern"
+      publish: "Veranstaltung veröffentlichen"
   activerecord:
       models:
         event: "Veranstaltung"
