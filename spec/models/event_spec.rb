@@ -23,8 +23,8 @@ describe Event do
   it "returns the event's participants" do
     event = FactoryGirl.build(:event)
     FactoryGirl.create(:application_letter_rejected, event: event)
-    true_letter = FactoryGirl.create(:application_letter_accepted, event: event)
-    expect(event.participants).to eq [true_letter.user]
+    accepted_letter = FactoryGirl.create(:application_letter_accepted, event: event)
+    expect(event.participants).to eq [accepted_letter.user]
   end
 
   it "returns a user's agreement letter for itself" do

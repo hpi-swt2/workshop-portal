@@ -25,7 +25,7 @@ class User < ActiveRecord::Base
 
   before_create :set_default_role
 
-  ROLES = %i[pupil tutor organizer admin]
+  ROLES = %i[pupil coach organizer admin]
 
   def role?(base_role)
     return false unless role
@@ -42,7 +42,7 @@ class User < ActiveRecord::Base
   # @param none
   # @return [Array<Event>] the user's events
   def events
-    accepted_applications = self.application_letters.select { |a| a.status == true }
+    accepted_applications = application_letters.where(status: ApplicationLetter.statuses[:accepted])
     accepted_applications.collect { |a| a.event }
   end
 

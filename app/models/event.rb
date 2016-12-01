@@ -21,7 +21,7 @@ class Event < ActiveRecord::Base
   # @param none
   # @return [Array<User>] the event's participants
   def participants
-    accepted_applications = self.application_letters.select { |a| a.status == true }
+    accepted_applications = application_letters.where(status: ApplicationLetter.statuses[:accepted])
     accepted_applications.collect { |a| a.user }
   end
 
@@ -46,6 +46,6 @@ class Event < ActiveRecord::Base
   # @param none
   # @return [Int] for number of occupied places
   def compute_occupied_places
-    application_letters.where(status: true).count
+    application_letters.where(status: ApplicationLetter.statuses[:accepted]).count
   end
 end

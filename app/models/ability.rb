@@ -41,10 +41,10 @@ class Ability
       # Pupils can upload their letters of agreement
       can [:create], AgreementLetter
     end
-    if user.role? :tutor
-      # Tutors can view Applications for Event
+    if user.role? :coach
+      # Coaches can view Applications for Event
       can [:view_applicants], Event
-      can [:view_and_add_notes], ApplicationLetter
+      can [:view_and_add_notes, :show], ApplicationLetter
     end
     if user.role? :organizer
       can [:index, :show], Profile

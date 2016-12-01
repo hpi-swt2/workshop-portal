@@ -30,7 +30,7 @@
 
 <h3><%= t('.application_title', title: @application_letter.event.name) %></h3>
 <dl class="dl-vertical">
-  <dt><strong> Radio Buttons (#45 US_3.11: Mark as accepted/rejected) </strong></dt>
+  <dt><%= render partial: 'application_letters/application_selective', locals: {application_letter: @application_letter} %></dt>
 </dl>
 
 <p>
