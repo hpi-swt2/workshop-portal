@@ -35,7 +35,8 @@ event = Event.find_or_create_by!(
     name: "Messung und Verarbeitung von Umweltdaten",
     description: "Veranstaltung mit Phidgets und Etoys",
     max_participants: 20,
-    active: true
+    active: true,
+    draft: false
 )
 
 # Pupil's profile
