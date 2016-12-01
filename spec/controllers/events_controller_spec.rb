@@ -173,4 +173,11 @@ RSpec.describe EventsController, type: :controller do
     end
   end
 
+  describe "GET #print_applications" do
+    it "returns success" do
+      event = Event.create! valid_attributes
+      get :print_applications, id: event.to_param, session: valid_session
+      expect(response).to redirect_to(events_path)
+    end
+  end
 end

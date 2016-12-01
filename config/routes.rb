@@ -4,7 +4,9 @@ Rails.application.routes.draw do
     resources :application_notes,
       only: :create
   end
-  resources :events
+  resources :events do
+    get 'print_applications', on: :member
+  end
   resources :profiles
   devise_for :users
   # The priority is based upon order of creation: first created -> highest priority.
