@@ -19,3 +19,27 @@
               :method => 'delete',
               :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
               :class => 'btn btn-danger' %>
+
+<h3>Events</h3>
+<table id='events_table', class='table table-bordered table-hover'>
+  <thead>
+    <tr>
+      <th>id</th>
+      <th><%= t('agreement_letters.agreement_letter') %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @profile.user.events.each do |event| %>
+      <tr>
+        <td><%= event.id %></td>
+        <td>
+          <% if @profile.adult? %>
+            <%= render('upload_form',
+              event_id: event.id,
+              agreement_letter: event.agreement_letter_for(@profile.user)) %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

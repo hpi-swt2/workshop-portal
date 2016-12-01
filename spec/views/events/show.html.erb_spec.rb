@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "events/show", type: :view do
   before(:each) do
-    @event = assign(:event, FactoryGirl.create(:event))
+    @event = assign(:event, FactoryGirl.create(:event, :with_two_date_ranges))
     @application_letter = FactoryGirl.create(:application_letter, user: FactoryGirl.create(:user, role: :admin), event: @event)
     @application_letter.user.profile = FactoryGirl.build(:profile)
     @event.application_letters.push(@application_letter)

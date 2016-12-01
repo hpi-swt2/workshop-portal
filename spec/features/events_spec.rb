@@ -59,7 +59,7 @@ RSpec.feature "Event Applicant Overview", :type => :feature do
   end
 
   def login(role)
-    @event = FactoryGirl.create(:event)
+    @event = FactoryGirl.create(:event, max_participants: 1)
     @profile = FactoryGirl.create(:profile)
     @profile.user.role = role
     login_as(@profile.user, :scope => :user)
