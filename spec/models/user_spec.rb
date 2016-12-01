@@ -47,8 +47,8 @@ describe User do
     other_event = FactoryGirl.create(:event)
     current_event = FactoryGirl.create(:event)
 
-    other_application_letter = FactoryGirl.create(:application_letter, user: user, event: other_event, status: true)
-    current_application_letter = FactoryGirl.create(:application_letter, user: user, event: current_event, status: true)
+    other_application_letter = FactoryGirl.create(:application_letter_accepted, user: user, event: other_event)
+    current_application_letter = FactoryGirl.create(:application_letter_accepted, user: user, event: current_event)
 
     expect(current_application_letter.user.accepted_applications_count(current_event)).to eq(1)
   end
@@ -58,8 +58,8 @@ describe User do
     other_event = FactoryGirl.create(:event)
     current_event = FactoryGirl.create(:event)
 
-    other_application_letter = FactoryGirl.create(:application_letter, user: user, event: other_event, status: false)
-    current_application_letter = FactoryGirl.create(:application_letter, user: user, event: current_event, status: false)
+    other_application_letter = FactoryGirl.create(:application_letter_rejected, user: user, event: other_event)
+    current_application_letter = FactoryGirl.create(:application_letter_rejected, user: user, event: current_event)
 
     expect(current_application_letter.user.rejected_applications_count(current_event)).to eq(1)
   end

@@ -95,6 +95,15 @@ Request.find_or_create_by!(
 # Applicant's application letter
 ApplicationLetter.find_or_create_by!(
     motivation: "Ich würde sehr gerne an eurer Veranstaltung teilnehmen",
+    grade: 10,
+    experience: "Internet",
+    coding_skills: "HTML",
+    emergency_number: "01234567891",
+    vegeterian: false,
+    vegan: false,
+    allergic: false,
+    allergies: "",
+    status: nil,
     user: applicant,
     event: event
 )

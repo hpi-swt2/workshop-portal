@@ -28,7 +28,7 @@ class Event < ActiveRecord::Base
   # @param none
   # @return [Int] for number of occupied places
   def compute_occupied_places
-    application_letters.where(status: true).count
+    application_letters.where(status: ApplicationLetter.statuses[:accepted]).count
   end
 
   scope :draft_is, ->(draft) { where("draft = ?", draft) }
