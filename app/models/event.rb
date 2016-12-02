@@ -41,16 +41,6 @@ class Event < ActiveRecord::Base
   def has_date_ranges
     errors.add(:base, 'Bitte mindestens eine Zeitspanne auswählen!') if date_ranges.blank?
   end
-
-  def self.human_attribute_name(*args)
-    if args[0].to_s == "max_participants"
-      return "Maximale Teilnehmerzahl"
-    elsif args[0].to_s == "date_ranges"
-      return "Zeitspannen"
-    end
-
-    super
-  end
   
   # Returns the participants whose application for this Event has been accepted
   #
