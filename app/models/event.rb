@@ -69,6 +69,8 @@ class Event < ActiveRecord::Base
     self.agreement_letters.where(user: user).take
   end
 
+  enum kind: [ :workshop, :camp ]
+
   # Returns the number of free places of the event, this value may be negative
   #
   # @param none
