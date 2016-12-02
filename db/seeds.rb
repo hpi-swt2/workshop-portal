@@ -30,13 +30,20 @@ users.each do |user|
   user.save!
 end
 
+date_range = DateRange.find_or_create_by!(
+  start_date: Date.today,
+  end_date: Date.tomorrow
+)
+
 # An event
-event = Event.find_or_create_by!(
+event = Event.new(
     name: "Messung und Verarbeitung von Umweltdaten",
     description: "Veranstaltung mit Phidgets und Etoys",
     max_participants: 20,
     active: true
 )
+event.date_ranges << date_range
+event.save
 
 # Pupil's profile
 Profile.find_or_create_by!(
@@ -103,7 +110,6 @@ ApplicationLetter.find_or_create_by!(
     vegan: false,
     allergic: false,
     allergies: "",
-    status: nil,
     user: applicant,
     event: event
 )
