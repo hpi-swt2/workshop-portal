@@ -80,3 +80,17 @@ RSpec.configure do |config|
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
 end
+
+# Selects a given date object for a select matched by css_selector
+# adapted from http://stackoverflow.com/questions/6729786/how-to-select-date-from-a-select-box-using-capybara-in-rails-3
+#
+# @param date [Date] the date to be selected
+# @param locator [string] locator to match for the surronding date picker element
+def select_date_within_selector(date, locator)
+  month_name = I18n.l(date, format: '%B')
+  within locator do
+    find("option[value='#{date.month}']", text: month_name).select_option
+    find("option[value='#{date.day}']", text: date.day.to_s).select_option
+    find("option[value='#{date.year}']").select_option
+  end
+end
