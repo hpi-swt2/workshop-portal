@@ -44,7 +44,7 @@
                   events_path, :class => 'btn btn-default'%>
 
       <%= link_to t('.print_all'),
-                  print_applications_event_path(@event.id), :class => 'btn btn-default'%>
+                  print_applications_event_path(@event.id), :target => "_blank", :class => 'btn btn-default'%>
     </div>
     <div class="btn-group pull-right" role="group">
       <%= link_to "Zusagen verschicken",
