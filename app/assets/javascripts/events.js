@@ -3,6 +3,7 @@
 
 $(document).on('turbolinks:load', function() {
   $('#event-add-date-picker').bind('click', function() {
+    console.log('PLS ADD');
     // insert our template to the ui and add a remove button
     $(EVENT_DATE_PICKER_TEMPLATE)
       .insertBefore(this)

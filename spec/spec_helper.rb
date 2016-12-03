@@ -24,7 +24,11 @@ RSpec.configure do |config|
   # Use color in STDOUT
   config.color = true
 
-  Capybara.javascript_driver = :poltergeist
+  Capybara.register_driver :poltergeist_debug do |app|
+    Capybara::Poltergeist::Driver.new(app, :inspector => true)
+  end
+
+  Capybara.javascript_driver = :poltergeist_debug
   # Capybara.default_max_wait_time = 5
 
   # Use color not only in STDOUT but also in pagers and files
