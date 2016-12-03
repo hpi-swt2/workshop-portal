@@ -24,6 +24,7 @@ RSpec.configure do |config|
   config.color = true
 
   Capybara.javascript_driver = :webkit
+  Capybara.default_max_wait_time = 5
 
   # Use color not only in STDOUT but also in pagers and files
   # config.tty = true
