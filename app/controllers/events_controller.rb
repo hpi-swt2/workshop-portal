@@ -67,43 +67,24 @@ class EventsController < ApplicationController
 
   # POST /events/1/badges
   def print_badges
-    @event = Event.find(params[:event_id])
-    @participants = @event.participants
-
-    # TODO: undo mock and get checked participants from view
-    @participants.push(create_mock_participants)
-    @participants.push(create_mock_participants)
-    @participants.push(create_mock_participants)
-    @participants.push(create_mock_participants)
+    names = badges_name_params
 
     # pdf document initialization
     pdf = Prawn::Document.new(:page_size => 'A4')
     pdf.stroke_color "000000"
 
     # creates badge edges as rectangles left-upper-bound[x,y], width, height
-    @participants.each_with_index do |participant, index|
+    names.each_with_index do |participant, index|
       if index % 2 == 0 # left column badges
-        create_badge(pdf, participant.name, 0, 750 - index / 2 * 150)
+        create_badge(pdf, participant, 0, 750 - index / 2 * 150)
         index = index - 1
       else
-        create_badge(pdf, participant.name, 260, 750 - index / 2 * 150)
+        create_badge(pdf, participant, 260, 750 - index / 2 * 150)
       end
 
     end
 
-    #create_badge(pdf, 0, 750)
-    #create_badge(pdf, 0, 600)
-    #create_badge(pdf, 0, 450)
-    #create_badge(pdf, 0, 300)
-    #create_badge(pdf, 0, 150)
-
-    #create_badge(pdf, 260, 750)
-    #create_badge(pdf, 260, 600)
-    #create_badge(pdf, 260, 450)
-    #create_badge(pdf, 260, 300)
-    #create_badge(pdf, 260, 150)
-
-    send_data pdf.render, :filename => "x.pdf", :type => "application/pdf", disposition: "inline"
+    send_data pdf.render, :filename => "badges.pdf", :type => "application/pdf", disposition: "inline"
   end
 
   # GET /events/1/participants
@@ -145,6 +126,21 @@ class EventsController < ApplicationController
       params.require(:event).permit(:name, :description, :max_participants, :active, :kind, :organizer, :knowledge_level)
     end
 
+    # Generate all names to print from the query-params
+    #
+    # @return participant_names as array of strings
+    def badges_name_params
+      participant_names = []
+      params.each do | k, v |
+        # check if key is containing the keyword, schema of name_param: #{participant.id}_print_#{participant.name}
+        if k.include? "_print_"
+          name_index = k.index("_print_") + "_print_".chars.length
+          participant_names.push(k[name_index .. k.chars.length])
+        end
+      end
+      participant_names
+    end
+
     # Create a name badge in a given pdf
     #
     # @param pdf, is a prawn pdf-object
@@ -160,6 +156,6 @@ class EventsController < ApplicationController
 
     # TODO: remove
     def create_mock_participants
-      participant = User.new(name: "Max Mustermann")
+      participant = User.new(name: "Max Mustermann", id: SecureRandom.uuid)
     end
 end

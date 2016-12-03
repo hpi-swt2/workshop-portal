@@ -168,6 +168,8 @@ RSpec.describe EventsController, type: :controller do
   end
 
   describe "GET #badges" do
+    let(:valid_attributes) { FactoryGirl.attributes_for(:event_with_accepted_applications) }
+
     it "assigns the requested event as @event" do
       event = Event.create! valid_attributes
       get :badges, event_id: event.to_param, session: valid_session
@@ -176,10 +178,15 @@ RSpec.describe EventsController, type: :controller do
   end
 
   describe "POST #badges" do
-    it "assigns the requested event as @event" do
+    it "contains two name badges with title 'Max Mustermann'" do
       event = Event.create! valid_attributes
-      post :print_badges, event_id: event.to_param, session: valid_session
-      expect(assigns(:event)).to eq(event)
+      rendered_pdf = post :print_badges,
+                          event_id: event.to_param,
+                          session: valid_session,
+                          "1234_print_Max Mustermann"  => 1,
+                          "1235_print_Max Mustermann"  => 1
+      pdf = PDF::Inspector::Text.analyze(rendered_pdf.body)
+      expect(pdf.strings).to include("Max Mustermann")
     end
   end
 
