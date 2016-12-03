@@ -14,7 +14,7 @@ RSpec.describe AgreementLettersController, type: :controller do
 
     it "redirects to user profile" do
       post :create, { letter_upload: @file, event_id: @event.id }
-      expect(response).to have_http_status(:redirect)
+      expect(response).to redirect_to(profile_path(@user.profile))
     end
 
     it "shows error when POSTed without a file" do
@@ -59,7 +59,6 @@ RSpec.describe AgreementLettersController, type: :controller do
     end
 
     it "updates existing db entry when replacing a file" do
-      AgreementLetter.where(user: @user, event: @event).each { |a| File.delete.a.path }
       post :create, { letter_upload: @file, event_id: @event.id }
       expect(AgreementLetter.where(user: @user, event: @event).size).to eq 1
       post :create, { letter_upload: @another_file, event_id: @event.id }
@@ -67,7 +66,6 @@ RSpec.describe AgreementLettersController, type: :controller do
     end
 
     it "overwrites file when user uploads to same event twice" do
-      AgreementLetter.where(user: @user, event: @event).each { |a| a.delete }
       post :create, { letter_upload: @file, event_id: @event.id }
       @agreement_letter = assigns(:agreement_letter)
       expect(File.size(@agreement_letter.path)).to eq @file.size
@@ -76,15 +74,4 @@ RSpec.describe AgreementLettersController, type: :controller do
       expect(File.size(@agreement_letter.path)).to eq @another_file.size
     end
   end
-
-  describe "GET #show" do
-    it "redirects to user profile" do
-      @user = FactoryGirl.create(:user, role: :pupil)
-      @user.profile ||= FactoryGirl.create(:profile)
-      sign_in @user
-      get :show
-      expect(response).to have_http_status(:redirect)
-    end
-  end
-
 end

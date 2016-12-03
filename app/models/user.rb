@@ -27,7 +27,7 @@ class User < ActiveRecord::Base
 
   before_create :set_default_role
 
-  ROLES = %i[pupil tutor organizer admin]
+  ROLES = %i[pupil coach organizer admin]
 
   def role?(base_role)
     return false unless role
@@ -39,6 +39,10 @@ class User < ActiveRecord::Base
     self.role ||= :pupil
   end
 
+  # Returns the events for which the user's application has been accepted
+  #
+  # @param none
+  # @return [Array<Event>] the user's events
   def events
     accepted_applications = self.application_letters.select { |a| a.status == true }
     accepted_applications.collect { |a| a.event }
@@ -64,12 +68,12 @@ class User < ActiveRecord::Base
     event_start = given_event.start_date
     event_start_is_before_birthday = event_start.month > self.profile.birth_date.month || (event_start.month == self.profile.birth_date.month && event_start.day >= self.profile.birth_date.day)
     age_at_event_start = event_start.year - self.profile.birth_date.year - (event_start_is_before_birthday ? 0 : 1)
-	return false unless age_at_event_start >= 18
-	return true
+	return age_at_event_start >= 18
   end
   
   has_one :profile
   has_many :application_letters
+  has_many :agreement_letters
   has_many :requests
 
   # Returns the number of accepted applications from the user without counting status of current event application

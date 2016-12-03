@@ -4,8 +4,6 @@
 </div>
 
 <dl class="dl-horizontal">
-  <dt><strong><%= model_class.human_attribute_name(:cv) %>:</strong></dt>
-  <dd><%= @profile.cv %></dd>
   <dt><strong><%= model_class.human_attribute_name(:user_id) %>:</strong></dt>
   <dd><%= @profile.user_id %></dd>
   <dt><strong><%= model_class.human_attribute_name(:graduates_school_in) %>:</strong></dt>
@@ -27,15 +25,19 @@
   <thead>
     <tr>
       <th>id</th>
-      <th>letter of agreement</th>
+      <th><%= t('agreement_letters.agreement_letter') %></th>
     </tr>
   </thead>
   <tbody>
     <% @profile.user.events.each do |event| %>
       <tr>
-        <td>id</td>
+        <td><%= event.id %></td>
         <td>
-          <%= render 'upload_form', event_id: event.id %>
+          <% if @profile.adult? %>
+            <%= render('upload_form',
+              event_id: event.id,
+              agreement_letter: event.agreement_letter_for(@profile.user)) %>
+          <% end %>
         </td>
       </tr>
     <% end %>

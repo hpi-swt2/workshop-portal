@@ -58,7 +58,7 @@ class Event < ActiveRecord::Base
   # @return whether this event appears unreasonably long as defined by
   #         the corresponding constant
   def unreasonably_long
-    end_date - start_date > UNREASONABLY_LONG_DATE_SPAN
+    end_date - start_date > Rails.configuration.unreasonably_long_event_time_span
   end
 
   # validation function on whether we have at least one date range
@@ -74,6 +74,41 @@ class Event < ActiveRecord::Base
     end
 
     super
+  end
+  
+  # Returns the participants whose application for this Event has been accepted
+  #
+  # @param none
+  # @return [Array<User>] the event's participants
+  def participants
+    accepted_applications = application_letters.where(status: ApplicationLetter.statuses[:accepted])
+    accepted_applications.collect { |a| a.user }
+  end
+
+  # Returns the agreement letter a user submitted for this event
+  #
+  # @param user [User] the user whose agreement letter we want
+  # @return [AgreementLetter, nil] the user's agreement letter or nil
+  def agreement_letter_for(user)
+    self.agreement_letters.where(user: user).take
+  end
+
+  enum kind: [ :workshop, :camp ]
+
+  # Returns the number of free places of the event, this value may be negative
+  #
+  # @param none
+  # @return [Int] for number of free places available
+  def compute_free_places
+    max_participants - compute_occupied_places
+  end
+
+  # Returns the number of already occupied places of the event
+  #
+  # @param none
+  # @return [Int] for number of occupied places
+  def compute_occupied_places
+    application_letters.where(status: ApplicationLetter.statuses[:accepted]).count
   end
   
   protected
