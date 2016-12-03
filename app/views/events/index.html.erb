@@ -5,7 +5,6 @@
 <table class="table table-striped">
   <thead>
     <tr>
-      <th><%= model_class.human_attribute_name(:id) %></th>
       <th><%= model_class.human_attribute_name(:name) %></th>
       <th><%= model_class.human_attribute_name(:description) %></th>
       <th><%= model_class.human_attribute_name(:max_participants) %></th>
@@ -19,8 +18,7 @@
   <tbody>
     <% @events.each do |event| %>
       <tr>
-        <td><%= link_to event.id, event_path(event) %></td>
-        <td><%= event.name %></td>
+        <td><%= link_to event.name, event_path(event) %></td>
         <td><%= event.description %></td>
         <td><%= event.max_participants %></td>
         <td><%= event.active %></td>
