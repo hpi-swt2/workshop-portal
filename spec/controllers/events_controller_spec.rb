@@ -47,8 +47,12 @@ RSpec.describe EventsController, type: :controller do
       }
   }
 
+  # This should return the minimal set of attributes required to create a valid
+  # Event. As you add validations to Event, be sure to
+  # adjust the attributes here as well.
   let(:valid_attributes) { FactoryGirl.attributes_for(:event) }
-  let(:invalid_attributes) { FactoryGirl.build(:event, max_participants: "twelve").attributes }
+
+  let(:invalid_attributes) { FactoryGirl.attributes_for(:event, max_participants: "twelve") }
 
   let(:valid_attributes_for_having_participants) { FactoryGirl.attributes_for(:event_with_accepted_applications) }
   # This should return the minimal set of values that should be in the session
