@@ -89,13 +89,6 @@ end
 def select_date_within_selector(date, locator)
   month_name = I18n.l(date, format: '%B')
 
-  # within doesn't wait for us, so we wait ourselves
-  if locator.is_a? String
-    Timeout.timeout(30) do
-      loop until find(:css, locator).present?
-    end
-  end
-
   within locator do
     find("option[value='#{date.month}']", text: month_name).select_option
     find("option[value='#{date.day}']", text: date.day.to_s).select_option
