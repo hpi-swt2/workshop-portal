@@ -18,13 +18,14 @@
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 
 require 'rspec/rails'
+require 'capybara/poltergeist'
 
 RSpec.configure do |config|
   # Use color in STDOUT
   config.color = true
 
-  Capybara.javascript_driver = :webkit
-  Capybara.default_max_wait_time = 5
+  Capybara.javascript_driver = :poltergeist
+  # Capybara.default_max_wait_time = 5
 
   # Use color not only in STDOUT but also in pagers and files
   # config.tty = true
