@@ -70,9 +70,10 @@ ActiveRecord::Schema.define(version: 20161129131315) do
     t.boolean  "active"
     t.datetime "created_at",                   null: false
     t.datetime "updated_at",                   null: false
-    t.integer  "kind",             default: 0
     t.string   "organizer"
     t.string   "knowledge_level"
+    t.boolean  "draft"
+    t.integer  "kind",             default: 0
   end
 
   create_table "profiles", force: :cascade do |t|
