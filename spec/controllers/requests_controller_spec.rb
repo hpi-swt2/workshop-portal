@@ -29,34 +29,91 @@ RSpec.describe RequestsController, type: :controller do
   # RequestsController. Be sure to keep this updated too.
   let(:valid_session) { {} }
 
-  describe "GET #index" do
-    it "assigns all requests as @requests" do
-      request = Request.create! valid_attributes
-      get :index, session: valid_session
-      expect(assigns(:requests)).to eq([request])
+  context "with an existing request" do
+    before :each do
+      # Cannot use @request, because this variable is already in use.
+      @a_request = Request.create! valid_attributes
     end
-  end
 
-  describe "GET #show" do
-    it "assigns the requested request as @request" do
-      request = Request.create! valid_attributes
-      get :show, id: request.to_param, session: valid_session
-      expect(assigns(:request)).to eq(request)
+    describe "GET #index" do
+      it "assigns all requests as @requests" do
+        get :index, session: valid_session
+        expect(assigns(:requests)).to eq([@a_request])
+      end
     end
-  end
 
-  describe "GET #new" do
-    it "assigns a new request as @request" do
-      get :new, session: valid_session
-      expect(assigns(:request)).to be_a_new(Request)
+    describe "GET #show" do
+      it "assigns the requested request as @request" do
+        get :show, id: @a_request.to_param, session: valid_session
+        expect(assigns(:request)).to eq(@a_request)
+      end
     end
-  end
 
-  describe "GET #edit" do
-    it "assigns the requested request as @request" do
-      request = Request.create! valid_attributes
-      get :edit, id: request.to_param, session: valid_session
-      expect(assigns(:request)).to eq(request)
+    describe "GET #new" do
+      it "assigns a new request as @request" do
+        get :new, session: valid_session
+        expect(assigns(:request)).to be_a_new(Request)
+      end
+    end
+
+    describe "GET #edit" do
+      it "assigns the requested request as @request" do
+        get :edit, id: @a_request.to_param, session: valid_session
+        expect(assigns(:request)).to eq(@a_request)
+      end
+    end
+
+    describe "PUT #update" do
+      context "with valid params" do
+        let(:new_attributes) {
+          {
+              topics: "New awesome topics"
+          }
+        }
+
+        it "updates the requested request" do
+          put :update, id: @a_request.to_param, request: new_attributes, session: valid_session
+          @a_request.reload
+          expect(@a_request.topics).to eq(new_attributes[:topics])
+        end
+
+        it "assigns the requested request as @request" do
+          put :update, id: @a_request.to_param, request: valid_attributes, session: valid_session
+          expect(assigns(:request)).to eq(@a_request)
+        end
+
+        it "redirects to the request" do
+          put :update, id: @a_request.to_param, request: valid_attributes, session: valid_session
+          expect(response).to redirect_to(@a_request)
+        end
+      end
+
+      context "with invalid params" do
+        it "assigns the request as @request" do
+          put :update, id: @a_request.to_param, request: invalid_attributes, session: valid_session
+          expect(assigns(:request)).to eq(@a_request)
+        end
+
+        it "re-renders the 'edit' template" do
+          put :update, id: @a_request.to_param, request: invalid_attributes, session: valid_session
+          expect(response).to render_template("edit")
+        end
+      end
+    end
+
+    describe "DELETE #destroy" do
+      it "destroys the requested request" do
+        request = Request.create! valid_attributes
+        expect {
+          delete :destroy, id: @a_request.to_param, session: valid_session
+        }.to change(Request, :count).by(-1)
+      end
+
+      it "redirects to the requests list" do
+        request = Request.create! valid_attributes
+        delete :destroy, id: @a_request.to_param, session: valid_session
+        expect(response).to redirect_to(requests_url)
+      end
     end
   end
 
@@ -92,63 +149,4 @@ RSpec.describe RequestsController, type: :controller do
       end
     end
   end
-
-  describe "PUT #update" do
-    context "with valid params" do
-      let(:new_attributes) {
-        {
-            topics: "New awesome topics"
-        }
-      }
-
-      it "updates the requested request" do
-        request = Request.create! valid_attributes
-        put :update, id: request.to_param, request: new_attributes, session: valid_session
-        request.reload
-        expect(request.topics).to eq(new_attributes[:topics])
-      end
-
-      it "assigns the requested request as @request" do
-        request = Request.create! valid_attributes
-        put :update, id: request.to_param, request: valid_attributes, session: valid_session
-        expect(assigns(:request)).to eq(request)
-      end
-
-      it "redirects to the request" do
-        request = Request.create! valid_attributes
-        put :update, id: request.to_param, request: valid_attributes, session: valid_session
-        expect(response).to redirect_to(request)
-      end
-    end
-
-    context "with invalid params" do
-      it "assigns the request as @request" do
-        request = Request.create! valid_attributes
-        put :update, id: request.to_param, request: invalid_attributes, session: valid_session
-        expect(assigns(:request)).to eq(request)
-      end
-
-      it "re-renders the 'edit' template" do
-        request = Request.create! valid_attributes
-        put :update, id: request.to_param, request: invalid_attributes, session: valid_session
-        expect(response).to render_template("edit")
-      end
-    end
-  end
-
-  describe "DELETE #destroy" do
-    it "destroys the requested request" do
-      request = Request.create! valid_attributes
-      expect {
-        delete :destroy, id: request.to_param, session: valid_session
-      }.to change(Request, :count).by(-1)
-    end
-
-    it "redirects to the requests list" do
-      request = Request.create! valid_attributes
-      delete :destroy, id: request.to_param, session: valid_session
-      expect(response).to redirect_to(requests_url)
-    end
-  end
-
 end

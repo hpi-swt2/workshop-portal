@@ -32,18 +32,4 @@ class DateRange < ActiveRecord::Base
       errors.add(:end_date, "kann nicht vor Start-Datum liegen.")
     end
   end
-
-  def self.human_attribute_name(*args)
-    if args[0].to_s == "start_date"
-      return "Anfangs-Datum"
-    elsif args[0].to_s == "end_date"
-      return "End-Datum"
-    end
-
-    # NOTE: In our quest for 100% code coverage we can't have this line.
-    # If anyone is to add a new attribute that uses the default label,
-    # reenable this line.
-    # super
-  end
-
 end
