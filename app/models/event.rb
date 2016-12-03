@@ -20,16 +20,6 @@ class Event < ActiveRecord::Base
 
   validates :max_participants, numericality: { only_integer: true, greater_than: 0 }
   
-  # Returns all users that applied to this event and were accepted.
-  def participants
-	@accepted_applications = self.application_letters.select { |application_letter| application_letter.status == true }
-	@participants = []
-	for application in @accepted_applications do
-		@participants.push(application.user)
-	end
-	@participants
-  end
-  
   # Returns all participants for this event in following order:
   # 1. All participants that have to submit an letter of agreement but did not yet do so, ordered by name.
   # 2. All participants that have to submit an letter of agreement and did do so, ordered by name.

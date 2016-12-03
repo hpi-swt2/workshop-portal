@@ -33,11 +33,10 @@ describe User do
   end
 
   it "returns the users events" do
-    true_letter = FactoryGirl.create(:application_letter_accepted)
-    false_letter = FactoryGirl.create(:application_letter_rejected)
-    application_letters = [true_letter, false_letter]
-    user = FactoryGirl.build(:user, application_letters: application_letters)
-    expect(user.events).to eq [true_letter.event]
+	user = FactoryGirl.build(:user)
+    true_letter = FactoryGirl.create(:application_letter_accepted, user: user)
+    false_letter = FactoryGirl.create(:application_letter_rejected, user: user)
+    expect(user.events).to eq ([true_letter.event])
   end
   
   it "returns the correct letter of agreement for a given event" do

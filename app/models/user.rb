@@ -44,7 +44,7 @@ class User < ActiveRecord::Base
   # @param none
   # @return [Array<Event>] the user's events
   def events
-    accepted_applications = self.application_letters.select { |a| a.status == ApplicationLetter.accepted }
+    accepted_applications = application_letters.where(status: ApplicationLetter.statuses[:accepted])
     accepted_applications.collect { |a| a.event }
   end
 
