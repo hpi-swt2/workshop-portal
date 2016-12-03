@@ -15,3 +15,14 @@ $(document).on('turbolinks:load', function() {
   });
 });
 
+function addEventDatePicker() {
+  console.log('BLA BLUB');
+  var picker = $('#event-add-date-picker');
+  $(EVENT_DATE_PICKER_TEMPLATE)
+    .insertBefore(picker)
+    .append(' <a style="float: none" class="close">&times;</a>')
+    .find('.close')
+    .click(function() {
+      $(this).parent('div').remove();
+    });
+}
