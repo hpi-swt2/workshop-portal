@@ -7,14 +7,23 @@ module ApplicationHelper
 
   def dropdown_items
     o = ''
+    # everyone gets settings
     o << (menu_item t(:settings, scope: 'navbar'), edit_user_registration_path)
-    if current_user.profile.present? and current_user.role? :pupil
+    # everyone gets their profile, if it exists
+    if current_user.profile.present?
       o << (menu_item t(:profile, scope: 'navbar'), profile_path(current_user.profile))
     end
-    if current_user.role? :pupil
+    # pupils get their applications
+    if current_user.role == "pupil"
       o << (menu_item t(:my_application_letters, scope: 'navbar'), application_letters_path)
     end
+    # admins get user management
+    if current_user.role == "admin"
+      o << (menu_item t(:user_management, scope: 'navbar'), profiles_path)
+    end
+    # everyone gets logout
     o << (menu_item t(:logout, scope: 'navbar'), destroy_user_session_path, :method => :delete)
+
     o.html_safe
   end
 end

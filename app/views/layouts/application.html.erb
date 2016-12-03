@@ -12,11 +12,6 @@
   <%= nav_bar do %>
     <%= menu_group do %>
       <%= menu_items %>
-      <% if user_signed_in? and !current_user.role? :pupil %>
-        <%= menu_item t(:profiles, scope: 'navbar'), profiles_path %>
-        <%= menu_item t(:application_letters, scope: 'navbar'), application_letters_path %>
-      <% end %>
-
       <% if user_signed_in? %>
         <%= drop_down current_user.name do %>
           <%= dropdown_items %>

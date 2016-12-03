@@ -2,6 +2,18 @@ require 'rails_helper'
 
 RSpec.describe 'navbar', type: :view do
 
+  it "shows Start, Veranstaltungen, Anfragen in the menu" do
+    %i[pupil organizer admin].each do |role|
+      user = FactoryGirl.create(:user, role: role)
+      sign_in user
+      render template: 'application/index', layout: 'layouts/application'
+
+      expect(rendered).to have_css(".nav a", text: 'Start')
+      expect(rendered).to have_css(".nav a", text: 'Veranstaltungen')
+      expect(rendered).to have_css(".nav a", text: 'Anfragen')
+    end
+  end
+
   context "logged in as pupil without a profile" do
     before(:each) do
       user = FactoryGirl.create(:user, role: :pupil)
@@ -9,20 +21,11 @@ RSpec.describe 'navbar', type: :view do
       render template: 'application/index', layout: 'layouts/application'
     end
 
-    it "shows Start, Veranstaltungen, Anfragen in the menu" do
-      expect(rendered).to have_css(".nav a", text: 'Start')
-      expect(rendered).to have_css(".nav a", text: 'Veranstaltungen')
-      expect(rendered).to have_css(".nav a", text: 'Anfragen')
-    end
-
     it "shows Profilinfo, Meine Bewerbungen, Ausloggen in the dropdown" do
       expect(rendered).to have_css(".nav .dropdown-menu a", text: 'Profilinfo')
       expect(rendered).to have_css(".nav .dropdown-menu a", text: 'Meine Bewerbungen')
       expect(rendered).to have_css(".nav .dropdown-menu a", text: 'Ausloggen')
-    end
-
-    it "shows no profile link" do
-      expect(rendered).to_not have_css(".nav .dropdown-menu a", text: 'Mein Profil')
+      expect(rendered).to have_css(".nav .dropdown-menu a", count: 3)
     end
   end
 
@@ -32,6 +35,32 @@ RSpec.describe 'navbar', type: :view do
       sign_in profile.user
       render template: 'application/index', layout: 'layouts/application'
       expect(rendered).to have_css(".nav .dropdown-menu a", text: 'Mein Profil')
+      expect(rendered).to have_css(".nav .dropdown-menu a", count: 4)
+    end
+  end
+
+  context "logged in as an admin" do
+    it "shows Profilinfo, Mein Profil, Benutzerverwaltung, Ausloggen" do
+      profile = FactoryGirl.create(:profile, user: (FactoryGirl.create :user, role: :admin))
+      sign_in profile.user
+      render template: 'application/index', layout: 'layouts/application'
+      expect(rendered).to have_css(".nav .dropdown-menu a", text: 'Profilinfo')
+      expect(rendered).to have_css(".nav .dropdown-menu a", text: 'Mein Profil')
+      expect(rendered).to have_css(".nav .dropdown-menu a", text: 'Benutzerverwaltung')
+      expect(rendered).to have_css(".nav .dropdown-menu a", text: 'Ausloggen')
+      expect(rendered).to have_css(".nav .dropdown-menu a", count: 4)
+    end
+  end
+
+  context "logged in as an organizer" do
+    it "shows Profilinfo, Mein Profil, Ausloggen" do
+      profile = FactoryGirl.create(:profile, user: (FactoryGirl.create :user, role: :organizer))
+      sign_in profile.user
+      render template: 'application/index', layout: 'layouts/application'
+      expect(rendered).to have_css(".nav .dropdown-menu a", text: 'Profilinfo')
+      expect(rendered).to have_css(".nav .dropdown-menu a", text: 'Mein Profil')
+      expect(rendered).to have_css(".nav .dropdown-menu a", text: 'Ausloggen')
+      expect(rendered).to have_css(".nav .dropdown-menu a", count: 3)
     end
   end
 end

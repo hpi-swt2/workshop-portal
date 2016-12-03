@@ -30,6 +30,7 @@ de:
     profiles: "Nutzer"
     application_letters: "Bewerbungen"
     my_application_letters: "Meine Bewerbungen"
+    user_management: "Benutzerverwaltung"
     requests: "Anfragen"
     profile: "Mein Profil"
     settings: "Profilinfo"
