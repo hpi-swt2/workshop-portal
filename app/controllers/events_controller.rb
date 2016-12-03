@@ -81,13 +81,12 @@ class EventsController < ApplicationController
     pdf.stroke_color "000000"
 
     # creates badge edges as rectangles left-upper-bound[x,y], width, height
-    # TODO: create dynamically from checked participants
     @participants.each_with_index do |participant, index|
       if index % 2 == 0 # left column badges
-        create_badge(pdf, 0, 750 - index / 2 * 150)
+        create_badge(pdf, participant.name, 0, 750 - index / 2 * 150)
         index = index - 1
       else
-        create_badge(pdf, 260, 750 - index / 2 * 150)
+        create_badge(pdf, participant.name, 260, 750 - index / 2 * 150)
       end
 
     end
@@ -146,14 +145,20 @@ class EventsController < ApplicationController
       params.require(:event).permit(:name, :description, :max_participants, :active, :kind, :organizer, :knowledge_level)
     end
 
-    def create_badge(pdf, x, y)
+    # Create a name badge in a given pdf
+    #
+    # @param pdf, is a prawn pdf-object
+    # @param name [String] is the name label of the new badge
+    # @param x [Integer] is the x-coordinate of the upper left corner of the new badge
+    # @param y [Integer] is the y-coordinate of the upper left corner of the new badge
+    def create_badge(pdf, name, x, y)
       width = 260
       height = 150
       pdf.stroke_rectangle [x, y], width, height
-      # TODO: the position is very hacky, make it better
-      pdf.draw_text "Max Mustermann", :at => [x + width / 2 - 50 , y - 20]
+      pdf.draw_text name, :at => [x + width / 2 - 50 , y - 20]
     end
 
+    # TODO: remove
     def create_mock_participants
       participant = User.new(name: "Max Mustermann")
     end
