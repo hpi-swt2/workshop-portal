@@ -42,12 +42,6 @@ describe "Event", type: :feature do
       select_date_within_selector(first_to, '.event-date-picker-end')
       click_link "Zeitspanne hinzufügen"
 
-      # FIXME if you have a better solution, thank the gods!
-      # Don't do this at home children. Capybara (on travis) does not wait
-      # correctly until our new datepicker appears, so we have to force it
-      # to wait manually
-      sleep 3
-
       select_date_within_selector(second_from, '.event-date-picker:nth-child(2) .event-date-picker-start')
       select_date_within_selector(second_to, '.event-date-picker:nth-child(2) .event-date-picker-end')
       click_button "Veranstaltung erstellen"
