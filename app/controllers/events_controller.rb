@@ -57,8 +57,8 @@ class EventsController < ApplicationController
 
   # GET /events/1/participants
   def participants
-	@event = Event.find(params[:id])
-	@participants = @event.participants
+    @event = Event.find(params[:id])
+    @participants = @event.participants
   end
   
   private
