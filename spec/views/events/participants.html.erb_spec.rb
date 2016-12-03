@@ -8,7 +8,7 @@ RSpec.describe "events/participants", type: :view do
 
   it "renders attributes" do
     render
-    expect(rendered).to have_text("Einverständniserklärung")
+    expect(rendered).to have_text(t(:participants, scope:'events.participants'))
     expect(rendered).to have_text(@event.participants[0].name)
   end
   
@@ -20,7 +20,7 @@ RSpec.describe "events/participants", type: :view do
 	assign(:event, @event)
 	assign(:participants, @event.participants)
 	render
-	expect(rendered).to have_text("nicht vorhanden")
+	expect(rendered).to have_text(t(:unavailable, scope:'events.participants'))
   end
   
   it "detects available agreement letters" do
@@ -32,8 +32,8 @@ RSpec.describe "events/participants", type: :view do
 	assign(:event, @event)
 	assign(:participants, @event.participants)
 	render
-	expect(rendered).to have_text("vorhanden")
-	expect(rendered).not_to have_text("nicht vorhanden")
+	expect(rendered).to have_text(t(:available, scope:'events.participants'))
+	expect(rendered).not_to have_text(t(:unavailable, scope:'events.participants'))
   end
   
   it "detects when agreement letters are unnecessary" do
@@ -45,7 +45,7 @@ RSpec.describe "events/participants", type: :view do
 	assign(:event, @event)
 	assign(:participants, @event.participants)
 	render
-	expect(rendered).to have_text("unnötig")
+	expect(rendered).to have_text(t(:unnecessary, scope:'events.participants'))
   end
   
 end

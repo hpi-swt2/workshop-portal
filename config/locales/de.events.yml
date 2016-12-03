@@ -14,6 +14,11 @@ de:
       occupied_places:
         one: '%{count} Platz belegt'
         other: '%{count} Plätze belegt'
+    participants:
+      participants: "Teilnehmer"
+      unnecessary: "unnötig"
+      available: "vorhanden"
+      unavailable: "nicht vorhanden"
 
   activerecord:
       models:
@@ -26,3 +31,5 @@ de:
           active: "Aktiv"
           organizer: "Veranstalter"
           knowledge_level: "Kenntnisstand"
+
+  

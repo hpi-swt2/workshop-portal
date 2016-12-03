@@ -1,25 +1,16 @@
 <%- model_class = Event -%>
 <div class="page-header">
-  <h1><%=t '.title', :default => model_class.model_name.human.titleize %></h1>
+  <h1><%=t '.title', :default => model_class.model_name.human.titleize %> (<%= @event.kind.humanize %>)</h1>
 </div>
 
-<dl class="dl-horizontal">
-  <dt><strong><%= model_class.human_attribute_name(:name) %>:</strong></dt>
-  <dd><%= @event.name %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:description) %>:</strong></dt>
-  <dd><%= @event.description %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:max_participants) %>:</strong></dt>
-  <dd><%= @event.max_participants %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:active) %>:</strong></dt>
-  <dd><%= @event.active %></dd>
-</dl>
+<%= render :partial => 'show_event' %>
 
-<h1>Teilnehmer</h1>
+<h1><%= t '.participants' %></h1>
 <table>
   <tr>
-    <th>Name</th>
-    <th>Email</th>
-	<th>Einverständniserklärung</th>
+    <th><%= t 'activerecord.attributes.profile.name' %></th>
+    <th><%= t 'activerecord.attributes.profile.email' %></th>
+	<th><%= t 'agreement_letters.agreement_letter' %></th>
   </tr>  
   
   <% @participants.each do |participant| %>
@@ -33,11 +24,11 @@
     </td>
 	<td>
 	  <% if participant.older_than_18_at_start_date_of_event?(@event) %>
-	    <p class="agreement-letter-unnecessary"> unnötig </p>
+	    <p class="text-muted"> <%= t '.unnecessary' %> </p>
 	  <% elsif participant.agreement_letter_for_event?(@event) %>
-	    <p class="agreement-letter-available" title="<%= participant.agreement_letter_for_event(@event).updated_at %>"> vorhanden </p>
+	    <p class="text-success" title="<%= participant.agreement_letter_for_event(@event).updated_at %>"> <%= t '.available' %> </p>
 	  <% else %>
-	    <p class="agreement-letter-missing"> nicht vorhanden </p>
+	    <p class="text-danger"><%= t '.unavailable' %></p>
 	  <% end %>
 	</td>
   </tr>
