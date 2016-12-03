@@ -29,8 +29,10 @@ de:
     events: "Veranstaltungen"
     profiles: "Nutzer"
     application_letters: "Bewerbungen"
+    my_application_letters: "Meine Bewerbungen"
     requests: "Anfragen"
-    settings: "Einstellungen"
+    profile: "Mein Profil"
+    settings: "Profilinfo"
     login: "Einloggen"
     logout: "Ausloggen"
   users:
