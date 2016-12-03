@@ -91,7 +91,7 @@ def select_date_within_selector(date, locator)
 
   # within doesn't wait for us, so we wait ourselves
   if locator.is_a? String
-    Timeout.timeout(Capybara.default_max_wait_time) do
+    Timeout.timeout(30) do
       loop until find(:css, locator).present?
     end
   end
