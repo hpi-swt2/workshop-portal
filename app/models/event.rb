@@ -18,16 +18,6 @@ class Event < ActiveRecord::Base
   has_many :date_ranges
 
   validates :max_participants, numericality: { only_integer: true, greater_than: 0 }
-<<<<<<< HEAD
-  
-  def participants
-	@accepted_applications = self.application_letters.select { |application_letter| application_letter.status == true }
-	@participants = []
-	for application in @accepted_applications do
-		@participants.push(application.user)
-	end
-	@participants
-=======
   validate :has_date_ranges
 
 
@@ -85,6 +75,5 @@ class Event < ActiveRecord::Base
   # @return [Int] for number of occupied places
   def compute_occupied_places
     application_letters.where(status: ApplicationLetter.statuses[:accepted]).count
->>>>>>> dev
   end
 end

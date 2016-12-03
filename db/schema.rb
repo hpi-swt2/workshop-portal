@@ -11,11 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
-ActiveRecord::Schema.define(version: 20161123124500) do
-=======
 ActiveRecord::Schema.define(version: 20161129131315) do
->>>>>>> dev
 
   create_table "agreement_letters", force: :cascade do |t|
     t.integer  "user_id",    null: false
@@ -23,9 +19,6 @@ ActiveRecord::Schema.define(version: 20161129131315) do
     t.string   "path",       null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-<<<<<<< HEAD
-    t.boolean  "status"
-=======
   end
 
   add_index "agreement_letters", ["event_id"], name: "index_agreement_letters_on_event_id"
@@ -46,7 +39,6 @@ ActiveRecord::Schema.define(version: 20161129131315) do
     t.boolean  "vegan"
     t.boolean  "allergic"
     t.string   "allergies"
->>>>>>> dev
   end
 
   add_index "application_letters", ["event_id"], name: "index_application_letters_on_event_id"
