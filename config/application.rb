@@ -22,5 +22,8 @@ module WorkshopPortal
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
+
+    # see Event::unreasonably_long, unit in days
+    config.unreasonably_long_event_time_span = 300
   end
 end

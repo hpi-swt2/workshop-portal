@@ -1,7 +1,11 @@
 Rails.application.routes.draw do
   resources :requests
-  resources :application_letters, path: 'applications'
+  resources :application_letters, path: 'applications' do
+    resources :application_notes,
+      only: :create
+  end
   resources :events do
+    resources :agreement_letters, only: [:create], shallow: true
     get 'badges'
     post 'badges' => 'events#print_badges', as: :print_badges
   end

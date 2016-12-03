@@ -15,20 +15,16 @@
     </div>
   <% end %>
 
-  <div class="form-group">
-    <%= f.label :cv, :class => 'control-label col-lg-2' %>
-    <div class="col-lg-10">
-      <%= f.text_field :cv, :class => 'form-control' %>
-    </div>
-    <%=f.error_span(:cv) %>
-  </div>
-
   <%# Create an input field for each of the mandatory attributes%>
-  <% [:first_name, :last_name, :gender, :birth_date, :email, :school, :street_name, :zip_code, :city, :state, :country].each do |attr_name| %>
+  <% [:first_name, :last_name, :gender, :birth_date, :school, :street_name, :zip_code, :city, :state, :country].each do |attr_name| %>
     <div class="form-group">
       <%= f.label attr_name, :class => 'control-label col-lg-2 required'%>
       <div class="col-lg-10">
-        <%= f.text_field attr_name, :class => 'form-control' %>
+        <% unless attr_name == :birth_date %>
+          <%= f.text_field attr_name, :class => 'form-control' %>
+        <% else %>
+          <input id="profile_birth_date" class="form-control datepicker" data-provide="datepicker" value="<%=I18n.l @profile.public_send(attr_name) if @profile.public_send(attr_name)%>" name="profile[birth_date]" type="text">
+        <% end %>
       </div>
       <%=f.error_span(attr_name) %>
     </div>
@@ -38,7 +34,7 @@
   <div class="form-group">
     <%= f.label :graduates_school_in, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
-      <%= f.collection_select(:graduates_school_in, Array(Time.now.year..Time.now.year+15).unshift(I18n.t('helpers.label.profile.already_graduated')), :to_s, :to_s) %>
+      <%= f.collection_select(:graduates_school_in, Array(Time.now.year..Time.now.year+15).unshift(t '.already_graduated'), :to_s, :to_s) %>
     </div>
     <%=f.error_span(:graduates_school_in) %>
   </div>
@@ -53,3 +49,10 @@
   </div>
 
 <% end %>
+
+<script>
+$('.datepicker').datepicker({
+            language:"<%= I18n.locale %>",
+            format: "<%= I18n.t('date.formats.datepicker')%>",
+        });
+</script>

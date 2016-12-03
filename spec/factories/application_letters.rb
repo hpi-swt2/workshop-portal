@@ -8,17 +8,28 @@
 #  event_id    :integer          not null
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
-#  status      :boolean
-
+#  status      :integer          not null
+#
 FactoryGirl.define do
   factory :application_letter do
-    motivation "MyString"
+    grade 10
+    experience "None"
+    motivation "None"
+    coding_skills "None"
+    emergency_number "01234567891"
+    vegeterian false
+    vegan false
+    allergic true
+    allergies "Many"
     user
-	event
-	status nil
+    event
   end
 
-  factory :accepted_application_letter, parent: :application_letter do
-    status true
+  factory :application_letter_accepted, parent: :application_letter do
+    status :accepted
+  end
+
+  factory :application_letter_rejected, parent: :application_letter do
+    status :rejected
   end
 end
