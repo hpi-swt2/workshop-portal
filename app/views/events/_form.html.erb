@@ -76,7 +76,7 @@
       </a>
     </div>
     <%=f.error_span(:active) %>
-    <script>var EVENT_DATE_PICKER_TEMPLATE = '<%= date_picker_template.html_safe %>';</script>
+    <script>var EVENT_DATE_PICKER_TEMPLATE = '<%= date_picker_template.gsub("\n", "").html_safe %>';</script>
   </div>
   <div class="form-group">
     <%= f.label :organizer, :class => 'control-label col-lg-2' %>
