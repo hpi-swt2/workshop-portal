@@ -29,8 +29,8 @@ RSpec.feature "Event Applicant Overview", :type => :feature do
     @pupil.user.role = :pupil
     @pending_application = FactoryGirl.create(:application_letter, :event => @event, :user => @pupil.user)
     visit event_path(@event)
-    expect(page).to have_button("Zusagen verschicken", disabled: true)
-    expect(page).to have_button("Absagen verschicken", disabled: true)
+    expect(page).to have_button(I18n.t('events.applicants_overview.sending_acceptances'), disabled: true)
+    expect(page).to have_button(I18n.t('events.applicants_overview.sending_rejections'), disabled: true)
   end
 
   scenario "logged in as Organizer I want to be unable to send emails if there is a negative number of free places left" do
@@ -43,8 +43,8 @@ RSpec.feature "Event Applicant Overview", :type => :feature do
     @accepted_application = FactoryGirl.create(:application_letter_accepted, :event => @event, :user => @pupil1.user)
     @accepted_application_2 = FactoryGirl.create(:application_letter_accepted, :event => @event, :user => @pupil2.user)
     visit event_path(@event)
-    expect(page).to have_button("Zusagen verschicken", disabled: true)
-    expect(page).to have_button("Absagen verschicken", disabled: true)
+    expect(page).to have_button(I18n.t('events.applicants_overview.sending_acceptances'), disabled: true)
+    expect(page).to have_button(I18n.t('events.applicants_overview.sending_rejections'), disabled: true)
   end
 
   scenario "logged in as Organizer I want to open a modal by clicking on sending emails" do
@@ -57,7 +57,7 @@ RSpec.feature "Event Applicant Overview", :type => :feature do
     @accepted_application = FactoryGirl.create(:application_letter_accepted, :event => @event, :user => @pupil1.user)
     @accepted_application_2 = FactoryGirl.create(:application_letter_accepted, :event => @event, :user => @pupil2.user)
     visit event_path(@event)
-    click_button "Zusagen verschicken"
+    click_button I18n.t('events.applicants_overview.sending_acceptances')
     expect(page).to have_selector('div', :id => 'send-emails-modal')
   end
 

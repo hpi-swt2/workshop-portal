@@ -1,5 +1,5 @@
 <div class="container-fluid" id="applicants_overview">
-  <h3><%= t('.title', title: @event.name) %></h3>
+  <h3><%= t '.title', title: @event.name %></h3>
   <div id="free_places"><%= t '.free_places', count: @free_places %></div>
   <div id="occupied_places"><%= t '.occupied_places', count: @occupied_places %></div>
 
@@ -47,22 +47,22 @@
     </div>
     <div class="btn-group pull-right" role="group">
       <% if (!@event.applications_classified?) %>
-          <div class="tooltip-wrapper disabled has-tooltip" data-toggle="tooltip" title="Bewerbung(en) wurden noch nicht klassifiziert">
-            <%= button_tag "Zusagen verschicken", type: 'button', class: 'send-emails-button btn btn-default', disabled: true %>
+          <div class="tooltip-wrapper disabled has-tooltip" data-toggle="tooltip" title="<%= t '.unclassified_applications_left' %>">
+            <%= button_tag t('.sending_acceptances'), type: 'button', class: 'send-emails-button btn btn-default', disabled: true %>
           </div>
-          <div class="tooltip-wrapper disabled has-tooltip" data-toggle="tooltip" title="Bewerbung(en) wurden noch nicht klassifiziert">
-            <%= button_tag "Absagen verschicken", type: 'button', class: 'send-emails-button btn btn-default', disabled: true %>
+          <div class="tooltip-wrapper disabled has-tooltip" data-toggle="tooltip" title="<%= t '.unclassified_applications_left' %>">
+            <%= button_tag t('.sending_rejections'), type: 'button', class: 'send-emails-button btn btn-default', disabled: true %>
           </div>
       <% elsif (@event.compute_free_places < 0)%>
-          <div class="tooltip-wrapper disabled has-tooltip" data-toggle="tooltip" title="Maximale Teilnehmeranzahl wurde überschritten">
-            <%= button_tag "Zusagen verschicken", type: 'button', class: 'send-emails-button btn btn-default', disabled: true %>
+          <div class="tooltip-wrapper disabled has-tooltip" data-toggle="tooltip" title="<%= t '.maximum_number_of_participants_exeeded' %>">
+            <%= button_tag t('.sending_acceptances'), type: 'button', class: 'send-emails-button btn btn-default', disabled: true %>
           </div>
-          <div class="tooltip-wrapper disabled has-tooltip" data-toggle="tooltip" title="Maximale Teilnehmeranzahl wurde überschritten">
-            <%= button_tag "Absagen verschicken", type: 'button', class: 'send-emails-button btn btn-default', disabled: true %>
+          <div class="tooltip-wrapper disabled has-tooltip" data-toggle="tooltip" title="<%= t '.maximum_number_of_participants_exeeded' %>">
+            <%= button_tag t('.sending_rejections'), type: 'button', class: 'send-emails-button btn btn-default', disabled: true %>
           </div>
       <% else %>
-          <%= button_tag "Zusagen verschicken", type: 'button', class: 'btn btn-default', data: {toggle: 'modal', target: '#send-emails-modal', title: 'Zusagen verschicken', list: @event.accepted_applications_emails} %>
-          <%= button_tag "Absagen verschicken", type: 'button', class: 'btn btn-default', data: {toggle: 'modal', target: '#send-emails-modal', title: 'Absagen verschicken', list: @event.rejected_applications_emails} %>
+          <%= button_tag t('.sending_acceptances'), type: 'button', class: 'btn btn-default', data: {toggle: 'modal', target: '#send-emails-modal', title: t('.sending_acceptances'), list: @event.accepted_applications_emails} %>
+          <%= button_tag t('.sending_rejections'), type: 'button', class: 'btn btn-default', data: {toggle: 'modal', target: '#send-emails-modal', title: t('.sending_rejections'), list: @event.rejected_applications_emails} %>
       <% end %>
     </div>
   </div>
