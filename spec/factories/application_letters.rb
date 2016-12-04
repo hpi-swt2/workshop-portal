@@ -16,5 +16,8 @@ FactoryGirl.define do
     user
     event
     status nil
+    factory :application_letter_deadline_over do
+	    association :event, factory: :event, application_deadline: Date.yesterday
+  	end
   end
 end

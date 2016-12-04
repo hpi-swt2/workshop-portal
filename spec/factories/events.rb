@@ -19,5 +19,6 @@ FactoryGirl.define do
     active false
     organizer "Workshop-Organizer"
     knowledge_level "Workshop-Knowledge Level"
+    application_deadline Date.tomorrow
   end
 end
