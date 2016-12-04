@@ -37,6 +37,28 @@ describe "Event", type: :feature do
 
       expect(page).to have_text("End-Datum kann nicht vor Start-Datum liegen")
     end
+
+    it "should allow entering multiple time spans", js: true do
+      visit new_event_path
+
+      first_from = Date.today
+      first_to = Date.today.next_day(2)
+
+      second_from = Date.today.next_day(6)
+      second_to = Date.today.next_day(8)
+
+      fill_in 'Maximale Teilnehmerzahl', :with => 25
+      select_date_within_selector(first_from, '.event-date-picker-start')
+      select_date_within_selector(first_to, '.event-date-picker-end')
+      click_link "Zeitspanne hinzufügen"
+
+      select_date_within_selector(second_from, '.event-date-picker:nth-child(2) .event-date-picker-start')
+      select_date_within_selector(second_to, '.event-date-picker:nth-child(2) .event-date-picker-end')
+      click_button "Veranstaltung erstellen"
+
+      expect(page).to have_text(first_from.to_s + ' bis ' + first_to.to_s)
+      expect(page).to have_text(second_from.to_s + ' bis ' + second_to.to_s)
+    end
   end
 
   describe "show page" do

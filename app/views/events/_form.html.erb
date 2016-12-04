@@ -83,12 +83,12 @@
             .html_safe
         end
       %>
-      <a class="btn btn-xs btn-default" id="event-add-date-picker">
+      <a class="btn btn-xs btn-default" href="javascript:addEventDatePicker()" id="event-add-date-picker">
         Zeitspanne hinzufügen
       </a>
     </div>
     <%=f.error_span(:active) %>
-    <script>var EVENT_DATE_PICKER_TEMPLATE = '<%= date_picker_template.html_safe %>';</script>
+    <script>var EVENT_DATE_PICKER_TEMPLATE = '<%= date_picker_template.gsub("\n", "").html_safe %>';</script>
   </div>
   <div class="form-group">
     <%= f.label :organizer, :class => 'control-label col-lg-2' %>
