@@ -25,10 +25,10 @@ class ApplicationLettersController < ApplicationController
   # POST /applications
   def create
     @application_letter = ApplicationLetter.new(application_params)
-		#event must be param to new_application_letter_path
-		if params[:event_id]
-			@application_letter.event_id = params[:event_id]
-		end
+    #event must be param to new_application_letter_path
+    if params[:event_id]
+      @application_letter.event_id = params[:event_id]
+    end
     @application_letter.user_id = current_user.id
 
     if @application_letter.save
