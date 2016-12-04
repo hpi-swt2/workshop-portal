@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe 'navbar', type: :view do
 
   it "shows Start, Veranstaltungen, Anfragen in the menu" do
-    %i[pupil organizer admin].each do |role|
+    %i[pupil organizer coach admin].each do |role|
       user = FactoryGirl.create(:user, role: role)
       sign_in user
       render template: 'application/index', layout: 'layouts/application'
@@ -52,15 +52,17 @@ RSpec.describe 'navbar', type: :view do
     end
   end
 
-  context "logged in as an organizer" do
-    it "shows Profilinfo, Mein Profil, Ausloggen" do
-      profile = FactoryGirl.create(:profile, user: (FactoryGirl.create :user, role: :organizer))
-      sign_in profile.user
-      render template: 'application/index', layout: 'layouts/application'
-      expect(rendered).to have_css(".nav .dropdown-menu a", text: 'Profilinfo')
-      expect(rendered).to have_css(".nav .dropdown-menu a", text: 'Mein Profil')
-      expect(rendered).to have_css(".nav .dropdown-menu a", text: 'Ausloggen')
-      expect(rendered).to have_css(".nav .dropdown-menu a", count: 3)
+  context "logged in as an organizer or coach" do
+    %i[organizer coach].each do |role|
+      it "shows Profilinfo, Mein Profil, Ausloggen" do
+        profile = FactoryGirl.create(:profile, user: (FactoryGirl.create :user, role: role))
+        sign_in profile.user
+        render template: 'application/index', layout: 'layouts/application'
+        expect(rendered).to have_css(".nav .dropdown-menu a", text: 'Profilinfo')
+        expect(rendered).to have_css(".nav .dropdown-menu a", text: 'Mein Profil')
+        expect(rendered).to have_css(".nav .dropdown-menu a", text: 'Ausloggen')
+        expect(rendered).to have_css(".nav .dropdown-menu a", count: 3)
+      end
     end
   end
 end
