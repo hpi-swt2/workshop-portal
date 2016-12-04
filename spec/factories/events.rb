@@ -32,6 +32,13 @@ FactoryGirl.define do
       end
     end
 
+    trait :single_day do
+      after(:build) do |event|
+        event.date_ranges = []
+        event.date_ranges << FactoryGirl.create(:date_range, start_date: Date.tomorrow, end_date: Date.tomorrow)
+      end
+    end
+
     trait :with_multiple_date_ranges do
       after(:build) do |event|
         event.date_ranges = []
