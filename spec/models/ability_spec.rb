@@ -65,10 +65,29 @@ describe User do
       ability = Ability.new(user)
 
       expect(ability).to_not be_able_to(:edit, another_application)
-      expect(ability).to_not be_able_to(:show, another_application)
       expect(ability).to_not be_able_to(:update, another_application)
       expect(ability).to_not be_able_to(:destroy, another_application)
     end
+  end
+
+  it "cannot see another user's application as pupil" do
+    user = FactoryGirl.create(:user, role: :pupil)
+    another_user = FactoryGirl.create(:user)
+    another_application = FactoryGirl.create(:application_letter, user: another_user)
+    ability = Ability.new(user)
+
+
+    expect(ability).to_not be_able_to(:show, another_application)
+  end
+
+  it "can see another user's application as coach" do
+    user = FactoryGirl.create(:user, role: :coach)
+    another_user = FactoryGirl.create(:user)
+    another_application = FactoryGirl.create(:application_letter, user: another_user)
+    ability = Ability.new(user)
+
+
+    expect(ability).to be_able_to(:show, another_application)
   end
 
   %i[coach organizer].each do |role|

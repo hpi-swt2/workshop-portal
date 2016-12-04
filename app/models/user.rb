@@ -37,8 +37,18 @@ class User < ActiveRecord::Base
     self.role ||= :pupil
   end
 
+  # Returns the events for which the user's application has been accepted
+  #
+  # @param none
+  # @return [Array<Event>] the user's events
+  def events
+    accepted_applications = application_letters.where(status: ApplicationLetter.statuses[:accepted])
+    accepted_applications.collect { |a| a.event }
+  end
+
   has_one :profile
   has_many :application_letters
+  has_many :agreement_letters
   has_many :requests
 
   # Returns the number of accepted applications from the user without counting status of current event application
