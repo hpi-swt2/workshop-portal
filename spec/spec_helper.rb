@@ -17,13 +17,48 @@
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 
+require 'rspec/rails'
+require 'capybara/poltergeist'
+
 RSpec.configure do |config|
   # Use color in STDOUT
   config.color = true
 
+  Capybara.javascript_driver = :poltergeist
+
   # Use color not only in STDOUT but also in pagers and files
   # config.tty = true
-  
+
+  # by default capybara wraps every test in an undoable transaction, however
+  # js tests run asynchronously and thus break the pattern. DatabaseCleaner
+  # solves this problem by manually making sure the db is clean after tests.
+  config.use_transactional_fixtures = false
+  config.before(:suite) do
+    if config.use_transactional_fixtures?
+      raise(<<-MSG)
+        Delete line `config.use_transactional_fixtures = true` from rails_helper.rb
+        (or set it to false) to prevent uncommitted transactions being used in
+        JavaScript-dependent specs.
+        During testing, the app-under-test that the browser driver connects to
+        uses a different database connection to the database connection used by
+        the spec. The app's database connection would not be able to access
+        uncommitted transaction data setup over the spec's database connection.
+      MSG
+    end
+    DatabaseCleaner.clean_with(:truncation)
+  end
+  config.before(:each, type: :feature) do
+    if Capybara.current_driver != :rack_test
+      DatabaseCleaner.strategy = :truncation
+    end
+  end
+  config.before(:each) do
+    DatabaseCleaner.start
+  end
+  config.after(:each) do
+    DatabaseCleaner.clean
+  end
+
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
   # assertions if you prefer.
