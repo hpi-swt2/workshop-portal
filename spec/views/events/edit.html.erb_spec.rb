@@ -23,4 +23,16 @@ RSpec.describe "events/edit", type: :view do
     expect(rendered).to have_field("event_organizer", :placeholder => "optional")
     expect(rendered).to have_field("event_knowledge_level", :placeholder => "optional")
   end
+
+  it "should have a draft button for events that haven't been published" do
+    @event = assign(:event, FactoryGirl.create(:event, draft: true))
+    render
+    assert_select "input[name=draft]"
+  end
+
+  it "shouldn't have a draft button for events that have already been published" do
+    @event = assign(:event, FactoryGirl.create(:event, draft: false))
+    render
+    assert_select "input[name=draft]", false
+  end
 end

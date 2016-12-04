@@ -7,7 +7,7 @@ describe "Event", type: :feature do
         visit new_event_path
         fill_in "Maximale Teilnehmerzahl", :with => 25
         choose(kind)
-        click_button "Veranstaltung erstellen"
+        click_button I18n.t('.events.form.publish')
         expect(page).to have_text(kind)
       end
     end
@@ -16,7 +16,7 @@ describe "Event", type: :feature do
       visit new_event_path
       select_date_within_selector(Date.yesterday.prev_day, '.event-date-picker-start')
       select_date_within_selector(Date.yesterday, '.event-date-picker-end')
-      click_button "Veranstaltung erstellen"
+      click_button I18n.t('.events.form.publish')
       expect(page).to have_text("Anfangs-Datum darf nicht in der Vergangenheit liegen.")
     end
 
@@ -25,7 +25,7 @@ describe "Event", type: :feature do
       fill_in 'Maximale Teilnehmerzahl', :with => 25
       select_date_within_selector(Date.today, '.event-date-picker-start')
       select_date_within_selector(Date.today.next_year(3), '.event-date-picker-end')
-      click_button "Veranstaltung erstellen"
+      click_button I18n.t('.events.form.publish')
       expect(page).to have_text("End-Datum liegt ungewöhnlich weit vom Start-Datum entfernt.")
     end
 
@@ -33,7 +33,7 @@ describe "Event", type: :feature do
       visit new_event_path
       select_date_within_selector(Date.today, '.event-date-picker-start')
       select_date_within_selector(Date.today.prev_day(2), '.event-date-picker-end')
-      click_button "Veranstaltung erstellen"
+      click_button I18n.t('.events.form.publish')
 
       expect(page).to have_text("End-Datum kann nicht vor Start-Datum liegen")
     end
@@ -54,7 +54,7 @@ describe "Event", type: :feature do
 
       select_date_within_selector(second_from, '.event-date-picker:nth-child(2) .event-date-picker-start')
       select_date_within_selector(second_to, '.event-date-picker:nth-child(2) .event-date-picker-end')
-      click_button "Veranstaltung erstellen"
+      click_button I18n.t('.events.form.publish')
 
       expect(page).to have_text(first_from.to_s + ' bis ' + first_to.to_s)
       expect(page).to have_text(second_from.to_s + ' bis ' + second_to.to_s)
@@ -79,6 +79,7 @@ describe "Event", type: :feature do
       expect(page).to have_text(event.date_ranges.second.start_date.to_s +
                                 ' bis ' + event.date_ranges.second.end_date.to_s)
     end
+
   end
 
   describe "edit page" do
@@ -109,10 +110,9 @@ describe "Event", type: :feature do
       select_date_within_selector(dateStart, startPicker)
       select_date_within_selector(dateEnd, endPicker)
 
-      click_button 'Veranstaltung aktualisieren'
+      click_button I18n.t('.events.form.update')
 
       expect(page).to have_text(dateStart.to_s + ' bis ' + dateEnd.to_s)
     end
   end
 end
-
