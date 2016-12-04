@@ -108,7 +108,7 @@
   <div class="form-group">
     <div class="col-lg-offset-2 col-lg-10">
       <% if @event.draft == false %>
-        <%= f.submit nil, :name => 'publish', :class => 'btn btn-primary' %>
+        <%= f.submit t('.update'), :name => 'publish', :class => 'btn btn-primary' %>
       <% else %>
         <%= f.submit t('.publish'), :name => 'publish', :class => 'btn btn-primary' %>
         <%= f.submit t('.draft'), :name => 'draft', :class => 'btn btn-default' %>

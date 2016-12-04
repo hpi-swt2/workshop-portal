@@ -16,8 +16,9 @@ de:
         other: '%{count} Plätze belegt'
 
     form:
-      draft: "Als Entwurf speichern"
-      publish: "Veranstaltung veröffentlichen"
+      draft: "Speichern"
+      publish: "Veröffentlichen"
+      update: "Aktualisieren"
   activerecord:
       models:
         event: "Veranstaltung"
@@ -33,4 +34,4 @@ de:
   helpers:
     submit:
       event:
-        create: "%{model} veröffentlichen"
+        create: "Veröffentlichen"
