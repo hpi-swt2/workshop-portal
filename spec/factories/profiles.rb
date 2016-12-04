@@ -23,4 +23,9 @@ FactoryGirl.define do
     graduates_school_in "Bereits Abitur"
     user
   end
+
+  factory :adult_profile, parent: :profile do
+    birth_date  18.years.ago
+  end
+
 end

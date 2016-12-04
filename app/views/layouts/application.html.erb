@@ -11,19 +11,15 @@
   <%# https://github.com/seyhunak/twitter-bootstrap-rails#using-helpers %>
   <%= nav_bar do %>
     <%= menu_group do %>
-      <%= menu_item t(:home, scope: 'navbar'), root_path %>
-      <%= menu_item t(:events, scope: 'navbar'), events_path %>
-      <%= menu_item t(:profiles, scope: 'navbar'), profiles_path %>
-      <%= menu_item t(:requests, scope: 'navbar'), requests_path %>
-      <%= menu_item t(:application_letters, scope: 'navbar'), application_letters_path %>
+      <%= menu_items %>
       <% if user_signed_in? %>
         <%= drop_down current_user.name do %>
-            <%= menu_item t(:settings, scope: 'navbar'), edit_user_registration_path %>
-            <%= menu_item t(:logout, scope: 'navbar'), destroy_user_session_path, :method => :delete %>
+          <%= dropdown_items %>
         <% end %>
       <% else %>
         <%= menu_item t(:login, scope: 'navbar'), new_user_session_path %>
       <% end %>
+
     <% end %>
   <% end %>
 

@@ -23,10 +23,10 @@ describe Profile do
   end
 
   it "cannot create Profile without mandatory fields" do
-  	[:first_name, :last_name, :gender, :birth_date, :school, :street_name, :zip_code, :city, :state, :country].each do |attr|
-	    profile = FactoryGirl.build(:profile, attr => nil)
-	    expect(profile).to_not be_valid
-	  end
+    [:first_name, :last_name, :gender, :birth_date, :school, :street_name, :zip_code, :city, :state, :country].each do |attr|
+      profile = FactoryGirl.build(:profile, attr => nil)
+      expect(profile).to_not be_valid
+    end
   end
 
   it "returns correct age" do

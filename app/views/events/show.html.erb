@@ -1,7 +1,15 @@
 <%- model_class = Event -%>
 <div class="page-header">
-  <h1><%= t '.title', :default => model_class.model_name.human.titleize %></h1>
+  <h1><%=t '.title', :default => model_class.model_name.human.titleize %> (<%= @event.kind.humanize %>)</h1>
 </div>
+
+<% if @event.unreasonably_long %>
+  <div class="panel panel-warning">
+    <div class="panel-body">
+      End-Datum liegt ungewöhnlich weit vom Start-Datum entfernt.
+    </div>
+  </div>
+<% end %>
 
 <dl class="dl-horizontal">
   <dt><strong><%= model_class.human_attribute_name(:name) %>:</strong></dt>
@@ -12,6 +20,14 @@
   <dd><%= @event.max_participants %></dd>
   <dt><strong><%= model_class.human_attribute_name(:active) %>:</strong></dt>
   <dd><%= @event.active %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:date_ranges) %>:</strong></dt>
+  <dd>
+    <ul>
+    <% @event.date_ranges.each do |r| %>
+      <li><%= r.start_date.to_s %> bis <%= r.end_date.to_s %></li>
+    <% end %>
+    </ul>
+  </dd>
   <dt><strong><%= model_class.human_attribute_name(:organizer) %>:</strong></dt>
   <dd><%= @event.organizer %></dd>
   <dt><strong><%= model_class.human_attribute_name(:knowledge_level) %>:</strong></dt>
