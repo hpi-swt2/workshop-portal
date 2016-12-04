@@ -68,7 +68,7 @@
           end_picker = select_date(endDate, {prefix: 'date_ranges[end_date][]'}).gsub("\n", "") 
           "<div class=\"event-date-picker\">
             <div class=\"event-date-picker-start\">#{start_picker}</div>
-            bis
+            #{t 'date_range.to'}
             <div class=\"event-date-picker-end\">#{end_picker}</div>
           </div>"
         end %>
