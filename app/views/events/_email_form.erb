@@ -1,0 +1,14 @@
+<%= form_tag '/email', class: 'email-form' do %>
+    <div class="form-group">
+      <label for="to">An:</label>
+      <%= email_field_tag 'to', @email.addresses %>
+    </div>
+    <div class="form-group">
+      <label for="subject">Betreff:</label>
+      <%= text_field_tag 'subject', @email.subject %>
+    </div>
+    <div class="form-group">
+      <%= text_area_tag 'content', nil, cols: 15 %>
+    </div>
+    <%= button_tag 'Senden' %>
+<% end %>
