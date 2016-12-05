@@ -3,7 +3,6 @@
 # Table name: profiles
 #
 #  id         :integer          not null, primary key
-#  cv         :string
 #  user_id    :integer          not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
@@ -12,7 +11,16 @@ class Profile < ActiveRecord::Base
   belongs_to :user
 
   validates :user, presence: true
-  validates_presence_of :first_name, :last_name, :gender, :birth_date, :email, :school, :street_name, :zip_code, :city, :state, :country
+  validates_presence_of :first_name, :last_name, :gender, :birth_date, :school, :street_name, :zip_code, :city, :state, :country
+
+
+  # Returns true if the user is 18 years old or older
+  #
+  # @param none
+  # @return [Boolean] whether the user is an adult
+  def adult?()
+    self.birth_date >= 18.years.ago
+  end
 
   # Returns the age of the user based on the current date
   #
@@ -40,5 +48,4 @@ class Profile < ActiveRecord::Base
   def address
     street_name + ", " + zip_code + " " +  city + ", " + state + ", " + country
   end
-
 end
