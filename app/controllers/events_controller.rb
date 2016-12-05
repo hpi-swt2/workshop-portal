@@ -49,7 +49,7 @@ class EventsController < ApplicationController
 
   # GET /events/1/print_applications
   def print_applications
-    pdf = Prawn::Document.new(:page_size => 'A4')
+    pdf = Prawn::Document.new(page_size: 'A4')
     pdf.text "Application Overview for #{@event.name}"
     send_data pdf.render, filename: "applications_#{@event.name}_#{Date.today}.pdf", type: "application/pdf", disposition: "inline"
   end

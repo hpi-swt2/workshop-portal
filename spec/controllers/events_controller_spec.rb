@@ -183,11 +183,16 @@ RSpec.describe EventsController, type: :controller do
     it 'returns downloadable PDF' do
       event = Event.create! valid_attributes
       get :print_applications, id: event.to_param, session: valid_session
-      expect(response.headers["Content-Type"]).to eq "application/pdf"
+      PDF::Inspector::Text.analyze response.body
+    end
 
-      # for pdf-inspector gem
-      # analysis = PDF::Inspector::Text.analyze response.body
-      # expect(analysis.strings).to include event.name
-  end
+    it "returns a PDF with a correct overview page" do
+      event = Event.create! valid_attributes
+      get :print_applications, id: event.to_param, session: valid_session
+      page_analysis = PDF::Inspector::Page.analyze(response.body)
+      expect(page_analysis.pages.size).to be >= 1
+      analysis = PDF::Inspector::Text.analyze response.body
+      expect(analysis.strings.join).to include event.name
+    end
   end
 end
