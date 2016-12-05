@@ -6,6 +6,8 @@ de:
       title: "Bewerber für %{title}"
       participations: "Anzahl der Bewerbungen"
       accepted_rejected: "angenommen / abgelehnt"
+      filter_by: "Filtern nach ..."
+      filter: "Filtern"
       status: "Status"
       details: "Details"
       free_places:

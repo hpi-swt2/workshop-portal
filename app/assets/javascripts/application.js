@@ -17,3 +17,9 @@
 //= require bootstrap-datepicker/locales/bootstrap-datepicker.de.js
 //= require turbolinks
 //= require_tree .
+
+// enable popovers in the entire application
+$(document).on('turbolinks:load', function () {
+  $('[data-toggle="popover"]').popover();
+});
+
