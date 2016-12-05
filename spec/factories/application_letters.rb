@@ -38,5 +38,9 @@ FactoryGirl.define do
     status :rejected
   end
 
+  factory :application_letter_pending_before_deadline, parent: :application_letter_deadline_over do
+    status :pending
+  end
+
 
 end
