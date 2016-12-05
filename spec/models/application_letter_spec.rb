@@ -24,10 +24,20 @@ describe ApplicationLetter do
       expect(application).to_not be_valid
     end
   end
-  it "can't be created with non integer grade" do
+  it "does only accept valid grades" do
+    application = FactoryGirl.build(:application_letter, :grade => 8)
+    expect(application).to be_valid
+
     application = FactoryGirl.build(:application_letter, :grade => "erste")
     expect(application).to_not be_valid
-   end
+
+    application = FactoryGirl.build(:application_letter, :grade => 4)
+    expect(application).to_not be_valid
+
+    application = FactoryGirl.build(:application_letter, :grade => 14)
+    expect(application).to_not be_valid
+
+  end
   it "has application_notes" do
     application = FactoryGirl.build(:application_letter)
     expect(application).to respond_to(:application_notes)
