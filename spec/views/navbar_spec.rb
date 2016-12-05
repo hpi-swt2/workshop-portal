@@ -21,11 +21,12 @@ RSpec.describe 'navbar', type: :view do
       render template: 'application/index', layout: 'layouts/application'
     end
 
-    it "shows Profilinfo, Meine Bewerbungen, Ausloggen in the dropdown" do
+    it "shows Profilinfo, Meine Bewerbungen, Meine Events, Ausloggen in the dropdown" do
       expect(rendered).to have_css(".nav .dropdown-menu a", text: 'Profilinfo')
       expect(rendered).to have_css(".nav .dropdown-menu a", text: 'Meine Bewerbungen')
+      expect(rendered).to have_css(".nav .dropdown-menu a", text: 'Meine Events')
       expect(rendered).to have_css(".nav .dropdown-menu a", text: 'Ausloggen')
-      expect(rendered).to have_css(".nav .dropdown-menu a", count: 3)
+      expect(rendered).to have_css(".nav .dropdown-menu a", count: 4)
     end
   end
 
@@ -47,8 +48,9 @@ RSpec.describe 'navbar', type: :view do
       expect(rendered).to have_css(".nav .dropdown-menu a", text: 'Profilinfo')
       expect(rendered).to have_css(".nav .dropdown-menu a", text: 'Mein Profil')
       expect(rendered).to have_css(".nav .dropdown-menu a", text: 'Benutzerverwaltung')
+      expect(rendered).to have_css(".nav .dropdown-menu a", text: 'Meine Events')
       expect(rendered).to have_css(".nav .dropdown-menu a", text: 'Ausloggen')
-      expect(rendered).to have_css(".nav .dropdown-menu a", count: 4)
+      expect(rendered).to have_css(".nav .dropdown-menu a", count: 5)
     end
   end
 
@@ -60,8 +62,9 @@ RSpec.describe 'navbar', type: :view do
         render template: 'application/index', layout: 'layouts/application'
         expect(rendered).to have_css(".nav .dropdown-menu a", text: 'Profilinfo')
         expect(rendered).to have_css(".nav .dropdown-menu a", text: 'Mein Profil')
+      expect(rendered).to have_css(".nav .dropdown-menu a", text: 'Meine Events')
         expect(rendered).to have_css(".nav .dropdown-menu a", text: 'Ausloggen')
-        expect(rendered).to have_css(".nav .dropdown-menu a", count: 3)
+        expect(rendered).to have_css(".nav .dropdown-menu a", count: 4)
       end
     end
   end
