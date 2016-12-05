@@ -3,7 +3,7 @@ class EventsController < ApplicationController
 
   # GET /events
   def index
-    @events = Event.all
+    @events = Event.draft_is false
   end
 
   # GET /events/1
@@ -25,6 +25,8 @@ class EventsController < ApplicationController
   def create
     @event = Event.new(event_params)
 
+    @event.draft = (params[:draft] != nil)
+
     @event.date_ranges = date_range_params
 
     if @event.save
@@ -41,6 +43,7 @@ class EventsController < ApplicationController
     if params[:date_ranges]
       attrs[:date_ranges] = date_range_params
     end
+    @event.draft = (params[:commit] == "draft")
 
     if @event.update(attrs)
       redirect_to @event, notice: 'Event wurde aktualisiert.'

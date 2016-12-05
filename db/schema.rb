@@ -73,6 +73,7 @@ ActiveRecord::Schema.define(version: 20161129131315) do
     t.integer  "kind",             default: 0
     t.string   "organizer"
     t.string   "knowledge_level"
+    t.boolean  "draft"
   end
 
   create_table "profiles", force: :cascade do |t|
