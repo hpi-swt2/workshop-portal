@@ -16,6 +16,7 @@ de:
         other: '%{count} Plätze belegt'
     participants:
       participants: "Teilnehmer"
+      show_participants: "Teilnehmerliste"
       unnecessary: "nicht benötigt"
       available: "vorhanden"
       unavailable: "nicht vorhanden"

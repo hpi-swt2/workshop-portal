@@ -4,6 +4,7 @@ RSpec.describe "events/participants", type: :view do
   before(:each) do
     @event = assign(:event, FactoryGirl.create(:event_with_accepted_applications))
 	@participants = assign(:participants, @event.participants)
+	sign_in(FactoryGirl.create(:user, role: :admin))
   end
 
   it "renders attributes" do
