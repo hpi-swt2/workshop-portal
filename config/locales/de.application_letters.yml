@@ -6,6 +6,7 @@ de:
       application_title: "Bewerbung für %{title}"
       new_note: "Neue Anmerkung:"
     form:
+      warning: "Die Deadline ist schon vorbei. Du kannst deine Bewerbung nicht mehr ändern."
       help_text_coding_skills: "Wie gut beherrscht du sie deiner Meinung nach (Anfänger,
       Fortgeschrittener, Experte)? Was kannst du in den Programmiersprachen
       realisieren/hast du realisiert? Je ausführlicher du diese Beschreibst, desto
