@@ -54,4 +54,9 @@ describe Profile do
     profile = FactoryGirl.build(:profile)
     expect(profile.address).to eq("#{profile.street_name}, #{profile.zip_code} #{profile.city}, #{profile.state}, #{profile.country}")
   end
+
+  it "doesn't allow a birthday in the future" do
+    profile = FactoryGirl.build(:profile, birth_date: Date.tomorrow)
+    expect(profile).to_not be_valid
+  end
 end
