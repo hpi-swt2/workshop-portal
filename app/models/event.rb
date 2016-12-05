@@ -103,25 +103,25 @@ class Event < ActiveRecord::Base
   
   protected
   def compare_participants_by_agreement(participant1, participant2)
-    if participant1.older_than_18_at_start_date_of_event?(self)
-	  if participant2.older_than_18_at_start_date_of_event?(self)
-	    return participant1.name <=> participant2.name
+    if participant1.requires_agreement_letter_for_event?(self)
+      if participant2.requires_agreement_letter_for_event?(self)
+        return participant1.name <=> participant2.name
       end
-	  return 1
-	end
-	if participant2.older_than_18_at_start_date_of_event?(self)
-	  return -1
-	end
-	if participant1.agreement_letter_for_event?(self)
-	  if participant2.agreement_letter_for_event?(self)
-	    return participant1.name <=> participant2.name
-	  end
-	  return 1
-	end
-	if participant2.agreement_letter_for_event?(self)
-	  return -1
-	end
-	return participant1.name <=> participant2.name
+      return 1
+    end
+    if participant2.requires_agreement_letter_for_event?(self)
+      return -1
+    end
+    if participant1.agreement_letter_for_event?(self)
+      if participant2.agreement_letter_for_event?(self)
+        return participant1.name <=> participant2.name
+      end
+      return 1
+    end
+    if participant2.agreement_letter_for_event?(self)
+      return -1
+    end
+    return participant1.name <=> participant2.name
   end
   
 end

@@ -6,7 +6,7 @@
 <%= render :partial => 'show_event' %>
 
 <h1><%= t '.participants' %></h1>
-<table>
+<table class="table table-striped">
   <tr>
     <th><%= t 'activerecord.attributes.profile.name' %></th>
     <th><%= t 'activerecord.attributes.profile.email' %></th>
@@ -23,12 +23,12 @@
       <%= participant.email %>
     </td>
 	<td>
-	  <% if participant.older_than_18_at_start_date_of_event?(@event) %>
-	    <p class="text-muted"> <%= t '.unnecessary' %> </p>
+	  <% if participant.requires_agreement_letter_for_event?(@event) %>
+	    <span class="text-muted"> <%= t '.unnecessary' %> </p>
 	  <% elsif participant.agreement_letter_for_event?(@event) %>
-	    <p class="text-success" title="<%= participant.agreement_letter_for_event(@event).updated_at %>"> <%= t '.available' %> </p>
+	    <span class="text-success" title="<%= participant.agreement_letter_for_event(@event).updated_at %>"> <%= t '.available' %> </p>
 	  <% else %>
-	    <p class="text-danger"><%= t '.unavailable' %></p>
+	    <span class="text-danger"><%= t '.unavailable' %></p>
 	  <% end %>
 	</td>
   </tr>

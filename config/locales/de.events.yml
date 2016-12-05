@@ -16,7 +16,7 @@ de:
         other: '%{count} Plätze belegt'
     participants:
       participants: "Teilnehmer"
-      unnecessary: "unnötig"
+      unnecessary: "nicht benötigt"
       available: "vorhanden"
       unavailable: "nicht vorhanden"
 
