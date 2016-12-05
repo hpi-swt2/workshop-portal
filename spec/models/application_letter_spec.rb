@@ -32,4 +32,15 @@ describe ApplicationLetter do
     application = FactoryGirl.build(:application_letter)
     expect(application).to respond_to(:application_notes)
   end
+
+  it "can not be updated after event application deadline"  do
+    application = FactoryGirl.create(:application_letter_deadline_over)
+    expect(application).to_not be_valid
+  end
+
+   it "can be updated if status or grade are changed"  do
+     application = FactoryGirl.create(:application_letter_deadline_over)
+     application.grade = 3
+     expect(application).to be_valid
+  end
 end

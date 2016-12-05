@@ -20,6 +20,7 @@ class ApplicationLetter < ActiveRecord::Base
   validates :grade, presence: true, numericality: { only_integer: true }
   validates :vegeterian, :vegan, :allergic, inclusion: { in: [true, false] }
   validates :vegeterian, :vegan, :allergic, exclusion: { in: [nil] }
+  validate :deadline_cannot_be_in_the_past, :if => Proc.new { |letter| !(letter.status_changed? or letter.grade_changed?) }
 
   enum status: {accepted: 1, rejected: 0, pending: 2}
 
@@ -31,4 +32,14 @@ class ApplicationLetter < ActiveRecord::Base
     Date.today > event.application_deadline if event.present?
   end
 
+  # Validator for after_deadline?
+  # Adds error
+  #
+  # @param none
+  # @return [Boolean] true if deadline is over
+  def deadline_cannot_be_in_the_past
+    if after_deadline?
+      errors.add(:event, I18n.t("helpers.submit.update", model: ApplicationLetter.model_name.human))
+    end
+  end
 end
