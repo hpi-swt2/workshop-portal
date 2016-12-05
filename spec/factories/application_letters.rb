@@ -25,6 +25,11 @@ FactoryGirl.define do
     event
   end
 
+
+  factory :application_letter_deadline_over, parent: :application_letter do
+    association :event, factory: :event, application_deadline: Date.yesterday
+  end
+
   factory :application_letter_accepted, parent: :application_letter do
     status :accepted
   end
