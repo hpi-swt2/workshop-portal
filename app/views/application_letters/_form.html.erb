@@ -14,6 +14,13 @@
       </div>
     </div>
   <% end %>
+
+  <% if @application_letter.after_deadline? %>
+    <div class="alert alert-warning" role="warning">
+      <%= t '.warning' %>
+    </div>
+  <% end %>
+
   <div class="form-group">
     <%= f.label :grade, :class => 'control-label col-lg-2 required' %>
     <div class="col-lg-10">
@@ -84,7 +91,7 @@
 
   <div class="form-group">
     <div class="col-lg-offset-2 col-lg-10">
-      <%= f.submit nil, :class => 'btn btn-primary' %>
+      <%= f.submit nil, :class => 'btn btn-primary', :disabled => @application_letter.after_deadline? %>
       <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
                 application_letters_path, :class => 'btn btn-default' %>
     </div>
