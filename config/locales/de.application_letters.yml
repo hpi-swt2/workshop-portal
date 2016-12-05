@@ -3,7 +3,7 @@
 de:
   application_letters:
     show:
-      application_title: "Bewerber für %{title}"
+      application_title: "Bewerbung für %{title}"
       new_note: "Neue Anmerkung:"
     form:
       help_text_coding_skills: "Wie gut beherrscht du sie deiner Meinung nach (Anfänger,
@@ -15,7 +15,9 @@ de:
 
   activerecord:
     models:
-      application_letter: "Bewerbung"
+      application_letter:
+        one: "Bewerbung"
+        other: "Bewerbungen"
       application_note:
         one: "Anmerkung"
         other: "Anmerkungen"
