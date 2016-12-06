@@ -12,6 +12,16 @@ class Profile < ActiveRecord::Base
 
   validates :user, presence: true
   validates_presence_of :first_name, :last_name, :gender, :birth_date, :school, :street_name, :zip_code, :city, :state, :country
+  validate :birthdate_not_in_future
+
+
+  # Returns true if the user is 18 years old or older
+  #
+  # @param none
+  # @return [Boolean] whether the user is an adult
+  def adult?()
+    self.birth_date >= 18.years.ago
+  end
 
   # Returns the age of the user based on the current date
   #
@@ -40,4 +50,10 @@ class Profile < ActiveRecord::Base
     street_name + ", " + zip_code + " " +  city + ", " + state + ", " + country
   end
 
+  private
+  def birthdate_not_in_future
+    if birth_date.present? and birth_date > Date.today
+      errors.add(:birth_date, I18n.t('profiles.validation.birthday_in_future'))
+    end
+  end
 end

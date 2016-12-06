@@ -22,4 +22,9 @@ Vagrant.configure("2") do |config|
   # port forward
   config.vm.network :forwarded_port, host: 3000, guest: 3000
   config.vm.synced_folder ".", "/home/vagrant/hpi-swt2"
+
+  config.vm.provision "shell", inline: <<-SHELL
+    apt-get update
+    apt-get install -y phantomjs
+  SHELL
 end

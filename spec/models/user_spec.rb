@@ -32,14 +32,39 @@ describe User do
     expect(user).to_not be_valid
   end
 
+  it "returns the user's events" do
+    user = FactoryGirl.build(:user)
+    FactoryGirl.create(:application_letter_rejected, user: user)
+    accepted_letter = FactoryGirl.create(:application_letter_accepted, user: user)
+    expect(user.events).to eq [accepted_letter.event]
+  end
+
   it "returns correct default accepted applications count" do
     application_letter = FactoryGirl.create(:application_letter)
     expect(application_letter.user.accepted_applications_count(application_letter.event)).to eq(0)
   end
 
+  it "computes the correct number of accepted applications" do
+    user = FactoryGirl.create(:user)
+    application_letter = FactoryGirl.create(:application_letter, event: FactoryGirl.create(:event), user: user)
+    application_letter_accepted = FactoryGirl.create(:application_letter_accepted, event: FactoryGirl.create(:event), user: user)
+    expect(user.accepted_applications_count(FactoryGirl.create(:event))).to eq(1)
+    application_letter_accepted_2 = FactoryGirl.create(:application_letter_accepted, event: FactoryGirl.create(:event), user: user)
+    expect(user.accepted_applications_count(FactoryGirl.create(:event))).to eq(2)
+  end
+
   it "returns correct default rejected applications count" do
     application_letter = FactoryGirl.create(:application_letter)
     expect(application_letter.user.rejected_applications_count(application_letter.event)).to eq(0)
+  end
+
+  it "computes the correct number of rejected applications" do
+    user = FactoryGirl.create(:user)
+    application_letter = FactoryGirl.create(:application_letter, event: FactoryGirl.create(:event), user: user)
+    application_letter_rejected = FactoryGirl.create(:application_letter_rejected, event: FactoryGirl.create(:event), user: user)
+    expect(user.rejected_applications_count(FactoryGirl.create(:event))).to eq(1)
+    application_letter_rejected_2 = FactoryGirl.create(:application_letter_rejected, event: FactoryGirl.create(:event), user: user)
+    expect(user.rejected_applications_count(FactoryGirl.create(:event))).to eq(2)
   end
 
   it "only counts the accepted application of other events and ignores status of current event application" do

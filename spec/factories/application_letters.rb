@@ -10,7 +10,6 @@
 #  updated_at  :datetime         not null
 #  status      :integer          not null
 #
-
 FactoryGirl.define do
   factory :application_letter do
     grade 10
@@ -26,33 +25,16 @@ FactoryGirl.define do
     event
   end
 
-  factory :application_letter_accepted, class: :application_letter do
-		grade 10
-    experience "None"
-    motivation "None"
-    coding_skills "None"
-    emergency_number "01234567891"
-    vegeterian false
-    vegan false
-    allergic true
-    allergies "Many"
-    user
-    event
+
+  factory :application_letter_deadline_over, parent: :application_letter do
+    association :event, factory: :event, application_deadline: Date.yesterday
+  end
+
+  factory :application_letter_accepted, parent: :application_letter do
     status :accepted
   end
 
-  factory :application_letter_rejected, class: :application_letter do
-    grade 10
-    experience "None"
-    motivation "None"
-    coding_skills "None"
-    emergency_number "01234567891"
-    vegeterian false
-    vegan false
-    allergic true
-    allergies "Many"
-    user
-    event
+  factory :application_letter_rejected, parent: :application_letter do
     status :rejected
   end
 end
