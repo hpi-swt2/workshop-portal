@@ -74,6 +74,28 @@ RSpec.feature "Application Letter Overview", :type => :feature do
     end
   end
 
+  it "shows an error if you aren't logged in" do
+    profile = FactoryGirl.create(:profile)
+    event = FactoryGirl.create(:event)
+    user = profile.user
+    login_error_message = I18n.t 'application_letters.login_before_creation'
+    login_link_text = I18n.t 'users.sessions.new.sign_in'
+    new_application_path = new_application_letter_path(:event_id => event.id)
+
+    visit new_application_path
+    page.assert_current_path new_application_path # Make sure no redirect happened
+    expect(page).to have_text login_error_message
+    link = page.find('main').find(:link, login_link_text)
+    link.click
+
+    fill_in 'user_email', with: user.email
+    fill_in 'user_password', with: user.password
+    find('input[name=commit]').click
+
+    page.assert_current_path(new_application_path)
+    expect(page).to_not have_text login_error_message
+  end
+
   def login(role)
     @event = FactoryGirl.create(:event)
     @profile = FactoryGirl.create(:profile)
