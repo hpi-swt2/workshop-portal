@@ -79,14 +79,11 @@ RSpec.feature "Application Letter Overview", :type => :feature do
     event = FactoryGirl.create(:event)
     user = profile.user
     login_error_message = I18n.t 'application_letters.login_before_creation'
-    login_link_text = I18n.t 'users.sessions.new.sign_in'
     new_application_path = new_application_letter_path(:event_id => event.id)
 
     visit new_application_path
-    page.assert_current_path new_application_path # Make sure no redirect happened
+    page.assert_current_path user_session_path # Make sure redirect happened
     expect(page).to have_text login_error_message
-    link = page.find('main').find(:link, login_link_text)
-    link.click
 
     fill_in 'user_email', with: user.email
     fill_in 'user_password', with: user.password
@@ -94,6 +91,23 @@ RSpec.feature "Application Letter Overview", :type => :feature do
 
     page.assert_current_path(new_application_path)
     expect(page).to_not have_text login_error_message
+  end
+
+  it "shows an error if you don't have a profile" do
+    user = FactoryGirl.create(:user)
+    event = FactoryGirl.create(:event)
+    profile_required_message = I18n.t 'application_letters.fill_in_profile_before_creation'
+    new_application_path = new_application_letter_path(:event_id => event.id)
+
+    login_as(user, :scope => :user)
+    visit new_application_path
+    page.assert_current_path new_profile_path # Make sure redirect happened
+    expect(page).to have_text profile_required_message
+
+    FactoryGirl.create(:profile, :user => user)
+
+    visit new_application_path
+    expect(page).to_not have_text profile_required_message
   end
 
   def login(role)
