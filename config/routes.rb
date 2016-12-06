@@ -8,6 +8,7 @@ Rails.application.routes.draw do
     member do
       get :email_list
     end
+    resources :agreement_letters, only: [:create], shallow: true
   end
   resources :profiles
   devise_for :users
@@ -19,6 +20,7 @@ Rails.application.routes.draw do
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
+  get 'events/:id/participants' => 'events#participants'
 
   # Example of named route that can be invoked with purchase_url(id: product.id)
   #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase

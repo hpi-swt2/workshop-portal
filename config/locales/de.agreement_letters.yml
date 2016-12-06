@@ -1,0 +1,11 @@
+de:
+  agreement_letters:
+    agreement_letter: "Einverständniserklärung"
+    upload: "Hochladen"
+    update: "Aktualisieren"
+    file_too_big: "Die Datei ist zu groß."
+    wrong_filetype: "Ungültiger Datentyp."
+    upload_success: "Datei erfolgreich hochgeladen."
+    upload_failed: "Fehler beim Hochladen."
+    already_uploaded: "Datei hochgeladen am %{timestamp}"
+

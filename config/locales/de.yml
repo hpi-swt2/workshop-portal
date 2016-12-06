@@ -21,13 +21,19 @@
 
 de:
   hello: "Willkommen beim Workshop-Portal"
+  unauthorized:
+      manage:
+        all: "Du bist nicht authorisiert diese Aktion auszuführen."
   navbar:
     home: "Start"
     events: "Veranstaltungen"
     profiles: "Nutzer"
     application_letters: "Bewerbungen"
+    my_application_letters: "Meine Bewerbungen"
+    user_management: "Benutzerverwaltung"
     requests: "Anfragen"
-    settings: "Einstellungen"
+    profile: "Mein Profil"
+    settings: "Profilinfo"
     login: "Einloggen"
     logout: "Ausloggen"
   users:
