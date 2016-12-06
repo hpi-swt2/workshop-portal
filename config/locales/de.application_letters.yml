@@ -13,6 +13,7 @@ de:
       besser können wir schon in der Vorbereitung der Veranstaltung darauf eingehen.
       Programmierkenntnisse sind keine  Voraussetzung zur Teilnahme. Diese Information
       wird zur Gruppeneinteilung benötigt."
+    login_before_creation: "Du musst angemeldet sein, um dich für Workshops bewerben zu können."
 
   activerecord:
     models:
