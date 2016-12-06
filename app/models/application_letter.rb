@@ -16,8 +16,11 @@ class ApplicationLetter < ActiveRecord::Base
 
   has_many :application_notes
 
+  VALID_GRADES = 5..13
+
   validates :user, :event, :experience, :motivation, :coding_skills, :emergency_number, presence: true
   validates :grade, presence: true, numericality: { only_integer: true }
+  validates_inclusion_of :grade, :in => VALID_GRADES
   validates :vegeterian, :vegan, :allergic, inclusion: { in: [true, false] }
   validates :vegeterian, :vegan, :allergic, exclusion: { in: [nil] }
   validate :deadline_cannot_be_in_the_past, :if => Proc.new { |letter| !(letter.status_changed?) }
