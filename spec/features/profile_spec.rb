@@ -63,11 +63,32 @@ RSpec.feature "Profile adaptation", :type => :feature do
     fill_in "profile_state" , with:  "Babelsberg"
     fill_in "profile_country" , with:  "Deutschland"
 
-
     find('input[name=commit]').click
 
     expect(page).to have_css(".has-error", count: 3)
-
   end
 
+  scenario "user fills in a valid birth date" do
+    @profile = FactoryGirl.create(:profile)
+    login_as(@profile.user, :scope => :user)
+    visit edit_profile_path(@profile)
+
+    fill_in "profile_birth_date", with: Date.yesterday
+
+    find('input[name=commit]').click
+
+    expect(page).to have_text('Profile was successfully updated.')
+  end
+
+  scenario "user fills in an invalid birth date" do
+    @profile = FactoryGirl.create(:profile)
+    login_as(@profile.user, :scope => :user)
+    visit edit_profile_path(@profile)
+
+    fill_in "profile_birth_date", with: Date.tomorrow
+
+    find('input[name=commit]').click
+
+    expect(page).to have_css(".has-error", count: 1)
+  end
 end

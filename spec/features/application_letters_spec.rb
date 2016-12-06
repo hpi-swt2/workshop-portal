@@ -29,7 +29,6 @@ RSpec.feature "Application Letter Overview", :type => :feature do
   it "should highlight wrong or missing insertions from user" do
     login(:pupil)
     visit new_application_letter_path
-    fill_in "application_letter_grade", with:   ""
     fill_in "application_letter_experience", with:   ""
     fill_in "application_letter_motivation", with:   ""
     fill_in "application_letter_coding_skills", with:   ""
@@ -37,13 +36,13 @@ RSpec.feature "Application Letter Overview", :type => :feature do
 
     find('input[name=commit]').click
 
-    expect(page).to have_css(".has-error", count: 5)
+    expect(page).to have_css(".has-error", count: 4)
   end
 
    it "should save" do
     login(:pupil)
     visit new_application_letter_path(:event_id => @event.id)
-    fill_in "application_letter_grade", with:   "11"
+    select "11", from: "application_letter_grade"
     fill_in "application_letter_experience", with:   "None"
     fill_in "application_letter_motivation", with:   "None"
     fill_in "application_letter_coding_skills", with:   "None"
