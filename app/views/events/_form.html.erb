@@ -1,24 +1,6 @@
 <%= form_for @event, :html => { :class => "form-horizontal event" } do |f| %>
 
-  <% if @event.errors.any? %>
-    <div id="error_expl" class="panel panel-danger">
-      <div class="panel-heading">
-        <h3 class="panel-title"><%= pluralize(@event.errors.count, "Fehler") %> verhinderte das Speichern:</h3>
-      </div>
-      <div class="panel-body">
-        <ul>
-        <% @event.errors.full_messages.each do |msg| %>
-          <li><%= msg %></li>
-        <% end %>
-        <% @event.date_ranges.each do |range|
-          range.errors.full_messages.each do |msg| %>
-          <li><%= msg %></li>
-          <% end
-        end %>
-        </ul>
-      </div>
-    </div>
-  <% end %>
+  <%= render partial: "shared/error_message", locals: {entity: @event} %>
 
   <div class="form-group">
     <div class="btn-group col-lg-10 col-lg-offset-2" data-toggle="buttons">

@@ -107,7 +107,7 @@ de:
       year: Jahr
   errors:
     format: "%{attribute} %{message}"
-    form_invalid: "falsch ausgefüllt "
+    form_invalid: "In %{number} Feldern sind Fehler aufgetreten"
     messages:
       accepted: muss akzeptiert werden
       blank: muss ausgefüllt werden

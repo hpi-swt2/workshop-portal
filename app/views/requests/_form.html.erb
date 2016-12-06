@@ -1,19 +1,6 @@
 <%= form_for @request, :html => { :class => "form-horizontal request" } do |f| %>
 
-  <% if @request.errors.any? %>
-    <div id="error_expl" class="panel panel-danger">
-      <div class="panel-heading">
-        <h3 class="panel-title"><%= pluralize(@request.errors.count, "error") %> prohibited this request from being saved:</h3>
-      </div>
-      <div class="panel-body">
-        <ul>
-        <% @request.errors.full_messages.each do |msg| %>
-          <li><%= msg %></li>
-        <% end %>
-        </ul>
-      </div>
-    </div>
-  <% end %>
+  <%= render partial: "shared/error_message", locals: {entity: @request} %>
 
   <div class="form-group">
     <%= f.label :topics, :class => 'control-label col-lg-2' %>

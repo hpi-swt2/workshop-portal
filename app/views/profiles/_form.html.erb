@@ -1,12 +1,6 @@
 <%= form_for @profile, :html => { :class => "form-horizontal profile" } do |f| %>
 
-  <% if @profile.errors.any? %>
-    <div id="error_expl" class="panel panel-danger">
-      <div class="panel-heading">
-        <h3 class="panel-title"><%="#{@profile.class.model_name.human} #{I18n.t("errors.form_invalid")}" %></h3>
-      </div>
-    </div>
-  <% end %>
+  <%= render partial: "shared/error_message", locals: {entity: @profile} %>
 
   <%# Create an input field for each of the mandatory attributes%>
   <% [:first_name, :last_name, :gender, :birth_date, :school, :street_name, :zip_code, :city, :state, :country].each do |attr_name| %>
@@ -16,7 +10,7 @@
         <% unless attr_name == :birth_date %>
           <%= f.text_field attr_name, :class => 'form-control' %>
         <% else %>
-          <input id="profile_birth_date" class="form-control datepicker" data-provide="datepicker" value="<%=I18n.l @profile.public_send(attr_name) if @profile.public_send(attr_name)%>" name="profile[birth_date]" type="text">
+          <%= f.text_field attr_name, :class => 'form-control datepicker', :"data-provide" => "datepicker", value: (I18n.l @profile.public_send(attr_name) if @profile.public_send(attr_name)) %>
         <% end %>
         <%=f.error_span(attr_name) %>
       </div>
