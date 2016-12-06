@@ -1,3 +1,5 @@
+require 'pdf_generation/applications_pdf'
+
 class EventsController < ApplicationController
   before_action :set_event, only: [:show, :edit, :update, :destroy, :print_applications]
 
@@ -49,9 +51,8 @@ class EventsController < ApplicationController
 
   # GET /events/1/print_applications
   def print_applications
-    pdf = Prawn::Document.new(page_size: 'A4')
-    pdf.text "Application Overview for #{@event.name}"
-    send_data pdf.render, filename: "applications_#{@event.name}_#{Date.today}.pdf", type: "application/pdf", disposition: "inline"
+    pdf = ApplicationsPDF.generate(@event)
+    send_data pdf, filename: "applications_#{@event.name}_#{Date.today}.pdf", type: "application/pdf", disposition: "inline"
   end
 
   private
