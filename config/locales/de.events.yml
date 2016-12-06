@@ -17,6 +17,10 @@ de:
       print_all: "Alle ausdrucken"
       accept_all: "Alle annehmen"
 
+    form:
+      draft: "Speichern"
+      publish: "Veröffentlichen"
+      update: "Aktualisieren"
   activerecord:
       models:
         event: "Veranstaltung"
@@ -24,7 +28,12 @@ de:
         event:
           name: "Name"
           description: "Beschreibung"
-          max_participants: "Maximale Bewerber"
+          max_participants: "Maximale Teilnehmerzahl"
           active: "Aktiv"
           organizer: "Veranstalter"
           knowledge_level: "Kenntnisstand"
+          date_ranges: "Zeitspannen"
+  helpers:
+    submit:
+      event:
+        create: "Veröffentlichen"
