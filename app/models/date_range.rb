@@ -32,4 +32,12 @@ class DateRange < ActiveRecord::Base
       errors.add(:end_date, "kann nicht vor Start-Datum liegen.")
     end
   end
+
+  def to_s
+    if start_date == end_date
+      start_date
+    else
+      start_date.to_s + ' ' + I18n.t('date_range.to') + ' ' + end_date.to_s
+    end
+  end
 end

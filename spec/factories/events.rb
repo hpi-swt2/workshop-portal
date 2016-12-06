@@ -19,9 +19,10 @@ FactoryGirl.define do
     max_participants 1
     kind :workshop
     active false
-
+    draft false
     organizer "Workshop-Organizer"
     knowledge_level "Workshop-Knowledge Level"
+    application_deadline Date.tomorrow
     date_ranges { build_list :date_range, 1 }
 
     trait :with_two_date_ranges do
@@ -29,6 +30,13 @@ FactoryGirl.define do
         event.date_ranges = []
         event.date_ranges << FactoryGirl.create(:date_range, start_date: Date.tomorrow, end_date: Date.tomorrow.next_day(5))
         event.date_ranges << FactoryGirl.create(:date_range, start_date: Date.tomorrow, end_date: Date.tomorrow.next_day(10))
+      end
+    end
+
+    trait :single_day do
+      after(:build) do |event|
+        event.date_ranges = []
+        event.date_ranges << FactoryGirl.create(:date_range, start_date: Date.tomorrow, end_date: Date.tomorrow)
       end
     end
 

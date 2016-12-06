@@ -24,7 +24,7 @@
   <dd>
     <ul>
     <% @event.date_ranges.each do |r| %>
-      <li><%= r.start_date.to_s %> bis <%= r.end_date.to_s %></li>
+      <li><%= r.to_s %></li>
     <% end %>
     </ul>
   </dd>
