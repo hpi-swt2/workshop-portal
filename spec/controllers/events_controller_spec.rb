@@ -173,10 +173,17 @@ RSpec.describe EventsController, type: :controller do
       expect(assigns(:event)).to eq(event)
     end
 
-    it "renders an text-response" do
+    it "renders an csv-response" do
       event = Event.create! valid_attributes
       get :email_list, id: event.to_param, session: valid_session
       expect(response.content_type).to eq('text/csv')
+    end
+
+    it "contains the required email addresses" do
+      application_letter = FactoryGirl.create(:application_letter, status: true)
+      event = application_letter.event
+      get :email_list, id: event.to_param, session: valid_session
+      expect(response.body).to include(application_letter.user.email)
     end
   end
 

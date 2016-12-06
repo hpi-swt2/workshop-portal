@@ -49,7 +49,7 @@ class EventsController < ApplicationController
 
   # GET /events/1/email_list
   def email_list
-    render :text => @event.get_email_list, :content_type => 'text/csv'
+    render plain: @event.get_email_list, :content_type => 'text/csv'
   end
 
   private
