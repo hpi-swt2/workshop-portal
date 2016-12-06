@@ -3,14 +3,7 @@
   <% if @profile.errors.any? %>
     <div id="error_expl" class="panel panel-danger">
       <div class="panel-heading">
-        <h3 class="panel-title"><%= pluralize(@profile.errors.count, "error") %> prohibited this profile from being saved:</h3>
-      </div>
-      <div class="panel-body">
-        <ul>
-        <% @profile.errors.full_messages.each do |msg| %>
-          <li><%= msg %></li>
-        <% end %>
-        </ul>
+        <h3 class="panel-title"><%="#{@profile.class.model_name.human} #{I18n.t("errors.form_invalid")}" %></h3>
       </div>
     </div>
   <% end %>
@@ -25,8 +18,8 @@
         <% else %>
           <input id="profile_birth_date" class="form-control datepicker" data-provide="datepicker" value="<%=I18n.l @profile.public_send(attr_name) if @profile.public_send(attr_name)%>" name="profile[birth_date]" type="text">
         <% end %>
+        <%=f.error_span(attr_name) %>
       </div>
-      <%=f.error_span(attr_name) %>
     </div>
   <% end %>
 
@@ -35,8 +28,8 @@
     <%= f.label :graduates_school_in, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
       <%= f.collection_select(:graduates_school_in, Array(Time.now.year..Time.now.year+15).unshift(t '.already_graduated'), :to_s, :to_s) %>
+      <%=f.error_span(:graduates_school_in) %>
     </div>
-    <%=f.error_span(:graduates_school_in) %>
   </div>
 
 
