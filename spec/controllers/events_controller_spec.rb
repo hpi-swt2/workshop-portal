@@ -219,25 +219,52 @@ RSpec.describe EventsController, type: :controller do
     end
   end
   describe "GET #print_applications" do
+    before :each do
+      @event = Event.create! valid_attributes
+    end
+
     it "returns success" do
-      event = Event.create! valid_attributes
-      get :print_applications, id: event.to_param, session: valid_session
+      get :print_applications, id: @event.to_param, session: valid_session
       expect(response).to be_success
     end
 
     it 'returns downloadable PDF' do
-      event = Event.create! valid_attributes
-      get :print_applications, id: event.to_param, session: valid_session
+      get :print_applications, id: @event.to_param, session: valid_session
       PDF::Inspector::Text.analyze response.body
     end
 
     it "returns a PDF with a correct overview page" do
-      event = Event.create! valid_attributes
-      get :print_applications, id: event.to_param, session: valid_session
+      get :print_applications, id: @event.to_param, session: valid_session
       page_analysis = PDF::Inspector::Page.analyze(response.body)
       expect(page_analysis.pages.size).to be >= 1
       analysis = PDF::Inspector::Text.analyze response.body
-      expect(analysis.strings.join).to include event.name
+      text = analysis.strings.join
+      expect(text).to include(
+        @event.name,
+        @event.max_participants.to_s,
+        @event.active.to_s,
+        @event.organizer,
+        @event.knowledge_level,
+        @event.compute_free_places.to_s,
+        @event.compute_occupied_places.to_s)
+      @event.date_ranges.each { |d| expect(text).to include(d.to_s) }
+    end
+
+    it "shows an overview of every application" do
+      FactoryGirl.create(:application_letter, event: @event,)
+      User.find_each { |u| FactoryGirl.create(:profile, user: u) }
+      get :print_applications, id: @event.to_param, session: valid_session
+      analysis = PDF::Inspector::Text.analyze response.body
+      text = analysis.strings.join
+      @event.application_letters.each do |a|
+        expect(text).to include(
+          a.user.profile.name,
+          a.user.profile.age.to_s,
+          a.user.profile.gender,
+          a.user.accepted_applications_count(@event).to_s,
+          a.user.rejected_applications_count(@event).to_s,
+          a.status)
+      end
     end
   end
 end
