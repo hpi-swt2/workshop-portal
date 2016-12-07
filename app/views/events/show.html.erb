@@ -1,22 +1,17 @@
 <%- model_class = Event -%>
 <div class="page-header">
-  <h1><%= t '.title', :default => model_class.model_name.human.titleize %></h1>
+  <h1><%=t '.title', :default => model_class.model_name.human.titleize %> (<%= @event.kind.humanize %>)</h1>
 </div>
 
-<dl class="dl-horizontal">
-  <dt><strong><%= model_class.human_attribute_name(:name) %>:</strong></dt>
-  <dd><%= @event.name %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:description) %>:</strong></dt>
-  <dd><%= @event.description %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:max_participants) %>:</strong></dt>
-  <dd><%= @event.max_participants %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:active) %>:</strong></dt>
-  <dd><%= @event.active %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:organizer) %>:</strong></dt>
-  <dd><%= @event.organizer %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:knowledge_level) %>:</strong></dt>
-  <dd><%= @event.knowledge_level %></dd>
-</dl>
+<% if @event.unreasonably_long %>
+  <div class="panel panel-warning">
+    <div class="panel-body">
+      End-Datum liegt ungewöhnlich weit vom Start-Datum entfernt.
+    </div>
+  </div>
+<% end %>
+
+<%= render :partial => 'show_event' %>
 
 <% if can? :view_applicants, Event %>
   <%= render :partial => 'applicants_overview' %>
@@ -24,3 +19,7 @@
 
 <%= link_to t('.back', :default => t("helpers.links.back")),
               events_path, :class => 'btn btn-default'  %>
+<% if can? :view_participants, Event %>
+  <%= link_to t('events.participants.show_participants'),
+              event_path(@event) + "/participants" , :class => 'btn btn-default'  %>
+<% end %>
