@@ -1,4 +1,4 @@
-def addSampleEvents
+def add_sample_events
 
   date_range_singleday1 = DateRange.find_or_create_by!(
       start_date: Date.tomorrow,

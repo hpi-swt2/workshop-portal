@@ -3,6 +3,6 @@ require './db/sample_data'
 namespace :db do
   desc 'Populates the database with sample data'
   task populate_sample_data: :environment do
-    addSampleEvents
+    add_sample_events
   end
 end
