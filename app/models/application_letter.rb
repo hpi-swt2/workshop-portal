@@ -25,7 +25,7 @@ class ApplicationLetter < ActiveRecord::Base
   validates :vegeterian, :vegan, :allergic, exclusion: { in: [nil] }
   validate :deadline_cannot_be_in_the_past, :if => Proc.new { |letter| !(letter.status_changed?) }
 
-  enum status: {accepted: 1, rejected: 0, pending: 2}
+  enum status: {accepted: 1, rejected: 0, pending: 2, alternative: 3}
 
   # Checks if the deadline is over
   #

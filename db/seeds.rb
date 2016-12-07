@@ -42,7 +42,8 @@ event = Event.new(
     max_participants: 20,
     active: true,
     application_deadline: Date.tomorrow,
-    draft: false
+    draft: false,
+    application_status_locked: false
 )
 event.date_ranges << date_range
 event.save

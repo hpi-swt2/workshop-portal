@@ -1,4 +1,4 @@
-<% if can? :edit_applicants, Event %>
+<% if can? :edit_applicants, Event and application_letter.event.application_status_locked == false %>
     <%= form_for :application_letter, url: application_letter_path(application_letter), html: {method: :put} do |f| %>
         <div class="form-group">
           <div class="btn-group">

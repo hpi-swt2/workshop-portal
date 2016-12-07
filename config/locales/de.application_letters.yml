@@ -36,6 +36,7 @@ de:
           allergies: "Falls Allergien vorhanden, welche?"
 
   application_status:
-    accepted: "angenommen"
-    rejected: "abgelehnt"
-    pending: "ausstehend"
+    accepted: "Angenommen"
+    rejected: "Abgelehnt"
+    pending: "Ausstehend"
+    alternative: "Nachrücker"
