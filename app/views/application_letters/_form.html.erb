@@ -1,19 +1,6 @@
 <%= form_for @application_letter, :html => { :class => "form-horizontal application" } do |f| %>
 
-  <% if @application_letter.errors.any? %>
-    <div id="error_expl" class="panel panel-danger">
-      <div class="panel-heading">
-        <h3 class="panel-title"><%= pluralize(@application_letter.errors.count, "error") %> prohibited this application from being saved:</h3>
-      </div>
-      <div class="panel-body">
-        <ul>
-        <% @application_letter.errors.full_messages.each do |msg| %>
-          <li><%= msg %></li>
-        <% end %>
-        </ul>
-      </div>
-    </div>
-  <% end %>
+  <%= render partial: "shared/error_message", locals: {entity: @application_letter} %>
 
   <% if @application_letter.after_deadline? %>
     <div class="alert alert-warning" role="warning">
@@ -24,40 +11,37 @@
   <div class="form-group">
     <%= f.label :grade, :class => 'control-label col-lg-2 required' %>
     <div class="col-lg-10">
-      <%= f.text_field :grade, :class => 'form-control' %>
+      <%= f.collection_select :grade, ApplicationLetter::VALID_GRADES, :to_s, :to_s, {}, :class => 'form-control' %>
     </div>
     <%=f.error_span(:grade) %>
   </div>
   <div class="form-group">
     <%= f.label :experience, :class => 'control-label col-lg-2 required' %>
     <div class="col-lg-10">
-      <%= f.text_area :experience, :class => 'form-control' %>
+      <%= f.text_area :experience, :class => 'form-control' %> <%=f.error_span(:experience) %>
     </div>
-    <%=f.error_span(:experience) %>
   </div>
   <div class="form-group">
     <%= f.label :motivation, :class => 'control-label col-lg-2 required' %>
     <div class="col-lg-10">
-      <%= f.text_area :motivation,:rows => 10, :class => 'form-control' %>
+      <%= f.text_area :motivation, :rows => 10, :class => 'form-control' %> <%=f.error_span(:motivation) %>
     </div>
-    <%=f.error_span(:motivation) %>
   </div>
   <div class="form-group">
     <%= f.label :coding_skills, :class => 'control-label col-lg-2 required' %>
     <div class="col-lg-10">
-      <%= f.text_area :coding_skills,:rows => 5, :class => 'form-control' %>
+      <%= f.text_area :coding_skills, :rows => 5, :class => 'form-control' %>
+      <%=f.error_span(:coding_skills) %>
       <p class="help-block"><%= t '.help_text_coding_skills' %></p>
 
       <p ></p>
     </div>
-    <%=f.error_span(:coding_skills) %>
   </div>
   <div class="form-group">
     <%= f.label :emergency_number, :class => 'control-label col-lg-2 required' %>
     <div class="col-lg-10">
-      <%= f.text_field :emergency_number, :class => 'form-control' %>
+      <%= f.text_field :emergency_number, :class => 'form-control' %> <%=f.error_span(:emergency_number) %>
     </div>
-    <%=f.error_span(:emergency_number) %>
   </div>
   <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">
@@ -83,7 +67,7 @@
   <div class="form-group">
     <%= f.label :allergies, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
-      <%= f.text_field :allergies, :class => 'form-control' %>
+      <%= f.text_area :allergies, :rows => 3, :class => 'form-control' %>
     </div>
     <%=f.error_span(:allergies) %>
   </div>
