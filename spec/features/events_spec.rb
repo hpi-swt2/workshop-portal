@@ -1,8 +1,14 @@
 require "rails_helper"
 
-RSpec.feature "Event Applicant Overview", :type => :feature do
+RSpec.feature "Event Applicant overview on event page", :type => :feature do
+  before :each do
+    @event = FactoryGirl.create(:event)
+  end
+
   scenario "logged in as Pupil I can not see overview" do
     login(:pupil)
+    visit event_path(@event)
+
     expect(page).to_not have_table("applicants")
     expect(page).to_not have_css("div#free_places")
     expect(page).to_not have_css("div#occupied_places")
@@ -10,6 +16,7 @@ RSpec.feature "Event Applicant Overview", :type => :feature do
 
   scenario "logged in as Coach I can see overview" do
     login(:coach)
+    visit event_path(@event)
     expect(page).to have_table("applicants")
     expect(page).to have_css("div#free_places")
     expect(page).to have_css("div#occupied_places")
@@ -17,6 +24,7 @@ RSpec.feature "Event Applicant Overview", :type => :feature do
 
   scenario "logged in as Organizer I can see overview" do
     login(:organizer)
+    visit event_path(@event)
     expect(page).to have_table("applicants")
     expect(page).to have_css("div#free_places")
     expect(page).to have_css("div#occupied_places")
@@ -25,6 +33,7 @@ RSpec.feature "Event Applicant Overview", :type => :feature do
   scenario "logged in as Organizer I can see the correct count of free/occupied places" do
     login(:organizer)
     @event.update!(max_participants: 1)
+    visit event_path(@event)
     expect(page).to have_text(I18n.t "free_places", count: (@event.max_participants).to_i, scope: [:events, :applicants_overview])
     expect(page).to have_text(I18n.t "occupied_places", count: 0, scope: [:events, :applicants_overview])
     2.times do |i| #2 to also test negative free places, those are fine
@@ -39,7 +48,6 @@ RSpec.feature "Event Applicant Overview", :type => :feature do
 
   scenario "logged in as Organizer I can change application status with radio buttons" do
     login(:organizer)
-
     @pupil = FactoryGirl.create(:profile)
     @application_letter = FactoryGirl.create(:application_letter, event: @event, user: @pupil.user)
     visit event_path(@event)
@@ -51,7 +59,6 @@ RSpec.feature "Event Applicant Overview", :type => :feature do
 
   scenario "logged in as Coach I can see application status" do
     login(:coach)
-
     @pupil = FactoryGirl.create(:profile)
     @application_letter = FactoryGirl.create(:application_letter, event: @event, user: @pupil.user)
     visit event_path(@event)
@@ -59,10 +66,8 @@ RSpec.feature "Event Applicant Overview", :type => :feature do
   end
 
   def login(role)
-    @event = FactoryGirl.create(:event, max_participants: 1)
     @profile = FactoryGirl.create(:profile)
     @profile.user.role = role
     login_as(@profile.user, :scope => :user)
-    visit event_path(@event)
   end
 end
