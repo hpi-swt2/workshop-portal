@@ -41,3 +41,6 @@ config/database.yml
 /nbproject/private/
 /.DS_Store
 .vagrant
+
+# Ignore application configuration
+/config/application.yml
