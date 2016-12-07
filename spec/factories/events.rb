@@ -60,6 +60,20 @@ FactoryGirl.define do
       date_ranges { [] }
     end
   
+
+    trait :with_open_applications do
+      transient do
+        application_letters_count 5
+      end
+
+      after(:build) do |event, evaluator|
+        create_list(:application_letter, evaluator.application_letters_count, event: event)
+        event.application_letters.each do |letter|
+          letter.user.profile = FactoryGirl.build :profile, user: letter.user
+        end
+      end
+    end
+
     factory :event_with_accepted_applications do
       name "Event-Name"
       description "Event-Description"
