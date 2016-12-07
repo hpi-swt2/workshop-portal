@@ -38,17 +38,19 @@ class Ability
       # Pupils can only edit their own applications
       can [:new, :create], ApplicationLetter
       can [:index, :show, :edit, :update, :destroy], ApplicationLetter, user: { id: user.id }
+      # Pupils can upload their letters of agreement
+      can [:create], AgreementLetter
     end
     if user.role? :coach
-      # Coaches can view Applications for Event
-      can [:view_applicants], Event
-      can [:view_and_add_notes], ApplicationLetter
+      # Coaches can view Applications and participants for Event
+      can [:view_applicants, :view_participants], Event
+      can [:view_and_add_notes, :show], ApplicationLetter
     end
     if user.role? :organizer
       can [:index, :show], Profile
       can [:index, :show, :view_and_add_notes], ApplicationLetter
-      # Organizers can view and edit Applications for Events
-      can [:view_applicants, :edit_applicants], Event
+      # Organizers can view and edit Applications and view participants for Events
+      can [:view_applicants, :edit_applicants, :view_participants], Event
     end
     if user.role? :admin
       can :manage, :all

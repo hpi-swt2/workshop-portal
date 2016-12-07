@@ -1,5 +1,6 @@
 class ApplicationLettersController < ApplicationController
   load_and_authorize_resource param_method: :application_params
+  skip_authorize_resource :only => :new
 
   before_action :set_application, only: [:show, :edit, :update, :destroy]
 
@@ -16,6 +17,7 @@ class ApplicationLettersController < ApplicationController
   # GET /applications/new
   def new
     @application_letter = ApplicationLetter.new
+    authorize! :new, @application_letter, :message => I18n.t('application_letters.login_before_creation')
   end
 
   # GET /applications/1/edit
@@ -25,10 +27,10 @@ class ApplicationLettersController < ApplicationController
   # POST /applications
   def create
     @application_letter = ApplicationLetter.new(application_params)
-		#event must be param to new_application_letter_path
-		if params[:event_id]
-			@application_letter.event_id = params[:event_id]
-		end
+    #event must be param to new_application_letter_path
+    if params[:event_id]
+      @application_letter.event_id = params[:event_id]
+    end
     @application_letter.user_id = current_user.id
 
     if @application_letter.save

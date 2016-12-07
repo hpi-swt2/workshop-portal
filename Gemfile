@@ -86,6 +86,8 @@ group :development, :test do
   gem 'byebug'
   gem 'rspec-rails', '~> 3.2'
   gem 'capybara', '~> 2.5'
+  gem 'poltergeist'
+  gem 'database_cleaner'
   # gem 'database_cleaner'
   gem 'factory_girl_rails'
 end

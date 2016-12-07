@@ -8,6 +8,9 @@ Bundler.require(*Rails.groups)
 
 module WorkshopPortal
   class ApplicationLetter < Rails::Application
+      config.action_view.field_error_proc = Proc.new { |html_tag, instance|
+          "<div class=\"field_with_errors has-error\">#{html_tag}</div>".html_safe
+    }
     # Settings in config/environments/* take precedence over those specified here.
     # ApplicationLetter configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
@@ -22,5 +25,8 @@ module WorkshopPortal
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
+
+    # see Event::unreasonably_long, unit in days
+    config.unreasonably_long_event_time_span = 300
   end
 end

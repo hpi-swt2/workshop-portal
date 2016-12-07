@@ -32,41 +32,102 @@ RSpec.describe ProfilesController, type: :controller do
   # ProfilesController. Be sure to keep this updated too.
   let(:valid_session) { {} }
 
-  describe "GET #index" do
-    it "assigns all profiles as @profiles" do
-      sign_in FactoryGirl.create(:user)
-      profile = Profile.create! valid_attributes
-      get :index, params: {}, session: valid_session
-      expect(assigns(:profiles)).to eq([profile])
+  context "with an existing profile" do
+    before :each do
+      @profile = Profile.create! valid_attributes
+      sign_in @profile.user
+    end
+
+    describe "GET #index" do
+      it "assigns all profiles as @profiles" do
+        get :index, params: {}, session: valid_session
+        expect(assigns(:profiles)).to eq([@profile])
+      end
+    end
+
+    describe "GET #show" do
+      it "assigns the requested profile as @profile" do
+        get :show, id: @profile.to_param, session: valid_session
+        expect(assigns(:profile)).to eq(@profile)
+      end
+    end
+
+    describe "GET #new" do
+      it "assigns a new profile as @profile" do
+        get :new, params: {}, session: valid_session
+        expect(assigns(:profile)).to be_a_new(Profile)
+      end
+    end
+
+    describe "GET #edit" do
+      it "assigns the requested profile as @profile" do
+        get :edit, id: @profile.to_param, session: valid_session
+        expect(assigns(:profile)).to eq(@profile)
+      end
+    end
+    
+    describe "PUT #update" do
+      context "with valid params" do
+        let(:new_attributes) {
+          {
+              first_name: "Karl",
+              last_name: "Doe",
+              gender: "männlich",
+              birth_date: 15.years.ago,
+              school: "Schule am Griebnitzsee",
+              street_name: "August-Bebel-Str. 88",
+              zip_code: "14482",
+              city: "Potsdam",
+              state: "Babelsberg",
+              country: "Deutschland",
+              graduates_school_in: "Bereits Abitur"
+          }
+        }
+
+        it "updates the requested profile" do
+          put :update, id: @profile.to_param, profile: new_attributes, session: valid_session
+          @profile.reload
+          expect(@profile.street_name).to eq(new_attributes[:street_name])
+        end
+
+        it "assigns the requested profile as @profile" do
+          put :update, id: @profile.to_param, profile: valid_attributes, session: valid_session
+          expect(assigns(:profile)).to eq(@profile)
+        end
+
+        it "redirects to the profile" do
+          put :update, id: @profile.to_param, profile: valid_attributes, session: valid_session
+          expect(response).to redirect_to(@profile)
+        end
+      end
+
+      context "with invalid params" do
+        it "assigns the profile as @profile" do
+          put :update, id: @profile.to_param, profile: invalid_attributes, session: valid_session
+          expect(assigns(:profile)).to eq(@profile)
+        end
+
+        it "re-renders the 'edit' template" do
+          put :update, id: @profile.to_param, profile: invalid_attributes, session: valid_session
+          expect(response).to render_template("edit")
+        end
+      end
+    end
+
+    describe "DELETE #destroy" do
+      it "destroys the requested profile" do
+        expect {
+          delete :destroy, id: @profile.to_param, session: valid_session
+        }.to change(Profile, :count).by(-1)
+      end
+
+      it "redirects to the profiles list" do
+        delete :destroy, id: @profile.to_param, session: valid_session
+        expect(response).to redirect_to(profiles_url)
+      end
     end
   end
-
-  describe "GET #show" do
-    it "assigns the requested profile as @profile" do
-      profile = Profile.create! valid_attributes
-      sign_in profile.user
-      get :show, id: profile.to_param, session: valid_session
-      expect(assigns(:profile)).to eq(profile)
-    end
-  end
-
-  describe "GET #new" do
-    it "assigns a new profile as @profile" do
-      sign_in FactoryGirl.create(:user)
-      get :new, params: {}, session: valid_session
-      expect(assigns(:profile)).to be_a_new(Profile)
-    end
-  end
-
-  describe "GET #edit" do
-    it "assigns the requested profile as @profile" do
-      profile = Profile.create! valid_attributes
-      sign_in profile.user
-      get :edit, id: profile.to_param, session: valid_session
-      expect(assigns(:profile)).to eq(profile)
-    end
-  end
-
+  
   describe "POST #create" do
     context "with valid params" do
       it "creates a new Profile" do
@@ -104,80 +165,4 @@ RSpec.describe ProfilesController, type: :controller do
       end
     end
   end
-
-  describe "PUT #update" do
-    context "with valid params" do
-      let(:new_attributes) {
-        {
-            first_name: "Karl",
-            last_name: "Doe",
-            gender: "männlich",
-            birth_date: 15.years.ago,
-            school: "Schule am Griebnitzsee",
-            street_name: "August-Bebel-Str. 88",
-            zip_code: "14482",
-            city: "Potsdam",
-            state: "Babelsberg",
-            country: "Deutschland",
-            graduates_school_in: "Bereits Abitur"
-        }
-      }
-
-      it "updates the requested profile" do
-        profile = Profile.create! valid_attributes
-        sign_in profile.user
-        put :update, id: profile.to_param, profile: new_attributes, session: valid_session
-        profile.reload
-        expect(profile.street_name).to eq(new_attributes[:street_name])
-      end
-
-      it "assigns the requested profile as @profile" do
-        profile = Profile.create! valid_attributes
-        sign_in profile.user
-        put :update, id: profile.to_param, profile: valid_attributes, session: valid_session
-        expect(assigns(:profile)).to eq(profile)
-      end
-
-      it "redirects to the profile" do
-        profile = Profile.create! valid_attributes
-        sign_in profile.user
-        put :update, id: profile.to_param, profile: valid_attributes, session: valid_session
-        expect(response).to redirect_to(profile)
-      end
-    end
-
-    context "with invalid params" do
-      it "assigns the profile as @profile" do
-        profile = Profile.create! valid_attributes
-        sign_in profile.user
-        put :update, id: profile.to_param, profile: invalid_attributes, session: valid_session
-        expect(assigns(:profile)).to eq(profile)
-      end
-
-      it "re-renders the 'edit' template" do
-        profile = Profile.create! valid_attributes
-        sign_in profile.user
-        put :update, id: profile.to_param, profile: invalid_attributes, session: valid_session
-        expect(response).to render_template("edit")
-      end
-    end
-  end
-
-  describe "DELETE #destroy" do
-    it "destroys the requested profile" do
-      profile = Profile.create! valid_attributes
-      sign_in profile.user
-      expect {
-        delete :destroy, id: profile.to_param, session: valid_session
-      }.to change(Profile, :count).by(-1)
-    end
-
-    it "redirects to the profiles list" do
-      profile = Profile.create! valid_attributes
-      sign_in profile.user
-      delete :destroy, id: profile.to_param, session: valid_session
-      expect(response).to redirect_to(profiles_url)
-    end
-  end
-
 end
