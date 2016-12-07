@@ -65,6 +65,17 @@ RSpec.feature "Event Applicant overview on event page", :type => :feature do
     expect(page).to have_text(I18n.t "application_status.#{@application_letter.status}")
   end
 
+  scenario "Logged in as organizer I can see a table with the applicants" do
+    login(:organizer)
+    @event = FactoryGirl.create(:event, :with_open_applications)
+    visit event_path(@event)
+    #save_and_open_page
+    table = page.find(:xpath, '//table[@id="applicants"]')
+    @event.application_letters.each do |application_letter|
+      expect(table).to have_text(application_letter.user.profile.name)
+    end
+  end
+
   def login(role)
     @profile = FactoryGirl.create(:profile)
     @profile.user.role = role
