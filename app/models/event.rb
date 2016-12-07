@@ -58,16 +58,6 @@ class Event < ActiveRecord::Base
   def has_date_ranges
     errors.add(:base, 'Bitte mindestens eine Zeitspanne auswählen!') if date_ranges.blank?
   end
-
-  def self.human_attribute_name(*args)
-    if args[0].to_s == "max_participants"
-      return "Maximale Teilnehmerzahl"
-    elsif args[0].to_s == "date_ranges"
-      return "Zeitspannen"
-    end
-
-    super
-  end
   
   # Returns the participants whose application for this Event has been accepted
   #
@@ -104,6 +94,8 @@ class Event < ActiveRecord::Base
     application_letters.where(status: ApplicationLetter.statuses[:accepted]).count
   end
   
+  scope :draft_is, ->(draft) { where("draft = ?", draft) }
+  
   protected
   # Compares two participants to achieve following order:
   # 1. All participants that have to submit an letter of agreement but did not yet do so, ordered by name.
@@ -130,5 +122,5 @@ class Event < ActiveRecord::Base
     end
     return participant1.name <=> participant2.name
   end
-  
+
 end

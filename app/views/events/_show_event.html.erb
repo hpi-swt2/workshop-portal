@@ -1,22 +1,22 @@
 <dl class="dl-horizontal">
-  <dt><strong><%= Event.human_attribute_name(:name) %>:</strong></dt>
+  <dt><strong><%= model_class.human_attribute_name(:name) %>:</strong></dt>
   <dd><%= @event.name %></dd>
-  <dt><strong><%= Event.human_attribute_name(:description) %>:</strong></dt>
+  <dt><strong><%= model_class.human_attribute_name(:description) %>:</strong></dt>
   <dd><%= @event.description %></dd>
-  <dt><strong><%= Event.human_attribute_name(:max_participants) %>:</strong></dt>
+  <dt><strong><%= model_class.human_attribute_name(:max_participants) %>:</strong></dt>
   <dd><%= @event.max_participants %></dd>
-  <dt><strong><%= Event.human_attribute_name(:active) %>:</strong></dt>
+  <dt><strong><%= model_class.human_attribute_name(:active) %>:</strong></dt>
   <dd><%= @event.active %></dd>
-  <dt><strong><%= Event.human_attribute_name(:date_ranges) %>:</strong></dt>
+  <dt><strong><%= model_class.human_attribute_name(:date_ranges) %>:</strong></dt>
   <dd>
     <ul>
     <% @event.date_ranges.each do |r| %>
-      <li><%= r.start_date.to_s %> bis <%= r.end_date.to_s %></li>
+      <li><%= r.to_s %></li>
     <% end %>
     </ul>
   </dd>
-  <dt><strong><%= Event.human_attribute_name(:organizer) %>:</strong></dt>
+  <dt><strong><%= model_class.human_attribute_name(:organizer) %>:</strong></dt>
   <dd><%= @event.organizer %></dd>
-  <dt><strong><%= Event.human_attribute_name(:knowledge_level) %>:</strong></dt>
+  <dt><strong><%= model_class.human_attribute_name(:knowledge_level) %>:</strong></dt>
   <dd><%= @event.knowledge_level %></dd>
 </dl>

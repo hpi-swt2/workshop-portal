@@ -23,10 +23,10 @@ describe Profile do
   end
 
   it "cannot create Profile without mandatory fields" do
-  	[:first_name, :last_name, :gender, :birth_date, :school, :street_name, :zip_code, :city, :state, :country].each do |attr|
-	    profile = FactoryGirl.build(:profile, attr => nil)
-	    expect(profile).to_not be_valid
-	  end
+    [:first_name, :last_name, :gender, :birth_date, :school, :street_name, :zip_code, :city, :state, :country].each do |attr|
+      profile = FactoryGirl.build(:profile, attr => nil)
+      expect(profile).to_not be_valid
+    end
   end
 
   it "returns correct age" do
@@ -53,5 +53,10 @@ describe Profile do
   it "returns full address" do
     profile = FactoryGirl.build(:profile)
     expect(profile.address).to eq("#{profile.street_name}, #{profile.zip_code} #{profile.city}, #{profile.state}, #{profile.country}")
+  end
+
+  it "doesn't allow a birthday in the future" do
+    profile = FactoryGirl.build(:profile, birth_date: Date.tomorrow)
+    expect(profile).to_not be_valid
   end
 end
