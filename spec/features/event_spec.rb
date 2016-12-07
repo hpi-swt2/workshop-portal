@@ -16,7 +16,6 @@ describe "Event", type: :feature do
       visit new_event_path
       select_date_within_selector(Date.yesterday.prev_day, '.event-date-picker-start')
       select_date_within_selector(Date.yesterday, '.event-date-picker-end')
-      #find("input[name='commit']").click
       click_button "Veranstaltung erstellen"
       expect(page).to have_text("Anfangs-Datum darf nicht in der Vergangenheit liegen.")
     end

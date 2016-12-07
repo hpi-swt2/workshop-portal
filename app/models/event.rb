@@ -24,6 +24,9 @@ class Event < ActiveRecord::Base
   # 1. All participants that have to submit an letter of agreement but did not yet do so, ordered by name.
   # 2. All participants that have to submit an letter of agreement and did do so, ordered by name.
   # 3. All participants that do not have to submit an letter of agreement, ordered by name.
+  #
+  # @param none
+  # @return [Array<User>] the event's participants in that order.
   def participants_by_agreement_letter
     @participants = self.participants
 	@participants.sort { |x, y| self.compare_participants_by_agreement(x,y) }
@@ -102,6 +105,10 @@ class Event < ActiveRecord::Base
   end
   
   protected
+  # Compares two participants to achieve following order:
+  # 1. All participants that have to submit an letter of agreement but did not yet do so, ordered by name.
+  # 2. All participants that have to submit an letter of agreement and did do so, ordered by name.
+  # 3. All participants that do not have to submit an letter of agreement, ordered by name.
   def compare_participants_by_agreement(participant1, participant2)
     if participant1.requires_agreement_letter_for_event?(self)
       if participant2.requires_agreement_letter_for_event?(self)
