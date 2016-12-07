@@ -1,5 +1,19 @@
 <%- model_class = Event -%>
 <div class="page-header">
-  <h1><%=t '.title', :default => model_class.model_name.human.pluralize.titleize %></h1>
 </div>
-<%= render partial: '_email_form',  %>
+<div>
+  <div class="email-form col-md-8">
+    <%= render partial: 'emails/email_form', locals: {adresses: @adresses, subject: '', content: ''} %>
+  </div>
+  <div class="email-templates col-md-4">
+    <p><%= t('.templates') %></p>
+    <div class="list-group">
+      <% @templates.each do |template| %>
+        <a href="#" class="list-group-item">
+          <h4 class="list-group-item-heading"><%= template[:subject] %></h4>
+          <p class="list-group-item-text"><%= template[:content] %></p>
+        </a>
+      <% end %>
+    </div>
+  </div>
+</div>

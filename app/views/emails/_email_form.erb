@@ -1,14 +1,24 @@
-<%= form_tag '/email', class: 'email-form' do %>
+<%= form_tag '/email', class: 'email-form form-horizontal' do %>
     <div class="form-group">
-      <label for="to">An:</label>
-      <%= email_field_tag 'to', @email.addresses %>
+      <label class="control-label col-sm-2" for="to"><%= t('.to') %>:</label>
+      <div class="col-sm-10">
+        <%= text_field_tag 'to', @adresses, class: 'email-to form-control' %>
+      </div>
     </div>
     <div class="form-group">
-      <label for="subject">Betreff:</label>
-      <%= text_field_tag 'subject', @email.subject %>
+      <label class="control-label col-sm-2" for="subject"><%= t('.subject') %>:</label>
+      <div class="col-sm-10">
+        <%= text_field_tag 'subject', @subject, class: 'email-subject form-control' %>
+      </div>
     </div>
     <div class="form-group">
-      <%= text_area_tag 'content', nil, cols: 15 %>
+      <div class="col-sm-10 col-sm-offset-2">
+        <%= text_area_tag 'content', @content, class: 'email-content', rows: 15 %>
+      </div>
     </div>
-    <%= button_tag 'Senden' %>
+    <div class="form-group">
+      <div class="col-sm-2 col-sm-offset-10">
+        <%= button_tag t('.send'), class: 'email-submit btn btn-default' %>
+      </div>
+    </div>
 <% end %>

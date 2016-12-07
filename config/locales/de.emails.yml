@@ -1,0 +1,7 @@
+# German translation for email
+
+de:
+  email:
+    to: 'An'
+    subject: 'Betreff'
+    send: 'Senden'

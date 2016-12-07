@@ -20,11 +20,12 @@ de:
       unnecessary: "nicht benötigt"
       available: "vorhanden"
       unavailable: "nicht vorhanden"
-
     form:
       draft: "Speichern"
       publish: "Veröffentlichen"
       update: "Aktualisieren"
+    email:
+      templates: "Vorlagen"
   activerecord:
       models:
         event: "Veranstaltung"
