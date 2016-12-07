@@ -51,4 +51,11 @@ RSpec.describe "events/show", type: :view do
     render
     expect(rendered).to have_link(t(:details, scope: 'events.applicants_overview'))
   end
+
+  it "contains an modal to print participant lists" do
+    render
+    expect(rendered).to have_css('div#print_participant_modal')
+    expect(rendered).to have_button(:css, 'button#open_print_modal')
+    expect(rendered).to have_button(:css, 'button#print_participant_list')
+  end
 end

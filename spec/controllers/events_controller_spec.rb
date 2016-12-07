@@ -102,6 +102,17 @@ RSpec.describe EventsController, type: :controller do
       end
     end
 
+    describe "GET #participant_list" do
+      it "should return an pdf" do
+        get :participant_list, id: @event.to_param, session: valid_session
+        expect(response.content_type).to eq('application/pdf')
+      end
+
+      it "should contain the name of the participants" do
+        get :participant_list, id: @event.to_param, session: valid_session
+      end
+    end
+
     describe "PUT #update" do
       context "with valid params" do
         let(:new_attributes) {
