@@ -61,8 +61,8 @@
             <%= button_tag t('.sending_rejections'), type: 'button', class: 'send-emails-button btn btn-default', disabled: true %>
           </div>
       <% else %>
-          <%= button_tag t('.sending_acceptances'), type: 'button', class: 'btn btn-default', data: {toggle: 'modal', target: '#send-emails-modal', title: t('.sending_acceptances'), list: @event.accepted_applications_emails} %>
-          <%= button_tag t('.sending_rejections'), type: 'button', class: 'btn btn-default', data: {toggle: 'modal', target: '#send-emails-modal', title: t('.sending_rejections'), list: @event.rejected_applications_emails} %>
+          <%= button_tag t('.sending_acceptances'), type: 'button', class: 'btn btn-default', data: {toggle: 'modal', target: '#send-emails-modal', title: t('.sending_acceptances'), list: @event.email_adresses_of_accepted_applicants} %>
+          <%= button_tag t('.sending_rejections'), type: 'button', class: 'btn btn-default', data: {toggle: 'modal', target: '#send-emails-modal', title: t('.sending_rejections'), list: @event.email_adresses_of_rejected_applicants} %>
       <% end %>
     </div>
   </div>

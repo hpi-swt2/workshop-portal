@@ -44,4 +44,9 @@ RSpec.describe "profiles/show", type: :view do
     expect(rendered).to_not have_selector("input[type='file']")
     expect(rendered).to_not have_selector("input[type='submit']")
   end
+
+  it "renders the events table" do
+    render
+    expect(rendered).to have_table("events_table")
+  end
 end

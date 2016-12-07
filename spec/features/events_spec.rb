@@ -50,12 +50,11 @@ RSpec.feature "Event Applicant Overview", :type => :feature do
   scenario "logged in as Organizer I want to open a modal by clicking on sending emails" do
     login(:organizer)
     @event.update!(max_participants: 2)
-    @pupil1 = FactoryGirl.create(:profile)
-    @pupil1.user.role = :pupil
-    @pupil2 = FactoryGirl.create(:profile)
-    @pupil2.user.role = :pupil
-    @accepted_application = FactoryGirl.create(:application_letter_accepted, :event => @event, :user => @pupil1.user)
-    @accepted_application_2 = FactoryGirl.create(:application_letter_accepted, :event => @event, :user => @pupil2.user)
+    2.times do |n|
+      @pupil = FactoryGirl.create(:profile)
+      @pupil.user.role = :pupil
+      FactoryGirl.create(:application_letter_accepted, :event => @event, :user => @pupil.user)
+    end
     visit event_path(@event)
     click_button I18n.t('events.applicants_overview.sending_acceptances')
     expect(page).to have_selector('div', :id => 'send-emails-modal')
