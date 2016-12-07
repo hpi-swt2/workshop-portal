@@ -51,7 +51,7 @@ class User < ActiveRecord::Base
   # Returns true iff. user has submitted an agreement_letter for the given event
   #
   # @param given_event
-  # @return true or false
+  # @return [Boolean]
   def agreement_letter_for_event?(given_event)
     return !self.agreement_letter_for_event(given_event).nil?
   end
@@ -59,7 +59,7 @@ class User < ActiveRecord::Base
   # Returns the agreement letter the user has submitted for given_event. Returns Nil if no such letter exists.
   #
   # @param given_event
-  # @return agreement_letter
+  # @return [AgreementLetter, Nil]
   def agreement_letter_for_event(given_event)
     fitting_agreement_letters = self.agreement_letters.select { |letter| letter.event == given_event }
 	return fitting_agreement_letters[0]
@@ -68,7 +68,7 @@ class User < ActiveRecord::Base
   # Returns true iff. user is at least 18 years old at the start date of given_event
   #
   # @param given_event
-  # @return true or false
+  # @return [Boolean]
   def requires_agreement_letter_for_event?(given_event)
     return self.older_than_required_age_at_start_date_of_event?(given_event, 18)
   end
@@ -76,7 +76,7 @@ class User < ActiveRecord::Base
   # Returns true iff. the age of user is age or more at the start_date of given_event. Returns false if age of user is unknown.
   #
   # @param given_event (Event), age (Integer)
-  # @return true or false
+  # @return [Boolean]
   def older_than_required_age_at_start_date_of_event?(given_event, age)
     return false unless self.profile
     event_start = given_event.start_date
