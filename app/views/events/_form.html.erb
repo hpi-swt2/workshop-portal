@@ -1,10 +1,9 @@
 <%= form_for @event, :html => { :class => "form-horizontal event" } do |f| %>
 
-  <% if @event.errors.any? %>
-    <div id="error_expl" class="panel panel-danger">
-      <div class="panel-heading">
-        <h3 class="panel-title"><%= pluralize(@event.errors.count, "Fehler") %> verhinderte das Speichern:</h3>
-      </div>
+<% if @event.errors.any? %>
+  <div id="error_expl" class="panel panel-danger">
+    <div class="panel-heading">
+      <h3 class="panel-title"><%=I18n.t("errors.form_invalid", number: @event.errors.count) %></h3> </div>
       <div class="panel-body">
         <ul>
         <% @event.errors.full_messages.each do |msg| %>
@@ -17,8 +16,8 @@
         end %>
         </ul>
       </div>
-    </div>
-  <% end %>
+  </div>
+<% end %>
 
   <div class="form-group">
     <div class="btn-group col-lg-10 col-lg-offset-2" data-toggle="buttons">
@@ -28,44 +27,44 @@
           <%= key.humanize %>
         </label>
       <% end %>
+      <%=f.error_span(:kind) %>
     </div>
-    <%=f.error_span(:kind) %>
   </div>
 
   <div class="form-group">
     <%= f.label :name, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
       <%= f.text_field :name, :class => 'form-control' %>
+      <%=f.error_span(:name) %>
     </div>
-    <%=f.error_span(:name) %>
   </div>
   <div class="form-group">
     <%= f.label :description, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
       <%= f.text_field :description, :class => 'form-control' %>
+      <%=f.error_span(:description) %>
     </div>
-    <%=f.error_span(:description) %>
   </div>
   <div class="form-group">
     <%= f.label :max_participants, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
       <%= f.text_field :max_participants, :class => 'form-control' %>
+      <%=f.error_span(:max_participants) %>
     </div>
-    <%=f.error_span(:max_participants) %>
   </div>
   <div class="form-group">
     <%= f.label :active, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
       <%= f.text_field :active, :class => 'form-control' %>
+      <%=f.error_span(:active) %>
     </div>
-    <%=f.error_span(:active) %>
   </div>
   <div class="form-group">
     <%= f.label :date_ranges, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10" id="event-date-pickers">
       <% def date_picker_template(startDate = Date.today, endDate = Date.today)
           start_picker = select_date(startDate, {prefix: 'date_ranges[start_date][]'}).gsub("\n", "")
-          end_picker = select_date(endDate, {prefix: 'date_ranges[end_date][]'}).gsub("\n", "") 
+          end_picker = select_date(endDate, {prefix: 'date_ranges[end_date][]'}).gsub("\n", "")
           "<div class=\"event-date-picker\">
             <div class=\"event-date-picker-start\">#{start_picker}</div>
             #{t 'date_range.to'}
@@ -76,7 +75,7 @@
       <%=
         if @event.date_ranges.blank?
           date_picker_template.html_safe
-        else 
+        else
           @event.date_ranges
             .map { |d| date_picker_template d.start_date, d.end_date }
             .reduce(:+)
@@ -87,22 +86,21 @@
         Zeitspanne hinzufügen
       </a>
     </div>
-    <%=f.error_span(:active) %>
     <script>var EVENT_DATE_PICKER_TEMPLATE = '<%= date_picker_template.gsub("\n", "").html_safe %>';</script>
   </div>
   <div class="form-group">
     <%= f.label :organizer, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
       <%= f.text_field :organizer, :class => 'form-control', :placeholder => 'optional' %>
+      <%=f.error_span(:organizer) %>
     </div>
-    <%=f.error_span(:organizer) %>
   </div>
   <div class="form-group">
     <%= f.label :knowledge_level, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
       <%= f.text_field :knowledge_level, :class => 'form-control', :placeholder => 'optional' %>
+      <%=f.error_span(:knowledge_level) %>
     </div>
-    <%=f.error_span(:knowledge_level) %>
   </div>
 
   <div class="form-group">
