@@ -109,6 +109,33 @@ RSpec.feature "Application Letter Overview", :type => :feature do
     expect(page).to_not have_text profile_required_message
   end
 
+  it "shows an error if you don't have a profile and redirects you to the application page after profile creation" do
+    user = FactoryGirl.create(:user)
+    event = FactoryGirl.create(:event)
+    profile_required_message = I18n.t 'application_letters.fill_in_profile_before_creation'
+    new_application_path = new_application_letter_path(:event_id => event.id)
+
+    login_as(user, :scope => :user)
+    visit new_application_path
+    page.assert_current_path new_profile_path # Make sure redirect happened
+    expect(page).to have_text profile_required_message
+
+    fill_in "profile_first_name", with:   "John"
+    fill_in "profile_last_name", with:   "Doe"
+    fill_in "profile_gender", with:   "männlich"
+    fill_in "profile_birth_date", with: "19.03.2016"
+    fill_in "profile_school", with: "Griebnitzsee Schule"
+    fill_in "profile_street_name", with:   "Rudolf-Breitscheid-Str. 52"
+    fill_in "profile_zip_code", with:   "14482"
+    fill_in "profile_city" , with:  "Potsdam"
+    fill_in "profile_state" , with:  "Babelsberg"
+    fill_in "profile_country" , with:  "Deutschland"
+
+    find('input[name=commit]').click
+
+    expect(page).to have_text('Bewerbung erstellen')
+  end
+
   def login(role)
     @event = FactoryGirl.create(:event)
     @profile = FactoryGirl.create(:profile)
