@@ -45,12 +45,14 @@ class Ability
       # Coaches can view Applications for Event
       can [:view_applicants], Event
       can [:view_and_add_notes, :show], ApplicationLetter
+      can [:print_applications], Event
     end
     if user.role? :organizer
       can [:index, :show], Profile
       can [:index, :show, :view_and_add_notes], ApplicationLetter
       # Organizers can view and edit Applications for Events
       can [:view_applicants, :edit_applicants], Event
+      can [:print_applications], Event
     end
     if user.role? :admin
       can :manage, :all

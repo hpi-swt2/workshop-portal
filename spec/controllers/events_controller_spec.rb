@@ -221,6 +221,8 @@ RSpec.describe EventsController, type: :controller do
   describe "GET #print_applications" do
     before :each do
       @event = Event.create! valid_attributes
+      @user = FactoryGirl.create(:user, role: :organizer)
+      sign_in @user
     end
 
     it "returns success" do

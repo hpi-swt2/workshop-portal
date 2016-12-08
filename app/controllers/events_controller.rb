@@ -68,6 +68,7 @@ class EventsController < ApplicationController
   
   # GET /events/1/print_applications
   def print_applications
+    authorize! :print_applications, @event
     pdf = ApplicationsPDF.generate(@event)
     send_data pdf, filename: "applications_#{@event.name}_#{Date.today}.pdf", type: "application/pdf", disposition: "inline"
   end
