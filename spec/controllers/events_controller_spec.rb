@@ -184,7 +184,16 @@ RSpec.describe EventsController, type: :controller do
                           event_id: event.to_param,
                           session: valid_session,
                           "1234_print_Max Mustermann"  => 1,
-                          "1235_print_Max Mustermann"  => 1
+                          "1235_print_Max Mustermann"  => 1,
+                          "1236_print_Max Mustermann"  => 1,
+                          "1237_print_Max Mustermann"  => 1,
+                          "1238_print_Max Mustermann"  => 1,
+                          "1239_print_Max Mustermann"  => 1,
+                          "1240_print_Max Mustermann"  => 1,
+                          "1241_print_Max Mustermann"  => 1,
+                          "1242_print_Max Mustermann"  => 1,
+                          "1243_print_Max Mustermann"  => 1,
+                          "1244_print_Max Mustermann"  => 1
       pdf = PDF::Inspector::Text.analyze(rendered_pdf.body)
       expect(pdf.strings).to include("Max Mustermann")
     end

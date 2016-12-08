@@ -76,16 +76,12 @@ class EventsController < ApplicationController
     pdf = Prawn::Document.new(:page_size => 'A4')
     pdf.stroke_color "000000"
 
-    # creates badge edges as rectangles left-upper-bound[x,y], width, height
-    names.each_with_index do |participant, index|
-      if index % 2 == 0 # left column badges
-        create_badge(pdf, participant, 0, 750 - index / 2 * 150)
-        index = index - 1
-      else
-        create_badge(pdf, participant, 260, 750 - index / 2 * 150)
-      end
-
+    # divide in pieces of 10 names
+    badge_pages = names.each_slice(10).to_a
+    badge_pages.each_with_index do | page, index |
+      create_badge_page(pdf, page, index)
     end
+
 
     send_data pdf.render, :filename => "badges.pdf", :type => "application/pdf", disposition: "inline"
   end
@@ -155,6 +151,27 @@ class EventsController < ApplicationController
       height = 150
       pdf.stroke_rectangle [x, y], width, height
       pdf.draw_text name, :at => [x + width / 2 - 50 , y - 20]
+    end
+
+    # Create a page with maximum 10 badges
+    #
+    # @param pdf, is a prawn pdf-object
+    # @param names [Array of Strings] are the name which are printed to the badges
+    # @param index [Number] the page number
+    def create_badge_page(pdf, names, index)
+      # create no pagebreak for first page
+      if index > 0
+        pdf.start_new_page
+      end
+      # creates badge edges as rectangles left-upper-bound[x,y], width, height
+      names.each_with_index do |participant, index|
+        if index % 2 == 0 # left column badges
+          create_badge(pdf, participant, 0, 750 - index / 2 * 150)
+          index = index - 1
+        else
+          create_badge(pdf, participant, 260, 750 - index / 2 * 150)
+        end
+      end
     end
 
     # TODO: remove
