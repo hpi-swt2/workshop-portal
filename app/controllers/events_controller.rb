@@ -62,10 +62,6 @@ class EventsController < ApplicationController
   def badges
     @event = Event.find(params[:event_id])
     @participants = @event.participants
-
-    # TODO: undo mock
-    @participants.push(create_mock_participants)
-    @participants.push(create_mock_participants)
   end
 
   # POST /events/1/badges
@@ -175,7 +171,7 @@ class EventsController < ApplicationController
     end
 
     # TODO: remove
-    def create_mock_participants
-      participant = User.new(name: "Max Mustermann", id: SecureRandom.uuid)
-    end
+    #def create_mock_participants
+    #  participant = User.new(name: "Max Mustermann", id: SecureRandom.uuid)
+    #end
 end

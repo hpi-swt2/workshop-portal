@@ -52,6 +52,9 @@
 
       <%= link_to "Absagen verschicken",
                   events_path, :class => 'btn btn-default'%>
+
+      <%= link_to  t('events.badges.print_button_label'),
+                  event_badges_path(@event), :class => 'btn btn-default'%>
     </div>
   </div>
 

@@ -19,6 +19,7 @@ de:
         title: "Namensschilder drucken für das Event "
         participants: "Teilnehmer"
         printBoolean: "Drucken?"
+        print_button_label: "Namensschilder drucken"
     participants:
       participants: "Teilnehmer"
       show_participants: "Teilnehmerliste"
