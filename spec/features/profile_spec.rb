@@ -65,7 +65,7 @@ RSpec.feature "Profile adaptation", :type => :feature do
 
     find('input[name=commit]').click
 
-    expect(page).to have_css(".has-error", count: 3)
+    expect(page).to have_css(".has-error", count: 9)
   end
 
   scenario "user fills in a valid birth date" do
@@ -89,6 +89,6 @@ RSpec.feature "Profile adaptation", :type => :feature do
 
     find('input[name=commit]').click
 
-    expect(page).to have_css(".has-error", count: 1)
+    expect(page).to have_css(".has-error", count: 3)
   end
 end
