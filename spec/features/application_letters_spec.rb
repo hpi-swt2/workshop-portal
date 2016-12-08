@@ -92,7 +92,7 @@ RSpec.feature "Application Letter Overview", :type => :feature do
     expect(page).to_not have_text login_error_message
   end
 
-  it "shows an error if you don't have a profile" do
+  it "shows an error if you don't have a profile and redirects you to profile creation" do
     user = FactoryGirl.create(:user)
     event = FactoryGirl.create(:event)
     profile_required_message = I18n.t 'application_letters.fill_in_profile_before_creation'
