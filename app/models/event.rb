@@ -91,7 +91,6 @@ class Event < ActiveRecord::Base
   # @param none
   # @return [String] Concatenation of all email addresses of rejected applications, seperated by ','
   def email_adresses_of_rejected_applicants
-    #rejected_applications = application_letters.select { |application_letter| application_letter.status == 'rejected' }
     rejected_applications = application_letters.where(status: ApplicationLetter.statuses[:rejected])
     rejected_applications.map{ |applications_letter| applications_letter.user.email }.join(',')
   end

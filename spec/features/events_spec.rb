@@ -36,12 +36,11 @@ RSpec.feature "Event Applicant Overview", :type => :feature do
   scenario "logged in as Organizer I want to be unable to send emails if there is a negative number of free places left" do
     login(:organizer)
     @event.update!(max_participants: 1)
-    @pupil1 = FactoryGirl.create(:profile)
-    @pupil1.user.role = :pupil
-    @pupil2 = FactoryGirl.create(:profile)
-    @pupil2.user.role = :pupil
-    @accepted_application = FactoryGirl.create(:application_letter_accepted, :event => @event, :user => @pupil1.user)
-    @accepted_application_2 = FactoryGirl.create(:application_letter_accepted, :event => @event, :user => @pupil2.user)
+    2.times do |n|
+      @pupil = FactoryGirl.create(:profile)
+      @pupil.user.role = :pupil
+      FactoryGirl.create(:application_letter_accepted, :event => @event, :user => @pupil.user)
+    end
     visit event_path(@event)
     expect(page).to have_button(I18n.t('events.applicants_overview.sending_acceptances'), disabled: true)
     expect(page).to have_button(I18n.t('events.applicants_overview.sending_rejections'), disabled: true)
