@@ -59,6 +59,28 @@ describe Event do
   end
   
 
+  it "checks if there are unclassified applications_letters" do
+    event = FactoryGirl.create(:event)
+    accepted_application_letter = FactoryGirl.create(:application_letter_accepted, :event => event, :user => FactoryGirl.create(:user))
+    event.application_letters.push(accepted_application_letter)
+    expect(event.applications_classified?).to eq(true)
+
+    pending_application_letter = FactoryGirl.create(:application_letter, :event => event, :user => FactoryGirl.create(:user))
+    event.application_letters.push(pending_application_letter)
+    expect(event.applications_classified?).to eq(false)
+  end
+
+  it "computes the email addresses of the accepted and the rejected applications" do
+    event = FactoryGirl.create(:event)
+    accepted_application_letter_1 = FactoryGirl.create(:application_letter_accepted, :event => event, :user => FactoryGirl.create(:user))
+    accepted_application_letter_2 = FactoryGirl.create(:application_letter_accepted, :event => event, :user => FactoryGirl.create(:user))
+    accepted_application_letter_3 = FactoryGirl.create(:application_letter_accepted, :event => event, :user => FactoryGirl.create(:user))
+    rejected_application_letter = FactoryGirl.create(:application_letter_rejected, :event => event, :user => FactoryGirl.create(:user))
+    [accepted_application_letter_1, accepted_application_letter_2, accepted_application_letter_3, rejected_application_letter].each { |letter| event.application_letters.push(letter) }
+    expect(event.email_adresses_of_accepted_applicants).to eq([accepted_application_letter_1.user.email, accepted_application_letter_2.user.email, accepted_application_letter_3.user.email].join(','))
+    expect(event.email_adresses_of_rejected_applicants).to eq([rejected_application_letter.user.email].join(','))
+  end
+
   it "is either a camp or a workshop" do
     expect { FactoryGirl.build(:event, kind: :smth_invalid) }.to raise_error(ArgumentError)
 
@@ -146,3 +168,4 @@ describe Event do
     expect(event.compute_occupied_places).to eq(2)
   end
 end
+
