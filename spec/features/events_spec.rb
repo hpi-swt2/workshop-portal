@@ -22,6 +22,43 @@ RSpec.feature "Event Applicant Overview", :type => :feature do
     expect(page).to have_css("div#occupied_places")
   end
 
+  scenario "logged in as Organizer I want to be unable to send emails if there is any unclassified application left" do
+    login(:organizer)
+    @event.update!(max_participants: 1)
+    @pupil = FactoryGirl.create(:profile)
+    @pupil.user.role = :pupil
+    @pending_application = FactoryGirl.create(:application_letter, :event => @event, :user => @pupil.user)
+    visit event_path(@event)
+    expect(page).to have_button(I18n.t('events.applicants_overview.sending_acceptances'), disabled: true)
+    expect(page).to have_button(I18n.t('events.applicants_overview.sending_rejections'), disabled: true)
+  end
+
+  scenario "logged in as Organizer I want to be unable to send emails if there is a negative number of free places left" do
+    login(:organizer)
+    @event.update!(max_participants: 1)
+    2.times do |n|
+      @pupil = FactoryGirl.create(:profile)
+      @pupil.user.role = :pupil
+      FactoryGirl.create(:application_letter_accepted, :event => @event, :user => @pupil.user)
+    end
+    visit event_path(@event)
+    expect(page).to have_button(I18n.t('events.applicants_overview.sending_acceptances'), disabled: true)
+    expect(page).to have_button(I18n.t('events.applicants_overview.sending_rejections'), disabled: true)
+  end
+
+  scenario "logged in as Organizer I want to open a modal by clicking on sending emails" do
+    login(:organizer)
+    @event.update!(max_participants: 2)
+    2.times do |n|
+      @pupil = FactoryGirl.create(:profile)
+      @pupil.user.role = :pupil
+      FactoryGirl.create(:application_letter_accepted, :event => @event, :user => @pupil.user)
+    end
+    visit event_path(@event)
+    click_button I18n.t('events.applicants_overview.sending_acceptances')
+    expect(page).to have_selector('div', :id => 'send-emails-modal')
+  end
+
   scenario "logged in as Organizer I can see the correct count of free/occupied places" do
     login(:organizer)
     @event.update!(max_participants: 1)
