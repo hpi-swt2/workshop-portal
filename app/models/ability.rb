@@ -42,8 +42,8 @@ class Ability
       can [:create], AgreementLetter
     end
     if user.role? :coach
-      # Coaches can view Applications for Event
-      can [:view_applicants], Event
+      # Coaches can view Applications and participants for Event
+      can [:view_applicants, :view_participants], Event
       can [:view_and_add_notes, :show], ApplicationLetter
       can [:print_applications], Event
     end
@@ -51,8 +51,7 @@ class Ability
       can [:index, :show], Profile
       can [:index, :show, :view_and_add_notes], ApplicationLetter
       # Organizers can view and edit Applications for Events
-      can [:view_applicants, :edit_applicants], Event
-      can [:print_applications], Event
+      can [:view_applicants, :edit_applicants, :view_participants, :print_applications], Event
     end
     if user.role? :admin
       can :manage, :all

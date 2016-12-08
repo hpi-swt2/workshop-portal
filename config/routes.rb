@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  post 'agreement_letters/create'
+  get 'agreement_letters/show'
+
   resources :requests
   resources :application_letters, path: 'applications' do
     resources :application_notes,

@@ -63,7 +63,7 @@ class EventsController < ApplicationController
   # GET /events/1/participants
   def participants
     @event = Event.find(params[:id])
-    @participants = @event.participants
+    @participants = @event.participants_by_agreement_letter
   end
   
   # GET /events/1/print_applications
