@@ -20,6 +20,44 @@ describe Event do
   it "is created by event factory" do
     expect(event).to be_valid
   end
+  
+  it "has as many participants as accepted applications" do
+    event = FactoryGirl.create(:event_with_accepted_applications, accepted_application_letters_count: 10, rejected_application_letters_count: 7)
+    expect(event.participants.length).to eq 10
+  end
+
+  it "sorts participants in the expected order" do
+    @event = FactoryGirl.create(:event)
+    @user1 = FactoryGirl.create(:user, name: 'ghk')
+    @profile1 = FactoryGirl.create(:profile, user: @user1, birth_date: 15.years.ago)
+    @application1 = FactoryGirl.create(:application_letter_accepted, user: @user1, event: @event)
+    @agreement1 = FactoryGirl.create(:agreement_letter, user: @user1, event: @event)
+    
+    @user2 = FactoryGirl.create(:user, name: 'bba')
+    @profile2 = FactoryGirl.create(:profile, user: @user2, birth_date: 16.years.ago)
+    @application2 = FactoryGirl.create(:application_letter_accepted, user: @user2, event: @event)
+    
+    @user3 = FactoryGirl.create(:user, name: 'eee')
+    @profile3 = FactoryGirl.create(:profile, user: @user3, birth_date: 19.years.ago)
+    @application3 = FactoryGirl.create(:application_letter_accepted, user: @user3, event: @event)
+    @agreement3 = FactoryGirl.create(:agreement_letter, user: @user3, event: @event)
+    
+    @user4 = FactoryGirl.create(:user, name: 'ddd')
+    @profile4 = FactoryGirl.create(:profile, user: @user4, birth_date: 16.years.ago)
+    @application4 = FactoryGirl.create(:application_letter_accepted, user: @user4, event: @event)
+    
+    @user5 = FactoryGirl.create(:user, name: 'bbb')
+    @profile5 = FactoryGirl.create(:profile, user: @user5, birth_date: 20.years.ago)
+    @application5 = FactoryGirl.create(:application_letter_accepted, user: @user5, event: @event)
+    
+    @user6 = FactoryGirl.create(:user, name: 'abc')
+    @profile6 = FactoryGirl.create(:profile, user: @user6, birth_date: 16.years.ago)
+    @application6 = FactoryGirl.create(:application_letter_accepted, user: @user6, event: @event)
+    @agreement6 = FactoryGirl.create(:agreement_letter, user: @user6, event: @event)
+    #2,4,6,1,5,3
+	expect(@event.participants_by_agreement_letter).to eq([@user2, @user4, @user6, @user1, @user5, @user3])
+  end
+  
 
   it "is either a camp or a workshop" do
     expect { FactoryGirl.build(:event, kind: :smth_invalid) }.to raise_error(ArgumentError)

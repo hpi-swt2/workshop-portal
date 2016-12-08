@@ -14,6 +14,12 @@ de:
       occupied_places:
         one: '%{count} Platz belegt'
         other: '%{count} Plätze belegt'
+    participants:
+      participants: "Teilnehmer"
+      show_participants: "Teilnehmerliste"
+      unnecessary: "nicht benötigt"
+      available: "vorhanden"
+      unavailable: "nicht vorhanden"
 
     form:
       draft: "Speichern"
@@ -27,7 +33,11 @@ de:
           name: "Name"
           description: "Beschreibung"
           max_participants: "Maximale Teilnehmerzahl"
+          kind: "Art"
           active: "Aktiv"
+          start_date: "Beginn"
+          end_date: "Ende"
+          draft: "Entwurf"
           organizer: "Veranstalter"
           knowledge_level: "Kenntnisstand"
           date_ranges: "Zeitspannen"

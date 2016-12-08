@@ -36,7 +36,7 @@ RSpec.feature "Application Letter Overview", :type => :feature do
 
     find('input[name=commit]').click
 
-    expect(page).to have_css(".has-error", count: 4)
+    expect(page).to have_css(".has-error", count: 12)
   end
 
    it "should save" do

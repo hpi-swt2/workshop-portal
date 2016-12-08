@@ -25,10 +25,8 @@ a:hover:not(.btn) { color: #fff; background-color:#000; }
   color: green;
 }
 
-.field_with_errors {
-  padding: 2px;
-  background-color: red;
-  display: table;
+.field_with_errors label{
+    color: black !important;
 }
 
 #error_explanation {
