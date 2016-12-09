@@ -19,7 +19,7 @@
       <tr>
         <td><%= link_to event.id, event_path(event) %></td>
         <td><%= event.name %></td>
-        <td><%= I18n.t 'events.kinds.#{event.kind}' %></td>
+        <td><%= I18n.t "events.kinds.#{event.kind}" %></td>
         <td><%= event.start_date %></td>
         <td><%= event.end_date %></td>
         <td><%= event.draft %></td>
