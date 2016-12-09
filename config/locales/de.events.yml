@@ -25,6 +25,10 @@ de:
       available: "vorhanden"
       unavailable: "nicht vorhanden"
 
+    kinds:
+     workshop: "Workshop"
+     camp: "Camp"
+
     notices:
       created: "Event wurde erstellt."
       updated: "Event wurde aktualisiert."

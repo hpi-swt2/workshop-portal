@@ -9,7 +9,7 @@ RSpec.describe "events/index", type: :view do
   it "displays the name, the eventkind, the timespan and the status" do
     render
     assert_select "td", :text => @event.name
-    assert_select "td", :text => @event.kind
+    assert_select "td", :text => I18n.t("events.kinds.#{@event.kind}")
     assert_select "td", :date => @event.start_date
     assert_select "td", :date => @event.end_date
     assert_select "td", :boolean => @event.draft
