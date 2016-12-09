@@ -2,7 +2,13 @@
 
 de:
   date_range:
-    to: "bis"
+    errors:
+      starts_in_past: "darf nicht in der Vergangenheit liegen."
+      end_in_past: "darf nicht in der Vergangenheit liegen."
+      past_before_end: "kann nicht vor Start-Datum liegen."
+
+    pronouns:
+      to: "bis"
   activerecord:
     attributes:
       date_range:
