@@ -59,7 +59,9 @@ de:
           draft: "Entwurf"
           organizer: "Veranstalter"
           knowledge_level: "Kenntnisstand"
-          date_ranges: "Zeitspannen"
+          date_ranges:
+            one: "Zeitspanne"
+            other: "Zeitspannen"
   helpers:
     submit:
       event:
