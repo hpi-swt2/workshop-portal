@@ -28,11 +28,12 @@ class ApplicationLetter < ActiveRecord::Base
   enum status: {accepted: 1, rejected: 0, pending: 2}
 
   # Checks if the deadline is over
+  # additionally only return if event and event.application_deadline is present
   #
   # @param none
   # @return [Boolean] true if deadline is over
   def after_deadline?
-    Date.today > event.application_deadline if event.present?
+    Date.today > event.application_deadline if event.present? and !event.application_deadline.nil?
   end
 
   # Validator for after_deadline?
