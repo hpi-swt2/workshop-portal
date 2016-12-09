@@ -25,6 +25,10 @@ de:
       available: "vorhanden"
       unavailable: "nicht vorhanden"
 
+    notices:
+      created: "Event wurde erstellt."
+      updated: "Event wurde aktualisiert."
+      destroyed: "Event wurde gelöscht."
     form:
       draft: "Speichern"
       publish: "Veröffentlichen"

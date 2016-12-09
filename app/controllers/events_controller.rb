@@ -30,7 +30,7 @@ class EventsController < ApplicationController
     @event.date_ranges = date_range_params
 
     if @event.save
-      redirect_to @event, notice: 'Event wurde erstellt.'
+      redirect_to @event, notice: I18n.t(".events.notices.created")
     else
       render :new
     end
@@ -46,7 +46,7 @@ class EventsController < ApplicationController
     @event.draft = (params[:commit] == "draft")
 
     if @event.update(attrs)
-      redirect_to @event, notice: 'Event wurde aktualisiert.'
+      redirect_to @event, notice: I18n.t("events.notices.updated")
     else
       render :edit
     end
@@ -55,7 +55,7 @@ class EventsController < ApplicationController
   # DELETE /events/1
   def destroy
     @event.destroy
-    redirect_to events_url, notice: 'Event wurde gelöscht.'
+    redirect_to events_url, notice: I18n.t("events.notices.destroyed")
   end
 
   # GET /events/1/participants
