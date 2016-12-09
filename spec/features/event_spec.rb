@@ -47,11 +47,6 @@ describe "Event", type: :feature do
       second_from = Date.tomorrow.next_day(6)
       second_to = Date.tomorrow.next_day(8)
 
-      puts I18n.l(first_from).inspect
-      puts first_from.inspect
-      puts I18n.l(second_from).inspect
-      puts second_from.inspect
-
       fill_in 'Maximale Teilnehmerzahl', :with => 25
       fill_in "event[date_ranges_attributes][][start_date]", with: I18n.l(first_from)
       fill_in "event[date_ranges_attributes][][end_date]", with: I18n.l(first_to)
