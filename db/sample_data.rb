@@ -5,18 +5,32 @@ def add_sample_data
   events[:batterie_akustik] = event_batterie_akustik
   events[:bachlorpodium] = event_bachlorpodium
 
-  events.each do |key, event|
-    event.save!
+  users = Hash.new
+  users[:pupil] = user_pupil
+  users[:teacher] = user_teacher
+  users[:applicant] = user_applicant
+
+  profiles = Hash.new
+
+
+  [events, users, profiles].each do |models|
+    save_models(models)
   end
 end
 
 private
+  def save_models(models)
+    models.each do |key, model|
+      model.save!
+    end
+  end
+
   def event_bechersaeuberungsevent
     date_range_singleday = DateRange.find_or_create_by!(
         start_date: Date.new(2017, 04, 04),
         end_date: Date.new(2017, 04, 05)
     )
-    event = Event.new(
+    Event.new(
         name: 'Bechersäuberungsevent',
         description: 'Es dreht sich den ganzen Tag um das Säubern von Bechern. Wie säubert man einen Becher am
   effizientesten oder am schnellsten? Wie immer bieten wir eine Reihe an Expertenvorträgen an. Dieses Mal erfahrt ihr
@@ -35,7 +49,7 @@ private
         start_date: Date.new(2020, 02, 29),
         end_date: Date.new(2021, 03, 05)
     )
-    event = Event.new(
+    Event.new(
         name: 'Einführung in die Kunst der Gongakrobatik',
         description: 'Schon im alten China erzählte man sich von den sa­gen­um­wo­benen Legenden der Gongakrobatik.
   Spätestens seit dieser Trend auch seinen Weg nach Japan gefunden hat, stellt sich die Gongakrobatik auch für uns als
@@ -61,7 +75,7 @@ private
         start_date: Date.new(2017, 06, 01),
         end_date: Date.new(2017, 06, 14)
     )
-    event = Event.new(
+    Event.new(
         name: 'Batterie-Akustik für Fortgeschrittene',
         description: 'Viele Menschen sammeln bereits im jungen Alter Erfahrung mit der überaus komplexen Batterie-Akustik.
   "Leider wird daraus bei vielen aber nicht mehr als bloßes Jugendwissen, das sich höchstens für den jährlichen Party-Gag
@@ -78,6 +92,7 @@ private
         date_ranges: [date_range_short, date_range_medium]
     )
   end
+
   def event_bachlorpodium
     date_range_singleday1 = DateRange.find_or_create_by!(
         start_date: Date.tomorrow,
@@ -91,7 +106,7 @@ private
         start_date: Date.new(2017, 04, 06),
         end_date: Date.new(2017, 04, 06)
     )
-    event = Event.new(
+    Event.new(
         name: 'Bachelorpodium',
         description: 'Trotz modernem Videostreaming in HD in die anderen Hörsäle bleibt Hörsaal 1 doch der Publikumsliebling
   bei diesem jährlich mit größter Sorgfalt organisierten spektakulären PR Gag',
@@ -101,3 +116,33 @@ private
     )
   end
 
+  def user_password
+    "123456"
+  end
+
+  def user_pupil
+    User.new(
+      name: "Schueler",
+      email: "schueler@example.com",
+      password: user_password,
+      role: :pupil
+    )
+  end
+
+  def user_teacher 
+    User.new(
+      name: "Lehrer",
+      email: "lehrer@example.com",
+      password: user_password,
+      role: :teacher
+    )
+  end
+
+  def user_applicant
+    User.new(
+      name: "Bewerber",
+      email: "bewerber@example.com",
+      password: user_password,
+      role: :pupil
+    )
+  end
