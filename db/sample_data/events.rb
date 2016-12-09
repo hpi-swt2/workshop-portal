@@ -40,7 +40,7 @@ end
 
 def event_batterie_akustik
   date_range_short = DateRange.find_or_create_by!(
-      start_date: Date.today,
+      start_date: Date.current,
       end_date: Date.tomorrow
   )
 
