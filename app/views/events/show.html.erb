@@ -6,7 +6,7 @@
 <% if @event.unreasonably_long %>
   <div class="panel panel-warning">
     <div class="panel-body">
-      End-Datum liegt ungewöhnlich weit vom Start-Datum entfernt.
+      <%= t "events.notices.unreasonable_timespan" %>
     </div>
   </div>
 <% end %>

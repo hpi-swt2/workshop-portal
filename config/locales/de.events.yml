@@ -29,6 +29,7 @@ de:
       created: "Event wurde erstellt."
       updated: "Event wurde aktualisiert."
       destroyed: "Event wurde gelöscht."
+      unreasonable_timespan: "Vorsicht! End-Datum liegt ungewöhnlich weit vom Start-Datum entfernt."
     form:
       draft: "Speichern"
       publish: "Veröffentlichen"
