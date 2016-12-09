@@ -17,7 +17,7 @@ describe "Event", type: :feature do
       select_date_within_selector(Date.yesterday.prev_day, '.event-date-picker-start')
       select_date_within_selector(Date.yesterday, '.event-date-picker-end')
       click_button I18n.t('.events.form.publish')
-      expect(page).to have_text("Anfangs-Datum darf nicht in der Vergangenheit liegen.")
+      expect(page).to have_text("Anfangs-Datum darf nicht in der Vergangenheit liegen")
     end
 
     it "should warn about unreasonably long time spans" do

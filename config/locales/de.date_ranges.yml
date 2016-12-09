@@ -3,7 +3,7 @@
 de:
   date_range:
     errors:
-      starts_in_past: "darf nicht in der Vergangenheit liegen"
+      starts_in_past: "Anfangs-Datum darf nicht in der Vergangenheit liegen"
       end_in_past: "darf nicht in der Vergangenheit liegen"
       past_before_end: "kann nicht vor Start-Datum liegen"
       no_timespan: "Bitte mindestens eine Zeitspanne auswählen"
