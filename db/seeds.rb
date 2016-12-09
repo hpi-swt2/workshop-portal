@@ -6,7 +6,7 @@
 admin = User.find_or_initialize_by(
     name: "admin",
     email: "info@domain.com",
-    password: "system",
     role: :admin
 )
+admin.password = "system"
 admin.save!
