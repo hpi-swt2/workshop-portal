@@ -22,11 +22,14 @@ de:
       unnecessary: "nicht benötigt"
       available: "vorhanden"
       unavailable: "nicht vorhanden"
-
     form:
       draft: "Speichern"
       publish: "Veröffentlichen"
       update: "Aktualisieren"
+    applications_pdf:
+      free_places: "Freie Plätze"
+      occupied_places: "Belegte Plätze"
+      page: "Seite"
   activerecord:
       models:
         event: "Veranstaltung"

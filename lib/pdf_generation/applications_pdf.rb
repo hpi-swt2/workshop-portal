@@ -14,13 +14,15 @@ class ApplicationsPDF
 
   def create
     create_overview
-    @event.application_letters.each_with_index { |a,i| create_application_page(a, i) }
+    @event.application_letters.each_with_index do |a,i|
+      create_application_page(a, i)
+    end
     self
   end
 
   private
     def create_overview
-      text "Application Overview for #{@event.name}", size: 20
+      text t("events.applicants_overview.title", title: @event.name), size: 20
       table description_table_data do
         cells.borders = []
         cells.padding = 3
@@ -33,24 +35,30 @@ class ApplicationsPDF
             cells.borders = []
             row(0).borders = [:bottom]
             row(0).font_style = :bold
+            row(0).valign = :bottom
           end
       end
     end
 
     def description_table_data
-      data = [["Beschreibung:", @event.description],
-              ["Maximale Teilnehmer:", @event.max_participants],
-              ["Aktiv:", @event.active.to_s],
-              ["Zeitspannen:", @event.date_ranges[0].to_s]]
+      data = [[Event.human_attribute_name(:description)+":", @event.description],
+              [Event.human_attribute_name(:max_participants) + ":", @event.max_participants],
+              [Event.human_attribute_name(:active) + ":", @event.active.to_s],
+              [Event.human_attribute_name(:date_ranges) + ":", @event.date_ranges[0].to_s]]
       data += @event.date_ranges.drop(1).map { |d| ["", d.to_s] }
-      data += [["Veranstalter:", @event.organizer]] if @event.organizer
-      data += [["Kenntnisstand:", @event.knowledge_level]] if @event.knowledge_level
-      data += [["Freie Plätze:", @event.compute_free_places],
-               ["Belegte Plätze:", @event.compute_occupied_places]]
+      data += [[Event.human_attribute_name(:organizer) + ":", @event.organizer]] if @event.organizer
+      data += [[Event.human_attribute_name(:knowledge_level) + ":", @event.knowledge_level]] if @event.knowledge_level
+      data += [[t("events.applications_pdf.free_places") + ":", @event.compute_free_places],
+               [t("events.applications_pdf.occupied_places") + ":", @event.compute_occupied_places]]
     end
 
     def overview_table_data
-      data = [["Name", "Gender", "Age", "Accepted/rejected applications count", "Status"]]
+      data = [[Profile.human_attribute_name(:name),
+               Profile.human_attribute_name(:gender),
+               Profile.human_attribute_name(:age),
+               t("events.applicants_overview.participations") + "\n" +
+                 t("events.applicants_overview.accepted_rejected"),
+               ApplicationLetter.human_attribute_name(:status)]]
       data += @event.application_letters.map { |a|
         [a.user.profile.name,
          a.user.profile.gender,
@@ -103,11 +111,15 @@ class ApplicationsPDF
           relative_last_page = last_page - first_page + 1
           stroke_horizontal_rule
           move_down(5)
-          text_box("Page #{relative_page}/#{relative_last_page}",
+          text_box(t("events.applications_pdf.page") + " #{relative_page}/#{relative_last_page}",
                    at: [0, cursor],
                    align: :right)
-          text "Application #{index + 1}/#{@application_letters_count}"
+          text ApplicationLetter.model_name.human + " #{index + 1}/#{@application_letters_count}"
         end
       end
+    end
+
+    def t(string, options = {})
+      I18n.t(string, options)
     end
 end
