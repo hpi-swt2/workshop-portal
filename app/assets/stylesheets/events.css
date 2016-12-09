@@ -14,3 +14,10 @@
 #applicants_overview {
     margin-bottom: 20px;
 }
+
+.tooltip-wrapper {
+    display: inline-block;
+}
+.tooltip .btn[disabled] {
+    pointer-events: none;
+}
