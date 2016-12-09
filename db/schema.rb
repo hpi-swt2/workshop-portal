@@ -14,8 +14,8 @@
 ActiveRecord::Schema.define(version: 20161204205355) do
 
   create_table "agreement_letters", force: :cascade do |t|
-    t.integer  "user_id"
-    t.integer  "event_id"
+    t.integer  "user_id",    null: false
+    t.integer  "event_id",   null: false
     t.string   "path",       null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -70,10 +70,10 @@ ActiveRecord::Schema.define(version: 20161204205355) do
     t.boolean  "active"
     t.datetime "created_at",                       null: false
     t.datetime "updated_at",                       null: false
-    t.integer  "kind",                 default: 0
-    t.boolean  "draft"
     t.string   "organizer"
     t.string   "knowledge_level"
+    t.integer  "kind",                 default: 0
+    t.boolean  "draft"
     t.date     "application_deadline"
   end
 
