@@ -12,7 +12,7 @@ de:
     links:
       back: "Zurück"
       cancel: "Abbrechen"
-      confirm: "Sicher?"
+      confirm: "Sicher, dass das Event gelöscht werden soll?"
       destroy: "Löschen"
       new: "Neu"
       edit: "Bearbeiten"
