@@ -15,8 +15,16 @@ def add_sample_data
   profiles[:teacher] = profile_teacher(users[:teacher])
   profiles[:applicant] = profile_applicant(users[:applicant])
 
+  application_letters = Hash.new
+  application_letters[:applicant_gongakrobatik] = application_letter_applicant_gongakrobatik(users[:applicant], events[:gongakrobatik])
 
-  [events, users, profiles].each do |models|
+  requests = Hash.new
+  requests[:hardware_entwicklung] = request_hardware_entwicklung(users[:teacher])
+
+  agreement_letters = Hash.new
+  agreement_letters[:applicant_gongakrobatik] = agreement_letter_applicant_gongakrobatik(users[:applicant], events[:gongakrobatik])
+
+  [events, users, profiles, application_letters, requests, agreement_letters].each do |models|
     save_models(models)
   end
 end
@@ -198,5 +206,36 @@ private
       state: "Brandenburg",
       country: "Deutschland",
       graduates_school_in: "2017"
+    )
+  end
+
+  def application_letter_applicant_gongakrobatik(user, event)
+    ApplicationLetter.new(
+      motivation: "Ich habe vor kurzem davon erfahren und war direkt hellaufbegeistert. Gerne würde ich mich bei Ihnen näher über das Thema informieren",
+      grade: 10,
+      experience: "Über einen Facebookpost ihrer Seite bin ich auf das Angebot aufmerksam geworden",
+      coding_skills: "HTML",
+      emergency_number: "01234567891",
+      vegeterian: false,
+      vegan: false,
+      allergic: false,
+      allergies: "",
+      user: user,
+      event: event
+    )
+  end
+
+  def request_hardware_entwicklung(user)
+    Request.new(
+      topics: "Hardware-Entwicklung mit einem CAD-System",
+      user: user
+    )
+  end
+
+  def agreement_letter_applicant_gongakrobatik(user, event)
+    AgreementLetter.new(
+      user: user,
+      event: event,
+      path: "/storage/agreement_letters/foo.pdf"
     )
   end
