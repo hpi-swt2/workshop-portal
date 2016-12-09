@@ -29,7 +29,7 @@
           <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
                       event_path(event),
                       :method => :delete,
-                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                      :data => { :confirm => t('events.confirmation_prompts.confirm_delete', :default => t("helpers.links.confirm", :default => 'Löschen kann nicht rückgängig gemacht werden!')) },
                       :class => 'btn btn-xs btn-danger' %>
 					<%= link_to t('.new', :default => t("helpers.links.apply")),
                       new_application_letter_path(:event_id => event.id),

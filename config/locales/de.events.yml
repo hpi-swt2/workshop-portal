@@ -30,10 +30,16 @@ de:
       updated: "Event wurde aktualisiert."
       destroyed: "Event wurde gelöscht."
       unreasonable_timespan: "Vorsicht! End-Datum liegt ungewöhnlich weit vom Start-Datum entfernt."
+
+
+    confirmation_prompts:
+      confirm_delete: "Sicher, dass das Event gelöscht werden soll?"
+
     form:
       draft: "Speichern"
       publish: "Veröffentlichen"
       update: "Aktualisieren"
+      add_timespan: "Zeitspanne hinzufügen"
   activerecord:
       models:
         event: "Veranstaltung"
