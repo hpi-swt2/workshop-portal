@@ -1,0 +1,10 @@
+# German translations for the date ranges
+
+de:
+  date_range:
+    to: "bis"
+  activerecord:
+    attributes:
+      date_range:
+        start_date: "Anfangs-Datum"
+        end_date: "End-Datum"
