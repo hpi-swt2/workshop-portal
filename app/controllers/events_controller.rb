@@ -66,14 +66,6 @@ class EventsController < ApplicationController
       @event = Event.find(params[:id])
     end
 
-    # Extract date object from given date_info as returned by a form
-    #
-    # @param date_info [Hash] hash containing year, month and day keys
-    # @return [Date] the extracted date
-    def date_from_form(date_info)
-      Date.new(date_info[:year].to_i, date_info[:month].to_i, date_info[:day].to_i)
-    end
-
     # Only allow a trusted parameter "white list" through.
     def event_params
       params.require(:event).permit(:name, :description, :max_participants, :active, :kind, :organizer, :knowledge_level, date_ranges_attributes: [:start_date, :end_date, :id])

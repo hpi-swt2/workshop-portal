@@ -6,7 +6,7 @@
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <script>
     function enableDatepickers() {
-      $('[data-provide="datepicker"]').datepicker({
+      $('[data-datepicker="true"]').datepicker({
         language:"<%= I18n.locale %>",
         format: "<%= I18n.t('date.formats.datepicker')%>",
       });
