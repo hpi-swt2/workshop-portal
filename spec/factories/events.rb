@@ -43,16 +43,16 @@ FactoryGirl.define do
     trait :with_multiple_date_ranges do
       after(:build) do |event|
         event.date_ranges = []
-        event.date_ranges << FactoryGirl.create(:date_range, start_date: Date.today.next_day(3), end_date: Date.tomorrow.next_day(5))
-        event.date_ranges << FactoryGirl.create(:date_range, start_date: Date.today.next_day(12), end_date: Date.today.next_day(16))
-        event.date_ranges << FactoryGirl.create(:date_range, start_date: Date.today, end_date: Date.tomorrow)
+        event.date_ranges << FactoryGirl.create(:date_range, start_date: Date.current.next_day(3), end_date: Date.tomorrow.next_day(5))
+        event.date_ranges << FactoryGirl.create(:date_range, start_date: Date.current.next_day(12), end_date: Date.current.next_day(16))
+        event.date_ranges << FactoryGirl.create(:date_range, start_date: Date.current, end_date: Date.tomorrow)
       end
     end
 
     trait :with_unreasonably_long_range do
       after(:build) do |event|
         event.date_ranges << FactoryGirl.create(:date_range,
-          start_date: Date.today,
+          start_date: Date.current,
           end_date: Date.tomorrow.next_day(Rails.configuration.unreasonably_long_event_time_span))
       end
     end

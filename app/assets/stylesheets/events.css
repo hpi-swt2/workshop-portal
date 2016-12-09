@@ -4,11 +4,17 @@
 */
 
 .event-date-picker-start, .event-date-picker-end {
-	display: inline-block;
 }
 
-#event-add-date-picker {
-	margin-top: 6px;
+#event-date-pickers div {
+    margin-bottom: 6px;
+}
+#event-date-pickers .close {
+    float: none;
+}
+#event-date-pickers .form-control {
+    display: inline-block;
+    max-width: 200px;
 }
 
 #applicants_overview {
