@@ -112,7 +112,6 @@ RSpec.describe EventsController, type: :controller do
         end
 
         it "does not append to date ranges but replaces them" do
-          puts valid_attributes.inspect
           expect {
             put :update, id: @event.to_param, event: valid_attributes_post[:event], session: valid_session
           }.to change((Event.find_by! id: @event.to_param).date_ranges, :count).by(0)
