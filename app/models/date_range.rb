@@ -20,6 +20,7 @@ class DateRange < ActiveRecord::Base
 
   def validate_start_date_not_in_past
     if start_date < Date.current
+      puts "Comparing #{start_date.inspect} to #{Date.current.inspect}"
       errors.add(:start_date, "darf nicht in der Vergangenheit liegen.")
     end
     if end_date < Date.current

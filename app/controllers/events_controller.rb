@@ -23,6 +23,7 @@ class EventsController < ApplicationController
 
   # POST /events
   def create
+    puts event_params.inspect
     @event = Event.new(event_params)
 
     @event.draft = (params[:draft] != nil)
