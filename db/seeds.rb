@@ -41,6 +41,7 @@ event = Event.new(
     description: "Veranstaltung mit Phidgets und Etoys",
     max_participants: 20,
     active: true,
+    application_deadline: Date.tomorrow,
     draft: false
 )
 event.date_ranges << date_range
@@ -111,6 +112,7 @@ ApplicationLetter.find_or_create_by!(
     vegan: false,
     allergic: false,
     allergies: "",
+    status: ApplicationLetter.statuses[:pending],
     user: applicant,
     event: event
 )

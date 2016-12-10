@@ -4,6 +4,8 @@ de:
   profiles:
     form:
       already_graduated: "Bereits Abitur"
+    validation:
+      birthday_in_future: "Das Geburtsdatum darf nicht in der Zukunft liegen."
 
   activerecord:
     attributes:

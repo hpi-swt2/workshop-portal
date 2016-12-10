@@ -78,6 +78,9 @@ gem 'rubocop', '~> 0.29.1'
 # coveralls.io
 gem 'coveralls', require: false
 
+# Simple, Heroku-friendly Rails app configuration using ENV and a single YAML file
+gem 'figaro'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'

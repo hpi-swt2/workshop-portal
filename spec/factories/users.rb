@@ -24,12 +24,10 @@ FactoryGirl.define do
     email { "#{name}@example.com".downcase.tr(" ","_") }
     password "test123"
     role :pupil
-
-    trait :with_profile do
-      after :create do |user|
-        user.profile = FactoryGirl.create :profile, user: user
-      end
-    end
-
+	factory :user_with_profile do
+	  after(:build) do |user|
+        build(:profile, user: user)
+	  end
+	end
   end
 end
