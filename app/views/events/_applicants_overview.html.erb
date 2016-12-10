@@ -1,6 +1,5 @@
 <div class="container-fluid" id="applicants_overview">
-
-  <h3><%= t('.title', title: @event.name) %></h3>
+  <h3><%= t '.title', title: @event.name %></h3>
   <div id="free_places"><%= t '.free_places', count: @free_places %></div>
   <div id="occupied_places"><%= t '.occupied_places', count: @occupied_places %></div>
 
@@ -41,18 +40,54 @@
   <div class="container-fluid no-padding">
     <div class="btn-group" role="group">
       <%= link_to "Alle annehmen",
-                  events_path, :class => 'btn btn-default'%>
+          events_path, :class => 'btn btn-default'%>
 
       <%= link_to "Alle drucken",
-                  events_path, :class => 'btn btn-default'%>
+          events_path, :class => 'btn btn-default'%>
     </div>
     <div class="btn-group pull-right" role="group">
-      <%= link_to "Zusagen verschicken",
-                  events_path, :class => 'btn btn-default'%>
-
-      <%= link_to "Absagen verschicken",
-                  events_path, :class => 'btn btn-default'%>
+      <% if (!@event.applications_classified?) %>
+          <div class="tooltip-wrapper disabled has-tooltip" data-toggle="tooltip" title="<%= t '.unclassified_applications_left' %>">
+            <%= button_tag t('.sending_acceptances'), type: 'button', class: 'send-emails-button btn btn-default', disabled: true %>
+          </div>
+          <div class="tooltip-wrapper disabled has-tooltip" data-toggle="tooltip" title="<%= t '.unclassified_applications_left' %>">
+            <%= button_tag t('.sending_rejections'), type: 'button', class: 'send-emails-button btn btn-default', disabled: true %>
+          </div>
+      <% elsif (@event.compute_free_places < 0)%>
+          <div class="tooltip-wrapper disabled has-tooltip" data-toggle="tooltip" title="<%= t '.maximum_number_of_participants_exeeded' %>">
+            <%= button_tag t('.sending_acceptances'), type: 'button', class: 'send-emails-button btn btn-default', disabled: true %>
+          </div>
+          <div class="tooltip-wrapper disabled has-tooltip" data-toggle="tooltip" title="<%= t '.maximum_number_of_participants_exeeded' %>">
+            <%= button_tag t('.sending_rejections'), type: 'button', class: 'send-emails-button btn btn-default', disabled: true %>
+          </div>
+      <% else %>
+          <%= button_tag t('.sending_acceptances'), type: 'button', class: 'btn btn-default', data: {toggle: 'modal', target: '#send-emails-modal', title: t('.sending_acceptances'), list: @event.email_adresses_of_accepted_applicants} %>
+          <%= button_tag t('.sending_rejections'), type: 'button', class: 'btn btn-default', data: {toggle: 'modal', target: '#send-emails-modal', title: t('.sending_rejections'), list: @event.email_adresses_of_rejected_applicants} %>
+      <% end %>
     </div>
   </div>
 
+</div>
+
+<!-- Bootstrap Modal for sending emails -->
+<div id="send-emails-modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"></h4>
+      </div>
+      <div class="modal-body">
+        <%= link_to "Senden", '#', :id => 'send-emails-mailto', :class => 'btn btn-default' %>
+        <%= button_tag "In die Zwischenablage kopieren", type: 'button', id: 'send-emails-clipboard', class: 'btn btn-default' %>
+        <%= text_field_tag "send-emails-list", '', :type => 'hidden' %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
 </div>
