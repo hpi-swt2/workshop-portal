@@ -26,6 +26,9 @@ RSpec.configure do |config|
 
   Capybara.javascript_driver = :poltergeist
 
+  # load custom matchers
+  Dir[File.dirname(__FILE__) + "/support/matchers/*.rb"].each {|f| require f}
+
   # Use color not only in STDOUT but also in pagers and files
   # config.tty = true
 
