@@ -10,6 +10,8 @@ class EventsController < ApplicationController
   def show
     @free_places = @event.compute_free_places
     @occupied_places = @event.compute_occupied_places
+    @sort = params[:sort]
+    @order = params[:order]
   end
 
   # GET /events/new

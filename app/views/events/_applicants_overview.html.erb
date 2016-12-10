@@ -33,7 +33,10 @@
     </tr>
     </thead>
     <tbody>
-    <% @event.application_letters.each do | application_letter | %>
+    <% letters = @event.application_letters.to_a
+      letters.sort_by! {|l| l.user.profile.send(@sort) } if @sort
+      letters.reverse! if @order == 'descending'
+      letters.select {|l| l.user.profile }.each do | application_letter | %>
         <tr>
           <td><%= application_letter.user.profile.name %></td>
           <td><%= application_letter.user.profile.gender %></td>
