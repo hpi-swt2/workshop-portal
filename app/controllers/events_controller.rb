@@ -79,7 +79,7 @@ class EventsController < ApplicationController
     end
 
 
-    send_data pdf.render, :filename => "badges.pdf", :type => "application/pdf", disposition: "inline"
+    send_data pdf.render, filename: "badges.pdf", type: "application/pdf", disposition: "inline"
   end
 
   # GET /events/1/participants
@@ -127,10 +127,8 @@ class EventsController < ApplicationController
     def badges_name_params
       participant_names = []
       params.each do | k, v |
-        # check if key is containing the keyword, schema of name_param: #{participant.id}_print_#{participant.name}
-        if k.include? "_print_"
-          name_index = k.index("_print_") + "_print_".chars.length
-          participant_names.push(k[name_index .. k.chars.length])
+        if k.include? "_print"
+          participant_names.push(v)
         end
       end
       participant_names
@@ -145,8 +143,9 @@ class EventsController < ApplicationController
     def create_badge(pdf, name, x, y)
       width = 260
       height = 150
+
       pdf.stroke_rectangle [x, y], width, height
-      pdf.draw_text name, :at => [x + width / 2 - 50 , y - 20]
+      pdf.text_box name, :at => [x + width / 2 - 50 , y - 20], :width => width - 100, :height => height - 100, :overflow => :shrink_to_fit
     end
 
     # Create a page with maximum 10 badges
@@ -156,22 +155,11 @@ class EventsController < ApplicationController
     # @param index [Number] the page number
     def create_badge_page(pdf, names, index)
       # create no pagebreak for first page
-      if index > 0
-        pdf.start_new_page
-      end
-      # creates badge edges as rectangles left-upper-bound[x,y], width, height
-      names.each_with_index do |participant, index|
-        if index % 2 == 0 # left column badges
-          create_badge(pdf, participant, 0, 750 - index / 2 * 150)
-          index = index - 1
-        else
-          create_badge(pdf, participant, 260, 750 - index / 2 * 150)
-        end
+      pdf.start_new_page if index > 0
+
+      names.each_slice(2).with_index do |(left, right), row|
+        create_badge(pdf, left, 0, 750 - row * 150)
+        create_badge(pdf, right, 260, 750 - row * 150) unless right.nil?
       end
     end
-
-    # TODO: remove
-    #def create_mock_participants
-    #  participant = User.new(name: "Max Mustermann", id: SecureRandom.uuid)
-    #end
 end

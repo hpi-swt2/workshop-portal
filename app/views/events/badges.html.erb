@@ -1,10 +1,10 @@
-<h1><%= t('events.badges.title') %>'<%= @event.name %>'</h1>
+<h1><%= t('events.badges.title') + "'" + @event.name + "'" %></h1>
 <h3><%= t('events.badges.participants') %></h3>
 
 <%= form_for event_badges_path(@event), :html => { :class => "form-horizontal event" } do |f| %>
 <table>
   <tr>
-    <th>Name</th>
+    <th><%= t('events.badges.printName') %></th>
     <th><%= t('events.badges.printBoolean') %></th>
   </tr>
 
@@ -14,9 +14,7 @@
           <%= participant.name %>
         </td>
         <td>
-          <%= f.check_box_tag "#{participant.id}_print_#{participant.name}"%>
-        </td>
-        <td>
+          <%= f.check_box_tag "#{participant.id}_print", participant.name%>
         </td>
       </tr>
   <% end %>
