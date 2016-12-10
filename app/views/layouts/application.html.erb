@@ -6,9 +6,9 @@
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <script>
     function enableDatepickers() {
-      $('[data-datepicker="true"]').datepicker({
-        language:"<%= I18n.locale %>",
-        format: "<%= I18n.t('date.formats.datepicker')%>",
+      $('[data-enable-datepicker="true"]').datepicker({
+        language:"<%= j I18n.locale.to_s %>",
+        format: "<%= j I18n.t('date.formats.datepicker') %>",
       });
     }
     $(document).bind('turbolinks:load', enableDatepickers);

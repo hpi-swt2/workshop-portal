@@ -10,7 +10,7 @@
         <% unless attr_name == :birth_date %>
           <%= f.text_field attr_name, :class => 'form-control' %>
         <% else %>
-          <%= f.text_field attr_name, :class => 'form-control', :"data-datepicker" => "true", value: (I18n.l @profile.public_send(attr_name) if @profile.public_send(attr_name)) %>
+          <%= f.text_field attr_name, :class => 'form-control', :"data-enable-datepicker" => "true", value: (I18n.l @profile.public_send(attr_name) if @profile.public_send(attr_name)) %>
         <% end %>
         <%=f.error_span(attr_name) %>
       </div>
