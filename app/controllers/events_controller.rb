@@ -125,13 +125,7 @@ class EventsController < ApplicationController
     #
     # @return participant_names as array of strings
     def badges_name_params
-      participant_names = []
-      params.each do | k, v |
-        if k.include? "_print"
-          participant_names.push(v)
-        end
-      end
-      participant_names
+      params.select { |key, value| key.include? "_print" }.values
     end
 
     # Create a name badge in a given pdf
