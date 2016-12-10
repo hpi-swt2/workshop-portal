@@ -106,13 +106,13 @@ RSpec.feature "Event Applicant overview on event page", :type => :feature do
     login(:organizer)
     @event = FactoryGirl.create(:event, :with_open_applications)
     visit event_path(@event)
-    #save_and_open_page
+
     table = page.find(:xpath, '//table[@id="applicants"]')
     @event.application_letters.each do |application_letter|
       expect(table).to have_text(application_letter.user.profile.name)
     end
     click_link 'Name'
-    sorted_by_name = @event.application_letters.to_a.sort_by! { |letter| letter.user.profile.name }
+    sorted_by_name = @event.application_letters.to_a.sort_by { |letter| letter.user.profile.name }
     (@event.application_letters.count - 1).times do |i|
       first = sorted_by_name[i].user
       second = sorted_by_name[i + 1].user
