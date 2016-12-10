@@ -111,12 +111,16 @@ RSpec.feature "Event Applicant overview on event page", :type => :feature do
     @event.application_letters.each do |application_letter|
       expect(table).to have_text(application_letter.user.profile.name)
     end
-    click_link 'Name'
-    sorted_by_name = @event.application_letters.to_a.sort_by { |letter| letter.user.profile.name }
-    (@event.application_letters.count - 1).times do |i|
-      first = sorted_by_name[i].user
-      second = sorted_by_name[i + 1].user
-      expect(first.profile.name).to appear_before(second.profile.name)
+
+    ['name', 'gender', 'age'].each do |attribute|
+      link_name = I18n.t("activerecord.attributes.profile.#{attribute}")
+      click_link link_name
+      sorted_by_attribute = @event.application_letters.to_a.sort_by { |letter| letter.user.profile.send(attribute) }
+      names = sorted_by_attribute.map {|l| l.user.profile.name }
+      expect(page).to contain_ordered(names)
+
+      click_link link_name # again
+      expect(page).to contain_ordered(names.reverse)
     end
   end
 
