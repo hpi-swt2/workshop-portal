@@ -12,6 +12,8 @@ module ApplicationHelper
     # everyone gets their profile, if it exists
     if current_user.profile.present?
       o << (menu_item t(:profile, scope: 'navbar'), profile_path(current_user.profile))
+    else
+      o << (menu_item t(:create_profile, scope: 'navbar'), new_profile_path)
     end
     # pupils get their applications
     if current_user.role == "pupil"

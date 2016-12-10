@@ -33,6 +33,7 @@ de:
     user_management: "Benutzerverwaltung"
     requests: "Anfragen"
     profile: "Mein Profil"
+    create_profile: "Mein Profil anlegen"
     settings: "Profilinfo"
     login: "Einloggen"
     logout: "Ausloggen"
