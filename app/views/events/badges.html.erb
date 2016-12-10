@@ -4,7 +4,7 @@
 <%= form_for event_badges_path(@event), :html => { :class => "form-horizontal event" } do |f| %>
 <table>
   <tr>
-    <th><%= t('events.badges.printName') %></th>
+    <th><%= Profile.human_attribute_name(:name) %></th>
     <th><%= t('events.badges.printBoolean') %></th>
   </tr>
 
