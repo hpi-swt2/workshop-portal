@@ -10,8 +10,8 @@
 
 FactoryGirl.define do
   factory :profile do
-    first_name  "Karl"
-    last_name  "Doe"
+    sequence(:first_name) { |n| "Karl#{n}" }
+    sequence(:last_name) { |n| "Doe#{n}" }
     gender  "männlich"
     birth_date  15.years.ago
     school  "Schule am Griebnitzsee"
