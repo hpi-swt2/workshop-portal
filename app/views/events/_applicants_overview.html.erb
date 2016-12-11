@@ -34,8 +34,8 @@
     </thead>
     <tbody>
     <%
-      @application_letters.sort_by! {|l| l.user.profile.send(@sort) } if @sort
-      @application_letters.reverse! if @order == 'descending'
+      @application_letters.sort_by! {|l| l.user.profile.send(params[:sort]) } if params[:sort]
+      @application_letters.reverse! if params[:order] == 'descending'
       @application_letters.select {|l| l.user.profile }.each do | application_letter | %>
         <tr>
           <td><%= application_letter.user.profile.name %></td>

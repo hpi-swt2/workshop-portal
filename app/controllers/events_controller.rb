@@ -10,8 +10,6 @@ class EventsController < ApplicationController
   def show
     @free_places = @event.compute_free_places
     @occupied_places = @event.compute_occupied_places
-    @sort = params[:sort]
-    @order = params[:order]
     @application_letters = filter_application_letters(@event.application_letters)
   end
 
@@ -66,7 +64,7 @@ class EventsController < ApplicationController
     @event = Event.find(params[:id])
     @participants = @event.participants_by_agreement_letter
   end
-  
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_event
