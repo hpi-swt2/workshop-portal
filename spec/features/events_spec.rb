@@ -104,7 +104,7 @@ RSpec.feature "Event Applicant overview on event page", :type => :feature do
 
   scenario "Logged in as organizer I can see a table with the applicants and change the order" do
     login(:organizer)
-    @event = FactoryGirl.create(:event, :with_open_applications)
+    @event = FactoryGirl.create(:event, :with_diverse_open_applications)
     visit event_path(@event)
 
     table = page.find(:xpath, '//table[@id="applicants"]')
