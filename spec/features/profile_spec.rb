@@ -14,20 +14,8 @@ RSpec.feature "Upload letter of agreement", :type => :feature do
     attach_file(:letter_upload, './spec/testfiles/actual.pdf')
     click_button "upload_btn_#{@event.id}"
     expect(page).to have_current_path profile_path(@user.profile)
+    expect(page).not_to have_css(".has-error")
     expect(page).to have_text(I18n.t("agreement_letters.upload_success"))
-  end
-
-  scenario "user uploads a file with the wrong extension" do
-    attach_file(:letter_upload, './spec/testfiles/not_a_pd.f')
-    click_button "upload_btn_#{@event.id}"
-    expect(page).to have_text(I18n.t("agreement_letters.wrong_filetype"))
-  end
-
-  scenario "user uploads a file that is too big" do
-    stub_const("AgreementLetter::MAX_SIZE", 5)
-    attach_file(:letter_upload, './spec/testfiles/actual.pdf')
-    click_button "upload_btn_#{@event.id}"
-    expect(page).to have_text(I18n.t("agreement_letters.file_too_big"))
   end
 
   scenario "user uploads letter of agreement a second time" do
@@ -36,14 +24,37 @@ RSpec.feature "Upload letter of agreement", :type => :feature do
     attach_file(:letter_upload, './spec/testfiles/actual.pdf')
     click_button "upload_btn_#{@event.id}"
     expect(page).to have_current_path profile_path(@user.profile)
+    expect(page).not_to have_css(".has-error")
     expect(page).to have_text(I18n.t("agreement_letters.upload_success"))
   end
 
-  scenario "user upload fails" do
-    allow_any_instance_of(AgreementLettersController).to receive(:save_file).and_return(false)
+  scenario "user uploads a file with the wrong extension" do
+    attach_file(:letter_upload, './spec/testfiles/not_a_pd.f')
+    click_button "upload_btn_#{@event.id}"
+    expect(page).to have_css(".has-error")
+    expect(page).to have_text(I18n.t("agreement_letters.wrong_filetype"))
+  end
+
+  scenario "user uploads a file that is too big" do
+    stub_const("AgreementLetter::MAX_SIZE", 5)
     attach_file(:letter_upload, './spec/testfiles/actual.pdf')
     click_button "upload_btn_#{@event.id}"
+    expect(page).to have_css(".has-error")
+    expect(page).to have_text(I18n.t("agreement_letters.file_too_big"))
+  end
+
+  scenario "user upload fails" do
+    allow_any_instance_of(AgreementLetter).to receive(:save_file).and_return(false)
+    attach_file(:letter_upload, './spec/testfiles/actual.pdf')
+    click_button "upload_btn_#{@event.id}"
+    expect(page).to have_css(".has-error")
     expect(page).to have_text(I18n.t("agreement_letters.upload_failed"))
+  end
+  
+  scenario "user uploads no file" do
+    click_button "upload_btn_#{@event.id}"
+    expect(page).to have_css(".has-error")
+    expect(page).to have_text(I18n.t("agreement_letters.wrong_filetype"))
   end
 end
 
