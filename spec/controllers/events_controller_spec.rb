@@ -167,6 +167,40 @@ RSpec.describe EventsController, type: :controller do
     end
   end
 
+  describe "GET #badges" do
+    let(:valid_attributes) { FactoryGirl.attributes_for(:event_with_accepted_applications) }
+
+    it "assigns the requested event as @event" do
+      event = Event.create! valid_attributes
+      get :badges, event_id: event.to_param, session: valid_session
+      expect(assigns(:event)).to eq(event)
+    end
+  end
+
+  describe "POST #badges" do
+    it "contains two name badges with title 'Max Mustermann'" do
+      event = Event.create! valid_attributes
+      rendered_pdf = post :print_badges,
+                          event_id: event.to_param,
+                          session: valid_session,
+                          "1234_print"  => "Max Mustermann",
+                          "1235_print"  => "Max Mustermann",
+                          "1236_print"  => "Max Mustermann",
+                          "1237_print"  => "Max Mustermann",
+                          "1238_print"  => "Max Mustermann",
+                          "1239_print"  => "Max Mustermann",
+                          "1240_print"  => "John Doe",
+                          "1241_print"  => "Max Mustermann",
+                          "1242_print"  => "Max Mustermann",
+                          "1243_print"  => "Max Mustermann",
+                          "1244_print"  => "Max Mustermann",
+                          "1245_print"  => "Max Mustermann"
+      pdf = PDF::Inspector::Text.analyze(rendered_pdf.body)
+      expect(pdf.strings).to include("Max Mustermann")
+      expect(pdf.strings).to include("John Doe")
+    end
+  end
+
   describe "POST #create" do
     context "with valid params" do
       it "creates a new Event" do
