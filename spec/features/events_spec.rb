@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.feature "Event Applicant overview on event page", :type => :feature do
+RSpec.feature "Event application letters overview on event page", :type => :feature do
   before :each do
     @event = FactoryGirl.create(:event)
   end
@@ -102,9 +102,9 @@ RSpec.feature "Event Applicant overview on event page", :type => :feature do
     expect(page).to have_text(I18n.t "application_status.#{@application_letter.status}")
   end
 
-  scenario "Logged in as organizer I can see a table with the applicants and change the order" do
+  scenario "Logged in as organizer I can see a table with the applicants and sort them by attributes" do
     login(:organizer)
-    @event = FactoryGirl.create(:event, :with_diverse_open_applications)
+    @event = FactoryGirl.create(:event)
     visit event_path(@event)
 
     table = page.find(:xpath, '//table[@id="applicants"]')
