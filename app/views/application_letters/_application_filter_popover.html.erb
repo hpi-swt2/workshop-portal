@@ -1,19 +1,11 @@
 <form action="" method="GET">
     <% filter = params[:filter] || {} %>
-    <%= label :filter, :accepted do %>
-        <%= check_box_tag "filter[accepted]", "1", filter[:accepted] %>
-        <%= t 'application_status.accepted' %>
+    <% ApplicationLetter.statuses.keys.each do |key| %>
+      <%= label :filter, key do %>
+          <%= check_box_tag "filter[#{key}]", "1", filter[key] %>
+          <%= t "application_status.#{key}" %>
+      <% end %>
+      <br>
     <% end %>
-    <br>
-    <%= label :filter, :rejected do %>
-        <%= check_box_tag "filter[rejected]", "1", filter[:rejected] %>
-        <%= t 'application_status.rejected' %>
-    <% end %>
-    <br>
-    <%= label :filter, :pending do %>
-        <%= check_box_tag "filter[pending]", "1", filter[:pending] %>
-        <%= t 'application_status.pending' %>
-    <% end %>
-    <br>
     <input class="btn btn-default btn-sm" type="submit" value="<%= t 'events.applicants_overview.filter' %>">
 </form>
