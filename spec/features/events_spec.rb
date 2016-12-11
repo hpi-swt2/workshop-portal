@@ -130,18 +130,26 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     @event.application_letters.each do |letter|
       letter.user.profile = FactoryGirl.build(:profile, user: letter.user)
     end
+
     visit event_path(@event)
     click_button I18n.t 'events.applicants_overview.filter_by'
     check I18n.t 'application_status.accepted'
     click_button I18n.t 'events.applicants_overview.filter'
-    expected = @event.application_letters.to_a.select { |l| l.status.to_sym == :accepted }
-    filtered = @event.application_letters.to_a.select { |l| l.status.to_sym != :accepted }
-    expected.each do |letter|
-      expect(page).to have_text(letter.user.profile.name)
-    end
-    filtered.each do |letter|
-      expect(page).to_not have_text(letter.user.profile.name)
-    end
+
+    accepted_names = @event.application_letters.to_a.select { |l| l.status.to_sym == :accepted }.map {|l| l.user.profile.name}
+    not_accepted_names = @event.application_letters.to_a.select { |l| l.status.to_sym != :accepted }.map {|l| l.user.profile.name}
+
+    expect(page).to have_every_text(accepted_names)
+    expect(page).to have_no_text(not_accepted_names)
+
+    click_button I18n.t 'events.applicants_overview.filter_by'
+    uncheck I18n.t 'application_status.accepted'
+    check I18n.t 'application_status.rejected'
+    check I18n.t 'application_status.pending'
+    click_button I18n.t 'events.applicants_overview.filter'
+
+    expect(page).to have_every_text(not_accepted_names)
+    expect(page).to have_no_text(accepted_names)
   end
 
   def login(role)
