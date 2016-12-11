@@ -132,7 +132,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     end
     visit event_path(@event)
     click_button I18n.t 'events.applicants_overview.filter_by'
-    check 'filter_accepted'
+    check I18n.t 'application_status.accepted'
     click_button I18n.t 'events.applicants_overview.filter'
     expected = @event.application_letters.to_a.select { |l| l.status.to_sym == :accepted }
     filtered = @event.application_letters.to_a.select { |l| l.status.to_sym != :accepted }
