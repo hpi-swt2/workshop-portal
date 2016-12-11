@@ -27,8 +27,6 @@ class EventsController < ApplicationController
 
     @event.draft = (params[:draft] != nil)
 
-    @event.date_ranges = date_range_params
-
     if @event.save
       redirect_to @event, notice: 'Event wurde erstellt.'
     else
@@ -40,9 +38,6 @@ class EventsController < ApplicationController
   def update
     attrs = event_params
 
-    if params[:date_ranges]
-      attrs[:date_ranges] = date_range_params
-    end
     @event.draft = (params[:commit] == "draft")
 
     if @event.update(attrs)
@@ -94,31 +89,9 @@ class EventsController < ApplicationController
       @event = Event.find(params[:id])
     end
 
-    # We receive start_date/end_date pairs in a weird format because forms
-    # are limited in the way they can arrange data for us. So we translate
-    # pairs of { start_date: [{day, month, year}, {day, month, year}], end_date: [...] }
-    # to the expected format [{start_date, end_date}, ...]
-    #
-    # @return array of start_date, end_date pairs
-    def date_range_params
-      dateRanges = params[:date_ranges] || {start_date: [], end_date: []}
-
-      dateRanges[:start_date].zip(dateRanges[:end_date]).map do |s, e|
-        DateRange.new(start_date: date_from_form(s), end_date: date_from_form(e))
-      end
-    end
-
-    # Extract date object from given date_info as returned by a form
-    #
-    # @param date_info [Hash] hash containing year, month and day keys
-    # @return [Date] the extracted date
-    def date_from_form(date_info)
-      Date.new(date_info[:year].to_i, date_info[:month].to_i, date_info[:day].to_i)
-    end
-
     # Only allow a trusted parameter "white list" through.
     def event_params
-      params.require(:event).permit(:name, :description, :max_participants, :active, :kind, :organizer, :knowledge_level)
+      params.require(:event).permit(:name, :description, :max_participants, :active, :kind, :organizer, :knowledge_level, date_ranges_attributes: [:start_date, :end_date, :id])
     end
 
     # Generate all names to print from the query-params

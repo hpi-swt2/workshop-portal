@@ -31,7 +31,7 @@ users.each do |user|
 end
 
 date_range = DateRange.find_or_create_by!(
-  start_date: Date.today,
+  start_date: Date.current,
   end_date: Date.tomorrow
 )
 

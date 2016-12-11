@@ -109,14 +109,14 @@ describe Event do
   describe "#start_date" do
     it "should return return its minimum over all date ranges" do
       event = FactoryGirl.create :event, :with_multiple_date_ranges
-      expect(event.start_date).to eq(Date.today)
+      expect(event.start_date).to eq(Date.current)
     end
   end
 
   describe "#end_date" do
     it "should return return its maximum over all date ranges" do
       event = FactoryGirl.create :event, :with_multiple_date_ranges
-      expect(event.end_date).to eq(Date.today.next_day(16))
+      expect(event.end_date).to eq(Date.current.next_day(16))
     end
   end
 

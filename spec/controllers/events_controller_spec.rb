@@ -19,33 +19,18 @@ require 'rails_helper'
 # that an instance is receiving a specific message.
 
 RSpec.describe EventsController, type: :controller do
-  let(:date1) { Date.today }
-  let(:date2) { Date.today.next_day }
-  let(:date3) { Date.today.next_day(2) }
-  let(:date4) { Date.today.next_day(2) }
+  let(:date1) { Date.current }
+  let(:date2) { Date.current.next_day }
+  let(:date3) { Date.current.next_day(2) }
+  let(:date4) { Date.current.next_day(2) }
 
-  # this is the format expected by our controller due to reasons outlined
-  # in EventsController#date_range_params
-  let(:valid_attributes_post) {
-    {
-        event: {
-          name: 'Test',
-          description: 'Test',
-          max_participants: 1,
-          active: false,
-        },
-        date_ranges: {
-          start_date: [
-            {day: date1.day, month: date1.month, year: date1.year},
-            {day: date3.day, month: date3.month, year: date3.year}
-          ],
-          end_date: [
-            {day: date2.day, month: date2.month, year: date2.year},
-            {day: date4.day, month: date4.month, year: date4.year}
-          ]
-        }
-      }
-  }
+  # this is the format expected by our controller to receive its date ranges
+  # in as a nested object
+  let(:valid_attributes_post) do
+    event = FactoryGirl.attributes_for(:event)
+    event[:date_ranges_attributes] = [FactoryGirl.attributes_for(:date_range)]
+    { event: event }
+  end
 
   # This should return the minimal set of attributes required to create a valid
   # Event. As you add validations to Event, be sure to
@@ -124,6 +109,12 @@ RSpec.describe EventsController, type: :controller do
         it "redirects to the event" do
           put :update, id: @event.to_param, event: valid_attributes, session: valid_session
           expect(response).to redirect_to(@event)
+        end
+
+        it "does not append to date ranges but replaces them" do
+          expect {
+            put :update, id: @event.to_param, event: valid_attributes_post[:event], session: valid_session
+          }.to change((Event.find_by! id: @event.to_param).date_ranges, :count).by(0)
         end
       end
 
@@ -246,10 +237,9 @@ RSpec.describe EventsController, type: :controller do
       expect(assigns(:event)).to be_persisted
       expect(assigns(:event).date_ranges).to_not be_empty
       expect(assigns(:event).date_ranges.first.event_id).to eq(assigns(:event).id)
-      expect(assigns(:event).date_ranges.first.start_date).to eq(date1)
-      expect(assigns(:event).date_ranges.first.end_date).to eq(date2)
-      expect(assigns(:event).date_ranges.second.start_date).to eq(date3)
-      expect(assigns(:event).date_ranges.second.end_date).to eq(date4)
+      date_range = valid_attributes_post[:event][:date_ranges].first
+      expect(assigns(:event).date_ranges.first.start_date).to eq(date_range.start_date)
+      expect(assigns(:event).date_ranges.first.end_date).to eq(date_range.end_date)
     end
   end
 end
