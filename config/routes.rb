@@ -21,8 +21,10 @@ Rails.application.routes.draw do
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
   get 'events/:id/participants' => 'events#participants'
-  get 'events/:id/send-acceptances-email' => 'events#send_acceptances_email'
-  get 'events/:id/send-rejections-email' => 'events#send_rejections_email'
+  get 'events/:id/send-acceptances-email' => 'events#send_acceptances_email', as: :event_send_acceptances_email
+  get 'events/:id/send-rejections-email' => 'events#send_rejections_email', as: :event_send_rejections_email
+
+  post 'send_email' => 'emails#send_email'
 
   # Example of named route that can be invoked with purchase_url(id: product.id)
   #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase
