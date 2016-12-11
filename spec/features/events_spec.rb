@@ -124,6 +124,26 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     end
   end
 
+  scenario "logged in as Organizer I can filter displayed application letters by their status", js: true do
+    login(:organizer)
+    @event = FactoryGirl.create(:event_with_accepted_applications)
+    @event.application_letters.each do |letter|
+      letter.user.profile = FactoryGirl.build(:profile, user: letter.user)
+    end
+    visit event_path(@event)
+    click_button I18n.t 'events.applicants_overview.filter_by'
+    check 'filter_accepted'
+    click_button I18n.t 'events.applicants_overview.filter'
+    expected = @event.application_letters.to_a.select { |l| l.status.to_sym == :accepted }
+    filtered = @event.application_letters.to_a.select { |l| l.status.to_sym != :accepted }
+    expected.each do |letter|
+      expect(page).to have_text(letter.user.profile.name)
+    end
+    filtered.each do |letter|
+      expect(page).to_not have_text(letter.user.profile.name)
+    end
+  end
+
   def login(role)
     @profile = FactoryGirl.create(:profile)
     @profile.user.role = role
