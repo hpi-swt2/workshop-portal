@@ -19,13 +19,13 @@ RSpec.describe AgreementLettersController, type: :controller do
 
     it "shows error when POSTed without a file" do
       post :create, { event_id: @event.id }
-      expect(response).to have_http_status(422)
+      expect(page).to have_css(".has-error")
     end
 
     it "shows error when POSTed with an inexistent event" do
       @event.delete
       post :create, { letter_upload: @file, event_id: @event.id }
-      expect(response).to have_http_status(422)
+      expect(page).to have_css(".has-error")
     end
 
     it "saves a file on the server" do
