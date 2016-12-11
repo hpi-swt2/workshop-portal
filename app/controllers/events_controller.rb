@@ -12,6 +12,7 @@ class EventsController < ApplicationController
     @occupied_places = @event.compute_occupied_places
     @sort = params[:sort]
     @order = params[:order]
+    @application_letters = filter_application_letters(@event.application_letters)
   end
 
   # GET /events/new
@@ -92,6 +93,15 @@ class EventsController < ApplicationController
     # @return [Date] the extracted date
     def date_from_form(date_info)
       Date.new(date_info[:year].to_i, date_info[:month].to_i, date_info[:day].to_i)
+    end
+
+    def filter_application_letters(application_letters)
+      application_letters = application_letters.to_a
+      filters = (params[:filter] || {}).select { |k, v| v == '1' }.map{ |k, v| k.to_s }
+      if filters.count > 0  # skip filtering if no filters have been set
+        application_letters.keep_if { |l| filters.include?(l.status) }
+      end
+      application_letters
     end
 
     # Only allow a trusted parameter "white list" through.
