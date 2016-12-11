@@ -20,8 +20,6 @@ class Event < ActiveRecord::Base
   has_many :date_ranges
   accepts_nested_attributes_for :date_ranges
 
-  validates :max_participants, numericality: { only_integer: true, greater_than: 0 }
-  
   # Returns all participants for this event in following order:
   # 1. All participants that have to submit an letter of agreement but did not yet do so, ordered by name.
   # 2. All participants that have to submit an letter of agreement and did do so, ordered by name.
@@ -33,7 +31,7 @@ class Event < ActiveRecord::Base
     @participants = self.participants
 	@participants.sort { |x, y| self.compare_participants_by_agreement(x,y) }
   end
-  
+
   validates :max_participants, numericality: { only_integer: true, greater_than: 0 }
   validate :has_date_ranges
 
@@ -58,7 +56,7 @@ class Event < ActiveRecord::Base
   def has_date_ranges
     errors.add(:date_ranges, 'Bitte mindestens eine Zeitspanne auswählen!') if date_ranges.blank?
   end
-  
+
   # Returns the participants whose application for this Event has been accepted
   #
   # @param none
@@ -139,7 +137,7 @@ class Event < ActiveRecord::Base
   end
 
   scope :draft_is, ->(draft) { where("draft = ?", draft) }
-  
+
   protected
   # Compares two participants to achieve following order:
   # 1. All participants that have to submit an letter of agreement but did not yet do so, ordered by name.
