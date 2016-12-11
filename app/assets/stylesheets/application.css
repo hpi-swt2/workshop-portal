@@ -12,7 +12,6 @@
  *
  *= require bootstrap-datepicker
  *= require_tree .
- *= stub "disable_animations.css"
  *= require_self
  */
 
