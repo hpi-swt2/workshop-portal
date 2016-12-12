@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :email do
     hide_recipients false
-    recipients "MyString"
+    recipients "Email-Recipients"
     reply_to "Email-ReplyTo"
     subject "Email-Subject"
     content "Email-Content"

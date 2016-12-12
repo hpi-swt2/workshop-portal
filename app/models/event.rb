@@ -86,15 +86,6 @@ class Event < ActiveRecord::Base
     application_letters.all? { |application_letter| application_letter.status != 'pending' }
   end
 
-  # Returns a string of all email addresses of rejected applications
-  #
-  # @param none
-  # @return [String] Concatenation of all email addresses of rejected applications, seperated by ','
-  def email_adresses_of_rejected_applicants
-    rejected_applications = application_letters.where(status: ApplicationLetter.statuses[:rejected])
-    rejected_applications.map{ |applications_letter| applications_letter.user.email }.join(',')
-  end
-
   # Returns a string of all email addresses of accepted applications
   #
   # @param none
@@ -102,6 +93,15 @@ class Event < ActiveRecord::Base
   def email_adresses_of_accepted_applicants
     accepted_applications = application_letters.where(status: ApplicationLetter.statuses[:accepted])
     accepted_applications.map{ |application_letter| application_letter.user.email }.join(',')
+  end
+
+  # Returns a string of all email addresses of rejected applications
+  #
+  # @param none
+  # @return [String] Concatenation of all email addresses of rejected applications, seperated by ','
+  def email_adresses_of_rejected_applicants
+    rejected_applications = application_letters.where(status: ApplicationLetter.statuses[:rejected])
+    rejected_applications.map{ |applications_letter| applications_letter.user.email }.join(',')
   end
 
   # Returns a new acceptance email

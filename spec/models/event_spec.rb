@@ -170,12 +170,14 @@ describe Event do
 
   it "generates a new email for acceptance" do
     event = FactoryGirl.create(:event_with_accepted_applications)
-    expect(event.generate_acceptances_email).to eq(FactoryGirl.create(:email))
+    email = event.generate_acceptances_email
+    expect(email).to have_attributes(hide_recipients: false, recipients: event.email_adresses_of_accepted_applicants, reply_to: 'workshop.portal@hpi.de', subject: '', content: '')
   end
 
   it "generates a new email for rejections" do
     event = FactoryGirl.create(:event_with_accepted_applications)
-    expect(event.generate_rejections_email).to eq(FactoryGirl.create(:email))
+    email = event.generate_rejections_email
+    expect(email).to have_attributes(hide_recipients: false, recipients: event.email_adresses_of_rejected_applicants, reply_to: 'workshop.portal@hpi.de', subject: '', content: '')
   end
 end
 
