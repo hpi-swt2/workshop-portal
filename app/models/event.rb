@@ -56,7 +56,7 @@ class Event < ActiveRecord::Base
 
   # validation function on whether we have at least one date range
   def has_date_ranges
-    errors.add(:base, I18n.t("date_range.errors.no_timespan")) if date_ranges.blank?
+    errors.add(:base, I18n.t('date_range.errors.no_timespan')) if date_ranges.blank?
   end
   
   # Returns the participants whose application for this Event has been accepted
