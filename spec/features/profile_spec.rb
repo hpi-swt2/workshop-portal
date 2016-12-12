@@ -2,6 +2,7 @@ require "rails_helper"
 
 RSpec.feature "Upload letter of agreement", :type => :feature do
   before :each do
+    Rails.cache.clear
     @profile = FactoryGirl.create(:profile)
     @user = FactoryGirl.create(:user, role: :pupil, profile: @profile)
     @event = FactoryGirl.create(:event)
@@ -30,56 +31,68 @@ RSpec.feature "Upload letter of agreement", :type => :feature do
   end
 
   scenario "user uploads letter of agreement a second time" do
-    attach_file(:letter_upload, './spec/testfiles/actual.pdf')
-    click_button "upload_btn_#{@event.id}"
-    attach_file(:letter_upload, './spec/testfiles/actual.pdf')
-    click_button "upload_btn_#{@event.id}"
-    expect(page).to have_current_path profile_path(@user.profile)
-    expect(page).not_to have_css(".alert-danger")
-    expect(page).to have_css(".alert-success")
-    expect(page).to have_text(I18n.t("agreement_letters.upload_success"))
+    mock_writing_to_filesystem do
+      attach_file(:letter_upload, './spec/testfiles/actual.pdf')
+      click_button "upload_btn_#{@event.id}"
+      attach_file(:letter_upload, './spec/testfiles/actual.pdf')
+      click_button "upload_btn_#{@event.id}"
+      expect(page).to have_current_path profile_path(@user.profile)
+      expect(page).not_to have_css(".alert-danger")
+      expect(page).to have_css(".alert-success")
+      expect(page).to have_text(I18n.t("agreement_letters.upload_success"))
+    end
   end
 
   scenario "user uploads a file with the wrong extension" do
-    attach_file(:letter_upload, './spec/testfiles/not_a_pd.f')
-    click_button "upload_btn_#{@event.id}"
-    expect(page).to have_css(".alert-danger")
-    expect(page).not_to have_css(".alert-success")
-    expect(page).to have_text(I18n.t("agreement_letters.wrong_filetype"))
+    mock_writing_to_filesystem do
+      attach_file(:letter_upload, './spec/testfiles/not_a_pd.f')
+      click_button "upload_btn_#{@event.id}"
+      expect(page).to have_css(".alert-danger")
+      expect(page).not_to have_css(".alert-success")
+      expect(page).to have_text(I18n.t("agreement_letters.wrong_filetype"))
+    end
   end
 
   scenario "user uploads a file that is too big" do
-    stub_const("AgreementLetter::MAX_SIZE", 5)
-    attach_file(:letter_upload, './spec/testfiles/actual.pdf')
-    click_button "upload_btn_#{@event.id}"
-    expect(page).to have_css(".alert-danger")
-    expect(page).not_to have_css(".alert-success")
-    expect(page).to have_text(I18n.t("agreement_letters.file_too_big"))
+    mock_writing_to_filesystem do
+      stub_const("AgreementLetter::MAX_SIZE", 5)
+      attach_file(:letter_upload, './spec/testfiles/actual.pdf')
+      click_button "upload_btn_#{@event.id}"
+      expect(page).to have_css(".alert-danger")
+      expect(page).not_to have_css(".alert-success")
+      expect(page).to have_text(I18n.t("agreement_letters.file_too_big"))
+    end
   end
 
   scenario "saving to db fails" do
-    allow_any_instance_of(AgreementLetter).to receive(:valid?).and_return(false)
-    attach_file(:letter_upload, './spec/testfiles/actual.pdf')
-    click_button "upload_btn_#{@event.id}"
-    expect(page).to have_css(".alert-danger")
-    expect(page).not_to have_css(".alert-success")
-    expect(page).to have_text(I18n.t("agreement_letters.upload_failed"))
+    mock_writing_to_filesystem do
+      allow_any_instance_of(AgreementLetter).to receive(:valid?).and_return(false)
+      attach_file(:letter_upload, './spec/testfiles/actual.pdf')
+      click_button "upload_btn_#{@event.id}"
+      expect(page).to have_css(".alert-danger")
+      expect(page).not_to have_css(".alert-success")
+      expect(page).to have_text(I18n.t("agreement_letters.upload_failed"))
+    end
   end
 
   scenario "saving file fails" do
-    allow(File).to receive(:write).and_raise(IOError)
-    attach_file(:letter_upload, './spec/testfiles/actual.pdf')
-    click_button "upload_btn_#{@event.id}"
-    expect(page).to have_css(".alert-danger")
-    expect(page).not_to have_css(".alert-success")
-    expect(page).to have_text(I18n.t("agreement_letters.write_failed"))
+    mock_writing_to_filesystem do
+      allow(File).to receive(:write).and_raise(IOError)
+      attach_file(:letter_upload, './spec/testfiles/actual.pdf')
+      click_button "upload_btn_#{@event.id}"
+      expect(page).to have_css(".alert-danger")
+      expect(page).not_to have_css(".alert-success")
+      expect(page).to have_text(I18n.t("agreement_letters.write_failed"))
+    end
   end
-  
+
   scenario "user uploads no file" do
-    click_button "upload_btn_#{@event.id}"
-    expect(page).to have_css(".alert-danger")
-    expect(page).not_to have_css(".alert-success")
-    expect(page).to have_text(I18n.t("agreement_letters.not_a_file"))
+    mock_writing_to_filesystem do
+      click_button "upload_btn_#{@event.id}"
+      expect(page).to have_css(".alert-danger")
+      expect(page).not_to have_css(".alert-success")
+      expect(page).to have_text(I18n.t("agreement_letters.not_a_file"))
+    end
   end
 end
 
