@@ -26,13 +26,25 @@ class AgreementLetter < ActiveRecord::Base
   end
 
   def save_file(file)
-    return false unless valid_file?(file)
+    unless valid_file?(file)
+      self.destroy
+      return false
+    end
     begin
       File.write(path, file.read, mode: 'wb')
       true
     rescue IOError
       self.destroy
-      self.errors.add(:file, t('agreement_letters.write_failed'))
+      errors.add(:file, I18n.t('agreement_letters.write_failed'))
+      false
+    end
+  end
+
+  def save(*args)
+    if super
+      true
+    else
+      errors.add(:file, I18n.t('agreement_letters.upload_failed'))
       false
     end
   end
@@ -46,13 +58,13 @@ class AgreementLetter < ActiveRecord::Base
   private
     def valid_file?(file)
       if !is_file?(file)
-        errors.add(:file, I18n.t("not_a_file"))
+        errors.add(:file, I18n.t("agreement_letters.not_a_file"))
         false
       elsif too_big?(file)
-        errors.add(:file, I18n.t("too_big"))
+        errors.add(:file, I18n.t("agreement_letters.file_too_big"))
         false
       elsif wrong_filetype?(file)
-        errors.add(:file, I18n.t("wrong_filetype"))
+        errors.add(:file, I18n.t("agreement_letters.wrong_filetype"))
         false
       else
         true
