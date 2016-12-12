@@ -77,5 +77,24 @@ class Event < ActiveRecord::Base
     application_letters.where(status: ApplicationLetter.statuses[:accepted]).count
   end
 
+  # Returns the application letters ordered by either "email", "first_name", "last_name", "birth_date"
+  # either "asc" (ascending) or "desc" (descending).
+  #
+  # @param field [String] the field that should be used to order
+  # @param order_by [String] the order that should be used
+  # @return [ApplicationLetter] the application letters found
+  def application_letters_ordered(field, order_by)
+    field = case field
+              when "email"
+                "users.email"
+              when "birth_date", "first_name", "last_name"
+                "profiles." + field
+              else
+                "users.email"
+            end
+    order_by = order_by == 'asc' || order_by == 'desc' ? order_by : 'asc'
+    application_letters.joins(:users, :profiles).order(field, order_by)
+  end
+
   scope :draft_is, ->(draft) { where("draft = ?", draft) }
 end

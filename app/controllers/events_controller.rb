@@ -1,5 +1,5 @@
 class EventsController < ApplicationController
-  before_action :set_event, only: [:show, :edit, :update, :destroy]
+  before_action :set_event, only: [:show, :edit, :update, :destroy, :participants, :participants_pdf]
 
   # GET /events
   def index
@@ -60,8 +60,30 @@ class EventsController < ApplicationController
 
   # GET /events/1/participants
   def participants
-    @event = Event.find(params[:id])
     @participants = @event.participants
+  end
+
+  # GET /event/1/participants_pdf
+  def participants_pdf
+    @application_letters = @event.application_letters_ordered(params.require(:order_by), params:require(:order_direction))
+                               .where(:status => ApplicationLetter.statuses[:accepted])
+
+    data = @application_letters.collect do |application_letter|
+      [
+        application_letter.user.profile.first_name,
+        application_letter.user.profile.last_name,
+        application_letter.user.profile.birth_date,
+        application_letter.allergies
+      ]
+    end
+
+    data.unshift(['First name', 'Last name', 'Date of birth', 'Allergies'])
+
+    doc = Prawn::Document.generate(:page_size => 'A4') do
+      table(data)
+    end
+
+    send_data doc.render, :filename => "participants.pdf", :type => "application/pdf", disposition: "inline"
   end
   
   private
