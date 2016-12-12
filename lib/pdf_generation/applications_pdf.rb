@@ -83,14 +83,29 @@ class ApplicationsPDF
     end
 
     def create_application_page_content(application_letter)
-      pad_top(20) { text "Status: #{application_letter.status}" }
-      pad(10) { text "Motivation letter:" }
-      text application_letter.motivation
+      table applicants_detail_data(application_letter) do
+        cells.borders = []
+        cells.padding = 3
+        column(0).font_style = :bold
+        column(0).align = :right
+        column(0).width = 180
+      end
+      pad_top(10) { text "<u>#{ApplicationLetter.human_attribute_name(:motivation)}</u>", inline_format: true}
+      pad_top(5) { text application_letter.motivation }
+    end
+
+    def applicants_detail_data(application_letter)
+      data = [[Profile.human_attribute_name(:gender)+":", application_letter.user.profile.gender],
+              [Profile.human_attribute_name(:age)+":", application_letter.user.profile.age],
+              [Profile.human_attribute_name(:address)+":", application_letter.user.profile.address],
+              [User.human_attribute_name(:accepted_application_count)+":", application_letter.user.accepted_applications_count(application_letter.event)],
+              [User.human_attribute_name(:rejected_application_count)+":", application_letter.user.rejected_applications_count(application_letter.event)],
+              [Profile.human_attribute_name(:status)+":", t("application_status.#{application_letter.status}")]]
     end
 
     def create_main_header(application_letter)
-        text "Application from #{application_letter.user.profile.name}", size: 20
-        text "for #{application_letter.event.name}", size: 14
+        text t("application_letters.application_page.title", name: application_letter.user.profile.name), size: 20
+        text t("application_letters.application_page.for", event: application_letter.event.name), size: 14
         stroke_horizontal_rule
     end
 

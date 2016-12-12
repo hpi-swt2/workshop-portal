@@ -14,6 +14,9 @@ de:
       Programmierkenntnisse sind keine  Voraussetzung zur Teilnahme. Diese Information
       wird zur Gruppeneinteilung benötigt."
     login_before_creation: "Du musst angemeldet sein, um dich für Workshops bewerben zu können."
+    application_page:
+      title: "Bewerbung von %{name}"
+      for: "für %{event}"
 
   activerecord:
     models:
