@@ -40,7 +40,6 @@ event = Event.new(
     name: "Messung und Verarbeitung von Umweltdaten",
     description: "Veranstaltung mit Phidgets und Etoys",
     max_participants: 20,
-    active: true,
     application_deadline: Date.tomorrow,
     draft: false
 )
