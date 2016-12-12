@@ -19,12 +19,14 @@ RSpec.feature "Upload letter of agreement", :type => :feature do
   end
 
   scenario "user uploads letter of agreement for the first time" do
-    attach_file(:letter_upload, './spec/testfiles/actual.pdf')
-    click_button "upload_btn_#{@event.id}"
-    expect(page).to have_current_path profile_path(@user.profile)
-    expect(page).not_to have_css(".alert-danger")
-    expect(page).to have_css(".alert-success")
-    expect(page).to have_text(I18n.t("agreement_letters.upload_success"))
+    mock_writing_to_filesystem do
+      attach_file(:letter_upload, './spec/testfiles/actual.pdf')
+      click_button "upload_btn_#{@event.id}"
+      expect(page).to have_current_path profile_path(@user.profile)
+      expect(page).not_to have_css(".alert-danger")
+      expect(page).to have_css(".alert-success")
+      expect(page).to have_text(I18n.t("agreement_letters.upload_success"))
+    end
   end
 
   scenario "user uploads letter of agreement a second time" do
