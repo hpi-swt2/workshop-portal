@@ -66,18 +66,16 @@ class EventsController < ApplicationController
 
   # GET /events/1/send-acceptances-email
   def send_acceptances_email
-    @event = Event.find(params[:id])
-    #@adresses = @event.email_adresses_of_accepted_applicants
-    @adresses = 'test@example.com,test@example2.com,test@example3.com'
+    event = Event.find(params[:id])
+    @email = event.generate_acceptances_email
     @templates = [{subject: 'Zusage 1', content: 'Lorem Ispum...'}, {subject: 'Zusage 2', content: 'Lorem Ispum...'}, {subject: 'Zusage 3', content: 'Lorem Ispum...'}]
     render 'email'
   end
 
   # GET /events/1/send-rejections-email
   def send_rejections_email
-    @event = Event.find(params[:id])
-    #@adresses = @event.email_adresses_of_rejected_applicants
-    @adresses = 'test@example.com,test@example2.com,test@example3.com'
+    event = Event.find(params[:id])
+    @email = event.generate_rejections_email
     @templates = [{subject: 'Absage 1', content: 'Lorem Ispum...'}, {subject: 'Absage 2', content: 'Lorem Ispum...'}, {subject: 'Absage 3', content: 'Lorem Ispum...'}]
     render 'email'
   end

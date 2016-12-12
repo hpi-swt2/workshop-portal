@@ -46,7 +46,7 @@ RSpec.feature "Event Applicant Overview", :type => :feature do
     expect(page).to have_button(I18n.t('events.applicants_overview.sending_rejections'), disabled: true)
   end
 
-  scenario "logged in as Organizer I want to open a modal by clicking on sending emails" do
+  scenario "logged in as Organizer I want to be able to send an email to all accepted applicants" do
     login(:organizer)
     @event.update!(max_participants: 2)
     2.times do |n|
@@ -55,8 +55,7 @@ RSpec.feature "Event Applicant Overview", :type => :feature do
       FactoryGirl.create(:application_letter_accepted, :event => @event, :user => @pupil.user)
     end
     visit event_path(@event)
-    click_button I18n.t('events.applicants_overview.sending_acceptances')
-    expect(page).to have_selector('div', :id => 'send-emails-modal')
+    click_link I18n.t('events.applicants_overview.sending_acceptances')
   end
 
   scenario "logged in as Organizer I can see the correct count of free/occupied places" do

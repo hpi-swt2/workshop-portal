@@ -167,16 +167,16 @@ RSpec.describe EventsController, type: :controller do
     end
 
     describe "GET #send_acceptances_email" do
-      it "should assign email adresses of accepted applications as @adresses" do
+      it "should assign a new email to accepted applications as @email" do
         get :send_acceptances_email, id: @event.to_param, session: valid_session
-        expect(assigns(:adresses)).to eq(@event.email_adresses_of_accepted_applicants)
+        expect(assigns(:email)).to eq(@event.generate_acceptances_email)
       end
     end
 
     describe "GET #send_rejections_email" do
-      it "should assign email adresses of rejected applications as @adresses" do
+      it "should assign a new email to rejected applications as @email" do
         get :send_rejections_email, id: @event.to_param, session: valid_session
-        expect(assigns(:adresses)).to eq(@event.email_adresses_of_rejected_applicants)
+        expect(assigns(:email)).to eq(@event.generate_rejections_email)
       end
     end
   end

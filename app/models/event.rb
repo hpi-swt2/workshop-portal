@@ -104,6 +104,34 @@ class Event < ActiveRecord::Base
     accepted_applications.map{ |application_letter| application_letter.user.email }.join(',')
   end
 
+  # Returns a new acceptance email
+  #
+  # @param none
+  # @return [Email] new acceptance email
+  def generate_acceptances_email
+    email = Email.new
+    email.hide_recipients = false
+    email.recipients = email_adresses_of_accepted_applicants
+    email.reply_to = 'workshop.portal@hpi.de'
+    email.subject = ''
+    email.content = ''
+    email
+  end
+
+  # Returns a new rejection email
+  #
+  # @param none
+  # @return [Email] new rejection email
+  def generate_rejections_email
+    email = Email.new
+    email.hide_recipients = false
+    email.recipients = email_adresses_of_rejected_applicants
+    email.reply_to = 'workshop.portal@hpi.de'
+    email.subject = ''
+    email.content = ''
+    email
+  end
+
   # Returns the number of free places of the event, this value may be negative
   #
   # @param none

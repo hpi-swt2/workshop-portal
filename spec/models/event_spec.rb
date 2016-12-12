@@ -167,5 +167,15 @@ describe Event do
     application_letter_accepted_2 = FactoryGirl.create(:application_letter_accepted, user: FactoryGirl.create(:user), event: event)
     expect(event.compute_occupied_places).to eq(2)
   end
+
+  it "generates a new email for acceptance" do
+    event = FactoryGirl.create(:event_with_accepted_applications)
+    expect(event.generate_acceptances_email).to eq(FactoryGirl.create(:email))
+  end
+
+  it "generates a new email for rejections" do
+    event = FactoryGirl.create(:event_with_accepted_applications)
+    expect(event.generate_rejections_email).to eq(FactoryGirl.create(:email))
+  end
 end
 

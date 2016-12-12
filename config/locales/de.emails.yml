@@ -1,7 +1,9 @@
-# German translation for email
+# German translation for emails
 
 de:
-  email:
-    to: 'An'
-    subject: 'Betreff'
-    send: 'Senden'
+  emails:
+     email_form:
+      recipients: 'Empfänger'
+      to: 'An'
+      subject: 'Betreff'
+      send: 'Senden'

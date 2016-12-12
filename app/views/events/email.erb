@@ -3,7 +3,7 @@
 </div>
 <div>
   <div class="email-form col-md-8">
-    <%= render partial: 'emails/email_form', locals: {adresses: @adresses, subject: '', content: ''} %>
+    <%= render partial: 'emails/email_form', locals: { email: @email} %>
   </div>
   <div class="email-templates col-md-4">
     <p><%= t('.templates') %></p>
