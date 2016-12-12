@@ -19,10 +19,10 @@ class ApplicationLetter < ActiveRecord::Base
   VALID_GRADES = 5..13
 
   validates :user, :event, :experience, :motivation, :coding_skills, :emergency_number, presence: true
-  validates :grade, presence: true, numericality: { only_integer: true }
+  validates :grade, presence: true, numericality: {only_integer: true}
   validates_inclusion_of :grade, :in => VALID_GRADES
-  validates :vegeterian, :vegan, :allergic, inclusion: { in: [true, false] }
-  validates :vegeterian, :vegan, :allergic, exclusion: { in: [nil] }
+  validates :vegeterian, :vegan, :allergic, inclusion: {in: [true, false]}
+  validates :vegeterian, :vegan, :allergic, exclusion: {in: [nil]}
   validate :deadline_cannot_be_in_the_past, :if => Proc.new { |letter| !(letter.status_changed?) }
 
   enum status: {accepted: 1, rejected: 0, pending: 2}
@@ -34,7 +34,24 @@ class ApplicationLetter < ActiveRecord::Base
   # @param none
   # @return [Boolean] true if deadline is over
   def after_deadline?
-    Date.current > event.application_deadline if event.present?
+    Date.current > event.application_deadline if event.present? and !event.application_deadline.nil?
+  end
+
+  def status_type
+    case ApplicationLetter.statuses[status]
+      when ApplicationLetter.statuses[:accepted]
+        return "Angenommen"
+      when ApplicationLetter.statuses[:rejected]
+        return "Abgelehnt"
+      when ApplicationLetter.statuses[:pending]
+        if after_deadline?
+          return "In Bearbeitung"
+        else
+          return "Beworben"
+        end
+      else
+        return ""
+    end
   end
 
   # Validator for after_deadline?

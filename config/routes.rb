@@ -12,6 +12,7 @@ Rails.application.routes.draw do
     get 'badges'
     post 'badges' => 'events#print_badges', as: :print_badges
   end
+  resources :my_events
   resources :profiles
   devise_for :users
   # The priority is based upon order of creation: first created -> highest priority.

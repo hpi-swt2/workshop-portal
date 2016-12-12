@@ -46,6 +46,17 @@ event = Event.new(
 event.date_ranges << date_range
 event.save
 
+# An event
+past_event = Event.new(
+    name: "ABGELAUFEN Messung und Verarbeitung von Umweltdaten",
+    description: "Veranstaltung mit Phidgets und Etoys",
+    max_participants: 20,
+    application_deadline: Date.tomorrow,
+    draft: false
+)
+past_event.date_ranges << date_range
+past_event.save
+
 # Pupil's profile
 Profile.find_or_create_by!(
     user: pupil,
@@ -115,6 +126,57 @@ ApplicationLetter.find_or_create_by!(
     user: applicant,
     event: event
 )
+
+# Applicant's application letter after deadline
+ApplicationLetter.find_or_create_by!(
+    motivation: "Ich will auch",
+    grade: 10,
+    experience: "Internet",
+    coding_skills: "HTML",
+    emergency_number: "01234567891",
+    vegeterian: false,
+    vegan: false,
+    allergic: false,
+    allergies: "",
+    status: ApplicationLetter.statuses[:pending],
+    user: applicant,
+    event: past_event
+)
+
+# Applicant's application letter after deadline
+ApplicationLetter.find_or_create_by!(
+    motivation: "Ich will auch",
+    grade: 10,
+    experience: "Internet",
+    coding_skills: "HTML",
+    emergency_number: "01234567891",
+    vegeterian: false,
+    vegan: false,
+    allergic: false,
+    allergies: "",
+    status: ApplicationLetter.statuses[:accepted],
+    user: applicant,
+    event: past_event
+)
+
+# Applicant's application letter after deadline
+ApplicationLetter.find_or_create_by!(
+    motivation: "Ich will auch",
+    grade: 10,
+    experience: "Internet",
+    coding_skills: "HTML",
+    emergency_number: "01234567891",
+    vegeterian: false,
+    vegan: false,
+    allergic: false,
+    allergies: "",
+    status: ApplicationLetter.statuses[:rejected],
+    user: applicant,
+    event: past_event
+)
+# Let application deadline pass by
+past_event.application_deadline = Date.yesterday
+past_event.save
 
 AgreementLetter.find_or_create_by!(
   user: applicant,
