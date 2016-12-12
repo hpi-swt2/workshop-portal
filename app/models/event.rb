@@ -17,9 +17,9 @@ class Event < ActiveRecord::Base
 
   has_many :application_letters
   has_many :agreement_letters
+  has_many :date_ranges
+  accepts_nested_attributes_for :date_ranges
 
-  validates :max_participants, numericality: { only_integer: true, greater_than: 0 }
-  
   # Returns all participants for this event in following order:
   # 1. All participants that have to submit an letter of agreement but did not yet do so, ordered by name.
   # 2. All participants that have to submit an letter of agreement and did do so, ordered by name.
@@ -31,8 +31,6 @@ class Event < ActiveRecord::Base
     @participants = self.participants
 	@participants.sort { |x, y| self.compare_participants_by_agreement(x,y) }
   end
-  
-  has_many :date_ranges
 
   validates :max_participants, numericality: { only_integer: true, greater_than: 0 }
   validate :has_date_ranges
@@ -56,9 +54,9 @@ class Event < ActiveRecord::Base
 
   # validation function on whether we have at least one date range
   def has_date_ranges
-    errors.add(:base, 'Bitte mindestens eine Zeitspanne auswählen!') if date_ranges.blank?
+    errors.add(:date_ranges, 'Bitte mindestens eine Zeitspanne auswählen!') if date_ranges.blank?
   end
-  
+
   # Returns the participants whose application for this Event has been accepted
   #
   # @param none
@@ -119,9 +117,27 @@ class Event < ActiveRecord::Base
   def compute_occupied_places
     application_letters.where(status: ApplicationLetter.statuses[:accepted]).count
   end
-  
+
+  # Make sure any assignment coming from the controller
+  # replaces all date ranges instead of adding new ones
+  def date_ranges_attributes=(*args)
+    self.date_ranges.clear
+    super(*args)
+  end
+
+  # Make sure we add errors from our date_range children
+  # to the base event object for displaying
+  validate do |event|
+    event.date_ranges.each do |date_range|
+      next if date_range.valid?
+      date_range.errors.full_messages.each do |msg|
+        errors.add :date_ranges, msg
+      end
+    end
+  end
+
   scope :draft_is, ->(draft) { where("draft = ?", draft) }
-  
+
   protected
   # Compares two participants to achieve following order:
   # 1. All participants that have to submit an letter of agreement but did not yet do so, ordered by name.
