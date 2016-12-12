@@ -1,6 +1,15 @@
 require "rails_helper"
 
 describe "Event", type: :feature do
+  describe "index page" do
+    it "should link to the show page when an event title is clicked" do
+      event = FactoryGirl.create :event
+      visit events_path
+      click_link event.name
+      expect(page).to have_current_path(event_path(event))
+    end
+  end
+
   describe "create page" do
     ['Camp', 'Workshop'].each do |kind|
       it "should allow picking the #{kind} kind camp" do
@@ -14,8 +23,8 @@ describe "Event", type: :feature do
 
     it "should not allow dates in the past" do
       visit new_event_path
-      select_date_within_selector(Date.yesterday.prev_day, '.event-date-picker-start')
-      select_date_within_selector(Date.yesterday, '.event-date-picker-end')
+      fill_in "event[date_ranges_attributes][][start_date]", with: Date.yesterday.prev_day
+      fill_in "event[date_ranges_attributes][][end_date]", with: Date.yesterday
       click_button I18n.t('.events.form.publish')
       expect(page).to have_text("Anfangs-Datum darf nicht in der Vergangenheit liegen.")
     end
@@ -23,16 +32,16 @@ describe "Event", type: :feature do
     it "should warn about unreasonably long time spans" do
       visit new_event_path
       fill_in 'Maximale Teilnehmerzahl', :with => 25
-      select_date_within_selector(Date.today, '.event-date-picker-start')
-      select_date_within_selector(Date.today.next_year(3), '.event-date-picker-end')
+      fill_in "event[date_ranges_attributes][][start_date]", with: Date.current
+      fill_in "event[date_ranges_attributes][][end_date]", with: Date.current.next_year(3)
       click_button I18n.t('.events.form.publish')
       expect(page).to have_text("End-Datum liegt ungewöhnlich weit vom Start-Datum entfernt.")
     end
 
     it "should not allow an end date before a start date" do
       visit new_event_path
-      select_date_within_selector(Date.today, '.event-date-picker-start')
-      select_date_within_selector(Date.today.prev_day(2), '.event-date-picker-end')
+      fill_in "event[date_ranges_attributes][][start_date]", with: Date.current
+      fill_in "event[date_ranges_attributes][][end_date]", with: Date.current.prev_day(2)
       click_button I18n.t('.events.form.publish')
 
       expect(page).to have_text("End-Datum kann nicht vor Start-Datum liegen")
@@ -41,23 +50,25 @@ describe "Event", type: :feature do
     it "should allow entering multiple time spans", js: true do
       visit new_event_path
 
-      first_from = Date.today
-      first_to = Date.today.next_day(2)
+      first_from = Date.tomorrow
+      first_to = Date.tomorrow.next_day(2)
 
-      second_from = Date.today.next_day(6)
-      second_to = Date.today.next_day(8)
+      second_from = Date.tomorrow.next_day(6)
+      second_to = Date.tomorrow.next_day(8)
 
       fill_in 'Maximale Teilnehmerzahl', :with => 25
-      select_date_within_selector(first_from, '.event-date-picker-start')
-      select_date_within_selector(first_to, '.event-date-picker-end')
-      click_link "Zeitspanne hinzufügen"
+      fill_in "event[date_ranges_attributes][][start_date]", with: I18n.l(first_from)
+      fill_in "event[date_ranges_attributes][][end_date]", with: I18n.l(first_to)
 
-      select_date_within_selector(second_from, '.event-date-picker:nth-child(2) .event-date-picker-start')
-      select_date_within_selector(second_to, '.event-date-picker:nth-child(2) .event-date-picker-end')
+      click_link "Zeitspanne hinzufügen"
+      within page.find('#event-date-pickers').all('div')[1] do
+        fill_in "event[date_ranges_attributes][][start_date]", with: I18n.l(second_from)
+        fill_in "event[date_ranges_attributes][][end_date]", with: I18n.l(second_to)
+      end
       click_button I18n.t('.events.form.publish')
 
-      expect(page).to have_text(first_from.to_s + ' bis ' + first_to.to_s)
-      expect(page).to have_text(second_from.to_s + ' bis ' + second_to.to_s)
+      expect(page).to have_text (DateRange.new start_date: first_from, end_date: first_to)
+      expect(page).to have_text (DateRange.new start_date: second_from, end_date: second_to)
     end
   end
 
@@ -74,18 +85,15 @@ describe "Event", type: :feature do
       event = FactoryGirl.create(:event, :single_day)
       visit event_path(event)
       expect(page).to have_text(event.date_ranges.first.start_date)
-      expect(page).to_not have_text(event.date_ranges.first.start_date.to_s +
-                                    ' bis ' + event.date_ranges.first.end_date.to_s)
+      expect(page).to_not have_text(" bis " + I18n.l(event.date_ranges.first.end_date))
     end
 
     it "should display all date ranges" do
       event = FactoryGirl.create(:event, :with_two_date_ranges)
       visit event_path(event.id)
 
-      expect(page).to have_text(event.date_ranges.first.start_date.to_s +
-                                ' bis ' + event.date_ranges.first.end_date.to_s)
-      expect(page).to have_text(event.date_ranges.second.start_date.to_s +
-                                ' bis ' + event.date_ranges.second.end_date.to_s)
+      expect(page).to have_text(event.date_ranges.first)
+      expect(page).to have_text(event.date_ranges.second)
     end
 
   end
@@ -101,26 +109,24 @@ describe "Event", type: :feature do
       event = FactoryGirl.create(:event, :with_two_date_ranges)
       visit edit_event_path(event.id)
 
-      page.assert_selector('.event-date-picker', count: 2)
+      page.assert_selector('[name="event[date_ranges_attributes][][start_date]"]', count: 2)
     end
 
     it "should save edits to the date ranges" do
       event = FactoryGirl.create(:event, :with_two_date_ranges)
-      dateStart = Date.today.next_year
-      dateEnd = Date.tomorrow.next_year
+      date_start = Date.current.next_year
+      date_end = Date.tomorrow.next_year
 
       visit edit_event_path(event.id)
 
-      picker = page.all('.event-date-picker')[0]
-      startPicker = picker.find('.event-date-picker-start')
-      endPicker = picker.find('.event-date-picker-end')
-
-      select_date_within_selector(dateStart, startPicker)
-      select_date_within_selector(dateEnd, endPicker)
+      within page.find('#event-date-pickers').first('div') do
+        fill_in "event[date_ranges_attributes][][start_date]", with: date_start
+        fill_in "event[date_ranges_attributes][][end_date]", with: date_end
+      end
 
       click_button I18n.t('.events.form.update')
 
-      expect(page).to have_text(dateStart.to_s + ' bis ' + dateEnd.to_s)
+      expect(page).to have_text (DateRange.new start_date: date_start, end_date: date_end)
     end
   end
 end

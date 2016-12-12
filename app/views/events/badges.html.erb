@@ -1,0 +1,25 @@
+<h1><%= t('events.badges.title') + "'" + @event.name + "'" %></h1>
+<h3><%= t('events.badges.participants') %></h3>
+
+<%= form_for event_badges_path(@event), :html => { :class => "form-horizontal event" } do |f| %>
+<table>
+  <tr>
+    <th><%= Profile.human_attribute_name(:name) %></th>
+    <th><%= t('events.badges.printBoolean') %></th>
+  </tr>
+
+  <% @participants.each do |participant| %>
+      <tr>
+        <td>
+          <%= participant.name %>
+        </td>
+        <td>
+          <%= f.check_box_tag "#{participant.id}_print", participant.name%>
+        </td>
+      </tr>
+  <% end %>
+</table>
+
+
+<%= f.submit t('events.badges.print'), :class => 'btn btn-primary' %>
+<% end %>
