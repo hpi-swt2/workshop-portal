@@ -15,6 +15,7 @@ class AgreementLetter < ActiveRecord::Base
   validates :user, :event, :path, presence: true
   MAX_SIZE = 300_000_000
   ALLOWED_MIMETYPE = "application/pdf"
+  STORAGE_DIR = Rails.root.join('storage', 'agreement_letters')
 
   # Generates a unique filename for an AgreementLetter's file
   #
@@ -25,6 +26,10 @@ class AgreementLetter < ActiveRecord::Base
     event.nil? ? nil : "#{event.id}_#{user.id}.pdf"
   end
 
+  # Saves a file in the AgreementLetter's path
+  #
+  # @param [ActionDispatch::Http::UploadedFile] the file to save
+  # @return [Boolean] whether saving the file was saved
   def save_file(file)
     unless valid_file?(file)
       self.destroy
@@ -40,6 +45,7 @@ class AgreementLetter < ActiveRecord::Base
     end
   end
 
+  # Calls super, adds an error if save fails
   def save(*args)
     if super
       true
@@ -49,10 +55,12 @@ class AgreementLetter < ActiveRecord::Base
     end
   end
 
+  # Sets the AgreementLetter's path field to the path where the file should be saved
+  #
+  # @param none
+  # @return [String] the set path
   def set_path
-    unless filename.nil?
-      self.path = Rails.root.join('storage', 'agreement_letters', filename).to_s
-    end
+    self.path = File.join(STORAGE_DIR, filename).to_s unless filename.nil?
   end
 
   private

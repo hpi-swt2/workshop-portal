@@ -2,7 +2,6 @@ require "rails_helper"
 
 RSpec.feature "Upload letter of agreement", :type => :feature do
   before :each do
-    Rails.cache.clear
     @profile = FactoryGirl.create(:profile)
     @user = FactoryGirl.create(:user, role: :pupil, profile: @profile)
     @event = FactoryGirl.create(:event)
