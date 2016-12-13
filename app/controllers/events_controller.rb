@@ -102,7 +102,7 @@ class EventsController < ApplicationController
     data.unshift(['Vorname', 'Nachname', 'Geburtsdatum', 'Allergien'])
 
     doc = Prawn::Document.new(:page_size => 'A4') do
-      table(data)
+      table(data, width: bounds.width)
     end
 
     send_data doc.render, :filename => "participants.pdf", :type => "application/pdf", disposition: "inline"
