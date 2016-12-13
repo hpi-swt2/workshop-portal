@@ -5,6 +5,22 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     @event = FactoryGirl.create(:event)
   end
 
+  scenario "logged in as Pupil I can click the apply button on the index page" do
+    login(:pupil)
+    visit events_path
+
+    click_link 'Bewerben'
+    expect(page).to have_current_path(new_application_letter_path(:event_id => @event.id))
+  end
+
+  scenario "logged in as Pupil I can click the apply button on the show page" do
+    login(:pupil)
+    visit event_path(@event)
+
+    click_link 'Bewerben'
+    expect(page).to have_current_path(new_application_letter_path(:event_id => @event.id))
+  end
+
   scenario "logged in as Pupil I can not see overview" do
     login(:pupil)
     visit event_path(@event)
