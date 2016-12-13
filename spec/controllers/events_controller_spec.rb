@@ -265,7 +265,7 @@ RSpec.describe EventsController, type: :controller do
           a.user.profile.gender,
           a.user.accepted_applications_count(@event).to_s,
           a.user.rejected_applications_count(@event).to_s,
-          a.status)
+          I18n.t("application_status.#{a.status}"))
       end
     end
   end

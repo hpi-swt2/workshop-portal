@@ -31,11 +31,13 @@ class ApplicationsPDF
       end
       unless @event.application_letters.empty?
         table overview_table_data,
-          header: true, width: 500, position: :center, row_colors: ["F9F9F9", "FFFFFF"] do
+          header: 2, position: :center, row_colors: ["F9F9F9", "FFFFFF"] do
             cells.borders = []
-            row(0).borders = [:bottom]
+            row(1).borders = [:bottom]
+            row(1).font_style = :bold
             row(0).font_style = :bold
-            row(0).valign = :bottom
+            row(0).padding = [5, 0, 5, 5] #minimize padding between first two rows
+            row(1).padding = [0, 5, 5, 5]
           end
       end
     end
@@ -53,18 +55,19 @@ class ApplicationsPDF
     end
 
     def overview_table_data
-      data = [[Profile.human_attribute_name(:name),
-               Profile.human_attribute_name(:gender),
-               Profile.human_attribute_name(:age),
-               t("events.applicants_overview.participations") + "\n" +
-                 t("events.applicants_overview.accepted_rejected"),
-               ApplicationLetter.human_attribute_name(:status)]]
+      #line breaks lead to weird table formatting, so we create 2 header rows to fit all the text
+      data = [["", "", "", t("events.applicants_overview.participations"), ""]]
+      data += [[Profile.human_attribute_name(:name),
+                Profile.human_attribute_name(:gender),
+                Profile.human_attribute_name(:age),
+                t("events.applicants_overview.accepted_rejected"),
+                ApplicationLetter.human_attribute_name(:status)]]
       data += @event.application_letters.map { |a|
         [a.user.profile.name,
          a.user.profile.gender,
          a.user.profile.age,
          "#{a.user.accepted_applications_count(@event)} / #{a.user.rejected_applications_count(@event)}",
-         a.status]}
+         t("application_status.#{a.status}")]}
     end
 
     def create_application_page(application_letter, index)
@@ -88,24 +91,23 @@ class ApplicationsPDF
         cells.padding = 3
         column(0).font_style = :bold
         column(0).align = :right
-        column(0).width = 180
       end
-      pad_top(10) { text "<u>#{ApplicationLetter.human_attribute_name(:motivation)}</u>", inline_format: true}
+      pad_top(20) { text "<u>#{ApplicationLetter.human_attribute_name(:motivation)}</u>", inline_format: true}
       pad_top(5) { text application_letter.motivation }
     end
 
     def applicants_detail_data(application_letter)
-      data = [[Profile.human_attribute_name(:gender)+":", application_letter.user.profile.gender],
-              [Profile.human_attribute_name(:age)+":", application_letter.user.profile.age],
-              [Profile.human_attribute_name(:address)+":", application_letter.user.profile.address],
-              [User.human_attribute_name(:accepted_application_count)+":", application_letter.user.accepted_applications_count(application_letter.event)],
-              [User.human_attribute_name(:rejected_application_count)+":", application_letter.user.rejected_applications_count(application_letter.event)],
-              [Profile.human_attribute_name(:status)+":", t("application_status.#{application_letter.status}")]]
+      [[Profile.human_attribute_name(:gender)+":", application_letter.user.profile.gender],
+       [Profile.human_attribute_name(:age)+":", application_letter.user.profile.age],
+       [Profile.human_attribute_name(:address)+":", application_letter.user.profile.address],
+       [User.human_attribute_name(:accepted_application_count)+":", application_letter.user.accepted_applications_count(@event)],
+       [User.human_attribute_name(:rejected_application_count)+":", application_letter.user.rejected_applications_count(@event)],
+       [Profile.human_attribute_name(:status)+":", t("application_status.#{application_letter.status}")]]
     end
 
     def create_main_header(application_letter)
         text t("application_letters.application_page.title", name: application_letter.user.profile.name), size: 20
-        text t("application_letters.application_page.for", event: application_letter.event.name), size: 14
+        text t("application_letters.application_page.for", event: @event.name), size: 14
         stroke_horizontal_rule
     end
 
