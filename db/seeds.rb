@@ -31,8 +31,8 @@ users.each do |user|
 end
 
 date_range = DateRange.find_or_create_by!(
-  start_date: Date.current,
-  end_date: Date.tomorrow
+  start_date: Date.tomorrow.next_day(3),
+  end_date: Date.tomorrow.next_day(5)
 )
 
 # An event
