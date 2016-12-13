@@ -8,7 +8,6 @@ RSpec.feature "Draft events", :type => :feature do
     fill_in "event_name", :with => @event.name
     fill_in "event_description", :with => @event.description
     fill_in "event_max_participants", :with => @event.max_participants
-    fill_in "event_active", :with => @event.active
   end
 
   scenario "User saves a draft event, but doesn't publish it" do

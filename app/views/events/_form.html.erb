@@ -1,23 +1,6 @@
 <%= form_for @event, :html => { :class => "form-horizontal event" } do |f| %>
 
-<% if @event.errors.any? %>
-  <div id="error_expl" class="panel panel-danger">
-    <div class="panel-heading">
-      <h3 class="panel-title"><%=I18n.t("errors.form_invalid", number: @event.errors.count) %></h3> </div>
-      <div class="panel-body">
-        <ul>
-        <% @event.errors.full_messages.each do |msg| %>
-          <li><%= msg %></li>
-        <% end %>
-        <% @event.date_ranges.each do |range|
-          range.errors.full_messages.each do |msg| %>
-          <li><%= msg %></li>
-          <% end
-        end %>
-        </ul>
-      </div>
-  </div>
-<% end %>
+  <%= render partial: "shared/error_message", locals: {entity: @event} %>
 
   <div class="form-group">
     <div class="btn-group col-lg-10 col-lg-offset-2" data-toggle="buttons">
@@ -53,24 +36,17 @@
     </div>
   </div>
   <div class="form-group">
-    <%= f.label :active, :class => 'control-label col-lg-2' %>
-    <div class="col-lg-10">
-      <%= f.text_field :active, :class => 'form-control' %>
-      <%=f.error_span(:active) %>
-    </div>
-  </div>
-  <div class="form-group">
     <%= f.label :date_ranges, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10" id="event-date-pickers">
-      <% def date_picker_template(startDate = Date.today, endDate = Date.today)
-          start_picker = select_date(startDate, {prefix: 'date_ranges[start_date][]'}).gsub("\n", "")
-          end_picker = select_date(endDate, {prefix: 'date_ranges[end_date][]'}).gsub("\n", "")
-          "<div class=\"event-date-picker\">
-            <div class=\"event-date-picker-start\">#{start_picker}</div>
-            #{t 'date_range.to'}
-            <div class=\"event-date-picker-end\">#{end_picker}</div>
-          </div>"
-        end %>
+      <% def date_picker_template(start_date = Date.current, end_date = Date.current)
+        start_picker = text_field_tag "event[date_ranges_attributes][][start_date]", (I18n.l start_date),
+          class: 'form-control', :"data-enable-datepicker" => 'true'
+        end_picker = text_field_tag "event[date_ranges_attributes][][end_date]", (I18n.l end_date),
+          class: 'form-control', :"data-enable-datepicker" => 'true'
+
+        "<div>#{start_picker} #{t 'date_range.to'} #{end_picker} "+
+          "<a class=\"close\" onclick=\"javascript:removeEventDatePicker(event.target)\">&times;</a></div>"
+      end %>
 
       <%=
         if @event.date_ranges.blank?
@@ -85,6 +61,7 @@
       <a class="btn btn-xs btn-default" href="javascript:addEventDatePicker()" id="event-add-date-picker">
         Zeitspanne hinzufügen
       </a>
+      <%=f.error_span(:date_ranges) %>
     </div>
     <script>var EVENT_DATE_PICKER_TEMPLATE = '<%= date_picker_template.gsub("\n", "").html_safe %>';</script>
   </div>
