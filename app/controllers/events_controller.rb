@@ -10,6 +10,7 @@ class EventsController < ApplicationController
   def show
     @free_places = @event.compute_free_places
     @occupied_places = @event.compute_occupied_places
+    @application_letters = filter_application_letters(@event.application_letters)
   end
 
   # GET /events/new
@@ -91,7 +92,7 @@ class EventsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def event_params
-      params.require(:event).permit(:name, :description, :max_participants, :kind, :organizer, :knowledge_level, date_ranges_attributes: [:start_date, :end_date, :id])
+      params.require(:event).permit(:name, :description, :max_participants, :kind, :organizer, :knowledge_level, :application_deadline, date_ranges_attributes: [:start_date, :end_date, :id])
     end
 
     # Generate all names to print from the query-params
@@ -113,6 +114,15 @@ class EventsController < ApplicationController
 
       pdf.stroke_rectangle [x, y], width, height
       pdf.text_box name, :at => [x + width / 2 - 50 , y - 20], :width => width - 100, :height => height - 100, :overflow => :shrink_to_fit
+    end
+
+    def filter_application_letters(application_letters)
+      application_letters = application_letters.to_a
+      filters = (params[:filter] || {}).select { |k, v| v == '1' }.map{ |k, v| k.to_s }
+      if filters.count > 0  # skip filtering if no filters have been set
+        application_letters.keep_if { |l| filters.include?(l.status) }
+      end
+      application_letters
     end
 
     # Create a page with maximum 10 badges

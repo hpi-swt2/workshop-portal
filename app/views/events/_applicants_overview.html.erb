@@ -6,19 +6,37 @@
   <table id="applicants" class="table table-striped">
     <thead>
     <tr>
-      <th><%= Profile.human_attribute_name(:name) %></th>
-      <th><%= Profile.human_attribute_name(:gender) %></th>
-      <th><%= Profile.human_attribute_name(:age) %></th>
+      <th>
+        <%= sort_caret(Profile.human_attribute_name(:name), :name) %>
+      </th>
+      <th>
+        <%= sort_caret(Profile.human_attribute_name(:gender), :gender) %>
+      </th>
+      <th>
+        <%= sort_caret(Profile.human_attribute_name(:age), :age) %>
+      </th>
       <th>
         <%= t '.participations' %> <br>
         <%= t '.accepted_rejected' %>
       </th>
-      <th><%= t '.status' %></th>
+      <th>
+        <button
+         class="btn btn-default btn-sm pull-right has-popover"
+         title="<%= t '.filter_by' %>"
+         data-toggle="popover"
+         data-placement="bottom"
+         data-content="<%= (render :partial => 'application_letters/application_filter_popover').gsub('\n', '') %>"
+         data-html="true"><%= t '.filter_by' %></button>
+        <%= t '.status' %>
+      </th>
       <th></th>
     </tr>
     </thead>
     <tbody>
-    <% @event.application_letters.each do | application_letter | %>
+    <%
+      @application_letters.sort_by! {|l| l.user.profile.send(params[:sort]) } if params[:sort]
+      @application_letters.reverse! if params[:order] == 'descending'
+      @application_letters.select {|l| l.user.profile }.each do | application_letter | %>
         <tr>
           <td><%= application_letter.user.profile.name %></td>
           <td><%= application_letter.user.profile.gender %></td>
