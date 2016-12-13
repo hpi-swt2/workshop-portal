@@ -36,7 +36,7 @@ RSpec.feature "Application Letter Overview", :type => :feature do
 
     find('input[name=commit]').click
 
-    expect(page).to have_css(".has-error", count: 4)
+    expect(page).to have_css(".has-error", count: 12)
   end
 
    it "should save" do
@@ -78,14 +78,11 @@ RSpec.feature "Application Letter Overview", :type => :feature do
     event = FactoryGirl.create(:event)
     user = profile.user
     login_error_message = I18n.t 'application_letters.login_before_creation'
-    login_link_text = I18n.t 'users.sessions.new.sign_in'
     new_application_path = new_application_letter_path(:event_id => event.id)
 
     visit new_application_path
-    page.assert_current_path new_application_path # Make sure no redirect happened
+    page.assert_current_path user_session_path # Make sure redirect happened
     expect(page).to have_text login_error_message
-    link = page.find('main').find(:link, login_link_text)
-    link.click
 
     fill_in 'user_email', with: user.email
     fill_in 'user_password', with: user.password
@@ -93,6 +90,49 @@ RSpec.feature "Application Letter Overview", :type => :feature do
 
     page.assert_current_path(new_application_path)
     expect(page).to_not have_text login_error_message
+  end
+
+  it "shows an error if you don't have a profile and redirects you to profile creation" do
+    user = FactoryGirl.create(:user)
+    event = FactoryGirl.create(:event)
+    profile_required_message = I18n.t 'application_letters.fill_in_profile_before_creation'
+    new_application_path = new_application_letter_path(:event_id => event.id)
+
+    login_as(user, :scope => :user)
+    visit new_application_path
+    page.assert_current_path new_profile_path # Make sure redirect happened
+    expect(page).to have_text profile_required_message
+
+    FactoryGirl.create(:profile, :user => user)
+
+    visit new_application_path
+    expect(page).to_not have_text profile_required_message
+  end
+
+  it "shows an error if you don't have a profile and redirects you to the application page after profile creation" do
+    user = FactoryGirl.create(:user)
+    event = FactoryGirl.create(:event)
+    profile_required_message = I18n.t 'application_letters.fill_in_profile_before_creation'
+    new_application_path = new_application_letter_path(:event_id => event.id)
+
+    login_as(user, :scope => :user)
+    visit new_application_path
+    page.assert_current_path new_profile_path # Make sure redirect happened
+    expect(page).to have_text profile_required_message
+
+    fill_in "profile_first_name", with:   "John"
+    fill_in "profile_last_name", with:   "Doe"
+    fill_in "profile_birth_date", with: "19.03.2016"
+    fill_in "profile_school", with: "Griebnitzsee Schule"
+    fill_in "profile_street_name", with:   "Rudolf-Breitscheid-Str. 52"
+    fill_in "profile_zip_code", with:   "14482"
+    fill_in "profile_city" , with:  "Potsdam"
+    fill_in "profile_state" , with:  "Babelsberg"
+    fill_in "profile_country" , with:  "Deutschland"
+
+    find('input[name=commit]').click
+
+    expect(page).to have_text('Bewerbung erstellen')
   end
 
   def login(role)

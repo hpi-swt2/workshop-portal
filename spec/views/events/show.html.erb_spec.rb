@@ -6,6 +6,7 @@ RSpec.describe "events/show", type: :view do
     @application_letter = FactoryGirl.create(:application_letter, user: FactoryGirl.create(:user, role: :admin), event: @event)
     @application_letter.user.profile = FactoryGirl.build(:profile)
     @event.application_letters.push(@application_letter)
+    @application_letters = @event.application_letters
     sign_in(@application_letter.user)
   end
 
@@ -55,5 +56,11 @@ RSpec.describe "events/show", type: :view do
   it "displays email-list button" do
     render
     expect(rendered).to have_link('E-Mail-Addressen')
+  end
+
+
+  it "displays print badges button" do
+    render
+    expect(rendered).to have_link(t(:print_button_label, scope: 'events.badges'))
   end
 end

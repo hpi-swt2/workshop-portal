@@ -11,28 +11,7 @@
   </div>
 <% end %>
 
-<dl class="dl-horizontal">
-  <dt><strong><%= model_class.human_attribute_name(:name) %>:</strong></dt>
-  <dd><%= @event.name %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:description) %>:</strong></dt>
-  <dd><%= @event.description %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:max_participants) %>:</strong></dt>
-  <dd><%= @event.max_participants %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:active) %>:</strong></dt>
-  <dd><%= @event.active %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:date_ranges) %>:</strong></dt>
-  <dd>
-    <ul>
-    <% @event.date_ranges.each do |r| %>
-      <li><%= r.to_s %></li>
-    <% end %>
-    </ul>
-  </dd>
-  <dt><strong><%= model_class.human_attribute_name(:organizer) %>:</strong></dt>
-  <dd><%= @event.organizer %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:knowledge_level) %>:</strong></dt>
-  <dd><%= @event.knowledge_level %></dd>
-</dl>
+<%= render :partial => 'show_event' %>
 
 <% if can? :view_applicants, Event %>
   <%= render :partial => 'applicants_overview' %>
@@ -40,3 +19,7 @@
 
 <%= link_to t('.back', :default => t("helpers.links.back")),
               events_path, :class => 'btn btn-default'  %>
+<% if can? :view_participants, Event %>
+  <%= link_to t('events.participants.show_participants'),
+              event_path(@event) + "/participants" , :class => 'btn btn-default'  %>
+<% end %>
