@@ -122,7 +122,6 @@ RSpec.feature "Application Letter Overview", :type => :feature do
 
     fill_in "profile_first_name", with:   "John"
     fill_in "profile_last_name", with:   "Doe"
-    fill_in "profile_gender", with:   "männlich"
     fill_in "profile_birth_date", with: "19.03.2016"
     fill_in "profile_school", with: "Griebnitzsee Schule"
     fill_in "profile_street_name", with:   "Rudolf-Breitscheid-Str. 52"
