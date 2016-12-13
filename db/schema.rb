@@ -69,10 +69,10 @@ ActiveRecord::Schema.define(version: 20161209180054) do
     t.integer  "max_participants"
     t.datetime "created_at",                       null: false
     t.datetime "updated_at",                       null: false
+    t.integer  "kind",                 default: 0
+    t.boolean  "draft"
     t.string   "organizer"
     t.string   "knowledge_level"
-    t.boolean  "draft"
-    t.integer  "kind",                 default: 0
     t.date     "application_deadline"
   end
 

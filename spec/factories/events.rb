@@ -59,8 +59,19 @@ FactoryGirl.define do
     trait :without_date_ranges do
       date_ranges { [] }
     end
-  
+
+
+    trait :with_diverse_open_applications do
+      after(:build) do |event, evaluator|
+        create_list(:application_letter, 2, event: event)
+        event.application_letters[0].user.profile = FactoryGirl.build :profile, :high_values, user: event.application_letters[0].user
+        event.application_letters[1].user.profile = FactoryGirl.build :profile, :low_values, user: event.application_letters[1].user
+      end
+    end
+
     factory :event_with_accepted_applications do
+      name "Event-Name"
+      description "Event-Description"
       max_participants 20
       date_ranges { build_list :date_range, 1 }
       transient do
@@ -69,13 +80,11 @@ FactoryGirl.define do
       end
       organizer "Workshop-Organizer"
       knowledge_level "Workshop-Knowledge Level"
-      
+
       after(:create) do |event, evaluator|
         create_list(:application_letter_accepted, evaluator.accepted_application_letters_count, event: event)
         create_list(:application_letter_rejected, evaluator.rejected_application_letters_count, event: event)
       end
     end
   end
-  
-  
 end
