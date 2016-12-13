@@ -95,9 +95,9 @@ describe Event do
 
     #checking if the event model can handle date_ranges
     expect(event.date_ranges.size).to eq 2
-    expect(event.date_ranges.first.start_date).to eq(Date.tomorrow)
+    expect(event.date_ranges.first.start_date).to eq(Date.tomorrow.next_day(1))
     expect(event.date_ranges.first.end_date).to eq(Date.tomorrow.next_day(5))
-    expect(event.date_ranges.second.start_date).to eq(Date.tomorrow)
+    expect(event.date_ranges.second.start_date).to eq(Date.tomorrow.next_day(1))
     expect(event.date_ranges.second.end_date).to eq(Date.tomorrow.next_day(10))
     expect(event.date_ranges.second).to eq(event.date_ranges.last)
 
@@ -109,7 +109,7 @@ describe Event do
   describe "#start_date" do
     it "should return return its minimum over all date ranges" do
       event = FactoryGirl.create :event, :with_multiple_date_ranges
-      expect(event.start_date).to eq(Date.current)
+      expect(event.start_date).to eq(Date.tomorrow)
     end
   end
 

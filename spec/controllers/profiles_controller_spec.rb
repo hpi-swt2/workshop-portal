@@ -72,7 +72,7 @@ RSpec.describe ProfilesController, type: :controller do
           {
               first_name: "Karl",
               last_name: "Doe",
-              gender: "männlich",
+              gender: "male",
               birth_date: 15.years.ago,
               school: "Schule am Griebnitzsee",
               street_name: "August-Bebel-Str. 88",

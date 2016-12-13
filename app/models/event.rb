@@ -34,6 +34,8 @@ class Event < ActiveRecord::Base
 
   validates :max_participants, numericality: { only_integer: true, greater_than: 0 }
   validate :has_date_ranges
+  validates_presence_of :application_deadline
+  validate :application_deadline_before_start_of_event
 
 
   # @return the minimum start_date over all date ranges
@@ -55,6 +57,11 @@ class Event < ActiveRecord::Base
   # validation function on whether we have at least one date range
   def has_date_ranges
     errors.add(:date_ranges, 'Bitte mindestens eine Zeitspanne auswählen!') if date_ranges.blank?
+  end
+
+  #validate that application deadline is before the start of the event
+  def application_deadline_before_start_of_event
+    errors.add(:application_deadline, I18n.t('events.errors.application_deadline_before_start_of_event')) if application_deadline.present? && !date_ranges.blank? && application_deadline > start_date 
   end
 
   # Returns the participants whose application for this Event has been accepted

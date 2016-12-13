@@ -73,6 +73,11 @@
   </div>
 	<%= hidden_field_tag 'event_id', params[:event_id] %>
 
+  <div class="text-right col-lg-12" >
+    <label class="required"> </label>
+    <%= t("errors.messages.required") %>
+  </div>
+
   <div class="form-group">
     <div class="col-lg-offset-2 col-lg-10">
       <%= f.submit nil, :class => 'btn btn-primary', :disabled => @application_letter.after_deadline? %>
