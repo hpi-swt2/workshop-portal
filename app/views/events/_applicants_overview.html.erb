@@ -61,18 +61,22 @@
       <%= link_to "Alle drucken",
           events_path, :class => 'btn btn-default'%>
     </div>
+
     <% if (!@event.applications_classified?) %>
       <div class="btn-group pull-right tooltip-wrapper has-tooltip" role="group" data-toggle="tooltip" title="<%= t '.unclassified_applications_left'%>">
+        <%= link_to t('events.badges.print_button_label'), event_badges_path(@event), :class => 'btn btn-default'%>
         <%= button_tag t('.sending_acceptances'), type: 'button', class: 'send-emails-button btn btn-default', disabled: true %>
         <%= button_tag t('.sending_rejections'), type: 'button', class: 'send-emails-button btn btn-default', disabled: true %>
       </div>
     <% elsif (@event.compute_free_places < 0) %>
       <div class="btn-group pull-right tooltip-wrapper has-tooltip" role="group" data-toggle="tooltip" title="<%= t '.maximum_number_of_participants_exeeded'%>">
+        <%= link_to t('events.badges.print_button_label'), event_badges_path(@event), :class => 'btn btn-default'%>
         <%= button_tag t('.sending_acceptances'), type: 'button', class: 'send-emails-button btn btn-default', disabled: true %>
         <%= button_tag t('.sending_rejections'), type: 'button', class: 'send-emails-button btn btn-default', disabled: true %>
       </div>
     <% else %>
       <div class="btn-group pull-right" role="group">
+        <%= link_to t('events.badges.print_button_label'), event_badges_path(@event), :class => 'btn btn-default'%>
         <%= link_to t('.sending_acceptances'), event_send_acceptances_email_path, class: 'send-emails-button btn btn-default' %>
         <%= link_to t('.sending_rejections'), event_send_rejections_email_path, class: 'send-emails-button btn btn-default' %>
       </div>
