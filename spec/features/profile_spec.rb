@@ -102,7 +102,6 @@ RSpec.feature "Profile adaptation", :type => :feature do
     visit edit_profile_path(@profile)
     fill_in "profile_first_name", with:   ""
     fill_in "profile_last_name", with:   "Doe"
-    fill_in "profile_gender", with:   "männlich"
     fill_in "profile_birth_date", with: ""
     fill_in "profile_school", with: ""
     fill_in "profile_street_name", with:   "Rudolf-Breitscheid-Str. 52"
