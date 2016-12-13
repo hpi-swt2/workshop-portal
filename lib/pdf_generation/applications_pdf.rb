@@ -2,6 +2,10 @@ class ApplicationsPDF
   include Prawn::View
   Prawn::Font::AFM.hide_m17n_warning = true #consider adding TTF font
 
+  # Generates a PDF file containing the details of every application for an event
+  #
+  # param event [Event] the event whose applications are taken
+  # return [String] the generated PDF
   def self.generate(event)
     self.new(event).create.render
   end
@@ -12,6 +16,10 @@ class ApplicationsPDF
     @application_letters_count = @event.application_letters.count
   end
 
+  # Adds all necessary data and formatting to the ApplicationsPDF
+  #
+  # param none
+  # return [ApplicationsPDF] self
   def create
     create_overview
     @event.application_letters.each_with_index do |a,i|
@@ -61,12 +69,13 @@ class ApplicationsPDF
                 Profile.human_attribute_name(:age),
                 t("events.applicants_overview.accepted_rejected"),
                 ApplicationLetter.human_attribute_name(:status)]]
-      data += @event.application_letters.map { |a|
+      data += @event.application_letters.map do |a|
         [a.user.profile.name,
          a.user.profile.gender,
          a.user.profile.age,
          "#{a.user.accepted_applications_count(@event)} / #{a.user.rejected_applications_count(@event)}",
-         t("application_status.#{a.status}")]}
+         t("application_status.#{a.status}")]
+      end
     end
 
     def create_application_page(application_letter, index)
@@ -94,12 +103,12 @@ class ApplicationsPDF
       pad_top(20) { text "<u>#{ApplicationLetter.human_attribute_name(:motivation)}</u>", inline_format: true}
       pad_top(5) { text application_letter.motivation }
       unless application_letter.application_notes.count == 0
-        pad_top(15) {
+        pad_top(15) do
           text "<u>#{ApplicationNote.model_name.human(count: application_letter.application_notes.count)}</u>", inline_format: true
           application_letter.application_notes.each do |note|
             pad_top(5) { text note.note }
           end
-        }
+        end
       end
     end
 

@@ -242,6 +242,7 @@ RSpec.describe EventsController, type: :controller do
       expect(assigns(:event).date_ranges.first.end_date).to eq(date_range.end_date)
     end
   end
+
   describe "GET #print_applications" do
     before :each do
       @event = Event.create! valid_attributes
@@ -262,7 +263,7 @@ RSpec.describe EventsController, type: :controller do
     it "returns a PDF with a correct overview page" do
       get :print_applications, id: @event.to_param, session: valid_session
       page_analysis = PDF::Inspector::Page.analyze(response.body)
-      expect(page_analysis.pages.size).to be >= 1
+      expect(page_analysis.pages.size).to be 1
       analysis = PDF::Inspector::Text.analyze response.body
       text = analysis.strings.join
       expect(text).to include(
@@ -294,9 +295,7 @@ RSpec.describe EventsController, type: :controller do
           a.motivation
         )
         a.application_notes.each do |note|
-          expect(text).to include(
-            note.note
-          )
+          expect(text).to include(note.note)
         end
       end
     end
