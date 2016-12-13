@@ -101,7 +101,9 @@ class EventsController < ApplicationController
 
     data.unshift(['Vorname', 'Nachname', 'Geburtsdatum', 'Allergien'])
 
+    name = @event.name
     doc = Prawn::Document.new(:page_size => 'A4') do
+      text "Teilnehmerliste - " + name
       table(data, width: bounds.width)
     end
 
