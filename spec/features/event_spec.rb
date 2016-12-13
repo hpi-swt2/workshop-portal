@@ -58,7 +58,6 @@ describe "Event", type: :feature do
       second_to = Date.tomorrow.next_day(8)
 
       fill_in 'Maximale Teilnehmerzahl', :with => 25
-      fill_in "event_application_deadline", :with => I18n.l(Date.tomorrow)
       fill_in "event[date_ranges_attributes][][start_date]", with: I18n.l(first_from)
       fill_in "event[date_ranges_attributes][][end_date]", with: I18n.l(first_to)
 
@@ -67,6 +66,7 @@ describe "Event", type: :feature do
         fill_in "event[date_ranges_attributes][][start_date]", with: I18n.l(second_from)
         fill_in "event[date_ranges_attributes][][end_date]", with: I18n.l(second_to)
       end
+      fill_in "event_application_deadline", :with => I18n.l(Date.tomorrow)
       click_button I18n.t('.events.form.publish')
 
       expect(page).to have_text (DateRange.new start_date: first_from, end_date: first_to)
