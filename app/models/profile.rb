@@ -15,7 +15,7 @@ class Profile < ActiveRecord::Base
   validates :user, presence: true
   validates_presence_of :first_name, :last_name, :gender, :birth_date, :school, :street_name, :zip_code, :city, :state, :country
   validate :birthdate_not_in_future
-  #validates_inclusion_of :gender, in: POSSIBLE_GENDERS
+  validates_inclusion_of :gender, in: POSSIBLE_GENDERS
 
 
   # Returns true if the user is 18 years old or older
