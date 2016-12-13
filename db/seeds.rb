@@ -31,8 +31,8 @@ users.each do |user|
 end
 
 date_range = DateRange.find_or_create_by!(
-  start_date: Date.today,
-  end_date: Date.tomorrow
+  start_date: Date.tomorrow.next_day(3),
+  end_date: Date.tomorrow.next_day(5)
 )
 
 # An event
@@ -40,7 +40,6 @@ event = Event.new(
     name: "Messung und Verarbeitung von Umweltdaten",
     description: "Veranstaltung mit Phidgets und Etoys",
     max_participants: 20,
-    active: true,
     application_deadline: Date.tomorrow,
     draft: false,
     application_status_locked: false
@@ -53,7 +52,7 @@ Profile.find_or_create_by!(
     user: pupil,
     first_name: "Karl",
     last_name: "Doe",
-    gender: "männlich",
+    gender: "male",
     birth_date: Date.parse('2000.11.29'),
     school: "Schule am Griebnitzsee",
     street_name: "Rudolf-Breitscheid-Str. 52",
@@ -69,7 +68,7 @@ Profile.find_or_create_by!(
     user: teacher,
     first_name: "Ernst",
     last_name: "Teacher",
-    gender: "männlich",
+    gender: "male",
     birth_date: Date.parse('1970.1.1'),
     school: "Schule am Griebnitzsee",
     street_name: "Domstraße 14",
@@ -85,7 +84,7 @@ Profile.find_or_create_by!(
     user: applicant,
     first_name: "Erika",
     last_name: "Mustermann",
-    gender: "weiblich",
+    gender: "female",
     birth_date: Date.parse('1999.08.14'),
     school: "Schule am Griebnitzsee",
     street_name: "Rudolf-Breitscheid-Str. 52",
@@ -113,6 +112,7 @@ ApplicationLetter.find_or_create_by!(
     vegan: false,
     allergic: false,
     allergies: "",
+    status: ApplicationLetter.statuses[:pending],
     user: applicant,
     event: event
 )

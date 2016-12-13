@@ -9,6 +9,7 @@ capybara-*.html
 /public/assets
 /coverage/
 /spec/tmp
+/storage
 **.orig
 rerun.txt
 pickle-email-*.html
@@ -41,3 +42,6 @@ config/database.yml
 /nbproject/private/
 /.DS_Store
 .vagrant
+
+# Ignore application configuration
+/config/application.yml

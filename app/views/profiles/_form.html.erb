@@ -1,32 +1,21 @@
 <%= form_for @profile, :html => { :class => "form-horizontal profile" } do |f| %>
 
-  <% if @profile.errors.any? %>
-    <div id="error_expl" class="panel panel-danger">
-      <div class="panel-heading">
-        <h3 class="panel-title"><%= pluralize(@profile.errors.count, "error") %> prohibited this profile from being saved:</h3>
-      </div>
-      <div class="panel-body">
-        <ul>
-        <% @profile.errors.full_messages.each do |msg| %>
-          <li><%= msg %></li>
-        <% end %>
-        </ul>
-      </div>
-    </div>
-  <% end %>
+  <%= render partial: "shared/error_message", locals: {entity: @profile} %>
 
   <%# Create an input field for each of the mandatory attributes%>
   <% [:first_name, :last_name, :gender, :birth_date, :school, :street_name, :zip_code, :city, :state, :country].each do |attr_name| %>
     <div class="form-group">
       <%= f.label attr_name, :class => 'control-label col-lg-2 required'%>
       <div class="col-lg-10">
-        <% unless attr_name == :birth_date %>
-          <%= f.text_field attr_name, :class => 'form-control' %>
+        <% if attr_name == :birth_date %>
+          <%= f.text_field attr_name, :class => 'form-control', :"data-enable-datepicker" => "true", value: (I18n.l @profile.birth_date if @profile.birth_date) %>
+        <% elsif attr_name == :gender %>
+          <%= f.select :gender, options_for_select(Profile::POSSIBLE_GENDERS.collect {|d| [I18n.t("profiles.genders.#{d}"), d]}, @profile.gender), {}, {class: 'form-control'} %>
         <% else %>
-          <input id="profile_birth_date" class="form-control datepicker" data-provide="datepicker" value="<%=I18n.l @profile.public_send(attr_name) if @profile.public_send(attr_name)%>" name="profile[birth_date]" type="text">
+          <%= f.text_field attr_name, :class => 'form-control' %>
         <% end %>
+        <%=f.error_span(attr_name) %>
       </div>
-      <%=f.error_span(attr_name) %>
     </div>
   <% end %>
 
@@ -34,11 +23,15 @@
   <div class="form-group">
     <%= f.label :graduates_school_in, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
-      <%= f.collection_select(:graduates_school_in, Array(Time.now.year..Time.now.year+15).unshift(t '.already_graduated'), :to_s, :to_s) %>
+      <%= f.collection_select(:graduates_school_in, Array(Time.now.year..Time.now.year+15).unshift(t '.already_graduated').unshift(""), :to_s, :to_s, {}, {:class=>'form-control'}) %>
+      <%=f.error_span(:graduates_school_in) %>
     </div>
-    <%=f.error_span(:graduates_school_in) %>
   </div>
 
+  <div class="text-right col-lg-12" >
+    <label class="required"> </label>
+    <%= t("errors.messages.required") %>
+  </div>
 
   <div class="form-group">
     <div class="col-lg-offset-2 col-lg-10">
@@ -49,10 +42,3 @@
   </div>
 
 <% end %>
-
-<script>
-$('.datepicker').datepicker({
-            language:"<%= I18n.locale %>",
-            format: "<%= I18n.t('date.formats.datepicker')%>",
-        });
-</script>

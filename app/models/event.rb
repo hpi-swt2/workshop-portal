@@ -14,12 +14,29 @@
 #
 
 class Event < ActiveRecord::Base
+  UNREASONABLY_LONG_DATE_SPAN = 300
+
   has_many :application_letters
   has_many :agreement_letters
   has_many :date_ranges
+  accepts_nested_attributes_for :date_ranges
+
+  # Returns all participants for this event in following order:
+  # 1. All participants that have to submit an letter of agreement but did not yet do so, ordered by name.
+  # 2. All participants that have to submit an letter of agreement and did do so, ordered by name.
+  # 3. All participants that do not have to submit an letter of agreement, ordered by name.
+  #
+  # @param none
+  # @return [Array<User>] the event's participants in that order.
+  def participants_by_agreement_letter
+    @participants = self.participants
+	@participants.sort { |x, y| self.compare_participants_by_agreement(x,y) }
+  end
 
   validates :max_participants, numericality: { only_integer: true, greater_than: 0 }
   validate :has_date_ranges
+  validates_presence_of :application_deadline
+  validate :application_deadline_before_start_of_event
 
 
   # @return the minimum start_date over all date ranges
@@ -40,9 +57,14 @@ class Event < ActiveRecord::Base
 
   # validation function on whether we have at least one date range
   def has_date_ranges
-    errors.add(:base, 'Bitte mindestens eine Zeitspanne auswählen!') if date_ranges.blank?
+    errors.add(:date_ranges, 'Bitte mindestens eine Zeitspanne auswählen!') if date_ranges.blank?
   end
-  
+
+  #validate that application deadline is before the start of the event
+  def application_deadline_before_start_of_event
+    errors.add(:application_deadline, I18n.t('events.errors.application_deadline_before_start_of_event')) if application_deadline.present? && !date_ranges.blank? && application_deadline > start_date 
+  end
+
   # Returns the participants whose application for this Event has been accepted
   #
   # @param none
@@ -62,6 +84,32 @@ class Event < ActiveRecord::Base
 
   enum kind: [ :workshop, :camp ]
 
+  # Returns whether all application_letters are classified or not
+  #
+  # @param none
+  # @return [Boolean] if status of all application_letters is not pending
+  def applications_classified?
+    application_letters.all? { |application_letter| application_letter.status != 'pending' }
+  end
+
+  # Returns a string of all email addresses of rejected applications
+  #
+  # @param none
+  # @return [String] Concatenation of all email addresses of rejected applications, seperated by ','
+  def email_adresses_of_rejected_applicants
+    rejected_applications = application_letters.where(status: ApplicationLetter.statuses[:rejected])
+    rejected_applications.map{ |applications_letter| applications_letter.user.email }.join(',')
+  end
+
+  # Returns a string of all email addresses of accepted applications
+  #
+  # @param none
+  # @return [String] Concatenation of all email addresses of accepted applications, seperated by ','
+  def email_adresses_of_accepted_applicants
+    accepted_applications = application_letters.where(status: ApplicationLetter.statuses[:accepted])
+    accepted_applications.map{ |application_letter| application_letter.user.email }.join(',')
+  end
+
   # Returns the number of free places of the event, this value may be negative
   #
   # @param none
@@ -78,5 +126,51 @@ class Event < ActiveRecord::Base
     application_letters.where(status: ApplicationLetter.statuses[:accepted]).count
   end
 
+  # Make sure any assignment coming from the controller
+  # replaces all date ranges instead of adding new ones
+  def date_ranges_attributes=(*args)
+    self.date_ranges.clear
+    super(*args)
+  end
+
+  # Make sure we add errors from our date_range children
+  # to the base event object for displaying
+  validate do |event|
+    event.date_ranges.each do |date_range|
+      next if date_range.valid?
+      date_range.errors.full_messages.each do |msg|
+        errors.add :date_ranges, msg
+      end
+    end
+  end
+
   scope :draft_is, ->(draft) { where("draft = ?", draft) }
+
+  protected
+  # Compares two participants to achieve following order:
+  # 1. All participants that have to submit an letter of agreement but did not yet do so, ordered by name.
+  # 2. All participants that have to submit an letter of agreement and did do so, ordered by name.
+  # 3. All participants that do not have to submit an letter of agreement, ordered by name.
+  def compare_participants_by_agreement(participant1, participant2)
+    if participant1.requires_agreement_letter_for_event?(self)
+      if participant2.requires_agreement_letter_for_event?(self)
+        return participant1.name <=> participant2.name
+      end
+      return 1
+    end
+    if participant2.requires_agreement_letter_for_event?(self)
+      return -1
+    end
+    if participant1.agreement_letter_for_event?(self)
+      if participant2.agreement_letter_for_event?(self)
+        return participant1.name <=> participant2.name
+      end
+      return 1
+    end
+    if participant2.agreement_letter_for_event?(self)
+      return -1
+    end
+    return participant1.name <=> participant2.name
+  end
+
 end

@@ -7,7 +7,9 @@ RSpec.describe "profiles/show", type: :view do
 
   it "renders attributes" do
     render
-    expect(rendered).to have_text(@profile.graduates_school_in)
+    [:first_name, :last_name, :birth_date, :school, :street_name, :zip_code, :city, :state, :country, :graduates_school_in].each do |attr_name|
+      expect(rendered).to have_text(@profile.public_send(attr_name))
+    end
   end
 
   it "renders the events table" do
@@ -43,5 +45,10 @@ RSpec.describe "profiles/show", type: :view do
     render
     expect(rendered).to_not have_selector("input[type='file']")
     expect(rendered).to_not have_selector("input[type='submit']")
+  end
+
+  it "renders the events table" do
+    render
+    expect(rendered).to have_table("events_table")
   end
 end

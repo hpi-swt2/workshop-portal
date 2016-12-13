@@ -14,6 +14,7 @@ de:
       Programmierkenntnisse sind keine  Voraussetzung zur Teilnahme. Diese Information
       wird zur Gruppeneinteilung benötigt."
     login_before_creation: "Du musst angemeldet sein, um dich für Workshops bewerben zu können."
+    fill_in_profile_before_creation: "Du musst erst dein Profil ausfüllen, um dich für Workshops bewerben zu können."
 
   activerecord:
     models:
@@ -26,7 +27,7 @@ de:
     attributes:
       application_letter:
           grade: "Klassenstufe"
-          experience: "Wie hast du von diesem Event erfahren?"
+          experience: "Wie hast du von uns erfahren?"
           motivation: "Motivationsschreiben"
           coding_skills: "Mit welchen Programmiersprachen hast du bereits Erfahrungen gesammelt?"
           emergency_number: "Telefonnummer für Notfälle"

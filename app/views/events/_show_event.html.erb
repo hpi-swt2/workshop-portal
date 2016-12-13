@@ -1,0 +1,23 @@
+<%- model_class = Event -%>
+<dl class="dl-horizontal">
+  <dt><strong><%= model_class.human_attribute_name(:name) %>:</strong></dt>
+  <dd><%= @event.name %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:description) %>:</strong></dt>
+  <dd><%= @event.description %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:max_participants) %>:</strong></dt>
+  <dd><%= @event.max_participants %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:date_ranges) %>:</strong></dt>
+  <dd>
+    <ul>
+    <% @event.date_ranges.each do |r| %>
+      <li><%= r.to_s %></li>
+    <% end %>
+    </ul>
+  </dd>
+  <dt><strong><%= model_class.human_attribute_name(:organizer) %>:</strong></dt>
+  <dd><%= @event.organizer %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:knowledge_level) %>:</strong></dt>
+  <dd><%= @event.knowledge_level %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:application_deadline) %>:</strong></dt>
+  <dd> <%= I18n.l(@event.application_deadline) + ' ' + I18n.t('midnight') %></dd>
+</dl>

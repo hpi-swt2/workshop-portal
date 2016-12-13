@@ -6,6 +6,8 @@ de:
       title: "Bewerber für %{title}"
       participations: "Anzahl der Bewerbungen"
       accepted_rejected: "angenommen / abgelehnt"
+      filter_by: "Filtern nach ..."
+      filter: "Filtern"
       status: "Status"
       details: "Details"
       free_places:
@@ -14,11 +16,31 @@ de:
       occupied_places:
         one: '%{count} Platz belegt'
         other: '%{count} Plätze belegt'
+      unclassified_applications_left: 'Bewerbung(en) wurden noch nicht klassifiziert'
+      maximum_number_of_participants_exeeded: 'Maximale Teilnehmeranzahl wurde überschritten'
+      sending_acceptances: 'Zusagen verschicken'
+      sending_rejections: 'Absagen verschicken'
+    badges:
+        print: "Namensschilder drucken"
+        title: "Namensschilder drucken für das Event "
+        participants: "Teilnehmer"
+        printBoolean: "Drucken?"
+        print_button_label: "Namensschilder drucken"
+    participants:
+      participants: "Teilnehmer"
+      show_participants: "Teilnehmerliste"
+      unnecessary: "nicht benötigt"
+      available: "vorhanden"
+      unavailable: "nicht vorhanden"
 
     form:
       draft: "Speichern"
       publish: "Veröffentlichen"
       update: "Aktualisieren"
+
+    errors:
+      application_deadline_before_start_of_event: "Bewerbungsschluss muss vor Beginn der Veranstaltung liegen"
+
   activerecord:
       models:
         event: "Veranstaltung"
@@ -27,10 +49,15 @@ de:
           name: "Name"
           description: "Beschreibung"
           max_participants: "Maximale Teilnehmerzahl"
+          kind: "Art"
           active: "Aktiv"
+          start_date: "Beginn"
+          end_date: "Ende"
+          draft: "Entwurf"
           organizer: "Veranstalter"
           knowledge_level: "Kenntnisstand"
           date_ranges: "Zeitspannen"
+          application_deadline: "Bewerbungsschluss"
   helpers:
     submit:
       event:

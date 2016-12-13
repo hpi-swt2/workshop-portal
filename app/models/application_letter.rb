@@ -29,11 +29,13 @@ class ApplicationLetter < ActiveRecord::Base
   enum status: {accepted: 1, rejected: 0, pending: 2, alternative: 3}
 
   # Checks if the deadline is over
+  # additionally only return if event and event.application_deadline is present
+  # TODO: 'event.application_deadline' should never be nil, when #18 is finished. Please remove this in #18.
   #
   # @param none
   # @return [Boolean] true if deadline is over
   def after_deadline?
-    Date.today > event.application_deadline if event.present?
+    Date.current > event.application_deadline if event.present?
   end
 
   # Checks if it is allowed to change the status of the application
