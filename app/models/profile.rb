@@ -52,7 +52,7 @@ class Profile < ActiveRecord::Base
 
   private
   def birthdate_not_in_future
-    if birth_date.present? and birth_date > Date.today
+    if birth_date.present? and birth_date > Date.current
       errors.add(:birth_date, I18n.t('profiles.validation.birthday_in_future'))
     end
   end

@@ -14,6 +14,16 @@ de:
       occupied_places:
         one: '%{count} Platz belegt'
         other: '%{count} Plätze belegt'
+      unclassified_applications_left: 'Bewerbung(en) wurden noch nicht klassifiziert'
+      maximum_number_of_participants_exeeded: 'Maximale Teilnehmeranzahl wurde überschritten'
+      sending_acceptances: 'Zusagen verschicken'
+      sending_rejections: 'Absagen verschicken'
+    badges:
+        print: "Namensschilder drucken"
+        title: "Namensschilder drucken für das Event "
+        participants: "Teilnehmer"
+        printBoolean: "Drucken?"
+        print_button_label: "Namensschilder drucken"
     participants:
       participants: "Teilnehmer"
       show_participants: "Teilnehmerliste"
