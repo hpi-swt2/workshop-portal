@@ -8,11 +8,14 @@
 #  updated_at :datetime         not null
 #
 class Profile < ActiveRecord::Base
+  POSSIBLE_GENDERS = ['male', 'female', 'other']
+  
   belongs_to :user
 
   validates :user, presence: true
   validates_presence_of :first_name, :last_name, :gender, :birth_date, :school, :street_name, :zip_code, :city, :state, :country
   validate :birthdate_not_in_future
+  validates_inclusion_of :gender, in: POSSIBLE_GENDERS
 
 
   # Returns true if the user is 18 years old or older
@@ -52,7 +55,7 @@ class Profile < ActiveRecord::Base
 
   private
   def birthdate_not_in_future
-    if birth_date.present? and birth_date > Date.today
+    if birth_date.present? and birth_date > Date.current
       errors.add(:birth_date, I18n.t('profiles.validation.birthday_in_future'))
     end
   end
