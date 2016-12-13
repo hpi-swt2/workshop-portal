@@ -126,10 +126,7 @@ describe "Event", type: :feature do
     it "should show that the application deadline is on midnight of the picked date" do 
       event = FactoryGirl.create(:event)
       visit event_path(event.id)
-
-      #TODO refactor this to have actual displayed text
-      expect(page).to have_text(I18n.l(event.application_deadline))
-      expect(page).to have_text("Mitternacht")
+      expect(page).to have_text(I18n.l(event.application_deadline) + " Mitternacht")
     end 
   end
 
