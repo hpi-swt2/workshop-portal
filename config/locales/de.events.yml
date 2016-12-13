@@ -37,6 +37,10 @@ de:
       draft: "Speichern"
       publish: "Veröffentlichen"
       update: "Aktualisieren"
+
+    errors:
+      application_deadline_before_start_of_event: "Bewerbungsschluss muss vor Beginn der Veranstaltung liegen"
+
   activerecord:
       models:
         event: "Veranstaltung"
@@ -53,6 +57,7 @@ de:
           organizer: "Veranstalter"
           knowledge_level: "Kenntnisstand"
           date_ranges: "Zeitspannen"
+          application_deadline: "Bewerbungsschluss"
   helpers:
     submit:
       event:
