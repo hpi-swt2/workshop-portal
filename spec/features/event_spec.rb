@@ -51,13 +51,14 @@ describe "Event", type: :feature do
     it "should allow entering multiple time spans", js: true do
       visit new_event_path
 
-      first_from = Date.tomorrow
+      first_from = Date.tomorrow.next_day(1)
       first_to = Date.tomorrow.next_day(2)
 
       second_from = Date.tomorrow.next_day(6)
       second_to = Date.tomorrow.next_day(8)
 
       fill_in 'Maximale Teilnehmerzahl', :with => 25
+      fill_in "event_application_deadline", :with => I18n.l(Date.tomorrow)
       fill_in "event[date_ranges_attributes][][start_date]", with: I18n.l(first_from)
       fill_in "event[date_ranges_attributes][][end_date]", with: I18n.l(first_to)
 
