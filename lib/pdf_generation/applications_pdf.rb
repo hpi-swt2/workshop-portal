@@ -92,6 +92,14 @@ class ApplicationsPDF
       end
       pad_top(10) { text "<u>#{ApplicationLetter.human_attribute_name(:motivation)}</u>", inline_format: true}
       pad_top(5) { text application_letter.motivation }
+      unless application_letter.application_notes.count == 0
+        pad_top(15) {
+          text "<u>#{ApplicationNote.model_name.human(count: application_letter.application_notes.count)}</u>", inline_format: true
+          application_letter.application_notes.each do |note|
+            pad_top(5) { text note.note }
+          end
+        }
+      end
     end
 
     def applicants_detail_data(application_letter)

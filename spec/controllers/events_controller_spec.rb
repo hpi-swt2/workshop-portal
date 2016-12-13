@@ -252,12 +252,13 @@ RSpec.describe EventsController, type: :controller do
       @event.date_ranges.each { |d| expect(text).to include(d.to_s) }
     end
 
-    it "shows an overview of every application" do
-      FactoryGirl.create(:application_letter, event: @event,)
+    it "shows an overview of all and details of every application" do
+      al = FactoryGirl.create(:application_letter, event: @event,)
+      FactoryGirl.create(:application_note, application_letter_id: al.id)
       User.find_each { |u| FactoryGirl.create(:profile, user: u) }
       get :print_applications, id: @event.to_param, session: valid_session
       analysis = PDF::Inspector::Text.analyze response.body
-      text = analysis.strings.join
+      text = analysis.strings.join(' ')
       @event.application_letters.each do |a|
         expect(text).to include(
           a.user.profile.name,
@@ -265,8 +266,33 @@ RSpec.describe EventsController, type: :controller do
           a.user.profile.gender,
           a.user.accepted_applications_count(@event).to_s,
           a.user.rejected_applications_count(@event).to_s,
-          a.status)
+          I18n.t("application_status.#{a.status}"),
+          a.user.profile.address,
+          a.motivation
+        )
+        a.application_notes.each do |note|
+          expect(text).to include(
+            note.note
+          )
+        end
       end
+    end
+
+    it "includes at last one page per application" do
+      FactoryGirl.create(:application_letter, event: @event,)
+      FactoryGirl.create(:application_letter2, event: @event,)
+      User.find_each { |u| FactoryGirl.create(:profile, user: u) }
+      get :print_applications, id: @event.to_param, session: valid_session
+      page_analysis = PDF::Inspector::Page.analyze(response.body)
+      expect(page_analysis.pages.size).to be >= 3
+    end
+
+    it "extends long applications over several pages" do
+      FactoryGirl.create(:application_letter_long, event: @event,)
+      User.find_each { |u| FactoryGirl.create(:profile, user: u) }
+      get :print_applications, id: @event.to_param, session: valid_session
+      page_analysis = PDF::Inspector::Page.analyze(response.body)
+      expect(page_analysis.pages.size).to be >= 3
     end
   end
 end
