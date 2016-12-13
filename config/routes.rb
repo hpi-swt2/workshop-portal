@@ -11,6 +11,9 @@ Rails.application.routes.draw do
     resources :agreement_letters, only: [:create], shallow: true
     get 'badges'
     post 'badges' => 'events#print_badges', as: :print_badges
+    member do
+      get 'participants_pdf'
+    end
   end
   resources :profiles
   devise_for :users

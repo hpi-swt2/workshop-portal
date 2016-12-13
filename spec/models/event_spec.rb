@@ -167,5 +167,33 @@ describe Event do
     application_letter_accepted_2 = FactoryGirl.create(:application_letter_accepted, user: FactoryGirl.create(:user), event: event)
     expect(event.compute_occupied_places).to eq(2)
   end
+
+  it "generates an application letter list ordered by first name" do
+    @event = FactoryGirl.create(:event)
+    @user1 = FactoryGirl.create(:user, name: 'aab', email:'a@b.com')
+    @profile1 = FactoryGirl.create(:profile, user: @user1, birth_date: 15.years.ago, first_name:'Corny')
+    @application1 = FactoryGirl.create(:application_letter_accepted, user: @user1, event: @event)
+    @agreement1 = FactoryGirl.create(:agreement_letter, user: @user1, event: @event)
+
+    @user2 = FactoryGirl.create(:user, name: 'bba', email:'b@c.com')
+    @profile2 = FactoryGirl.create(:profile, user: @user2, birth_date: 16.years.ago, first_name:'John')
+    @application2 = FactoryGirl.create(:application_letter_accepted, user: @user2, event: @event)
+
+    expect(@event.application_letters_ordered('first_name','ASC')).to eq([@application1,@application2])
+  end
+
+  it "generates an application letter list ordered by anything else" do
+    @event = FactoryGirl.create(:event)
+    @user1 = FactoryGirl.create(:user, name: 'aab', email:'a@b.com')
+    @profile1 = FactoryGirl.create(:profile, user: @user1, birth_date: 15.years.ago, first_name:'Corny')
+    @application1 = FactoryGirl.create(:application_letter_accepted, user: @user1, event: @event)
+    @agreement1 = FactoryGirl.create(:agreement_letter, user: @user1, event: @event)
+
+    @user2 = FactoryGirl.create(:user, name: 'bba', email:'b@c.com')
+    @profile2 = FactoryGirl.create(:profile, user: @user2, birth_date: 16.years.ago, first_name:'John')
+    @application2 = FactoryGirl.create(:application_letter_accepted, user: @user2, event: @event)
+
+    expect(@event.application_letters_ordered('unknown','DESC')).to eq([@application2,@application1])
+  end
 end
 

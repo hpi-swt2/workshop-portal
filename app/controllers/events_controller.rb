@@ -84,7 +84,10 @@ class EventsController < ApplicationController
 
   # GET /event/1/participants_pdf
   def participants_pdf
-    @application_letters = @event.application_letters_ordered(params.require(:order_by), params:require(:order_direction))
+    default = {:order_by => "email", :order_direction => 'asc'}
+    default = default.merge(params)
+
+    @application_letters = @event.application_letters_ordered(default[:order_by], default[:order_direction])
                                .where(:status => ApplicationLetter.statuses[:accepted])
 
     data = @application_letters.collect do |application_letter|
@@ -96,9 +99,9 @@ class EventsController < ApplicationController
       ]
     end
 
-    data.unshift(['First name', 'Last name', 'Date of birth', 'Allergies'])
+    data.unshift(['Vorname', 'Nachname', 'Geburtsdatum', 'Allergien'])
 
-    doc = Prawn::Document.generate(:page_size => 'A4') do
+    doc = Prawn::Document.new(:page_size => 'A4') do
       table(data)
     end
 

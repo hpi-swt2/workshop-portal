@@ -80,6 +80,7 @@ gem 'coveralls', require: false
 
 # pdf generation
 gem 'prawn'
+gem 'prawn-table'
 
 # Simple, Heroku-friendly Rails app configuration using ENV and a single YAML file
 gem 'figaro'

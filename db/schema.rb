@@ -67,13 +67,14 @@ ActiveRecord::Schema.define(version: 20161209180054) do
     t.string   "name"
     t.string   "description"
     t.integer  "max_participants"
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
     t.string   "organizer"
     t.string   "knowledge_level"
+    t.integer  "kind",                      default: 0
     t.boolean  "draft"
-    t.integer  "kind",                 default: 0
     t.date     "application_deadline"
+    t.boolean  "application_status_locked"
   end
 
   create_table "profiles", force: :cascade do |t|

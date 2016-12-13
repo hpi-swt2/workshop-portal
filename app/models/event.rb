@@ -133,8 +133,8 @@ class Event < ActiveRecord::Base
               else
                 "users.email"
             end
-    order_by = order_by == 'asc' || order_by == 'desc' ? order_by : 'asc'
-    application_letters.joins(:users, :profiles).order(field, order_by)
+    order_by = order_by == 'ASC' || order_by == 'DESC' ? order_by : 'ASC'
+    application_letters.joins(user: :profile).order(field + ' ' + order_by)
   end
 
   # Make sure any assignment coming from the controller

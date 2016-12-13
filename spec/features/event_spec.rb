@@ -96,22 +96,6 @@ describe "Event", type: :feature do
       expect(page).to have_text(event.date_ranges.second)
     end
 
-    it "should display an button to enable the modal to print the event list" do
-      event = FactoryGirl.create(:event, :with_two_date_ranges)
-      visit event_path(event.id)
-
-      expect(page).to have_button('button#open_print_modal')
-      click_button 'button#open_print_modal'
-      expect(page).to have_css('div#print_participant_modal.fade-in')
-    end
-
-    it "should contain an modal with an button to create an participant list" do
-      event = FactoryGirl.create(:event, :with_two_date_ranges)
-      visit event_path(event.id)
-
-      expect(page).to have_button('button#print_participant_list')
-    end
-
   end
 
   describe "edit page" do

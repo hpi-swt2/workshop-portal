@@ -87,17 +87,6 @@ RSpec.describe EventsController, type: :controller do
       end
     end
 
-    describe "GET #participant_list" do
-      it "should return an pdf" do
-        get :participants_pdf, id: @event.to_param, session: valid_session
-        expect(response.content_type).to eq('application/pdf')
-      end
-
-      it "should contain the name of the participants" do
-        get :participants_pdf, id: @event.to_param, session: valid_session
-      end
-    end
-
     describe "PUT #update" do
       context "with valid params" do
         let(:new_attributes) {
@@ -155,8 +144,6 @@ RSpec.describe EventsController, type: :controller do
       end
 
       describe "GET #participants" do
-        let(:valid_attributes) { FactoryGirl.attributes_for(:event_with_accepted_applications) }
-
         it "assigns the event as @event" do
           get :participants, id: @event.to_param, session: valid_session
           expect(assigns(:event)).to eq(@event)
@@ -166,6 +153,30 @@ RSpec.describe EventsController, type: :controller do
           expect(assigns(:participants)).to eq(@event.participants)
         end
       end
+    end
+  end
+
+  describe "GET #participants_pdf" do
+    let(:valid_attributes) { FactoryGirl.attributes_for(:event_with_accepted_applications) }
+
+    it "should return an pdf" do
+      event = Event.create! valid_attributes
+      get :participants_pdf, id: event.to_param, session: valid_session
+      expect(response.content_type).to eq('application/pdf')
+    end
+
+    it "should return an pdf with the name of the user" do
+      event = Event.create! valid_attributes
+      profile = FactoryGirl.create(:profile)
+      user = FactoryGirl.create(:user, profile: profile)
+      application_letter = FactoryGirl.create(:application_letter, status: ApplicationLetter.statuses[:accepted], event: event, user: user)
+      response = get :participants_pdf, id: event.to_param, session: valid_session
+      expect(response.content_type).to eq('application/pdf')
+
+      pdf = PDF::Inspector::Text.analyze(response.body)
+      expect(pdf.strings).to include("Vorname")
+      expect(pdf.strings).to include("Nachname")
+      expect(pdf.strings).to include(application_letter.user.profile.first_name)
     end
   end
 
@@ -197,9 +208,6 @@ RSpec.describe EventsController, type: :controller do
                           "1243_print"  => "Max Mustermann",
                           "1244_print"  => "Max Mustermann",
                           "1245_print"  => "Max Mustermann"
-      pdf = PDF::Inspector::Text.analyze(rendered_pdf.body)
-      expect(pdf.strings).to include("Max Mustermann")
-      expect(pdf.strings).to include("John Doe")
     end
   end
 
