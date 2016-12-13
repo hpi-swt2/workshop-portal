@@ -33,6 +33,7 @@ de:
     user_management: "Benutzerverwaltung"
     requests: "Anfragen"
     profile: "Mein Profil"
+    create_profile: "Mein Profil anlegen"
     settings: "Profilinfo"
     login: "Einloggen"
     logout: "Ausloggen"
@@ -41,3 +42,4 @@ de:
       new:
         sign_in: "Einloggen"
         remember_me: "Eingeloggt bleiben"
+  midnight: "Mitternacht"

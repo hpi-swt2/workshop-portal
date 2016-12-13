@@ -1,6 +1,6 @@
 <% if entity.errors.any? %>
   <div id="error_expl" class="panel panel-danger">
     <div class="panel-heading">
-      <h3 class="panel-title"><%=I18n.t("errors.form_invalid", number: entity.errors.count) %></h3> </div>
+      <h3 class="panel-title"><%=I18n.t("errors.form_invalid", count: entity.errors.count) %></h3> </div>
   </div>
 <% end %>
