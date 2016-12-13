@@ -1,0 +1,12 @@
+# English translations for the user profiles
+
+en:
+  profiles:
+    form:
+      already_graduated: "Already Abitur"
+    validation:
+      birthday_in_future: "Your birth date can not be in the future"
+    genders:
+      male: "Male"
+      female: "Female"
+      other: "Other"
