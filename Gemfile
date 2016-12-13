@@ -80,7 +80,7 @@ gem 'coveralls', require: false
 
 # pdf generation
 gem 'prawn'
-gem 'prawn-table
+gem 'prawn-table'
 
 # Simple, Heroku-friendly Rails app configuration using ENV and a single YAML file
 gem 'figaro'
@@ -117,7 +117,7 @@ group :development do
   # Add a comment summarizing the current schema for models and others
   # usage: annotate
   gem 'annotate'
-  
+
   # opens sent emails in a new browser tab
   # gem "letter_opener"
 end

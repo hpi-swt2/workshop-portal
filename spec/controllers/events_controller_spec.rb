@@ -268,7 +268,6 @@ RSpec.describe EventsController, type: :controller do
       expect(text).to include(
         @event.name,
         @event.max_participants.to_s,
-        @event.active.to_s,
         @event.organizer,
         @event.knowledge_level,
         @event.compute_free_places.to_s,
