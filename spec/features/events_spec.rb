@@ -80,6 +80,24 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     end
     visit event_path(@event)
     click_link I18n.t('events.applicants_overview.sending_acceptances')
+    fill_in('email_subject', with: 'Subject')
+    fill_in('email_content', with: 'Content')
+    click_button I18n.t('emails.email_form.send')
+  end
+
+  scenario "logged in as Organizer I want to be able to send an email to all rejected applicants" do
+    login(:organizer)
+    @event.update!(max_participants: 2)
+    2.times do |n|
+      @pupil = FactoryGirl.create(:profile)
+      @pupil.user.role = :pupil
+      FactoryGirl.create(:application_letter_rejected, :event => @event, :user => @pupil.user)
+    end
+    visit event_path(@event)
+    click_link I18n.t('events.applicants_overview.sending_rejections')
+    fill_in('email_subject', with: 'Subject')
+    fill_in('email_content', with: 'Content')
+    click_button I18n.t('emails.email_form.send')
   end
 
   scenario "logged in as Organizer I can see the correct count of free/occupied places" do
