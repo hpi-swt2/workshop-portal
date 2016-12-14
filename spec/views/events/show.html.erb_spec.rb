@@ -6,6 +6,7 @@ RSpec.describe "events/show", type: :view do
     @application_letter = FactoryGirl.create(:application_letter, user: FactoryGirl.create(:user, role: :admin), event: @event)
     @application_letter.user.profile = FactoryGirl.build(:profile)
     @event.application_letters.push(@application_letter)
+    @application_letters = @event.application_letters
     sign_in(@application_letter.user)
   end
 

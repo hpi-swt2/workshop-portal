@@ -207,7 +207,7 @@ RSpec.describe EventsController, type: :controller do
       end
 
       it "saves optional attributes" do
-        post :create, event: valid_attributes, session: valid_session
+        post :create, valid_attributes_post, session: valid_session
         event = Event.create! valid_attributes
         expect(assigns(:event).organizer).to eq(event.organizer)
         expect(assigns(:event).knowledge_level).to eq(event.knowledge_level)

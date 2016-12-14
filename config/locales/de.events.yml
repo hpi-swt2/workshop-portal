@@ -6,6 +6,8 @@ de:
       title: "Bewerber für %{title}"
       participations: "Anzahl der Bewerbungen"
       accepted_rejected: "angenommen / abgelehnt"
+      filter_by: "Filtern nach ..."
+      filter: "Filtern"
       status: "Status"
       details: "Details"
       free_places:
@@ -31,10 +33,29 @@ de:
       available: "vorhanden"
       unavailable: "nicht vorhanden"
 
+    kinds:
+     workshop: "Workshop"
+     camp: "Camp"
+
+    notices:
+      created: "Event wurde erstellt."
+      updated: "Event wurde aktualisiert."
+      destroyed: "Event wurde gelöscht."
+      unreasonable_timespan: "Vorsicht! End-Datum liegt ungewöhnlich weit vom Start-Datum entfernt."
+
+
+    confirmation_prompts:
+      confirm_delete: "Sicher, dass das Event gelöscht werden soll?"
+
     form:
       draft: "Speichern"
       publish: "Veröffentlichen"
       update: "Aktualisieren"
+      add_timespan: "Zeitspanne hinzufügen"
+
+    errors:
+      application_deadline_before_start_of_event: "Bewerbungsschluss muss vor Beginn der Veranstaltung liegen"
+
   activerecord:
       models:
         event: "Veranstaltung"
@@ -50,7 +71,10 @@ de:
           draft: "Entwurf"
           organizer: "Veranstalter"
           knowledge_level: "Kenntnisstand"
-          date_ranges: "Zeitspannen"
+          date_ranges:
+            one: "Zeitspanne"
+            other: "Zeitspannen"
+          application_deadline: "Bewerbungsschluss"
   helpers:
     submit:
       event:
