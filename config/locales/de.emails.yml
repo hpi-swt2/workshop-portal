@@ -5,8 +5,9 @@ de:
     send_email:
       sending_successful: 'Email wurde erfolgreich versendet'
     email_form:
-      to: 'An'
-      bcc: 'BCC'
+      further_recipients: 'Andere Empfänger'
+      show_recipients: 'Sichtbar'
+      hide_recipients: 'Versteckt'
       copy: 'Empfänger kopieren'
       reply_to: 'Absender'
       recipients: 'Empfänger'

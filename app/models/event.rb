@@ -121,7 +121,7 @@ class Event < ActiveRecord::Base
     email.reply_to = 'workshop.portal@hpi.de'
     email.subject = ''
     email.content = ''
-    email
+    return email
   end
 
   # Returns a new rejection email
@@ -135,7 +135,7 @@ class Event < ActiveRecord::Base
     email.reply_to = 'workshop.portal@hpi.de'
     email.subject = ''
     email.content = ''
-    email
+    return email
   end
 
   # Returns the number of free places of the event, this value may be negative
