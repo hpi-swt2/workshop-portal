@@ -10,6 +10,7 @@
 #  active           :boolean
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
+#  application_status_locked  :boolean
 #
 
 class Event < ActiveRecord::Base
@@ -56,7 +57,7 @@ class Event < ActiveRecord::Base
 
   # validation function on whether we have at least one date range
   def has_date_ranges
-    errors.add(:date_ranges, 'Bitte mindestens eine Zeitspanne auswählen!') if date_ranges.blank?
+    errors.add(:date_ranges, I18n.t('date_range.errors.no_timespan')) if date_ranges.blank?
   end
 
   #validate that application deadline is before the start of the event

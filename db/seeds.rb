@@ -41,7 +41,8 @@ event = Event.new(
     description: "Veranstaltung mit Phidgets und Etoys",
     max_participants: 20,
     application_deadline: Date.tomorrow,
-    draft: false
+    draft: false,
+    application_status_locked: false
 )
 event.date_ranges << date_range
 event.save
