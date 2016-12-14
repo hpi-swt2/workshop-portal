@@ -49,6 +49,15 @@ class ApplicationLettersController < ApplicationController
     end
   end
 
+  # PATCH/PUT /applications/1/status
+  def update_status
+    if @application_letter.update_attributes(application_status_param)
+      redirect_to :back, notice: 'Application was successfully updated.' rescue ActionController::RedirectBackError redirect_to root_path
+    else
+      render :edit
+    end
+  end
+
   # DELETE /applications/1
   def destroy
     @application_letter.destroy
@@ -64,6 +73,11 @@ class ApplicationLettersController < ApplicationController
     # Only allow a trusted parameter "white list" through.
     # Don't allow user_id as you shouldn't be able to set the user from outside of create/update.
     def application_params
-      params.require(:application_letter).permit(:grade, :experience, :motivation, :coding_skills, :emergency_number, :vegeterian, :vegan, :allergic, :allergies, :user_id, :event_id, :status)
+      params.require(:application_letter).permit(:grade, :experience, :motivation, :coding_skills, :emergency_number, :vegeterian, :vegan, :allergic, :allergies, :user_id, :event_id)
+    end
+
+    # Only allow to update the status
+    def application_status_param
+      params.require(:application_letter).permit(:status)
     end
 end

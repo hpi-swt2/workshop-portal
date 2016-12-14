@@ -144,17 +144,17 @@ describe User do
     expect(ability).to_not be_able_to(:update, another_profile)
     expect(ability).to_not be_able_to(:destroy, another_profile)
 
-    # expect(ability).to_not be_able_to(:edit, another_application)
-    # expect(ability).to_not be_able_to(:update, another_application)
+    expect(ability).to_not be_able_to(:edit, another_application)
+    expect(ability).to_not be_able_to(:update, another_application)
     expect(ability).to_not be_able_to(:destroy, another_application)
   end
 
-  it "can update application letter statuses as organizer" do
+  it "can update application letter status as organizer" do
     user = FactoryGirl.create(:user, role: :organizer)
     another_user = FactoryGirl.create(:user)
     another_application = FactoryGirl.create(:application_letter, user: another_user)
     ability = Ability.new(user)
 
-    expect(ability).to be_able_to(:update, another_application)
+    expect(ability).to be_able_to(:update_status, another_application)
   end
 end

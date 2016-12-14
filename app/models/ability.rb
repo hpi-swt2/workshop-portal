@@ -49,7 +49,8 @@ class Ability
     if user.role? :organizer
       can [:index, :show], Profile
       can [:index, :show, :view_and_add_notes], ApplicationLetter
-      can :update, ApplicationLetter
+      cannot :update, ApplicationLetter
+      can :update_status, ApplicationLetter
       # Organizers can view and edit Applications for Events
       can [:view_applicants, :edit_applicants], Event
     end
