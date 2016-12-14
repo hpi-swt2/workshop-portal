@@ -98,7 +98,7 @@ class AgreementLetter < ActiveRecord::Base
 
   def wrong_file_trailer? file
     begin
-    page_analysis = PDF::Inspector::Page.analyze(file.open)
+    page_analysis = PDF::Inspector::Page.analyze_file(file.open)
     false
     rescue
       true
