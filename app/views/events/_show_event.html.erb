@@ -6,7 +6,7 @@
   <dd><%= @event.description %></dd>
   <dt><strong><%= model_class.human_attribute_name(:max_participants) %>:</strong></dt>
   <dd><%= @event.max_participants %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:date_ranges) %>:</strong></dt>
+  <dt><strong><%= model_class.human_attribute_name(:date_ranges, count: @event.date_ranges.count) %>:</strong></dt>
   <dd>
     <ul>
     <% @event.date_ranges.each do |r| %>
@@ -21,3 +21,5 @@
   <dt><strong><%= model_class.human_attribute_name(:application_deadline) %>:</strong></dt>
   <dd> <%= I18n.l(@event.application_deadline) + ' ' + I18n.t('midnight') %></dd>
 </dl>
+<%= link_to t('.new', :default => t("helpers.links.apply")), new_application_letter_path(:event_id => @event.id),
+                      :class => 'btn btn-info' %>
