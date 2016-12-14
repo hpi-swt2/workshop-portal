@@ -1,5 +1,5 @@
 class Mailer
-  def send_generic_email(hide_recipients, recipients, reply_to, subject, content)
+  def self.send_generic_email(hide_recipients, recipients, reply_to, subject, content)
     if hide_recipients
       if recipients.is_a? String
         recipients = recipients.lines(',')
