@@ -2,6 +2,7 @@
 # The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
 #
 
+
 # Create Superuser
 admin = User.find_or_initialize_by(
     name: "admin",
@@ -10,3 +11,4 @@ admin = User.find_or_initialize_by(
 )
 admin.password = "system"
 admin.save!
+

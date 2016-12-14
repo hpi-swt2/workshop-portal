@@ -17,24 +17,6 @@ RSpec.describe AgreementLettersController, type: :controller do
       expect(response).to redirect_to(profile_path(@user.profile))
     end
 
-    it "shows error when POSTed without a file" do
-      post :create, { event_id: @event.id }
-      expect(response).to have_http_status(422)
-    end
-
-    it "shows error when POSTed with an inexistent event" do
-      @event.delete
-      post :create, { letter_upload: @file, event_id: @event.id }
-      expect(response).to have_http_status(422)
-    end
-
-    it "saves a file on the server" do
-      post :create, { letter_upload: @file, event_id: @event.id }
-      @agreement_letter = assigns(:agreement_letter)
-      filepath = Rails.root.join('storage/agreement_letters', @agreement_letter.filename)
-      expect(File.exists?(filepath)).to be true
-    end
-
     it "saves a file's path in the database" do
       post :create, { letter_upload: @file, event_id: @event.id }
       @agreement_letter = assigns(:agreement_letter)

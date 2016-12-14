@@ -24,15 +24,26 @@ class ApplicationLetter < ActiveRecord::Base
   validates :vegeterian, :vegan, :allergic, inclusion: { in: [true, false] }
   validates :vegeterian, :vegan, :allergic, exclusion: { in: [nil] }
   validate :deadline_cannot_be_in_the_past, :if => Proc.new { |letter| !(letter.status_changed?) }
+  validate :status_cannot_be_changed, :if => Proc.new { |letter| letter.status_changed?}
 
-  enum status: {accepted: 1, rejected: 0, pending: 2}
+  enum status: {accepted: 1, rejected: 0, pending: 2, alternative: 3}
 
   # Checks if the deadline is over
+  # additionally only return if event and event.application_deadline is present
+  # TODO: 'event.application_deadline' should never be nil, when #18 is finished. Please remove this in #18.
   #
   # @param none
   # @return [Boolean] true if deadline is over
   def after_deadline?
-    Date.today > event.application_deadline if event.present?
+    Date.current > event.application_deadline if event.present?
+  end
+
+  # Checks if it is allowed to change the status of the application
+  #
+  # @param none
+  # @return [Boolean] true if no status changes are allowed anymore
+  def status_change_allowed?
+    !event.application_status_locked
   end
 
   # Validator for after_deadline?
@@ -40,6 +51,14 @@ class ApplicationLetter < ActiveRecord::Base
   def deadline_cannot_be_in_the_past
     if after_deadline?
       errors.add(:event, I18n.t("application_letters.form.warning"))
+    end
+  end
+
+  # Validator for status_change_allowed?
+  # Adds error
+  def status_cannot_be_changed
+    unless status_change_allowed?
+      errors.add(:event, "Die Bewerbungen wurden bereits bearbeitet, eine Statusänderung ist nicht mehr erlaubt.")
     end
   end
 end
