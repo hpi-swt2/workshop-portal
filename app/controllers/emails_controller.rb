@@ -1,8 +1,4 @@
 class EmailsController < ApplicationController
-  def new
-    @email = Email.new
-  end
-
   def send_email
     @email = Email.new(email_params)
     PortalMailer.generic_email(@email.hide_recipients, @email.recipients, @email.reply_to, @email.subject, @email.content).deliver_now
