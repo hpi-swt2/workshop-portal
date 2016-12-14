@@ -10,10 +10,12 @@ effizientesten oder am schnellsten? Wie immer bieten wir eine Reihe an Expertenv
 unter anderem wie ihr Edding-Markierungen selbst nach einer Spülmaschinen-Reinigung noch entfernen könnt oder wie man
 die richtige Größe für Becher-Stapel herausfindet und anwendet.',
       max_participants: 25,
-      active: true,
       organizer: 'FSR',
       knowledge_level: 'Anfänger',
-      date_ranges: [date_range_singleday]
+      date_ranges: [date_range_singleday], 
+      application_deadline: Date.tomorrow,
+      draft: false, 
+      application_status_locked: false
   )
 end
 
@@ -32,16 +34,18 @@ braucht man dafür. In den letzten Jahren hat sich zudem eine große Community r
 Höhepunkt der Veranstaltung ist demnach unser Besuch einer echten Gongmanufaktor im Herzen Berlins, durchgeführt von dem
 Ding Gong-Verein Berlin. Bei Bedarf können wir eine zweite Veranstaltung durchführen, bis dahin gilt first come first serve :)',
       max_participants: 19,
-      active: true,
       knowledge_level: 'Ihr braucht kein besonderes Vorwissen, jeder ist Willkommen!',
-      date_ranges: [date_range_long]
+      date_ranges: [date_range_long], 
+      application_deadline: Date.tomorrow, 
+      draft: false, 
+      application_status_locked: false
   )
 end
 
 def event_batterie_akustik
   date_range_short = DateRange.find_or_create_by!(
-      start_date: Date.current,
-      end_date: Date.tomorrow
+      start_date: Date.tomorrow.next_day(3),
+      end_date: tomorrow.next_day(5)
   )
 
   date_range_medium = DateRange.find_or_create_by!(
@@ -60,9 +64,11 @@ Batterien. Zudem erhalten sie ein offizielles Zertifikat des IAB, welches es ihn
 Veranstaltungen zum Thema teilzunehmen. Gerade in Zeit von E-Autos ist dies ein wichtiges Alleinstellungsmerkmal auf dem
 Arbeitsmarkt. Bitte beachtet die maximale Teilnehmeranzahl! Wichtig: Es gilt first come last served.',
       max_participants: 32,
-      active: true,
       organizer: 'IAB',
-      date_ranges: [date_range_short, date_range_medium]
+      date_ranges: [date_range_short, date_range_medium],  
+      application_deadline: Date.tomorrow,
+      draft: false, 
+      application_status_locked: false 
   )
 end
 
@@ -84,7 +90,9 @@ def event_bachlorpodium
       description: 'Trotz modernem Videostreaming in HD in die anderen Hörsäle bleibt Hörsaal 1 doch der Publikumsliebling
 bei diesem jährlich mit größter Sorgfalt organisierten spektakulären PR Gag',
       max_participants: 442,
-      active: true,
-      date_ranges: [date_range_singleday1, date_range_singleday2, date_range_singleday3]
+      date_ranges: [date_range_singleday1, date_range_singleday2, date_range_singleday3], 
+      application_deadline: Date.tomorrow, 
+      draft: false, 
+      application_status_locked: false 
   )
 end
