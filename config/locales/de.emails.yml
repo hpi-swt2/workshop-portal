@@ -12,4 +12,5 @@ de:
       reply_to: 'Absender'
       recipients: 'Empfänger'
       subject: 'Betreff'
+      content: 'Inhalt'
       send: 'Senden'
