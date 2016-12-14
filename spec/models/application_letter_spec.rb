@@ -49,7 +49,8 @@ describe ApplicationLetter do
   end
 
   it "can not be updated if status is changed and application status is locked" do
-    application = FactoryGirl.build(:application_letter_deadline_over)
+    application = FactoryGirl.build(:application_letter)
+    application.status = :rejected
     application.event.application_status_locked = true
     expect(application).to_not be_valid
   end
