@@ -1,5 +1,5 @@
 class EventsController < ApplicationController
-  before_action :set_event, only: [:show, :edit, :update, :destroy]
+  before_action :set_event, only: [:show, :edit, :update, :destroy, :email_list]
 
   # GET /events
   def index
@@ -82,6 +82,11 @@ class EventsController < ApplicationController
   def participants
     @event = Event.find(params[:id])
     @participants = @event.participants_by_agreement_letter
+  end
+
+  # GET /events/1/email_list
+  def email_list
+    render text: @event.get_email_list, :content_type => 'text/csv'
   end
 
   private

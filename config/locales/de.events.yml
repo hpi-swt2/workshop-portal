@@ -20,6 +20,7 @@ de:
       maximum_number_of_participants_exeeded: 'Maximale Teilnehmeranzahl wurde überschritten'
       sending_acceptances: 'Zusagen verschicken'
       sending_rejections: 'Absagen verschicken'
+      address_list: 'E-Mail-Addressen'
     badges:
         print: "Namensschilder drucken"
         title: "Namensschilder drucken für das Event "

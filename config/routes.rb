@@ -8,6 +8,9 @@ Rails.application.routes.draw do
       only: :create
   end
   resources :events do
+    member do
+      get :email_list
+    end
     resources :agreement_letters, only: [:create], shallow: true
     get 'badges'
     post 'badges' => 'events#print_badges', as: :print_badges

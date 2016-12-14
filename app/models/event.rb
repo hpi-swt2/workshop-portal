@@ -144,6 +144,14 @@ class Event < ActiveRecord::Base
     end
   end
 
+  # Returns an semicolon-separated-list of email addresses of all accepted participants.
+  #
+  # @param none
+  # @return [String] for list of email-addresses
+  def get_email_list
+    application_letters.where(status: ApplicationLetter.statuses[:accepted]).reduce('') {|list, letter| list << letter.user.email << ';'}
+  end
+
   scope :draft_is, ->(draft) { where("draft = ?", draft) }
 
   protected

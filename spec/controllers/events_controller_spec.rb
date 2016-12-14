@@ -242,4 +242,25 @@ RSpec.describe EventsController, type: :controller do
       expect(assigns(:event).date_ranges.first.end_date).to eq(date_range.end_date)
     end
   end
+
+  describe "GET #email_list" do
+    it "assigns the requested event as @event" do
+      event = Event.create! valid_attributes
+      get :email_list, id: event.to_param, session: valid_session
+      expect(assigns(:event)).to eq(event)
+    end
+
+    it "renders an csv-response" do
+      event = Event.create! valid_attributes
+      get :email_list, id: event.to_param, session: valid_session
+      expect(response.content_type).to eq('text/csv')
+    end
+
+    it "contains the required email addresses" do
+      application_letter = FactoryGirl.create(:application_letter, status: ApplicationLetter.statuses[:accepted])
+      event = application_letter.event
+      get :email_list, id: event.to_param, session: valid_session
+      expect(response.body).to include(application_letter.user.email)
+    end
+  end
 end
