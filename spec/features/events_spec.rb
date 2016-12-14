@@ -101,12 +101,28 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
 
   scenario "logged in as Organizer I can change application status with radio buttons" do
     login(:organizer)
+    @event.application_status_locked = false
+    @event.save
     @pupil = FactoryGirl.create(:profile)
     @application_letter = FactoryGirl.create(:application_letter, event: @event, user: @pupil.user)
     visit event_path(@event)
     ApplicationLetter.statuses.keys.each do |new_status|
       choose(I18n.t "application_status.#{new_status}")
       expect(ApplicationLetter.where(id: @application_letter.id)).to exist
+    end
+  end
+
+  scenario "logged in as Organizer I can not change application status with radio buttons if the applications are locked" do
+    login(:organizer)
+    @event.application_status_locked = true
+    @event.save
+    @pupil = FactoryGirl.create(:profile)
+    @application_letter = FactoryGirl.create(:application_letter, event: @event, user: @pupil.user)
+    visit event_path(@event)
+    ApplicationLetter.statuses.keys.each do |new_status|
+      if new_status != @application_letter.status
+        expect(page).not_to have_text(I18n.t "application_status.#{new_status}")
+      end
     end
   end
 

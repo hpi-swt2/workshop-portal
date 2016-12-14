@@ -26,7 +26,7 @@ describe "Event", type: :feature do
       fill_in "event[date_ranges_attributes][][start_date]", with: Date.yesterday.prev_day
       fill_in "event[date_ranges_attributes][][end_date]", with: Date.yesterday
       click_button I18n.t('.events.form.publish')
-      expect(page).to have_text("Anfangs-Datum darf nicht in der Vergangenheit liegen.")
+      expect(page).to have_text('Anfangs-Datum darf nicht in der Vergangenheit liegen')
     end
 
     it "should warn about unreasonably long time spans" do
@@ -36,7 +36,7 @@ describe "Event", type: :feature do
       fill_in "event[date_ranges_attributes][][start_date]", with: Date.current
       fill_in "event[date_ranges_attributes][][end_date]", with: Date.current.next_year(3)
       click_button I18n.t('.events.form.publish')
-      expect(page).to have_text("End-Datum liegt ungewöhnlich weit vom Start-Datum entfernt.")
+      expect(page).to have_text('End-Datum liegt ungewöhnlich weit vom Start-Datum entfernt.')
     end
 
     it "should not allow an end date before a start date" do
@@ -45,7 +45,7 @@ describe "Event", type: :feature do
       fill_in "event[date_ranges_attributes][][end_date]", with: Date.current.prev_day(2)
       click_button I18n.t('.events.form.publish')
 
-      expect(page).to have_text("End-Datum kann nicht vor Start-Datum liegen")
+      expect(page).to have_text('End-Datum kann nicht vor Start-Datum liegen')
     end
 
     it "should allow entering multiple time spans", js: true do
