@@ -36,7 +36,9 @@ class Ability
       can [:new, :create], Profile
       can [:index, :show, :edit, :update, :destroy], Profile, user: { id: user.id }
       # Pupils can only edit their own applications
-      can [:new, :create], ApplicationLetter
+      if user.profile.present?
+        can [:new, :create], ApplicationLetter
+      end
       can [:index, :show, :edit, :update, :destroy], ApplicationLetter, user: { id: user.id }
       # Pupils can upload their letters of agreement
       can [:create], AgreementLetter

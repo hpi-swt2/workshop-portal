@@ -1,0 +1,11 @@
+<form action="" method="GET">
+    <% filter = params[:filter] || {} %>
+    <% ApplicationLetter.statuses.keys.each do |key| %>
+      <%= label :filter, key do %>
+          <%= check_box_tag "filter[#{key}]", "1", filter[key] %>
+          <%= t "application_status.#{key}" %>
+      <% end %>
+      <br>
+    <% end %>
+    <input class="btn btn-default btn-sm" type="submit" value="<%= t 'events.applicants_overview.filter' %>">
+</form>

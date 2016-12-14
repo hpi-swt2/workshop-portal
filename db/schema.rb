@@ -77,7 +77,6 @@ ActiveRecord::Schema.define(version: 20161211123737) do
     t.string   "name"
     t.string   "description"
     t.integer  "max_participants"
-    t.boolean  "active"
     t.datetime "created_at",                       null: false
     t.datetime "updated_at",                       null: false
     t.string   "organizer"

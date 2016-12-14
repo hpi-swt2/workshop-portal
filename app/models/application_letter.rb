@@ -34,7 +34,7 @@ class ApplicationLetter < ActiveRecord::Base
   # @param none
   # @return [Boolean] true if deadline is over
   def after_deadline?
-    Date.today > event.application_deadline if event.present? and !event.application_deadline.nil?
+    Date.current > event.application_deadline if event.present?
   end
 
   # Validator for after_deadline?

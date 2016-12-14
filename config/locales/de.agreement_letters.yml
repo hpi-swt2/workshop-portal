@@ -4,8 +4,9 @@ de:
     upload: "Hochladen"
     update: "Aktualisieren"
     file_too_big: "Die Datei ist zu groß."
+    not_a_file: "Bitte eine Datei angeben."
     wrong_filetype: "Ungültiger Datentyp."
     upload_success: "Datei erfolgreich hochgeladen."
     upload_failed: "Fehler beim Hochladen."
     already_uploaded: "Datei hochgeladen am %{timestamp}"
-
+    write_failed: "Datei konnte nicht gespeichert werden."
