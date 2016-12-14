@@ -144,6 +144,8 @@ RSpec.describe EventsController, type: :controller do
       end
 
       describe "GET #participants" do
+        let(:valid_attributes) { FactoryGirl.attributes_for(:event_with_accepted_applications) }
+
         it "assigns the event as @event" do
           get :participants, id: @event.to_param, session: valid_session
           expect(assigns(:event)).to eq(@event)
@@ -208,6 +210,10 @@ RSpec.describe EventsController, type: :controller do
                           "1243_print"  => "Max Mustermann",
                           "1244_print"  => "Max Mustermann",
                           "1245_print"  => "Max Mustermann"
+
+      pdf = PDF::Inspector::Text.analyze(rendered_pdf.body)
+      expect(pdf.strings).to include("Max Mustermann")
+      expect(pdf.strings).to include("John Doe")
     end
   end
 

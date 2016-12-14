@@ -80,7 +80,7 @@ class EventsController < ApplicationController
 
   # GET /events/1/participants
   def participants
-    @participants = @event.participants
+    @participants = @event.participants_by_agreement_letter
   end
 
   # GET /event/1/participants_pdf
