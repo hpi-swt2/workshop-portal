@@ -62,7 +62,7 @@
           events_path, :class => 'btn btn-default'%>
     </div>
 
-    <% if (!@event.applications_classified?) %>
+    <% if not @event.applications_classified? %>
       <div class="btn-group pull-right tooltip-wrapper has-tooltip" role="group" data-toggle="tooltip" title="<%= t '.unclassified_applications_left'%>">
         <%= link_to t('events.badges.print_button_label'), event_badges_path(@event), :class => 'btn btn-default'%>
         <%= button_tag t('.sending_acceptances'), type: 'button', class: 'send-emails-button btn btn-default', disabled: true %>
