@@ -4,6 +4,15 @@
   <title>Workshop-Portal</title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <script>
+    function enableDatepickers() {
+      $('[data-enable-datepicker="true"]').datepicker({
+        language:"<%= j I18n.locale.to_s %>",
+        format: "<%= j I18n.t('date.formats.datepicker') %>",
+      });
+    }
+    $(document).bind('turbolinks:load', enableDatepickers);
+  </script>
   <%= csrf_meta_tags %>
 </head>
 <body>

@@ -14,4 +14,9 @@ RSpec.describe "events/index", type: :view do
     assert_select "td", :date => @event.end_date
     assert_select "td", :boolean => @event.draft
   end
+
+  it "shouldn't have an id displayed" do
+    render
+    expect(rendered).to_not have_text("Id")
+  end
 end
