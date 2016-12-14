@@ -84,6 +84,7 @@ ActiveRecord::Schema.define(version: 20161211123737) do
     t.integer  "kind",                 default: 0
     t.boolean  "draft"
     t.date     "application_deadline"
+    t.boolean  "application_status_locked"
   end
 
   create_table "profiles", force: :cascade do |t|

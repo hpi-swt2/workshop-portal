@@ -6,7 +6,7 @@
 <% if @event.unreasonably_long %>
   <div class="panel panel-warning">
     <div class="panel-body">
-      End-Datum liegt ungewöhnlich weit vom Start-Datum entfernt.
+      <%= t 'events.notices.unreasonable_timespan' %>
     </div>
   </div>
 <% end %>
@@ -17,7 +17,7 @@
   <%= render :partial => 'applicants_overview' %>
 <% end %>
 
-<%= link_to t('.back', :default => t("helpers.links.back")),
+<%= link_to t('.back', :default => t('helpers.links.back')),
               events_path, :class => 'btn btn-default'  %>
 <% if can? :view_participants, Event %>
   <%= link_to t('events.participants.show_participants'),
