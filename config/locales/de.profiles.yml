@@ -6,8 +6,16 @@ de:
       already_graduated: "Bereits Abitur"
     validation:
       birthday_in_future: "Das Geburtsdatum darf nicht in der Zukunft liegen."
+    genders:
+      male: "Männlich"
+      female: "Weiblich"
+      other: "Andere"
 
   activerecord:
+    models:
+      profile:
+        one: "Profil"
+        other: "Profile"
     attributes:
       profile:
         first_name: "Vorname"
