@@ -80,10 +80,10 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     end
     visit event_path(@event)
     click_link I18n.t('events.applicants_overview.sending_acceptances')
+    choose(I18n.t('emails.email_form.show_recipients'))
     fill_in('email_subject', with: 'Subject')
     fill_in('email_content', with: 'Content')
-    click_button I18n.t('emails.email_form.send')
-    expect(ActionMailer::Base.deliveries.last.to.count).to eq(1)
+    expect{click_button I18n.t('emails.email_form.send')}.to change{ActionMailer::Base.deliveries.count}.by(1)
   end
 
   scenario "logged in as Organizer I want to be able to send an email to all rejected applicants" do
@@ -96,10 +96,10 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     end
     visit event_path(@event)
     click_link I18n.t('events.applicants_overview.sending_rejections')
+    choose(I18n.t('emails.email_form.show_recipients'))
     fill_in('email_subject', with: 'Subject')
     fill_in('email_content', with: 'Content')
-    click_button I18n.t('emails.email_form.send')
-    expect(ActionMailer::Base.deliveries.last.to.count).to eq(1)
+    expect{click_button I18n.t('emails.email_form.send')}.to change{ActionMailer::Base.deliveries.count}.by(1)
   end
 
   scenario "logged in as Organizer I can see the correct count of free/occupied places" do
