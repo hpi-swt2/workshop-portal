@@ -1,6 +1,5 @@
 class PortalMailer < ApplicationMailer
-
-  # @param hide_recipients [Boolean] - identify whether recipients should be hidden from each other (true) or not (false)
+  
   # @param recipients [Array<String>] - email addresses of recipients
   # @param reply_to [Array<String>] - email addresses of recipient of the answer
   # @param subject [String] - subject of the mail
