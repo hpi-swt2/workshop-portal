@@ -1,0 +1,11 @@
+en:
+  my_events:
+    index:
+      td_events: "Events"
+      td_status: "Status"
+      td_action: "Actions"
+    status:
+      accepted: "Accepted"
+      rejected: "Rejected"
+      pending_before_deadline: "Applied"
+      pending_after_deadline: "In progress"

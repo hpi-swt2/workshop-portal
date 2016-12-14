@@ -34,20 +34,20 @@ class ApplicationLetter < ActiveRecord::Base
   # @param none
   # @return [Boolean] true if deadline is over
   def after_deadline?
-    Date.current > event.application_deadline if event.present? 
+    Date.current > event.application_deadline if event.present? and !event.application_deadline.nil?
   end
 
   def status_type
     case ApplicationLetter.statuses[status]
       when ApplicationLetter.statuses[:accepted]
-        return "Angenommen"
+        return I18n.t("my_events.status.accepted")
       when ApplicationLetter.statuses[:rejected]
-        return "Abgelehnt"
+        return I18n.t("my_events.status.rejected")
       when ApplicationLetter.statuses[:pending]
         if after_deadline?
-          return "In Bearbeitung"
+          return I18n.t("my_events.status.pending_after_deadline")
         else
-          return "Beworben"
+          return I18n.t("my_events.status.pending_before_deadline")
         end
       else
         return ""

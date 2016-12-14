@@ -1,0 +1,11 @@
+de:
+  my_events:
+    index:
+      td_events: "Events"
+      td_status: "Status"
+      td_action: "Aktionen"
+    status:
+      accepted: "Angenommen"
+      rejected: "Abgelehnt"
+      pending_before_deadline: "Beworben"
+      pending_after_deadline: "In Bearbeitung"
