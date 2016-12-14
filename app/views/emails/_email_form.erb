@@ -1,13 +1,13 @@
 <%= form_for @email, url: {action: 'send_email', controller: 'emails'}, html: {class: 'email-form form-horizontal'} do |f| %>
     <div class="form-group">
-      <div class="col-sm-10 col-sm-offset-2">
-        <label for="hide_recipients">
-          <%= f.radio_button :hide_recipients, false, class: 'form-check-input', checked: @email.hide_recipients %>
-          <%= t('.to')%>
+      <div class="col-sm-10 col-sm-offset-2 btn-group" data-toggle="buttons">
+        <label class="btn btn-default <%= 'active' if @email.hide_recipients %>">
+          <%= f.radio_button :hide_recipients, @email.hide_recipients, checked: @email.hide_recipients %>
+          <%= t('.to') %>
         </label>
-        <label for="hide_recipients">
-          <%= f.radio_button :hide_recipients, false, class: 'form-check-input', checked: !@email.hide_recipients %>
-          BCC
+        <label class="btn btn-default <%= 'active' if !@email.hide_recipients %>">
+          <%= f.radio_button :hide_recipients, !@email.hide_recipients, checked: !@email.hide_recipients%>
+          <%= t('.bcc') %>
         </label>
       </div>
     </div>

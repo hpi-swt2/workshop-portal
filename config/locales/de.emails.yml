@@ -2,8 +2,11 @@
 
 de:
   emails:
-     email_form:
+    send_email:
+      sending_successful: 'Email wurde erfolgreich versendet'
+    email_form:
       recipients: 'Empfänger'
       to: 'An'
+      bcc: 'BCC'
       subject: 'Betreff'
       send: 'Senden'

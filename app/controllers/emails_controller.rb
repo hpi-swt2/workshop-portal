@@ -5,8 +5,8 @@ class EmailsController < ApplicationController
 
   def send_email
     @email = Email.new(email_params)
-    PortalMailer.generic_email(@email.hide_recipients, @email.recipients, @email.reply_to, @email.subject, @email.content)
-    render '_email_form'
+    PortalMailer.generic_email(@email.hide_recipients, @email.recipients, @email.reply_to, @email.subject, @email.content).deliver_now
+    redirect_to :events, notice: t('.sending_successful')
   end
 
   private

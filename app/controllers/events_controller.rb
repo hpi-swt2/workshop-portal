@@ -69,7 +69,7 @@ class EventsController < ApplicationController
     event = Event.find(params[:id])
     @email = event.generate_acceptances_email
     @templates = [{subject: 'Zusage 1', content: 'Lorem Ispum...'}, {subject: 'Zusage 2', content: 'Lorem Ispum...'}, {subject: 'Zusage 3', content: 'Lorem Ispum...'}]
-    render 'email'
+    render :email
   end
 
   # GET /events/1/send-rejections-email
@@ -77,7 +77,7 @@ class EventsController < ApplicationController
     event = Event.find(params[:id])
     @email = event.generate_rejections_email
     @templates = [{subject: 'Absage 1', content: 'Lorem Ispum...'}, {subject: 'Absage 2', content: 'Lorem Ispum...'}, {subject: 'Absage 3', content: 'Lorem Ispum...'}]
-    render 'email'
+    render :email
   end
   
   private
