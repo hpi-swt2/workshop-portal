@@ -15,6 +15,40 @@ def profile_pupil(user)
   )
 end
 
+def profile_pupil_1(user)
+  Profile.new(
+    user: user,
+    first_name: "Max",
+    last_name: "Mustermann",
+    gender: "male",
+    birth_date: Date.parse('2000.12.09'),
+    school: "Musterschule",
+    street_name: "Musterstraße 42",
+    zip_code: "14482",
+    city: "Potsdam",
+    state: "Brandenburg",
+    country: "Deutschland",
+    graduates_school_in: "2018"
+  )
+end
+
+def profile_pupil_2(user)
+  Profile.new(
+    user: user,
+    first_name: "Lisa",
+    last_name: "Schmidt",
+    gender: "female",
+    birth_date: Date.parse('2001.02.19'),
+    school: "Musterschule",
+    street_name: "Musterstraße 42",
+    zip_code: "14482",
+    city: "Potsdam",
+    state: "Brandenburg",
+    country: "Deutschland",
+    graduates_school_in: "2019"
+  )
+end
+
 def profile_teacher(user)
   Profile.new(
     user: user,
@@ -46,5 +80,22 @@ def profile_applicant(user)
     state: "Brandenburg",
     country: "Deutschland",
     graduates_school_in: "2017"
+  )
+end
+
+def profile_tobi(user)
+  Profile.new(
+    user: user,
+    first_name: "Tobias",
+    last_name: "Dürschmid",
+    gender: "male",
+    birth_date: Date.parse('1995.08.31'),
+    school: "Goetheschule Ilmenau",
+    street_name: "Stahnsdorfer Str.",
+    zip_code: "14482",
+    city: "Potsdam",
+    state: "Brandenburg",
+    country: "Deutschland",
+    graduates_school_in: "Bereits Abitur"
   )
 end

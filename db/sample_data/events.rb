@@ -1,3 +1,21 @@
+def event_programmierkurs
+  date_range_singleday = DateRange.find_or_create_by!(
+      start_date: Date.new(2017, 05, 04),
+      end_date: Date.new(2017, 05, 05)
+  )
+  Event.new(
+      name: 'Bechersäuberungsevent',
+      description: 'Ihr wolltet schon immer einmal eine eigene App programmieren? In diesem Workshop lernt ihr object-orientierte Programmierung am Beispiel von einer Android App.',
+      max_participants: 25,
+      organizer: 'HPI Schülerklub',
+      knowledge_level: 'Anfänger',
+      date_ranges: [date_range_singleday], 
+      application_deadline: Date.tomorrow,
+      draft: false, 
+      application_status_locked: false
+  )
+end
+
 def event_bechersaeuberungsevent
   date_range_singleday = DateRange.find_or_create_by!(
       start_date: Date.new(2017, 04, 04),
