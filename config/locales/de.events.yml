@@ -1,0 +1,82 @@
+# German translations for events
+
+de:
+  events:
+    applicants_overview:
+      title: "Bewerber für %{title}"
+      participations: "Anzahl der Bewerbungen"
+      accepted_rejected: "angenommen / abgelehnt"
+      filter_by: "Filtern nach ..."
+      filter: "Filtern"
+      status: "Status"
+      details: "Details"
+      free_places:
+        one: '%{count} Platz frei'
+        other: '%{count} Plätze frei'
+      occupied_places:
+        one: '%{count} Platz belegt'
+        other: '%{count} Plätze belegt'
+      unclassified_applications_left: 'Bewerbung(en) wurden noch nicht klassifiziert'
+      maximum_number_of_participants_exeeded: 'Maximale Teilnehmeranzahl wurde überschritten'
+      sending_acceptances: 'Zusagen verschicken'
+      sending_rejections: 'Absagen verschicken'
+    badges:
+        print: "Namensschilder drucken"
+        title: "Namensschilder drucken für das Event "
+        participants: "Teilnehmer"
+        printBoolean: "Drucken?"
+        print_button_label: "Namensschilder drucken"
+    participants:
+      participants: "Teilnehmer"
+      show_participants: "Teilnehmerliste"
+      unnecessary: "nicht benötigt"
+      available: "vorhanden"
+      unavailable: "nicht vorhanden"
+
+    kinds:
+     workshop: "Workshop"
+     camp: "Camp"
+
+    notices:
+      created: "Event wurde erstellt."
+      updated: "Event wurde aktualisiert."
+      destroyed: "Event wurde gelöscht."
+      unreasonable_timespan: "Vorsicht! End-Datum liegt ungewöhnlich weit vom Start-Datum entfernt."
+
+
+    confirmation_prompts:
+      confirm_delete: "Sicher, dass das Event gelöscht werden soll?"
+
+    form:
+      draft: "Speichern"
+      publish: "Veröffentlichen"
+      update: "Aktualisieren"
+      add_timespan: "Zeitspanne hinzufügen"
+    email:
+      templates: "Vorlagen"
+    errors:
+      application_deadline_before_start_of_event: "Bewerbungsschluss muss vor Beginn der Veranstaltung liegen"
+
+  activerecord:
+      models:
+        event: "Veranstaltung"
+      attributes:
+        event:
+          name: "Name"
+          description: "Beschreibung"
+          max_participants: "Maximale Teilnehmerzahl"
+          kind: "Art"
+          active: "Aktiv"
+          start_date: "Beginn"
+          end_date: "Ende"
+          draft: "Entwurf"
+          organizer: "Veranstalter"
+          knowledge_level: "Kenntnisstand"
+          date_ranges:
+            one: "Zeitspanne"
+            other: "Zeitspannen"
+          application_deadline: "Bewerbungsschluss"
+  helpers:
+    submit:
+      event:
+        create: "Veröffentlichen"

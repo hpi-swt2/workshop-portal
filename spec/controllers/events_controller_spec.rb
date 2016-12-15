@@ -19,47 +19,190 @@ require 'rails_helper'
 # that an instance is receiving a specific message.
 
 RSpec.describe EventsController, type: :controller do
+  let(:date1) { Date.current }
+  let(:date2) { Date.current.next_day }
+  let(:date3) { Date.current.next_day(2) }
+  let(:date4) { Date.current.next_day(2) }
+
+  # this is the format expected by our controller to receive its date ranges
+  # in as a nested object
+  let(:valid_attributes_post) do
+    event = FactoryGirl.attributes_for(:event)
+    event[:date_ranges_attributes] = [FactoryGirl.attributes_for(:date_range)]
+    { event: event }
+  end
 
   # This should return the minimal set of attributes required to create a valid
   # Event. As you add validations to Event, be sure to
   # adjust the attributes here as well.
-  let(:valid_attributes) { FactoryGirl.build(:event).attributes }
+  let(:valid_attributes) { FactoryGirl.attributes_for(:event) }
 
-  let(:invalid_attributes) { FactoryGirl.build(:event, max_participants: "twelve").attributes }
+  let(:invalid_attributes) { FactoryGirl.attributes_for(:event, max_participants: "twelve") }
 
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
   # EventsController. Be sure to keep this updated too.
   let(:valid_session) { {} }
 
-  describe "GET #index" do
-    it "assigns all events as @events" do
-      event = Event.create! valid_attributes
-      get :index, session: valid_session
-      expect(assigns(:events)).to eq([event])
+  context "With an existing event" do
+    before :each do
+      @event = Event.create! valid_attributes
+    end
+
+    describe "GET #index" do
+      it "assigns all events as @events" do
+        get :index, session: valid_session
+        expect(assigns(:events)).to eq([@event])
+      end
+    end
+
+    describe "GET #show" do
+      it "assigns the requested event as @event" do
+        get :show, id: @event.to_param, session: valid_session
+        expect(assigns(:event)).to eq(@event)
+      end
+
+      it "assigns the number of free places as @free_places" do
+        get :show, id: @event.to_param, session: valid_session
+        expect(assigns(:free_places)).to eq(@event.compute_free_places)
+      end
+
+      it "assigns the number of occupied places as @occupied_places" do
+        get :show, id: @event.to_param, session: valid_session
+        expect(assigns(:occupied_places)).to eq(@event.compute_occupied_places)
+      end
+    end
+
+    describe "GET #new" do
+      it "assigns a new event as @event" do
+        get :new, params: {}, session: valid_session
+        expect(assigns(:event)).to be_a_new(Event)
+      end
+    end
+
+    describe "GET #edit" do
+      it "assigns the requested event as @event" do
+        get :edit, id: @event.to_param, session: valid_session
+        expect(assigns(:event)).to eq(@event)
+      end
+    end
+
+    describe "PUT #update" do
+      context "with valid params" do
+        let(:new_attributes) {
+          {
+              name: "Awesome new name"
+          }
+        }
+
+        it "updates the requested event" do
+          put :update, id: @event.to_param, event: new_attributes, session: valid_session
+          @event.reload
+          expect(@event.name).to eq(new_attributes[:name])
+        end
+
+        it "assigns the requested event as @event" do
+          put :update, id: @event.to_param, event: valid_attributes, session: valid_session
+          expect(assigns(:event)).to eq(@event)
+        end
+
+        it "redirects to the event" do
+          put :update, id: @event.to_param, event: valid_attributes, session: valid_session
+          expect(response).to redirect_to(@event)
+        end
+
+        it "does not append to date ranges but replaces them" do
+          expect {
+            put :update, id: @event.to_param, event: valid_attributes_post[:event], session: valid_session
+          }.to change((Event.find_by! id: @event.to_param).date_ranges, :count).by(0)
+        end
+      end
+
+      context "with invalid params" do
+        it "assigns the event as @event" do
+          put :update, id: @event.to_param, event: invalid_attributes, session: valid_session
+          expect(assigns(:event)).to eq(@event)
+        end
+
+        it "re-renders the 'edit' template" do
+          put :update, id: @event.to_param, event: invalid_attributes, session: valid_session
+          expect(response).to render_template("edit")
+        end
+      end
+
+      describe "DELETE #destroy" do
+        it "destroys the requested event" do
+          expect {
+            delete :destroy, id: @event.to_param, session: valid_session
+          }.to change(Event, :count).by(-1)
+        end
+
+        it "redirects to the events list" do
+          delete :destroy, id: @event.to_param, session: valid_session
+          expect(response).to redirect_to(events_url)
+        end
+      end
+
+      describe "GET #participants" do
+        let(:valid_attributes) { FactoryGirl.attributes_for(:event_with_accepted_applications) }
+
+        it "assigns the event as @event" do
+          get :participants, id: @event.to_param, session: valid_session
+          expect(assigns(:event)).to eq(@event)
+        end
+        it "assigns all participants as @participants" do
+            get :participants, id: @event.to_param, session: valid_session
+          expect(assigns(:participants)).to eq(@event.participants)
+        end
+      end
+    end
+
+    describe "GET #send_acceptances_email" do
+      it "should assign a new email to accepted applications as @email" do
+        get :send_acceptance_emails, id: @event.to_param, session: valid_session
+        expect(assigns(:email)).to have_attributes(hide_recipients: false, recipients: @event.email_adresses_of_accepted_applicants, reply_to: 'workshop.portal@hpi.de', subject: '', content: '')
+      end
+    end
+
+    describe "GET #send_rejections_email" do
+      it "should assign a new email to rejected applications as @email" do
+        get :send_rejection_emails, id: @event.to_param, session: valid_session
+        expect(assigns(:email)).to have_attributes(hide_recipients: false, recipients: @event.email_adresses_of_rejected_applicants, reply_to: 'workshop.portal@hpi.de', subject: '', content: '')
+      end
     end
   end
 
-  describe "GET #show" do
+  describe "GET #badges" do
+    let(:valid_attributes) { FactoryGirl.attributes_for(:event_with_accepted_applications) }
+
     it "assigns the requested event as @event" do
       event = Event.create! valid_attributes
-      get :show, id: event.to_param, session: valid_session
+      get :badges, event_id: event.to_param, session: valid_session
       expect(assigns(:event)).to eq(event)
     end
   end
 
-  describe "GET #new" do
-    it "assigns a new event as @event" do
-      get :new, params: {}, session: valid_session
-      expect(assigns(:event)).to be_a_new(Event)
-    end
-  end
-
-  describe "GET #edit" do
-    it "assigns the requested event as @event" do
+  describe "POST #badges" do
+    it "contains two name badges with title 'Max Mustermann'" do
       event = Event.create! valid_attributes
-      get :edit, id: event.to_param, session: valid_session
-      expect(assigns(:event)).to eq(event)
+      rendered_pdf = post :print_badges,
+                          event_id: event.to_param,
+                          session: valid_session,
+                          "1234_print"  => "Max Mustermann",
+                          "1235_print"  => "Max Mustermann",
+                          "1236_print"  => "Max Mustermann",
+                          "1237_print"  => "Max Mustermann",
+                          "1238_print"  => "Max Mustermann",
+                          "1239_print"  => "Max Mustermann",
+                          "1240_print"  => "John Doe",
+                          "1241_print"  => "Max Mustermann",
+                          "1242_print"  => "Max Mustermann",
+                          "1243_print"  => "Max Mustermann",
+                          "1244_print"  => "Max Mustermann",
+                          "1245_print"  => "Max Mustermann"
+      pdf = PDF::Inspector::Text.analyze(rendered_pdf.body)
+      expect(pdf.strings).to include("Max Mustermann")
+      expect(pdf.strings).to include("John Doe")
     end
   end
 
@@ -67,18 +210,25 @@ RSpec.describe EventsController, type: :controller do
     context "with valid params" do
       it "creates a new Event" do
         expect {
-          post :create, event: valid_attributes, session: valid_session
+          post :create, valid_attributes_post, session: valid_session
         }.to change(Event, :count).by(1)
       end
 
       it "assigns a newly created event as @event" do
-        post :create, event: valid_attributes, session: valid_session
+        post :create, valid_attributes_post, session: valid_session
         expect(assigns(:event)).to be_a(Event)
         expect(assigns(:event)).to be_persisted
       end
 
+      it "saves optional attributes" do
+        post :create, valid_attributes_post, session: valid_session
+        event = Event.create! valid_attributes
+        expect(assigns(:event).organizer).to eq(event.organizer)
+        expect(assigns(:event).knowledge_level).to eq(event.knowledge_level)
+      end
+
       it "redirects to the created event" do
-        post :create, event: valid_attributes, session: valid_session
+        post :create, valid_attributes_post, session: valid_session
         expect(response).to redirect_to(Event.last)
       end
     end
@@ -94,64 +244,16 @@ RSpec.describe EventsController, type: :controller do
         expect(response).to render_template("new")
       end
     end
-  end
 
-  describe "PUT #update" do
-    context "with valid params" do
-      let(:new_attributes) {
-        {
-            name: "Awesome new name"
-        }
-      }
-
-      it "updates the requested event" do
-        event = Event.create! valid_attributes
-        put :update, id: event.to_param, event: new_attributes, session: valid_session
-        event.reload
-        expect(event.name).to eq(new_attributes[:name])
-      end
-
-      it "assigns the requested event as @event" do
-        event = Event.create! valid_attributes
-        put :update, id: event.to_param, event: valid_attributes, session: valid_session
-        expect(assigns(:event)).to eq(event)
-      end
-
-      it "redirects to the event" do
-        event = Event.create! valid_attributes
-        put :update, id: event.to_param, event: valid_attributes, session: valid_session
-        expect(response).to redirect_to(event)
-      end
-    end
-
-    context "with invalid params" do
-      it "assigns the event as @event" do
-        event = Event.create! valid_attributes
-        put :update, id: event.to_param, event: invalid_attributes, session: valid_session
-        expect(assigns(:event)).to eq(event)
-      end
-
-      it "re-renders the 'edit' template" do
-        event = Event.create! valid_attributes
-        put :update, id: event.to_param, event: invalid_attributes, session: valid_session
-        expect(response).to render_template("edit")
-      end
+    it "should attach correct date ranges to the event entity" do
+      post :create, valid_attributes_post, session: valid_session
+      expect(assigns(:event)).to be_a(Event)
+      expect(assigns(:event)).to be_persisted
+      expect(assigns(:event).date_ranges).to_not be_empty
+      expect(assigns(:event).date_ranges.first.event_id).to eq(assigns(:event).id)
+      date_range = valid_attributes_post[:event][:date_ranges].first
+      expect(assigns(:event).date_ranges.first.start_date).to eq(date_range.start_date)
+      expect(assigns(:event).date_ranges.first.end_date).to eq(date_range.end_date)
     end
   end
-
-  describe "DELETE #destroy" do
-    it "destroys the requested event" do
-      event = Event.create! valid_attributes
-      expect {
-        delete :destroy, id: event.to_param, session: valid_session
-      }.to change(Event, :count).by(-1)
-    end
-
-    it "redirects to the events list" do
-      event = Event.create! valid_attributes
-      delete :destroy, id: event.to_param, session: valid_session
-      expect(response).to redirect_to(events_url)
-    end
-  end
-
 end

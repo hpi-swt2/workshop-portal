@@ -42,6 +42,7 @@ en:
       default: "%Y-%m-%d"
       long: "%B %d, %Y"
       short: "%b %d"
+      datepicker: "yyyy-mm-dd"
     month_names:
     -
     - January
@@ -108,6 +109,7 @@ en:
       year: Year
   errors:
     format: "%{attribute} %{message}"
+    form_invalid: "There have been errors in %{number} fields"
     messages:
       accepted: must be accepted
       blank: can't be blank

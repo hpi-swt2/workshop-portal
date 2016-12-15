@@ -1,0 +1,35 @@
+# German translations for the user profiles
+
+de:
+  profiles:
+    form:
+      already_graduated: "Bereits Abitur"
+    validation:
+      birthday_in_future: "Das Geburtsdatum darf nicht in der Zukunft liegen."
+    genders:
+      male: "Männlich"
+      female: "Weiblich"
+      other: "Andere"
+
+  activerecord:
+    models:
+      profile:
+        one: "Profil"
+        other: "Profile"
+    attributes:
+      profile:
+        first_name: "Vorname"
+        last_name: "Nachname"
+        name: "Name"
+        gender: "Geschlecht"
+        birth_date: "Geburtsdatum"
+        age: "Alter"
+        email: "E-Mail"
+        school: "Schule"
+        street_name: "Straße"
+        zip_code: "Postleitzahl"
+        city: "Stadt"
+        state: "Bundesland"
+        country: "Land"
+        address: "Adresse"
+        graduates_school_in: "Abitur vorraussichtlich in"

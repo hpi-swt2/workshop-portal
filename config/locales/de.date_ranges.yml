@@ -1,0 +1,17 @@
+# German translations for the date ranges
+
+de:
+  date_range:
+    errors:
+      starts_in_past: "Anfangs-Datum darf nicht in der Vergangenheit liegen"
+      end_in_past: "darf nicht in der Vergangenheit liegen"
+      end_before_start: "kann nicht vor Start-Datum liegen"
+      no_timespan: "Bitte mindestens eine Zeitspanne auswählen"
+
+    pronouns:
+      to: "bis"
+  activerecord:
+    attributes:
+      date_range:
+        start_date: "Anfangs-Datum"
+        end_date: "End-Datum"

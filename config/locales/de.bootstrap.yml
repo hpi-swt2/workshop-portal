@@ -12,10 +12,10 @@ de:
     links:
       back: "Zurück"
       cancel: "Abbrechen"
-      confirm: "Sicher?"
       destroy: "Löschen"
       new: "Neu"
       edit: "Bearbeiten"
+      apply: "Bewerben"
     titles:
       edit: "%{model} bearbeiten"
       save: "%{model} speichern"

@@ -12,7 +12,26 @@ RSpec.describe "events/edit", type: :view do
       assert_select "input#event_name[name=?]", "event[name]"
       assert_select "input#event_description[name=?]", "event[description]"
       assert_select "input#event_max_participants[name=?]", "event[max_participants]"
-      assert_select "input#event_active[name=?]", "event[active]"
+      assert_select "input#event_organizer[name=?]", "event[organizer]"
+      assert_select "input#event_knowledge_level[name=?]", "event[knowledge_level]"
     end
+  end
+
+  it "shows that organizer and knowledge_level are optional" do
+    render
+    expect(rendered).to have_field("event_organizer", :placeholder => "optional")
+    expect(rendered).to have_field("event_knowledge_level", :placeholder => "optional")
+  end
+
+  it "should have a draft button for events that haven't been published" do
+    @event = assign(:event, FactoryGirl.create(:event, draft: true))
+    render
+    assert_select "input[name=draft]"
+  end
+
+  it "shouldn't have a draft button for events that have already been published" do
+    @event = assign(:event, FactoryGirl.create(:event, draft: false))
+    render
+    assert_select "input[name=draft]", false
   end
 end

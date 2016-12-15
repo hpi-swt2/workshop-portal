@@ -21,13 +21,20 @@
 
 de:
   hello: "Willkommen beim Workshop-Portal"
+  unauthorized:
+      manage:
+        all: "Du bist nicht authorisiert diese Aktion auszuführen."
   navbar:
     home: "Start"
     events: "Veranstaltungen"
     profiles: "Nutzer"
     application_letters: "Bewerbungen"
+    my_application_letters: "Meine Bewerbungen"
+    user_management: "Benutzerverwaltung"
     requests: "Anfragen"
-    settings: "Einstellungen"
+    profile: "Mein Profil"
+    create_profile: "Mein Profil anlegen"
+    settings: "Profilinfo"
     login: "Einloggen"
     logout: "Ausloggen"
   users:
@@ -35,19 +42,4 @@ de:
       new:
         sign_in: "Einloggen"
         remember_me: "Eingeloggt bleiben"
-  helpers:
-    label:
-      profile:
-        first_name: "Vorname"
-        last_name: "Nachname"
-        gender: "Geschlecht"
-        birth_date: Geburtsdatum 
-        email: "E-Mail"
-        school: "Schule"
-        street_name: "Straße"
-        zip_code: "Postleitzahl"
-        city: "Stadt"
-        state: "Bundesland"
-        country: "Land"
-        graduates_school_in: "Abitur vorraussichtlich in"
-        already_graduated: "Bereits Abitur"
+  midnight: "Mitternacht"

@@ -46,7 +46,7 @@ gem 'devise-bootstrap-views'
 # Integrates Bootstrap Tooltip library with Rails asset pipeline
 # gem 'bootstrap-tooltip-rails'
 # Integrates a bootstrap-style datepicker with Rails asset pipeline
-# gem 'bootstrap-datepicker-rails'
+gem 'bootstrap-datepicker-rails'
 
 # Select2 dropdown replacement featuring autocomplete
 # gem 'select2-rails'
@@ -78,11 +78,19 @@ gem 'rubocop', '~> 0.29.1'
 # coveralls.io
 gem 'coveralls', require: false
 
+# pdf generation
+gem 'prawn'
+
+# Simple, Heroku-friendly Rails app configuration using ENV and a single YAML file
+gem 'figaro'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
   gem 'rspec-rails', '~> 3.2'
   gem 'capybara', '~> 2.5'
+  gem 'poltergeist'
+  gem 'database_cleaner'
   # gem 'database_cleaner'
   gem 'factory_girl_rails'
 end
@@ -123,6 +131,7 @@ group :test do
   gem 'parser', '~> 2.2.2.5'
   # Stubbing external calls by blocking traffic with WebMock.disable_net_connect! or allow:
   # gem 'webmock'
+  gem 'pdf-inspector', require: "pdf/inspector"
 end
 
 group :production do

@@ -43,6 +43,7 @@ de:
       default: "%d.%m.%Y"
       long: "%e. %B %Y"
       short: "%e. %b"
+      datepicker: "dd.mm.yyyy"
     month_names:
     -
     - Januar
@@ -106,6 +107,9 @@ de:
       year: Jahr
   errors:
     format: "%{attribute} %{message}"
+    form_invalid: 
+      one: "In einem Feld ist ein Fehler aufgetreten"
+      other: "In %{count} Feldern sind Fehler aufgetreten"
     messages:
       accepted: muss akzeptiert werden
       blank: muss ausgefüllt werden

@@ -3,13 +3,19 @@
   <h1><%=t '.title', :default => model_class.model_name.human.titleize %></h1>
 </div>
 
-<dl class="dl-horizontal">
-  <dt><strong><%= model_class.human_attribute_name(:motivation) %>:</strong></dt>
-  <dd><%= @application_letter.motivation %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:user_id) %>:</strong></dt>
-  <dd><%= @application_letter.user_id %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:event_id) %>:</strong></dt>
-  <dd><%= @application_letter.event_id %></dd>
+<h3><%= @application_letter.user.profile.name %></h3>
+
+<dl class="dl-horizontal" id="applicant_details">
+  <dt><strong><%= Profile.human_attribute_name(:gender) %>:</strong></dt>
+  <dd><%= @application_letter.user.profile.gender %></dd>
+  <dt><strong><%= Profile.human_attribute_name(:age) %>:</strong></dt>
+  <dd><%= @application_letter.user.profile.age %></dd>
+  <dt><strong><%= Profile.human_attribute_name(:address) %>:</strong></dt>
+  <dd><%= @application_letter.user.profile.address %></dd>
+  <dt><strong><%= User.human_attribute_name(:accepted_application_count) %>:</strong></dt>
+  <dd><%= @application_letter.user.accepted_applications_count(@application_letter.event) %></dd>
+  <dt><strong><%= User.human_attribute_name(:rejected_application_count) %>:</strong></dt>
+  <dd><%= @application_letter.user.rejected_applications_count(@application_letter.event) %></dd>
 </dl>
 
 <%= link_to t('.back', :default => t("helpers.links.back")),
@@ -21,3 +27,53 @@
               :method => 'delete',
               :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
               :class => 'btn btn-danger' %>
+
+<h3><%= t('.application_title', title: @application_letter.event.name) %></h3>
+<dl class="dl-vertical">
+  <dt><%= render partial: 'application_letters/application_selective', locals: {application_letter: @application_letter} %></dt>
+</dl>
+
+<p>
+  <%= @application_letter.motivation %>
+</p>
+
+<% if can? :view_and_add_notes, ApplicationLetter  %>
+  <dl class="dl-horizontal">
+    <dt><strong><%= ApplicationNote.model_name.human(count: @application_letter.application_notes.count) %>:</strong></dt>
+    <dd><% @application_letter.application_notes.each do |note| %>
+          <div> <%= note.note %> </div>
+      <% end %></dd>
+  </dl>
+
+  <%= form_for [@application_letter, @application_letter.application_notes.build], :html => { :class => "form-horizontal application" } do |f| %>
+
+      <% if @application_note.errors.any? %>
+          <div id="error_expl" class="panel panel-danger">
+            <div class="panel-heading">
+              <h3 class="panel-title"><%= pluralize(@application_note.errors.count, "error") %> prohibited this application from being saved:</h3>
+            </div>
+            <div class="panel-body">
+              <ul>
+                <% @application_note.errors.full_messages.each do |msg| %>
+                    <li><%= msg %></li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+      <% end %>
+
+      <div class="form-group">
+        <%= f.label :note, t(".new_note"), :class => 'control-label col-lg-2' %>
+        <div class="col-lg-10">
+          <%= f.text_area :note, :class => 'form-control' %>
+        </div>
+        <%=f.error_span(:note) %>
+      </div>
+
+      <div class="form-group">
+        <div class="col-lg-offset-2 col-lg-10">
+          <%= f.submit nil, :class => 'btn btn-primary' %>
+        </div>
+      </div>
+    <% end %>
+<% end %>

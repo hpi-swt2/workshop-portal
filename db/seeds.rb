@@ -30,30 +30,69 @@ users.each do |user|
   user.save!
 end
 
+date_range = DateRange.find_or_create_by!(
+  start_date: Date.tomorrow.next_day(3),
+  end_date: Date.tomorrow.next_day(5)
+)
+
 # An event
-event = Event.find_or_create_by!(
+event = Event.new(
     name: "Messung und Verarbeitung von Umweltdaten",
     description: "Veranstaltung mit Phidgets und Etoys",
     max_participants: 20,
-    active: true
+    application_deadline: Date.tomorrow,
+    draft: false,
+    application_status_locked: false
 )
+event.date_ranges << date_range
+event.save
 
 # Pupil's profile
 Profile.find_or_create_by!(
-    cv: "Ich habe mich zu keiner Veranstaltung beworben",
-    user: pupil
+    user: pupil,
+    first_name: "Karl",
+    last_name: "Doe",
+    gender: "male",
+    birth_date: Date.parse('2000.11.29'),
+    school: "Schule am Griebnitzsee",
+    street_name: "Rudolf-Breitscheid-Str. 52",
+    zip_code: "14482",
+    city: "Potsdam",
+    state: "Brandenburg",
+    country: "Deutschland",
+    graduates_school_in: "2019"
 )
 
 # Teacher's profile
 Profile.find_or_create_by!(
-    cv: "Ich bin ein Lehrer. Ich frage Veranstaltungen für meine Schüler an.",
-    user: teacher
+    user: teacher,
+    first_name: "Ernst",
+    last_name: "Teacher",
+    gender: "male",
+    birth_date: Date.parse('1970.1.1'),
+    school: "Schule am Griebnitzsee",
+    street_name: "Domstraße 14",
+    zip_code: "14482",
+    city: "Potsdam",
+    state: "Brandenburg",
+    country: "Deutschland",
+    graduates_school_in: "Bereits Abitur"
 )
 
 # Applicant's profile
 Profile.find_or_create_by!(
-    cv: "Ich bin ein Schüler, der an Veranstaltungen teilnehmen möchte.",
-    user: applicant
+    user: applicant,
+    first_name: "Erika",
+    last_name: "Mustermann",
+    gender: "female",
+    birth_date: Date.parse('1999.08.14'),
+    school: "Schule am Griebnitzsee",
+    street_name: "Rudolf-Breitscheid-Str. 52",
+    zip_code: "14482",
+    city: "Potsdam",
+    state: "Brandenburg",
+    country: "Deutschland",
+    graduates_school_in: "2017"
 )
 
 # Teacher's event request
@@ -65,6 +104,21 @@ Request.find_or_create_by!(
 # Applicant's application letter
 ApplicationLetter.find_or_create_by!(
     motivation: "Ich würde sehr gerne an eurer Veranstaltung teilnehmen",
+    grade: 10,
+    experience: "Internet",
+    coding_skills: "HTML",
+    emergency_number: "01234567891",
+    vegeterian: false,
+    vegan: false,
+    allergic: false,
+    allergies: "",
+    status: ApplicationLetter.statuses[:pending],
     user: applicant,
     event: event
+)
+
+AgreementLetter.find_or_create_by!(
+  user: applicant,
+  event: event,
+  path: "/storage/agreement_letters/foo.pdf"
 )

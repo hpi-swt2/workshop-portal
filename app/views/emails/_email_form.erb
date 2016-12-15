@@ -1,0 +1,47 @@
+<%= form_for @email, url: {action: 'send_email', controller: 'emails'}, html: {class: 'email-form form-horizontal'} do |f| %>
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="hide_show_recipients"><%= t('.further_recipients') %>:</label>
+      <div class="col-sm-6 btn-group" data-toggle="buttons">
+        <label class="btn btn-default <%= 'active' if !@email.hide_recipients %>">
+          <%= f.radio_button :show_recipients, !@email.hide_recipients, checked: !@email.hide_recipients %>
+          <%= t('.show_recipients') %>
+        </label>
+        <label class="btn btn-default <%= 'active' if @email.hide_recipients %>">
+          <%= f.radio_button :hide_recipients, @email.hide_recipients, checked: @email.hide_recipients%>
+          <%= t('.hide_recipients') %>
+        </label>
+      </div>
+      <div class="col-sm-4 ">
+        <%= button_tag t('.copy'), type: 'button', id: 'send-emails-clipboard', class: 'btn btn-default pull-right' %>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="reply_to"><%= t('.reply_to') %>:</label>
+      <div class="col-sm-10">
+        <%= f.text_field :reply_to, class: 'email-reply_to form-control' %>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="to"><%= t('.recipients') %>:</label>
+      <div class="col-sm-10">
+        <%= f.text_field :recipients, class: 'email-to form-control' %>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="subject"><%= t('.subject') %>:</label>
+      <div class="col-sm-10">
+        <%= f.text_field :subject, class: 'email-subject form-control' %>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="content"><%= t('.content') %>:</label>
+      <div class="col-sm-10">
+        <%= f.text_area :content, class: 'email-content form-control', rows: 15 %>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-2 col-sm-offset-10">
+        <%= f.submit t('.send'), class: 'email-submit btn btn-default' %>
+      </div>
+    </div>
+<% end %>

@@ -1,0 +1,41 @@
+<%- model_class = Event -%>
+<div class="page-header">
+  <h1><%=t '.title', :default => model_class.model_name.human.titleize %> (<%= @event.kind.humanize %>)</h1>
+</div>
+<% if can? :view_participants, Event %>
+  <%= render :partial => 'show_event' %>
+  
+  <h1><%= t '.participants' %></h1>
+  <table class="table table-striped">
+    <tr>
+      <th><%= t 'activerecord.attributes.profile.name' %></th>
+      <th><%= t 'activerecord.attributes.profile.email' %></th>
+  	  <th><%= t 'agreement_letters.agreement_letter' %></th>
+    </tr>  
+  
+    <% @participants.each do |participant| %>
+    <tr>
+      
+      <td>
+      <%= participant.name %>
+      </td>
+      <td>
+      <%= participant.email %>
+      </td>
+      <td>
+        <% if participant.requires_agreement_letter_for_event?(@event) %>
+          <span class="text-muted"> <%= t '.unnecessary' %> </span>
+        <% elsif participant.agreement_letter_for_event?(@event) %>
+          <span class="text-success" title="<%= participant.agreement_letter_for_event(@event).updated_at %>"> <%= t '.available' %> </span>
+        <% else %>
+          <span class="text-danger"><%= t '.unavailable' %></span>
+        <% end %>
+      </td>
+    </tr>
+    <% end %>
+  </table>
+  
+  
+  <%= link_to t('.back', :default => t('helpers.links.back')),
+              event_path(@event), :class => 'btn btn-default'  %>
+<% end %>
