@@ -12,10 +12,9 @@ pre {
   font-size: 11px;
 }
 
-/* not-selector to prevent override of bootstrap button color */
-a:not(.btn) { color: #000; }
-a:visited:not(.btn) { color: #666; }
-a:hover:not(.btn) { color: #fff; background-color:#000; }
+a { color: #000; }
+a:visited { color: #666; }
+a:hover { color: #fff; background-color:#000; }
 
 .field, .actions {
   margin-bottom: 10px;

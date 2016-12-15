@@ -1,9 +1,6 @@
 Rails.application.routes.draw do
   resources :requests
-  resources :application_letters, path: 'applications' do
-    resources :application_notes,
-      only: :create
-  end
+  resources :application_letters, path: 'applications'
   resources :events
   resources :profiles
   devise_for :users

@@ -4,7 +4,7 @@ require 'rails_helper'
 require "cancan/matchers"
 
 describe User do
-  %i[pupil coach].each do |role|
+  %i[pupil tutor].each do |role|
     it "can create its profile" do
       user = FactoryGirl.create(:user, role: role)
       ability = Ability.new(user)
@@ -69,37 +69,6 @@ describe User do
       expect(ability).to_not be_able_to(:update, another_application)
       expect(ability).to_not be_able_to(:destroy, another_application)
     end
-  end
-
-  %i[coach organizer].each do |role|
-
-    it "can view and add notes to application letters as #{role}" do
-      user = FactoryGirl.create(:user, role: role)
-      ability = Ability.new(user)
-
-      expect(ability).to be_able_to(:view_and_add_notes, ApplicationLetter)
-      end
-
-    it "can view applicants for an event as #{role}" do
-      user = FactoryGirl.create(:user, role: role)
-      ability = Ability.new(user)
-
-      expect(ability).to be_able_to(:view_applicants, Event)
-    end
-  end
-
-  it "cannot view and add notes to application letters as pupil" do
-    user = FactoryGirl.create(:user, role: :pupil)
-    ability = Ability.new(user)
-
-    expect(ability).to_not be_able_to(:view_and_add_notes, ApplicationLetter)
-  end
-
-  it "cannot view applicants for an event as pupil" do
-    user = FactoryGirl.create(:user, role: :pupil)
-    ability = Ability.new(user)
-
-    expect(ability).to_not be_able_to(:view_applicants, Event)
   end
 
   it "can do everything as admin" do

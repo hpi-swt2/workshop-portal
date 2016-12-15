@@ -48,7 +48,6 @@ RSpec.configure do |config|
   # https://github.com/plataformatec/devise/wiki/How-To:-Test-with-Capybara
   config.include Warden::Test::Helpers
   config.include Devise::Test::ControllerHelpers, :type => :controller
-  config.include Devise::Test::ControllerHelpers, :type => :view
 
   # Reset warden after each test
   config.after :each do

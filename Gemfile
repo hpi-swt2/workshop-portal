@@ -46,7 +46,7 @@ gem 'devise-bootstrap-views'
 # Integrates Bootstrap Tooltip library with Rails asset pipeline
 # gem 'bootstrap-tooltip-rails'
 # Integrates a bootstrap-style datepicker with Rails asset pipeline
-gem 'bootstrap-datepicker-rails'
+# gem 'bootstrap-datepicker-rails'
 
 # Select2 dropdown replacement featuring autocomplete
 # gem 'select2-rails'
