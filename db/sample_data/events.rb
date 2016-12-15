@@ -45,7 +45,7 @@ end
 def event_batterie_akustik
   date_range_short = DateRange.find_or_create_by!(
       start_date: Date.tomorrow.next_day(3),
-      end_date: tomorrow.next_day(5)
+      end_date: Date.tomorrow.next_day(5)
   )
 
   date_range_medium = DateRange.find_or_create_by!(
