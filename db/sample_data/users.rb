@@ -40,7 +40,7 @@ end
 
 def user_lisa
   User.new(
-    name: "Lisa Schmidt",
+    name: "Lisa Ihde",
     email: "lisa@schueler.com",
     password: user_password,
     role: :pupil
@@ -48,15 +48,6 @@ def user_lisa
 end
 
 def user_tobi
-  User.new(
-    name: "Tobias Dürschmid",
-    email: "tobias.duerschmid@student.hpi.de",
-    password: user_password,
-    role: :organizer
-  )
-end
-
-def user_tobi_pupil
   User.new(
     name: "Tobias Dürschmid",
     email: "tobias.duerschmid@t-online.de",
