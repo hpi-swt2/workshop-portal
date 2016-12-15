@@ -27,15 +27,15 @@ FactoryGirl.define do
     trait :with_two_date_ranges do
       after(:build) do |event|
         event.date_ranges = []
-        event.date_ranges << FactoryGirl.create(:date_range, start_date: Date.tomorrow, end_date: Date.tomorrow.next_day(5))
-        event.date_ranges << FactoryGirl.create(:date_range, start_date: Date.tomorrow, end_date: Date.tomorrow.next_day(10))
+        event.date_ranges << FactoryGirl.create(:date_range, start_date: Date.tomorrow.next_day(1), end_date: Date.tomorrow.next_day(5))
+        event.date_ranges << FactoryGirl.create(:date_range, start_date: Date.tomorrow.next_day(1), end_date: Date.tomorrow.next_day(10))
       end
     end
 
     trait :single_day do
       after(:build) do |event|
         event.date_ranges = []
-        event.date_ranges << FactoryGirl.create(:date_range, start_date: Date.tomorrow, end_date: Date.tomorrow)
+        event.date_ranges << FactoryGirl.create(:date_range, start_date: Date.tomorrow.next_day(1), end_date: Date.tomorrow.next_day(1))
       end
     end
 
@@ -44,15 +44,15 @@ FactoryGirl.define do
         event.date_ranges = []
         event.date_ranges << FactoryGirl.create(:date_range, start_date: Date.current.next_day(3), end_date: Date.tomorrow.next_day(5))
         event.date_ranges << FactoryGirl.create(:date_range, start_date: Date.current.next_day(12), end_date: Date.current.next_day(16))
-        event.date_ranges << FactoryGirl.create(:date_range, start_date: Date.current, end_date: Date.tomorrow)
+        event.date_ranges << FactoryGirl.create(:date_range, start_date: Date.current.next_day(1), end_date: Date.current.next_day(2))
       end
     end
 
     trait :with_unreasonably_long_range do
       after(:build) do |event|
         event.date_ranges << FactoryGirl.create(:date_range,
-          start_date: Date.current,
-          end_date: Date.tomorrow.next_day(Rails.configuration.unreasonably_long_event_time_span))
+          start_date: Date.tomorrow,
+          end_date: Date.tomorrow.next_day(Rails.configuration.unreasonably_long_event_time_span) + 8)
       end
     end
 
@@ -80,7 +80,8 @@ FactoryGirl.define do
       end
       organizer "Workshop-Organizer"
       knowledge_level "Workshop-Knowledge Level"
-
+      application_deadline Date.current
+      
       after(:create) do |event, evaluator|
         create_list(:application_letter_accepted, evaluator.accepted_application_letters_count, event: event)
         create_list(:application_letter_rejected, evaluator.rejected_application_letters_count, event: event)

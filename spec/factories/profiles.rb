@@ -12,7 +12,7 @@ FactoryGirl.define do
   factory :profile do
     sequence(:first_name) { |n| "Karl#{n}" }
     sequence(:last_name) { |n| "Doe#{n}" }
-    gender  "männlich"
+    gender  "male"
     birth_date  15.years.ago
     school  "Schule am Griebnitzsee"
     street_name  "Rudolf-Breitscheid-Str. 52"
@@ -26,14 +26,14 @@ FactoryGirl.define do
       first_name "Andreas"
       last_name "Andresen"
       birth_date 13.years.ago    # low age, but higher date
-      gender "männlich"
+      gender "male"
     end
 
     trait :high_values do
       first_name "Zoe"
       last_name "Z"
       birth_date 20.years.ago
-      gender "weiblich"
+      gender "female"
     end
   end
 

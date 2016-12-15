@@ -11,7 +11,7 @@
 
 FactoryGirl.define do
     factory :date_range  do
-        start_date Date.tomorrow
+        start_date Date.tomorrow.next_day(1)
         end_date Date.tomorrow.next_day(10)
 
         trait :with_negative_range do
@@ -25,6 +25,3 @@ FactoryGirl.define do
         end
     end 
 end
-
-
-
