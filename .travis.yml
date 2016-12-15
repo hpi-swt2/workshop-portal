@@ -21,5 +21,4 @@ deploy:
   run:
   - rake db:schema:load
   - rake db:seed
-  - rake db:populate_sample_data
   - restart
