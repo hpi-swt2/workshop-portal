@@ -3,6 +3,7 @@ require "rails_helper"
 RSpec.describe Mailer, type: :service do
   let(:recipients_string) { 'test@example.de, test2@example.de' }
   let(:recipients_array) { recipients_string.lines(',') }
+
   let(:reply_to) { ['test3@example.de'] }
   let(:subject) {'Subject'}
   let(:content) {'Awesome content'}

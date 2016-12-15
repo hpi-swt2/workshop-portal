@@ -1,5 +1,23 @@
+def event_programmierkurs
+  date_range_singleday = DateRange.create!(
+      start_date: Date.new(2017, 05, 04),
+      end_date: Date.new(2017, 05, 05)
+  )
+  Event.new(
+      name: 'Bechersäuberungsevent',
+      description: 'Ihr wolltet schon immer einmal eine eigene App programmieren? In diesem Workshop lernt ihr object-orientierte Programmierung am Beispiel von einer Android App.',
+      max_participants: 25,
+      organizer: 'HPI Schülerklub',
+      knowledge_level: 'Anfänger',
+      date_ranges: [date_range_singleday], 
+      application_deadline: Date.tomorrow,
+      draft: false, 
+      application_status_locked: false
+  )
+end
+
 def event_bechersaeuberungsevent
-  date_range_singleday = DateRange.find_or_create_by!(
+  date_range_singleday = DateRange.create!(
       start_date: Date.new(2017, 04, 04),
       end_date: Date.new(2017, 04, 05)
   )
@@ -20,7 +38,7 @@ die richtige Größe für Becher-Stapel herausfindet und anwendet.',
 end
 
 def event_gongakrobatik
-  date_range_long = DateRange.find_or_create_by!(
+  date_range_long = DateRange.create!(
       start_date: Date.new(2020, 02, 29),
       end_date: Date.new(2021, 03, 05)
   )
@@ -43,12 +61,12 @@ Ding Gong-Verein Berlin. Bei Bedarf können wir eine zweite Veranstaltung durchf
 end
 
 def event_batterie_akustik
-  date_range_short = DateRange.find_or_create_by!(
+  date_range_short = DateRange.create!(
       start_date: Date.tomorrow.next_day(3),
       end_date: Date.tomorrow.next_day(5)
   )
 
-  date_range_medium = DateRange.find_or_create_by!(
+  date_range_medium = DateRange.create!(
       start_date: Date.new(2017, 06, 01),
       end_date: Date.new(2017, 06, 14)
   )
@@ -73,15 +91,15 @@ Arbeitsmarkt. Bitte beachtet die maximale Teilnehmeranzahl! Wichtig: Es gilt fir
 end
 
 def event_bachlorpodium
-  date_range_singleday1 = DateRange.find_or_create_by!(
+  date_range_singleday1 = DateRange.create!(
       start_date: Date.tomorrow,
       end_date: Date.tomorrow
   )
-  date_range_singleday2 = DateRange.find_or_create_by!(
+  date_range_singleday2 = DateRange.create!(
       start_date: Date.new(2017, 04, 04),
       end_date: Date.new(2017, 04, 05)
   )
-  date_range_singleday3 = DateRange.find_or_create_by!(
+  date_range_singleday3 = DateRange.create!(
       start_date: Date.new(2017, 04, 06),
       end_date: Date.new(2017, 04, 06)
   )
