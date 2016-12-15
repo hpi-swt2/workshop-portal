@@ -1,0 +1,16 @@
+# German translation for emails
+
+de:
+  emails:
+    send_email:
+      sending_successful: 'Email wurde erfolgreich versendet'
+    email_form:
+      further_recipients: 'Andere Empfänger'
+      show_recipients: 'Sichtbar'
+      hide_recipients: 'Versteckt'
+      copy: 'Empfänger kopieren'
+      reply_to: 'Absender'
+      recipients: 'Empfänger'
+      subject: 'Betreff'
+      content: 'Inhalt'
+      send: 'Senden'

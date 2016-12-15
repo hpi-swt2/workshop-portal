@@ -167,5 +167,17 @@ describe Event do
     application_letter_accepted_2 = FactoryGirl.create(:application_letter_accepted, user: FactoryGirl.create(:user), event: event)
     expect(event.compute_occupied_places).to eq(2)
   end
+
+  it "generates a new email for acceptance" do
+    event = FactoryGirl.create(:event_with_accepted_applications)
+    email = event.generate_acceptances_email
+    expect(email).to have_attributes(hide_recipients: false, recipients: event.email_adresses_of_accepted_applicants, reply_to: 'workshop.portal@hpi.de', subject: '', content: '')
+  end
+
+  it "generates a new email for rejections" do
+    event = FactoryGirl.create(:event_with_accepted_applications)
+    email = event.generate_rejections_email
+    expect(email).to have_attributes(hide_recipients: false, recipients: event.email_adresses_of_rejected_applicants, reply_to: 'workshop.portal@hpi.de', subject: '', content: '')
+  end
 end
 

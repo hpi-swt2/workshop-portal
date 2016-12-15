@@ -84,6 +84,9 @@ gem 'prawn'
 # Simple, Heroku-friendly Rails app configuration using ENV and a single YAML file
 gem 'figaro'
 
+# Allow ORM functionality in plain ruby models
+gem 'active_attr'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'

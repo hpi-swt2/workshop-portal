@@ -52,13 +52,16 @@ de:
       publish: "Veröffentlichen"
       update: "Aktualisieren"
       add_timespan: "Zeitspanne hinzufügen"
-
+    email:
+      templates: "Vorlagen"
     errors:
       application_deadline_before_start_of_event: "Bewerbungsschluss muss vor Beginn der Veranstaltung liegen"
 
   activerecord:
       models:
-        event: "Veranstaltung"
+        event:
+          one: "Veranstaltung"
+          other: "Veranstaltungen"
       attributes:
         event:
           name: "Name"
