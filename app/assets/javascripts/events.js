@@ -14,9 +14,8 @@ jQuery(function() {
     });
 
     $('#send-emails-clipboard').click(function () {
-        var $temp = $("<input>");
-        $('body').append($temp);
-        $temp.val($('#send-emails-list').val()).select();
+        var $recipients = document.getElementById("email_recipients");
+        $recipients.select();
         try {
             var successful = document.execCommand('copy');
             var msg = successful ? 'successful' : 'unsuccessful';
