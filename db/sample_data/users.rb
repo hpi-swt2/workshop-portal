@@ -28,3 +28,57 @@ def user_applicant
     role: :pupil
   )
 end
+
+def user_max
+  User.new(
+    name: "Max Mustermann",
+    email: "max@schueler.com",
+    password: user_password,
+    role: :pupil
+  )
+end
+
+def user_lisa
+  User.new(
+    name: "Lisa Schmidt",
+    email: "lisa@schueler.com",
+    password: user_password,
+    role: :pupil
+  )
+end
+
+def user_tobi
+  User.new(
+    name: "Tobias Dürschmid",
+    email: "tobias.duerschmid@student.hpi.de",
+    password: user_password,
+    role: :organizer
+  )
+end
+
+def user_tobi_pupil
+  User.new(
+    name: "Tobias Dürschmid",
+    email: "tobias.duerschmid@t-online.de",
+    password: user_password,
+    role: :pupil
+  )
+end
+
+def user_organizer
+  User.new(
+    name: "Organizer",
+    email: "organizer@workshops.hpi.de",
+    password: user_password,
+    role: :admin
+  )
+end
+
+def user_coach
+  User.new(
+    name: "Coach",
+    email: "coach@workshops.hpi.de",
+    password: user_password,
+    role: :coach
+  )
+end
