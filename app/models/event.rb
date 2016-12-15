@@ -92,6 +92,15 @@ class Event < ActiveRecord::Base
     application_letters.all? { |application_letter| application_letter.status != 'pending' }
   end
 
+  # Returns a string of all email addresses of accepted applications
+  #
+  # @param none
+  # @return [String] Concatenation of all email addresses of accepted applications, seperated by ','
+  def email_adresses_of_accepted_applicants
+    accepted_applications = application_letters.where(status: ApplicationLetter.statuses[:accepted])
+    accepted_applications.map{ |application_letter| application_letter.user.email }.join(',')
+  end
+
   # Returns a string of all email addresses of rejected applications
   #
   # @param none
@@ -101,13 +110,32 @@ class Event < ActiveRecord::Base
     rejected_applications.map{ |applications_letter| applications_letter.user.email }.join(',')
   end
 
-  # Returns a string of all email addresses of accepted applications
+  # Returns a new acceptance email
   #
   # @param none
-  # @return [String] Concatenation of all email addresses of accepted applications, seperated by ','
-  def email_adresses_of_accepted_applicants
-    accepted_applications = application_letters.where(status: ApplicationLetter.statuses[:accepted])
-    accepted_applications.map{ |application_letter| application_letter.user.email }.join(',')
+  # @return [Email] new acceptance email
+  def generate_acceptances_email
+    email = Email.new
+    email.hide_recipients = false
+    email.recipients = email_adresses_of_accepted_applicants
+    email.reply_to = 'workshop.portal@hpi.de'
+    email.subject = ''
+    email.content = ''
+    return email
+  end
+
+  # Returns a new rejection email
+  #
+  # @param none
+  # @return [Email] new rejection email
+  def generate_rejections_email
+    email = Email.new
+    email.hide_recipients = false
+    email.recipients = email_adresses_of_rejected_applicants
+    email.reply_to = 'workshop.portal@hpi.de'
+    email.subject = ''
+    email.content = ''
+    return email
   end
 
   # Returns the number of free places of the event, this value may be negative
