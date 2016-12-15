@@ -59,7 +59,9 @@ de:
 
   activerecord:
       models:
-        event: "Veranstaltung"
+        event:
+          one: "Veranstaltung"
+          other: "Veranstaltungen"
       attributes:
         event:
           name: "Name"
