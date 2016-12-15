@@ -15,7 +15,7 @@ def profile_pupil(user)
   )
 end
 
-def profile_pupil_1(user)
+def profile_pupil_max(user)
   Profile.new(
     user: user,
     first_name: "Max",
@@ -29,23 +29,6 @@ def profile_pupil_1(user)
     state: "Brandenburg",
     country: "Deutschland",
     graduates_school_in: "2018"
-  )
-end
-
-def profile_pupil_2(user)
-  Profile.new(
-    user: user,
-    first_name: "Lisa",
-    last_name: "Schmidt",
-    gender: "female",
-    birth_date: Date.parse('2001.02.19'),
-    school: "Musterschule",
-    street_name: "Musterstraße 42",
-    zip_code: "14482",
-    city: "Potsdam",
-    state: "Brandenburg",
-    country: "Deutschland",
-    graduates_school_in: "2019"
   )
 end
 

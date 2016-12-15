@@ -3,13 +3,33 @@ def event_programmierkurs
       start_date: Date.new(2017, 05, 04),
       end_date: Date.new(2017, 05, 05)
   )
+
   Event.new(
-      name: 'Bechersäuberungsevent',
+      name: 'Android Programmierkurs',
       description: 'Ihr wolltet schon immer einmal eine eigene App programmieren? In diesem Workshop lernt ihr object-orientierte Programmierung am Beispiel von einer Android App.',
       max_participants: 25,
       organizer: 'HPI Schülerklub',
       knowledge_level: 'Anfänger',
       date_ranges: [date_range_singleday], 
+      application_deadline: Date.tomorrow,
+      draft: false, 
+      application_status_locked: false
+  )
+end
+
+def event_mintcamp
+  date_range_mint_camp = DateRange.create!(
+      start_date: Date.new(2017, 03, 30),
+      end_date: Date.new(2017, 04, 04)
+  )
+
+  Event.new(
+      name: 'MINT-Camp',
+      description: 'Wie soll die digitale Zukunft in den Schulen aussehen? In immer mehr Schulen kommen Smartboards zum Einsatz. Diese elektronischen Tafeln haben das Potenzial den Unterricht und das Lernen nachhaltig zu verbessern. Häufig wird das Gerät allerdings auf seinen älteren Verwandten reduziert und nur zum Schreiben, bestenfalls auch für die Medienwiedergabe genutzt. Der Grund dafür sind meist schwer verständliche Programme, die weder die Bedürfnisse der Schüler noch die der Lehrer erfüllen. Dabei sind weitaus interessantere und vor allem sinnvollere Anwendungen für die intelligenten Tafeln denkbar. In diesem MINT-Camp entwickeln wir in kleinen Teams zunächst mit Hilfe von Design Thinking spannende neuartige Ideen für Smartboards. Anschließend werden die Ideen mit Webtechnologien implementiert und können direkt ausprobiert werden. Zum Abschluss hat jedes Team die Möglichkeit seine fertig entwickelte Anwendung zu präsentieren. Dabei stehen euch die ganze Zeit HPI-Studenten zur Seite und helfen euch bei Problemen aller Art. Vorkenntnisse sind keine erforderlich. ',
+      max_participants: 25,
+      organizer: 'HPI Schülerklub',
+      knowledge_level: 'Fortgeschrittene',
+      date_ranges: [date_range_mint_camp], 
       application_deadline: Date.tomorrow,
       draft: false, 
       application_status_locked: false
