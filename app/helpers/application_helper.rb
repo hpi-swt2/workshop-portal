@@ -16,10 +16,6 @@ module ApplicationHelper
     else
       o << (menu_item t(:create_profile, scope: 'navbar'), new_profile_path)
     end
-    # pupils get their applications
-    if current_user.role == "pupil"
-      o << (menu_item t(:my_application_letters, scope: 'navbar'), application_letters_path)
-    end
     # admins get user management
     if current_user.role == "admin"
       o << (menu_item t(:user_management, scope: 'navbar'), profiles_path)
