@@ -165,7 +165,7 @@ RSpec.describe ApplicationLettersController, type: :controller do
 
   describe "POST #create" do
     before :each do
-      sign_in FactoryGirl.create(:user)
+      sign_in FactoryGirl.create(:profile).user
     end
     context "with valid params" do
       it "creates a new Application" do
@@ -198,5 +198,4 @@ RSpec.describe ApplicationLettersController, type: :controller do
       end
     end
   end
-
 end

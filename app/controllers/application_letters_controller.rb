@@ -16,8 +16,17 @@ class ApplicationLettersController < ApplicationController
 
   # GET /applications/new
   def new
+    if not current_user
+      message = I18n.t('application_letters.login_before_creation')
+      return redirect_to user_session_path, :alert => message
+    elsif not current_user.profile.present?
+      message = I18n.t('application_letters.fill_in_profile_before_creation')
+      flash[:event_id] = params[:event_id]
+      flash.keep(:event_id)
+      return redirect_to new_profile_path, :alert => message
+    end
     @application_letter = ApplicationLetter.new
-    authorize! :new, @application_letter, :message => I18n.t('application_letters.login_before_creation')
+    authorize! :new, @application_letter
   end
 
   # GET /applications/1/edit

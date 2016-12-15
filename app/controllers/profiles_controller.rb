@@ -15,6 +15,7 @@ class ProfilesController < ApplicationController
   # GET /profiles/new
   def new
     @profile = Profile.new
+    flash.keep(:event_id)
   end
 
   # GET /profiles/1/edit
@@ -27,7 +28,11 @@ class ProfilesController < ApplicationController
     @profile.user_id = current_user.id
 
     if @profile.save
-      redirect_to @profile, notice: 'Profile was successfully created.'
+      if flash[:event_id]
+        redirect_to new_application_letter_path(:event_id => flash[:event_id])
+      else
+        redirect_to @profile
+      end
     else
       render :new
     end

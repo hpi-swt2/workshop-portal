@@ -26,6 +26,12 @@ RSpec.configure do |config|
 
   Capybara.javascript_driver = :poltergeist
 
+  # Skip PhantomJS tests if PhantomJS is not installed.
+  config.filter_run_excluding :js => (not Cliver::detect('phantomjs'))
+
+  # load custom matchers
+  Dir[File.dirname(__FILE__) + "/support/matchers/*.rb"].each {|f| require f}
+
   # Use color not only in STDOUT but also in pagers and files
   # config.tty = true
 

@@ -15,6 +15,7 @@ de:
       wird zur Gruppeneinteilung benötigt."
     login_before_creation: "Du musst angemeldet sein, um dich für Workshops bewerben zu können."
     successful_update: "Die Bewerbung wurde erfolgreich aktualisiert"
+    fill_in_profile_before_creation: "Du musst erst dein Profil ausfüllen, um dich für Workshops bewerben zu können."
 
   activerecord:
     models:
@@ -27,7 +28,7 @@ de:
     attributes:
       application_letter:
           grade: "Klassenstufe"
-          experience: "Wie hast du von diesem Event erfahren?"
+          experience: "Wie hast du von uns erfahren?"
           motivation: "Motivationsschreiben"
           coding_skills: "Mit welchen Programmiersprachen hast du bereits Erfahrungen gesammelt?"
           emergency_number: "Telefonnummer für Notfälle"
@@ -37,6 +38,7 @@ de:
           allergies: "Falls Allergien vorhanden, welche?"
 
   application_status:
-    accepted: "angenommen"
-    rejected: "abgelehnt"
-    pending: "ausstehend"
+    accepted: "Angenommen"
+    rejected: "Abgelehnt"
+    pending: "Ausstehend"
+    alternative: "Nachrücker"

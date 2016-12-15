@@ -40,6 +40,7 @@ describe User do
 
     it "can create its application" do
       user = FactoryGirl.create(:user, role: role)
+      FactoryGirl.create(:profile, user: user)
       ability = Ability.new(user)
 
       expect(ability).to be_able_to(:new, ApplicationLetter)
