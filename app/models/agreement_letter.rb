@@ -76,7 +76,7 @@ class AgreementLetter < ActiveRecord::Base
       elsif wrong_filetype?(file)
         errors.add(:file, I18n.t("agreement_letters.wrong_filetype"))
         false
-      elsif wrong_file_trailer?(file)
+      elsif unable_to_open?(file)
         errors.add(:file, I18n.t("agreement_letters.corrupt_document"))
         false
       else
@@ -96,11 +96,11 @@ class AgreementLetter < ActiveRecord::Base
       file.content_type != ALLOWED_MIMETYPE
     end
 
-  def wrong_file_trailer? file
+  def unable_to_open? file
     begin
-    page_analysis = PDF::Inspector::Page.analyze_file(file.open)
-    false
-    rescue
+      PDF::Inspector::Page.analyze_file(file.open)
+      false
+    rescue PDF::Reader::UnsupportedFeatureError, PDF::Reader::MalformedPDFError
       true
     end
   end
