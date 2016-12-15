@@ -30,6 +30,7 @@ en:
     profiles: "Profiles"
     application_letters: "Applications"
     requests: "Requests"
+    my_events: "My events"
     settings: "Settings"
     login: "Log in"
     logout: "Log out"

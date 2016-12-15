@@ -1,0 +1,30 @@
+<div class="page-header">
+  <h1><%=t '.title', :default => "Events" %></h1>
+</div>
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th><%= I18n.t("my_events.index.td_events") %></th>
+    <th><%= I18n.t("my_events.index.td_status") %></th>
+    <th><%=t '.actions', :default => t("helpers.actions") %></th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @application_letters.each do |letter|
+    event = Event.find(letter.event_id)
+  %>
+
+      <tr>
+        <td><%= link_to event.name, event_path(event.id) %></td>
+        <td><%= letter.status_type %></td>
+        <td>
+          <%= if not letter.after_deadline?
+                link_to t('.edit', :default => t("helpers.links.edit")),
+                        edit_application_letter_path(letter), :class => 'btn btn-default btn-xs'
+              end
+          %>
+        </td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>

@@ -11,4 +11,3 @@ admin = User.find_or_initialize_by(
 )
 admin.password = "system"
 admin.save!
-
