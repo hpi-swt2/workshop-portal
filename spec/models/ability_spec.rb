@@ -150,6 +150,15 @@ describe User do
     expect(ability).to_not be_able_to(:destroy, another_application)
   end
 
+  %i[pupil coach].each do |role|
+    it "cannot update application letter status as #{role}" do
+      user = FactoryGirl.create(:user, role: role)
+      ability = Ability.new(user)
+
+      expect(ability).to_not be_able_to(:update_status, ApplicationLetter)
+    end
+  end
+
   it "can update application letter status as organizer" do
     user = FactoryGirl.create(:user, role: :organizer)
     another_user = FactoryGirl.create(:user)
