@@ -73,8 +73,6 @@ ActiveRecord::Schema.define(version: 20161209180054) do
     t.boolean  "draft"
     t.string   "organizer"
     t.string   "knowledge_level"
-    t.integer  "kind",                 default: 0
-    t.boolean  "draft"
     t.date     "application_deadline"
     t.boolean  "application_status_locked"
   end
