@@ -43,7 +43,7 @@ class ApplicationLettersController < ApplicationController
   # PATCH/PUT /applications/1
   def update
     if @application_letter.update_attributes(application_params)
-      redirect_to :back, notice: 'Application was successfully updated.' rescue ActionController::RedirectBackError redirect_to root_path
+      redirect_to :back, notice: I18n.t('application_letters.successful_update') rescue ActionController::RedirectBackError redirect_to root_path
     else
       render :edit
     end
@@ -52,9 +52,9 @@ class ApplicationLettersController < ApplicationController
   # PATCH/PUT /applications/1/status
   def update_status
     if @application_letter.update_attributes(application_status_param)
-      redirect_to :back, notice: 'Application was successfully updated.' rescue ActionController::RedirectBackError redirect_to root_path
+      redirect_to :back, notice: I18n.t('application_letters.successful_update') rescue ActionController::RedirectBackError redirect_to root_path
     # else
-    #   render :edit
+    #  render :edit
     end
   end
 
