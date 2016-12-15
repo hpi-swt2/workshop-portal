@@ -74,7 +74,7 @@ def user_organizer
   )
 end
 
-def user_organizer
+def user_coach
   User.new(
     name: "Coach",
     email: "coach@workshops.hpi.de",

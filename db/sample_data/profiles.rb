@@ -99,3 +99,20 @@ def profile_tobi(user)
     graduates_school_in: "Bereits Abitur"
   )
 end
+
+def profile_lisa(user)
+  Profile.new(
+      user: user,
+      first_name: "Lisa",
+      last_name: "Ihde",
+      gender: "female",
+      birth_date: Date.parse('1996.09.21'),
+      school: "Sophie-Scholl-Gymnasium",
+      street_name: "Stahnsdorfer Str.",
+      zip_code: "14482",
+      city: "Potsdam",
+      state: "Brandenburg",
+      country: "Deutschland",
+      graduates_school_in: "Bereits Abitur"
+  )
+end

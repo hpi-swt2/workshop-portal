@@ -32,9 +32,9 @@ def add_sample_data
   profiles[:tobi] = profile_tobi(users[:tobi])
   profiles[:ptobi] = profile_tobi(users[:ptobi])
   profiles[:lisa] = profile_lisa(users[:lisa])
-  profiles[:max]  = profile_max(users[:max])
-  profiles[:organizer] = profile_max(users[:organizer])
-  profiles[:coach]  = profile_max(users[:coach])
+  profiles[:max]  = profile_pupil_1(users[:max])
+  profiles[:organizer] = profile_pupil_1(users[:organizer])
+  profiles[:coach]  = profile_pupil_1(users[:coach])
 
   application_letters = Hash.new
   application_letters[:applicant_gongakrobatik] = application_letter_applicant_gongakrobatik(users[:applicant], events[:gongakrobatik])
