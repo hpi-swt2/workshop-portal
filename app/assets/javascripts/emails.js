@@ -3,7 +3,6 @@
 
 jQuery(function() {
     $(document).on('click', "#send-emails-clipboard", function() {
-        console.log('Test');
         $("#email_recipients").select();
         try {
            document.execCommand('copy');
