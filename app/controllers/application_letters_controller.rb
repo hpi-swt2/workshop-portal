@@ -53,8 +53,8 @@ class ApplicationLettersController < ApplicationController
   def update_status
     if @application_letter.update_attributes(application_status_param)
       redirect_to :back, notice: I18n.t('application_letters.successful_update') rescue ActionController::RedirectBackError redirect_to root_path
-    # else
-    #  render :edit
+    else
+      render :edit
     end
   end
 

@@ -26,6 +26,7 @@ class ApplicationLetter < ActiveRecord::Base
   validate :deadline_cannot_be_in_the_past, :if => Proc.new { |letter| !(letter.status_changed?) }
 
   enum status: {accepted: 1, rejected: 0, pending: 2}
+  validates :status, inclusion: { in: statuses.keys }
 
   # Checks if the deadline is over
   #
