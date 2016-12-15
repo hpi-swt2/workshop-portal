@@ -12,20 +12,6 @@ jQuery(function() {
         modal.find('#send-emails-mailto').attr('href', 'mailto:' + list);
         modal.find('#send-emails-list').val(list);
     });
-
-    $('#send-emails-clipboard').click(function () {
-        var $recipients = document.getElementById("email_recipients");
-        $recipients.select();
-        try {
-            var successful = document.execCommand('copy');
-            var msg = successful ? 'successful' : 'unsuccessful';
-            console.log('Copying emails to the clipboard was ' + msg);
-        }
-        catch (err) {
-            console.log('Unable to copy emails to the clipboard');
-        }
-        $temp.remove();
-    });
 });
 
 function addEventDatePicker() {

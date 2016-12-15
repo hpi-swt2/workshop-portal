@@ -2,12 +2,12 @@
     <div class="form-group">
       <label class="control-label col-sm-2" for="hide_show_recipients"><%= t('.further_recipients') %>:</label>
       <div class="col-sm-6 btn-group" data-toggle="buttons">
-        <label class="btn btn-default <%= 'active' if !@email.hide_recipients %>">
-          <%= f.radio_button :show_recipients, !@email.hide_recipients, checked: !@email.hide_recipients %>
+        <label class="btn btn-default <%= 'active' unless @email.hide_recipients %>">
+          <%= f.radio_button :hide_recipients, @email.hide_recipients, checked: !@email.hide_recipients %>
           <%= t('.show_recipients') %>
         </label>
         <label class="btn btn-default <%= 'active' if @email.hide_recipients %>">
-          <%= f.radio_button :hide_recipients, @email.hide_recipients, checked: @email.hide_recipients%>
+          <%= f.radio_button :hide_recipients, !@email.hide_recipients, checked: @email.hide_recipients%>
           <%= t('.hide_recipients') %>
         </label>
       </div>
