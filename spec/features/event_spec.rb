@@ -102,10 +102,14 @@ describe "Event", type: :feature do
       visit new_event_path
 
       fill_in "Maximale Teilnehmerzahl", :with => 25
-      fill_in "event[date_ranges_attributes][][start_date]", with: I18n.l(Date.current)
-      fill_in "event[date_ranges_attributes][][end_date]", with: I18n.l(Date.yesterday)
+
+      within page.find("#event-date-pickers").all("div")[0] do
+        fill_in "event[date_ranges_attributes][][start_date]", with: I18n.l(Date.current.prev_day(7))
+        fill_in "event[date_ranges_attributes][][end_date]", with: I18n.l(Date.yesterday.prev_day(7))
+      end
 
       click_link "Zeitspanne hinzufügen"
+
       within page.find("#event-date-pickers").all("div")[1] do
         fill_in "event[date_ranges_attributes][][start_date]", with: I18n.l(Date.current)
         fill_in "event[date_ranges_attributes][][end_date]", with: I18n.l(Date.yesterday)
