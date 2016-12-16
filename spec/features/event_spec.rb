@@ -97,6 +97,25 @@ describe "Event", type: :feature do
 
       expect(page).to have_text("Bewerbungsschluss muss vor Beginn der Veranstaltung liegen")
     end
+
+    it "should not display errors on date ranges twice", js: true do
+      visit new_event_path
+
+      fill_in "Maximale Teilnehmerzahl", :with => 25
+      fill_in "event[date_ranges_attributes][][start_date]", with: I18n.l(Date.current)
+      fill_in "event[date_ranges_attributes][][end_date]", with: I18n.l(Date.yesterday)
+
+      click_link "Zeitspanne hinzufügen"
+      within page.find("#event-date-pickers").all("div")[1] do
+        fill_in "event[date_ranges_attributes][][start_date]", with: I18n.l(Date.current)
+        fill_in "event[date_ranges_attributes][][end_date]", with: I18n.l(Date.yesterday)
+      end
+
+      click_button I18n.t(".events.form.publish")
+
+      expect(page).to have_css("div.has_error")
+      expect(page).to have_content("kann nicht vor Start-Datum liegen", count: 1)
+    end
   end
 
   describe "show page" do
