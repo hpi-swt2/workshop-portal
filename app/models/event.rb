@@ -167,7 +167,7 @@ class Event < ActiveRecord::Base
     event.date_ranges.each do |date_range|
       next if date_range.valid?
       date_range.errors.full_messages.each do |msg|
-        errors.add :date_ranges, msg
+        errors.add :date_ranges, msg unless errors[:date_ranges].include? msg
       end
     end
   end
