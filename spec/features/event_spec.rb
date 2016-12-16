@@ -113,7 +113,7 @@ describe "Event", type: :feature do
 
       click_button I18n.t(".events.form.publish")
 
-      expect(page).to have_css("div.has_error")
+      expect(page).to have_css("div.has-error")
       expect(page).to have_content("kann nicht vor Start-Datum liegen", count: 1)
     end
   end
