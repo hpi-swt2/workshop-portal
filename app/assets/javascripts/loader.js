@@ -1,6 +1,6 @@
 document.addEventListener('turbolinks:visit', function() {
-  $('.loader').show();
+  $('.loader').fadeIn();
 });
 document.addEventListener('turbolinks:load', function() {
-  $('.loader').hide();
+  $('.loader').fadeOut();
 });
