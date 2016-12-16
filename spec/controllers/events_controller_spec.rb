@@ -199,10 +199,19 @@ RSpec.describe EventsController, type: :controller do
                           "1242_print"  => "Max Mustermann",
                           "1243_print"  => "Max Mustermann",
                           "1244_print"  => "Max Mustermann",
-                          "1245_print"  => "Max Mustermann"
+                          "1245_print"  => "River Song"
       pdf = PDF::Inspector::Text.analyze(rendered_pdf.body)
       expect(pdf.strings).to include("Max Mustermann")
       expect(pdf.strings).to include("John Doe")
+      expect(pdf.strings).to include("River Song")
+    end
+
+    it "does not break when no user is selected" do
+      event = Event.create! valid_attributes
+      rendered_pdf = post :print_badges,
+                          event_id: event.to_param,
+                          session: valid_session
+      PDF::Inspector::Text.analyze(rendered_pdf.body)
     end
   end
 
