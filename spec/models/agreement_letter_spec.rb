@@ -26,12 +26,6 @@ RSpec.describe AgreementLetter, type: :model do
     fixture_file_upload(filepath, 'text/x-fortran')
   end
 
-  let(:fake_pdf_file) do
-    extend ActionDispatch::TestProcess
-    filepath = Rails.root.join('spec/testfiles/fake.pdf')
-    fixture_file_upload(filepath, 'application/pdf')
-  end
-
   it "returns the correct filename" do
     user = @agreement_letter.user
     event = @agreement_letter.event
@@ -77,13 +71,6 @@ RSpec.describe AgreementLetter, type: :model do
   it "does not save a file that is not a PDF" do
     mock_writing_to_filesystem do
       expect(@agreement_letter.save_file(fake_file)).to be false
-      expect(File.exists?(@agreement_letter.path)).to be false
-    end
-  end
-
-  it "does not save a file that is not a real PDF" do
-    mock_writing_to_filesystem do
-      expect(@agreement_letter.save_file(fake_pdf_file)).to be false
       expect(File.exists?(@agreement_letter.path)).to be false
     end
   end
