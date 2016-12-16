@@ -1,25 +1,40 @@
 <h1><%= t('events.badges.title') + "'" + @event.name + "'" %></h1>
+
+<%= form_tag event_badges_path(@event), :html => { :class => "form-horizontal event" } do |f| %>
+<h3>Optionen</h3>
+<h4>Logo</h3>
+<%= file_field_tag "logo_upload",
+  class: "btn btn-default btn-file",
+  accept: "image/*" %>
+<h4>Name</h3>
+<%= select_tag "name_select", options_for_select([
+  ["First name only", :first],
+  ["Last name only", :last],
+  ["Full name", :full]]) %>
+<h4>Organisation</h3>
+<%= check_box_tag "show_organization" %>
+<h4>Gruppen-Farbe</h3>
+<%= check_box_tag "show_color" %>
 <h3><%= t('events.badges.participants') %></h3>
 
-<%= form_for event_badges_path(@event), :html => { :class => "form-horizontal event" } do |f| %>
-<table>
+<table class="table table-striped table-bordered table-hover">
   <tr>
     <th><%= Profile.human_attribute_name(:name) %></th>
     <th><%= t('events.badges.printBoolean') %></th>
   </tr>
 
   <% @participants.each do |participant| %>
-      <tr>
-        <td>
-          <%= participant.name %>
-        </td>
-        <td>
-          <%= f.check_box_tag "#{participant.id}_print", participant.name%>
-        </td>
-      </tr>
+    <tr>
+      <td>
+        <%= participant.name %>
+      </td>
+      <td>
+        <%= check_box_tag "#{participant.id}_print", participant.name%>
+      </td>
+    </tr>
   <% end %>
 </table>
 
 
-<%= f.submit t('events.badges.print'), :class => 'btn btn-primary' %>
+<%= submit_tag t('events.badges.print'), :class => 'btn btn-primary' %>
 <% end %>
