@@ -1,6 +1,6 @@
 <h1><%= t('events.badges.title') + "'" + @event.name + "'" %></h1>
 
-<%= form_tag event_badges_path(@event), :html => { :class => "form-horizontal event" } do |f| %>
+<%= form_tag event_badges_path(@event), class: "form-horizontal event", multipart: true do %>
 <h3>Optionen</h3>
 <h4>Logo</h3>
 <%= file_field_tag "logo_upload",

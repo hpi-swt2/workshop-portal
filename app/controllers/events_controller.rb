@@ -68,7 +68,7 @@ class EventsController < ApplicationController
     name_format = params[:name_format]
     show_color = params[:show_color]
     show_organization = params[:show_organization]
-    logo = params[:logo]
+    logo = params[:logo_upload]
 
     participant_ids = params.select { |key, value| key.include? "_print" }.values
     participants = User.where(id: participant_ids)
