@@ -64,8 +64,12 @@ class EventsController < ApplicationController
 
   # POST /events/1/badges
   def print_badges
-    names = params.select { |key, value| key.include? "_print" }.values
-    pdf = BadgesPDF.generate(@event, names)
+    @event = Event.find(params[:event_id])
+    participant_ids = params.select { |key, value| key.include? "_print" }.values
+    participants = User.where(id: participant_ids)
+    # remove users who are not actual participants
+    participants &= @event.participants
+    pdf = BadgesPDF.generate(@event, participants)
     send_data pdf, filename: "badges.pdf", type: "application/pdf", disposition: "inline"
   end
 

@@ -183,33 +183,46 @@ RSpec.describe EventsController, type: :controller do
   end
 
   describe "POST #badges" do
+    before :each do
+      @event = Event.create! valid_attributes
+    end
+
     it "contains two name badges with title 'Max Mustermann'" do
-      event = Event.create! valid_attributes
-      rendered_pdf = post :print_badges,
-                          event_id: event.to_param,
-                          session: valid_session,
-                          "1234_print"  => "Max Mustermann",
-                          "1235_print"  => "Max Mustermann",
-                          "1236_print"  => "Max Mustermann",
-                          "1237_print"  => "Max Mustermann",
-                          "1238_print"  => "Max Mustermann",
-                          "1239_print"  => "Max Mustermann",
-                          "1240_print"  => "John Doe",
-                          "1241_print"  => "Max Mustermann",
-                          "1242_print"  => "Max Mustermann",
-                          "1243_print"  => "Max Mustermann",
-                          "1244_print"  => "Max Mustermann",
-                          "1245_print"  => "River Song"
+      users = 12.times.collect do
+        user = FactoryGirl.create(:user_with_profile)
+        FactoryGirl.create(:application_letter_accepted, user: user, event: @event)
+        user
+      end
+      params = users.collect { |user| ["#{user.id}_print", user.id.to_s] }.to_h
+      params[:event_id] = @event.to_param
+      params[:session] = valid_session
+
+      rendered_pdf = post :print_badges, params
       pdf = PDF::Inspector::Text.analyze(rendered_pdf.body)
-      expect(pdf.strings).to include("Max Mustermann")
-      expect(pdf.strings).to include("John Doe")
-      expect(pdf.strings).to include("River Song")
+      users.each { |user| expect(pdf.strings).to include(user.profile.name) }
+    end
+
+    it "does not create badges for users who are not participants" do
+      participant = FactoryGirl.create(:user_with_profile)
+      rejected_participant = FactoryGirl.create(:user_with_profile)
+      non_participant = FactoryGirl.create(:user_with_profile)
+      users = [participant, rejected_participant, non_participant]
+      FactoryGirl.create(:application_letter_accepted, user: participant, event: @event)
+      FactoryGirl.create(:application_letter_rejected, user: rejected_participant, event: @event)
+      params = users.collect { |user| ["#{user.id}_print", user.id.to_s] }.to_h
+      params[:event_id] = @event.to_param
+      params[:session] = valid_session
+
+      rendered_pdf = post :print_badges, params
+      pdf = PDF::Inspector::Text.analyze(rendered_pdf.body)
+      expect(pdf.strings).to include(participant.profile.name)
+      expect(pdf.strings).not_to include(rejected_participant.profile.name)
+      expect(pdf.strings).not_to include(non_participant.profile.name)
     end
 
     it "does not break when no user is selected" do
-      event = Event.create! valid_attributes
       rendered_pdf = post :print_badges,
-                          event_id: event.to_param,
+                          event_id: @event.to_param,
                           session: valid_session
       PDF::Inspector::Text.analyze(rendered_pdf.body)
     end
