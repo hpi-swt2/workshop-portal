@@ -25,6 +25,17 @@ FactoryGirl.define do
     event
   end
 
+  factory :application_letter2, parent: :application_letter do
+    grade 11
+    experience "A lot"
+    motivation "Ich bin sehr motiviert, glaubt mir."
+    emergency_number "110"
+    vegeterian true
+  end
+
+  factory :application_letter_long, parent: :application_letter do
+    motivation "Ich bin sehr motiviert, glaubt mir." * 200
+  end
 
   factory :application_letter_deadline_over, parent: :application_letter do
     association :event, factory: :event, application_deadline: Date.yesterday

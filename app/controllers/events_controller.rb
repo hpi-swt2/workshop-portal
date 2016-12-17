@@ -1,5 +1,7 @@
+require 'pdf_generation/applications_pdf'
+
 class EventsController < ApplicationController
-  before_action :set_event, only: [:show, :edit, :update, :destroy]
+  before_action :set_event, only: [:show, :edit, :update, :destroy, :print_applications]
 
   # GET /events
   def index
@@ -84,6 +86,12 @@ class EventsController < ApplicationController
     @participants = @event.participants_by_agreement_letter
   end
 
+  # GET /events/1/print_applications
+  def print_applications
+    authorize! :print_applications, @event
+    pdf = ApplicationsPDF.generate(@event)
+    send_data pdf, filename: "applications_#{@event.name}_#{Date.today}.pdf", type: "application/pdf", disposition: "inline"
+  end
   # GET /events/1/send-acceptances-email
   def send_acceptance_emails
     event = Event.find(params[:id])

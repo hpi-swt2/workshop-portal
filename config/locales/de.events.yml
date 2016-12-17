@@ -16,6 +16,8 @@ de:
       occupied_places:
         one: '%{count} Platz belegt'
         other: '%{count} Plätze belegt'
+      print_all: "Alle ausdrucken"
+      accept_all: "Alle annehmen"
       unclassified_applications_left: 'Bewerbung(en) wurden noch nicht klassifiziert'
       maximum_number_of_participants_exeeded: 'Maximale Teilnehmeranzahl wurde überschritten'
       sending_acceptances: 'Zusagen verschicken'
@@ -32,7 +34,6 @@ de:
       unnecessary: "nicht benötigt"
       available: "vorhanden"
       unavailable: "nicht vorhanden"
-
     kinds:
      workshop: "Workshop"
      camp: "Camp"
@@ -54,6 +55,10 @@ de:
       add_timespan: "Zeitspanne hinzufügen"
     email:
       templates: "Vorlagen"
+    applications_pdf:
+      free_places: "Freie Plätze"
+      occupied_places: "Belegte Plätze"
+      page: "Seite"
     errors:
       application_deadline_before_start_of_event: "Bewerbungsschluss muss vor Beginn der Veranstaltung liegen"
 

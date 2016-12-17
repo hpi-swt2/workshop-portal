@@ -16,6 +16,9 @@ de:
     login_before_creation: "Du musst angemeldet sein, um dich für Workshops bewerben zu können."
     successful_update: "Die Bewerbung wurde erfolgreich aktualisiert"
     fill_in_profile_before_creation: "Du musst erst dein Profil ausfüllen, um dich für Workshops bewerben zu können."
+    application_page:
+      title: "Bewerbung von %{name}"
+      for: "für %{event}"
 
   activerecord:
     models:
