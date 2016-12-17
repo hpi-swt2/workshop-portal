@@ -185,6 +185,11 @@ RSpec.describe EventsController, type: :controller do
   describe "POST #badges" do
     before :each do
       @event = Event.create! valid_attributes
+      @params = {
+        event_id: @event.to_param,
+        session: valid_session,
+        name_format: :full
+      }
     end
 
     it "contains two name badges with title 'Max Mustermann'" do
@@ -193,13 +198,13 @@ RSpec.describe EventsController, type: :controller do
         FactoryGirl.create(:application_letter_accepted, user: user, event: @event)
         user
       end
-      params = users.collect { |user| ["#{user.id}_print", user.id.to_s] }.to_h
-      params[:event_id] = @event.to_param
-      params[:session] = valid_session
 
-      rendered_pdf = post :print_badges, params
-      pdf = PDF::Inspector::Text.analyze(rendered_pdf.body)
-      users.each { |user| expect(pdf.strings).to include(user.profile.name) }
+      print_params = users.collect { |user| ["#{user.id}_print", user.id.to_s] }.to_h
+      @params = @params.merge(print_params)
+
+      rendered_pdf = post :print_badges, @params
+      text = PDF::Inspector::Text.analyze(rendered_pdf.body).strings.join(' ')
+      users.each { |user| expect(text).to include(user.profile.name) }
     end
 
     it "does not create badges for users who are not participants" do
@@ -209,22 +214,31 @@ RSpec.describe EventsController, type: :controller do
       users = [participant, rejected_participant, non_participant]
       FactoryGirl.create(:application_letter_accepted, user: participant, event: @event)
       FactoryGirl.create(:application_letter_rejected, user: rejected_participant, event: @event)
-      params = users.collect { |user| ["#{user.id}_print", user.id.to_s] }.to_h
-      params[:event_id] = @event.to_param
-      params[:session] = valid_session
 
-      rendered_pdf = post :print_badges, params
-      pdf = PDF::Inspector::Text.analyze(rendered_pdf.body)
-      expect(pdf.strings).to include(participant.profile.name)
-      expect(pdf.strings).not_to include(rejected_participant.profile.name)
-      expect(pdf.strings).not_to include(non_participant.profile.name)
+      print_params = users.collect { |user| ["#{user.id}_print", user.id.to_s] }.to_h
+      @params = @params.merge(print_params)
+
+      rendered_pdf = post :print_badges, @params
+      text = PDF::Inspector::Text.analyze(rendered_pdf.body).strings.join(' ')
+      expect(text).to include(participant.profile.name)
+      expect(text).not_to include(rejected_participant.profile.name)
+      expect(text).not_to include(non_participant.profile.name)
     end
 
     it "does not break when no user is selected" do
-      rendered_pdf = post :print_badges,
-                          event_id: @event.to_param,
-                          session: valid_session
+      rendered_pdf = post :print_badges, @params
       PDF::Inspector::Text.analyze(rendered_pdf.body)
+    end
+
+    it "displays does not cut off the participant's name" do
+      profile = FactoryGirl.create(:profile, :long_name)
+      participant = FactoryGirl.create(:user, profile: profile)
+      FactoryGirl.create(:application_letter_accepted, user: participant, event: @event)
+      @params["#{participant.id}_print"] = participant.id.to_s
+
+      rendered_pdf = post :print_badges, @params
+      text = PDF::Inspector::Text.analyze(rendered_pdf.body).strings.join(' ')
+      expect(text).to include(participant.profile.name)
     end
   end
 
