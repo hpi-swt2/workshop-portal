@@ -14,6 +14,7 @@ de:
       Programmierkenntnisse sind keine  Voraussetzung zur Teilnahme. Diese Information
       wird zur Gruppeneinteilung benötigt."
     login_before_creation: "Du musst angemeldet sein, um dich für Workshops bewerben zu können."
+    successful_update: "Die Bewerbung wurde erfolgreich aktualisiert"
     fill_in_profile_before_creation: "Du musst erst dein Profil ausfüllen, um dich für Workshops bewerben zu können."
     application_page:
       title: "Bewerbung von %{name}"
@@ -40,6 +41,7 @@ de:
           allergies: "Falls Allergien vorhanden, welche?"
 
   application_status:
-    accepted: "angenommen"
-    rejected: "abgelehnt"
-    pending: "ausstehend"
+    accepted: "Angenommen"
+    rejected: "Abgelehnt"
+    pending: "Ausstehend"
+    alternative: "Nachrücker"

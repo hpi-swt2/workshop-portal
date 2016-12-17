@@ -70,7 +70,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     expect(page).to have_button(I18n.t('events.applicants_overview.sending_rejections'), disabled: true)
   end
 
-  scenario "logged in as Organizer I want to open a modal by clicking on sending emails" do
+  scenario "logged in as Organizer I want to be able to send an email to all accepted applicants" do
     login(:organizer)
     @event.update!(max_participants: 2)
     2.times do |n|
@@ -79,8 +79,27 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
       FactoryGirl.create(:application_letter_accepted, :event => @event, :user => @pupil.user)
     end
     visit event_path(@event)
-    click_button I18n.t('events.applicants_overview.sending_acceptances')
-    expect(page).to have_selector('div', :id => 'send-emails-modal')
+    click_link I18n.t('events.applicants_overview.sending_acceptances')
+    choose(I18n.t('emails.email_form.show_recipients'))
+    fill_in('email_subject', with: 'Subject')
+    fill_in('email_content', with: 'Content')
+    expect{click_button I18n.t('emails.email_form.send')}.to change{ActionMailer::Base.deliveries.count}.by(1)
+  end
+
+  scenario "logged in as Organizer I want to be able to send an email to all rejected applicants" do
+    login(:organizer)
+    @event.update!(max_participants: 2)
+    2.times do |n|
+      @pupil = FactoryGirl.create(:profile)
+      @pupil.user.role = :pupil
+      FactoryGirl.create(:application_letter_rejected, :event => @event, :user => @pupil.user)
+    end
+    visit event_path(@event)
+    click_link I18n.t('events.applicants_overview.sending_rejections')
+    choose(I18n.t('emails.email_form.show_recipients'))
+    fill_in('email_subject', with: 'Subject')
+    fill_in('email_content', with: 'Content')
+    expect{click_button I18n.t('emails.email_form.send')}.to change{ActionMailer::Base.deliveries.count}.by(1)
   end
 
   scenario "logged in as Organizer I can see the correct count of free/occupied places" do
@@ -101,12 +120,28 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
 
   scenario "logged in as Organizer I can change application status with radio buttons" do
     login(:organizer)
+    @event.application_status_locked = false
+    @event.save
     @pupil = FactoryGirl.create(:profile)
     @application_letter = FactoryGirl.create(:application_letter, event: @event, user: @pupil.user)
     visit event_path(@event)
     ApplicationLetter.statuses.keys.each do |new_status|
       choose(I18n.t "application_status.#{new_status}")
       expect(ApplicationLetter.where(id: @application_letter.id)).to exist
+    end
+  end
+
+  scenario "logged in as Organizer I can not change application status with radio buttons if the applications are locked" do
+    login(:organizer)
+    @event.application_status_locked = true
+    @event.save
+    @pupil = FactoryGirl.create(:profile)
+    @application_letter = FactoryGirl.create(:application_letter, event: @event, user: @pupil.user)
+    visit event_path(@event)
+    ApplicationLetter.statuses.keys.each do |new_status|
+      if new_status != @application_letter.status
+        expect(page).not_to have_text(I18n.t "application_status.#{new_status}")
+      end
     end
   end
 

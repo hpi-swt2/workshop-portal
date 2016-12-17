@@ -26,7 +26,7 @@ describe "Event", type: :feature do
       fill_in "event[date_ranges_attributes][][start_date]", with: Date.yesterday.prev_day
       fill_in "event[date_ranges_attributes][][end_date]", with: Date.yesterday
       click_button I18n.t('.events.form.publish')
-      expect(page).to have_text("Anfangs-Datum darf nicht in der Vergangenheit liegen.")
+      expect(page).to have_text('Anfangs-Datum darf nicht in der Vergangenheit liegen')
     end
 
     it "should warn about unreasonably long time spans" do
@@ -36,7 +36,7 @@ describe "Event", type: :feature do
       fill_in "event[date_ranges_attributes][][start_date]", with: Date.current
       fill_in "event[date_ranges_attributes][][end_date]", with: Date.current.next_year(3)
       click_button I18n.t('.events.form.publish')
-      expect(page).to have_text("End-Datum liegt ungewöhnlich weit vom Start-Datum entfernt.")
+      expect(page).to have_text('End-Datum liegt ungewöhnlich weit vom Start-Datum entfernt.')
     end
 
     it "should not allow an end date before a start date" do
@@ -45,7 +45,7 @@ describe "Event", type: :feature do
       fill_in "event[date_ranges_attributes][][end_date]", with: Date.current.prev_day(2)
       click_button I18n.t('.events.form.publish')
 
-      expect(page).to have_text("End-Datum kann nicht vor Start-Datum liegen")
+      expect(page).to have_text('End-Datum kann nicht vor Start-Datum liegen')
     end
 
     it "should allow entering multiple time spans", js: true do
@@ -96,6 +96,29 @@ describe "Event", type: :feature do
       click_button I18n.t('.events.form.publish')
 
       expect(page).to have_text("Bewerbungsschluss muss vor Beginn der Veranstaltung liegen")
+    end
+
+    it "should not display errors on date ranges twice", js: true do
+      visit new_event_path
+
+      fill_in "Maximale Teilnehmerzahl", :with => 25
+
+      within page.find("#event-date-pickers").all("div")[0] do
+        fill_in "event[date_ranges_attributes][][start_date]", with: I18n.l(Date.current.prev_day(7))
+        fill_in "event[date_ranges_attributes][][end_date]", with: I18n.l(Date.yesterday.prev_day(7))
+      end
+
+      click_link "Zeitspanne hinzufügen"
+
+      within page.find("#event-date-pickers").all("div")[1] do
+        fill_in "event[date_ranges_attributes][][start_date]", with: I18n.l(Date.current)
+        fill_in "event[date_ranges_attributes][][end_date]", with: I18n.l(Date.yesterday)
+      end
+
+      click_button I18n.t(".events.form.publish")
+
+      expect(page).to have_css("div.has-error")
+      expect(page).to have_content("kann nicht vor Start-Datum liegen", count: 1)
     end
   end
 
