@@ -32,7 +32,6 @@ class ApplicationLetter < ActiveRecord::Base
 
   # Checks if the deadline is over
   # additionally only return if event and event.application_deadline is present
-  # TODO: 'event.application_deadline' should never be nil, when #18 is finished. Please remove this in #18.
   #
   # @param none
   # @return [Boolean] true if deadline is over
