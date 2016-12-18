@@ -48,4 +48,8 @@ FactoryGirl.define do
   factory :application_letter_rejected, parent: :application_letter do
     status :rejected
   end
+
+  factory :application_letter_alternative, parent: :application_letter do
+    status :alternative
+  end
 end
