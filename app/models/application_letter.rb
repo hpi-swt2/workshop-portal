@@ -55,6 +55,27 @@ class ApplicationLetter < ActiveRecord::Base
     end
   end
 
+  # Chooses right status based on status and event deadline
+  #
+  # @param none
+  # @return [String] to display on the website
+  def status_type
+    case ApplicationLetter.statuses[status]
+      when ApplicationLetter.statuses[:accepted]
+        return I18n.t("application_status.accepted")
+      when ApplicationLetter.statuses[:rejected]
+        return I18n.t("application_status.rejected")
+      when ApplicationLetter.statuses[:pending]
+        if after_deadline?
+          return I18n.t("application_status.pending_after_deadline")
+        else
+          return I18n.t("application_status.pending_before_deadline")
+        end
+      else
+        return I18n.t("application_status.alternative")
+    end
+  end
+
   # Validator for status_change_allowed?
   # Adds error
   def status_cannot_be_changed
