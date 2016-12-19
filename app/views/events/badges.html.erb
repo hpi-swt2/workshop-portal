@@ -1,42 +1,41 @@
 <h1><%= t('events.badges.title') + "'" + @event.name + "'" %></h1>
 
 <%= form_tag event_badges_path(@event), class: "form-horizontal event", multipart: true do %>
-<h3>Optionen</h3>
-<h4>Logo</h3>
-<%= file_field_tag "logo_upload",
-  class: "btn btn-default btn-file",
-  accept: "image/png,image/jpeg" %>
-<h4>Name</h3>
-<%= select_tag "name_format",
-  options_for_select([
-    ["First name only", :first],
-    ["Last name only", :last],
-    ["Full name", :full]]),
-  class: "form-control" %>
-<h4>Organisation</h3>
-<%= check_box_tag "show_organization" %>
-<h4>Gruppen-Farbe</h3>
-<%= check_box_tag "show_color" %>
-<h3><%= t('events.badges.participants') %></h3>
+  <h3>Optionen</h3>
+  <h4>Logo</h3>
+  <%= file_field_tag "logo_upload",
+    class: "btn btn-default btn-file",
+    accept: "image/png,image/jpeg" %>
+  <h4>Name</h3>
+  <%= select_tag "name_format",
+    options_for_select([
+      ["First name only", :first],
+      ["Last name only", :last],
+      ["Full name", :full]]),
+    class: "form-control" %>
+  <h4>Organisation</h3>
+  <%= check_box_tag "show_organization" %>
+  <h4>Gruppen-Farbe</h3>
+  <%= check_box_tag "show_color" %>
+  <h3><%= t('events.badges.participants') %></h3>
 
-<table class="table table-striped table-bordered table-hover">
-  <tr>
-    <th><%= Profile.human_attribute_name(:name) %></th>
-    <th><%= t('events.badges.printBoolean') %></th>
-  </tr>
-
-  <% @participants.each do |participant| %>
+  <table class="table table-striped table-bordered table-hover">
     <tr>
-      <td>
-        <%= participant.name %>
-      </td>
-      <td>
-        <%= check_box_tag "#{participant.id}_print", participant.id%>
-      </td>
+      <th><%= Profile.human_attribute_name(:name) %></th>
+      <th><%= t('events.badges.printBoolean') %></th>
     </tr>
-  <% end %>
-</table>
 
+    <% @participants.each do |participant| %>
+      <tr>
+        <td>
+          <%= participant.name %>
+        </td>
+        <td>
+          <%= check_box_tag "#{participant.id}_print", participant.id%>
+        </td>
+      </tr>
+    <% end %>
+  </table>
 
-<%= submit_tag t('events.badges.print'), :class => 'btn btn-primary' %>
+  <%= submit_tag t('events.badges.print'), :class => 'btn btn-primary' %>
 <% end %>

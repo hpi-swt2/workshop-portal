@@ -79,8 +79,8 @@ class EventsController < ApplicationController
       pdf = BadgesPDF.generate(@event, participants, name_format, show_color, show_organization, logo)
       send_data pdf, filename: "badges.pdf", type: "application/pdf", disposition: "inline"
     rescue Prawn::Errors::UnsupportedImageType
-      @event.errors.add(:base, "Logo must be image")
       @participants = @event.participants
+      flash[:error] = "Logo must be PNG or JPEG"
       render 'badges'
     end
   end
