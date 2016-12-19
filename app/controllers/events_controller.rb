@@ -66,21 +66,27 @@ class EventsController < ApplicationController
   # POST /events/1/badges
   def print_badges
     @event = Event.find(params[:event_id])
+    @participants = @event.participants
     name_format = params[:name_format]
     show_color = params[:show_color]
     show_organization = params[:show_organization]
     logo = params[:logo_upload]
 
-    participant_ids = params.select { |key, value| key.include? "_print" }.values
-    participants = User.where(id: participant_ids)
+    selected_ids = params[:selected_ids]
+    selected_participants = User.where(id: selected_ids)
     # remove users who are not actual participants
-    participants &= @event.participants
+    selected_participants &= @participants
+    if selected_participants.empty?
+      flash[:error] = I18n.t('events.badges.no_users_selected')
+      render 'badges'
+      return
+    end
+
     begin
-      pdf = BadgesPDF.generate(@event, participants, name_format, show_color, show_organization, logo)
+      pdf = BadgesPDF.generate(@event, selected_participants, name_format, show_color, show_organization, logo)
       send_data pdf, filename: "badges.pdf", type: "application/pdf", disposition: "inline"
     rescue Prawn::Errors::UnsupportedImageType
-      @participants = @event.participants
-      flash[:error] = "Logo must be PNG or JPEG"
+      flash[:error] = I18n.t('events.badges.wrong_file_format')
       render 'badges'
     end
   end

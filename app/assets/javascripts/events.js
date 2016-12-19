@@ -12,6 +12,18 @@ jQuery(function() {
         modal.find('#send-emails-mailto').attr('href', 'mailto:' + list);
         modal.find('#send-emails-list').val(list);
     });
+
+    $('#select-all-print').click(function() {
+        if(this.checked) {
+            $('input[id="selected_ids_"').each(function() {
+                this.checked = true;
+            });
+        } else {
+            $('input[id="selected_ids_"').each(function() {
+                this.checked = false;
+            });
+        }
+    });
 });
 
 function addEventDatePicker() {
