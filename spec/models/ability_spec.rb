@@ -106,6 +106,13 @@ describe User do
 
       expect(ability).to be_able_to(:view_applicants, Event)
     end
+
+    it "can print an event's applications as #{role}" do
+      user = FactoryGirl.create(:user, role: role)
+      ability = Ability.new(user)
+
+      expect(ability).to be_able_to(:print_applications, Event)
+    end
   end
 
   it "cannot view and add notes to application letters as pupil" do
@@ -120,6 +127,13 @@ describe User do
     ability = Ability.new(user)
 
     expect(ability).to_not be_able_to(:view_applicants, Event)
+  end
+
+  it "cannot print applications for an event as pupil" do
+    user = FactoryGirl.create(:user, role: :pupil)
+    ability = Ability.new(user)
+
+    expect(ability).to_not be_able_to(:print_applications, Event)
   end
 
   it "can do everything as admin" do

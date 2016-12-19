@@ -53,6 +53,10 @@ RSpec.describe "events/show", type: :view do
     expect(rendered).to have_link(t(:details, scope: 'events.applicants_overview'))
   end
 
+  it "displays print applications button" do
+    render
+    expect(rendered).to have_link(t(:print_all, scope: 'events.applicants_overview'))
+  end
 
   it "displays print badges button" do
     render
