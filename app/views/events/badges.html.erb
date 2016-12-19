@@ -5,12 +5,14 @@
 <h4>Logo</h3>
 <%= file_field_tag "logo_upload",
   class: "btn btn-default btn-file",
-  accept: "image/*" %>
+  accept: "image/png,image/jpeg" %>
 <h4>Name</h3>
-<%= select_tag "name_format", options_for_select([
-  ["First name only", :first],
-  ["Last name only", :last],
-  ["Full name", :full]]) %>
+<%= select_tag "name_format",
+  options_for_select([
+    ["First name only", :first],
+    ["Last name only", :last],
+    ["Full name", :full]]),
+  class: "form-control" %>
 <h4>Organisation</h3>
 <%= check_box_tag "show_organization" %>
 <h4>Gruppen-Farbe</h3>

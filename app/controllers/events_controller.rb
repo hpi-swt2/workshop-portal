@@ -74,8 +74,14 @@ class EventsController < ApplicationController
     participants = User.where(id: participant_ids)
     # remove users who are not actual participants
     participants &= @event.participants
-    pdf = BadgesPDF.generate(@event, participants, name_format, show_color, show_organization, logo)
-    send_data pdf, filename: "badges.pdf", type: "application/pdf", disposition: "inline"
+    begin
+      pdf = BadgesPDF.generate(@event, participants, name_format, show_color, show_organization, logo)
+      send_data pdf, filename: "badges.pdf", type: "application/pdf", disposition: "inline"
+    rescue Prawn::Errors::UnsupportedImageType
+      @event.errors.add(:base, "Logo must be image")
+      @participants = @event.participants
+      render 'badges'
+    end
   end
 
   # GET /events/1/participants

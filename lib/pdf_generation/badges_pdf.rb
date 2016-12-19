@@ -8,6 +8,7 @@ class BadgesPDF
   SCHOOL_HEIGHT_RATIO = 1.0/3
   MAX_NAME_FONT_SIZE = 28
   MAX_SCHOOL_FONT_SIZE = 16
+  LINE_SPACING = 5
 
   # Generates a PDF file containing the badges for each participant
   #
@@ -43,11 +44,15 @@ class BadgesPDF
 
       v_space_left = @badge_height
       v_space_left -= Y_PADDING
-      v_space_left -= LOGO_HEIGHT unless @logo.nil?
+      if @logo
+        v_space_left -= LOGO_HEIGHT
+        v_space_left -= LINE_SPACING
+      end
       v_space_left -= @show_color ? COLOR_HEIGHT : Y_PADDING
       if @show_school
         @school_height = v_space_left * SCHOOL_HEIGHT_RATIO
         v_space_left -= @school_height
+        v_space_left -= LINE_SPACING
       end
       @name_height = v_space_left
     end
@@ -71,12 +76,14 @@ class BadgesPDF
         if @logo
           create_logo(cursor)
           cursor -= LOGO_HEIGHT
+          cursor -= LINE_SPACING
         end
 
         create_name(participant, cursor)
         cursor -= @name_height
 
         if @show_school
+          cursor -= LINE_SPACING
           create_school(participant, cursor)
           cursor -= @school_height
         end
