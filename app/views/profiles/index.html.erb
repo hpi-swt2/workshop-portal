@@ -35,6 +35,9 @@
   </tbody>
 </table>
 
+
 <%= link_to t('.new', :default => t("helpers.links.new")),
             new_profile_path,
-            :class => 'btn btn-primary' %>
+            :class => 'btn btn-primary' %> 
+<%= will_paginate @profiles  %>
+
