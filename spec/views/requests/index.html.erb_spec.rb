@@ -13,4 +13,9 @@ RSpec.describe "requests/index", type: :view do
     render
     assert_select "tr>td", :text => @topics, :count => 2
   end
+
+  it "shouldn't have an id displayed" do
+    render
+    expect(rendered).to_not have_text("Id")
+  end
 end

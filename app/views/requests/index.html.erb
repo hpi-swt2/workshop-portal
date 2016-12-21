@@ -5,7 +5,6 @@
 <table class="table table-striped">
   <thead>
     <tr>
-      <th><%= model_class.human_attribute_name(:id) %></th>
       <th><%= model_class.human_attribute_name(:topics) %></th>
       <th><%= model_class.human_attribute_name(:user_id) %></th>
       <th><%= model_class.human_attribute_name(:created_at) %></th>
@@ -15,8 +14,7 @@
   <tbody>
     <% @requests.each do |request| %>
       <tr>
-        <td><%= link_to request.id, request_path(request) %></td>
-        <td><%= request.topics %></td>
+        <td><%= link_to request.topics, request_path(request) %></td>
         <td><%= request.user_id %></td>
         <td><%=l request.created_at %></td>
         <td>
