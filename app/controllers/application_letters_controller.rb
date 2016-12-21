@@ -6,7 +6,7 @@ class ApplicationLettersController < ApplicationController
 
   # GET /applications
   def index
-    @application_letters = ApplicationLetter.all
+    @application_letters = ApplicationLetter.where(user_id: current_user.id)
   end
 
   # GET /applications/1
