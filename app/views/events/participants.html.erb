@@ -8,17 +8,12 @@
   <h1><%= t '.participants' %></h1>
   <table class="table table-striped">
     <tr>
-      <th><%= t 'activerecord.attributes.profile.name' %></th>
       <th><%= t 'activerecord.attributes.profile.email' %></th>
   	  <th><%= t 'agreement_letters.agreement_letter' %></th>
     </tr>  
   
     <% @participants.each do |participant| %>
     <tr>
-      
-      <td>
-      <%= participant.name %>
-      </td>
       <td>
       <%= participant.email %>
       </td>

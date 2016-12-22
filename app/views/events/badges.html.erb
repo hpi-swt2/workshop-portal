@@ -11,10 +11,10 @@
   <% @participants.each do |participant| %>
       <tr>
         <td>
-          <%= participant.name %>
+          <%= participant.profile.name %>
         </td>
         <td>
-          <%= f.check_box_tag "#{participant.id}_print", participant.name%>
+          <%= f.check_box_tag "#{participant.id}_print", participant.profile.name%>
         </td>
       </tr>
   <% end %>

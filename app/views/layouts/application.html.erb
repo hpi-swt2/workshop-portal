@@ -22,7 +22,7 @@
     <%= menu_group do %>
       <%= menu_items %>
       <% if user_signed_in? %>
-        <%= drop_down current_user.name do %>
+        <%= drop_down current_user.email do %>
           <%= dropdown_items %>
         <% end %>
       <% else %>
