@@ -34,7 +34,7 @@ de:
     requests: "Anfragen"
     profile: "Mein Profil"
     create_profile: "Mein Profil anlegen"
-    settings: "Profilinfo"
+    settings: "Einstellungen"
     login: "Einloggen"
     logout: "Ausloggen"
   users:
