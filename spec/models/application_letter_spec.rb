@@ -67,4 +67,12 @@ describe ApplicationLetter do
      application.status = :rejected
      expect(application).to be_valid
   end
+
+  it "calculates the correct age of applicant when event starts" do
+    user = FactoryGirl.build(:user)
+    profile = FactoryGirl.build(:profile, user: user)
+    application = FactoryGirl.build(:application_letter, user: user)
+    application.user.profile.birth_date = application.event.start_date - 18.years - 1.days
+    expect(application.applicant_age_when_event_starts).to eq(18)
+  end
 end
