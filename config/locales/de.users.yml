@@ -2,6 +2,10 @@
 
 de:
   activerecord:
+    models:
+      user:
+        one: "Benutzer"
+        other: "Benutzer"
     attributes:
       user:
         accepted_application_count: "Angenommene Bewerbungen"
