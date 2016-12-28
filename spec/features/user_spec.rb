@@ -35,6 +35,21 @@ RSpec.feature "Account creation", :type => :feature do
     expect(page).to have_css(".alert-success")
   end
 
+  scenario "User is not able to change email on user settings page" do
+    user = FactoryGirl.create(:user)
+    login_as(user)
+    new_email = "hacke@peta.de"
+
+    # Go to /users/edit
+    visit edit_user_registration_path
+    fill_in "user_email", :with => new_email
+    fill_in "user_current_password", :with => user.password
+    find('input[name="commit"]').click
+    expect(page).to have_css(".alert-success")
+
+    visit edit_user_registration_path
+    expect(page).to have_selector("input[value='hacke@peta.de']")
+  end
 
   scenario "User visits the 'user settings' page after having already logged off" do
     user = FactoryGirl.create(:user)
