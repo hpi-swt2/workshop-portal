@@ -112,7 +112,7 @@ de:
       other: "Achtung. In %{count} Feldern sind Fehler aufgetreten. Korrigiere die Fehler um fortzufahren."
     messages:
       accepted: muss akzeptiert werden.
-      blank: 'Feld muss ausgefüllt werden.'
+      blank: 'Feld ist leer. Bitte fülle es aus, um fortfahren zu können.'
       present: darf nicht ausgefüllt werden.
       confirmation: stimmt nicht mit %{attribute} überein.
       empty: Feld muss ausgefüllt werden.
