@@ -21,8 +21,8 @@ RSpec.describe 'navbar', type: :view do
       render template: 'application/index', layout: 'layouts/application'
     end
 
-    it "shows Profilinfo, Mein Profil anlegen, Meine Bewerbungen, Ausloggen in the dropdown" do
-      expect(rendered).to have_css(".nav .dropdown-menu a", text: 'Profilinfo')
+    it "shows Einstellungen, Mein Profil anlegen, Meine Bewerbungen, Ausloggen in the dropdown" do
+      expect(rendered).to have_css(".nav .dropdown-menu a", text: 'Einstellungen')
       expect(rendered).to have_css(".nav .dropdown-menu a", text: 'Mein Profil anlegen')
       expect(rendered).to have_css(".nav .dropdown-menu a", text: 'Meine Bewerbungen')
       expect(rendered).to have_css(".nav .dropdown-menu a", text: 'Ausloggen')
@@ -41,11 +41,11 @@ RSpec.describe 'navbar', type: :view do
   end
 
   context "logged in as an admin" do
-    it "shows Profilinfo, Mein Profil, Benutzerverwaltung, Ausloggen" do
+    it "shows Einstellungen, Mein Profil, Benutzerverwaltung, Ausloggen" do
       profile = FactoryGirl.create(:profile, user: (FactoryGirl.create :user, role: :admin))
       sign_in profile.user
       render template: 'application/index', layout: 'layouts/application'
-      expect(rendered).to have_css(".nav .dropdown-menu a", text: 'Profilinfo')
+      expect(rendered).to have_css(".nav .dropdown-menu a", text: 'Einstellungen')
       expect(rendered).to have_css(".nav .dropdown-menu a", text: 'Mein Profil')
       expect(rendered).to have_css(".nav .dropdown-menu a", text: 'Benutzerverwaltung')
       expect(rendered).to have_css(".nav .dropdown-menu a", text: 'Ausloggen')
@@ -55,11 +55,11 @@ RSpec.describe 'navbar', type: :view do
 
   context "logged in as an organizer or coach" do
     %i[organizer coach].each do |role|
-      it "shows Profilinfo, Mein Profil, Ausloggen" do
+      it "shows Einstellungen, Mein Profil, Ausloggen" do
         profile = FactoryGirl.create(:profile, user: (FactoryGirl.create :user, role: role))
         sign_in profile.user
         render template: 'application/index', layout: 'layouts/application'
-        expect(rendered).to have_css(".nav .dropdown-menu a", text: 'Profilinfo')
+        expect(rendered).to have_css(".nav .dropdown-menu a", text: 'Einstellungen')
         expect(rendered).to have_css(".nav .dropdown-menu a", text: 'Mein Profil')
         expect(rendered).to have_css(".nav .dropdown-menu a", text: 'Ausloggen')
         expect(rendered).to have_css(".nav .dropdown-menu a", count: 3)

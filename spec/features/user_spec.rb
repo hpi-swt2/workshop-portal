@@ -35,21 +35,6 @@ RSpec.feature "Account creation", :type => :feature do
     expect(page).to have_css(".alert-success")
   end
 
-  scenario "User changes name on user settings page" do
-    user = FactoryGirl.create(:user)
-    login_as(user)
-    new_name = "xXACoolAliasXx"
-
-    # Go to /users/edit
-    visit edit_user_registration_path
-    fill_in "user_name", :with => new_name
-    fill_in "user_current_password", :with => user.password
-    find('input[name="commit"]').click
-    expect(page).to have_css(".alert-success")
-
-    visit edit_user_registration_path
-    expect(page).to have_content(new_name)
-  end
 
   scenario "User visits the 'user settings' page after having already logged off" do
     user = FactoryGirl.create(:user)
