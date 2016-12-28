@@ -45,7 +45,7 @@ describe "Event", type: :feature do
       fill_in "event[date_ranges_attributes][][end_date]", with: Date.current.prev_day(2)
       click_button I18n.t('.events.form.publish')
 
-      expect(page).to have_text('"End-Datum" kann nicht vor Start-Datum liegen')
+      expect(page).to have_text('End-Datum kann nicht vor Start-Datum liegen')
     end
 
     it "should allow entering multiple time spans", js: true do
