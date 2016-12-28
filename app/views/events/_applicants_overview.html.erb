@@ -13,7 +13,7 @@
         <%= sort_caret(Profile.human_attribute_name(:gender), :gender) %>
       </th>
       <th>
-        <%= sort_caret( t('.age_when_event_starts'), :applicant_age_when_event_starts) %>
+        <%= sort_caret(( t('.age') + " <br> " + t('.when_event_starts')), :applicant_age_when_event_starts ) %>
       </th>
       <th>
         <%= t '.participations' %> <br>
@@ -41,7 +41,7 @@
         <tr>
           <td><%= application_letter.user.profile.name %></td>
           <td><%= application_letter.user.profile.gender %></td>
-          <td><%= application_letter.applicant_age_when_event_starts  %></td>
+          <td><%= application_letter.user.profile.age_at_time(@event.start_date)  %> </td>
           <td><%= application_letter.user.accepted_applications_count(@event) %> / <%= application_letter.user.rejected_applications_count(@event) %></td>
           <td>
             <%= render :partial => 'application_letters/application_selective', locals: {application_letter: application_letter} %>

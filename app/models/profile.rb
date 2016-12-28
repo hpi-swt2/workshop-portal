@@ -26,14 +26,13 @@ class Profile < ActiveRecord::Base
     self.birth_date >= 18.years.ago
   end
 
-  # Returns the age of the user based on the current date
+  # Returns the age of the user based on the given date
   #
   # @param none
   # @return [Int] for age as number of years
-  def age
-    now = Time.now.utc.to_date
-    current_time_is_before_birthday = now.month > birth_date.month || (now.month == birth_date.month && now.day >= birth_date.day)
-    return now.year - birth_date.year - (current_time_is_before_birthday ? 0 : 1)
+  def age_at_time (given_date)
+    given_date_is_before_birth_date = given_date.month > birth_date.month || (given_date.month == birth_date.month && given_date.day >= birth_date.day)
+    return given_date.year - birth_date.year - (given_date_is_before_birth_date ? 0 : 1)
   end
 
   # Returns the Full Name of the user
