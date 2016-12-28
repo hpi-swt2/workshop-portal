@@ -106,7 +106,7 @@ de:
       second: Sekunde
       year: Jahr
   errors:
-    format: '"%{attribute}"- %{message}'
+    format: '"%{attribute}" %{message}'
     form_invalid: 
       one: "Achtung. In einem Feld ist ein Fehler aufgetreten. Korrigiere die Fehler um fortzufahren."
       other: "Achtung. In %{count} Feldern sind Fehler aufgetreten. Korrigiere die Fehler um fortzufahren."
