@@ -73,6 +73,6 @@ describe ApplicationLetter do
     profile = FactoryGirl.build(:profile, user: user)
     application = FactoryGirl.build(:application_letter, user: user)
     application.user.profile.birth_date = application.event.start_date - 18.years - 1.days
-    expect(application.applicant_age_when_event_starts).to eq(18)
+    expect(application.user.profile.age_at_time(application.event.start_date)).to eq(18)
   end
 end
