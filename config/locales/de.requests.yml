@@ -1,0 +1,15 @@
+# German translation for the requests
+
+de:
+  activerecord:
+    models:
+      request:
+        one: "Anfrage"
+        other: "Anfragen"
+    attributes:
+      request:
+        topics: "Themen"
+        user_id: "Benutzer"
+        id: "Nummer"
+        created_at: "Erstellt am"
+
