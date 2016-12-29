@@ -108,7 +108,7 @@ de:
   errors:
     format: '%{attribute} %{message}'
     form_invalid: 
-      one: "Achtung. In einem Feld ist ein Fehler aufgetreten. Korrigiere die Fehler um fortzufahren."
+      one: "Achtung. In einem Feld ist ein Fehler aufgetreten. Korrigiere den Fehler um fortzufahren."
       other: "Achtung. In %{count} Feldern sind Fehler aufgetreten. Korrigiere die Fehler um fortzufahren."
     messages:
       accepted: muss akzeptiert werden.
