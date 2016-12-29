@@ -206,6 +206,15 @@ RSpec.describe EventsController, type: :controller do
     end
   end
 
+  describe "POST #upload_material" do
+    it "uploads a file to the event's material directory" do
+      event = Event.create! valid_attributes
+      post :upload_material, event_id: event.to_param, session: valid_session
+      expect(response).to redirect_to :action => :show,
+                                      :id => event.id
+    end
+  end
+
   describe "POST #create" do
     context "with valid params" do
       it "creates a new Event" do

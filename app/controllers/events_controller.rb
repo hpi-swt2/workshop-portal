@@ -108,6 +108,13 @@ class EventsController < ApplicationController
     render :email
   end
 
+  # POST /events/1/upload_material
+  def upload_material
+    event = Event.find(params[:event_id])
+    redirect_to event_path(event),
+                notice: t("events.material_area.success_message")
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_event

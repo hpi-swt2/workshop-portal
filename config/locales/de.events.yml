@@ -22,6 +22,10 @@ de:
       maximum_number_of_participants_exeeded: 'Maximale Teilnehmeranzahl wurde überschritten'
       sending_acceptances: 'Zusagen verschicken'
       sending_rejections: 'Absagen verschicken'
+    material_area:
+      title: "Materialbereich für %{title}"
+      upload: "Datei hochladen"
+      success_message: "Datei erfolgreich hochgeladen"
     badges:
         print: "Namensschilder drucken"
         title: "Namensschilder drucken für das Event "

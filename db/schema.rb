@@ -75,6 +75,7 @@ ActiveRecord::Schema.define(version: 20161209180054) do
     t.string   "knowledge_level"
     t.date     "application_deadline"
     t.boolean  "application_status_locked"
+    t.string   "material_directory"
   end
 
   create_table "profiles", force: :cascade do |t|

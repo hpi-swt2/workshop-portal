@@ -1,0 +1,14 @@
+<div class="container-fluid" id="material_area">
+  <h3><%= t '.title', title: @event.name %></h3>
+
+  <%= form_tag(event_upload_material_path(@event), class: 'btn btn-default') do %>
+
+      <%= file_field_tag "file_upload",
+                         class: "btn btn-default btn-file",
+                         style: 'display:inline',
+                         id: "material_upload_#{@event.id}" %>
+      <%= submit_tag t('.upload'),
+                     class: 'btn btn-default',
+                     id: "material_upload_btn_#{@event.id}"%>
+  <% end %>
+</div>

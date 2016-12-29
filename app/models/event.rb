@@ -11,6 +11,7 @@
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  application_status_locked  :boolean
+#  material_directory :string
 #
 
 class Event < ActiveRecord::Base
