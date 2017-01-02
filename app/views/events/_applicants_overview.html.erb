@@ -12,8 +12,8 @@
       <th>
         <%= sort_caret(Profile.human_attribute_name(:gender), :gender) %>
       </th>
-      <th>
-        <%= sort_caret(( t('.age') + " <br> " + t('.when_event_starts')), :applicant_age_when_event_starts ) %>
+      <th style="max-width: 100px">
+        <%= sort_caret(( t('.age_when_event_starts')), :applicant_age_when_event_starts ) %>
       </th>
       <th>
         <%= t '.participations' %> <br>

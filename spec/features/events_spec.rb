@@ -174,7 +174,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
       expect(page).to contain_ordered(names.reverse)
     end
 
-    link_name = I18n.t('events.applicants_overview.age')+ " " + I18n.t('events.applicants_overview.when_event_starts')
+    link_name = I18n.t('events.applicants_overview.age_when_event_starts')
     click_link link_name
     sorted_by_attribute = @event.application_letters.to_a.sort_by { |letter| letter.send(attribute) }
     names = sorted_by_attribute.map {|l| l.user.profile.name }

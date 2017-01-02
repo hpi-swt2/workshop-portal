@@ -33,7 +33,7 @@ describe Profile do
     @age = 20
     profile = FactoryGirl.build(:profile, birth_date: @age.years.ago())
 
-    expect(profile.age_at_time(Time.now)).to eq(@age)
+    expect(profile.age).to eq(@age)
   end
 
   it "returns correct age in leap year edge case" do
@@ -42,7 +42,7 @@ describe Profile do
     # Birthday on leap year
     profile = FactoryGirl.build(:profile, birth_date: Time.new(1996, 2, 29))
 
-    expect(profile.age_at_time(Time.now)).to eq(20)
+    expect(profile.age).to eq(20)
   end
 
   it "returns full name" do
