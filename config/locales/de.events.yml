@@ -26,6 +26,8 @@ de:
       title: "Materialbereich für %{title}"
       upload: "Datei hochladen"
       success_message: "Datei erfolgreich hochgeladen"
+      no_file_given: "Keine Datei angegeben"
+      saving_fails: "Datei konnte nicht gespeichert werden"
     badges:
         print: "Namensschilder drucken"
         title: "Namensschilder drucken für das Event "

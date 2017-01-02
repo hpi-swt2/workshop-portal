@@ -111,8 +111,21 @@ class EventsController < ApplicationController
   # POST /events/1/upload_material
   def upload_material
     event = Event.find(params[:event_id])
-    redirect_to event_path(event),
-                notice: t("events.material_area.success_message")
+    material_path = File.join("storage/materials/", event.id.to_s + "_" + event.name)
+    Dir.mkdir(material_path) unless File.exists?(material_path)
+
+    file = params[:file_upload]
+    unless is_file?(file)
+      redirect_to event_path(event), alert: t("events.material_area.no_file_given")
+      return false
+    end
+    begin
+      File.write(File.join(material_path, file.original_filename), file.read, mode: "wb")
+    rescue IOError
+      redirect_to event_path(event), alert: t("events.material_area.saving_fails")
+      return false
+    end
+    redirect_to event_path(event), notice: t("events.material_area.success_message")
   end
 
   private
@@ -169,5 +182,13 @@ class EventsController < ApplicationController
         create_badge(pdf, left, 0, 750 - row * 150)
         create_badge(pdf, right, 260, 750 - row * 150) unless right.nil?
       end
+    end
+
+    # Checks if a file is valid and not empty
+    #
+    # @param [ActionDispatch::Http::UploadedFile] is a file object
+    # @return [Boolean] whether @file is a valid file
+    def is_file?(file)
+      file.respond_to?(:open) && file.respond_to?(:content_type) && file.respond_to?(:size)
     end
 end

@@ -207,11 +207,35 @@ RSpec.describe EventsController, type: :controller do
   end
 
   describe "POST #upload_material" do
+    before :each do
+      filepath = Rails.root.join('spec/testfiles/actual.pdf')
+      @file = fixture_file_upload(filepath, 'application/pdf')
+      @event = Event.create! valid_attributes
+    end
+
+    after :each do
+      filepath = File.join('storage/materials', @event.id.to_s + "_" + @event.name, @file.original_filename)
+      File.delete(filepath) if File.exist?(filepath)
+    end
+
     it "uploads a file to the event's material directory" do
-      event = Event.create! valid_attributes
-      post :upload_material, event_id: event.to_param, session: valid_session
-      expect(response).to redirect_to :action => :show,
-                                      :id => event.id
+      post :upload_material, event_id: @event.to_param, session: valid_session, file_upload: @file
+      expect(response).to redirect_to :action => :show, :id => @event.id
+      expect(File.exists?(File.join('storage/materials', @event.id.to_s + "_" + @event.name, @file.original_filename)))
+      expect(flash[:notice]).to match(I18n.t(:success_message, scope: 'events.material_area'))
+    end
+
+    it "shows error if no file was given" do
+      post :upload_material, event_id: @event.to_param, session: valid_session
+      expect(response).to redirect_to :action => :show, :id => @event.id
+      expect(flash[:alert]).to match(I18n.t(:no_file_given, scope: 'events.material_area'))
+    end
+
+    it "shows error if file saving was not successfull" do
+      allow(File).to receive(:write).and_raise(IOError)
+      post :upload_material, event_id: @event.to_param, session: valid_session, file_upload: @file
+      expect(response).to redirect_to :action => :show, :id => @event.id
+      expect(flash[:alert]).to match(I18n.t(:saving_fails, scope: 'events.material_area'))
     end
   end
 
