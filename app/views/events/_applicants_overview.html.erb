@@ -33,11 +33,8 @@
     </tr>
     </thead>
     <tbody>
-    <%
-      @application_letters.sort_by! {|l| l.user.profile.send(params[:sort]) } if params[:sort] && params[:sort] != 'applicant_age_when_event_starts'
-      @application_letters.sort_by! {|l| l.send(params[:sort]) } if params[:sort] && params[:sort] == 'applicant_age_when_event_starts'
-      @application_letters.reverse! if params[:order] == 'descending'
-      @application_letters.select {|l| l.user.profile }.each do | application_letter | %>
+    <% sort_application_letters
+       @application_letters.select {|l| l.user.profile }.each do | application_letter |%>
         <tr>
           <td><%= application_letter.user.profile.name %></td>
           <td><%= application_letter.user.profile.gender %></td>
