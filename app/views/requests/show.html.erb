@@ -4,7 +4,7 @@
 </div>
 
 <dl class="dl-horizontal">
-  <dt><strong><%= t('activerecord.request.topics') %>:</strong></dt>
+  <dt><strong><%= model_class.human_attribute_name(:topics) %>:</strong></dt>
   <dd><%= @request.topics %></dd>
   <dt><strong><%= model_class.human_attribute_name(:user_id) %>:</strong></dt>
   <dd><%= @request.user_id %></dd>

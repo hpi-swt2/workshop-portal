@@ -1,9 +1,6 @@
 ---
 de:
   activerecord:
-    request:
-        one: "Anfrage"
-        other: "Anfragen"
     errors:
       messages:
         record_invalid: 'Gültigkeitsprüfung ist fehlgeschlagen: %{errors}'
