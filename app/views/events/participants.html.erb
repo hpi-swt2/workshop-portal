@@ -16,7 +16,7 @@
     <% @participants.each do |participant| %>
     <tr>
       <td>
-        <%= participant.profile.name %>
+        <%= participant.profile.name if participant.profile %>
       </td>
       <td>
       <%= participant.email %>
