@@ -54,7 +54,7 @@ class Ability
       can [:index, :show, :view_and_add_notes, :update_status], ApplicationLetter
       cannot :update, ApplicationLetter
       # Organizers can view, edit and print Applications and view participants for Events
-      can [:view_applicants, :edit_applicants, :view_participants, :print_applications], Event
+      can [:view_applicants, :edit_applicants, :view_participants, :print_applications, :manage], Event
     end
     if user.role? :admin
       can :manage, :all
