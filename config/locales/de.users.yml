@@ -3,7 +3,7 @@
 de:
   activerecord:
     models:
-      profile:
+      user:
         one: "Benutzer"
         other: "Benutzer"
     attributes:
