@@ -39,6 +39,7 @@ de:
           vegan: "Vegan"
           allergic: "Allergien vorhanden"
           allergies: "Falls Allergien vorhanden, welche?"
+          group: "Gruppe"
 
   application_status:
     accepted: "Angenommen"

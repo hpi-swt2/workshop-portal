@@ -74,6 +74,14 @@ class Event < ActiveRecord::Base
     accepted_applications.collect { |a| a.user }
   end
 
+  # Returns the application letter of this event for a given user
+  #
+  # @param user [User] the user whose application letter we want
+  # @return [ApplicationLetter, nil] the user's application letter or nil
+  def application_letter_for(user)
+    self.application_letters.where(user: user).take
+  end
+
   # Returns the agreement letter a user submitted for this event
   #
   # @param user [User] the user whose agreement letter we want
