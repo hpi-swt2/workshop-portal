@@ -19,4 +19,21 @@ RSpec.describe "events/index", type: :view do
     render
     expect(rendered).to_not have_text("Id")
   end
+
+  it "should not display new, edit, delete buttons for non-organizers" do
+    sign_in(FactoryGirl.create(:user, role: :coach))
+    render
+    expect(rendered).to_not have_link(I18n.t('helpers.links.new'))
+    expect(rendered).to_not have_link(I18n.t('helpers.links.edit'))
+    expect(rendered).to_not have_link(I18n.t('helpers.links.destroy'))
+
+  end
+
+  it "should display new, edit, delete buttons for organizers" do
+    sign_in(FactoryGirl.create(:user, role: :organizer))
+    render
+    expect(rendered).to have_link(I18n.t('helpers.links.new'))
+    expect(rendered).to have_link(I18n.t('helpers.links.edit'))
+    expect(rendered).to have_link(I18n.t('helpers.links.destroy'))
+  end
 end
