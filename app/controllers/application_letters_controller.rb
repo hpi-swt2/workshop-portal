@@ -48,7 +48,7 @@ class ApplicationLettersController < ApplicationController
     @application_letter.user_id = current_user.id
 
     if @application_letter.save
-      redirect_to @application_letter, notice: 'Application was successfully created.'
+      redirect_to check_application_letter_path(@application_letter), notice: 'Application was successfully created.'
     else
       render :new
     end
