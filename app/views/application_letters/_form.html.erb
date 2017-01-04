@@ -1,6 +1,6 @@
 <%= form_for @application_letter, :html => { :class => "form-horizontal application" } do |f| %>
 
-  <%= render partial: "shared/error_message", locals: {entity: @application_letter} %>
+  <%= render partial: "shared/error_message_detailed", locals: {entity: @application_letter} %>
 
   <% if @application_letter.after_deadline? %>
     <div class="alert alert-warning" role="warning">
