@@ -154,6 +154,17 @@ class Event < ActiveRecord::Base
     application_letters.where(status: ApplicationLetter.statuses[:accepted]).count
   end
 
+  # locks the ability to change application statuses
+  def lock_application_status
+    application_status_locked = true
+    update(application_status_locked: true)
+  end
+  # unlocks the ability to change application statuses
+  def unlock_application_status
+    application_status_locked = false
+    update(application_status_locked: false)
+  end
+
   # Make sure any assignment coming from the controller
   # replaces all date ranges instead of adding new ones
   def date_ranges_attributes=(*args)
@@ -200,5 +211,4 @@ class Event < ActiveRecord::Base
     end
     return participant1.name <=> participant2.name
   end
-
 end
