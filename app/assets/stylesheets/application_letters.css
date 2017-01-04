@@ -11,3 +11,7 @@
 #applicant_details dd {
     margin-left: 220px;
 }
+
+#application_deadline_information {
+    color: red;
+}

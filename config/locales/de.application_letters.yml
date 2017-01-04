@@ -19,6 +19,11 @@ de:
     application_page:
       title: "Bewerbung von %{name}"
       for: "für %{event}"
+    check:
+      can_change_until: "Sie können Ihre Bewerbung noch bis zur Bewerbungsdeadline (%{application_deadline}) bearbeiten."
+      my_application: "Meine Bewerbung"
+      my_personal_data: "Meine persönlichen Daten (unwichtig für den Auswahlprozess)"
+      check_application_for: "Bewerbung für %{event_name} prüfen"
 
   activerecord:
     models:
