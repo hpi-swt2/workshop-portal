@@ -83,4 +83,12 @@ class ApplicationLetter < ActiveRecord::Base
       errors.add(:event, "Die Bewerbungen wurden bereits bearbeitet, eine Statusänderung ist nicht mehr erlaubt.")
     end
   end
+
+  # Returns the age of the user based on the date the event starts
+  #
+  # @param none
+  # @return [Int] for age as number of years
+  def applicant_age_when_event_starts
+    user.profile.age_at_time(event.start_date)
+  end
 end
