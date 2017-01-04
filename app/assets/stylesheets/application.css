@@ -15,6 +15,10 @@
  *= require_self
  */
 
+ /*
+  *= require bootstrap_and_overrides
+  */
+ 
 label.required:after {
     content:" *";
     color: red

@@ -40,6 +40,8 @@ gem 'devise_openid_authenticatable'
 # Use Bootstrap (app/assets/stylesheets) for app styling
 # Also provides some nifty helpers:
 # https://github.com/seyhunak/twitter-bootstrap-rails#using-helpers
+gem "therubyracer"
+gem "less-rails"
 gem 'twitter-bootstrap-rails'
 # Boostrap-syle view for devise
 gem 'devise-bootstrap-views'
