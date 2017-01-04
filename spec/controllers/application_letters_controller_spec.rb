@@ -194,7 +194,7 @@ RSpec.describe ApplicationLettersController, type: :controller do
 
       it "redirects to the created application" do
         post :create, application_letter: valid_attributes, session: valid_session
-        expect(response).to redirect_to(ApplicationLetter.last)
+        expect(response).to redirect_to(check_application_letter_path(ApplicationLetter.last))
       end
     end
 
