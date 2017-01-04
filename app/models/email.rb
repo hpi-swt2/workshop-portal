@@ -10,10 +10,14 @@ class Email
   attribute :subject, :type => String
   attribute :content, :type => String
 
-  validates_presence_of :hide_recipients, :recipients, :reply_to, :subject, :content
+  validates_presence_of :recipients, :reply_to, :subject, :content
+  validates_inclusion_of :hide_recipients, in: [true, false]
 
   def initialize(attributes = {})
     attributes.each do |name, value|
+      if name == 'content'
+        value.gsub!(/\n/, '<br/>')
+      end
       send("#{name}=", value)
     end
   end
