@@ -1,1 +1,34 @@
-<h1><%= t('hello') %></h1>
+<section class="front-section row">
+	<div class="container">
+		<%= image_tag "front-welcome.png", class: "pull-right img-rounded img-front-welcome" %>
+		<h1><%= t :hello %></h1>
+		<p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+	</div>
+</section>
+
+<section class="front-section row">
+	<div class="container">
+		<h2>Veranstaltungen
+			<a class="btn btn-primary" href="<%= events_path %>">
+				<%= glyph 'calendar' %> Alle Veranstaltungen
+			</a>
+		</h2>
+		<p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+
+		<%= render Event.all %>
+	</div>
+</section>
+
+<section class="front-section row">
+	<div class="container">
+		<h2>Workshop anfragen</h2>
+		<p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+		<p class="text-center">
+			<a class="btn btn-primary btn-lg" href="<%= new_request_path %>">
+				<%= glyph 'send' %> Anfrange stellen
+			</a>
+		</p>
+		<p class="lead">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+	</div>
+</section>
+

@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
   end
 
   def index
-
+    render 'index', locals: { full_width: true }
   end
 
   protected

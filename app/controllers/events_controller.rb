@@ -5,7 +5,11 @@ class EventsController < ApplicationController
 
   # GET /events
   def index
-    @events = Event.draft_is false
+    if can? :edit, :event
+      @events = Event.all
+    else
+      @events = Event.draft_is false
+    end
   end
 
   # GET /events/1

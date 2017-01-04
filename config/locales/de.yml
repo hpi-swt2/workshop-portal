@@ -20,6 +20,7 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 de:
+  app_name: "Workshop-Portal"
   hello: "Willkommen beim Workshop-Portal"
   unauthorized:
       manage:

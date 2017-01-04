@@ -1,0 +1,24 @@
+<div class="event-preview clearfix">
+  <%= image_tag "example.png", class: "img-rounded pull-right" %>
+  <div class="event-date pull-left">
+    <span class="event-day"><%= l event.start_date, format: "%d" %></span>
+    <span class="event-month"><%= l event.start_date, format: "%b" %></span>
+  </div>
+
+  <h3><%= event.name %> <%= tag_label 'Entwurf', :default if event.draft %></h3>
+  <p><%= truncate(event.description, length: 300) { link_to " Weiterlesen", event_path(event) } %></p>
+
+  <%= link_to t("helpers.links.apply"), new_application_letter_path(:event_id => event.id), class: "btn btn-success btn-sm" %>
+
+  <%= link_to 'Mehr dazu', event_path(event), class: "btn btn-default btn-sm" %>
+
+  <div class="pull-right">
+    <%= link_to t('.edit', :default => t('helpers.links.edit')), edit_event_path(event),
+      :class => 'btn btn-default btn-sm' if can? :edit, event %>
+
+    <%= link_to t('.destroy', :default => t('helpers.links.destroy')), event_path(event),
+      :method => :delete,
+      :data => { :confirm => t('events.confirmation_prompts.confirm_delete', :default => t("helpers.links.confirm", :default => 'Löschen kann nicht rückgängig gemacht werden!')) },
+      :class => 'btn btn-sm btn-danger' if can? :destroy, event %>
+  </div>
+</div>
