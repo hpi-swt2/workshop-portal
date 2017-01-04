@@ -1,4 +1,6 @@
 require 'pdf_generation/applications_pdf'
+require 'rubygems'
+require 'zip'
 
 class EventsController < ApplicationController
   before_action :set_event, only: [:show, :edit, :update, :destroy, :print_applications]
@@ -106,6 +108,60 @@ class EventsController < ApplicationController
     @email = event.generate_rejections_email
     @templates = [{subject: 'Absage 1', content: 'Lorem Ispum...'}, {subject: 'Absage 2', content: 'Lorem Ispum...'}, {subject: 'Absage 3', content: 'Lorem Ispum...'}]
     render :email
+  end
+
+  #POST /events/1/participants/agreement_letters
+  def download_agreement_letters
+    @event = Event.find(params[:id])
+    if not params.has_key?(:selected_participants)
+      redirect_to event_participant_url(@event), notice: I18n.t('events.agreement_letters_download.notices.no_participants_selected') and return
+    end
+    authorize! :print_agreement_letters, @event
+    if params.has_key?(:download_single)
+      filename = "agreement_letters_#{@event.name}_#{Date.today}.zip"
+      temp_file = Tempfile.new(filename)
+      number_of_files = 0
+      begin
+        Zip::OutputStream.open(temp_file) { |zos| }
+        Zip::File.open(temp_file.path, Zip::File::CREATE) do |zipfile|
+          params[:selected_participants].each do |participant_id|
+            user = User.find(participant_id)
+            agreement_letter = user.agreement_letter_for_event(@event)
+
+            unless agreement_letter.nil?
+              number_of_files += 1
+              zipfile.add(number_of_files.to_s + "_" + user.name + ".pdf", agreement_letter.path)
+            end
+          end
+        end
+        zip_data = File.read(temp_file.path)
+        if number_of_files != 0
+          send_data(zip_data, :type => 'application/zip', :filename => filename)
+        end
+      ensure
+        temp_file.close
+        temp_file.unlink
+      end
+      if number_of_files == 0
+        redirect_to event_participant_url(@event), notice: I18n.t('events.agreement_letters_download.notices.no_agreement_letters') and return
+      end
+    end
+    if params.has_key?(:download_concatenated)
+      empty = true
+      pdf = CombinePDF.new
+      params[:selected_participants].each do |participant_id|
+        agreement_letter = User.find(participant_id).agreement_letter_for_event(@event)
+        unless agreement_letter.nil?
+          pdf << CombinePDF.load(agreement_letter.path) 
+          empty = false
+        end
+      end
+      #pdf.save "combined.pdf"
+      if empty
+        redirect_to event_participant_url(@event), notice: I18n.t('events.agreement_letters_download.notices.no_agreement_letters') and return
+      end
+      send_data pdf, filename: "agreement_letters_#{@event.name}_#{Date.today}.pdf", type: "application/pdf", disposition: "inline" unless pdf.nil?
+    end
   end
 
   private

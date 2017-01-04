@@ -81,6 +81,10 @@ gem 'coveralls', require: false
 # pdf generation
 gem 'prawn'
 gem 'prawn-table'
+gem 'combine_pdf'
+
+#zip generation
+gem 'rubyzip', require: 'zip'
 
 # Simple, Heroku-friendly Rails app configuration using ENV and a single YAML file
 gem 'figaro'
