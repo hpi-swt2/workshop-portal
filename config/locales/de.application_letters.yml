@@ -2,6 +2,8 @@
 
 de:
   application_letters:
+    index:
+      details: "Details"
     show:
       application_title: "Bewerbung für %{title}"
       new_note: "Neue Anmerkung:"
