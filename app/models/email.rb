@@ -1,6 +1,7 @@
 class Email
   include ActiveAttr::TypecastedAttributes
   include ActiveModel::Validations
+  include ActiveModel::Validations::Callbacks
   include ActiveModel::Conversion
   extend ActiveModel::Naming
 
@@ -12,13 +13,11 @@ class Email
 
   validates_presence_of :recipients, :reply_to, :subject, :content
   validates_inclusion_of :hide_recipients, in: [true, false]
+  after_validation :convert_line_breaks
 
-  def initialize(attributes = {})
-    attributes.each do |name, value|
-      if name == 'content'
-        value.gsub!(/\n/, '<br/>')
-      end
-      send("#{name}=", value)
+  def convert_line_breaks
+    unless self.content.blank?
+      self.content = self.content.gsub!(/\n/, '<br/>')
     end
   end
 
