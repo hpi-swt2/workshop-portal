@@ -25,6 +25,7 @@ de:
       my_application: "Meine Bewerbung"
       my_personal_data: "Meine persönlichen Daten (unwichtig für den Auswahlprozess)"
       check_application_for: "Bewerbung für %{event_name} prüfen"
+      eating_habits: "Essgewohnheiten"
 
   activerecord:
     models:

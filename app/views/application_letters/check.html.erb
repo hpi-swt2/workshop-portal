@@ -23,6 +23,21 @@
   <%= @application_letter.coding_skills %><br/>
   <strong><%= ApplicationLetter.human_attribute_name(:emergency_number) %>:</strong>
   <%= @application_letter.emergency_number %><br/>
+
+  <% habits = Array.new
+    if @application_letter.vegeterian
+      habits.push(ApplicationLetter.human_attribute_name(:vegeterian))
+    end
+    if @application_letter.vegan
+      habits.push(ApplicationLetter.human_attribute_name(:vegan))
+    end
+    if @application_letter.allergic
+      habits.push(ApplicationLetter.human_attribute_name(:allergic))
+    end
+  %>
+  <strong><%=t('.eating_habits') %>:</strong>
+  <%= habits.join(', ') %><br/>
+
   <strong><%= ApplicationLetter.human_attribute_name(:allergies) %>:</strong><br/>
   <%= @application_letter.allergies %><br/>
 </div>
