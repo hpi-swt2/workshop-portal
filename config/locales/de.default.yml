@@ -120,7 +120,7 @@ de:
       equal_to: muss genau %{count} sein
       even: muss gerade sein
       exclusion: ist nicht verfügbar
-      greater_than: muss grüßer als %{count} sein
+      greater_than: muss größer als %{count} sein
       greater_than_or_equal_to: muss mindestens %{count} sein
       inclusion: ist kein gültiger Wert
       invalid: ist nicht gültig
