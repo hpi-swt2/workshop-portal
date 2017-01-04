@@ -64,6 +64,11 @@ RSpec.describe ApplicationLettersController, type: :controller do
         get :check, id: @application.to_param, session: valid_session
         expect(assigns(:application_letter)).to eq(@application)
       end
+
+      it "assigns the application deadline status as @application_deadline_exceeded" do
+        get :check, id: @application.to_param, session: valid_session
+        expect(assigns(:application_deadline_exceeded)).to eq(@application.after_deadline?)
+      end
     end
 
     describe "GET #new" do

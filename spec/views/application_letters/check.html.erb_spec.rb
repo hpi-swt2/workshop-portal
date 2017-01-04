@@ -4,6 +4,7 @@ RSpec.describe "application_letters/check", type: :view do
   before(:each) do
     @application_letter = assign(:application_letter, FactoryGirl.create(:application_letter))
     @application_letter.user.profile = FactoryGirl.build(:profile)
+    assign(:application_deadline_exceeded, @application_letter.after_deadline?)
     render
   end
 
@@ -11,8 +12,32 @@ RSpec.describe "application_letters/check", type: :view do
     expect(rendered).to have_css('h1', text: I18n.t('application_letters.check.check_application_for', event_name: @application_letter.event.name))
   end
 
-  it "renders information concerning application deadline" do
-    expect(rendered).to have_text(I18n.t('application_letters.check.can_change_until', application_deadline: I18n.l(@application_letter.event.application_deadline)))
+  context "with application deadline exceeded" do
+    before(:each) do
+      assign(:application_deadline_exceeded, true)
+      render
+    end
+    it "renders information concerning application deadline" do
+      expect(rendered).to have_text(I18n.t('application_letters.check.deadline_exceeded'))
+    end
+
+    #TODO wtf
+    #it "doesnt render link to edit application" do
+    #  expect(rendered).to_not have_link(I18n.t("helpers.links.edit"), id: 'edit_application_link', href: edit_application_letter_path(@application_letter))
+    #end
+  end
+
+  context "with application deadline not exceeded" do
+    before(:each) do
+      assign(:application_deadline_exceeded, false)
+    end
+    it "renders information concerning application deadline" do
+      expect(rendered).to have_text(I18n.t('application_letters.check.can_change_until', application_deadline: I18n.l(@application_letter.event.application_deadline)))
+    end
+
+    it "renders link to edit application" do
+      expect(rendered).to have_link(id: 'edit_application_link', href: edit_application_letter_path(@application_letter))
+    end
   end
 
   it "renders application's attributes" do
@@ -36,12 +61,12 @@ RSpec.describe "application_letters/check", type: :view do
     expect(rendered).to have_text(@application_letter.user.profile.graduates_school_in)
   end
 
-  it "renders button to edit application" do
-    expect(rendered).to have_link(id: 'edit_application_link', href: edit_application_letter_path(@application_letter))
-  end
-
-  it "renders button to edit profile" do
+  it "renders link to edit profile" do
     expect(rendered).to have_link(id: 'edit_profile_link', href: edit_profile_path(@application_letter.user.profile))
   end
+
+  #context "renders eating habits" do
+  #  it "shows none"
+  #end
 
 end
