@@ -2,8 +2,12 @@
 
 <div class="page-header">
   <h1><%=t '.check_application_for', event_name: @application_letter.event.name %></h1>
-  <p id='application_deadline_information'>
-    <%= t('.can_change_until', application_deadline: l(@application_letter.event.application_deadline)) %>
+  <p class='alert alert-info' >
+    <% if @application_deadline_exceeded %>
+      <%= t('.deadline_exceeded') %>
+    <% else %>
+      <%= t('.can_change_until', application_deadline: l(@application_letter.event.application_deadline)) %>
+    <% end %>
   </p>
 </div>
 
@@ -22,8 +26,9 @@
   <strong><%= ApplicationLetter.human_attribute_name(:allergies) %>:</strong><br/>
   <%= @application_letter.allergies %><br/>
 </div>
-<%= link_to t('.edit', :default => t("helpers.links.edit")),
-              edit_application_letter_path(@application_letter), id: 'edit_application_link', class: 'btn btn-default' %>
+<% if !@application_deadline_exceeded %>
+  <%= link_to t('.edit', :default => t("helpers.links.edit")), edit_application_letter_path(@application_letter), id: 'edit_application_link', class: 'btn btn-default' %>
+<% end %>
 
 <h3><%= t('.my_personal_data') %></h3>
 <div id="applicant_details">
