@@ -2,6 +2,7 @@
 
 de:
   application_letters:
+    confirmApplicationDelete: "Bist du dir sicher, dass du diese Bewerbung löschen möchtest? Dieser Schritt kann nicht widerrufen werden."
     show:
       application_title: "Bewerbung für %{title}"
       new_note: "Neue Anmerkung:"
