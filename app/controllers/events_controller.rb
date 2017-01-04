@@ -156,11 +156,10 @@ class EventsController < ApplicationController
           empty = false
         end
       end
-      #pdf.save "combined.pdf"
       if empty
         redirect_to event_participant_url(@event), notice: I18n.t('events.agreement_letters_download.notices.no_agreement_letters') and return
       end
-      send_data pdf, filename: "agreement_letters_#{@event.name}_#{Date.today}.pdf", type: "application/pdf", disposition: "inline" unless pdf.nil?
+      send_data pdf.to_pdf, filename: "agreement_letters_#{@event.name}_#{Date.today}.pdf", type: "application/pdf", disposition: "inline" unless pdf.nil?
     end
   end
 
