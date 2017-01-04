@@ -63,16 +63,6 @@ ActiveRecord::Schema.define(version: 20161211123737) do
 
   add_index "date_ranges", ["event_id"], name: "index_date_ranges_on_event_id"
 
-  create_table "emails", force: :cascade do |t|
-    t.boolean  "hide_recipients"
-    t.string   "recipients"
-    t.string   "reply_to"
-    t.string   "subject"
-    t.string   "content"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
-  end
-
   create_table "events", force: :cascade do |t|
     t.string   "name"
     t.string   "description"

@@ -335,7 +335,7 @@ DEPENDENCIES
   twitter-bootstrap-rails
   web-console (~> 2.0)
 
-  RUBY VERSION
+RUBY VERSION
   ruby 2.2.2p95
 
 BUNDLED WITH
