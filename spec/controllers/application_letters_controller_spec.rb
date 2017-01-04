@@ -192,7 +192,7 @@ RSpec.describe ApplicationLettersController, type: :controller do
         expect(assigns(:application_letter)).to be_persisted
       end
 
-      it "redirects to the created application" do
+      it "redirects to the checking page for the created application" do
         post :create, application_letter: valid_attributes, session: valid_session
         expect(response).to redirect_to(check_application_letter_path(ApplicationLetter.last))
       end
