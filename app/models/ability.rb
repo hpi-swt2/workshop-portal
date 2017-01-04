@@ -57,7 +57,6 @@ class Ability
       # Organizers can view, edit and print Applications, view participants for and manage Events
       can [:view_applicants, :edit_applicants, :view_participants, :print_applications, :manage], Event
       can :manage, Request
-
     end
     if user.role? :admin
       can :manage, :all

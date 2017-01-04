@@ -200,5 +200,4 @@ describe User do
     ability = Ability.new(user)
     expect(ability).to be_able_to(:manage, Request)
   end
-
 end
