@@ -19,6 +19,10 @@ RSpec.describe ApplicationLettersController, type: :routing do
       expect(:get => "/applications/1/edit").to route_to("application_letters#edit", :id => "1")
     end
 
+    it "routes to #check" do    
+      expect(:get => "/applications/1/check").to route_to("application_letters#check", :id => "1")
+    end
+
     it "routes to #create" do
       expect(:post => "/applications").to route_to("application_letters#create")
     end
