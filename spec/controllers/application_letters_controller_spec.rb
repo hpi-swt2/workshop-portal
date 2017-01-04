@@ -59,6 +59,13 @@ RSpec.describe ApplicationLettersController, type: :controller do
       end
     end
 
+    describe "GET #check" do
+      it "assigns the requested application as @application" do
+        get :check, id: @application.to_param, session: valid_session
+        expect(assigns(:application_letter)).to eq(@application)
+      end
+    end
+
     describe "GET #new" do
       it "assigns a new application as @application" do
         get :new, session: valid_session
