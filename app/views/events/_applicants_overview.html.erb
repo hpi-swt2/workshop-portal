@@ -55,11 +55,11 @@
 
   <div class="container-fluid no-padding">
     <div class="btn-group" role="group">
-      <%= link_to "Alle annehmen",
+      <%= link_to t('.accept_all'),
           events_path, :class => 'btn btn-default'%>
 
-      <%= link_to "Alle drucken",
-          events_path, :class => 'btn btn-default'%>
+      <%= link_to t('.print_all'),
+                  print_applications_event_path(@event.id), :target => "_blank", :class => 'btn btn-default'%>
     </div>
 
     <% if not @event.applications_classified? %>
