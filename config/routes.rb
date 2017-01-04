@@ -3,12 +3,16 @@ Rails.application.routes.draw do
   get 'agreement_letters/show'
 
   resources :requests
+
+  put 'applications/:id/status' => 'application_letters#update_status', as: :update_application_letter_status
+
   resources :application_letters, path: 'applications' do
     resources :application_notes,
       only: :create
   end
   resources :events do
     resources :agreement_letters, only: [:create], shallow: true
+    get 'print_applications', on: :member
     get 'badges'
     post 'badges' => 'events#print_badges', as: :print_badges
   end

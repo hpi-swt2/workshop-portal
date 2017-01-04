@@ -6,7 +6,7 @@ class ApplicationLettersController < ApplicationController
 
   # GET /applications
   def index
-    @application_letters = ApplicationLetter.all
+    @application_letters = ApplicationLetter.where(user_id: current_user.id)
   end
 
   # GET /applications/1
@@ -43,7 +43,7 @@ class ApplicationLettersController < ApplicationController
     @application_letter.user_id = current_user.id
 
     if @application_letter.save
-      redirect_to @application_letter, notice: 'Application was successfully created.'
+      redirect_to @application_letter, notice: I18n.t('application_letters.successful_creation')
     else
       render :new
     end
@@ -52,7 +52,16 @@ class ApplicationLettersController < ApplicationController
   # PATCH/PUT /applications/1
   def update
     if @application_letter.update_attributes(application_params)
-      redirect_to :back, notice: 'Application was successfully updated.' rescue ActionController::RedirectBackError redirect_to root_path
+      redirect_to :back, notice: I18n.t('application_letters.successful_update') rescue ActionController::RedirectBackError redirect_to root_path
+    else
+      render :edit
+    end
+  end
+
+  # PATCH/PUT /applications/1/status
+  def update_status
+    if @application_letter.update_attributes(application_status_param)
+      redirect_to :back, notice: I18n.t('application_letters.successful_update') rescue ActionController::RedirectBackError redirect_to root_path
     else
       render :edit
     end
@@ -61,7 +70,7 @@ class ApplicationLettersController < ApplicationController
   # DELETE /applications/1
   def destroy
     @application_letter.destroy
-    redirect_to application_letters_url, notice: 'Application was successfully destroyed.'
+    redirect_to application_letters_url, notice: I18n.t('application_letters.successful_deletion')
   end
 
   private
@@ -73,6 +82,11 @@ class ApplicationLettersController < ApplicationController
     # Only allow a trusted parameter "white list" through.
     # Don't allow user_id as you shouldn't be able to set the user from outside of create/update.
     def application_params
-      params.require(:application_letter).permit(:grade, :experience, :motivation, :coding_skills, :emergency_number, :vegeterian, :vegan, :allergic, :allergies, :user_id, :event_id, :status)
+      params.require(:application_letter).permit(:grade, :experience, :motivation, :coding_skills, :emergency_number, :vegeterian, :vegan, :allergic, :allergies, :user_id, :event_id)
+    end
+
+    # Only allow to update the status
+    def application_status_param
+      params.require(:application_letter).permit(:status)
     end
 end

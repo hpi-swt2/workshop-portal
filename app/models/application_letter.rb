@@ -27,10 +27,11 @@ class ApplicationLetter < ActiveRecord::Base
   validate :status_cannot_be_changed, :if => Proc.new { |letter| letter.status_changed?}
 
   enum status: {accepted: 1, rejected: 0, pending: 2, alternative: 3}
+  validates :status, inclusion: { in: statuses.keys }
+  
 
   # Checks if the deadline is over
   # additionally only return if event and event.application_deadline is present
-  # TODO: 'event.application_deadline' should never be nil, when #18 is finished. Please remove this in #18.
   #
   # @param none
   # @return [Boolean] true if deadline is over
@@ -51,6 +52,27 @@ class ApplicationLetter < ActiveRecord::Base
   def deadline_cannot_be_in_the_past
     if after_deadline?
       errors.add(:event, I18n.t("application_letters.form.warning"))
+    end
+  end
+
+  # Chooses right status based on status and event deadline
+  #
+  # @param none
+  # @return [String] to display on the website
+  def status_type
+    case ApplicationLetter.statuses[status]
+      when ApplicationLetter.statuses[:accepted]
+        return I18n.t("application_status.accepted")
+      when ApplicationLetter.statuses[:rejected]
+        return I18n.t("application_status.rejected")
+      when ApplicationLetter.statuses[:pending]
+        if after_deadline?
+          return I18n.t("application_status.pending_after_deadline")
+        else
+          return I18n.t("application_status.pending_before_deadline")
+        end
+      else
+        return I18n.t("application_status.alternative")
     end
   end
 
