@@ -65,8 +65,19 @@ RSpec.describe "application_letters/check", type: :view do
     expect(rendered).to have_link(id: 'edit_profile_link', href: edit_profile_path(@application_letter.user.profile))
   end
 
-  #context "renders eating habits" do
-  #  it "shows none"
-  #end
+  context "renders eating habits" do
+    it "shows one" do
+      @application_letter.vegeterian = true
+      render
+      expect(rendered).to have_text(ApplicationLetter.human_attribute_name(:vegeterian))
+    end
+
+    it "shows multiple concatenated by commas" do
+      @application_letter.vegeterian = true
+      @application_letter.allergic = true
+      render
+      expect(rendered).to have_text(ApplicationLetter.human_attribute_name(:vegeterian) + ', ' + ApplicationLetter.human_attribute_name(:allergic))
+    end
+  end
 
 end
