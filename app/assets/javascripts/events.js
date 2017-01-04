@@ -26,3 +26,10 @@ function addEventDatePicker() {
 function removeEventDatePicker(button) {
   $(button).parent('div').remove();
 }
+
+jQuery(function() {
+  $('#check_all').on("click", function(){
+    var cbxs = $('input[type="checkbox"]');
+    cbxs.prop("checked", !cbxs.prop("checked"));
+  });
+});
