@@ -156,12 +156,10 @@ class Event < ActiveRecord::Base
 
   # locks the ability to change application statuses
   def lock_application_status
-    application_status_locked = true
     update(application_status_locked: true)
   end
   # unlocks the ability to change application statuses
   def unlock_application_status
-    application_status_locked = false
     update(application_status_locked: false)
   end
 

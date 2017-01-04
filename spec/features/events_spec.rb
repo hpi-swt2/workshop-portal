@@ -146,8 +146,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
   scenario "logged in as Organizer I can lock the event application statuses by pressing one of the email buttons" do
     login(:organizer)
     @pupil = FactoryGirl.create(:profile)
-    @application_letter = FactoryGirl.create(:application_letter, event: @event, user: @pupil.user)
-    @application_letter.status = 'accepted'
+    @application_letter = FactoryGirl.create(:application_letter_accepted, event: @event, user: @pupil.user)
     @application_letter.save
     ['.events.applicants_overview.sending_acceptances', '.events.applicants_overview.sending_rejections'].each do | email_button |
       @event.unlock_application_status
