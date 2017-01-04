@@ -16,7 +16,7 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-<div class="container">
+<div class="container" id="wsp-navigation--wrapper">
   <%# https://github.com/seyhunak/twitter-bootstrap-rails#using-helpers %>
   <%= nav_bar do %>
     <%= menu_group do %>
@@ -34,7 +34,8 @@
 
   <%# https://github.com/seyhunak/twitter-bootstrap-rails#flash-helper %>
   <%= bootstrap_flash %>
-
+</div>
+<div class="container">
   <main>
     <%= yield %>
   </main>
