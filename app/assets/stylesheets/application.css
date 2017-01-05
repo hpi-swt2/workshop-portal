@@ -31,10 +31,21 @@ footer.front-section {
 footer {
     margin-top: 60px;
 }
+.m-l-1 { margin-left: 15px; }
+.m-r-1 { margin-right: 15px; }
+.m-t-1 { margin-top: 15px; }
+.m-b-1 { margin-bottom: 15px; }
 
-.img-front-welcome {
-    max-width: 450px;
-    margin: 15px;
+.img-float-corner-tr {
+    float: right;
+    margin: 0 0 15px 15px;
+}
+@media (max-width: 768px) {
+    .img-float-corner-tr {
+        float: none;
+        margin: auto;
+        margin-bottom: 15px;
+    }
 }
 .front-section {
     border-bottom: 1px solid #eee;

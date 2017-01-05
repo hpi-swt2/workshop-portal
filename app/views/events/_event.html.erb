@@ -1,6 +1,6 @@
 <div class="event-preview <%= 'event-past' if event.is_past %> clearfix">
-  <%= image_tag "example.png", class: "img-rounded pull-right" %>
-  <div class="event-date pull-left">
+  <%= image_tag "example.png", class: "img-rounded img-responsive img-float-corner-tr center-block" %>
+  <div class="event-date">
     <span class="event-day"><%= l event.start_date, format: "%d" %></span>
     <span class="event-month"><%= l event.start_date, format: "%b" %></span>
     <% if event.start_date.year != Time.now.year %>
@@ -20,10 +20,10 @@
     link_to " " + I18n.t('events.list.read_on'), event_path(event)
   end %></p>
 
-  <%= event.application_deadline_label.try { |label| tag_label label, :default } %>
-  <%= event.duration_label.try { |label| tag_label label, :default } %>
-  <br>
-  <br>
+  <div class="m-b-1">
+    <%= event.application_deadline_label.try { |label| tag_label label, :default } %>
+    <%= event.duration_label.try { |label| tag_label label, :default } %>
+  </div>
 
   <%= link_to t("helpers.links.apply"), new_application_letter_path(:event_id => event.id), class: "btn btn-success btn-sm" %>
 

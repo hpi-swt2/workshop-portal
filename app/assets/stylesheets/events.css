@@ -43,11 +43,6 @@
 .event-list .event-preview:last-of-type {
     border-bottom: none;
 }
-.event-preview img {
-    height: 155px;
-    margin-left: 15px;
-    margin-bottom: 15px;
-}
 .event-preview h3 {
     margin-top: 0;
 }
@@ -55,19 +50,37 @@
     text-align: center;
     line-height: 3em;
     margin-right: 15px;
-    margin-bottom: 70px;
+    float: left;
+}
+.event-date > span {
+    display: block;
 }
 .event-day {
-    display: block;
     font-weight: 800;
     font-size: 4em;
 }
 .event-month {
     font-size: 2em;
     font-weight: 100;
-    display: block;
 }
 .event-year {
-    margin-top: -1.2em;
-    display: block;
+    margin: -1.2em 0;
+}
+@media (max-width: 768px) {
+    .event-date {
+        float: none;
+        margin-bottom: 15px;
+    }
+    .event-day:after {
+        content: '.';
+    }
+    .event-year {
+    }
+    .event-date > span {
+        margin-left: 5px;
+        font-weight: 100;
+        display: inline-block;
+        vertical-align: middle;
+        font-size: 1.5em;
+    }
 }
