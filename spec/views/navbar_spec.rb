@@ -7,10 +7,9 @@ RSpec.describe 'navbar', type: :view do
       user = FactoryGirl.create(:user, role: role)
       sign_in user
       render template: 'application/index', layout: 'layouts/application'
-
-      expect(rendered).to have_css(".nav a", text: 'Start')
-      expect(rendered).to have_css(".nav a", text: 'Veranstaltungen')
-      expect(rendered).to have_css(".nav a", text: 'Anfragen')
+      expect(rendered).to have_css(".nav a", text: I18n.t('navbar.home'))
+      expect(rendered).to have_css(".nav a", text: I18n.t('navbar.events'))
+      expect(rendered).to have_css(".nav a", text: I18n.t('navbar.requests'))
     end
   end
 
@@ -21,11 +20,11 @@ RSpec.describe 'navbar', type: :view do
       render template: 'application/index', layout: 'layouts/application'
     end
 
-    it "shows Profilinfo, Mein Profil anlegen, Meine Bewerbungen, Ausloggen in the dropdown" do
-      expect(rendered).to have_css(".nav .dropdown-menu a", text: 'Profilinfo')
-      expect(rendered).to have_css(".nav .dropdown-menu a", text: 'Mein Profil anlegen')
-      expect(rendered).to have_css(".nav .dropdown-menu a", text: 'Meine Bewerbungen')
-      expect(rendered).to have_css(".nav .dropdown-menu a", text: 'Ausloggen')
+    it "shows Einstellungen, Mein Profil anlegen, Meine Bewerbungen, Ausloggen in the dropdown" do
+      expect(rendered).to have_css(".nav .dropdown-menu a", text: I18n.t('navbar.settings'))
+      expect(rendered).to have_css(".nav .dropdown-menu a", text: I18n.t('navbar.create_profile'))
+      expect(rendered).to have_css(".nav .dropdown-menu a", text: I18n.t('navbar.my_application_letters'))
+      expect(rendered).to have_css(".nav .dropdown-menu a", text: I18n.t('navbar.logout'))
       expect(rendered).to have_css(".nav .dropdown-menu a", count: 4)
     end
   end
@@ -35,33 +34,33 @@ RSpec.describe 'navbar', type: :view do
       profile = FactoryGirl.create(:profile)
       sign_in profile.user
       render template: 'application/index', layout: 'layouts/application'
-      expect(rendered).to have_css(".nav .dropdown-menu a", text: 'Mein Profil')
+      expect(rendered).to have_css(".nav .dropdown-menu a", text: I18n.t('navbar.profile'))
       expect(rendered).to have_css(".nav .dropdown-menu a", count: 4)
     end
   end
 
   context "logged in as an admin" do
-    it "shows Profilinfo, Mein Profil, Benutzerverwaltung, Ausloggen" do
+    it "shows Einstellungen, Mein Profil, Benutzerverwaltung, Ausloggen" do
       profile = FactoryGirl.create(:profile, user: (FactoryGirl.create :user, role: :admin))
       sign_in profile.user
       render template: 'application/index', layout: 'layouts/application'
-      expect(rendered).to have_css(".nav .dropdown-menu a", text: 'Profilinfo')
-      expect(rendered).to have_css(".nav .dropdown-menu a", text: 'Mein Profil')
-      expect(rendered).to have_css(".nav .dropdown-menu a", text: 'Benutzerverwaltung')
-      expect(rendered).to have_css(".nav .dropdown-menu a", text: 'Ausloggen')
+      expect(rendered).to have_css(".nav .dropdown-menu a", text: I18n.t('navbar.settings'))
+      expect(rendered).to have_css(".nav .dropdown-menu a", text: I18n.t('navbar.profile'))
+      expect(rendered).to have_css(".nav .dropdown-menu a", text: I18n.t('navbar.user_management'))
+      expect(rendered).to have_css(".nav .dropdown-menu a", text: I18n.t('navbar.logout'))
       expect(rendered).to have_css(".nav .dropdown-menu a", count: 4)
     end
   end
 
   context "logged in as an organizer or coach" do
     %i[organizer coach].each do |role|
-      it "shows Profilinfo, Mein Profil, Ausloggen" do
+      it "shows Einstellungen, Mein Profil, Ausloggen" do
         profile = FactoryGirl.create(:profile, user: (FactoryGirl.create :user, role: role))
         sign_in profile.user
         render template: 'application/index', layout: 'layouts/application'
-        expect(rendered).to have_css(".nav .dropdown-menu a", text: 'Profilinfo')
-        expect(rendered).to have_css(".nav .dropdown-menu a", text: 'Mein Profil')
-        expect(rendered).to have_css(".nav .dropdown-menu a", text: 'Ausloggen')
+        expect(rendered).to have_css(".nav .dropdown-menu a", text: I18n.t('navbar.settings'))
+        expect(rendered).to have_css(".nav .dropdown-menu a", text: I18n.t('navbar.profile'))
+        expect(rendered).to have_css(".nav .dropdown-menu a", text: I18n.t('navbar.logout'))
         expect(rendered).to have_css(".nav .dropdown-menu a", count: 3)
       end
     end

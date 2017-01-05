@@ -34,7 +34,7 @@ de:
     requests: "Anfragen"
     profile: "Mein Profil"
     create_profile: "Mein Profil anlegen"
-    settings: "Profilinfo"
+    settings: "Einstellungen"
     login: "Einloggen"
     logout: "Ausloggen"
   users:
@@ -43,3 +43,8 @@ de:
         sign_in: "Einloggen"
         remember_me: "Eingeloggt bleiben"
   midnight: "Mitternacht"
+  navigational:
+    back: Zurück
+    forward: Weiter
+    top: oben
+    bottom: unten

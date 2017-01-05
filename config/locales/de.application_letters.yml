@@ -2,8 +2,10 @@
 
 de:
   application_letters:
+    confirmApplicationDelete: "Bist du dir sicher, dass du diese Bewerbung löschen möchtest? Dieser Schritt kann nicht widerrufen werden."
     show:
       application_title: "Bewerbung für %{title}"
+      age_when_event_starts: "Alter bei Beginn"
       new_note: "Neue Anmerkung:"
     form:
       warning: "Die Deadline ist schon vorbei. Du kannst deine Bewerbung nicht mehr ändern."
@@ -14,11 +16,14 @@ de:
       Programmierkenntnisse sind keine  Voraussetzung zur Teilnahme. Diese Information
       wird zur Gruppeneinteilung benötigt."
     login_before_creation: "Du musst angemeldet sein, um dich für Workshops bewerben zu können."
-    successful_update: "Die Bewerbung wurde erfolgreich aktualisiert"
+    successful_update: "Bewerbung erfolgreich bearbeitet"
+    successful_deletion: "Bewerbung erfolgreich gelöscht"
+    successful_creation: "Bewerbung erfolgreich erstellt"
     fill_in_profile_before_creation: "Du musst erst dein Profil ausfüllen, um dich für Workshops bewerben zu können."
     application_page:
       title: "Bewerbung von %{name}"
       for: "für %{event}"
+    confirm_deletion: "Willst du diese Bewerbung wirklich löschen?"
 
   activerecord:
     models:
