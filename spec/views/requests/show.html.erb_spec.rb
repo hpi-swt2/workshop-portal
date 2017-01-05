@@ -2,12 +2,12 @@ require 'rails_helper'
 
 RSpec.describe "requests/show", type: :view do
   before(:each) do
-    @aRequest = assign(:request, FactoryGirl.create(:request, topics: 'Topics'))
+    @aRequest = assign(:request, FactoryGirl.create(:request, topic_of_workshop: 'Topics'))
   end
 
   it "renders attributes" do
     render
-    expect(rendered).to have_text(@aRequest.topics)
+    expect(rendered).to have_text(@aRequest.topic_of_workshop)
   end
 
   it "should not display edit, delete buttons for non-organizers" do
