@@ -41,6 +41,7 @@ gem 'devise_openid_authenticatable'
 # Also provides some nifty helpers:
 # https://github.com/seyhunak/twitter-bootstrap-rails#using-helpers
 gem "therubyracer"
+#gem 'less-rails-bootstrap'
 gem "less-rails"
 gem 'twitter-bootstrap-rails'
 # Boostrap-syle view for devise
