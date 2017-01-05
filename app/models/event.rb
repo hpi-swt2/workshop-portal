@@ -154,6 +154,36 @@ class Event < ActiveRecord::Base
     application_letters.where(status: ApplicationLetter.statuses[:accepted]).count
   end
 
+  # Returns a label listing the number of days to the deadline if
+  # it's <= 7 days to go. Otherwise returns nil.
+  #
+  # @return string containing the label or nil
+  def application_deadline_label
+    days = (application_deadline - Date.current).to_i
+    I18n.t('events.notices.deadline_approaching', count: days) if days <= 7 and days > 0
+  end
+
+  def is_past
+    return start_date < Date.current
+  end
+
+  # Returns a label that describes the duration of the event in days,
+  # also mentioning whether or not the event happens on consecutive
+  # days. If the event is only on a single day, it returns nothing.
+  #
+  # @return the duration label or nil
+  def duration_label
+    # gotta add 1 since from Sunday to Monday is on two days, but only
+    # a difference of a single day
+    days = (end_date - start_date).to_i + 1
+
+    if date_ranges.size > 1
+      I18n.t('events.notices.time_span_non_consecutive', count: days)
+    elsif days > 1
+      I18n.t('events.notices.time_span_consecutive', count: days)
+    end
+  end
+
   # Make sure any assignment coming from the controller
   # replaces all date ranges instead of adding new ones
   def date_ranges_attributes=(*args)
@@ -173,6 +203,17 @@ class Event < ActiveRecord::Base
   end
 
   scope :draft_is, ->(draft) { where("draft = ?", draft) }
+
+  # Returns events sorted by start date, returning only public ones
+  # if requested
+  #
+  # @param limit Maximum number of events to return
+  # @param only_public Set to true to not include drafts
+  # @return List of events
+  def self.sorted_by_start_date(only_public)
+    (!only_public ? Event.all : Event.draft_is(false))
+      .sort_by(&:start_date)
+  end
 
   protected
   # Compares two participants to achieve following order:

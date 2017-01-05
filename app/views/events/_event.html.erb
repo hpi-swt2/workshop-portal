@@ -1,12 +1,27 @@
-<div class="event-preview clearfix">
+<div class="event-preview <%= 'event-past' if event.is_past %> clearfix">
   <%= image_tag "example.png", class: "img-rounded pull-right" %>
   <div class="event-date pull-left">
     <span class="event-day"><%= l event.start_date, format: "%d" %></span>
     <span class="event-month"><%= l event.start_date, format: "%b" %></span>
+    <% if event.start_date.year != Time.now.year %>
+      <span class="event-year"><%= event.start_date.year %></span>
+    <% end %>
   </div>
 
-  <h3><%= event.name %> <%= tag_label 'Entwurf', :default if event.draft %></h3>
-  <p><%= truncate(event.description, length: 300) { link_to " Weiterlesen", event_path(event) } %></p>
+  <h3>
+    <%= event.name %>
+    <small>
+      <%= tag_label t('draft'), :default if event.draft %>
+      <%= tag_label t('events.notices.past_event'), :default if event.is_past %>
+    </small>
+  </h3>
+
+  <p><%= truncate(event.description, length: 250) { link_to " Weiterlesen", event_path(event) } %></p>
+
+  <%= event.application_deadline_label.try { |label| tag_label label, :default } %>
+  <%= event.duration_label.try { |label| tag_label label, :default } %>
+  <br>
+  <br>
 
   <%= link_to t("helpers.links.apply"), new_application_letter_path(:event_id => event.id), class: "btn btn-success btn-sm" %>
 

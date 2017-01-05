@@ -5,11 +5,7 @@ class EventsController < ApplicationController
 
   # GET /events
   def index
-    if can? :edit, :event
-      @events = Event.all
-    else
-      @events = Event.draft_is false
-    end
+    @events = Event.sorted_by_start_date(!can?(:edit, :event)).reverse
   end
 
   # GET /events/1

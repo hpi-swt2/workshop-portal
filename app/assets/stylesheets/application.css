@@ -47,16 +47,20 @@ footer {
 }
 .event-preview {
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    margin: 30px 0;
+    margin: 15px 0;
+    padding-bottom: 15px;
+}
+.event-preview.event-past {
+    opacity: 0.7;
 }
 .front-section:nth-child(even) .event-preview {
     border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 }
-.event-preview:last-of-type {
+.event-list .event-preview:last-of-type {
     border-bottom: none;
 }
 .event-preview img {
-    height: 150px;
+    height: 155px;
     margin-left: 15px;
     margin-bottom: 15px;
 }
@@ -67,7 +71,7 @@ footer {
     text-align: center;
     line-height: 3em;
     margin-right: 15px;
-    margin-bottom: 40px;
+    margin-bottom: 70px;
 }
 .event-day {
     display: block;
@@ -77,4 +81,9 @@ footer {
 .event-month {
     font-size: 2em;
     font-weight: 100;
+    display: block;
+}
+.event-year {
+    margin-top: -1.2em;
+    display: block;
 }

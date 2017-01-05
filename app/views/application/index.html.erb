@@ -15,7 +15,12 @@
 		</h2>
 		<p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
 
-		<%= render Event.all %>
+		<div class="event-list col-md-10 col-md-offset-1">
+			<%= render @events %>
+			<a class="btn btn-primary" href="<%= events_path %>">
+				<%= glyph 'calendar' %> Alle Veranstaltungen
+			</a>
+		</div>
 	</div>
 </section>
 
