@@ -16,7 +16,7 @@
     </small>
   </h3>
 
-  <p><%= truncate(event.description, length: 250) { link_to " Weiterlesen", event_path(event) } %></p>
+  <p><%= truncate(event.description, length: Event::TRUNCATE_DESCRIPTION_TEXT_LENGTH) { link_to " " + I18n.t('events.list.read_on'), event_path(event) } %></p>
 
   <%= event.application_deadline_label.try { |label| tag_label label, :default } %>
   <%= event.duration_label.try { |label| tag_label label, :default } %>
@@ -25,7 +25,7 @@
 
   <%= link_to t("helpers.links.apply"), new_application_letter_path(:event_id => event.id), class: "btn btn-success btn-sm" %>
 
-  <%= link_to 'Mehr dazu', event_path(event), class: "btn btn-default btn-sm" %>
+  <%= link_to t('events.list.more'), event_path(event), class: "btn btn-default btn-sm" %>
 
   <div class="pull-right">
     <%= link_to t('.edit', :default => t('helpers.links.edit')), edit_event_path(event),

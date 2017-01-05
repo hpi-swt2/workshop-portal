@@ -15,6 +15,7 @@
 
 class Event < ActiveRecord::Base
   UNREASONABLY_LONG_DATE_SPAN = 300
+  TRUNCATE_DESCRIPTION_TEXT_LENGTH = 250
 
   has_many :application_letters
   has_many :agreement_letters

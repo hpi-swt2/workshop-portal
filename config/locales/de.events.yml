@@ -37,6 +37,9 @@ de:
     kinds:
      workshop: "Workshop"
      camp: "Camp"
+    list:
+      more: "Mehr dazu"
+      read_on: "Weiterlesen"
 
     notices:
       created: "Event wurde erstellt."

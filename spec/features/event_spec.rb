@@ -16,6 +16,46 @@ describe "Event", type: :feature do
       visit events_path
       expect(page).to have_css(".label", text: I18n.t(".activerecord.attributes.event.draft"))
     end
+
+    it "should not show drafts to pupils or coaches" do
+      %i[coach pupil].each do |role|
+        login_as(FactoryGirl.create(:user, role: role), :scope => :user)
+
+        FactoryGirl.create :event, draft: true
+        visit events_path
+        expect(page).to_not have_css(".label", text: I18n.t(".activerecord.attributes.event.draft"))
+      end
+    end
+
+    it "should display the duration of the event" do
+      FactoryGirl.create :event, :over_six_days
+      visit events_path
+      expect(page).to have_text(I18n.t("events.notices.time_span_consecutive", count: 6))
+    end
+
+    it "should display note of non consecutive date ranges" do
+      FactoryGirl.create :event, :with_multiple_date_ranges
+      visit events_path
+      expect(page).to have_text(I18n.t("events.notices.time_span_non_consecutive", count: 16))
+    end
+
+    it "should display the days left to apply" do
+      FactoryGirl.create :event
+      visit events_path
+      expect(page).to have_text(I18n.t("events.notices.deadline_approaching", count: 1))
+    end
+
+    it "should not display the days left to apply if it's more than 7" do
+      FactoryGirl.create :event, :application_deadline_in_10_days
+      visit events_path
+      expect(page).to_not have_text(I18n.t("events.notices.deadline_approaching", count: 10))
+    end
+
+    it "should truncate the description text if it's long" do
+      FactoryGirl.create :event, description: ('a' * Event::TRUNCATE_DESCRIPTION_TEXT_LENGTH) + 'blah'
+      visit events_path
+      expect(page).to_not have_text('blah')
+    end
   end
 
   describe "create page" do
