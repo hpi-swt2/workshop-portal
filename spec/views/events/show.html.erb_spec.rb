@@ -45,7 +45,7 @@ RSpec.describe "events/show", type: :view do
     render
     expect(rendered).to have_css("td", :text => @application_letter.user.profile.name)
     expect(rendered).to have_css("td", :text => @application_letter.user.profile.gender)
-    expect(rendered).to have_css("td", :text => @application_letter.user.profile.age)
+    expect(rendered).to have_css("td", :text => @application_letter.user.profile.age_at_time(@event.start_date))
   end
 
   it "displays application details button" do

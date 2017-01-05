@@ -29,7 +29,7 @@ footer.front-section {
     border: none;
 }
 footer {
-    margin-top: 40px;
+    margin-top: 60px;
 }
 
 .img-front-welcome {
@@ -42,6 +42,9 @@ footer {
 }
 .front-section:first-child {
     padding-top: 30px;
+}
+.front-section:last-of-type {
+    border: none;
 }
 .front-section:nth-child(even), footer {
     background-color: #333;

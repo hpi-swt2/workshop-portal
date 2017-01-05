@@ -164,6 +164,10 @@ class Event < ActiveRecord::Base
     I18n.t('events.notices.deadline_approaching', count: days) if days <= 7 and days > 0
   end
 
+  # Uses the start date to determine whether or not this event is in the past (or more
+  # precisely, in the past or currently running)
+  #
+  # @return boolean if it's in the past
   def is_past
     return start_date < Date.current
   end

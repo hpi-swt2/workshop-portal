@@ -21,7 +21,6 @@
 
 de:
   app_name: "Workshop-Portal"
-  hello: "Willkommen beim Workshop-Portal"
   unauthorized:
       manage:
         all: "Du bist nicht authorisiert diese Aktion auszuführen."
@@ -35,7 +34,7 @@ de:
     requests: "Anfragen"
     profile: "Mein Profil"
     create_profile: "Mein Profil anlegen"
-    settings: "Profilinfo"
+    settings: "Einstellungen"
     login: "Einloggen"
     logout: "Ausloggen"
   users:
@@ -44,7 +43,17 @@ de:
         sign_in: "Einloggen"
         remember_me: "Eingeloggt bleiben"
   midnight: "Mitternacht"
-  intro_text: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-  intro_text_events: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
-  intro_text_requests: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
-  outro_text_requests: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+  start_page:
+    hello: "Willkommen beim Workshop-Portal"
+    place_request: "Anfrage stellen"
+    all_events: 'Alle Veranstaltungen'
+    intro_text: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+    intro_text_events: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+    intro_text_requests: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+    outro_text_requests: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+  footer: "Companion Cube <3"
+  navigational:
+    back: Zurück
+    forward: Weiter
+    top: oben
+    bottom: unten

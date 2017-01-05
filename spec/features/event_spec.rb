@@ -2,10 +2,10 @@ require "rails_helper"
 
 describe "Event", type: :feature do
   describe "index page" do
-    it "should link to the show page when an event title is clicked" do
+    it "should link to the show page when an event's read more button is clicked" do
       event = FactoryGirl.create :event
       visit events_path
-      click_link event.name
+      click_link I18n.t('events.list.more')
       expect(page).to have_current_path(event_path(event))
     end
 

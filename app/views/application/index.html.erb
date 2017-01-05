@@ -1,8 +1,8 @@
 <section class="front-section row">
 	<div class="container">
 		<%= image_tag "front-welcome.png", class: "pull-right img-rounded img-front-welcome" %>
-		<h1><%= t :hello %></h1>
-		<p class="lead"><%= t "intro_text" %></p>
+		<h1><%= t "start_page.hello" %></h1>
+		<p class="lead"><%= t "start_page.intro_text" %></p>
 	</div>
 </section>
 
@@ -10,15 +10,15 @@
 	<div class="container">
 		<h2>Veranstaltungen
 			<a class="btn btn-primary" href="<%= events_path %>">
-				<%= glyph 'calendar' %> Alle Veranstaltungen
+				<%= glyph 'calendar' %> <%= t "start_page.all_events" %>
 			</a>
 		</h2>
-		<p class="lead"><%= t "intro_text_events" %></p>
+		<p class="lead"><%= t "start_page.intro_text_events" %></p>
 
 		<div class="event-list col-md-10 col-md-offset-1">
 			<%= render @events %>
 			<a class="btn btn-primary" href="<%= events_path %>">
-				<%= glyph 'calendar' %> Alle Veranstaltungen
+				<%= glyph 'calendar' %> <%= t "start_page.all_events" %>
 			</a>
 		</div>
 	</div>
@@ -27,13 +27,13 @@
 <section class="front-section row">
 	<div class="container">
 		<h2>Workshop anfragen</h2>
-		<p class="lead"><%= t "intro_text_requests" %></p>
+		<p class="lead"><%= t "start_page.intro_text_requests" %></p>
 		<p class="text-center">
 			<a class="btn btn-primary btn-lg" href="<%= new_request_path %>">
-				<%= glyph 'send' %> Anfrange stellen
+				<%= glyph 'send' %> <%= t "start_page.place_request" %>
 			</a>
 		</p>
-		<p class="lead"><%= t "outro_text_requests" %></p>
+		<p class="lead"><%= t "start_page.outro_text_requests" %></p>
 	</div>
 </section>
 

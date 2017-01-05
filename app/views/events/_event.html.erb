@@ -16,7 +16,9 @@
     </small>
   </h3>
 
-  <p><%= truncate(event.description, length: Event::TRUNCATE_DESCRIPTION_TEXT_LENGTH) { link_to " " + I18n.t('events.list.read_on'), event_path(event) } %></p>
+  <p><%= truncate(event.description, length: Event::TRUNCATE_DESCRIPTION_TEXT_LENGTH) do
+    link_to " " + I18n.t('events.list.read_on'), event_path(event)
+  end %></p>
 
   <%= event.application_deadline_label.try { |label| tag_label label, :default } %>
   <%= event.duration_label.try { |label| tag_label label, :default } %>
@@ -33,7 +35,10 @@
 
     <%= link_to t('.destroy', :default => t('helpers.links.destroy')), event_path(event),
       :method => :delete,
-      :data => { :confirm => t('events.confirmation_prompts.confirm_delete', :default => t("helpers.links.confirm", :default => 'Löschen kann nicht rückgängig gemacht werden!')) },
+      :data => {
+        :confirm => t('events.confirmation_prompts.confirm_delete',
+          :default => t("helpers.links.confirm",
+            :default => 'Löschen kann nicht rückgängig gemacht werden!')) },
       :class => 'btn btn-sm btn-danger' if can? :destroy, event %>
   </div>
 </div>

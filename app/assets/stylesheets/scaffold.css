@@ -40,3 +40,11 @@ pre {
   font-size: 12px;
   list-style: square;
 }
+
+.spacer-15 {
+  margin-top: 15px;
+}
+
+.spacer-30 {
+  margin-top: 30px;
+}

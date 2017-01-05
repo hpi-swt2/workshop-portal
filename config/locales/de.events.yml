@@ -11,6 +11,7 @@ de:
       filter: "Filtern"
       status: "Status"
       details: "Details"
+      age_when_event_starts: "Alter bei Beginn"
       free_places:
         one: '%{count} Platz frei'
         other: '%{count} Plätze frei'
