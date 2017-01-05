@@ -3,6 +3,9 @@ Rails.application.routes.draw do
   get 'agreement_letters/show'
 
   resources :requests
+
+  put 'applications/:id/status' => 'application_letters#update_status', as: :update_application_letter_status
+
   resources :application_letters, path: 'applications' do
     resources :application_notes,
       only: :create
@@ -23,6 +26,10 @@ Rails.application.routes.draw do
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
   get 'events/:id/participants' => 'events#participants'
+  get 'events/:id/send-acceptance-emails' => 'events#send_acceptance_emails', as: :event_send_acceptance_emails
+  get 'events/:id/send-rejection-emails' => 'events#send_rejection_emails', as: :event_send_rejection_emails
+
+  post 'send_email' => 'emails#send_email'
 
   # Example of named route that can be invoked with purchase_url(id: product.id)
   #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase

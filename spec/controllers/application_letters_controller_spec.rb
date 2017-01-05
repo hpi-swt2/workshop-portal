@@ -78,8 +78,7 @@ RSpec.describe ApplicationLettersController, type: :controller do
               vegeterian: true,
               vegan: true,
               allergic: true,
-              allergys: "Many",
-              status: "accepted"
+              allergys: "Many"
           }
         }
 
@@ -87,7 +86,6 @@ RSpec.describe ApplicationLettersController, type: :controller do
           put :update, id: @application.to_param, application_letter: new_attributes, session: valid_session
           @application.reload
           expect(@application.motivation).to eq(new_attributes[:motivation])
-          expect(@application.status).to eq(new_attributes[:status])
         end
 
         it "assigns the requested application as @application" do
@@ -109,6 +107,43 @@ RSpec.describe ApplicationLettersController, type: :controller do
 
         it "re-renders the 'edit' template" do
           put :update, id: @application.to_param, application_letter: invalid_attributes, session: valid_session
+          expect(response).to render_template("edit")
+        end
+      end
+    end
+
+    describe "PUT #update_status" do
+      before :each do
+        sign_in FactoryGirl.create(:user, role: :admin)
+      end
+      context "with valid params" do
+        let(:new_status) { {status: 'accepted'} }
+
+        it "assigns the requested application as @application" do
+          put :update_status, id: @application.to_param, application_letter: new_status, session: valid_session
+          expect(assigns(:application_letter)).to eq(@application)
+        end
+
+        it "updates the status" do
+          put :update_status, id: @application.to_param, application_letter: new_status, session: valid_session
+          @application.reload
+          expect(@application.status).to eq(new_status[:status])
+        end
+
+        it "redirects back" do
+          put :update_status, id: @application.to_param, application_letter: new_status, session: valid_session
+          expect(response).to redirect_to(request.env['HTTP_REFERER'])
+        end
+      end
+
+      context "with invalid params" do
+        it "assigns the application as @application" do
+          put :update_status, id: @application.to_param, application_letter: {status: nil}, session: valid_session
+          expect(assigns(:application_letter)).to eq(@application)
+        end
+
+        it "re-renders the 'edit' template" do
+          put :update_status, id: @application.to_param, application_letter: {status: nil}, session: valid_session
           expect(response).to render_template("edit")
         end
       end
