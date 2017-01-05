@@ -123,10 +123,10 @@ class EventsController < ApplicationController
     begin
       File.write(File.join(material_path, file.original_filename), file.read, mode: "wb")
     rescue IOError
-      redirect_to event_path(event), alert: t("events.material_area.saving_fails")
+      redirect_to event_path(event), alert: I18n.t("events.material_area.saving_fails")
       return false
     end
-    redirect_to event_path(event), notice: t("events.material_area.success_message")
+    redirect_to event_path(event), notice: I18n.t("events.material_area.success_message")
   end
 
   private
