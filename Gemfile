@@ -80,6 +80,7 @@ gem 'coveralls', require: false
 
 # pdf generation
 gem 'prawn'
+gem 'prawn-table'
 
 # pdf inspection
 gem 'pdf-inspector', require: "pdf/inspector"
@@ -122,7 +123,7 @@ group :development do
   # Add a comment summarizing the current schema for models and others
   # usage: annotate
   gem 'annotate'
-  
+
   # opens sent emails in a new browser tab
   # gem "letter_opener"
 end
@@ -137,7 +138,9 @@ group :test do
   gem 'parser', '~> 2.2.2.5'
   # Stubbing external calls by blocking traffic with WebMock.disable_net_connect! or allow:
   # gem 'webmock'
+  
 end
+
 
 group :production do
   # Use Puma web server

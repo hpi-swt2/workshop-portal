@@ -14,6 +14,7 @@ def add_sample_data
   events[:gongakrobatik] = event_gongakrobatik
   events[:batterie_akustik] = event_batterie_akustik
   events[:bachlorpodium] = event_bachlorpodium
+  events[:past_deadline_event] = event_gongakrobatik
 
   users = Hash.new
   users[:pupil] = user_pupil
@@ -39,6 +40,9 @@ def add_sample_data
 
   application_letters = Hash.new
   application_letters[:applicant_gongakrobatik] = application_letter_applicant_gongakrobatik(users[:applicant], events[:gongakrobatik])
+  application_letters[:applicant_gongakrobatik_past_deadline] = application_letter_applicant_gongakrobatik(users[:applicant], events[:past_deadline_event])
+  application_letters[:applicant_gongakrobatik_accepcted] = application_letter_applicant_gongakrobatik_accepted(users[:applicant], events[:past_deadline_event])
+  application_letters[:applicant_gongakrobatik_rejected] = application_letter_applicant_gongakrobatik_rejected(users[:applicant], events[:past_deadline_event])
   application_letters[:applicant_programmierkurs_lisa] = application_letter_applicant_programmierkurs_1(users[:lisa], events[:programmierkurs])
   application_letters[:applicant_programmierkurs_max] = application_letter_applicant_programmierkurs_2(users[:max], events[:programmierkurs])
   application_letters[:applicant_programmierkurs_tobi] = application_letter_applicant_programmierkurs_3(users[:tobi], events[:programmierkurs])
@@ -56,6 +60,10 @@ def add_sample_data
   [events, users, profiles, application_letters, requests, agreement_letters].each do |models|
     save_models(models)
   end
+
+  # set deadline to past to work around validation of application letters
+  events[:past_deadline_event].application_deadline = Date.yesterday
+  events[:past_deadline_event].save!
 end
 
 private
