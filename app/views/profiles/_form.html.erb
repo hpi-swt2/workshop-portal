@@ -1,6 +1,6 @@
 <%= form_for @profile, :html => { :class => "form-horizontal profile" } do |f| %>
 
-  <%= render partial: "shared/error_message", locals: {entity: @profile} %>
+  <%= render partial: "shared/error_message_detailed", locals: {entity: @profile} %>
 
   <%# Create an input field for each of the mandatory attributes%>
   <% [:first_name, :last_name, :gender, :birth_date, :school, :street_name, :zip_code, :city, :state, :country].each do |attr_name| %>

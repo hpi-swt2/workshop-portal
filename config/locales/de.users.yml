@@ -2,7 +2,16 @@
 
 de:
   activerecord:
+    models:
+      user:
+        one: "Benutzer"
+        other: "Benutzer"
     attributes:
       user:
         accepted_application_count: "Angenommene Bewerbungen"
         rejected_application_count: "Abgelehnte Bewerbungen"
+        role: Rolle
+        current_password: Aktives Passwort
+        password: Passwort
+        password_confirmation: Passwort-Wiederholung
+        email: E-Mail-Adresse 
