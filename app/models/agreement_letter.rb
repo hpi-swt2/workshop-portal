@@ -9,7 +9,6 @@
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #
-require "pdf/inspector"
 
 class AgreementLetter < ActiveRecord::Base
   belongs_to :user
@@ -97,11 +96,11 @@ class AgreementLetter < ActiveRecord::Base
     end
 
   def unable_to_open? file
-    begin
-      PDF::Inspector::Page.analyze_file(file.open)
+    #begin
+      # PDF::Inspector::Page.analyze_file(file.open)
       false
-    rescue PDF::Reader::UnsupportedFeatureError, PDF::Reader::MalformedPDFError
-      true
-    end
+    #rescue PDF::Reader::UnsupportedFeatureError, PDF::Reader::MalformedPDFError
+      #true
+    #end
   end
 end
