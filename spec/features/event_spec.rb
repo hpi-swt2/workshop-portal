@@ -8,6 +8,14 @@ describe "Event", type: :feature do
       click_link event.name
       expect(page).to have_current_path(event_path(event))
     end
+
+    it "should mark an event as draft by showning a label" do
+      login_as(FactoryGirl.create(:user, role: :organizer), :scope => :user)
+
+      FactoryGirl.create :event, draft: true
+      visit events_path
+      expect(page).to have_css(".label", text: I18n.t(".activerecord.attributes.event.draft"))
+    end
   end
 
   describe "create page" do
