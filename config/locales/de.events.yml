@@ -29,6 +29,8 @@ de:
       success_message: "Datei erfolgreich hochgeladen"
       no_file_given: "Keine Datei angegeben"
       saving_fails: "Datei konnte nicht gespeichert werden"
+      table_name: "Dateiname"
+      table_type: "Dateityp"
     badges:
         print: "Namensschilder drucken"
         title: "Namensschilder drucken für das Event "

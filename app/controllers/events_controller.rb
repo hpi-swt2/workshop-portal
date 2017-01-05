@@ -13,6 +13,7 @@ class EventsController < ApplicationController
     @free_places = @event.compute_free_places
     @occupied_places = @event.compute_occupied_places
     @application_letters = filter_application_letters(@event.application_letters)
+    @material_files = get_material_files(@event)
   end
 
   # GET /events/new
@@ -111,7 +112,7 @@ class EventsController < ApplicationController
   # POST /events/1/upload_material
   def upload_material
     event = Event.find(params[:event_id])
-    material_path = File.join("storage/materials/", event.id.to_s + "_" + event.name)
+    material_path = event.material_path
     Dir.mkdir(material_path) unless File.exists?(material_path)
 
     file = params[:file_upload]
@@ -190,5 +191,14 @@ class EventsController < ApplicationController
     # @return [Boolean] whether @file is a valid file
     def is_file?(file)
       file.respond_to?(:open) && file.respond_to?(:content_type) && file.respond_to?(:size)
+    end
+
+    # Gets all file names stored in the material storage of the event
+    #
+    # @param [Event]
+    # @return [Array of Strings]
+    def get_material_files(event)
+      material_path = event.material_path
+      File.exists?(material_path) ? Dir.glob(File.join(material_path, "*")) : []
     end
 end

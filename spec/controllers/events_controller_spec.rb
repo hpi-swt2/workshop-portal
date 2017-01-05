@@ -214,14 +214,14 @@ RSpec.describe EventsController, type: :controller do
     end
 
     after :each do
-      filepath = File.join('storage/materials', @event.id.to_s + "_" + @event.name, @file.original_filename)
+      filepath = File.join(@event.material_path, @file.original_filename)
       File.delete(filepath) if File.exist?(filepath)
     end
 
     it "uploads a file to the event's material directory" do
       post :upload_material, event_id: @event.to_param, session: valid_session, file_upload: @file
       expect(response).to redirect_to :action => :show, :id => @event.id
-      expect(File.exists?(File.join('storage/materials', @event.id.to_s + "_" + @event.name, @file.original_filename)))
+      expect(File.exists?(File.join(@event.material_path, @file.original_filename)))
       expect(flash[:notice]).to match(I18n.t(:success_message, scope: 'events.material_area'))
     end
 

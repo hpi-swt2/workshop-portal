@@ -11,7 +11,6 @@
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  application_status_locked  :boolean
-#  material_directory :string
 #
 
 class Event < ActiveRecord::Base
@@ -160,6 +159,13 @@ class Event < ActiveRecord::Base
   def date_ranges_attributes=(*args)
     self.date_ranges.clear
     super(*args)
+  end
+
+  # Gets the path of the event in the material storage
+  #
+  # @return [String] path in the material storage
+  def material_path
+    File.join("storage/materials/", self.id.to_s + "_" + self.name)
   end
 
   # Make sure we add errors from our date_range children

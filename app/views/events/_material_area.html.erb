@@ -1,14 +1,35 @@
 <div class="container-fluid" id="material_area">
   <h3><%= t '.title', title: @event.name %></h3>
 
-  <%= form_tag(event_upload_material_path(@event), class: 'btn btn-default', multipart: true) do %>
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th><%=t '.table_name' %></th>
+      <th><%=t '.table_type' %></th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @material_files.each do |file| %>
+        <tr>
+          <td><%= File.basename(file, File.extname(file))  %></td>
+          <td><%= File.extname(file) %></td>
+        </tr>
+    <% end %>
+    </tbody>
+  </table>
 
-      <%= file_field_tag "file_upload",
-                         class: "btn btn-default btn-file",
-                         style: 'display:inline',
-                         id: "material_upload_#{@event.id}" %>
-      <%= submit_tag t('.upload'),
-                     class: 'btn btn-default',
-                     id: "material_upload_btn_#{@event.id}"%>
+  <% if can? :upload_material, Event %>
+    <%= form_tag(event_upload_material_path(@event), class: 'btn btn-default', multipart: true) do %>
+
+        <%= file_field_tag "file_upload",
+                           class: "btn btn-default btn-file",
+                           style: 'display:inline',
+                           id: "material_upload_#{@event.id}" %>
+        <%= submit_tag t('.upload'),
+                       class: 'btn btn-default',
+                       id: "material_upload_btn_#{@event.id}"%>
+    <% end %>
   <% end %>
+  <br/>
 </div>
+

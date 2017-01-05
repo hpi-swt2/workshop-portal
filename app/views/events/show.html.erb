@@ -17,9 +17,7 @@
   <%= render :partial => 'applicants_overview' %>
 <% end %>
 
-<% if can? :view_material_area, Event %>
-    <%= render :partial => 'material_area' %>
-<% end %>
+<%= render :partial => 'material_area' %>
 
 
 <%= link_to t('.back', :default => t('helpers.links.back')),
