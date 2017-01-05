@@ -35,7 +35,8 @@ RSpec.feature "Account creation", :type => :feature do
     expect(page).to have_css(".alert-success")
   end
 
-  scenario "User is not able to change email on user settings page" do
+
+  scenario "User is able to change email on user settings page" do
     user = FactoryGirl.create(:user)
     login_as(user)
     new_email = "hacke@peta.de"

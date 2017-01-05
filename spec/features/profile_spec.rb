@@ -124,7 +124,7 @@ RSpec.feature "Profile adaptation", :type => :feature do
 
     find('input[name=commit]').click
 
-    expect(page).to have_text('Profile was successfully updated.')
+    expect(page).to have_text(I18n.t('profiles.successful_update'))
   end
 
   scenario "user fills in an invalid birth date" do
