@@ -1,4 +1,4 @@
-<div class="container" id="event_material_area">
+<div class="col-xs-12 col-sm-12 col-md-10 col-lg-10 col-xs-offset-0 col-sm-offset-0 col-md-offset-1 col-lg-offset-1" id="event_material_area">
   <h3><%= t '.title', title: @event.name %></h3>
 
   <table class="table table-striped">
@@ -30,6 +30,6 @@
                        id: "material_upload_btn_#{@event.id}"%>
     <% end %>
   <% end %>
-  <br/>
+  <div class="spacer-30"></div>
 </div>
 
