@@ -79,10 +79,8 @@ class User < ActiveRecord::Base
   # @return [Boolean]
   def older_than_required_age_at_start_date_of_event?(given_event, age)
     return false unless self.profile
-    event_start = given_event.start_date
-    event_start_is_before_birthday = event_start.month > self.profile.birth_date.month || (event_start.month == self.profile.birth_date.month && event_start.day >= self.profile.birth_date.day)
-    age_at_event_start = event_start.year - self.profile.birth_date.year - (event_start_is_before_birthday ? 0 : 1)
-	return age_at_event_start >= age
+    age_at_event_start = self.profile.age_at_time(given_event.start_date)
+	  return age_at_event_start >= age
   end
   
   has_one :profile

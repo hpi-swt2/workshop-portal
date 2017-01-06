@@ -206,6 +206,39 @@ RSpec.describe EventsController, type: :controller do
     end
   end
 
+  describe "POST #upload_material" do
+    before :each do
+      filepath = Rails.root.join('spec/testfiles/actual.pdf')
+      @file = fixture_file_upload(filepath, 'application/pdf')
+      @event = Event.create! valid_attributes
+    end
+
+    after :each do
+      filepath = File.join(@event.material_path, @file.original_filename)
+      File.delete(filepath) if File.exist?(filepath)
+    end
+
+    it "uploads a file to the event's material directory" do
+      post :upload_material, event_id: @event.to_param, session: valid_session, file_upload: @file
+      expect(response).to redirect_to :action => :show, :id => @event.id
+      expect(File.exists?(File.join(@event.material_path, @file.original_filename)))
+      expect(flash[:notice]).to match(I18n.t(:success_message, scope: 'events.material_area'))
+    end
+
+    it "shows error if no file was given" do
+      post :upload_material, event_id: @event.to_param, session: valid_session
+      expect(response).to redirect_to :action => :show, :id => @event.id
+      expect(flash[:alert]).to match(I18n.t(:no_file_given, scope: 'events.material_area'))
+    end
+
+    it "shows error if file saving was not successfull" do
+      allow(File).to receive(:write).and_raise(IOError)
+      post :upload_material, event_id: @event.to_param, session: valid_session, file_upload: @file
+      expect(response).to redirect_to :action => :show, :id => @event.id
+      expect(flash[:alert]).to match(I18n.t(:saving_fails, scope: 'events.material_area'))
+    end
+  end
+
   describe "POST #create" do
     context "with valid params" do
       it "creates a new Event" do
@@ -300,7 +333,7 @@ RSpec.describe EventsController, type: :controller do
       @event.application_letters.each do |a|
         expect(text).to include(
           a.user.profile.name,
-          a.user.profile.age.to_s,
+          a.user.profile.age_at_time(@event.start_date).to_s,
           a.user.profile.gender,
           a.user.accepted_applications_count(@event).to_s,
           a.user.rejected_applications_count(@event).to_s,
