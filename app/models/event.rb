@@ -196,6 +196,13 @@ class Event < ActiveRecord::Base
     super(*args)
   end
 
+  # Gets the path of the event in the material storage
+  #
+  # @return [String] path in the material storage
+  def material_path
+    File.join("storage/materials/", self.id.to_s + "_" + self.name)
+  end
+
   # Make sure we add errors from our date_range children
   # to the base event object for displaying
   validate do |event|
