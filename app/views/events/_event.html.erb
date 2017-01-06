@@ -20,16 +20,17 @@
     link_to " " + I18n.t('events.list.read_on'), event_path(event)
   end %></p>
 
+  <div class="pull-right">
+    <%= link_to t("helpers.links.apply"), new_application_letter_path(:event_id => event.id), class: "btn btn-success btn-sm" %>
+    <%= link_to t('events.list.more'), event_path(event), class: "btn btn-default btn-sm" %>
+  </div>
+
   <div class="m-b-1">
     <%= event.application_deadline_label.try { |label| tag_label label, :default } %>
     <%= event.duration_label.try { |label| tag_label label, :default } %>
   </div>
 
-  <%= link_to t("helpers.links.apply"), new_application_letter_path(:event_id => event.id), class: "btn btn-success btn-sm" %>
-
-  <%= link_to t('events.list.more'), event_path(event), class: "btn btn-default btn-sm" %>
-
-  <div class="pull-right">
+  <div>
     <%= link_to t('.edit', :default => t('helpers.links.edit')), edit_event_path(event),
       :class => 'btn btn-default btn-sm' if can? :edit, event %>
 
