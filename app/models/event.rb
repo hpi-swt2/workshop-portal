@@ -154,7 +154,10 @@ class Event < ActiveRecord::Base
     application_letters.where(status: ApplicationLetter.statuses[:accepted]).count
   end
 
-  # locks the ability to change application statuses
+  # Locks the ability to change application statuses
+  #
+  # @param none
+  # @return none
   def lock_application_status
     update(application_status_locked: true)
   end
