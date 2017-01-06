@@ -21,9 +21,9 @@ RSpec.describe AgreementLettersController, type: :controller do
       post :create, { letter_upload: @file, event_id: @event.id }
       @agreement_letter = assigns(:agreement_letter)
       AgreementLetter.where(
-        user: @user,
-        event: @event,
-        path: Rails.root.join('storage/agreement_letters', @agreement_letter.filename).to_s)
+          user: @user,
+          event: @event,
+          path: Rails.root.join('storage/agreement_letters', @agreement_letter.filename).to_s)
           .take!
     end
   end
