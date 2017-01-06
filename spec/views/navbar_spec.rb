@@ -1,13 +1,15 @@
 require 'rails_helper'
 
 RSpec.describe 'navbar', type: :view do
+  before :each do
+    @events = []
+  end
 
-  it "shows Start, Veranstaltungen, Anfragen in the menu" do
+  it "shows Veranstaltungen, Anfragen in the menu" do
     %i[pupil organizer coach admin].each do |role|
       user = FactoryGirl.create(:user, role: role)
       sign_in user
       render template: 'application/index', layout: 'layouts/application'
-      expect(rendered).to have_css(".nav a", text: I18n.t('navbar.home'))
       expect(rendered).to have_css(".nav a", text: I18n.t('navbar.events'))
       expect(rendered).to have_css(".nav a", text: I18n.t('navbar.requests'))
     end
