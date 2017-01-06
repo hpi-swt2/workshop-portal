@@ -5,6 +5,7 @@ de:
     confirmApplicationDelete: "Bist du dir sicher, dass du diese Bewerbung löschen möchtest? Dieser Schritt kann nicht widerrufen werden."
     show:
       application_title: "Bewerbung für %{title}"
+      age_when_event_starts: "Alter bei Beginn"
       new_note: "Neue Anmerkung:"
     form:
       warning: "Die Deadline ist schon vorbei. Du kannst deine Bewerbung nicht mehr ändern."

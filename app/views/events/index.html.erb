@@ -1,49 +1,19 @@
 <%- model_class = Event -%>
 <div class="page-header">
   <h1><%=t '.title', :default => model_class.model_name.human(:count => model_class.count).titleize %></h1>
+  <p class="lead"><%= t('events.intro_text') %></p>
 </div>
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th><%= model_class.human_attribute_name(:name) %></th>
-      <th><%= model_class.human_attribute_name(:kind) %></th>
-      <th><%= model_class.human_attribute_name(:start_date) %></th>
-      <th><%= model_class.human_attribute_name(:end_date) %></th>
-      <th><%= model_class.human_attribute_name(:draft) %></th>
-      <th><%=t '.actions', :default => t("helpers.actions") %></th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @events.each do |event| %>
-      <tr>
-        <td><%= link_to event.name, event_path(event) %></td>
-        <td><%= I18n.t "events.kinds.#{event.kind}" %></td>
-        <td><%= event.start_date %></td>
-        <td><%= event.end_date %></td>
-        <td><%= event.draft %></td>
-        <td>
-          <% if can? :edit, event %>
-            <%= link_to t('.edit', :default => t('helpers.links.edit')),
-                      edit_event_path(event), :class => 'btn btn-default btn-xs' %>
-          <% end %>
-          <% if can? :destroy, event %>
-            <%= link_to t('.destroy', :default => t('helpers.links.destroy')),
-                      event_path(event),
-                      :method => :delete,
-                      :data => { :confirm => t('events.confirmation_prompts.confirm_delete', :default => t("helpers.links.confirm", :default => 'Löschen kann nicht rückgängig gemacht werden!')) },
-                      :class => 'btn btn-xs btn-danger' %>
-          <% end %>
-					<%= link_to t('.new', :default => t('helpers.links.apply')),
-                      new_application_letter_path(:event_id => event.id),
-                      :class => 'btn btn-xs btn-primary' %>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
 
-<% if can? :new, Event %>
-  <%= link_to t('.new', :default => t('helpers.links.new')),
-            new_event_path,
-            :class => 'btn btn-primary' %>
-<% end %>
+<div class="event-list col-md-10 col-md-offset-1">
+  <% if can? :new, Event %>
+  <div class="clearfix">
+    <%= link_to new_event_path, :class => 'btn btn-primary pull-right' do
+      glyph('plus') + ' ' +
+      t('.new', :default => t('helpers.links.new'))
+    end %>
+  </div>
+  <% end %>
+
+  <%= render @events %>
+</div>
+

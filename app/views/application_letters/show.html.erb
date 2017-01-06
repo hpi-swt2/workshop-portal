@@ -8,8 +8,8 @@
 <dl class="dl-horizontal" id="applicant_details">
   <dt><strong><%= Profile.human_attribute_name(:gender) %>:</strong></dt>
   <dd><%= @application_letter.user.profile.gender %></dd>
-  <dt><strong><%= Profile.human_attribute_name(:age) %>:</strong></dt>
-  <dd><%= @application_letter.user.profile.age %></dd>
+  <dt><strong><%= t('.age_when_event_starts') %>:</strong></dt>
+  <dd><%= @application_letter.user.profile.age_at_time(@application_letter.event.start_date) %></dd>
   <dt><strong><%= Profile.human_attribute_name(:address) %>:</strong></dt>
   <dd><%= @application_letter.user.profile.address %></dd>
   <dt><strong><%= User.human_attribute_name(:accepted_application_count) %>:</strong></dt>
