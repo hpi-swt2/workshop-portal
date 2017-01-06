@@ -158,10 +158,6 @@ class Event < ActiveRecord::Base
   def lock_application_status
     update(application_status_locked: true)
   end
-  # unlocks the ability to change application statuses
-  def unlock_application_status
-    update(application_status_locked: false)
-  end
 
   # Make sure any assignment coming from the controller
   # replaces all date ranges instead of adding new ones

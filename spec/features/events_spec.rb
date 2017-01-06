@@ -120,7 +120,8 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
 
   scenario "logged in as Organizer I can change application status with radio buttons" do
     login(:organizer)
-    @event.unlock_application_status
+    @event.application_status_locked = false
+    @event.save
     @pupil = FactoryGirl.create(:profile)
     @application_letter = FactoryGirl.create(:application_letter, event: @event, user: @pupil.user)
     visit event_path(@event)
@@ -148,7 +149,8 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     @pupil = FactoryGirl.create(:profile)
     @application_letter = FactoryGirl.create(:application_letter_accepted, event: @event, user: @pupil.user)
     ['.events.applicants_overview.sending_acceptances', '.events.applicants_overview.sending_rejections'].each do | email_button |
-      @event.unlock_application_status
+      @event.application_status_locked = false
+      @event.save
       visit event_path(@event)
       click_link I18n.t email_button
       expect(Event.find(@event.id).application_status_locked).to be(true)
