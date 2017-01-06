@@ -2,6 +2,7 @@
 
 de:
   events:
+    intro_text: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
     applicants_overview:
       title: "Bewerber für %{title}"
       participations: "Anzahl der Bewerbungen"
@@ -46,13 +47,25 @@ de:
     kinds:
      workshop: "Workshop"
      camp: "Camp"
+    list:
+      more: "Mehr dazu"
+      read_on: "Weiterlesen"
 
     notices:
       created: "Event wurde erstellt."
       updated: "Event wurde aktualisiert."
       destroyed: "Event wurde gelöscht."
       unreasonable_timespan: "Vorsicht! End-Datum liegt ungewöhnlich weit vom Start-Datum entfernt."
-
+      deadline_approaching:
+        one: "Bewerbungsfirst in einem Tag"
+        other: "Bewerbungsfirst in %{count} Tagen"
+      time_span_non_consecutive:
+        one: "Über einen Tag mit Unterbrechung"
+        other: "Über %{count} Tage mit Unterbrechung"
+      time_span_consecutive:
+        one: "Über einen Tag"
+        other: "Über %{count} Tage"
+      past_event: "Vergangene Veranstaltung"
 
     confirmation_prompts:
       confirm_delete: "Sicher, dass das Event gelöscht werden soll?"

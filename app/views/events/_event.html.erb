@@ -1,0 +1,44 @@
+<div class="event-preview <%= 'event-past' if event.is_past %> clearfix">
+  <%= image_tag "example.png", class: "img-rounded img-responsive img-float-corner-tr center-block" %>
+  <div class="event-date">
+    <span class="event-day"><%= l event.start_date, format: "%d" %></span>
+    <span class="event-month"><%= l event.start_date, format: "%b" %></span>
+    <% if event.start_date.year != Time.now.year %>
+      <span class="event-year"><%= event.start_date.year %></span>
+    <% end %>
+  </div>
+
+  <h3>
+    <%= event.name %>
+    <small>
+      <%= tag_label t('activerecord.attributes.event.draft'), :default if event.draft %>
+      <%= tag_label t('events.notices.past_event'), :default if event.is_past %>
+    </small>
+  </h3>
+
+  <p><%= truncate(event.description, length: Event::TRUNCATE_DESCRIPTION_TEXT_LENGTH) do
+    link_to " " + I18n.t('events.list.read_on'), event_path(event)
+  end %></p>
+
+  <div class="m-b-1">
+    <%= event.application_deadline_label.try { |label| tag_label label, :default } %>
+    <%= event.duration_label.try { |label| tag_label label, :default } %>
+  </div>
+
+  <%= link_to t("helpers.links.apply"), new_application_letter_path(:event_id => event.id), class: "btn btn-success btn-sm" %>
+
+  <%= link_to t('events.list.more'), event_path(event), class: "btn btn-default btn-sm" %>
+
+  <div class="pull-right">
+    <%= link_to t('.edit', :default => t('helpers.links.edit')), edit_event_path(event),
+      :class => 'btn btn-default btn-sm' if can? :edit, event %>
+
+    <%= link_to t('.destroy', :default => t('helpers.links.destroy')), event_path(event),
+      :method => :delete,
+      :data => {
+        :confirm => t('events.confirmation_prompts.confirm_delete',
+          :default => t("helpers.links.confirm",
+            :default => 'Löschen kann nicht rückgängig gemacht werden!')) },
+      :class => 'btn btn-sm btn-danger' if can? :destroy, event %>
+  </div>
+</div>
