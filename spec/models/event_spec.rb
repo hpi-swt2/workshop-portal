@@ -182,6 +182,8 @@ describe Event do
 
   it "locks the application status changing of the event" do
     event = FactoryGirl.create(:event)
+    event.application_status_locked = false
+    event.save
     event.lock_application_status
     expect(event.application_status_locked).to eq(true)
   end
