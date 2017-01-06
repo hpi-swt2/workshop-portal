@@ -47,7 +47,7 @@ class Ability
       # Coaches can view Applications and participants for Event
       can [:view_applicants, :view_participants], Event
       can [:view_and_add_notes, :show], ApplicationLetter
-      can [:print_applications, :print_agreement_letters], Event
+      can [:print_applications], Event
     end
     if user.role? :organizer
       can [:index, :show], Profile

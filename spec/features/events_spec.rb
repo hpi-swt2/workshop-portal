@@ -145,6 +145,65 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     end
   end
 
+  scenario "logged in as Organizer and viewing the participants page all checkboxes are checked when pressing the \"check all\" button", js: true do
+    login(:organizer)
+    @user = FactoryGirl.create(:user)
+    @profile = FactoryGirl.create(:profile, user: @user, birth_date: 15.years.ago)
+    @event = FactoryGirl.create(:event)
+    @application = FactoryGirl.create(:application_letter_accepted, user: @user, event: @event)
+    @agreement = FactoryGirl.create(:agreement_letter, user: @user, event: @event)
+    #assign(:event, @event)
+    #assign(:participants, @event.participants)
+    visit event_participants_path(@event)
+    check 'selectAll'
+    all('input[type=checkbox]').each do |checkbox|
+      expect(checkbox).to be_checked
+    end
+  end
+
+  scenario "logged in as Organizer when I want to download agreement letters but no participants are selected, it displays error message" do
+    login(:organizer)
+    @event = FactoryGirl.create(:event_with_accepted_applications_and_agreement_letters)
+    visit event_participants_path(@event)
+    click_button I18n.t "events.agreement_letters_download.download_all_as"
+    expect(page).to have_text(I18n.t "events.agreement_letters_download.notices.no_participants_selected")
+  end
+
+  scenario "logged in as Organizer when I want to download agreement letters but no participants have agreement letters, it displays error message" do
+    login(:organizer)
+    @event = FactoryGirl.create(:event_with_accepted_applications_and_agreement_letters)
+    visit event_participants_path(@event)
+    find(:css, "#selected_participants_[value='2']").set(true)
+    find("option[value='zip']").select_option
+    click_button I18n.t "events.agreement_letters_download.download_all_as"
+    expect(page).to have_text(I18n.t "events.agreement_letters_download.notices.no_agreement_letters")
+    visit event_participants_path(@event)
+    find(:css, "#selected_participants_[value='2']").set(true)
+    find("option[value='pdf']").select_option
+    click_button I18n.t "events.agreement_letters_download.download_all_as"
+    expect(page).to have_text(I18n.t "events.agreement_letters_download.notices.no_agreement_letters")
+  end
+
+  scenario "logged in as Organizer when I want to download agreement letters in a zip file, I can do so", js: true do
+    login(:organizer)
+    @event = FactoryGirl.create(:event_with_accepted_applications_and_agreement_letters)
+    visit event_participants_path(@event)
+    check 'selectAll'
+    find("option[value='zip']").select_option
+    click_button I18n.t "events.agreement_letters_download.download_all_as"
+    page.response_headers['Content-Type'].should eq "application/zip"
+  end
+
+  scenario "logged in as Organizer when I want to download agreement letters in a pdf file, I can do so", js: true do
+    login(:organizer)
+    @event = FactoryGirl.create(:event_with_accepted_applications_and_agreement_letters)
+    visit event_participants_path(@event)
+    check 'selectAll'
+    find("option[value='pdf']").select_option
+    click_button I18n.t "events.agreement_letters_download.download_all_as"
+    page.response_headers['Content-Type'].should eq "application/pdf"
+  end
+
   scenario "logged in as Coach I can see application status" do
     login(:coach)
     @pupil = FactoryGirl.create(:profile)

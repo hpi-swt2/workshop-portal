@@ -1,4 +1,19 @@
 <%- model_class = Event -%>
+<script type="text/javascript">
+  jQuery(function() {
+    $('#selectAll').click(function() {
+       if (this.checked) {
+           $(':checkbox').each(function() {
+               this.checked = true;                        
+           });
+       } else {
+          $(':checkbox').each(function() {
+               this.checked = false;                        
+           });
+       } 
+    });
+  });
+</script>
 <div class="page-header">
   <h1><%=t '.title', :default => model_class.model_name.human.titleize %> (<%= @event.kind.humanize %>)</h1>
 </div>
@@ -12,7 +27,7 @@
         <th><%= t 'activerecord.attributes.profile.name' %></th>
         <th><%= t 'activerecord.attributes.profile.email' %></th>
     	  <th><%= t 'agreement_letters.agreement_letter' %></th>
-        <th></th>
+        <% if can? :print_agreement_letters, Event %><th><input type="checkbox" id="selectAll" value="selectAll" /> <%= t 'events.agreement_letters_download.select_all' %></th><% end %>
       </tr>  
     
       <% @participants.each do |participant| %>
@@ -33,15 +48,18 @@
             <span class="text-danger"><%= t '.unavailable' %></span>
           <% end %>
         </td>
-        <td>
-          <%= check_box_tag('selected_participants[]', participant.id) %>
-        </td>
+        <% if can? :print_agreement_letters, Event %>
+          <td>
+            <%= check_box_tag('selected_participants[]', participant.id) %>
+          </td>
+        <% end %>
       </tr>
       <% end %>
     </table>
-    <button type="button" id="check_all" class="btw"><%="Check all/Uncheck all"%></button>
-    <%= submit_tag "Download letters of agreement", name: "download_single" %>
-    <%= submit_tag "Download concatenated letters of agreement", name: "download_concatenated" %>
+    <% if can? :print_agreement_letters, Event %>
+      <%= submit_tag t('events.agreement_letters_download.download_all_as'), name: "download_all" %>
+      <%= select_tag :download_type, options_for_select([['pdf'], ['zip']]) %>
+    <% end %>
   <% end %>
   
   <%= link_to t('.back', :default => t('helpers.links.back')),

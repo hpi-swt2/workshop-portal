@@ -14,5 +14,10 @@ FactoryGirl.define do
     path { Rails.root.join('storage/agreement_letters/foo.pdf').to_s }
     user
     event
+
+    factory :real_agreement_letter do
+    	path { Rails.root.join('storage/agreement_letters/real_agreement_letter.pdf').to_s }
+    end
+
   end
 end

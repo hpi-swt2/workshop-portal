@@ -111,13 +111,14 @@ class EventsController < ApplicationController
   end
 
   #POST /events/1/participants/agreement_letters
+  # creates either a zip or a pdf containing all agreement letters for all selected participants
   def download_agreement_letters
     @event = Event.find(params[:id])
     if not params.has_key?(:selected_participants)
-      redirect_to event_participant_url(@event), notice: I18n.t('events.agreement_letters_download.notices.no_participants_selected') and return
+      redirect_to event_participants_url(@event), notice: I18n.t('events.agreement_letters_download.notices.no_participants_selected') and return
     end
     authorize! :print_agreement_letters, @event
-    if params.has_key?(:download_single)
+    if params[:download_type] == "zip"
       filename = "agreement_letters_#{@event.name}_#{Date.today}.zip"
       temp_file = Tempfile.new(filename)
       number_of_files = 0
@@ -143,10 +144,10 @@ class EventsController < ApplicationController
         temp_file.unlink
       end
       if number_of_files == 0
-        redirect_to event_participant_url(@event), notice: I18n.t('events.agreement_letters_download.notices.no_agreement_letters') and return
+        redirect_to event_participants_url(@event), notice: I18n.t('events.agreement_letters_download.notices.no_agreement_letters') and return
       end
     end
-    if params.has_key?(:download_concatenated)
+    if params[:download_type] == "pdf"
       empty = true
       pdf = CombinePDF.new
       params[:selected_participants].each do |participant_id|
@@ -157,7 +158,7 @@ class EventsController < ApplicationController
         end
       end
       if empty
-        redirect_to event_participant_url(@event), notice: I18n.t('events.agreement_letters_download.notices.no_agreement_letters') and return
+        redirect_to event_participants_url(@event), notice: I18n.t('events.agreement_letters_download.notices.no_agreement_letters') and return
       end
       send_data pdf.to_pdf, filename: "agreement_letters_#{@event.name}_#{Date.today}.pdf", type: "application/pdf", disposition: "inline" unless pdf.nil?
     end
