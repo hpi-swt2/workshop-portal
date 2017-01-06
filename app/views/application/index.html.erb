@@ -1,4 +1,4 @@
-<section class="front-section row">
+<section class="front-section">
 	<div class="container">
 		<%= image_tag "front-welcome.png", class: "center-block img-responsive img-rounded img-float-corner-tr" %>
 		<h1><%= t "start_page.hello" %></h1>
@@ -6,7 +6,7 @@
 	</div>
 </section>
 
-<section class="front-section row">
+<section class="front-section">
 	<div class="container">
 		<h2><span class="m-r-1">Veranstaltungen</span>
 			<a class="btn btn-primary" href="<%= events_path %>">
@@ -15,16 +15,18 @@
 		</h2>
 		<p class="lead"><%= t "start_page.intro_text_events" %></p>
 
-		<div class="event-list col-md-10 col-md-offset-1">
-			<%= render @events %>
-			<a class="btn btn-primary" href="<%= events_path %>">
-				<%= glyph 'calendar' %> <%= t "start_page.all_events" %>
-			</a>
+		<div class="row">
+			<div class="event-list col-md-10 col-md-offset-1">
+				<%= render @events %>
+				<a class="btn btn-primary" href="<%= events_path %>">
+					<%= glyph 'calendar' %> <%= t "start_page.all_events" %>
+				</a>
+			</div>
 		</div>
 	</div>
 </section>
 
-<section class="front-section row">
+<section class="front-section">
 	<div class="container">
 		<h2>Workshop anfragen</h2>
 		<p class="lead"><%= t "start_page.intro_text_requests" %></p>
