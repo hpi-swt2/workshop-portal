@@ -48,7 +48,7 @@ class ApplicationLettersController < ApplicationController
     @application_letter.user_id = current_user.id
 
     if @application_letter.save
-      redirect_to check_application_letter_path(@application_letter), notice: I18n.t('application_letters.successful_create')
+      redirect_to check_application_letter_path(@application_letter), notice: I18n.t('application_letters.successful_creation')
     else
       render :new
     end
@@ -75,7 +75,7 @@ class ApplicationLettersController < ApplicationController
   # DELETE /applications/1
   def destroy
     @application_letter.destroy
-    redirect_to application_letters_url, notice: 'Application was successfully destroyed.'
+    redirect_to application_letters_url, notice: I18n.t('application_letters.successful_deletion')
   end
 
   private

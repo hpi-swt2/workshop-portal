@@ -163,7 +163,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
       expect(table).to have_text(application_letter.user.profile.name)
     end
 
-    ['name', 'gender', 'age'].each do |attribute|
+    ['name', 'gender'].each do |attribute|
       link_name = I18n.t("activerecord.attributes.profile.#{attribute}")
       click_link link_name
       sorted_by_attribute = @event.application_letters.to_a.sort_by { |letter| letter.user.profile.send(attribute) }
@@ -173,6 +173,15 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
       click_link link_name # again
       expect(page).to contain_ordered(names.reverse)
     end
+
+    link_name = I18n.t('events.applicants_overview.age_when_event_starts')
+    click_link link_name
+    sorted_by_attribute = @event.application_letters.to_a.sort_by { |letter| letter.send(attribute) }
+    names = sorted_by_attribute.map {|l| l.user.profile.name }
+    expect(page).to contain_ordered(names)
+
+    click_link link_name # again
+    expect(page).to contain_ordered(names.reverse)
   end
 
   scenario "logged in as Organizer I can filter displayed application letters by their status", js: true do

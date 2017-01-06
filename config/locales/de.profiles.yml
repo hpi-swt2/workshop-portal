@@ -10,6 +10,10 @@ de:
       male: "Männlich"
       female: "Weiblich"
       other: "Andere"
+    confirm_deletion: "Willst du dieses Profil wirklich löschen?"
+    successful_update: "Profil erfolgreich aktualisiert"
+    successful_deletion: "Profil erfolgreich gelöscht"
+    successful_creation: "Profil erfolgreich erstellt"
 
   activerecord:
     models:

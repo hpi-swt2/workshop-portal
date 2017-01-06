@@ -52,7 +52,7 @@ def add_sample_data
   application_letters[:applicant_mintcamp_tobi] = application_letter_applicant_programmierkurs_3(users[:tobi], events[:mintcamp])
 
   requests = Hash.new
-  requests[:hardware_entwicklung] = request_hardware_entwicklung(users[:teacher])
+  requests[:hardware_entwicklung] = request_hardware_entwicklung
 
   agreement_letters = Hash.new
   agreement_letters[:applicant_gongakrobatik] = agreement_letter_applicant_gongakrobatik(users[:applicant], events[:gongakrobatik])
