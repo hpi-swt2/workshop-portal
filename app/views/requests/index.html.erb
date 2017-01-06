@@ -6,8 +6,8 @@
   <thead>
     <tr>
       <th><%= model_class.human_attribute_name(:id) %></th>
-      <th><%= model_class.human_attribute_name(:topics) %></th>
-      <th><%= model_class.human_attribute_name(:user_id) %></th>
+      <th><%= model_class.human_attribute_name(:first_name) %></th>
+      <th><%= model_class.human_attribute_name(:last_name) %></th>
       <th><%= model_class.human_attribute_name(:created_at) %></th>
       <th><%=t '.actions', :default => t("helpers.actions") %></th>
     </tr>
@@ -16,8 +16,9 @@
     <% @requests.each do |request| %>
       <tr>
         <td><%= link_to request.id, request_path(request) %></td>
-        <td><%= request.topics %></td>
-        <td><%= request.user_id %></td>
+        <td><%= request.first_name %></td>
+        <td><%= request.last_name %></td>
+        <td><%= request.topic_of_workshop %></td>
         <td><%=l request.created_at %></td>
         <td>
           <% if can? :edit, request %>

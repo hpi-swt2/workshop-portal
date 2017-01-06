@@ -82,6 +82,9 @@ gem 'coveralls', require: false
 gem 'prawn'
 gem 'prawn-table'
 
+# pdf inspection
+gem 'pdf-inspector', require: "pdf/inspector"
+
 # Simple, Heroku-friendly Rails app configuration using ENV and a single YAML file
 gem 'figaro'
 
@@ -135,9 +138,9 @@ group :test do
   gem 'parser', '~> 2.2.2.5'
   # Stubbing external calls by blocking traffic with WebMock.disable_net_connect! or allow:
   # gem 'webmock'
+  
+end
 
-  # PDF testing
-  gem 'pdf-inspector', require: "pdf/inspector"end
 
 group :production do
   # Use Puma web server
