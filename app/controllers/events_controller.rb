@@ -109,6 +109,15 @@ class EventsController < ApplicationController
     render :email
   end
 
+  # GET /events/1/accept-all-applicants
+  def accept_all_applicants
+    event = Event.find(params[:id])
+    event.application_letters.each do |application_letter|
+      application_letter.update(status: :accepted)
+    end
+    redirect_to event_path(event)
+  end
+
   # POST /events/1/upload_material
   def upload_material
     event = Event.find(params[:event_id])

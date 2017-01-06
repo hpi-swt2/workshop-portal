@@ -30,6 +30,7 @@ Rails.application.routes.draw do
   get 'events/:id/participants' => 'events#participants'
   get 'events/:id/send-acceptance-emails' => 'events#send_acceptance_emails', as: :event_send_acceptance_emails
   get 'events/:id/send-rejection-emails' => 'events#send_rejection_emails', as: :event_send_rejection_emails
+  get 'events/:id/accept_all_applicants' => 'events#accept_all_applicants', as: :event_accept_all_applicants
 
   post 'send_email' => 'emails#send_email'
 
