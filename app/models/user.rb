@@ -86,7 +86,6 @@ class User < ActiveRecord::Base
   has_one :profile
   has_many :application_letters
   has_many :agreement_letters
-  has_many :requests
 
   # Returns the number of accepted applications from the user without counting status of current event application
   #

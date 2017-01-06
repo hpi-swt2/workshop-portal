@@ -1,6 +1,5 @@
 module ApplicationHelper
   def menu_items
-    (menu_item t(:home, scope: 'navbar'), root_path) +
     (menu_item t(:events, scope: 'navbar'), events_path) +
     (menu_item t(:requests, scope: 'navbar'), requests_path)
   end
