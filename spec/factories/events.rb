@@ -32,10 +32,26 @@ FactoryGirl.define do
       end
     end
 
+    trait :application_deadline_in_10_days do
+      application_deadline Date.current.next_day(10)
+
+      after(:build) do |event|
+        event.date_ranges = [FactoryGirl.create(:date_range, start_date: Date.tomorrow.next_day(30), end_date: Date.tomorrow.next_day(30))]
+      end
+    end
+
     trait :single_day do
       after(:build) do |event|
         event.date_ranges = []
         event.date_ranges << FactoryGirl.create(:date_range, start_date: Date.tomorrow.next_day(1), end_date: Date.tomorrow.next_day(1))
+      end
+    end
+
+    trait :over_six_days do
+      after(:build) do |event|
+        event.date_ranges = [
+          FactoryGirl.create(:date_range, start_date: Date.current.next_day(1), end_date: Date.current.next_day(6))
+        ]
       end
     end
 

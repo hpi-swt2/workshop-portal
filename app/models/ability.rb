@@ -42,10 +42,11 @@ class Ability
       can [:index, :show, :edit, :update, :destroy], ApplicationLetter, user: { id: user.id }
       # Pupils can upload their letters of agreement
       can [:create], AgreementLetter
+      can [:new, :create], Request
     end
     if user.role? :coach
-      # Coaches can view Applications and participants for Event
-      can [:view_applicants, :view_participants], Event
+      # Coaches can view Applications and participants for and upload materials for Event
+      can [:view_applicants, :view_participants, :upload_material], Event
       can [:view_and_add_notes, :show], ApplicationLetter
       can [:print_applications], Event
     end
@@ -53,8 +54,9 @@ class Ability
       can [:index, :show], Profile
       can [:index, :show, :view_and_add_notes, :update_status], ApplicationLetter
       cannot :update, ApplicationLetter
-      # Organizers can view, edit and print Applications and view participants and print their letters of agreement for Events
-      can [:view_applicants, :edit_applicants, :view_participants, :print_applications, :print_agreement_letters], Event
+      # Organizers can view, edit and print Applications, view participants for, upload materials for, print agreement letters for and manage Events
+      can [:view_applicants, :edit_applicants, :view_participants, :print_applications, :manage, :upload_material, :print_agreement_letters], Event
+      can :manage, Request
     end
     if user.role? :admin
       can :manage, :all

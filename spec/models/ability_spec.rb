@@ -201,4 +201,23 @@ describe User do
 
     expect(ability).to be_able_to(:update_status, another_application)
   end
+
+  it "can manage events as organzier" do
+    user = FactoryGirl.create(:user, role: :organizer)
+    ability = Ability.new(user)
+    expect(ability).to be_able_to(:manage, Event)
+  end
+
+  it "can create requests as pupil" do
+    user = FactoryGirl.create(:user, role: :pupil)
+    ability = Ability.new(user)
+    expect(ability).to be_able_to(:create, Request)
+    expect(ability).to be_able_to(:new, Request)
+  end
+
+  it "can manage requests as organzier" do
+    user = FactoryGirl.create(:user, role: :organizer)
+    ability = Ability.new(user)
+    expect(ability).to be_able_to(:manage, Request)
+  end
 end

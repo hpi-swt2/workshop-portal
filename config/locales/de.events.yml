@@ -2,6 +2,7 @@
 
 de:
   events:
+    intro_text: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
     applicants_overview:
       title: "Bewerber für %{title}"
       participations: "Anzahl der Bewerbungen"
@@ -10,6 +11,7 @@ de:
       filter: "Filtern"
       status: "Status"
       details: "Details"
+      age_when_event_starts: "Alter bei Beginn"
       free_places:
         one: '%{count} Platz frei'
         other: '%{count} Plätze frei'
@@ -22,6 +24,14 @@ de:
       maximum_number_of_participants_exeeded: 'Maximale Teilnehmeranzahl wurde überschritten'
       sending_acceptances: 'Zusagen verschicken'
       sending_rejections: 'Absagen verschicken'
+    material_area:
+      title: "Materialbereich für %{title}"
+      upload: "Datei hochladen"
+      success_message: "Datei erfolgreich hochgeladen"
+      no_file_given: "Keine Datei angegeben"
+      saving_fails: "Datei konnte nicht gespeichert werden"
+      table_name: "Dateiname"
+      table_type: "Dateityp"
     badges:
         print: "Namensschilder drucken"
         title: "Namensschilder drucken für das Event "
@@ -43,13 +53,25 @@ de:
     kinds:
      workshop: "Workshop"
      camp: "Camp"
+    list:
+      more: "Mehr dazu"
+      read_on: "Weiterlesen"
 
     notices:
       created: "Event wurde erstellt."
       updated: "Event wurde aktualisiert."
       destroyed: "Event wurde gelöscht."
       unreasonable_timespan: "Vorsicht! End-Datum liegt ungewöhnlich weit vom Start-Datum entfernt."
-
+      deadline_approaching:
+        one: "Bewerbungsfrist in einem Tag"
+        other: "Bewerbungsfrist in %{count} Tagen"
+      time_span_non_consecutive:
+        one: "Über einen Tag mit Unterbrechung"
+        other: "Über %{count} Tage mit Unterbrechung"
+      time_span_consecutive:
+        one: "Über einen Tag"
+        other: "Über %{count} Tage"
+      past_event: "Vergangene Veranstaltung"
 
     confirmation_prompts:
       confirm_delete: "Sicher, dass das Event gelöscht werden soll?"

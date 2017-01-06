@@ -7,7 +7,7 @@ class EventsController < ApplicationController
 
   # GET /events
   def index
-    @events = Event.draft_is false
+    @events = Event.sorted_by_start_date(!can?(:edit, Event)).reverse
   end
 
   # GET /events/1
@@ -15,6 +15,7 @@ class EventsController < ApplicationController
     @free_places = @event.compute_free_places
     @occupied_places = @event.compute_occupied_places
     @application_letters = filter_application_letters(@event.application_letters)
+    @material_files = get_material_files(@event)
   end
 
   # GET /events/new
@@ -164,6 +165,26 @@ class EventsController < ApplicationController
     end
   end
 
+  # POST /events/1/upload_material
+  def upload_material
+    event = Event.find(params[:event_id])
+    material_path = event.material_path
+    Dir.mkdir(material_path) unless File.exists?(material_path)
+
+    file = params[:file_upload]
+    unless is_file?(file)
+      redirect_to event_path(event), alert: t("events.material_area.no_file_given")
+      return false
+    end
+    begin
+      File.write(File.join(material_path, file.original_filename), file.read, mode: "wb")
+    rescue IOError
+      redirect_to event_path(event), alert: I18n.t("events.material_area.saving_fails")
+      return false
+    end
+    redirect_to event_path(event), notice: I18n.t("events.material_area.success_message")
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_event
@@ -218,5 +239,22 @@ class EventsController < ApplicationController
         create_badge(pdf, left, 0, 750 - row * 150)
         create_badge(pdf, right, 260, 750 - row * 150) unless right.nil?
       end
+    end
+
+    # Checks if a file is valid and not empty
+    #
+    # @param [ActionDispatch::Http::UploadedFile] is a file object
+    # @return [Boolean] whether @file is a valid file
+    def is_file?(file)
+      file.respond_to?(:open) && file.respond_to?(:content_type) && file.respond_to?(:size)
+    end
+
+    # Gets all file names stored in the material storage of the event
+    #
+    # @param [Event]
+    # @return [Array of Strings]
+    def get_material_files(event)
+      material_path = event.material_path
+      File.exists?(material_path) ? Dir.glob(File.join(material_path, "*")) : []
     end
 end
