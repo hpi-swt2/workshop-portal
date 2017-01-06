@@ -145,6 +145,18 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     end
   end
 
+  scenario "logged in as Organizer I can push the accept all button to accept all applicants" do
+    login(:organizer)
+    @event.max_participants = 3
+    2.times do |i|
+      @pupil = FactoryGirl.create(:profile)
+      @application_letter = FactoryGirl.create(:application_letter, event: @event, user: @pupil.user)
+    end
+    visit event_path(@event)
+    click_link I18n.t "events.applicants_overview.accept_all"
+    expect(@event.application_letters.all? { |application_letter| application_letter.status == :accepted}).to eq(true)
+  end
+
   scenario "logged in as Coach I can see application status" do
     login(:coach)
     @pupil = FactoryGirl.create(:profile)
