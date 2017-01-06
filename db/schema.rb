@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161209180054) do
+ActiveRecord::Schema.define(version: 20170104135212) do
 
   create_table "agreement_letters", force: :cascade do |t|
     t.integer  "user_id",    null: false
@@ -97,13 +97,20 @@ ActiveRecord::Schema.define(version: 20161209180054) do
   add_index "profiles", ["user_id"], name: "index_profiles_on_user_id"
 
   create_table "requests", force: :cascade do |t|
-    t.string   "topics"
-    t.integer  "user_id",    null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+    t.integer  "form_of_address"
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "phone_number"
+    t.string   "address"
+    t.string   "email"
+    t.text     "topic_of_workshop"
+    t.text     "time_period"
+    t.integer  "number_of_participants"
+    t.string   "knowledge_level"
+    t.text     "annotations"
   end
-
-  add_index "requests", ["user_id"], name: "index_requests_on_user_id"
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false

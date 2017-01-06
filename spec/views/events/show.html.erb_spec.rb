@@ -7,6 +7,7 @@ RSpec.describe "events/show", type: :view do
     @application_letter.user.profile = FactoryGirl.build(:profile)
     @event.application_letters.push(@application_letter)
     @application_letters = @event.application_letters
+    @material_files = []
     sign_in(@application_letter.user)
   end
 
@@ -61,5 +62,13 @@ RSpec.describe "events/show", type: :view do
   it "displays print badges button" do
     render
     expect(rendered).to have_link(t(:print_button_label, scope: 'events.badges'))
+  end
+
+  it "displays material area" do
+    render
+    expect(rendered).to have_text(t(:title, title: @event.name, scope: 'events.material_area'))
+    expect(rendered).to have_css("th", :text => t(:table_name, scope:'events.material_area'))
+    expect(rendered).to have_css("th", :text => t(:table_type, scope:'events.material_area'))
+    expect(rendered).to have_button(t(:upload, scope: 'events.material_area'))
   end
 end

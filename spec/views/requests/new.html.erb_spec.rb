@@ -9,8 +9,8 @@ RSpec.describe "requests/new", type: :view do
     render
 
     assert_select "form[action=?][method=?]", requests_path, "post" do
-      assert_select "input#request_topics[name=?]", "request[topics]"
-      assert_select "input#request_user_id[name=?]", "request[user_id]"
+      assert_select "input#request_first_name[name=?]", "request[first_name]"
+      assert_select "input#request_last_name[name=?]", "request[last_name]"
     end
   end
 end
