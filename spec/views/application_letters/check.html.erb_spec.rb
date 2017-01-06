@@ -1,15 +1,58 @@
 require 'rails_helper'
 
 RSpec.describe "application_letters/check", type: :view do
-  before(:each) do
+
+  before(:context) do
     @application_letter = assign(:application_letter, FactoryGirl.create(:application_letter))
     @application_letter.user.profile = FactoryGirl.build(:profile)
-    assign(:application_deadline_exceeded, @application_letter.after_deadline?)
-    render
   end
 
-  it "has correct headline" do
-    expect(rendered).to have_css('h1', text: I18n.t('application_letters.check.check_application_for', event_name: @application_letter.event.name))
+  context "independent of deadline exceeded or not" do
+    before(:each) do
+      assign(:application_deadline_exceeded, @application_letter.after_deadline?)
+      render
+    end
+
+    it "has correct headline" do
+      expect(rendered).to have_css('h1', text: I18n.t('application_letters.check.check_application_for', event_name: @application_letter.event.name))
+    end
+
+    it "renders application's attributes" do
+      expect(rendered).to have_css('h3', text: I18n.t('application_letters.check.my_application'))
+      expect(rendered).to have_text(@application_letter.grade)
+      expect(rendered).to have_text(@application_letter.experience)
+      expect(rendered).to have_text(@application_letter.motivation)
+      expect(rendered).to have_text(@application_letter.coding_skills)
+      expect(rendered).to have_text(@application_letter.emergency_number)
+      expect(rendered).to have_text(@application_letter.allergies)
+    end
+
+    it "renders applicant's attributes" do
+      expect(rendered).to have_css('h3', text: I18n.t('application_letters.check.my_personal_data'))
+      expect(rendered).to have_text(@application_letter.user.profile.name)
+      expect(rendered).to have_text(@application_letter.user.profile.gender)
+      expect(rendered).to have_text(@application_letter.user.profile.age)
+      expect(rendered).to have_text(@application_letter.user.profile.school)
+      expect(rendered).to have_text(@application_letter.user.profile.address)
+      expect(rendered).to have_text(@application_letter.user.profile.graduates_school_in)
+    end
+
+    it "renders link to edit profile" do
+      expect(rendered).to have_link(id: 'edit_profile_link', href: edit_profile_path(@application_letter.user.profile))
+    end
+
+    it "shows one eating habit" do
+      @application_letter.vegeterian = true
+      render
+      expect(rendered).to have_text(ApplicationLetter.human_attribute_name(:vegeterian))
+    end
+
+    it "shows multiple eating habits concatenated by commas" do
+      @application_letter.vegeterian = true
+      @application_letter.allergic = true
+      render
+      expect(rendered).to have_text(ApplicationLetter.human_attribute_name(:vegeterian) + ', ' + ApplicationLetter.human_attribute_name(:allergic))
+    end
   end
 
   context "with application deadline exceeded" do
@@ -21,15 +64,15 @@ RSpec.describe "application_letters/check", type: :view do
       expect(rendered).to have_text(I18n.t('application_letters.check.deadline_exceeded'))
     end
 
-    #TODO wtf
-    #it "doesnt render link to edit application" do
-    #  expect(rendered).to_not have_link(I18n.t("helpers.links.edit"), id: 'edit_application_link', href: edit_application_letter_path(@application_letter))
-    #end
+    it "doesnt render link to edit application" do
+      expect(rendered).to_not have_link(I18n.t("helpers.links.edit"), id: 'edit_application_link', href: edit_application_letter_path(@application_letter))
+    end
   end
 
   context "with application deadline not exceeded" do
     before(:each) do
       assign(:application_deadline_exceeded, false)
+      render
     end
     it "renders information concerning application deadline" do
       expect(rendered).to have_text(I18n.t('application_letters.check.can_change_until', application_deadline: I18n.l(@application_letter.event.application_deadline)))
@@ -39,45 +82,4 @@ RSpec.describe "application_letters/check", type: :view do
       expect(rendered).to have_link(id: 'edit_application_link', href: edit_application_letter_path(@application_letter))
     end
   end
-
-  it "renders application's attributes" do
-    expect(rendered).to have_css('h3', text: I18n.t('application_letters.check.my_application'))
-    expect(rendered).to have_text(@application_letter.grade)
-    expect(rendered).to have_text(@application_letter.experience)
-    expect(rendered).to have_text(@application_letter.motivation)
-    expect(rendered).to have_text(@application_letter.coding_skills)
-    expect(rendered).to have_text(@application_letter.emergency_number)
-    expect(rendered).to have_text(@application_letter.allergies)
-    #TODO vegetarian etc
-  end
-
-  it "renders applicant's attributes" do
-    expect(rendered).to have_css('h3', text: I18n.t('application_letters.check.my_personal_data'))
-    expect(rendered).to have_text(@application_letter.user.profile.name)
-    expect(rendered).to have_text(@application_letter.user.profile.gender)
-    expect(rendered).to have_text(@application_letter.user.profile.age)
-    expect(rendered).to have_text(@application_letter.user.profile.school)
-    expect(rendered).to have_text(@application_letter.user.profile.address)
-    expect(rendered).to have_text(@application_letter.user.profile.graduates_school_in)
-  end
-
-  it "renders link to edit profile" do
-    expect(rendered).to have_link(id: 'edit_profile_link', href: edit_profile_path(@application_letter.user.profile))
-  end
-
-  context "renders eating habits" do
-    it "shows one" do
-      @application_letter.vegeterian = true
-      render
-      expect(rendered).to have_text(ApplicationLetter.human_attribute_name(:vegeterian))
-    end
-
-    it "shows multiple concatenated by commas" do
-      @application_letter.vegeterian = true
-      @application_letter.allergic = true
-      render
-      expect(rendered).to have_text(ApplicationLetter.human_attribute_name(:vegeterian) + ', ' + ApplicationLetter.human_attribute_name(:allergic))
-    end
-  end
-
 end

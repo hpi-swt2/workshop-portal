@@ -41,7 +41,7 @@
   <strong><%= ApplicationLetter.human_attribute_name(:allergies) %>:</strong><br/>
   <%= @application_letter.allergies %><br/>
 </div>
-<% if !@application_deadline_exceeded %>
+<% unless @application_deadline_exceeded %>
   <%= link_to t('.edit', :default => t("helpers.links.edit")), edit_application_letter_path(@application_letter), id: 'edit_application_link', class: 'btn btn-default' %>
 <% end %>
 

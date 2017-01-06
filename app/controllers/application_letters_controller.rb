@@ -48,7 +48,7 @@ class ApplicationLettersController < ApplicationController
     @application_letter.user_id = current_user.id
 
     if @application_letter.save
-      redirect_to check_application_letter_path(@application_letter), notice: 'Application was successfully created.'
+      redirect_to check_application_letter_path(@application_letter), notice: I18n.t('application_letters.successful_create')
     else
       render :new
     end
@@ -57,7 +57,7 @@ class ApplicationLettersController < ApplicationController
   # PATCH/PUT /applications/1
   def update
     if @application_letter.update_attributes(application_params)
-      redirect_to :back, notice: I18n.t('application_letters.successful_update') rescue ActionController::RedirectBackError redirect_to root_path
+      redirect_to check_application_letter_path(@application_letter), notice: I18n.t('application_letters.successful_update')
     else
       render :edit
     end

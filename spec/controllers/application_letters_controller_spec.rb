@@ -105,9 +105,9 @@ RSpec.describe ApplicationLettersController, type: :controller do
           expect(assigns(:application_letter)).to eq(@application)
         end
 
-        it "redirects back" do
+        it "redirects to application checking page" do
           put :update, id: @application.to_param, application_letter: valid_attributes, session: valid_session
-          expect(response).to redirect_to(request.env['HTTP_REFERER'])
+          expect(response).to redirect_to(check_application_letter_path(@application))
         end
       end
 
