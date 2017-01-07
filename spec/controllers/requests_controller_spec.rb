@@ -38,7 +38,7 @@ RSpec.describe RequestsController, type: :controller do
     describe "GET #index" do
       it "assigns all requests as @requests" do
         get :index, session: valid_session
-        expect(assigns(:requests)).to eq([@a_request])
+        expect(response).to redirect_to(root_url)
       end
     end
 
