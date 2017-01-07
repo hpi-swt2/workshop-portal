@@ -19,6 +19,7 @@ RSpec.describe "emails/email_form", type: :view do
 
   it "renders email send button" do
     expect(rendered).to have_button(I18n.t('emails.email_form.send'))
+    expect(rendered).to have_button(I18n.t('emails.email_form.save_template'))
   end
 
   it "fills recipients_fills with set recipients" do

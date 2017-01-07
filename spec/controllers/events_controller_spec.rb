@@ -147,11 +147,11 @@ RSpec.describe EventsController, type: :controller do
         let(:valid_attributes) { FactoryGirl.attributes_for(:event_with_accepted_applications) }
 
         it "assigns the event as @event" do
-          get :participants, id: @event.to_param, session: valid_session
+          get :event_participants, id: @event.to_param, session: valid_session
           expect(assigns(:event)).to eq(@event)
         end
         it "assigns all participants as @participants" do
-            get :participants, id: @event.to_param, session: valid_session
+            get :event_participants, id: @event.to_param, session: valid_session
           expect(assigns(:participants)).to eq(@event.participants)
         end
       end

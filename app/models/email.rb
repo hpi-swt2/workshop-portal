@@ -1,3 +1,11 @@
+# == Schema Information
+#
+#  hide_recipients        :boolean          not null
+#  recipients             :string           not null
+#  reply_to               :string           not null
+#  subject                :string           not null
+#  content                :string           nol null
+#
 class Email
   include ActiveAttr::TypecastedAttributes
   include ActiveModel::Validations

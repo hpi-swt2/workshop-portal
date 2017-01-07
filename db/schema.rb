@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161209180054) do
+ActiveRecord::Schema.define(version: 20170107140419) do
 
   create_table "agreement_letters", force: :cascade do |t|
     t.integer  "user_id",    null: false
@@ -62,6 +62,13 @@ ActiveRecord::Schema.define(version: 20161209180054) do
   end
 
   add_index "date_ranges", ["event_id"], name: "index_date_ranges_on_event_id"
+
+  create_table "email_templates", force: :cascade do |t|
+    t.integer "status"
+    t.string  "subject"
+    t.text    "content"
+    t.boolean "hide_recipients"
+  end
 
   create_table "events", force: :cascade do |t|
     t.string   "name"

@@ -1,3 +1,8 @@
+/*
+  Place all the styles related to the matching controller here.
+  They will automatically be included in application.css.
+*/
+
 .email-content {
     width: 100%;
     max-width: 100%;
@@ -5,4 +10,18 @@
 
 .email-submit {
     float: right;
+}
+
+.email-templates h3 {
+    margin-top: 0px;
+}
+
+.email-templates .list-group {
+    height: 550px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.email-templates .list-group-item {
+    text-overflow: ellipsis;
 }
