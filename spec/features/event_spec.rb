@@ -52,11 +52,11 @@ describe "Event", type: :feature do
     end
 
     it "should strip markdown from the description" do
-      FactoryGirl.create :event, description: "# Headline Test\nParagraph"
+      FactoryGirl.create :event, description: "# Headline Test\nParagraph with a [link](http://portal.edu)."
       visit events_path
       expect(page).to_not have_css('h1', text: 'Headline Test')
-      expect(page).to_not have_text('# Headline Test')
-      expect(page).to have_text('Paragraph')
+      expect(page).to_not have_text('Headline Test')
+      expect(page).to have_text('Paragraph with a link.')
     end
 
     it "should truncate the description text if it's long" do
