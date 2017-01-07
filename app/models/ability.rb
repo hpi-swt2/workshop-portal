@@ -49,6 +49,8 @@ class Ability
       can [:view_applicants, :view_participants, :upload_material], Event
       can [:view_and_add_notes, :show], ApplicationLetter
       can [:print_applications], Event
+
+      can :manage, Request
     end
     if user.role? :organizer
       can [:index, :show], Profile
