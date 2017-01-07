@@ -3,15 +3,24 @@ require 'rails_helper'
 RSpec.describe "requests/index", type: :view do
   before(:each) do
     @topic_of_workshop = 'Topics'
-    assign(:requests, [
-      FactoryGirl.create(:request, topic_of_workshop: @topic_of_workshop),
+    @requests = [
+      FactoryGirl.create(:request, topic_of_workshop: @topic_of_workshop, first_name: 'Matthias'),
       FactoryGirl.create(:request, topic_of_workshop: @topic_of_workshop)
-    ])
+    ]
+    assign(:requests, @requests)
   end
 
-  it "renders a list of requests" do
+  it "renders a list of requests with their attributes" do
     render
-    assert_select "tr>td", :text => @topic_of_workshop, :count => 2
+    @requests.each do |r|
+      assert_select "tr" do
+        assert_select 'td>a', :text => r.topic_of_workshop
+        assert_select 'td', :text => r.name
+        assert_select 'td', :text => r.time_period
+        assert_select 'td', :text => r.number_of_participants.to_s
+      end
+    end
+
   end
 
   it "should not display the new button for non-pupils" do
