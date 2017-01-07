@@ -5,7 +5,11 @@ require 'redcarpet/render_strip'
 # except paragraphs
 class MarkdownRenderTruncate < Redcarpet::Render::Base
   def paragraph(text)
-    text + '<br>'
+    text + ' '
+  end
+
+  def link(link, title, content)
+    content
   end
 end
 
