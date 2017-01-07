@@ -15,9 +15,8 @@ Rails.application.routes.draw do
     get 'print_applications', on: :member
     get 'badges'
     post 'badges' => 'events#print_badges', as: :print_badges
-    get 'participants' => 'events#participants'
-    get 'email' => 'emails#show', as: :email_show
-    post 'email' => 'emails#submit', as: :email_submit
+    get 'emails' => 'emails#show', as: :email_show
+    post 'emails' => 'emails#submit', as: :email_submit
   end
   resources :profiles
   devise_for :users
@@ -29,6 +28,7 @@ Rails.application.routes.draw do
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
+  get 'events/:id/participants' => 'events#participants'
 
   # Example of named route that can be invoked with purchase_url(id: product.id)
   #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase

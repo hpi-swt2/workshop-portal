@@ -147,27 +147,13 @@ RSpec.describe EventsController, type: :controller do
         let(:valid_attributes) { FactoryGirl.attributes_for(:event_with_accepted_applications) }
 
         it "assigns the event as @event" do
-          get :event_participants, id: @event.to_param, session: valid_session
+          get :participants, id: @event.to_param, session: valid_session
           expect(assigns(:event)).to eq(@event)
         end
         it "assigns all participants as @participants" do
-            get :event_participants, id: @event.to_param, session: valid_session
+            get :participants, id: @event.to_param, session: valid_session
           expect(assigns(:participants)).to eq(@event.participants)
         end
-      end
-    end
-
-    describe "GET #send_acceptances_email" do
-      it "should assign a new email to accepted applications as @email" do
-        get :send_acceptance_emails, id: @event.to_param, session: valid_session
-        expect(assigns(:email)).to have_attributes(hide_recipients: false, recipients: @event.email_adresses_of_accepted_applicants, reply_to: 'workshop.portal@hpi.de', subject: '', content: '')
-      end
-    end
-
-    describe "GET #send_rejections_email" do
-      it "should assign a new email to rejected applications as @email" do
-        get :send_rejection_emails, id: @event.to_param, session: valid_session
-        expect(assigns(:email)).to have_attributes(hide_recipients: false, recipients: @event.email_adresses_of_rejected_applicants, reply_to: 'workshop.portal@hpi.de', subject: '', content: '')
       end
     end
   end

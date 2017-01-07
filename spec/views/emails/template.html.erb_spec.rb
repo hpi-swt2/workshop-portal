@@ -6,7 +6,7 @@ RSpec.describe "emails/template", type: :view do
 
     @template = FactoryGirl.create(:email_template)
     @templates = Array(@template)
-    render :partial => "emails/template"
+    render :partial => "emails/templates"
   end
 
   it("renders template information") do

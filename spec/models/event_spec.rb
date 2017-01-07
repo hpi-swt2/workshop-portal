@@ -167,5 +167,34 @@ describe Event do
     application_letter_accepted_2 = FactoryGirl.create(:application_letter_accepted, user: FactoryGirl.create(:user), event: event)
     expect(event.compute_occupied_places).to eq(2)
   end
+
+  describe "returns applicants email list" do
+    before :each do
+      @event = FactoryGirl.create(:event)
+    end
+
+    it "returns email address of accepted application" do
+      @application = FactoryGirl.create(:application_letter_accepted, event: @event, user: FactoryGirl.create(:user))
+      expect(@event.email_addresses_of_type(:accepted)).to eq(@application.user.email)
+    end
+
+    it "returns email address of rejected application" do
+      @application = FactoryGirl.create(:application_letter_rejected, event: @event, user: FactoryGirl.create(:user))
+      expect(@event.email_addresses_of_type(:rejected)).to eq(@application.user.email)
+    end
+
+    it "returns email address only of the given type" do
+      @accepted_application = FactoryGirl.create(:application_letter_accepted, event: @event, user: FactoryGirl.create(:user))
+      @rejected_application = FactoryGirl.create(:application_letter_rejected, event: @event, user: FactoryGirl.create(:user))
+      expect(@event.email_addresses_of_type(:accepted)).to eq(@accepted_application.user.email)
+      expect(@event.email_addresses_of_type(:rejected)).to eq(@rejected_application.user.email)
+    end
+
+    it "correctly concatinates multiple email addresses" do
+      @application1 = FactoryGirl.create(:application_letter_accepted, event: @event, user: FactoryGirl.create(:user))
+      @application2 = FactoryGirl.create(:application_letter_accepted, event: @event, user: FactoryGirl.create(:user))
+      expect(@event.email_addresses_of_type(:accepted)).to eq(@application1.user.email + "," + @application2.user.email)
+    end
+  end
 end
 

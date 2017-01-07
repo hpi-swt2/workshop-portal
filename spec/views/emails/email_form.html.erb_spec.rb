@@ -2,9 +2,12 @@ require 'rails_helper'
 
 RSpec.describe "emails/email_form", type: :view do
   before(:each) do
-    @email = assign(:email, FactoryGirl.build(:email))
     sign_in(FactoryGirl.create(:user, role: :admin))
-    render :partial => "emails/email_form"
+
+    @event = FactoryGirl.create(:event)
+    @email = assign(:email, FactoryGirl.build(:email))
+
+    render partial: "emails/email_form", :event_id => @event.id
   end
 
   it("renders required email fields") do
