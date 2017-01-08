@@ -151,8 +151,6 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     @event = FactoryGirl.create(:event)
     @application = FactoryGirl.create(:application_letter_accepted, user: @user, event: @event)
     @agreement = FactoryGirl.create(:agreement_letter, user: @user, event: @event)
-    #assign(:event, @event)
-    #assign(:participants, @event.participants)
     visit event_participants_path(@event)
     check 'selectAll'
     all('input[type=checkbox]').each do |checkbox|
