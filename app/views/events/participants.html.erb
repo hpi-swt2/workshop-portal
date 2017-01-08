@@ -1,19 +1,4 @@
 <%- model_class = Event -%>
-<script type="text/javascript">
-  jQuery(function() {
-    jQuery('#selectAll').click(function() {
-       if (this.checked) {
-           jQuery(':checkbox').each(function() {
-               this.checked = true;                        
-           });
-       } else {
-          jQuery(':checkbox').each(function() {
-               this.checked = false;                        
-           });
-       } 
-    });
-  });
-</script>
 <div class="page-header">
   <h1><%=t '.title', :default => model_class.model_name.human.titleize %> (<%= @event.kind.humanize %>)</h1>
 </div>
@@ -27,7 +12,14 @@
         <th><%= t 'activerecord.attributes.profile.name' %></th>
         <th><%= t 'activerecord.attributes.profile.email' %></th>
     	  <th><%= t 'agreement_letters.agreement_letter' %></th>
-        <% if can? :print_agreement_letters, Event and @has_agreement_letters %><th><input type="checkbox" id="selectAll" value="selectAll" /> <%= t 'events.agreement_letters_download.select_all' %></th><% end %>
+        <% if can? :print_agreement_letters, Event and @has_agreement_letters %>
+          <th>
+            <label>
+              <input type="checkbox" id="select_all_participants" class="participant_selection" onclick="flipAllCheckboxes(this)">
+              <%= t 'events.agreement_letters_download.select_all' %>
+            </label>
+          </th>
+        <% end %>
       </tr>  
     
       <% @participants.each do |participant| %>
@@ -50,7 +42,7 @@
         </td>
         <% if can? :print_agreement_letters, Event and @has_agreement_letters %>
           <td>
-            <%= check_box_tag('selected_participants[]', participant.id) %>
+            <%= check_box_tag('selected_participants[]', participant.id, false, class: 'participant_selection') %>
           </td>
         <% end %>
       </tr>

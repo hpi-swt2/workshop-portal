@@ -152,7 +152,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     @application = FactoryGirl.create(:application_letter_accepted, user: @user, event: @event)
     @agreement = FactoryGirl.create(:agreement_letter, user: @user, event: @event)
     visit event_participants_path(@event)
-    check 'selectAll'
+    check 'select_all_participants'
     all('input[type=checkbox]').each do |checkbox|
       expect(checkbox).to be_checked
     end
@@ -185,7 +185,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     login(:organizer)
     @event = FactoryGirl.create(:event_with_accepted_applications_and_agreement_letters)
     visit event_participants_path(@event)
-    check 'selectAll'
+    check 'select_all_participants'
     find("option[value='zip']").select_option
     click_button I18n.t "events.agreement_letters_download.download_all_as"
     page.response_headers['Content-Type'].should eq "application/zip"
@@ -195,7 +195,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     login(:organizer)
     @event = FactoryGirl.create(:event_with_accepted_applications_and_agreement_letters)
     visit event_participants_path(@event)
-    check 'selectAll'
+    check 'select_all_participants'
     find("option[value='pdf']").select_option
     click_button I18n.t "events.agreement_letters_download.download_all_as"
     page.response_headers['Content-Type'].should eq "application/pdf"
