@@ -25,7 +25,7 @@ de:
         topic_of_workshop: "Thema des Workshops"
         time_period: "Zeitrahmen" 
         number_of_participants: "Teilnehmeranzahl"
-        knowledge_level: "Kentnissstand"
+        knowledge_level: "Kenntnisstand"
         annotations: "Anmerkungen"
         id: "Nummer"
         created_at: "Erstellt am"
