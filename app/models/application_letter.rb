@@ -98,15 +98,9 @@ class ApplicationLetter < ActiveRecord::Base
   # @return [String] comma seperated string of eating habits, or empty string if none
   def eating_habits
     habits = Array.new
-    if vegeterian
-      habits.push(ApplicationLetter.human_attribute_name(:vegeterian))
-    end
-    if vegan
-      habits.push(ApplicationLetter.human_attribute_name(:vegan))
-    end
-    if allergic
-      habits.push(ApplicationLetter.human_attribute_name(:allergic))
-    end
-    return habits.join(', ')
+    habits.push(ApplicationLetter.human_attribute_name(:vegeterian)) if vegeterian
+    habits.push(ApplicationLetter.human_attribute_name(:vegan)) if vegan
+    habits.push(ApplicationLetter.human_attribute_name(:allergic)) if allergic
+    habits.join(', ')
   end
 end
