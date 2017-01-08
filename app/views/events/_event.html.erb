@@ -16,7 +16,7 @@
     </small>
   </h3>
 
-  <p><%= truncate(event.description, length: Event::TRUNCATE_DESCRIPTION_TEXT_LENGTH) do
+  <p><%= truncate(markdown(event.description, true), length: Event::TRUNCATE_DESCRIPTION_TEXT_LENGTH) do
     link_to " " + I18n.t('events.list.read_on'), event_path(event)
   end %></p>
 
