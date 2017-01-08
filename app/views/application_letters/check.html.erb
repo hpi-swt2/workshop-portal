@@ -25,7 +25,7 @@
   <%= @application_letter.emergency_number %><br/>
 
   <strong><%=t('.eating_habits') %>:</strong>
-  <%= @application_letter.eating_habits %><br/>
+  <%= @application_letter.eating_habits.join(', ') %><br/>
 
   <strong><%= ApplicationLetter.human_attribute_name(:allergies) %>:</strong><br/>
   <%= @application_letter.allergies %><br/>

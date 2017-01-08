@@ -101,6 +101,6 @@ class ApplicationLetter < ActiveRecord::Base
     habits.push(ApplicationLetter.human_attribute_name(:vegeterian)) if vegeterian
     habits.push(ApplicationLetter.human_attribute_name(:vegan)) if vegan
     habits.push(ApplicationLetter.human_attribute_name(:allergic)) if allergic
-    habits.join(', ')
+    habits
   end
 end

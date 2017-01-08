@@ -45,28 +45,28 @@ describe ApplicationLetter do
     expect(application).to respond_to(:application_notes)
   end
 
- it "returns an empty string when no eating habits exist" do
+ it "returns an empty array when no eating habits exist" do
     application = FactoryGirl.build(:application_letter)
     application.vegan = false
     application.vegeterian = false
     application.allergic = false
-    expect(application.eating_habits).to eq("")
+    expect(application.eating_habits).to eq([])
   end
 
-  it "returns a single eating habit without commas" do
+  it "returns a single eating habit" do
     application = FactoryGirl.build(:application_letter)
     application.vegan = true
     application.vegeterian = false
     application.allergic = false
-    expect(application.eating_habits).to eq(ApplicationLetter.human_attribute_name(:vegan))
+    expect(application.eating_habits).to eq([ApplicationLetter.human_attribute_name(:vegan)])
   end
 
-  it "returns multiple eating habits as comma seperated string" do
+  it "returns multiple eating habits" do
     application = FactoryGirl.build(:application_letter)
     application.vegan = false
     application.vegeterian = true
     application.allergic = true
-    expect(application.eating_habits).to eq([ApplicationLetter.human_attribute_name(:vegeterian), ApplicationLetter.human_attribute_name(:allergic)].join(', '))
+    expect(application.eating_habits).to eq([ApplicationLetter.human_attribute_name(:vegeterian), ApplicationLetter.human_attribute_name(:allergic)])
   end
 
   it "can not be updated after event application deadline"  do

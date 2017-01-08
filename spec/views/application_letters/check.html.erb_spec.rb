@@ -25,7 +25,7 @@ RSpec.describe "application_letters/check", type: :view do
       expect(rendered).to have_text(@application_letter.coding_skills)
       expect(rendered).to have_text(@application_letter.emergency_number)
       expect(rendered).to have_text(@application_letter.allergies)
-      expect(rendered).to have_text(@application_letter.eating_habits)
+      expect(rendered).to have_text(@application_letter.eating_habits.join(', '))
     end
 
     it "renders applicant's attributes" do
