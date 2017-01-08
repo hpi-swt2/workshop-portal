@@ -24,17 +24,27 @@ class ApplicationLetter < ActiveRecord::Base
   validates :vegeterian, :vegan, :allergic, inclusion: { in: [true, false] }
   validates :vegeterian, :vegan, :allergic, exclusion: { in: [nil] }
   validate :deadline_cannot_be_in_the_past, :if => Proc.new { |letter| !(letter.status_changed?) }
+  validate :status_cannot_be_changed, :if => Proc.new { |letter| letter.status_changed?}
 
-  enum status: {accepted: 1, rejected: 0, pending: 2}
+  enum status: {accepted: 1, rejected: 0, pending: 2, alternative: 3}
+  validates :status, inclusion: { in: statuses.keys }
+  
 
   # Checks if the deadline is over
   # additionally only return if event and event.application_deadline is present
-  # TODO: 'event.application_deadline' should never be nil, when #18 is finished. Please remove this in #18.
   #
   # @param none
   # @return [Boolean] true if deadline is over
   def after_deadline?
     Date.current > event.application_deadline if event.present?
+  end
+
+  # Checks if it is allowed to change the status of the application
+  #
+  # @param none
+  # @return [Boolean] true if no status changes are allowed anymore
+  def status_change_allowed?
+    !event.application_status_locked
   end
 
   # Validator for after_deadline?
@@ -43,5 +53,54 @@ class ApplicationLetter < ActiveRecord::Base
     if after_deadline?
       errors.add(:event, I18n.t("application_letters.form.warning"))
     end
+  end
+
+  # Chooses right status based on status and event deadline
+  #
+  # @param none
+  # @return [String] to display on the website
+  def status_type
+    case ApplicationLetter.statuses[status]
+      when ApplicationLetter.statuses[:accepted]
+        return I18n.t("application_status.accepted")
+      when ApplicationLetter.statuses[:rejected]
+        return I18n.t("application_status.rejected")
+      when ApplicationLetter.statuses[:pending]
+        if after_deadline?
+          return I18n.t("application_status.pending_after_deadline")
+        else
+          return I18n.t("application_status.pending_before_deadline")
+        end
+      else
+        return I18n.t("application_status.alternative")
+    end
+  end
+
+  # Validator for status_change_allowed?
+  # Adds error
+  def status_cannot_be_changed
+    unless status_change_allowed?
+      errors.add(:event, "Die Bewerbungen wurden bereits bearbeitet, eine Statusänderung ist nicht mehr erlaubt.")
+    end
+  end
+
+  # Returns the age of the user based on the date the event starts
+  #
+  # @param none
+  # @return [Int] for age as number of years
+  def applicant_age_when_event_starts
+    user.profile.age_at_time(event.start_date)
+  end
+
+  # Returns an array of eating habits (including allergies, vegan and vegeterian)
+  #
+  # @param none
+  # @return [Array <String>] array of eating habits, empty if none
+  def eating_habits
+    habits = Array.new
+    habits.push(ApplicationLetter.human_attribute_name(:vegeterian)) if vegeterian
+    habits.push(ApplicationLetter.human_attribute_name(:vegan)) if vegan
+    habits.push(ApplicationLetter.human_attribute_name(:allergic)) if allergic
+    habits
   end
 end

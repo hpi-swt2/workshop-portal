@@ -10,10 +10,12 @@
 #  active           :boolean
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
+#  application_status_locked  :boolean
 #
 
 class Event < ActiveRecord::Base
   UNREASONABLY_LONG_DATE_SPAN = 300
+  TRUNCATE_DESCRIPTION_TEXT_LENGTH = 250
 
   has_many :application_letters
   has_many :agreement_letters
@@ -56,12 +58,12 @@ class Event < ActiveRecord::Base
 
   # validation function on whether we have at least one date range
   def has_date_ranges
-    errors.add(:date_ranges, 'Bitte mindestens eine Zeitspanne auswählen!') if date_ranges.blank?
+    errors.add(:date_ranges, I18n.t('date_range.errors.no_timespan')) if date_ranges.blank?
   end
 
   #validate that application deadline is before the start of the event
   def application_deadline_before_start_of_event
-    errors.add(:application_deadline, I18n.t('events.errors.application_deadline_before_start_of_event')) if application_deadline.present? && !date_ranges.blank? && application_deadline > start_date 
+    errors.add(:application_deadline, I18n.t('events.errors.application_deadline_before_start_of_event')) if application_deadline.present? && !date_ranges.blank? && application_deadline > start_date
   end
 
   # Returns the participants whose application for this Event has been accepted
@@ -91,6 +93,15 @@ class Event < ActiveRecord::Base
     application_letters.all? { |application_letter| application_letter.status != 'pending' }
   end
 
+  # Returns a string of all email addresses of accepted applications
+  #
+  # @param none
+  # @return [String] Concatenation of all email addresses of accepted applications, seperated by ','
+  def email_adresses_of_accepted_applicants
+    accepted_applications = application_letters.where(status: ApplicationLetter.statuses[:accepted])
+    accepted_applications.map{ |application_letter| application_letter.user.email }.join(',')
+  end
+
   # Returns a string of all email addresses of rejected applications
   #
   # @param none
@@ -100,13 +111,32 @@ class Event < ActiveRecord::Base
     rejected_applications.map{ |applications_letter| applications_letter.user.email }.join(',')
   end
 
-  # Returns a string of all email addresses of accepted applications
+  # Returns a new acceptance email
   #
   # @param none
-  # @return [String] Concatenation of all email addresses of accepted applications, seperated by ','
-  def email_adresses_of_accepted_applicants
-    accepted_applications = application_letters.where(status: ApplicationLetter.statuses[:accepted])
-    accepted_applications.map{ |application_letter| application_letter.user.email }.join(',')
+  # @return [Email] new acceptance email
+  def generate_acceptances_email
+    email = Email.new
+    email.hide_recipients = false
+    email.recipients = email_adresses_of_accepted_applicants
+    email.reply_to = 'workshop.portal@hpi.de'
+    email.subject = ''
+    email.content = ''
+    return email
+  end
+
+  # Returns a new rejection email
+  #
+  # @param none
+  # @return [Email] new rejection email
+  def generate_rejections_email
+    email = Email.new
+    email.hide_recipients = false
+    email.recipients = email_adresses_of_rejected_applicants
+    email.reply_to = 'workshop.portal@hpi.de'
+    email.subject = ''
+    email.content = ''
+    return email
   end
 
   # Returns the number of free places of the event, this value may be negative
@@ -123,6 +153,48 @@ class Event < ActiveRecord::Base
   # @return [Int] for number of occupied places
   def compute_occupied_places
     application_letters.where(status: ApplicationLetter.statuses[:accepted]).count
+  end
+
+  # Locks the ability to change application statuses
+  #
+  # @param none
+  # @return none
+  def lock_application_status
+    update(application_status_locked: true)
+  end
+
+  # Returns a label listing the number of days to the deadline if
+  # it's <= 7 days to go. Otherwise returns nil.
+  #
+  # @return string containing the label or nil
+  def application_deadline_label
+    days = (application_deadline - Date.current).to_i
+    I18n.t('events.notices.deadline_approaching', count: days) if days <= 7 and days > 0
+  end
+
+  # Uses the start date to determine whether or not this event is in the past (or more
+  # precisely, in the past or currently running)
+  #
+  # @return boolean if it's in the past
+  def is_past
+    return start_date < Date.current
+  end
+
+  # Returns a label that describes the duration of the event in days,
+  # also mentioning whether or not the event happens on consecutive
+  # days. If the event is only on a single day, it returns nothing.
+  #
+  # @return the duration label or nil
+  def duration_label
+    # gotta add 1 since from Sunday to Monday is on two days, but only
+    # a difference of a single day
+    days = (end_date - start_date).to_i + 1
+
+    if date_ranges.size > 1
+      I18n.t('events.notices.time_span_non_consecutive', count: days)
+    elsif days > 1
+      I18n.t('events.notices.time_span_consecutive', count: days)
+    end
   end
 
   # Returns the application letters ordered by either "email", "first_name", "last_name", "birth_date"
@@ -151,18 +223,36 @@ class Event < ActiveRecord::Base
     super(*args)
   end
 
+  # Gets the path of the event in the material storage
+  #
+  # @return [String] path in the material storage
+  def material_path
+    File.join("storage/materials/", self.id.to_s + "_" + self.name)
+  end
+
   # Make sure we add errors from our date_range children
   # to the base event object for displaying
   validate do |event|
     event.date_ranges.each do |date_range|
       next if date_range.valid?
       date_range.errors.full_messages.each do |msg|
-        errors.add :date_ranges, msg
+        errors.add :date_ranges, msg unless errors[:date_ranges].include? msg
       end
     end
   end
 
   scope :draft_is, ->(draft) { where("draft = ?", draft) }
+
+  # Returns events sorted by start date, returning only public ones
+  # if requested
+  #
+  # @param limit Maximum number of events to return
+  # @param only_public Set to true to not include drafts
+  # @return List of events
+  def self.sorted_by_start_date(only_public)
+    (only_public ? Event.draft_is(false) : Event.all)
+      .sort_by(&:start_date)
+  end
 
   protected
   # Compares two participants to achieve following order:
@@ -190,5 +280,4 @@ class Event < ActiveRecord::Base
     end
     return participant1.name <=> participant2.name
   end
-
 end

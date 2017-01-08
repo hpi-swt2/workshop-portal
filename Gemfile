@@ -81,9 +81,22 @@ gem 'coveralls', require: false
 # pdf generation
 gem 'prawn'
 gem 'prawn-table'
+gem 'combine_pdf'
+
+#zip generation
+gem 'rubyzip', require: 'zip'
+
+# pdf inspection
+gem 'pdf-inspector', require: "pdf/inspector"
 
 # Simple, Heroku-friendly Rails app configuration using ENV and a single YAML file
 gem 'figaro'
+
+# Allow ORM functionality in plain ruby models
+gem 'active_attr'
+
+# Markdown renderer
+gem 'redcarpet'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -117,7 +130,7 @@ group :development do
   # Add a comment summarizing the current schema for models and others
   # usage: annotate
   gem 'annotate'
-  
+
   # opens sent emails in a new browser tab
   # gem "letter_opener"
 end
@@ -132,8 +145,9 @@ group :test do
   gem 'parser', '~> 2.2.2.5'
   # Stubbing external calls by blocking traffic with WebMock.disable_net_connect! or allow:
   # gem 'webmock'
-  gem 'pdf-inspector', require: "pdf/inspector"
+
 end
+
 
 group :production do
   # Use Puma web server

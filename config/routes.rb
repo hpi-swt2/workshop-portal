@@ -3,14 +3,20 @@ Rails.application.routes.draw do
   get 'agreement_letters/show'
 
   resources :requests
+
+  put 'applications/:id/status' => 'application_letters#update_status', as: :update_application_letter_status
+  get 'applications/:id/check' => 'application_letters#check', as: :check_application_letter
+
   resources :application_letters, path: 'applications' do
     resources :application_notes,
       only: :create
   end
   resources :events do
     resources :agreement_letters, only: [:create], shallow: true
+    get 'print_applications', on: :member
     get 'badges'
     post 'badges' => 'events#print_badges', as: :print_badges
+    post 'upload_material' => 'events#upload_material', as: :upload_material
     member do
       get 'participants_pdf'
     end
@@ -25,7 +31,12 @@ Rails.application.routes.draw do
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
-  get 'events/:id/participants' => 'events#participants'
+  get 'events/:id/participants' => 'events#participants', as: :event_participants
+  post 'events/:id/participants/agreement_letters' => 'events#download_agreement_letters', as: :event_download_agreement_letters
+  get 'events/:id/send-acceptance-emails' => 'events#send_acceptance_emails', as: :event_send_acceptance_emails
+  get 'events/:id/send-rejection-emails' => 'events#send_rejection_emails', as: :event_send_rejection_emails
+
+  post 'send_email' => 'emails#send_email'
 
   # Example of named route that can be invoked with purchase_url(id: product.id)
   #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase

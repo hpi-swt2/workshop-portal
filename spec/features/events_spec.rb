@@ -5,6 +5,22 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     @event = FactoryGirl.create(:event)
   end
 
+  scenario "logged in as Pupil I can click the apply button on the index page" do
+    login(:pupil)
+    visit events_path
+
+    click_link 'Bewerben'
+    expect(page).to have_current_path(new_application_letter_path(:event_id => @event.id))
+  end
+
+  scenario "logged in as Pupil I can click the apply button on the show page" do
+    login(:pupil)
+    visit event_path(@event)
+
+    click_link 'Bewerben'
+    expect(page).to have_current_path(new_application_letter_path(:event_id => @event.id))
+  end
+
   scenario "logged in as Pupil I can not see overview" do
     login(:pupil)
     visit event_path(@event)
@@ -54,7 +70,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     expect(page).to have_button(I18n.t('events.applicants_overview.sending_rejections'), disabled: true)
   end
 
-  scenario "logged in as Organizer I want to open a modal by clicking on sending emails" do
+  scenario "logged in as Organizer I want to be able to send an email to all accepted applicants" do
     login(:organizer)
     @event.update!(max_participants: 2)
     2.times do |n|
@@ -63,8 +79,27 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
       FactoryGirl.create(:application_letter_accepted, :event => @event, :user => @pupil.user)
     end
     visit event_path(@event)
-    click_button I18n.t('events.applicants_overview.sending_acceptances')
-    expect(page).to have_selector('div', :id => 'send-emails-modal')
+    click_link I18n.t('events.applicants_overview.sending_acceptances')
+    choose(I18n.t('emails.email_form.show_recipients'))
+    fill_in('email_subject', with: 'Subject')
+    fill_in('email_content', with: 'Content')
+    expect{click_button I18n.t('emails.email_form.send')}.to change{ActionMailer::Base.deliveries.count}.by(1)
+  end
+
+  scenario "logged in as Organizer I want to be able to send an email to all rejected applicants" do
+    login(:organizer)
+    @event.update!(max_participants: 2)
+    2.times do |n|
+      @pupil = FactoryGirl.create(:profile)
+      @pupil.user.role = :pupil
+      FactoryGirl.create(:application_letter_rejected, :event => @event, :user => @pupil.user)
+    end
+    visit event_path(@event)
+    click_link I18n.t('events.applicants_overview.sending_rejections')
+    choose(I18n.t('emails.email_form.show_recipients'))
+    fill_in('email_subject', with: 'Subject')
+    fill_in('email_content', with: 'Content')
+    expect{click_button I18n.t('emails.email_form.send')}.to change{ActionMailer::Base.deliveries.count}.by(1)
   end
 
   scenario "logged in as Organizer I can see the correct count of free/occupied places" do
@@ -85,12 +120,97 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
 
   scenario "logged in as Organizer I can change application status with radio buttons" do
     login(:organizer)
+    @event.application_status_locked = false
+    @event.save
     @pupil = FactoryGirl.create(:profile)
     @application_letter = FactoryGirl.create(:application_letter, event: @event, user: @pupil.user)
     visit event_path(@event)
     ApplicationLetter.statuses.keys.each do |new_status|
       choose(I18n.t "application_status.#{new_status}")
       expect(ApplicationLetter.where(id: @application_letter.id)).to exist
+    end
+  end
+
+  scenario "logged in as Organizer I can not change application status with radio buttons if the applications are locked" do
+    login(:organizer)
+    @event.lock_application_status
+    @pupil = FactoryGirl.create(:profile)
+    @application_letter = FactoryGirl.create(:application_letter, event: @event, user: @pupil.user)
+    visit event_path(@event)
+    ApplicationLetter.statuses.keys.each do |new_status|
+      if new_status != @application_letter.status
+        expect(page).not_to have_text(I18n.t "application_status.#{new_status}")
+      end
+    end
+  end
+
+  scenario "logged in as Organizer and viewing the participants page all checkboxes are checked when pressing the \"check all\" button", js: true do
+    login(:organizer)
+    @user = FactoryGirl.create(:user)
+    @profile = FactoryGirl.create(:profile, user: @user, birth_date: 15.years.ago)
+    @event = FactoryGirl.create(:event)
+    @application = FactoryGirl.create(:application_letter_accepted, user: @user, event: @event)
+    @agreement = FactoryGirl.create(:agreement_letter, user: @user, event: @event)
+    visit event_participants_path(@event)
+    check 'select_all_participants'
+    all('input[type=checkbox]').each do |checkbox|
+      expect(checkbox).to be_checked
+    end
+  end
+
+  scenario "logged in as Organizer when I want to download agreement letters but no participants are selected, it displays error message" do
+    login(:organizer)
+    @event = FactoryGirl.create(:event_with_accepted_applications_and_agreement_letters)
+    visit event_participants_path(@event)
+    click_button I18n.t "events.agreement_letters_download.download_all_as"
+    expect(page).to have_text(I18n.t "events.agreement_letters_download.notices.no_participants_selected")
+  end
+
+  scenario "logged in as Organizer when I want to download agreement letters but no participants have agreement letters, it displays error message" do
+    login(:organizer)
+    @event = FactoryGirl.create(:event_with_accepted_applications_and_agreement_letters)
+    visit event_participants_path(@event)
+    find(:css, "#selected_participants_[value='2']").set(true)
+    find("option[value='zip']").select_option
+    click_button I18n.t "events.agreement_letters_download.download_all_as"
+    expect(page).to have_text(I18n.t "events.agreement_letters_download.notices.no_agreement_letters")
+    visit event_participants_path(@event)
+    find(:css, "#selected_participants_[value='2']").set(true)
+    find("option[value='pdf']").select_option
+    click_button I18n.t "events.agreement_letters_download.download_all_as"
+    expect(page).to have_text(I18n.t "events.agreement_letters_download.notices.no_agreement_letters")
+  end
+
+  scenario "logged in as Organizer when I want to download agreement letters in a zip file, I can do so", js: true do
+    login(:organizer)
+    @event = FactoryGirl.create(:event_with_accepted_applications_and_agreement_letters)
+    visit event_participants_path(@event)
+    check 'select_all_participants'
+    find("option[value='zip']").select_option
+    click_button I18n.t "events.agreement_letters_download.download_all_as"
+    page.response_headers['Content-Type'].should eq "application/zip"
+  end
+
+  scenario "logged in as Organizer when I want to download agreement letters in a pdf file, I can do so", js: true do
+    login(:organizer)
+    @event = FactoryGirl.create(:event_with_accepted_applications_and_agreement_letters)
+    visit event_participants_path(@event)
+    check 'select_all_participants'
+    find("option[value='pdf']").select_option
+    click_button I18n.t "events.agreement_letters_download.download_all_as"
+    page.response_headers['Content-Type'].should eq "application/pdf"
+  end
+
+  scenario "logged in as Organizer I can lock the event application statuses by pressing one of the email buttons" do
+    login(:organizer)
+    @pupil = FactoryGirl.create(:profile)
+    @application_letter = FactoryGirl.create(:application_letter_accepted, event: @event, user: @pupil.user)
+    ['.events.applicants_overview.sending_acceptances', '.events.applicants_overview.sending_rejections'].each do | email_button |
+      @event.application_status_locked = false
+      @event.save
+      visit event_path(@event)
+      click_link I18n.t email_button
+      expect(Event.find(@event.id).application_status_locked).to be(true)
     end
   end
 
@@ -112,7 +232,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
       expect(table).to have_text(application_letter.user.profile.name)
     end
 
-    ['name', 'gender', 'age'].each do |attribute|
+    ['name', 'gender'].each do |attribute|
       link_name = I18n.t("activerecord.attributes.profile.#{attribute}")
       click_link link_name
       sorted_by_attribute = @event.application_letters.to_a.sort_by { |letter| letter.user.profile.send(attribute) }
@@ -122,6 +242,15 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
       click_link link_name # again
       expect(page).to contain_ordered(names.reverse)
     end
+
+    link_name = I18n.t('events.applicants_overview.age_when_event_starts')
+    click_link link_name
+    sorted_by_attribute = @event.application_letters.to_a.sort_by { |letter| letter.send(attribute) }
+    names = sorted_by_attribute.map {|l| l.user.profile.name }
+    expect(page).to contain_ordered(names)
+
+    click_link link_name # again
+    expect(page).to contain_ordered(names.reverse)
   end
 
   scenario "logged in as Organizer I can filter displayed application letters by their status", js: true do
