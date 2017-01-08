@@ -133,8 +133,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
 
   scenario "logged in as Organizer I can not change application status with radio buttons if the applications are locked" do
     login(:organizer)
-    @event.application_status_locked = true
-    @event.save
+    @event.lock_application_status
     @pupil = FactoryGirl.create(:profile)
     @application_letter = FactoryGirl.create(:application_letter, event: @event, user: @pupil.user)
     visit event_path(@event)
@@ -142,6 +141,19 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
       if new_status != @application_letter.status
         expect(page).not_to have_text(I18n.t "application_status.#{new_status}")
       end
+    end
+  end
+
+  scenario "logged in as Organizer I can lock the event application statuses by pressing one of the email buttons" do
+    login(:organizer)
+    @pupil = FactoryGirl.create(:profile)
+    @application_letter = FactoryGirl.create(:application_letter_accepted, event: @event, user: @pupil.user)
+    ['.events.applicants_overview.sending_acceptances', '.events.applicants_overview.sending_rejections'].each do | email_button |
+      @event.application_status_locked = false
+      @event.save
+      visit event_path(@event)
+      click_link I18n.t email_button
+      expect(Event.find(@event.id).application_status_locked).to be(true)
     end
   end
 
@@ -163,7 +175,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
       expect(table).to have_text(application_letter.user.profile.name)
     end
 
-    ['name', 'gender', 'age'].each do |attribute|
+    ['name', 'gender'].each do |attribute|
       link_name = I18n.t("activerecord.attributes.profile.#{attribute}")
       click_link link_name
       sorted_by_attribute = @event.application_letters.to_a.sort_by { |letter| letter.user.profile.send(attribute) }
@@ -173,6 +185,15 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
       click_link link_name # again
       expect(page).to contain_ordered(names.reverse)
     end
+
+    link_name = I18n.t('events.applicants_overview.age_when_event_starts')
+    click_link link_name
+    sorted_by_attribute = @event.application_letters.to_a.sort_by { |letter| letter.send(attribute) }
+    names = sorted_by_attribute.map {|l| l.user.profile.name }
+    expect(page).to contain_ordered(names)
+
+    click_link link_name # again
+    expect(page).to contain_ordered(names.reverse)
   end
 
   scenario "logged in as Organizer I can filter displayed application letters by their status", js: true do

@@ -66,13 +66,13 @@ class ApplicationsPDF
       data = [["", "", "", t("events.applicants_overview.participations"), ""]]
       data += [[Profile.human_attribute_name(:name),
                 Profile.human_attribute_name(:gender),
-                Profile.human_attribute_name(:age),
+                t('application_letters.show.age_when_event_starts'),
                 t("events.applicants_overview.accepted_rejected"),
                 ApplicationLetter.human_attribute_name(:status)]]
       data += @event.application_letters.map do |a|
         [a.user.profile.name,
          a.user.profile.gender,
-         a.user.profile.age,
+         a.applicant_age_when_event_starts,
          "#{a.user.accepted_applications_count(@event)} / #{a.user.rejected_applications_count(@event)}",
          t("application_status.#{a.status}")]
       end
@@ -114,7 +114,7 @@ class ApplicationsPDF
 
     def applicants_detail_data(application_letter)
       [[Profile.human_attribute_name(:gender)+":", application_letter.user.profile.gender],
-       [Profile.human_attribute_name(:age)+":", application_letter.user.profile.age],
+       [t('application_letters.show.age_when_event_starts')+":", application_letter.applicant_age_when_event_starts],
        [Profile.human_attribute_name(:address)+":", application_letter.user.profile.address],
        [User.human_attribute_name(:accepted_application_count)+":", application_letter.user.accepted_applications_count(@event)],
        [User.human_attribute_name(:rejected_application_count)+":", application_letter.user.rejected_applications_count(@event)],

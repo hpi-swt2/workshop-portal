@@ -3,7 +3,7 @@
   <dt><strong><%= model_class.human_attribute_name(:name) %>:</strong></dt>
   <dd><%= @event.name %></dd>
   <dt><strong><%= model_class.human_attribute_name(:description) %>:</strong></dt>
-  <dd><%= @event.description %></dd>
+  <dd><%= markdown @event.description %></dd>
   <dt><strong><%= model_class.human_attribute_name(:max_participants) %>:</strong></dt>
   <dd><%= @event.max_participants %></dd>
   <dt><strong><%= model_class.human_attribute_name(:date_ranges, count: @event.date_ranges.count) %>:</strong></dt>
