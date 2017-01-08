@@ -32,7 +32,7 @@ RSpec.describe "application_letters/check", type: :view do
       expect(rendered).to have_css('h3', text: I18n.t('application_letters.check.my_personal_data'))
       expect(rendered).to have_text(@application_letter.user.profile.name)
       expect(rendered).to have_text(@application_letter.user.profile.gender)
-      expect(rendered).to have_text(@application_letter.user.profile.age)
+      expect(rendered).to have_text(I18n.l(@application_letter.user.profile.birth_date))
       expect(rendered).to have_text(@application_letter.user.profile.school)
       expect(rendered).to have_text(@application_letter.user.profile.address)
       expect(rendered).to have_text(@application_letter.user.profile.graduates_school_in)
