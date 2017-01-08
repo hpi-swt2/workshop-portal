@@ -22,7 +22,7 @@ describe "workshop requests", type: :feature do
       	choose(form_of_address)
       	fill_in_required_fields
       	click_button I18n.t('.requests.form.create_request')
-      	expect(page).to have_current_path(request_path(Request.first))
+      	expect(page).to have_current_path(request_path(Request.last))
       end
     end
   end
