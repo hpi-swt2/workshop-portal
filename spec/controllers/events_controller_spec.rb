@@ -177,7 +177,7 @@ RSpec.describe EventsController, type: :controller do
 
     it "assigns the requested event as @event" do
       event = Event.create! valid_attributes
-      get :badges, event_id: event.to_param, session: valid_session
+      get :badges, id: event.to_param, session: valid_session
       expect(assigns(:event)).to eq(event)
     end
   end
@@ -186,21 +186,19 @@ RSpec.describe EventsController, type: :controller do
     before :each do
       @event = Event.create! valid_attributes
       @params = {
-        event_id: @event.to_param,
+        id: @event.to_param,
         session: valid_session,
         name_format: :full
       }
     end
 
-    it "contains two name badges with title 'Max Mustermann'" do
+    it "displays the selected participants' names" do
       users = 12.times.collect do
         user = FactoryGirl.create(:user_with_profile)
         FactoryGirl.create(:application_letter_accepted, user: user, event: @event)
         user
       end
-
-      print_params = users.collect { |user| ["#{user.id}_print", user.id.to_s] }.to_h
-      @params = @params.merge(print_params)
+      @params[:selected_ids] = users.collect { |user| user.id }
 
       rendered_pdf = post :print_badges, @params
       text = PDF::Inspector::Text.analyze(rendered_pdf.body).strings.join(' ')
@@ -214,9 +212,7 @@ RSpec.describe EventsController, type: :controller do
       users = [participant, rejected_participant, non_participant]
       FactoryGirl.create(:application_letter_accepted, user: participant, event: @event)
       FactoryGirl.create(:application_letter_rejected, user: rejected_participant, event: @event)
-
-      print_params = users.collect { |user| ["#{user.id}_print", user.id.to_s] }.to_h
-      @params = @params.merge(print_params)
+      @params[:selected_ids] = users.collect { |user| user.id }
 
       rendered_pdf = post :print_badges, @params
       text = PDF::Inspector::Text.analyze(rendered_pdf.body).strings.join(' ')
@@ -226,15 +222,14 @@ RSpec.describe EventsController, type: :controller do
     end
 
     it "does not break when no user is selected" do
-      rendered_pdf = post :print_badges, @params
-      PDF::Inspector::Text.analyze(rendered_pdf.body)
+      post :print_badges, @params
     end
 
-    it "displays does not cut off the participant's name" do
+    it "does not cut off the participant's name" do
       profile = FactoryGirl.create(:profile, :long_name)
       participant = FactoryGirl.create(:user, profile: profile)
       FactoryGirl.create(:application_letter_accepted, user: participant, event: @event)
-      @params["#{participant.id}_print"] = participant.id.to_s
+      @params[:selected_ids] = [participant.id]
 
       rendered_pdf = post :print_badges, @params
       text = PDF::Inspector::Text.analyze(rendered_pdf.body).strings.join(' ')

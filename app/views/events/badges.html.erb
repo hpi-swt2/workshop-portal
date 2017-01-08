@@ -1,6 +1,6 @@
 <h1><%= t('events.badges.title') + "'" + @event.name + "'" %></h1>
 
-<%= form_tag event_badges_path(@event),  multipart: true do %>
+<%= form_tag badges_event_path(@event),  multipart: true do %>
   <div class="form-group">
     <%= label_tag "logo_upload", t('events.badges.logo_upload') %>
     <%= file_field_tag "logo_upload",
@@ -11,9 +11,9 @@
     <%= label_tag "name_format", t('events.badges.name_format') %>
     <%= select_tag "name_format",
       options_for_select([
-        [t("first_name"), :first],
-        [t("last_name"), :last],
-        [t("full_name"), :full]]),
+        [t("events.badges.first_name"), :first],
+        [t("events.badges.last_name"), :last],
+        [t("events.badges.full_name"), :full]]),
       class: "form-control" %>
   </div>
   <div class="form-group">

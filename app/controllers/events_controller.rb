@@ -2,7 +2,7 @@ require 'pdf_generation/badges_pdf'
 require 'pdf_generation/applications_pdf'
 
 class EventsController < ApplicationController
-  before_action :set_event, only: [:show, :edit, :update, :destroy, :print_applications]
+  before_action :set_event, only: [:show, :edit, :update, :destroy, :print_applications, :badges, :print_badges]
 
   # GET /events
   def index
@@ -59,13 +59,11 @@ class EventsController < ApplicationController
 
   # GET /events/1/badges
   def badges
-    @event = Event.find(params[:event_id])
     @participants = @event.participants
   end
 
   # POST /events/1/badges
   def print_badges
-    @event = Event.find(params[:event_id])
     @participants = @event.participants
     name_format = params[:name_format]
     show_color = params[:show_color]

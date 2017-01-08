@@ -12,9 +12,11 @@ Rails.application.routes.draw do
   end
   resources :events do
     resources :agreement_letters, only: [:create], shallow: true
-    get 'print_applications', on: :member
-    get 'badges'
-    post 'badges' => 'events#print_badges', as: :print_badges
+    member do
+      get 'print_applications'
+      get 'badges'
+      post 'badges' => 'events#print_badges', as: :print_badges
+    end
   end
   resources :profiles
   devise_for :users

@@ -23,6 +23,9 @@ de:
       sending_acceptances: 'Zusagen verschicken'
       sending_rejections: 'Absagen verschicken'
     badges:
+      first_name: "Nur Vorname"
+      last_name: "Nur Nachname"
+      full_name: "Vor- und Nachname"
       print: "Namensschilder drucken"
       title: "Namensschilder drucken für das Event "
       logo_upload: "Logo (optional)"
