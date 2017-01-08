@@ -25,6 +25,7 @@ RSpec.describe "application_letters/check", type: :view do
       expect(rendered).to have_text(@application_letter.coding_skills)
       expect(rendered).to have_text(@application_letter.emergency_number)
       expect(rendered).to have_text(@application_letter.allergies)
+      expect(rendered).to have_text(@application_letter.eating_habits)
     end
 
     it "renders applicant's attributes" do
@@ -39,19 +40,6 @@ RSpec.describe "application_letters/check", type: :view do
 
     it "renders link to edit profile" do
       expect(rendered).to have_link(id: 'edit_profile_link', href: edit_profile_path(@application_letter.user.profile))
-    end
-
-    it "shows one eating habit" do
-      @application_letter.vegeterian = true
-      render
-      expect(rendered).to have_text(ApplicationLetter.human_attribute_name(:vegeterian))
-    end
-
-    it "shows multiple eating habits concatenated by commas" do
-      @application_letter.vegeterian = true
-      @application_letter.allergic = true
-      render
-      expect(rendered).to have_text(ApplicationLetter.human_attribute_name(:vegeterian) + ', ' + ApplicationLetter.human_attribute_name(:allergic))
     end
   end
 

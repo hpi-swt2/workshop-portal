@@ -91,4 +91,22 @@ class ApplicationLetter < ActiveRecord::Base
   def applicant_age_when_event_starts
     user.profile.age_at_time(event.start_date)
   end
+
+  # Returns a comma seperated string of eating habits (including allergies, vegan and vegeterian)
+  #
+  # @param none
+  # @return [String] comma seperated string of eating habits, or empty string if none
+  def eating_habits
+    habits = Array.new
+    if vegeterian
+      habits.push(ApplicationLetter.human_attribute_name(:vegeterian))
+    end
+    if vegan
+      habits.push(ApplicationLetter.human_attribute_name(:vegan))
+    end
+    if allergic
+      habits.push(ApplicationLetter.human_attribute_name(:allergic))
+    end
+    return habits.join(', ')
+  end
 end
