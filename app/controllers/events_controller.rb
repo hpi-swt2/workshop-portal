@@ -205,10 +205,10 @@ class EventsController < ApplicationController
     end
 
     data.unshift([
-                     I18n.t 'controllers.events.participants_pdf.first_name',
-                     I18n.t 'controllers.events.participants_pdf.last_name',
-                     I18n.t 'controllers.events.participants_pdf.first_name',
-                     I18n.t 'controllers.events.participants_pdf.allergies'
+                     I18n.t('controllers.events.participants_pdf.first_name'),
+                     I18n.t('controllers.events.participants_pdf.last_name'),
+                     I18n.t('controllers.events.participants_pdf.first_name'),
+                     I18n.t('controllers.events.participants_pdf.allergies')
                  ])
 
     name = @event.name

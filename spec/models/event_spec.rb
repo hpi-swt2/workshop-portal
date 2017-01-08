@@ -199,9 +199,8 @@ describe Event do
     @profile2 = FactoryGirl.create(:profile, user: @user2, birth_date: 16.years.ago, first_name:'John')
     @application2 = FactoryGirl.create(:application_letter_accepted, user: @user2, event: @event)
 
-    expect(@event.application_letters_ordered('unknown','DESC')).to eq([@application2,@application1])
+    expect(@event.application_letters_ordered('unknown','desc')).to eq([@application2,@application1])
   end
-end
 
   it "generates a new email for rejections" do
     event = FactoryGirl.create(:event_with_accepted_applications)
