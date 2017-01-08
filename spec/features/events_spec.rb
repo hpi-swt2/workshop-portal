@@ -133,8 +133,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
 
   scenario "logged in as Organizer I can not change application status with radio buttons if the applications are locked" do
     login(:organizer)
-    @event.application_status_locked = true
-    @event.save
+    @event.lock_application_status
     @pupil = FactoryGirl.create(:profile)
     @application_letter = FactoryGirl.create(:application_letter, event: @event, user: @pupil.user)
     visit event_path(@event)
@@ -202,6 +201,19 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     find("option[value='pdf']").select_option
     click_button I18n.t "events.agreement_letters_download.download_all_as"
     page.response_headers['Content-Type'].should eq "application/pdf"
+  end
+
+  scenario "logged in as Organizer I can lock the event application statuses by pressing one of the email buttons" do
+    login(:organizer)
+    @pupil = FactoryGirl.create(:profile)
+    @application_letter = FactoryGirl.create(:application_letter_accepted, event: @event, user: @pupil.user)
+    ['.events.applicants_overview.sending_acceptances', '.events.applicants_overview.sending_rejections'].each do | email_button |
+      @event.application_status_locked = false
+      @event.save
+      visit event_path(@event)
+      click_link I18n.t email_button
+      expect(Event.find(@event.id).application_status_locked).to be(true)
+    end
   end
 
   scenario "logged in as Coach I can see application status" do
