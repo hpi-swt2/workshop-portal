@@ -59,6 +59,18 @@ RSpec.describe ApplicationLettersController, type: :controller do
       end
     end
 
+    describe "GET #check" do
+      it "assigns the requested application as @application" do
+        get :check, id: @application.to_param, session: valid_session
+        expect(assigns(:application_letter)).to eq(@application)
+      end
+
+      it "assigns the application deadline status as @application_deadline_exceeded" do
+        get :check, id: @application.to_param, session: valid_session
+        expect(assigns(:application_deadline_exceeded)).to eq(@application.after_deadline?)
+      end
+    end
+
     describe "GET #new" do
       it "assigns a new application as @application" do
         get :new, session: valid_session
@@ -93,9 +105,9 @@ RSpec.describe ApplicationLettersController, type: :controller do
           expect(assigns(:application_letter)).to eq(@application)
         end
 
-        it "redirects back" do
+        it "redirects to application checking page" do
           put :update, id: @application.to_param, application_letter: valid_attributes, session: valid_session
-          expect(response).to redirect_to(request.env['HTTP_REFERER'])
+          expect(response).to redirect_to(check_application_letter_path(@application))
         end
       end
 
@@ -180,9 +192,9 @@ RSpec.describe ApplicationLettersController, type: :controller do
         expect(assigns(:application_letter)).to be_persisted
       end
 
-      it "redirects to the created application" do
+      it "redirects to the checking page for the created application" do
         post :create, application_letter: valid_attributes, session: valid_session
-        expect(response).to redirect_to(ApplicationLetter.last)
+        expect(response).to redirect_to(check_application_letter_path(ApplicationLetter.last))
       end
     end
 

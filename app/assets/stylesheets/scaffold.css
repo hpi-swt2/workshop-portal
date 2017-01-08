@@ -1,21 +1,8 @@
-body { background-color: #fff; color: #333; }
-
-body, p, ol, ul, td {
-  font-family: verdana, arial, helvetica, sans-serif;
-  font-size:   13px;
-  line-height: 18px;
-}
-
 pre {
   background-color: #eee;
   padding: 10px;
   font-size: 11px;
 }
-
-/* not-selector to prevent override of bootstrap button color */
-a:not(.btn) { color: #000; }
-a:visited:not(.btn) { color: #666; }
-a:hover:not(.btn) { color: #fff; background-color:#000; }
 
 .field, .actions {
   margin-bottom: 10px;
@@ -52,4 +39,12 @@ a:hover:not(.btn) { color: #fff; background-color:#000; }
 #error_explanation ul li {
   font-size: 12px;
   list-style: square;
+}
+
+.spacer-15 {
+  margin-top: 15px;
+}
+
+.spacer-30 {
+  margin-top: 30px;
 }
