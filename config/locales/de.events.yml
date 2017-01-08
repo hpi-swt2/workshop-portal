@@ -57,8 +57,8 @@ de:
       destroyed: "Event wurde gelöscht."
       unreasonable_timespan: "Vorsicht! End-Datum liegt ungewöhnlich weit vom Start-Datum entfernt."
       deadline_approaching:
-        one: "Bewerbungsfirst in einem Tag"
-        other: "Bewerbungsfirst in %{count} Tagen"
+        one: "Bewerbungsfrist in einem Tag"
+        other: "Bewerbungsfrist in %{count} Tagen"
       time_span_non_consecutive:
         one: "Über einen Tag mit Unterbrechung"
         other: "Über %{count} Tage mit Unterbrechung"

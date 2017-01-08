@@ -155,6 +155,14 @@ class Event < ActiveRecord::Base
     application_letters.where(status: ApplicationLetter.statuses[:accepted]).count
   end
 
+  # Locks the ability to change application statuses
+  #
+  # @param none
+  # @return none
+  def lock_application_status
+    update(application_status_locked: true)
+  end
+
   # Returns a label listing the number of days to the deadline if
   # it's <= 7 days to go. Otherwise returns nil.
   #
@@ -253,5 +261,4 @@ class Event < ActiveRecord::Base
     end
     return participant1.name <=> participant2.name
   end
-
 end

@@ -91,6 +91,9 @@ gem 'figaro'
 # Allow ORM functionality in plain ruby models
 gem 'active_attr'
 
+# Markdown renderer
+gem 'redcarpet'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'

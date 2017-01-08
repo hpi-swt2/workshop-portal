@@ -106,25 +106,26 @@ de:
       second: Sekunde
       year: Jahr
   errors:
-    format: "%{attribute} %{message}"
+    format: '%{attribute} %{message}.'
+    format_html: '%{attribute} %{message}.'
     form_invalid: 
-      one: "In einem Feld ist ein Fehler aufgetreten"
-      other: "In %{count} Feldern sind Fehler aufgetreten"
+      one: "Achtung. In einem Feld ist ein Fehler aufgetreten. Korrigiere den Fehler, um fortzufahren"
+      other: "Achtung. In %{count} Feldern sind Fehler aufgetreten. Korrigiere die Fehler, um fortzufahren"
     messages:
       accepted: muss akzeptiert werden
-      blank: muss ausgefüllt werden
+      blank: 'Feld ist leer: bitte fülle es aus, um fortzufahren'
       present: darf nicht ausgefüllt werden
-      confirmation: stimmt nicht mit %{attribute} überein
-      empty: muss ausgefüllt werden
+      confirmation: stimmt nicht mit %{attribute} überein.
+      empty: 'Feld ist leer. Bitte fülle es aus, um fortzufahren'
       equal_to: muss genau %{count} sein
       even: muss gerade sein
       exclusion: ist nicht verfügbar
       greater_than: muss größer als %{count} sein
-      greater_than_or_equal_to: muss größer oder gleich %{count} sein
+      greater_than_or_equal_to: muss mindestens %{count} sein
       inclusion: ist kein gültiger Wert
       invalid: ist nicht gültig
-      less_than: muss kleiner als %{count} sein
-      less_than_or_equal_to: muss kleiner oder gleich %{count} sein
+      less_than: muss weniger als %{count} sein
+      less_than_or_equal_to: darf höchstens %{count} sein
       model_invalid: 'Gültigkeitsprüfung ist fehlgeschlagen: %{errors}'
       not_a_number: ist keine Zahl
       not_an_integer: muss ganzzahlig sein

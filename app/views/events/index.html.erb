@@ -4,16 +4,18 @@
   <p class="lead"><%= t('events.intro_text') %></p>
 </div>
 
-<div class="event-list col-md-10 col-md-offset-1">
-  <% if can? :new, Event %>
-  <div class="clearfix">
-    <%= link_to new_event_path, :class => 'btn btn-primary pull-right' do
-      glyph('plus') + ' ' +
-      t('.new', :default => t('helpers.links.new'))
-    end %>
-  </div>
-  <% end %>
+<div class="row">
+  <div class="event-list col-md-10 col-md-offset-1">
+    <% if can? :new, Event %>
+    <div class="clearfix">
+      <%= link_to new_event_path, :class => 'btn btn-primary pull-right' do
+        glyph('plus') + ' ' +
+        t('.new', :default => t('helpers.links.new'))
+      end %>
+    </div>
+    <% end %>
 
   <%= render @events %>
+  </div>
 </div>
 
