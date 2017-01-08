@@ -189,7 +189,7 @@ describe User do
   end
 
  %i[coach organizer].each do |role|
-    it "cannot update application letter status as #{role}" do
+    it "cannot check applications as #{role}" do
       user = FactoryGirl.create(:user, role: role)
       ability = Ability.new(user)
 
