@@ -115,6 +115,13 @@ describe User do
     end
   end
 
+  it "can download an participants agreement letters as organizer" do
+    user = FactoryGirl.create(:user, role: :organizer)
+    ability = Ability.new(user)
+
+    expect(ability).to be_able_to(:print_agreement_letters, Event)
+  end
+
   it "cannot view and add notes to application letters as pupil" do
     user = FactoryGirl.create(:user, role: :pupil)
     ability = Ability.new(user)
@@ -136,6 +143,19 @@ describe User do
     expect(ability).to_not be_able_to(:print_applications, Event)
   end
 
+  it "cannot print agreement letters for an event as pupil" do
+    user = FactoryGirl.create(:user, role: :pupil)
+    ability = Ability.new(user)
+
+    expect(ability).to_not be_able_to(:print_agreement_letters, Event)
+  end  
+
+  it "cannot print agreement letters for an event as coach" do
+    user = FactoryGirl.create(:user, role: :coach)
+    ability = Ability.new(user)
+
+    expect(ability).to_not be_able_to(:print_agreement_letters, Event)
+  end  
   it "can do everything as admin" do
     user = FactoryGirl.create(:user, role: :admin)
     ability = Ability.new(user)

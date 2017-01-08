@@ -102,6 +102,13 @@ FactoryGirl.define do
         create_list(:application_letter_accepted, evaluator.accepted_application_letters_count, event: event)
         create_list(:application_letter_rejected, evaluator.rejected_application_letters_count, event: event)
       end
+
+      factory :event_with_accepted_applications_and_agreement_letters do
+        after(:create) do |event, evaluator|
+          create_list(:accepted_application_with_agreement_letters, evaluator.accepted_application_letters_count, event: event)
+        end
+      end
+
     end
   end
 end

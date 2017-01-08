@@ -28,7 +28,8 @@ Rails.application.routes.draw do
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
-  get 'events/:id/participants' => 'events#participants'
+  get 'events/:id/participants' => 'events#participants', as: :event_participants
+  post 'events/:id/participants/agreement_letters' => 'events#download_agreement_letters', as: :event_download_agreement_letters
   get 'events/:id/send-acceptance-emails' => 'events#send_acceptance_emails', as: :event_send_acceptance_emails
   get 'events/:id/send-rejection-emails' => 'events#send_rejection_emails', as: :event_send_rejection_emails
 
