@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   resources :requests
 
   put 'applications/:id/status' => 'application_letters#update_status', as: :update_application_letter_status
+  get 'applications/:id/check' => 'application_letters#check', as: :check_application_letter
 
   resources :application_letters, path: 'applications' do
     resources :application_notes,

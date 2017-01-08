@@ -2,7 +2,7 @@ class ApplicationLettersController < ApplicationController
   load_and_authorize_resource param_method: :application_params
   skip_authorize_resource :only => :new
 
-  before_action :set_application, only: [:show, :edit, :update, :destroy]
+  before_action :set_application, only: [:show, :edit, :update, :destroy, :check]
 
   # GET /applications
   def index
@@ -29,6 +29,11 @@ class ApplicationLettersController < ApplicationController
     authorize! :new, @application_letter
   end
 
+  # GET /applications/1/check
+  def check
+    @application_deadline_exceeded = @application_letter.after_deadline?
+  end
+
   # GET /applications/1/edit
   def edit
   end
@@ -43,7 +48,7 @@ class ApplicationLettersController < ApplicationController
     @application_letter.user_id = current_user.id
 
     if @application_letter.save
-      redirect_to @application_letter, notice: I18n.t('application_letters.successful_creation')
+      redirect_to check_application_letter_path(@application_letter), notice: I18n.t('application_letters.successful_creation')
     else
       render :new
     end
@@ -52,7 +57,7 @@ class ApplicationLettersController < ApplicationController
   # PATCH/PUT /applications/1
   def update
     if @application_letter.update_attributes(application_params)
-      redirect_to :back, notice: I18n.t('application_letters.successful_update') rescue ActionController::RedirectBackError redirect_to root_path
+      redirect_to check_application_letter_path(@application_letter), notice: I18n.t('application_letters.successful_update')
     else
       render :edit
     end

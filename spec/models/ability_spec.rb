@@ -193,6 +193,30 @@ describe User do
     end
   end
 
+  it "can check its own application as pupil" do
+    user = FactoryGirl.create(:user, role: :pupil)
+    application = FactoryGirl.create(:application_letter, user: user)
+    ability = Ability.new(user)
+    expect(ability).to be_able_to(:check, application)
+  end
+
+  it "cannot check other pupil's applications" do
+    user = FactoryGirl.create(:user, role: :pupil)
+    another_user = FactoryGirl.create(:user, role: :pupil)
+    application = FactoryGirl.create(:application_letter, user: another_user)
+    ability = Ability.new(user)
+    expect(ability).to_not be_able_to(:check, application)
+  end
+
+ %i[coach organizer].each do |role|
+    it "cannot check applications as #{role}" do
+      user = FactoryGirl.create(:user, role: role)
+      ability = Ability.new(user)
+
+      expect(ability).to_not be_able_to(:check, ApplicationLetter)
+    end
+  end
+
   it "can update application letter status as organizer" do
     user = FactoryGirl.create(:user, role: :organizer)
     another_user = FactoryGirl.create(:user)

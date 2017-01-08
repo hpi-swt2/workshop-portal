@@ -39,16 +39,16 @@ class Ability
       if user.profile.present?
         can [:new, :create], ApplicationLetter
       end
-      can [:index, :show, :edit, :update, :destroy], ApplicationLetter, user: { id: user.id }
+      can [:index, :show, :edit, :update, :destroy, :check], ApplicationLetter, user: { id: user.id }
       # Pupils can upload their letters of agreement
       can [:create], AgreementLetter
       can [:new, :create], Request
     end
     if user.role? :coach
       # Coaches can view Applications and participants for and upload materials for Event
-      can [:view_applicants, :view_participants, :upload_material], Event
+      can [:view_applicants, :view_participants, :upload_material, :print_applications], Event
       can [:view_and_add_notes, :show], ApplicationLetter
-      can [:print_applications], Event
+      cannot [:check], ApplicationLetter
     end
     if user.role? :organizer
       can [:index, :show], Profile
