@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   resources :requests
 
   put 'applications/:id/status' => 'application_letters#update_status', as: :update_application_letter_status
+  get 'applications/:id/check' => 'application_letters#check', as: :check_application_letter
 
   resources :application_letters, path: 'applications' do
     resources :application_notes,
@@ -17,6 +18,7 @@ Rails.application.routes.draw do
     post 'badges' => 'events#print_badges', as: :print_badges
     get 'emails' => 'emails#show', as: :email_show
     post 'emails' => 'emails#submit', as: :email_submit
+    post 'upload_material' => 'events#upload_material', as: :upload_material
   end
   resources :profiles
   devise_for :users
@@ -28,7 +30,8 @@ Rails.application.routes.draw do
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
-  get 'events/:id/participants' => 'events#participants'
+  get 'events/:id/participants' => 'events#participants', as: :event_participants
+  post 'events/:id/participants/agreement_letters' => 'events#download_agreement_letters', as: :event_download_agreement_letters
 
   # Example of named route that can be invoked with purchase_url(id: product.id)
   #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase

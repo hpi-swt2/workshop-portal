@@ -17,6 +17,9 @@
   <%= render :partial => 'applicants_overview' %>
 <% end %>
 
+<%= render :partial => 'material_area' %>
+
+
 <%= link_to t('.back', :default => t('helpers.links.back')),
               events_path, :class => 'btn btn-default'  %>
 <% if can? :view_participants, Event %>

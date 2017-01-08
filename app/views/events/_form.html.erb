@@ -7,7 +7,7 @@
       <% Event.kinds.keys.each do |key| %>
         <label class="btn btn-default <%= 'active' if @event.kind == key %>">
           <%= f.radio_button :kind, key %>
-          <%= key.humanize %>
+          <%= I18n.t :"events.kinds.#{key}" %>
         </label>
       <% end %>
       <%=f.error_span(:kind) %>

@@ -26,3 +26,15 @@ function addEventDatePicker() {
 function removeEventDatePicker(button) {
   $(button).parent('div').remove();
 }
+
+function flipAllCheckboxes(rootCheckbox) {
+  if (rootCheckbox.checked) {
+    jQuery(':checkbox.'.concat(rootCheckbox.className)).each(function() {
+      this.checked = true;
+    });
+  } else {
+    jQuery(':checkbox.'.concat(rootCheckbox.className)).each(function() {
+      this.checked = false;
+    });
+  }
+}
