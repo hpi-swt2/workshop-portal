@@ -87,6 +87,7 @@ class EventsController < ApplicationController
   def participants
     @event = Event.find(params[:id])
     @participants = @event.participants_by_agreement_letter
+    @has_agreement_letters = @event.agreement_letters.any?
   end
 
   # GET /events/1/print_applications

@@ -1,13 +1,13 @@
 <%- model_class = Event -%>
 <script type="text/javascript">
   jQuery(function() {
-    $('#selectAll').click(function() {
+    jQuery('#selectAll').click(function() {
        if (this.checked) {
-           $(':checkbox').each(function() {
+           jQuery(':checkbox').each(function() {
                this.checked = true;                        
            });
        } else {
-          $(':checkbox').each(function() {
+          jQuery(':checkbox').each(function() {
                this.checked = false;                        
            });
        } 
@@ -27,7 +27,7 @@
         <th><%= t 'activerecord.attributes.profile.name' %></th>
         <th><%= t 'activerecord.attributes.profile.email' %></th>
     	  <th><%= t 'agreement_letters.agreement_letter' %></th>
-        <% if can? :print_agreement_letters, Event %><th><input type="checkbox" id="selectAll" value="selectAll" /> <%= t 'events.agreement_letters_download.select_all' %></th><% end %>
+        <% if can? :print_agreement_letters, Event and @has_agreement_letters %><th><input type="checkbox" id="selectAll" value="selectAll" /> <%= t 'events.agreement_letters_download.select_all' %></th><% end %>
       </tr>  
     
       <% @participants.each do |participant| %>
@@ -48,7 +48,7 @@
             <span class="text-danger"><%= t '.unavailable' %></span>
           <% end %>
         </td>
-        <% if can? :print_agreement_letters, Event %>
+        <% if can? :print_agreement_letters, Event and @has_agreement_letters %>
           <td>
             <%= check_box_tag('selected_participants[]', participant.id) %>
           </td>
@@ -56,12 +56,14 @@
       </tr>
       <% end %>
     </table>
-    <% if can? :print_agreement_letters, Event %>
+    <% if can? :print_agreement_letters, Event and @has_agreement_letters %>
+      <div id="participants_download_submit_button">
       <%= submit_tag t('events.agreement_letters_download.download_all_as'), name: "download_all" %>
       <%= select_tag :download_type, options_for_select([['pdf'], ['zip']]) %>
+      </div>
     <% end %>
   <% end %>
-  
+  <br>
   <%= link_to t('.back', :default => t('helpers.links.back')),
               event_path(@event), :class => 'btn btn-default'  %>
 <% end %>
