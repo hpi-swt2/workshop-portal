@@ -41,8 +41,8 @@ class EmailsController < ApplicationController
       redirect_to @event, notice: t('.sending_successful')
     else
       @event = Event.find(params[:event_id])
-      flash[:alert] = t('.sending_failed')
-      render :email
+      flash.now[:alert] = t('.sending_failed')
+      show
     end
   end
 
@@ -55,7 +55,7 @@ class EmailsController < ApplicationController
     @template = EmailTemplate.new(@template_params)
 
     if @template.save
-      flash.now[:notice] = t('.saving_successful')
+      flash.now[:success] = t('.saving_successful')
     else
       flash.now[:alert] = t('.saving_failed')
     end
