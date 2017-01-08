@@ -189,7 +189,7 @@ class EventsController < ApplicationController
 
   # GET /event/1/participants_pdf
   def participants_pdf
-    default = {:order_by => "email", :order_direction => 'asc'}
+    default = {:order_by => 'email', :order_direction => 'ASC'}
     default = default.merge(params)
 
     @application_letters = @event.application_letters_ordered(default[:order_by], default[:order_direction])
@@ -204,7 +204,12 @@ class EventsController < ApplicationController
       ]
     end
 
-    data.unshift(['Vorname', 'Nachname', 'Geburtsdatum', 'Allergien'])
+    data.unshift([
+                     I18n.t 'controllers.events.participants_pdf.first_name',
+                     I18n.t 'controllers.events.participants_pdf.last_name',
+                     I18n.t 'controllers.events.participants_pdf.first_name',
+                     I18n.t 'controllers.events.participants_pdf.allergies'
+                 ])
 
     name = @event.name
     doc = Prawn::Document.new(:page_size => 'A4') do
