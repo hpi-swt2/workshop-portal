@@ -15,7 +15,7 @@
         <% if can? :print_agreement_letters, Event and @has_agreement_letters %>
           <th>
             <label>
-              <input type="checkbox" id="select_all_participants" class="participant_selection" onclick="flipAllCheckboxes(this)">
+              <input type="checkbox" id="select_all_participants" class="participant_selection" onclick="flipAllCheckboxes(this, 'participant_selection')">
               <%= t 'events.agreement_letters_download.select_all' %>
             </label>
           </th>

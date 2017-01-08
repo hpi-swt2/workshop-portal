@@ -28,14 +28,14 @@
     <%= label_tag "select_participants", t('events.badges.select_participants') %>
     <table class="table table-striped table-bordered table-hover" id="select_participants">
       <tr>
-        <th><%= check_box_tag "select-all-print" %></th>
+        <th><%= check_box_tag "select-all-print", true, false, onclick: "flipAllCheckboxes(this, 'selected_ids')" %></th>
         <th><%= Profile.human_attribute_name(:name) %></th>
       </tr>
 
       <% @participants.each do |participant| %>
         <tr>
           <td>
-            <%= check_box_tag "selected_ids[]", participant.id%>
+            <%= check_box_tag "selected_ids[]", participant.id, false, class:"selected_ids" %>
           </td>
           <td>
             <%= participant.name %>

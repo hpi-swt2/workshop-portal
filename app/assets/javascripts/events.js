@@ -12,18 +12,6 @@ jQuery(function() {
         modal.find('#send-emails-mailto').attr('href', 'mailto:' + list);
         modal.find('#send-emails-list').val(list);
     });
-
-    $('#select-all-print').click(function() {
-        if(this.checked) {
-            $('input[id="selected_ids_"').each(function() {
-                this.checked = true;
-            });
-        } else {
-            $('input[id="selected_ids_"').each(function() {
-                this.checked = false;
-            });
-        }
-    });
 });
 
 function addEventDatePicker() {
@@ -39,13 +27,13 @@ function removeEventDatePicker(button) {
   $(button).parent('div').remove();
 }
 
-function flipAllCheckboxes(rootCheckbox) {
+function flipAllCheckboxes(rootCheckbox, className) {
   if (rootCheckbox.checked) {
-    jQuery(':checkbox.'.concat(rootCheckbox.className)).each(function() {
+    jQuery(':checkbox.'.concat(className)).each(function() {
       this.checked = true;
     });
   } else {
-    jQuery(':checkbox.'.concat(rootCheckbox.className)).each(function() {
+    jQuery(':checkbox.'.concat(className)).each(function() {
       this.checked = false;
     });
   }

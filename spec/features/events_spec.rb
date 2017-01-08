@@ -188,7 +188,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     check 'select_all_participants'
     find("option[value='zip']").select_option
     click_button I18n.t "events.agreement_letters_download.download_all_as"
-    page.response_headers['Content-Type'].should eq "application/zip"
+    expect(page.response_headers['Content-Type']).to eq "application/zip"
   end
 
   scenario "logged in as Organizer when I want to download agreement letters in a pdf file, I can do so", js: true do
@@ -198,7 +198,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     check 'select_all_participants'
     find("option[value='pdf']").select_option
     click_button I18n.t "events.agreement_letters_download.download_all_as"
-    page.response_headers['Content-Type'].should eq "application/pdf"
+    expect(page.response_headers['Content-Type']).to eq "application/pdf"
   end
 
   scenario "logged in as Organizer I can lock the event application statuses by pressing one of the email buttons" do

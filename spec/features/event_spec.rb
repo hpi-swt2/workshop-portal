@@ -285,13 +285,12 @@ describe "Event", type: :feature do
       end
     end
 
-    it "selects all participants when the 'select all' checkbox is checked" do
-      pending
-      #visit badges_event_path(@event)
-      #all(:css, "#selected_ids_").each { |check| check.set(true) }
-      #click_button I18n.t('events.badges.print')
-      #strings = PDF::Inspector::Text.analyze(page.body).strings
-      #@users.each { |u| expect(strings).to include(u.profile.first_name) }
+    it "selects all participants when the 'select all' checkbox is checked", js: true do
+      visit badges_event_path(@event)
+      check('select-all-print')
+      all('input[type=checkbox].selected_ids').each { |checkbox| expect(checkbox).to be_checked }
+      uncheck('select-all-print')
+      all('input[type=checkbox].selected_ids').each { |checkbox| expect(checkbox).not_to be_checked }
     end
 
     it "creates a pdf with the correct schools" do
@@ -301,6 +300,15 @@ describe "Event", type: :feature do
       click_button I18n.t('events.badges.print')
       strings = PDF::Inspector::Text.analyze(page.body).strings
       @users.each { |u| expect(strings).to include(u.profile.school) }
+    end
+
+    it "executes the correct code when colors are selected" do
+      #testing if the actual colors are used is kinda hard
+      visit badges_event_path(@event)
+      all(:css, "#selected_ids_").each { |check| check.set(true) }
+      check('show_color')
+      expect_any_instance_of(BadgesPDF).to receive(:create_color).exactly(@users.count).times
+      click_button I18n.t('events.badges.print')
     end
 
     it "does not throw an error with a logo" do
