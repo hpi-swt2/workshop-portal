@@ -35,9 +35,10 @@ describe "Request", type: :feature do
         request = FactoryGirl.create(:request, status: :open)
         visit(request_path(request))
         expect(page).to have_text(request.status)
-        click_button I18n.t('requests.form.accept')
-        expect(request.status).to eq(:accepted)
-        expect(page).to have_text(request.status)
+        click_link I18n.t('requests.form.accept')
+        request = Request.find(request.id)
+        expect(request.status).to eql(:accepted)
+        expect(page).to have_text(I18n.t('requests.notice.was_accepted'))
       end
     end
   end
