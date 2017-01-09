@@ -17,21 +17,6 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-<div class="container-fluid" id="wsp-navigation--wrapper">
-  <div class="row">
-    
-    <%# https://github.com/seyhunak/twitter-bootstrap-rails#using-helpers %>
-    <%= nav_bar fixed: :top do %>
-      <%= menu_group do %>
-        <%= menu_items %>
-        <% if user_signed_in? %>
-          <%= drop_down current_user.name do %>
-            <%= dropdown_items %>
-          <% end %>
-        <% else %>
-          <%= menu_item t(:login, scope: 'navbar'), new_user_session_path %>
-        <% end %>
-
 <%# https://github.com/seyhunak/twitter-bootstrap-rails#using-helpers %>
 <%= nav_bar brand: t(:app_name), responsive: true, static: :top do %>
   <%= menu_group do %>
