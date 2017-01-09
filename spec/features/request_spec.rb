@@ -1,6 +1,6 @@
 require "rails_helper"
 
-describe "Event", type: :feature do
+describe "Request", type: :feature do
   describe "create page" do
 
     def fill_in_required_fields
@@ -19,6 +19,25 @@ describe "Event", type: :feature do
 	fill_in_required_fields
 	click_button I18n.t('.requests.form.create_request')
 	expect(page).to have_current_path(request_path(Request.first))
+      end
+    end
+  end
+
+  describe "show page" do
+    context "as an organizer" do
+      before(:each) do
+        profile = FactoryGirl.create(:profile)
+        organizer = FactoryGirl.create(:user, role: :organizer, profile: profile)
+        login_as(organizer, scope: :user)
+      end
+
+      it "should allow me to change the status to :accepted" do
+        request = FactoryGirl.create(:request, status: :open)
+        visit(request_path(request))
+        expect(page).to have_text(request.status)
+        click_button I18n.t('requests.form.accept')
+        expect(request.status).to eq(:accepted)
+        expect(page).to have_text(request.status)
       end
     end
   end
