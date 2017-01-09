@@ -10,6 +10,16 @@
   <dd><%= @request.last_name %></dd>
   <dt><strong><%= model_class.human_attribute_name(:topic_of_workshop) %>:</strong></dt>
   <dd><%= @request.topic_of_workshop %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:number_of_participants) %>:</strong></dt>
+  <dd><%= @request.number_of_participants %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:status) %>:</strong></dt>
+  <dd>
+    <%= @request.status %>
+    <% if (can? :edit, @request) && (@request.open?) %>
+      <%= link_to t('requests.form.accept'),
+                accept_request_path(@request.id), :class => 'btn btn-success' %>
+    <% end %>
+  </dd>
 </dl>
 
 <%= link_to t('.back', :default => t("helpers.links.back")),
