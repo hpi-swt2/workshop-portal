@@ -18,8 +18,8 @@
 </head>
 <body>
 <%# https://github.com/seyhunak/twitter-bootstrap-rails#using-helpers %>
-<%= nav_bar brand: t(:app_name), responsive: true, static: :top do %>
-  <%= menu_group do %>
+<%= nav_bar brand: t(:app_name), responsive: true, fixed: :top do %>
+   <%= menu_group pull: :right do %>
     <%= menu_items %>
     <% if user_signed_in? %>
       <%= drop_down current_user.name do %>
@@ -28,7 +28,6 @@
     <% else %>
       <%= menu_item t(:login, scope: 'navbar'), new_user_session_path %>
     <% end %>
-
   <% end %>
 <% end %>
 

@@ -44,6 +44,7 @@ gem "therubyracer"
 #gem 'less-rails-bootstrap'
 gem "less-rails"
 gem 'twitter-bootstrap-rails'
+gem 'ref'
 # Boostrap-syle view for devise
 gem 'devise-bootstrap-views'
 # Integrates Bootstrap Tooltip library with Rails asset pipeline
