@@ -1,5 +1,5 @@
 class RequestsController < ApplicationController
-  before_action :set_request, only: [:show, :edit, :update, :destroy]
+  before_action :set_request, only: [:show, :edit, :update, :destroy, :accept]
 
   # GET /requests
   def index
@@ -43,6 +43,16 @@ class RequestsController < ApplicationController
   def destroy
     @request.destroy
     redirect_to requests_url, notice: 'Request was successfully destroyed.'
+  end
+
+  def accept
+    authorize! :change_status, @request
+    @request.status = :accepted
+    if @request.save
+      redirect_to @request, notice: I18n.t('requests.notice.was_accepted')
+    else
+      render :show
+    end
   end
 
   private

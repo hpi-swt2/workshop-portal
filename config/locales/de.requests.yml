@@ -11,6 +11,8 @@ de:
       accept: "Annehmen"
     hints:
       please_enter_two_topics: "Bitte 2 Wünsche angeben"
+    notice:
+      was_accepted: "Die Anfrage wurde angenommen"
   activerecord:
     models:
       request:
