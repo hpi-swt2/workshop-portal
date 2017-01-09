@@ -151,7 +151,7 @@ RSpec.describe EventsController, type: :controller do
           expect(assigns(:event)).to eq(@event)
         end
         it "assigns all participants as @participants" do
-            get :participants, id: @event.to_param, session: valid_session
+          get :participants, id: @event.to_param, session: valid_session
           expect(assigns(:participants)).to eq(@event.participants)
         end
       end
@@ -206,6 +206,39 @@ RSpec.describe EventsController, type: :controller do
     end
   end
 
+  describe "POST #upload_material" do
+    before :each do
+      filepath = Rails.root.join('spec/testfiles/actual.pdf')
+      @file = fixture_file_upload(filepath, 'application/pdf')
+      @event = Event.create! valid_attributes
+    end
+
+    after :each do
+      filepath = File.join(@event.material_path, @file.original_filename)
+      File.delete(filepath) if File.exist?(filepath)
+    end
+
+    it "uploads a file to the event's material directory" do
+      post :upload_material, event_id: @event.to_param, session: valid_session, file_upload: @file
+      expect(response).to redirect_to :action => :show, :id => @event.id
+      expect(File.exists?(File.join(@event.material_path, @file.original_filename)))
+      expect(flash[:notice]).to match(I18n.t(:success_message, scope: 'events.material_area'))
+    end
+
+    it "shows error if no file was given" do
+      post :upload_material, event_id: @event.to_param, session: valid_session
+      expect(response).to redirect_to :action => :show, :id => @event.id
+      expect(flash[:alert]).to match(I18n.t(:no_file_given, scope: 'events.material_area'))
+    end
+
+    it "shows error if file saving was not successfull" do
+      allow(File).to receive(:write).and_raise(IOError)
+      post :upload_material, event_id: @event.to_param, session: valid_session, file_upload: @file
+      expect(response).to redirect_to :action => :show, :id => @event.id
+      expect(flash[:alert]).to match(I18n.t(:saving_fails, scope: 'events.material_area'))
+    end
+  end
+
   describe "POST #create" do
     context "with valid params" do
       it "creates a new Event" do
@@ -254,6 +287,81 @@ RSpec.describe EventsController, type: :controller do
       date_range = valid_attributes_post[:event][:date_ranges].first
       expect(assigns(:event).date_ranges.first.start_date).to eq(date_range.start_date)
       expect(assigns(:event).date_ranges.first.end_date).to eq(date_range.end_date)
+    end
+  end
+
+  describe "GET #print_applications" do
+    before :each do
+      @event = Event.create! valid_attributes
+      @user = FactoryGirl.create(:user, role: :organizer)
+      sign_in @user
+    end
+
+    it "returns success" do
+      get :print_applications, id: @event.to_param, session: valid_session
+      expect(response).to be_success
+    end
+
+    it 'returns downloadable PDF' do
+      get :print_applications, id: @event.to_param, session: valid_session
+      PDF::Inspector::Text.analyze response.body
+    end
+
+    it "returns a PDF with a correct overview page" do
+      get :print_applications, id: @event.to_param, session: valid_session
+      page_analysis = PDF::Inspector::Page.analyze(response.body)
+      expect(page_analysis.pages.size).to be 1
+      analysis = PDF::Inspector::Text.analyze response.body
+      text = analysis.strings.join
+      expect(text).to include(
+        @event.name,
+        @event.max_participants.to_s,
+        @event.organizer,
+        @event.knowledge_level,
+        @event.compute_free_places.to_s,
+        @event.compute_occupied_places.to_s)
+      @event.date_ranges.each { |d| expect(text).to include(d.to_s) }
+    end
+
+    it "shows an overview of all and details of every application" do
+      al = FactoryGirl.create(:application_letter, event: @event,)
+      FactoryGirl.create(:application_note, application_letter_id: al.id)
+      User.find_each { |u| FactoryGirl.create(:profile, user: u) }
+      get :print_applications, id: @event.to_param, session: valid_session
+      analysis = PDF::Inspector::Text.analyze response.body
+      text = analysis.strings.join(' ')
+      @event.application_letters.each do |a|
+        expect(text).to include(
+          a.user.profile.name,
+          a.user.profile.age_at_time(@event.start_date).to_s,
+          a.user.profile.gender,
+          a.user.accepted_applications_count(@event).to_s,
+          a.user.rejected_applications_count(@event).to_s,
+          I18n.t("application_status.#{a.status}"),
+          a.user.profile.address,
+          a.motivation
+        )
+        a.application_notes.each do |note|
+          expect(text).to include(note.note)
+        end
+      end
+    end
+
+    it "includes at last one page per application" do
+      FactoryGirl.create(:application_letter, event: @event,)
+      FactoryGirl.create(:application_letter2, event: @event,)
+      User.find_each { |u| FactoryGirl.create(:profile, user: u) }
+      get :print_applications, id: @event.to_param, session: valid_session
+      page_analysis = PDF::Inspector::Page.analyze(response.body)
+      expect(page_analysis.pages.size).to be >= 3
+    end
+
+    it "extends long applications over several pages" do
+      FactoryGirl.create(:application_letter_long, event: @event,)
+      User.find_each { |u| FactoryGirl.create(:profile, user: u) }
+      get :print_applications, id: @event.to_param, session: valid_session
+      page_analysis = PDF::Inspector::Page.analyze(response.body)
+      expect(page_analysis.pages.size).to be >= 3
     end
   end
 end
