@@ -3,7 +3,6 @@ class EmailsController < ApplicationController
   def show
     @event = Event.find(params[:event_id])
 
-
     if params[:status]
       @status = params[:status].to_sym
       @addresses = @event.email_addresses_of_type(@status)
@@ -12,13 +11,8 @@ class EmailsController < ApplicationController
       @addresses = ''
     end
 
-
-    @email = Email.new(hide_recipients: false,
-                       reply_to: 'workshop.portal@hpi.de',
-                       recipients: @addresses,
-                       subject: '',
-                       content: ''
-    )
+    @email = Email.new(hide_recipients: false, reply_to: 'workshop.portal@hpi.de', recipients: @addresses,
+                       subject: '', content: '')
     render :email
   end
 
@@ -38,6 +32,7 @@ class EmailsController < ApplicationController
     if email.valid?
       Mailer.send_generic_email(email.hide_recipients, email.recipients, email.reply_to, email.subject, email.content)
       @event = Event.find(params[:event_id])
+      @event.lock_application_status
       redirect_to @event, notice: t('.sending_successful')
     else
       @event = Event.find(params[:event_id])
