@@ -2,6 +2,7 @@
 <html>
 <head>
   <title>Workshop-Portal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <script>
@@ -31,18 +32,39 @@
           <%= menu_item t(:login, scope: 'navbar'), new_user_session_path %>
         <% end %>
 
+<%# https://github.com/seyhunak/twitter-bootstrap-rails#using-helpers %>
+<%= nav_bar brand: t(:app_name), responsive: true, static: :top do %>
+  <%= menu_group do %>
+    <%= menu_items %>
+    <% if user_signed_in? %>
+      <%= drop_down current_user.name do %>
+        <%= dropdown_items %>
       <% end %>
+    <% else %>
+      <%= menu_item t(:login, scope: 'navbar'), new_user_session_path %>
     <% end %>
 
-    <%# https://github.com/seyhunak/twitter-bootstrap-rails#flash-helper %>
-    <%= bootstrap_flash %>
-  </div>
-</div>
-<div class="container">
-  <main>
+  <% end %>
+<% end %>
+
+<%# https://github.com/seyhunak/twitter-bootstrap-rails#flash-helper %>
+<%= bootstrap_flash %>
+
+<main>
+  <% if not local_assigns[:full_width] %>
+    <div class="container">
+      <%= yield %>
+    </div>
+  <% else %>
     <%= yield %>
-  </main>
-</div>
+  <% end %>
+
+  <footer class="front-section">
+    <div class="container">
+      <%= t "footer" %>
+    </div>
+  </footer>
+</main>
 
 </body>
 </html>

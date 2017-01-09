@@ -83,4 +83,24 @@ class ApplicationLetter < ActiveRecord::Base
       errors.add(:event, "Die Bewerbungen wurden bereits bearbeitet, eine Statusänderung ist nicht mehr erlaubt.")
     end
   end
+
+  # Returns the age of the user based on the date the event starts
+  #
+  # @param none
+  # @return [Int] for age as number of years
+  def applicant_age_when_event_starts
+    user.profile.age_at_time(event.start_date)
+  end
+
+  # Returns an array of eating habits (including allergies, vegan and vegeterian)
+  #
+  # @param none
+  # @return [Array <String>] array of eating habits, empty if none
+  def eating_habits
+    habits = Array.new
+    habits.push(ApplicationLetter.human_attribute_name(:vegeterian)) if vegeterian
+    habits.push(ApplicationLetter.human_attribute_name(:vegan)) if vegan
+    habits.push(ApplicationLetter.human_attribute_name(:allergic)) if allergic
+    habits
+  end
 end

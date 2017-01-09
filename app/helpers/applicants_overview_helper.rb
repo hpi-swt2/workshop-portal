@@ -6,4 +6,10 @@ module ApplicantsOverviewHelper
       #{label} <span class=\"caret\"></span>
     </a>".html_safe
   end
+
+  def sort_application_letters
+    @application_letters.sort_by! {|l| l.user.profile.send(params[:sort]) } if params[:sort] && params[:sort] != 'applicant_age_when_event_starts'
+    @application_letters.sort_by! {|l| l.send(params[:sort]) } if params[:sort] && params[:sort] == 'applicant_age_when_event_starts'
+    @application_letters.reverse! if params[:order] == 'descending'
+  end
 end

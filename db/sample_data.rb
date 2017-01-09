@@ -43,6 +43,8 @@ def add_sample_data
   application_letters[:applicant_gongakrobatik_past_deadline] = application_letter_applicant_gongakrobatik(users[:applicant], events[:past_deadline_event])
   application_letters[:applicant_gongakrobatik_accepcted] = application_letter_applicant_gongakrobatik_accepted(users[:applicant], events[:past_deadline_event])
   application_letters[:applicant_gongakrobatik_rejected] = application_letter_applicant_gongakrobatik_rejected(users[:applicant], events[:past_deadline_event])
+  application_letters[:applicant_gongakrobatik_max] = application_letter_applicant_gongakrobatik_accepted(users[:max], events[:past_deadline_event])
+  application_letters[:applicant_gongakrobatik_karl] = application_letter_applicant_gongakrobatik_accepted(users[:pupil], events[:past_deadline_event])
   application_letters[:applicant_programmierkurs_lisa] = application_letter_applicant_programmierkurs_1(users[:lisa], events[:programmierkurs])
   application_letters[:applicant_programmierkurs_max] = application_letter_applicant_programmierkurs_2(users[:max], events[:programmierkurs])
   application_letters[:applicant_programmierkurs_tobi] = application_letter_applicant_programmierkurs_3(users[:tobi], events[:programmierkurs])
@@ -52,10 +54,11 @@ def add_sample_data
   application_letters[:applicant_mintcamp_tobi] = application_letter_applicant_programmierkurs_3(users[:tobi], events[:mintcamp])
 
   requests = Hash.new
-  requests[:hardware_entwicklung] = request_hardware_entwicklung(users[:teacher])
+  requests[:hardware_entwicklung] = request_hardware_entwicklung
 
   agreement_letters = Hash.new
-  agreement_letters[:applicant_gongakrobatik] = agreement_letter_applicant_gongakrobatik(users[:applicant], events[:gongakrobatik])
+  agreement_letters[:applicant_gongakrobatik] = agreement_letter_applicant_gongakrobatik(users[:applicant], events[:past_deadline_event])
+  agreement_letters[:max_gongakrobatik] = agreement_letter_applicant_gongakrobatik(users[:max], events[:past_deadline_event])
 
   [events, users, profiles, application_letters, requests, agreement_letters].each do |models|
     save_models(models)
