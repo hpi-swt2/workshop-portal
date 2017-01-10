@@ -6,10 +6,6 @@
   <%= text_field_tag :search, params[:search], placeholder: "Search Users" %>
   <%= submit_tag "Search", class: "btn btn-xs btn-primary" %>
   <% end %>
-  Search Results
-
-
-
 </div>
 
 <table class="table table-striped">
@@ -18,7 +14,6 @@
       <th><%= model_class.human_attribute_name(:name) %></th>
       <th><%= model_class.human_attribute_name(:created_at) %></th>
       <th><%= model_class.human_attribute_name(:role) %></th>
-      <th><%=t '.actions', :default => t("helpers.actions") %></th>
     </tr>
   </thead>
   <tbody>
@@ -26,9 +21,8 @@
       <% if can? :destroy, user %>
         <tr>
           <td>
-            <% profile = Profile.where(:user => user.id) %>
-            <% if not profile.empty? %>
-                <%= link_to user.name, profile_path(profile.take(1)) %>
+            <% if not user.profile.nil? %>
+                <%= link_to user.name, profile_path(user.profile) %>
             <% else %>
                 <%= user.name %>
             <% end %>
@@ -39,15 +33,6 @@
                 <%= f.collection_select(:role, User::ROLES, :to_s, lambda{|i| i.to_s.humanize}, {:selected => user.role.to_s })  %>
                 <%= f.submit t('.update', :default => "Update"), class: "btn btn-xs btn-primary" %>
             <% end %>
-          </td>
-          <td>
-            <%= link_to t('.edit', :default => t("helpers.links.edit")),
-                        edit_profile_path(profile), :class => 'btn btn-default btn-xs' %>
-            <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-                        profile_path(profile),
-                        :method => :delete,
-                        :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
-                        :class => 'btn btn-xs btn-danger' %>
           </td>
         </tr>
       <% end %>
