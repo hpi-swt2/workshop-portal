@@ -5,7 +5,6 @@
 
 # Create Superuser
 admin = User.find_or_initialize_by(
-    name: "admin",
     email: "info@domain.com",
     role: :admin
 )
