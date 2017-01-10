@@ -1,12 +1,6 @@
 <div class="event-preview <%= 'event-past' if event.is_past %> clearfix">
   <%= image_tag "example.png", class: "img-rounded img-responsive img-float-corner-tr center-block" %>
-  <div class="event-date">
-    <span class="event-day"><%= l event.start_date, format: "%d" %></span>
-    <span class="event-month"><%= l event.start_date, format: "%b" %></span>
-    <% if event.start_date.year != Time.now.year %>
-      <span class="event-year"><%= event.start_date.year %></span>
-    <% end %>
-  </div>
+  <%= render "event_date_large", event: event %>
 
   <h3>
     <%= event.name %>
