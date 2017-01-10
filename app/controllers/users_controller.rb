@@ -10,7 +10,7 @@ class UsersController < ApplicationController
     end
   end
 
-  # PATCH/PUT /profiles/1
+  # PATCH/PUT /users/1
   def update_role
     if @user.update(user_params)
       redirect_to :back, notice: I18n.t('users.successful_role_update')
