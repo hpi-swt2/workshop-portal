@@ -1,26 +1,35 @@
 <section class="front-section">
 	<div class="container">
-		<%= image_tag "front-welcome.png", class: "center-block img-responsive img-rounded img-float-corner-tr" %>
-		<h1><%= t "start_page.hello" %></h1>
-		<p class="lead"><%= t "start_page.intro_text" %></p>
-	</div>
-</section>
-
-<section class="front-section">
-	<div class="container">
-		<h2><span class="m-r-1">Veranstaltungen</span>
-			<a class="btn btn-primary" href="<%= events_path %>">
-				<%= glyph 'calendar' %> <%= t "start_page.all_events" %>
-			</a>
-		</h2>
-		<p class="lead"><%= t "start_page.intro_text_events" %></p>
-
 		<div class="row">
-			<div class="event-list col-md-10 col-md-offset-1">
-				<%= render @events %>
-				<a class="btn btn-primary" href="<%= events_path %>">
-					<%= glyph 'calendar' %> <%= t "start_page.all_events" %>
-				</a>
+			<div class="col-xs-12 col-sm-12 col-md-10 col-lg-10 col-md-offset-1 col-lg-offset-1">
+				<div class="row">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
+						<h4>
+							<%= t('start_page.host_name') %>
+						</h4>
+						<h1>
+							<%= t('start_page.website_name') %>
+						</h1>
+					</div>
+				</div>
+				<div class="row">
+				  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 subheadline--wrapper">
+				  	<div class="row">
+				  		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+				  			<p class="lead">Herzlich willkommen</p>
+				  			<p>
+				  				<%= t "start_page.intro_text" %>
+				  			</p>
+				  			<div class="row">
+				  				
+				  			</div>	
+				  		</div>
+				  		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+				  			<%= image_tag "front-welcome.png", class: "center-block img-responsive img-rounded img-float-corner-tr" %>
+				  		</div>
+				  	</div>
+				  </div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -28,14 +37,52 @@
 
 <section class="front-section">
 	<div class="container">
-		<h2>Workshop anfragen</h2>
-		<p class="lead"><%= t "start_page.intro_text_requests" %></p>
-		<p class="text-center">
-			<a class="btn btn-primary btn-lg" href="<%= new_request_path %>">
-				<%= glyph 'send' %> <%= t "start_page.place_request" %>
-			</a>
-		</p>
-		<p class="lead"><%= t "start_page.outro_text_requests" %></p>
+		<div class="row">
+			<div class="col-xs-12 col-sm-12 col-md-10 col-lg-10 col-md-offset-1 col-lg-offset-1">			
+				<h2><span class="m-r-1">Veranstaltungen</span>
+					<a class="btn btn-primary" href="<%= events_path %>">
+						<%= glyph 'calendar' %> <%= t "start_page.all_events" %>
+					</a>
+				</h2>
+				<p class="lead"><%= t "start_page.intro_text_events" %></p>
+
+				<div class="row">
+					<div class="event-list col-md-12">
+						<%= render @events %>
+						<a class="btn btn-primary" href="<%= events_path %>">
+							<%= glyph 'calendar' %> <%= t "start_page.all_events" %>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="front-section">
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-12 col-sm-12 col-md-10 col-lg-10 col-md-offset-1 col-lg-offset-1">
+				<div class="row">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
+						<h2>Workshop anfragen</h2>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+						<p class="lead"><%= t "start_page.intro_text_requests" %></p>
+						<div class="spacer-30"></div>
+						<p class="text-center">
+							<a class="btn btn-primary btn-lg" href="<%= new_request_path %>">
+								<%= glyph 'send' %> <%= t "start_page.place_request" %>
+							</a>
+						</p>
+						<div class="spacer-30"></div>
+						<p class="lead"><%= t "start_page.outro_text_requests" %></p>
+					</div>
+				</div>			
+			</div>
+		</div>
 	</div>
 </section>
 

@@ -18,7 +18,7 @@
 </head>
 <body>
 <%# https://github.com/seyhunak/twitter-bootstrap-rails#using-helpers %>
-<%= nav_bar brand: t(:app_name), responsive: true, fixed: :top do %>
+<%= nav_bar :brand => image_tag("hpi-schuelerklub-w200.png"), responsive: true, fixed: :top do %>
    <%= menu_group pull: :right do %>
     <%= menu_items %>
     <% if user_signed_in? %>
