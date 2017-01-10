@@ -51,6 +51,14 @@ describe "Event", type: :feature do
       expect(page).to_not have_text(I18n.t("events.notices.deadline_approaching", count: 10))
     end
 
+    it "should strip markdown from the description" do
+      FactoryGirl.create :event, description: "# Headline Test\nParagraph with a [link](http://portal.edu)."
+      visit events_path
+      expect(page).to_not have_css('h1', text: 'Headline Test')
+      expect(page).to_not have_text('Headline Test')
+      expect(page).to have_text('Paragraph with a link.')
+    end
+
     it "should truncate the description text if it's long" do
       FactoryGirl.create :event, description: ('a' * Event::TRUNCATE_DESCRIPTION_TEXT_LENGTH) + 'blah'
       visit events_path
@@ -177,6 +185,12 @@ describe "Event", type: :feature do
         visit event_path(event)
         expect(page).to have_text(kind.to_s.humanize)
       end
+    end
+
+    it "should render markdown for the description" do
+      event = FactoryGirl.create(:event, description: "# Test Headline")
+      visit event_path(event)
+      expect(page).to have_css("h1", text: "Test Headline")
     end
 
     it "should display a single day date range as a single date" do

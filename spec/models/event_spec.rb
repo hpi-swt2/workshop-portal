@@ -187,4 +187,12 @@ describe Event do
     application_letters = ApplicationLetter.where(event: event.id)
     expect(application_letters.all? { |application_letter| application_letter.status == 'accepted' }).to eq(true)
   end
+  
+  it "locks the application status changing of the event" do
+    event = FactoryGirl.create(:event)
+    event.application_status_locked = false
+    event.save
+    event.lock_application_status
+    expect(event.application_status_locked).to eq(true)
+  end
 end

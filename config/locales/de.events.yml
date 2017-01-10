@@ -44,6 +44,12 @@ de:
       unnecessary: "nicht benötigt"
       available: "vorhanden"
       unavailable: "nicht vorhanden"
+    agreement_letters_download:
+      notices:
+        no_participants_selected: "Keine Teilnehmer ausgewählt"
+        no_agreement_letters: "Keiner der gewählten Teilnehmer hat eine Einverständniserklärung"
+      select_all: "Alle auswählen"
+      download_all_as: "Alle herunterladen als"
     kinds:
      workshop: "Workshop"
      camp: "Camp"

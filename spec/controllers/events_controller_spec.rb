@@ -151,7 +151,7 @@ RSpec.describe EventsController, type: :controller do
           expect(assigns(:event)).to eq(@event)
         end
         it "assigns all participants as @participants" do
-            get :participants, id: @event.to_param, session: valid_session
+          get :participants, id: @event.to_param, session: valid_session
           expect(assigns(:participants)).to eq(@event.participants)
         end
       end

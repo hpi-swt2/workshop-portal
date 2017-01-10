@@ -6,36 +6,56 @@
   <%= render :partial => 'show_event' %>
   
   <h1><%= t '.participants' %></h1>
-  <table class="table table-striped">
-    <tr>
-      <th><%= t 'activerecord.attributes.profile.name' %></th>
-      <th><%= t 'activerecord.attributes.profile.email' %></th>
-  	  <th><%= t 'agreement_letters.agreement_letter' %></th>
-    </tr>  
-  
-    <% @participants.each do |participant| %>
-    <tr>
-      
-      <td>
-      <%= participant.name %>
-      </td>
-      <td>
-      <%= participant.email %>
-      </td>
-      <td>
-        <% if participant.requires_agreement_letter_for_event?(@event) %>
-          <span class="text-muted"> <%= t '.unnecessary' %> </span>
-        <% elsif participant.agreement_letter_for_event?(@event) %>
-          <span class="text-success" title="<%= participant.agreement_letter_for_event(@event).updated_at %>"> <%= t '.available' %> </span>
-        <% else %>
-          <span class="text-danger"><%= t '.unavailable' %></span>
+  <%= form_tag(event_path(@event) + "/participants/agreement_letters") do %>
+    <table class="table table-striped">
+      <tr>
+        <th><%= t 'activerecord.attributes.profile.name' %></th>
+        <th><%= t 'activerecord.attributes.profile.email' %></th>
+    	  <th><%= t 'agreement_letters.agreement_letter' %></th>
+        <% if can? :print_agreement_letters, Event and @has_agreement_letters %>
+          <th>
+            <label>
+              <input type="checkbox" id="select_all_participants" class="participant_selection" onclick="flipAllCheckboxes(this)">
+              <%= t 'events.agreement_letters_download.select_all' %>
+            </label>
+          </th>
         <% end %>
-      </td>
-    </tr>
+      </tr>  
+    
+      <% @participants.each do |participant| %>
+      <tr>
+        
+        <td>
+        <%= participant.name %>
+        </td>
+        <td>
+        <%= participant.email %>
+        </td>
+        <td>
+          <% if participant.requires_agreement_letter_for_event?(@event) %>
+            <span class="text-muted"> <%= t '.unnecessary' %> </span>
+          <% elsif participant.agreement_letter_for_event?(@event) %>
+            <span class="text-success" title="<%= participant.agreement_letter_for_event(@event).updated_at %>"> <%= t '.available' %> </span>
+          <% else %>
+            <span class="text-danger"><%= t '.unavailable' %></span>
+          <% end %>
+        </td>
+        <% if can? :print_agreement_letters, Event and @has_agreement_letters %>
+          <td>
+            <%= check_box_tag('selected_participants[]', participant.id, false, class: 'participant_selection') %>
+          </td>
+        <% end %>
+      </tr>
+      <% end %>
+    </table>
+    <% if can? :print_agreement_letters, Event and @has_agreement_letters %>
+      <div id="participants_download_submit_button">
+      <%= submit_tag t('events.agreement_letters_download.download_all_as'), name: "download_all" %>
+      <%= select_tag :download_type, options_for_select([['pdf'], ['zip']]) %>
+      </div>
     <% end %>
-  </table>
-  
-  
+  <% end %>
+  <br>
   <%= link_to t('.back', :default => t('helpers.links.back')),
               event_path(@event), :class => 'btn btn-default'  %>
 <% end %>
