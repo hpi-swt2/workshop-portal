@@ -1,6 +1,6 @@
 <div class="event-preview <%= 'event-past' if event.is_past %> clearfix">
   <%= image_tag "example.png", class: "img-rounded img-responsive img-float-corner-tr center-block" %>
-  <%= render "event_date_large", event: event %>
+  <%= render "events/event_date_large", event: event %>
 
   <h3>
     <%= event.name %>
