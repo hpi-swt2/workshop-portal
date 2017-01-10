@@ -67,4 +67,24 @@ RSpec.feature "Account creation", :type => :feature do
     # Error message
     expect(page).to have_css('.alert-danger')
   end
+
+end
+
+RSpec.feature "Role management page", :type => :feature do
+  before(:each) do
+    @profile = FactoryGirl.create(:profile)
+    @profiles = Profile.all
+  end
+  it "shows the right values for a logged in admin" do
+    @profile.user.role = :admin
+    @profile.user.name = "Karl Doe"
+    user = @profile.user
+    login_as(user)
+    visit users_path
+    expect(page).to have_text(@profile.id)
+    expect(page).to have_selector("a", :text => user.name)
+    expect(page).to have_text(@profile.created_at)
+    expect(page).to have_selector("select", :text => user.role.humanize)
+    expect(page).to have_button("Update")
+  end
 end

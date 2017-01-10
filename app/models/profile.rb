@@ -53,6 +53,11 @@ class Profile < ActiveRecord::Base
     street_name + ", " + zip_code + " " +  city + ", " + state + ", " + country
   end
 
+  def user_role
+    user.role
+  end
+
+
   private
   def birthdate_not_in_future
     if birth_date.present? and birth_date > Date.current

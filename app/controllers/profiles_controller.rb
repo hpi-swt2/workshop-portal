@@ -5,8 +5,7 @@ class ProfilesController < ApplicationController
 
   # GET /profiles
   def index
-    @profiles = Profile.all.paginate(:page => params[:page], :per_page => 5)
-    #Profile.all
+    @profiles = Profile.all
   end
 
   # GET /profiles/1
@@ -62,6 +61,6 @@ class ProfilesController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def profile_params
-      params.require(:profile).permit(:first_name, :last_name, :gender, :birth_date, :school, :street_name, :zip_code, :city, :state, :country, :graduates_school_in)
+      params.require(:profile).permit(:first_name, :last_name, :gender, :birth_date, :school, :street_name, :zip_code, :city, :state, :country, :graduates_school_in, user_attributes: [:role])
     end
 end

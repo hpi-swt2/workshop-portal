@@ -53,8 +53,22 @@ RSpec.describe 'navbar', type: :view do
     end
   end
 
-  context "logged in as an organizer or coach" do
-    %i[organizer coach].each do |role|
+  context "logged in as an organizer" do
+    %i[organizer].each do |role|
+      it "shows Profilinfo, Mein Profil, Benutzerverwaltung, Ausloggen" do
+        profile = FactoryGirl.create(:profile, user: (FactoryGirl.create :user, role: role))
+        sign_in profile.user
+        render template: 'application/index', layout: 'layouts/application'
+        expect(rendered).to have_css(".nav .dropdown-menu a", text: 'Profilinfo')
+        expect(rendered).to have_css(".nav .dropdown-menu a", text: 'Mein Profil')
+        expect(rendered).to have_css(".nav .dropdown-menu a", text: 'Benutzerverwaltung')
+        expect(rendered).to have_css(".nav .dropdown-menu a", text: 'Ausloggen')
+        expect(rendered).to have_css(".nav .dropdown-menu a", count: 4)
+      end
+    end
+  end
+  context "logged in as an coach" do
+    %i[coach].each do |role|
       it "shows Profilinfo, Mein Profil, Ausloggen" do
         profile = FactoryGirl.create(:profile, user: (FactoryGirl.create :user, role: role))
         sign_in profile.user
