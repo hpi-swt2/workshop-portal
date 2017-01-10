@@ -47,7 +47,7 @@ class EmailsController < ApplicationController
     @template = EmailTemplate.new({ status: get_status, hide_recipients: @email.hide_recipients,
                                     subject: @email.subject, content: @email.content })
 
-    if @email.validate_attributes [:subject, :content] && @template.save
+    if @email.validate_attributes([:subject, :content]) && @template.save
       flash.now[:success] = t('.saving_successful')
     else
       flash.now[:alert] = t('.saving_failed')
