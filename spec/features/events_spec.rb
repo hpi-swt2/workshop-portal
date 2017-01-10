@@ -147,7 +147,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
   scenario "logged in as Organizer I can push the accept all button to accept all applicants" do
     login(:organizer)
     @event = FactoryGirl.create :event, :with_diverse_open_applications
-    #@event.max_participants = 3
+    #TODO set max_participants to infinite, when participant number becomes relevant (eg @event.max_participants = event.infty)
     visit event_path(@event)
     click_link I18n.t "events.applicants_overview.accept_all"
     application_letters = ApplicationLetter.where(event: @event.id)
