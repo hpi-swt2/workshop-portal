@@ -1,8 +1,26 @@
 # German translation for the users
 
 de:
+  users:
+    successful_role_update: "Die Rolle wurde erfolgreich aktualisiert."
+
+    index:
+      search_users: "Suche Benutzer"
+      search: "Suche"
+      save: "Speichern"
+      role: "Rolle"
+
+    roles:
+      pupil: "Schüler"
+      coach: "Betreuer"
+      organizer: "Organisator"
+      admin: "Administrator"
+
+
   activerecord:
     attributes:
       user:
         accepted_application_count: "Angenommene Bewerbungen"
         rejected_application_count: "Abgelehnte Bewerbungen"
+        role: "Rolle"
+        created_at: "Erstellt am"
