@@ -25,7 +25,7 @@ RSpec.describe "application_letters/show", type: :view do
     it "logged in as #{role} I cannot see personal details" do
       login(role)
       expect(rendered).to_not have_text(@application_letter.user.profile.address)
-      expect(rendered).to_not have_text(Profile.human_attribute_name(:school))
+      expect(rendered).to_not have_text(@application_letter.user.profile.school)
     end
   end
 
