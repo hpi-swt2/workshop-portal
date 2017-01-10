@@ -10,7 +10,7 @@
 #
 class EmailTemplate < ActiveRecord::Base
 
-  enum status: { accepted: 1, rejected: 0 }
+  enum status: { default: 0, accepted: 1, rejected: 2 }
   validates_inclusion_of :status, in: statuses.keys
   validates_inclusion_of :hide_recipients, in: [ true, false ]
   validates_presence_of :subject, :content

@@ -44,7 +44,8 @@ class EmailsController < ApplicationController
 
   def save_template
     @email = Email.new(email_params)
-    @template = EmailTemplate.new({ status: params[:status], hide_recipients: @email.hide_recipients,
+
+    @template = EmailTemplate.new({ status: get_status, hide_recipients: @email.hide_recipients,
                                     subject: @email.subject, content: @email.content })
 
     if @email.validate_attributes [:subject, :content] and @template.save
@@ -60,10 +61,17 @@ class EmailsController < ApplicationController
 
   def get_templates
     if params[:status]
-      @status = params[:status].to_sym
-      return EmailTemplate.where(status: EmailTemplate.statuses[@status]).to_a
+      EmailTemplate.where(status: EmailTemplate.statuses[params[:status].to_sym]).to_a
     else
-      return []
+      EmailTemplate.where(status: EmailTemplate.statuses[:default]).to_a
+    end
+  end
+
+  def get_status
+    if params[:status]
+       params[:status]
+    else
+      :default
     end
   end
 

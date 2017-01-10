@@ -6,8 +6,6 @@
     <%= render partial: 'emails/email_form', locals: { email: @email } %>
   </div>
   <div class="email-templates col-md-4">
-    <% if params[:status] %>
-      <%= render partial: 'emails/templates', locals: { template: @templates } %>
-    <% end %>
+    <%= render partial: 'emails/templates', locals: { template: @templates } %>
   </div>
 </div>
