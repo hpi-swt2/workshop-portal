@@ -4,6 +4,9 @@ class UsersController < ApplicationController
 
   def index
     @users = User.all.paginate(:page => params[:page], :per_page => 5)
+    if params[:search]
+      @users = User.search(params[:search]).paginate(:page => params[:page], :per_page => 5)
+    end
   end
 
   # PATCH/PUT /profiles/1

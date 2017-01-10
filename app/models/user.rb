@@ -106,4 +106,9 @@ class User < ActiveRecord::Base
     ApplicationLetter.where(user_id: id, status: false).where.not(event: event).count()
   end
 
+  def self.search(search)
+    
+    #find(:all, :conditions => ['name LIKE ?', "%#{search}%"])
+    where("name LIKE ?", "%#{search}%") 
+  end
 end
