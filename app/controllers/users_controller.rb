@@ -2,6 +2,7 @@ class UsersController < ApplicationController
 
   before_action :set_user, only: [:update_role]
 
+  # GET /users
   def index
     @users = User.all.paginate(:page => params[:page], :per_page => 5)
     if params[:search]
@@ -12,8 +13,7 @@ class UsersController < ApplicationController
   # PATCH/PUT /profiles/1
   def update_role
     if @user.update(user_params)
-      redirect_to :users
-      #TODO flash message
+      redirect_to :back, notice: I18n.t('users.successful_role_update')
     end
   end
 
