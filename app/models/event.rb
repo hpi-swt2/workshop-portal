@@ -93,6 +93,16 @@ class Event < ActiveRecord::Base
     application_letters.all? { |application_letter| application_letter.status != 'pending' }
   end
 
+  # Sets the status of all the event's application letters to accepted
+  #
+  # @param none
+  # @return none
+  def accept_all_application_letters
+    application_letters.each do |application_letter|
+      application_letter.update(status: :accepted)
+    end
+  end
+
   # Returns a string of all email addresses of accepted applications
   #
   # @param none

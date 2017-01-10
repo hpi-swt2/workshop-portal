@@ -112,9 +112,7 @@ class EventsController < ApplicationController
   # GET /events/1/accept-all-applicants
   def accept_all_applicants
     event = Event.find(params[:id])
-    event.application_letters.each do |application_letter|
-      application_letter.update(status: :accepted)
-    end
+    event.accept_all_application_letters
     redirect_to event_path(event)
   end
 
