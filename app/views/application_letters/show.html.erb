@@ -3,7 +3,11 @@
   <h1><%=t '.title', :default => model_class.model_name.human.titleize %></h1>
 </div>
 
-<h3><%= @application_letter.user.profile.name %></h3>
+<% if can? :show, @application_letter.user.profile  %>
+    <h3><%= link_to @application_letter.user.profile.name, profile_path(@application_letter.user) %></h3>
+<% else %>
+    <h3><%= @application_letter.user.profile.name %></h3>
+<% end %>
 
 <dl class="dl-horizontal" id="applicant_details">
   <dt><strong><%= Profile.human_attribute_name(:gender) %>:</strong></dt>
