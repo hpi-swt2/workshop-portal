@@ -1,0 +1,43 @@
+<%- model_class = Event -%>
+<div>
+  <div class="pull-right">
+    <%= link_to t("helpers.links.apply"), new_application_letter_path(:event_id => @event.id), class: "btn btn-success btn-sm" %>
+    <%= link_to t('.edit', :default => t('helpers.links.edit')), edit_event_path(@event),
+                :class => 'btn btn-default btn-sm' if can? :edit, @event %>
+  </div>
+  <h1><%= @event.name %></h1>
+</div>
+<div style="width:100%; height:200px;" class="m-t-1 m-b-1">
+  <%= image_tag "event-detail.png", class: "img-rounded img-responsive img-float-corner-tr center-block" %>
+</div>
+<div class="row">
+  <div class="col-md-1 col-md-offset-1 text-center">
+    <div class="event-date clearfix">
+      <span class="event-day"><%= l @event.start_date, format: "%d" %></span>
+      <span class="event-month"><%= l @event.start_date, format: "%b" %></span>
+      <% if @event.start_date.year != Time.now.year %>
+          <span class="event-year"><%= @event.start_date.year %></span>
+      <% end %>
+    </div>
+    <div class="clearfix">
+      <% @event.date_ranges.each do |r| %>
+          <p><%= r.to_html %></p>
+      <% end %>
+    </div>
+  </div>
+  <div class="col-md-7">
+    <%= markdown @event.description %>
+  </div>
+  <div class="col-md-2">
+    <dl>
+      <dt><strong><%= model_class.human_attribute_name(:knowledge_level) %>:</strong></dt>
+      <dd><%= @event.knowledge_level %></dd>
+      <dt><strong><%= model_class.human_attribute_name(:max_participants) %>:</strong></dt>
+      <dd><%= @event.max_participants %></dd>
+      <dt><strong><%= model_class.human_attribute_name(:organizer) %>:</strong></dt>
+      <dd><%= @event.organizer %></dd>
+      <dt><strong><%= model_class.human_attribute_name(:application_deadline) %>:</strong></dt>
+      <dd> <%= I18n.l(@event.application_deadline) + ' ' + I18n.t('midnight') %></dd>
+    </dl>
+  </div>
+</div>

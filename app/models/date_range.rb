@@ -40,4 +40,16 @@ class DateRange < ActiveRecord::Base
       I18n.l(start_date) + ' ' + I18n.t('date_range.pronouns.to') + ' ' + I18n.l(end_date)
     end
   end
+
+  def to_html
+    if start_date == end_date
+      ("<strong>"+I18n.l(start_date)+"</strong>").html_safe
+    else
+      (
+        "<strong>"+I18n.l(start_date)+"</strong>" + ' ' +
+        I18n.t('date_range.pronouns.to') + ' ' +
+        "<strong>"+I18n.l(end_date)+"</strong>"
+      ).html_safe
+    end
+  end
 end
