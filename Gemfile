@@ -81,6 +81,10 @@ gem 'coveralls', require: false
 # pdf generation
 gem 'prawn'
 gem 'prawn-table'
+gem 'combine_pdf'
+
+#zip generation
+gem 'rubyzip', require: 'zip'
 
 # pdf inspection
 gem 'pdf-inspector', require: "pdf/inspector"
@@ -90,6 +94,9 @@ gem 'figaro'
 
 # Allow ORM functionality in plain ruby models
 gem 'active_attr'
+
+# Markdown renderer
+gem 'redcarpet'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

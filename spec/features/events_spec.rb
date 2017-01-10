@@ -133,8 +133,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
 
   scenario "logged in as Organizer I can not change application status with radio buttons if the applications are locked" do
     login(:organizer)
-    @event.application_status_locked = true
-    @event.save
+    @event.lock_application_status
     @pupil = FactoryGirl.create(:profile)
     @application_letter = FactoryGirl.create(:application_letter, event: @event, user: @pupil.user)
     visit event_path(@event)
@@ -153,6 +152,76 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     click_link I18n.t "events.applicants_overview.accept_all"
     application_letters = ApplicationLetter.where(event: @event.id)
     expect(application_letters.all? { |application_letter| application_letter.status == 'accepted' }).to eq(true)
+  end
+
+  scenario "logged in as Organizer and viewing the participants page all checkboxes are checked when pressing the \"check all\" button", js: true do
+    login(:organizer)
+    @user = FactoryGirl.create(:user)
+    @profile = FactoryGirl.create(:profile, user: @user, birth_date: 15.years.ago)
+    @event = FactoryGirl.create(:event)
+    @application = FactoryGirl.create(:application_letter_accepted, user: @user, event: @event)
+    @agreement = FactoryGirl.create(:agreement_letter, user: @user, event: @event)
+    visit event_participants_path(@event)
+    check 'select_all_participants'
+    all('input[type=checkbox]').each do |checkbox|
+      expect(checkbox).to be_checked
+    end
+  end
+
+  scenario "logged in as Organizer when I want to download agreement letters but no participants are selected, it displays error message" do
+    login(:organizer)
+    @event = FactoryGirl.create(:event_with_accepted_applications_and_agreement_letters)
+    visit event_participants_path(@event)
+    click_button I18n.t "events.agreement_letters_download.download_all_as"
+    expect(page).to have_text(I18n.t "events.agreement_letters_download.notices.no_participants_selected")
+  end
+
+  scenario "logged in as Organizer when I want to download agreement letters but no participants have agreement letters, it displays error message" do
+    login(:organizer)
+    @event = FactoryGirl.create(:event_with_accepted_applications_and_agreement_letters)
+    visit event_participants_path(@event)
+    find(:css, "#selected_participants_[value='2']").set(true)
+    find("option[value='zip']").select_option
+    click_button I18n.t "events.agreement_letters_download.download_all_as"
+    expect(page).to have_text(I18n.t "events.agreement_letters_download.notices.no_agreement_letters")
+    visit event_participants_path(@event)
+    find(:css, "#selected_participants_[value='2']").set(true)
+    find("option[value='pdf']").select_option
+    click_button I18n.t "events.agreement_letters_download.download_all_as"
+    expect(page).to have_text(I18n.t "events.agreement_letters_download.notices.no_agreement_letters")
+  end
+
+  scenario "logged in as Organizer when I want to download agreement letters in a zip file, I can do so", js: true do
+    login(:organizer)
+    @event = FactoryGirl.create(:event_with_accepted_applications_and_agreement_letters)
+    visit event_participants_path(@event)
+    check 'select_all_participants'
+    find("option[value='zip']").select_option
+    click_button I18n.t "events.agreement_letters_download.download_all_as"
+    page.response_headers['Content-Type'].should eq "application/zip"
+  end
+
+  scenario "logged in as Organizer when I want to download agreement letters in a pdf file, I can do so", js: true do
+    login(:organizer)
+    @event = FactoryGirl.create(:event_with_accepted_applications_and_agreement_letters)
+    visit event_participants_path(@event)
+    check 'select_all_participants'
+    find("option[value='pdf']").select_option
+    click_button I18n.t "events.agreement_letters_download.download_all_as"
+    page.response_headers['Content-Type'].should eq "application/pdf"
+  end
+
+  scenario "logged in as Organizer I can lock the event application statuses by pressing one of the email buttons" do
+    login(:organizer)
+    @pupil = FactoryGirl.create(:profile)
+    @application_letter = FactoryGirl.create(:application_letter_accepted, event: @event, user: @pupil.user)
+    ['.events.applicants_overview.sending_acceptances', '.events.applicants_overview.sending_rejections'].each do | email_button |
+      @event.application_status_locked = false
+      @event.save
+      visit event_path(@event)
+      click_link I18n.t email_button
+      expect(Event.find(@event.id).application_status_locked).to be(true)
+    end
   end
 
   scenario "logged in as Coach I can see application status" do

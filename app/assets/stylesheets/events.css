@@ -46,6 +46,9 @@
 .event-preview h3 {
     margin-top: 0;
 }
+.event-preview p {
+    overflow: hidden;
+}
 .event-date {
     text-align: center;
     line-height: 3em;

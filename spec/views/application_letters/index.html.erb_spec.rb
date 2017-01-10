@@ -37,16 +37,12 @@ RSpec.describe "application_letters/index", type: :view do
     expect(rendered).to have_content(@application_letters[0].event.name)
   end
 
-  it "should display the edit button for a pending event" do
+  it "should display the details button" do
     @application_letters = [FactoryGirl.create(:application_letter)]
     render
-    expect(rendered).to have_css("a.btn", :text => "Bearbeiten")
+    expect(rendered).to have_css("a.btn", :text => I18n.t('application_letters.index.details'))
   end
-  it "should not display edit button after deadline" do
-    @application_letters = [FactoryGirl.build(:application_letter_deadline_over)]
-    render
-    expect(rendered).to_not have_css("a.btn", :text => "Bearbeiten")
-  end
+
   it "should have link with the event name" do
     @application_letters = [FactoryGirl.create(:application_letter)]
     render

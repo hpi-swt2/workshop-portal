@@ -1,6 +1,15 @@
-# German translation for the requests
+#German translations for requests
 
 de:
+  requests:
+    form_of_addresses:
+      mr: "Herr"
+      mrs: "Frau"
+      prefer_to_omit: "Nicht angeben"
+    form:
+      create_request: "Anfrage erstellen" 
+    hints:
+      please_enter_two_topics: "Bitte 2 Wünsche angeben"
   activerecord:
     models:
       request:
@@ -8,8 +17,16 @@ de:
         other: "Anfragen"
     attributes:
       request:
-        topics: "Themen"
-        user_id: "Benutzer"
+        first_name: "Vorname"
+        last_name: "Nachname"
+        phone_number: "Telefonnummer"
+        address: "Adresse"
+        email: "E-Mail-Adresse"
+        topic_of_workshop: "Thema des Workshops"
+        time_period: "Zeitrahmen" 
+        number_of_participants: "Teilnehmeranzahl"
+        knowledge_level: "Kenntnisstand"
+        annotations: "Anmerkungen"
         id: "Nummer"
         created_at: "Erstellt am"
   dialogues:
