@@ -1,0 +1,15 @@
+<% if entity.errors.any? %>
+	<div id="error_expl" class="alert fade in alert-danger alert-dismissable">
+		<button aria-hidden="true" class="close" data-dismiss="alert" type="button">×</button>
+	 <h3 class="panel-title"><%=I18n.t("errors.form_invalid", count: entity.errors.count) %>
+	 </h3>
+	 <div class="row spacer-15">
+	    <ul>
+	      <% entity.errors.full_messages.each do |msg| %>
+	        <%= content_tag :li, msg, :id => "error_#{msg}" if msg.is_a?(String) %>
+	      <% end %>
+	    </ul>
+	 </div>
+	</div>
+<% end %>
+
