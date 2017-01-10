@@ -26,6 +26,20 @@ RSpec.feature "Application Letter Overview", :type => :feature do
     end
   end
 
+  scenario "logged in as pupil I can edit my profile from the checking page" do
+    login(:pupil)
+    visit check_application_letter_path(@application_letter)
+    click_link id: 'edit_profile_link'
+    expect(page).to have_current_path(edit_profile_path(@application_letter.user.profile))
+  end
+
+  scenario "logged in as pupil I can edit my application from the checking page" do
+    login(:pupil)
+    visit check_application_letter_path(@application_letter)
+    click_link id: 'edit_application_link'
+    expect(page).to have_current_path(edit_application_letter_path(@application_letter))
+  end
+
   it "should highlight wrong or missing insertions from user" do
     login(:pupil)
     visit new_application_letter_path

@@ -9,6 +9,7 @@
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #
+
 class AgreementLetter < ActiveRecord::Base
   belongs_to :user
   belongs_to :event
@@ -74,6 +75,9 @@ class AgreementLetter < ActiveRecord::Base
       elsif wrong_filetype?(file)
         errors.add(:file, I18n.t("agreement_letters.wrong_filetype"))
         false
+      elsif unable_to_open?(file)
+        errors.add(:file, I18n.t("agreement_letters.corrupt_document"))
+        false
       else
         true
       end
@@ -90,4 +94,13 @@ class AgreementLetter < ActiveRecord::Base
     def wrong_filetype?(file)
       file.content_type != ALLOWED_MIMETYPE
     end
+
+  def unable_to_open? file
+    begin
+      PDF::Inspector::Page.analyze_file(file.open)
+      false
+    rescue PDF::Reader::UnsupportedFeatureError, PDF::Reader::MalformedPDFError
+      true
+    end
+  end
 end

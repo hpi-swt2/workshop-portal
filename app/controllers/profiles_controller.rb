@@ -24,9 +24,9 @@ class ProfilesController < ApplicationController
 
     if @profile.save
       if flash[:event_id]
-        redirect_to new_application_letter_path(:event_id => flash[:event_id])
+        redirect_to new_application_letter_path(:event_id => flash[:event_id]), notice: I18n.t('profiles.successful_creation')
       else
-        redirect_to @profile
+        redirect_to @profile, notice: I18n.t('profiles.successful_creation')
       end
     else
       render :new
@@ -36,7 +36,7 @@ class ProfilesController < ApplicationController
   # PATCH/PUT /profiles/1
   def update
     if @profile.update(profile_params)
-      redirect_to @profile, notice: 'Profile was successfully updated.'
+      redirect_to @profile, notice: I18n.t('profiles.successful_update')
     else
       render :edit
     end
@@ -45,7 +45,7 @@ class ProfilesController < ApplicationController
   # DELETE /profiles/1
   def destroy
     @profile.destroy
-    redirect_to profiles_url, notice: 'Profile was successfully destroyed.'
+    redirect_to profiles_url, notice: I18n.t('profiles.successful_deletion')
   end
 
   private

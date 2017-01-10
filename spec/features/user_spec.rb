@@ -9,7 +9,6 @@ RSpec.feature "Account creation", :type => :feature do
     password = "mybirthdate"
     # http://www.rubydoc.info/github/jnicklas/capybara/Capybara/Node/Actions:fill_in
     fill_in "user_email", :with => "first.last@example.com"
-    fill_in "user_name", :with => "First Last"
     fill_in "user_password", :with => password
     fill_in "user_password_confirmation", :with => password
     # http://www.rubydoc.info/github/jnicklas/capybara/Capybara%2FNode%2FFinders%3Afind
@@ -20,7 +19,7 @@ RSpec.feature "Account creation", :type => :feature do
     expect(page).to have_css(".alert-success")
 
     # Make sure the user has the pupil role after registration.
-    user = User.find_by_name('First Last')
+    user = User.find_by_email('first.last@example.com')
     expect(user.role).to eq('pupil')
   end
 
@@ -35,20 +34,21 @@ RSpec.feature "Account creation", :type => :feature do
     expect(page).to have_css(".alert-success")
   end
 
-  scenario "User changes name on user settings page" do
+  scenario "User changes email on user settings page" do
     user = FactoryGirl.create(:user)
     login_as(user)
-    new_name = "xXACoolAliasXx"
+    new_mail = "first.last@new_example.com"
 
     # Go to /users/edit
     visit edit_user_registration_path
-    fill_in "user_name", :with => new_name
+    fill_in "user_email", :with => new_mail
     fill_in "user_current_password", :with => user.password
     find('input[name="commit"]').click
+
     expect(page).to have_css(".alert-success")
 
     visit edit_user_registration_path
-    expect(page).to have_content(new_name)
+    expect(page).to have_content(new_mail)
   end
 
   scenario "User visits the 'user settings' page after having already logged off" do
