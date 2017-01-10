@@ -11,7 +11,7 @@ de:
       role: "Rolle"
 
     roles:
-      pupil: "Schüler"
+      pupil: "Nutzer"
       coach: "Betreuer"
       organizer: "Organisator"
       admin: "Administrator"
