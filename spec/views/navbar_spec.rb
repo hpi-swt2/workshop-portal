@@ -68,4 +68,3 @@ RSpec.describe 'navbar', type: :view do
     end
   end
 end
-
