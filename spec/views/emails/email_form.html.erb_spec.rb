@@ -21,7 +21,7 @@ RSpec.describe "emails/email_form", type: :view do
     expect(rendered).to have_field('email_content')
   end
 
-  it "renders email send button" do
+  it "renders email submit buttons" do
     expect(rendered).to have_button(I18n.t('emails.email_form.send'))
     expect(rendered).to have_button(I18n.t('emails.email_form.save_template'))
   end
