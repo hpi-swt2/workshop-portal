@@ -24,6 +24,7 @@ de:
       maximum_number_of_participants_exeeded: 'Maximale Teilnehmeranzahl wurde überschritten'
       sending_acceptances: 'Zusagen verschicken'
       sending_rejections: 'Absagen verschicken'
+      send_email: "Email an Teilnehmer versenden"
     material_area:
       title: "Materialbereich für %{title}"
       upload: "Datei hochladen"
@@ -50,6 +51,14 @@ de:
         no_agreement_letters: "Keiner der gewählten Teilnehmer hat eine Einverständniserklärung"
       select_all: "Alle auswählen"
       download_all_as: "Alle herunterladen als"
+    email_modal:
+      send_email: "E-Mail an Teilnehmer senden"
+      select_users: "Nutzer auswählen"
+      select_groups: "Gruppen auswählen"
+      select_all: "Alle"
+      sender: "Absenderaddresse"
+      send_email_label: "Absenden"
+      close_modal: "Schließen"
     kinds:
      workshop: "Workshop"
      camp: "Camp"

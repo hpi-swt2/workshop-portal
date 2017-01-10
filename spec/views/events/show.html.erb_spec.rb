@@ -71,4 +71,17 @@ RSpec.describe "events/show", type: :view do
     expect(rendered).to have_css("th", :text => t(:table_type, scope:'events.material_area'))
     expect(rendered).to have_button(t(:upload, scope: 'events.material_area'))
   end
+
+  it "displays an modal that allows selection of email target" do
+    render
+    expect(rendered).to have_css('div#send_participant_email_modal')
+  end
+
+  it "allows selection of participants in the modal" do
+    application_letter = FactoryGirl.create(:application_letter, user: FactoryGirl.create(:user, role: :admin), event: @event, status: 1)
+    application_letter.user.profile = FactoryGirl.build(:profile)
+    @event.application_letters.push(application_letter)
+    render
+    expect(rendered).to have_select('users', :with_options => [application_letter.user.profile.first_name + ' ' + application_letter.user.profile.last_name])
+  end
 end

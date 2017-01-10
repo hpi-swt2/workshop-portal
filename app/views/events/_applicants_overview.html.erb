@@ -1,3 +1,4 @@
+<%= render :partial => 'email_modal' %>
 <div class="container-fluid" id="applicants_overview">
   <h3><%= t '.title', title: @event.name %></h3>
   <div id="free_places"><%= t '.free_places', count: @free_places %></div>
@@ -58,6 +59,7 @@
 
       <%= link_to t('.print_all'),
                   print_applications_event_path(@event.id), :target => "_blank", :class => 'btn btn-default'%>
+      <button type="button" class="btn btn-default" data-toggle="modal" data-target="#send_participant_email_modal"><%= t('.send_email') %></button>
     </div>
 
     <% if not @event.applications_classified? %>

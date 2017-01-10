@@ -77,8 +77,8 @@ describe Event do
     accepted_application_letter_3 = FactoryGirl.create(:application_letter_accepted, :event => event, :user => FactoryGirl.create(:user))
     rejected_application_letter = FactoryGirl.create(:application_letter_rejected, :event => event, :user => FactoryGirl.create(:user))
     [accepted_application_letter_1, accepted_application_letter_2, accepted_application_letter_3, rejected_application_letter].each { |letter| event.application_letters.push(letter) }
-    expect(event.email_adresses_of_accepted_applicants).to eq([accepted_application_letter_1.user.email, accepted_application_letter_2.user.email, accepted_application_letter_3.user.email].join(','))
-    expect(event.email_adresses_of_rejected_applicants).to eq([rejected_application_letter.user.email].join(','))
+    expect(event.email_addresses_of_accepted_applicants).to eq([accepted_application_letter_1.user.email, accepted_application_letter_2.user.email, accepted_application_letter_3.user.email].join(','))
+    expect(event.email_addresses_of_rejected_applicants).to eq([rejected_application_letter.user.email].join(','))
   end
 
   it "is either a camp or a workshop" do
@@ -171,13 +171,13 @@ describe Event do
   it "generates a new email for acceptance" do
     event = FactoryGirl.create(:event_with_accepted_applications)
     email = event.generate_acceptances_email
-    expect(email).to have_attributes(hide_recipients: false, recipients: event.email_adresses_of_accepted_applicants, reply_to: 'workshop.portal@hpi.de', subject: '', content: '')
+    expect(email).to have_attributes(hide_recipients: false, recipients: event.email_addresses_of_accepted_applicants, reply_to: 'workshop.portal@hpi.de', subject: '', content: '')
   end
 
   it "generates a new email for rejections" do
     event = FactoryGirl.create(:event_with_accepted_applications)
     email = event.generate_rejections_email
-    expect(email).to have_attributes(hide_recipients: false, recipients: event.email_adresses_of_rejected_applicants, reply_to: 'workshop.portal@hpi.de', subject: '', content: '')
+    expect(email).to have_attributes(hide_recipients: false, recipients: event.email_addresses_of_rejected_applicants, reply_to: 'workshop.portal@hpi.de', subject: '', content: '')
   end
 
   it "locks the application status changing of the event" do
@@ -187,4 +187,40 @@ describe Event do
     event.lock_application_status
     expect(event.application_status_locked).to eq(true)
   end
+
+  it "computes the email addresses of all participants" do
+    event = FactoryGirl.create(:event)
+    accepted_application_letter_1 = FactoryGirl.create(:application_letter_accepted, :event => event, :user => FactoryGirl.create(:user, :profile => FactoryGirl.create(:profile)))
+    accepted_application_letter_2 = FactoryGirl.create(:application_letter_accepted, :event => event, :user => FactoryGirl.create(:user, :profile => FactoryGirl.create(:profile)))
+    accepted_application_letter_3 = FactoryGirl.create(:application_letter_accepted, :event => event, :user => FactoryGirl.create(:user, :profile => FactoryGirl.create(:profile)))
+    rejected_application_letter = FactoryGirl.create(:application_letter_rejected, :event => event, :user => FactoryGirl.create(:user))
+    [accepted_application_letter_1, accepted_application_letter_2, accepted_application_letter_3, rejected_application_letter].each { |letter| event.application_letters.push(letter) }
+    expect(event.email_addresses_of_participants(true, [], [])).to eq([accepted_application_letter_1.user.email, accepted_application_letter_2.user.email, accepted_application_letter_3.user.email].join(','))
+  end
+
+  it "computes the email addresses of certain participants" do
+    event = FactoryGirl.create(:event)
+    accepted_application_letter_1 = FactoryGirl.create(:application_letter_accepted, :event => event, :user => FactoryGirl.create(:user, :profile => FactoryGirl.create(:profile)))
+    accepted_application_letter_2 = FactoryGirl.create(:application_letter_accepted, :event => event, :user => FactoryGirl.create(:user, :profile => FactoryGirl.create(:profile)))
+    accepted_application_letter_3 = FactoryGirl.create(:application_letter_accepted, :event => event, :user => FactoryGirl.create(:user, :profile => FactoryGirl.create(:profile)))
+    rejected_application_letter = FactoryGirl.create(:application_letter_rejected, :event => event, :user => FactoryGirl.create(:user))
+    [accepted_application_letter_1, accepted_application_letter_2, accepted_application_letter_3, rejected_application_letter].each { |letter| event.application_letters.push(letter) }
+    expect(event.email_addresses_of_participants(false, [], [accepted_application_letter_1.user.id])).to eq([accepted_application_letter_1.user.email].join(','))
+  end
+
+  it "computes the name and id of all participants" do
+    event = FactoryGirl.create(:event)
+    accepted_application_letter_1 = FactoryGirl.create(:application_letter_accepted, :event => event, :user => FactoryGirl.create(:user, :profile => FactoryGirl.create(:profile)))
+    accepted_application_letter_2 = FactoryGirl.create(:application_letter_accepted, :event => event, :user => FactoryGirl.create(:user, :profile => FactoryGirl.create(:profile)))
+    accepted_application_letter_3 = FactoryGirl.create(:application_letter_accepted, :event => event, :user => FactoryGirl.create(:user, :profile => FactoryGirl.create(:profile)))
+    rejected_application_letter = FactoryGirl.create(:application_letter_rejected, :event => event, :user => FactoryGirl.create(:user))
+    [accepted_application_letter_1, accepted_application_letter_2, accepted_application_letter_3, rejected_application_letter].each { |letter| event.application_letters.push(letter) }
+    expect(event.participants_with_id).to eq([
+        [accepted_application_letter_1.user.profile.first_name + ' ' + accepted_application_letter_1.user.profile.last_name, accepted_application_letter_1.user.id],
+        [accepted_application_letter_2.user.profile.first_name + ' ' + accepted_application_letter_2.user.profile.last_name, accepted_application_letter_2.user.id],
+        [accepted_application_letter_3.user.profile.first_name + ' ' + accepted_application_letter_3.user.profile.last_name, accepted_application_letter_3.user.id],
+                                             ])
+  end
+
+
 end

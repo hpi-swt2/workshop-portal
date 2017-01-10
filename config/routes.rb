@@ -17,6 +17,9 @@ Rails.application.routes.draw do
     get 'badges'
     post 'badges' => 'events#print_badges', as: :print_badges
     post 'upload_material' => 'events#upload_material', as: :upload_material
+    member do
+      get 'send_participants_email'
+    end
   end
   resources :profiles
   devise_for :users

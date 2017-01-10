@@ -97,7 +97,7 @@ class Event < ActiveRecord::Base
   #
   # @param none
   # @return [String] Concatenation of all email addresses of accepted applications, seperated by ','
-  def email_adresses_of_accepted_applicants
+  def email_addresses_of_accepted_applicants
     accepted_applications = application_letters.where(status: ApplicationLetter.statuses[:accepted])
     accepted_applications.map{ |application_letter| application_letter.user.email }.join(',')
   end
@@ -106,7 +106,7 @@ class Event < ActiveRecord::Base
   #
   # @param none
   # @return [String] Concatenation of all email addresses of rejected applications, seperated by ','
-  def email_adresses_of_rejected_applicants
+  def email_addresses_of_rejected_applicants
     rejected_applications = application_letters.where(status: ApplicationLetter.statuses[:rejected])
     rejected_applications.map{ |applications_letter| applications_letter.user.email }.join(',')
   end
@@ -118,7 +118,7 @@ class Event < ActiveRecord::Base
   def generate_acceptances_email
     email = Email.new
     email.hide_recipients = false
-    email.recipients = email_adresses_of_accepted_applicants
+    email.recipients = email_addresses_of_accepted_applicants
     email.reply_to = 'workshop.portal@hpi.de'
     email.subject = ''
     email.content = ''
@@ -132,11 +132,69 @@ class Event < ActiveRecord::Base
   def generate_rejections_email
     email = Email.new
     email.hide_recipients = false
-    email.recipients = email_adresses_of_rejected_applicants
+    email.recipients = email_addresses_of_rejected_applicants
     email.reply_to = 'workshop.portal@hpi.de'
     email.subject = ''
     email.content = ''
     return email
+  end
+
+  # Returns a new email to a set of participants
+  #
+  # @param criteria String
+  # @param value String
+  # @param sender String
+  # @return [Email] new email
+  def generate_participants_email(all, groups, users, sender)
+    email = Email.new
+    email.hide_recipients = false
+    email.recipients = email_addresses_of_participants(all, groups, users)
+    email.reply_to = sender
+    email.subject = ''
+    email.content = ''
+    email
+  end
+
+  # Returns all email addresses of user that fit the given criteria
+  #
+  # @param all Boolean
+  # @param groups [String]
+  # @param users [Int]
+  # @return [String] list of email addresses
+  def email_addresses_of_participants(all, groups, users)
+    if all
+      email_addresses_of_accepted_applicants
+    else
+      (email_addresses_of_groups(groups) + email_addresses_of_users(users)).uniq.join(',')
+    end
+  end
+
+  # Returns a list of tuples containing all participant names and their id
+  #
+  # @return [[String, Int]]
+  def participants_with_id
+    participants.map{|participant| [participant.profile.first_name + ' ' + participant.profile.last_name, participant.id]}
+  end
+
+  # Returns a list of group names and their id
+  #
+  # @return []
+  def groups_with_id
+    []
+  end
+
+  # No functionality because no groups are there yet.
+  # Returns a list of email addresses of all participants that are in one of the given groups
+  #
+  # @return [String]
+  def email_addresses_of_groups(groups)
+    []
+  end
+
+  # Returns a list of email addresses
+  def email_addresses_of_users(users)
+    user = User.where('id in (:ids)', ids: users)
+    user.map{ |user| user.email }
   end
 
   # Returns the number of free places of the event, this value may be negative
