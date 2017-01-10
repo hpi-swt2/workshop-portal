@@ -194,4 +194,16 @@ describe Event do
     event.lock_application_status
     expect(event.application_status_locked).to eq(true)
   end
+
+  it "can have unlimited participants" do
+    event = FactoryGirl.create(:event)
+    event.max_participants = Float::INFINITY
+    expect(event.participants_are_unlimited).to be(true)
+  end
+
+  it "has infinite max participants if max participants is unlimited" do
+    event = FactoryGirl.create(:event)
+    event.participants_are_unlimited = true
+    expect(event.max_participants).to be(Float::INFINITY)
+  end
 end
