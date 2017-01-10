@@ -48,12 +48,15 @@ class Ability
       # Coaches can view Applications and participants for and upload materials for Event
       can [:view_applicants, :view_participants, :upload_material, :print_applications], Event
       can [:view_and_add_notes, :show], ApplicationLetter
-      cannot [:check], ApplicationLetter
+      can :show, Profile, user: { id: user.id }
+      cannot :view_personal_details, ApplicationLetter, user: { id: !user.id }
+      cannot :check, ApplicationLetter
+      cannot :show, Profile, user: { id: !user.id }
     end
     if user.role? :organizer
       can [:index, :show], Profile
       can [:index, :show, :view_and_add_notes, :update_status], ApplicationLetter
-      cannot :update, ApplicationLetter
+      cannot [:update, :view_personal_details], ApplicationLetter, user: { id: !user.id }
       # Organizers can view, edit and print Applications, view participants for, upload materials for, print agreement letters for and manage Events
       can [:view_applicants, :edit_applicants, :view_participants, :print_applications, :manage, :upload_material, :print_agreement_letters], Event
       can :manage, Request
