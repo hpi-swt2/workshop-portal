@@ -2,11 +2,67 @@ require "rails_helper"
 
 describe "Event", type: :feature do
   describe "index page" do
-    it "should link to the show page when an event title is clicked" do
+    it "should link to the show page when an event's read more button is clicked" do
       event = FactoryGirl.create :event
       visit events_path
-      click_link event.name
+      click_link I18n.t('events.list.more')
       expect(page).to have_current_path(event_path(event))
+    end
+
+    it "should mark an event as draft by showing a label" do
+      login_as(FactoryGirl.create(:user, role: :organizer), :scope => :user)
+
+      FactoryGirl.create :event, draft: true
+      visit events_path
+      expect(page).to have_css(".label", text: I18n.t(".activerecord.attributes.event.draft"))
+    end
+
+    it "should not show drafts to pupils or coaches" do
+      %i[coach pupil].each do |role|
+        login_as(FactoryGirl.create(:user, role: role), :scope => :user)
+
+        FactoryGirl.create :event, draft: true
+        visit events_path
+        expect(page).to_not have_css(".label", text: I18n.t(".activerecord.attributes.event.draft"))
+      end
+    end
+
+    it "should display the duration of the event" do
+      FactoryGirl.create :event, :over_six_days
+      visit events_path
+      expect(page).to have_text(I18n.t("events.notices.time_span_consecutive", count: 6))
+    end
+
+    it "should display note of non consecutive date ranges" do
+      FactoryGirl.create :event, :with_multiple_date_ranges
+      visit events_path
+      expect(page).to have_text(I18n.t("events.notices.time_span_non_consecutive", count: 16))
+    end
+
+    it "should display the days left to apply" do
+      FactoryGirl.create :event
+      visit events_path
+      expect(page).to have_text(I18n.t("events.notices.deadline_approaching", count: 1))
+    end
+
+    it "should not display the days left to apply if it's more than 7" do
+      FactoryGirl.create :event, :application_deadline_in_10_days
+      visit events_path
+      expect(page).to_not have_text(I18n.t("events.notices.deadline_approaching", count: 10))
+    end
+
+    it "should strip markdown from the description" do
+      FactoryGirl.create :event, description: "# Headline Test\nParagraph with a [link](http://portal.edu)."
+      visit events_path
+      expect(page).to_not have_css('h1', text: 'Headline Test')
+      expect(page).to_not have_text('Headline Test')
+      expect(page).to have_text('Paragraph with a link.')
+    end
+
+    it "should truncate the description text if it's long" do
+      FactoryGirl.create :event, description: ('a' * Event::TRUNCATE_DESCRIPTION_TEXT_LENGTH) + 'blah'
+      visit events_path
+      expect(page).to_not have_text('blah')
     end
   end
 
@@ -129,6 +185,12 @@ describe "Event", type: :feature do
         visit event_path(event)
         expect(page).to have_text(kind.to_s.humanize)
       end
+    end
+
+    it "should render markdown for the description" do
+      event = FactoryGirl.create(:event, description: "# Test Headline")
+      visit event_path(event)
+      expect(page).to have_css("h1", text: "Test Headline")
     end
 
     it "should display a single day date range as a single date" do

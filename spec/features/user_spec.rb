@@ -44,6 +44,7 @@ RSpec.feature "Account creation", :type => :feature do
     fill_in "user_email", :with => new_mail
     fill_in "user_current_password", :with => user.password
     find('input[name="commit"]').click
+
     expect(page).to have_css(".alert-success")
 
     visit edit_user_registration_path
