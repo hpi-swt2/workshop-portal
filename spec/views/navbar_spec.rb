@@ -55,7 +55,7 @@ RSpec.describe 'navbar', type: :view do
   end
 
   context "logged in as an coach" do
-    %i[organizer coach].each do |role|
+    %i[coach].each do |role|
       it "shows Einstellungen, Mein Profil, Ausloggen" do
         profile = FactoryGirl.create(:profile, user: (FactoryGirl.create :user, role: role))
         sign_in profile.user
