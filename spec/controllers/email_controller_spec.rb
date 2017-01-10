@@ -3,6 +3,8 @@ require 'rails_helper'
 RSpec.describe EmailsController, type: :controller do
   before :each do
     @event = FactoryGirl.create(:event)
+    @user = FactoryGirl.create(:user, role: :organizer)
+    sign_in @user
   end
 
   describe "GET #show" do
@@ -125,8 +127,6 @@ RSpec.describe EmailsController, type: :controller do
         post :submit, commit: I18n.t('.emails.email_form.save_template'), event_id: @event.id, email: @email, status: :accepted
         expect(flash[:alert]).to eq(I18n.t('.emails.submit.saving_failed'))
       end
-
     end
-
   end
 end

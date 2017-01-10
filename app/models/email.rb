@@ -27,6 +27,12 @@ class Email
     end
   end
 
+  def validate_attributes(attributes = [])
+    attributes.each do |attribute|
+      validates_presence_of attribute
+    end
+  end
+
   def persisted?
     false
   end

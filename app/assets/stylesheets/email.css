@@ -18,10 +18,13 @@
 
 .email-templates .list-group {
     height: 550px;
-    overflow-x: hidden;
-    overflow-y: auto;
 }
 
-.email-templates .list-group-item {
-    text-overflow: ellipsis;
+.email-templates .list-group-item-text {
+    overflow: hidden;
+    position: relative;
+    max-height: 3.9em;
+    text-align: justify;
+    padding-right: 1em;
 }
+

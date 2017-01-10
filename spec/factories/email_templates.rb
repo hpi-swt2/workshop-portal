@@ -12,8 +12,8 @@ FactoryGirl.define do
   factory :email_template do
     status :accepted
     hide_recipients false
-    subject "Accepted EmailTemplate-Subject"
-    content "Accepted EmailTemplate-Content"
+    subject "EmailTemplate-Subject"
+    content "EmailTemplate-Content"
   end
 
   factory :email_template_accepted, parent: :email_template do

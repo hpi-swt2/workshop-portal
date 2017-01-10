@@ -1,61 +1,70 @@
 class EmailsController < ApplicationController
 
   def show
+    authorize! :send_email, Email
     @event = Event.find(params[:event_id])
 
-    if params[:status]
-      @status = params[:status].to_sym
-      @addresses = @event.email_addresses_of_type(@status)
-      @templates = EmailTemplate.where(status: EmailTemplate.statuses[@status]).to_a
-    else
-      @addresses = ''
-    end
+    @templates = get_templates
+    @addresses = @event.email_addresses_of_type(@status)
 
-    @email = Email.new(hide_recipients: false, reply_to: 'workshop.portal@hpi.de', recipients: @addresses,
+    @email = Email.new(hide_recipients: true, reply_to: 'workshop.portal@hpi.de', recipients: @addresses,
                        subject: '', content: '')
     render :email
   end
 
   def submit
-    @email = Email.new(params[:email])
+    authorize! :send_email, Email
     if send?
-      send_email(@email)
+      send_email
     elsif save_template?
-      save_template(@email)
+      save_template
     end
   end
 
 
   private
 
-  def send_email(email)
-    if email.valid?
-      Mailer.send_generic_email(email.hide_recipients, email.recipients, email.reply_to, email.subject, email.content)
+  def send_email
+    @email = Email.new(email_params)
+    if @email.valid?
+      Mailer.send_generic_email(@email.hide_recipients, @email.recipients, @email.reply_to, @email.subject, @email.content)
+
       @event = Event.find(params[:event_id])
       @event.lock_application_status
+
       redirect_to @event, notice: t('.sending_successful')
     else
       @event = Event.find(params[:event_id])
+      @templates = get_templates
+
       flash.now[:alert] = t('.sending_failed')
-      show
+      render :email
     end
   end
 
-  def save_template(email)
-    @template_params = { status: params[:status],
-                         hide_recipients: email.hide_recipients,
-                         subject: email.subject,
-                         content: email.content
-    }
-    @template = EmailTemplate.new(@template_params)
+  def save_template
+    @email = Email.new(email_params)
+    @template = EmailTemplate.new({ status: params[:status], hide_recipients: @email.hide_recipients,
+                                    subject: @email.subject, content: @email.content })
 
-    if @template.save
+    if @email.validate_attributes [:subject, :content] and @template.save
       flash.now[:success] = t('.saving_successful')
     else
       flash.now[:alert] = t('.saving_failed')
     end
+    @event = Event.find(params[:event_id])
+    @templates = get_templates
 
-    show
+    render :email
+  end
+
+  def get_templates
+    if params[:status]
+      @status = params[:status].to_sym
+      return EmailTemplate.where(status: EmailTemplate.statuses[@status]).to_a
+    else
+      return []
+    end
   end
 
   def send?
@@ -65,7 +74,6 @@ class EmailsController < ApplicationController
   def save_template?
     params[:commit] == t('emails.email_form.save_template')
   end
-
 
   # Only allow a trusted parameter "white list" through.
   def email_params
