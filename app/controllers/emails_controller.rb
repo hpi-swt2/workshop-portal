@@ -5,7 +5,7 @@ class EmailsController < ApplicationController
     @event = Event.find(params[:event_id])
 
     @templates = get_templates
-    @addresses = @event.email_addresses_of_type(@status)
+    @addresses = @event.email_addresses_of_type(get_status)
 
     @email = Email.new(hide_recipients: true, reply_to: 'workshop.portal@hpi.de', recipients: @addresses,
                        subject: '', content: '')
