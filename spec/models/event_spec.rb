@@ -182,7 +182,6 @@ describe Event do
 
   it "accepts all its application letters" do
     event = FactoryGirl.create :event, :with_diverse_open_applications
-    #TODO set max_participants to infinite, when participant number becomes relevant (eg @event.max_participants = event.infty)
     event.accept_all_application_letters
     application_letters = ApplicationLetter.where(event: event.id)
     expect(application_letters.all? { |application_letter| application_letter.status == 'accepted' }).to eq(true)
