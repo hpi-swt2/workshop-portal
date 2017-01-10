@@ -39,6 +39,11 @@ class User < ActiveRecord::Base
     self.role ||= :pupil
   end
 
+  def name
+    return profile.name if profile
+    email
+  end
+
   # Returns the events for which the user's application has been accepted
   #
   # @param none
