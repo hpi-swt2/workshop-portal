@@ -26,15 +26,14 @@ class EmailsController < ApplicationController
 
   def send_email
     @email = Email.new(email_params)
+    @event = Event.find(params[:event_id])
+
     if @email.valid?
       Mailer.send_generic_email(@email.hide_recipients, @email.recipients, @email.reply_to, @email.subject, @email.content)
-
-      @event = Event.find(params[:event_id])
       @event.lock_application_status
 
       redirect_to @event, notice: t('.sending_successful')
     else
-      @event = Event.find(params[:event_id])
       @templates = get_templates
 
       flash.now[:alert] = t('.sending_failed')
@@ -48,7 +47,7 @@ class EmailsController < ApplicationController
     @template = EmailTemplate.new({ status: get_status, hide_recipients: @email.hide_recipients,
                                     subject: @email.subject, content: @email.content })
 
-    if @email.validate_attributes [:subject, :content] and @template.save
+    if @email.validate_attributes [:subject, :content] && @template.save
       flash.now[:success] = t('.saving_successful')
     else
       flash.now[:alert] = t('.saving_failed')
@@ -60,19 +59,11 @@ class EmailsController < ApplicationController
   end
 
   def get_templates
-    if params[:status]
-      EmailTemplate.where(status: EmailTemplate.statuses[params[:status].to_sym]).to_a
-    else
-      EmailTemplate.where(status: EmailTemplate.statuses[:default]).to_a
-    end
+      EmailTemplate.where(status: EmailTemplate.statuses[get_status]).to_a
   end
 
   def get_status
-    if params[:status]
-       params[:status]
-    else
-      :default
-    end
+    params[:status] ? params[:status].to_sym : :default
   end
 
   def send?

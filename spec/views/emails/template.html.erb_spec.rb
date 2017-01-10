@@ -9,6 +9,10 @@ RSpec.describe "emails/template", type: :view do
     render :partial => "emails/templates"
   end
 
+  it ("renders template headline") do
+    expect(rendered).to have_text(I18n.t('.emails.templates.templates'))
+  end
+
   it("renders template information") do
     expect(rendered).to have_text(@template.subject)
     expect(rendered).to have_text(@template.content)

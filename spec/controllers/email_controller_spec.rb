@@ -37,13 +37,13 @@ RSpec.describe EmailsController, type: :controller do
         @template = FactoryGirl.create(:email_template_rejected)
       end
 
-      it "sets @email with the email of the accepted application" do
+      it "sets @email with the email of the rejected application" do
         get :show, event_id: @event.id, status: :rejected
         expect(assigns(:email)).to be_a(Email)
         expect(assigns(:email).recipients).to eq(@application.user.email)
       end
 
-      it "sets @template with template for accepted emails" do
+      it "sets @template with template for rejected emails" do
         get :show, event_id: @event.id, status: :rejected
         expect(assigns(:templates)).to eq([@template])
       end

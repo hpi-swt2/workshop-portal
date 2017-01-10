@@ -13,7 +13,7 @@ require 'rails_helper'
 
 describe EmailTemplate do
 
-  it "can be created by user factory" do
+  it "can be created by email_template factory" do
     expect(FactoryGirl.build(:email_template)).to be_valid
   end
 
