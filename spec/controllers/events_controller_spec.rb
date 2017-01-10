@@ -170,6 +170,14 @@ RSpec.describe EventsController, type: :controller do
         expect(assigns(:email)).to have_attributes(hide_recipients: false, recipients: @event.email_adresses_of_rejected_applicants, reply_to: 'workshop.portal@hpi.de', subject: '', content: '')
       end
     end
+
+    describe "GET #accept_all_applicants" do
+      it "should accept all application letters" do
+        get :accept_all_applicants, id: @event.to_param, session: valid_session
+        application_letters = ApplicationLetter.where(event: @event.id)
+        expect(application_letters.all? { |application_letter| application_letter.status == 'accepted' }).to eq(true)
+      end
+    end
   end
 
   describe "GET #badges" do
