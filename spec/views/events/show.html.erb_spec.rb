@@ -64,16 +64,24 @@ RSpec.describe "events/show", type: :view do
     expect(rendered).to have_link(t(:print_button_label, scope: 'events.badges'))
   end
 
-  it "should not accept-all-button non-organizers" do
+  it "should not display accept-all-button for non-organizers" do
     sign_in(FactoryGirl.create(:user, role: :coach))
     render
     expect(rendered).to_not have_link(I18n.t('events.applicants_overview.accept_all'))
   end
 
-  it "should display accept-all-button for organizers" do
+  it "should display accept-all-button for organizers if there are enough free places" do
     sign_in(FactoryGirl.create(:user, role: :organizer))
+    @event.max_participants = Float::INFINITY
     render
     expect(rendered).to have_link(I18n.t('events.applicants_overview.accept_all'))
+  end
+
+  it "should not display accept-all-button if there are not enough free places" do
+    sign_in(FactoryGirl.create(:user, role: :organizer))
+    @event.max_participants = 0
+    render
+    expect(rendered).to_not have_link(I18n.t('events.applicants_overview.accept_all'))
   end
 
   it "displays material area" do

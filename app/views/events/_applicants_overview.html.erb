@@ -53,7 +53,7 @@
 
   <div class="container-fluid no-padding">
     <div class="btn-group" role="group">
-      <% if can? :edit_applicants, Event %>
+      <% if (can? :edit_applicants, Event) && (@event.application_letters.count <= @event.max_participants) %>
         <%= link_to t('.accept_all'), event_accept_all_applicants_path(@event.id), :class => 'btn btn-default' %>
       <% end %>
       <%= link_to t('.print_all'), print_applications_event_path(@event.id), :target => "_blank", :class => 'btn btn-default' %>
