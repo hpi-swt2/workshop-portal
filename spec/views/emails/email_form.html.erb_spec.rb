@@ -26,6 +26,10 @@ RSpec.describe "emails/email_form", type: :view do
     expect(rendered).to have_button(I18n.t('emails.email_form.save_template'))
   end
 
+  it "renders copy recipients button" do
+    expect(rendered).to have_button(I18n.t('emails.email_form.copy'))
+  end
+
   it "fills recipients_fills with set recipients" do
     expect(rendered).to have_field('email_reply_to', with: @email.reply_to)
     expect(rendered).to have_field('email_recipients', with: @email.recipients)

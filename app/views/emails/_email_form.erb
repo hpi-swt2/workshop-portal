@@ -11,6 +11,9 @@
         <%= t('.hide_recipients') %>
       </label>
     </div>
+    <div class="col-sm-4 ">
+      <%= button_tag t('.copy'), type: 'button', id: 'send-emails-clipboard', class: 'btn btn-default pull-right' %>
+    </div>
     <%= f.error_span(:hide_recipients) %>
   </div>
   <div class="form-group">
