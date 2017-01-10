@@ -174,8 +174,7 @@ RSpec.describe EventsController, type: :controller do
     describe "GET #accept_all_applicants" do
       it "should accept all application letters" do
         get :accept_all_applicants, id: @event.to_param, session: valid_session
-        application_letters = ApplicationLetter.where(event: @event.id)
-        expect(application_letters.all? { |application_letter| application_letter.status == 'accepted' }).to eq(true)
+        expect(response).to redirect_to(@event)
       end
     end
   end
