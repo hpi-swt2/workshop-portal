@@ -10,7 +10,7 @@ RSpec.describe "events/participants", type: :view do
   it "renders attributes" do
     render
     expect(rendered).to have_text(t(:participants, scope:'events.participants'))
-    expect(rendered).to have_text(@event.participants[0].email)
+    expect(rendered).to have_text(@event.participants[0].name)
   end
   
   it "detects missing agreement letters" do
