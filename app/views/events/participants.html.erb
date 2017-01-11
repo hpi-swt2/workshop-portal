@@ -52,6 +52,7 @@
       <div id="participants_download_submit_button">
       <%= submit_tag t('events.agreement_letters_download.download_all_as'), name: "download_all" %>
       <%= select_tag :download_type, options_for_select([['pdf'], ['zip']]) %>
+      <%= link_to t('events.badges.print_button_label'), badges_event_path(@event), :class => 'btn btn-default'%>
       </div>
     <% end %>
   <% end %>
