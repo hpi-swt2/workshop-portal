@@ -18,7 +18,7 @@ de:
       Programmierkenntnisse sind keine  Voraussetzung zur Teilnahme. Diese Information
       wird zur Gruppeneinteilung benötigt."
     login_before_creation: "Du musst angemeldet sein, um dich für Workshops bewerben zu können."
-    successful_update: "Bewerbung erfolgreich aktualisiert"
+    successful_update: "Bewerbung erfolgreich bearbeitet"
     successful_deletion: "Bewerbung erfolgreich gelöscht"
     successful_creation: "Bewerbung erfolgreich erstellt"
     fill_in_profile_before_creation: "Du musst erst dein Profil ausfüllen, um dich für Workshops bewerben zu können."
@@ -29,7 +29,7 @@ de:
       can_change_until: "Sie können Ihre Bewerbung noch bis zur Bewerbungsdeadline (%{application_deadline}) bearbeiten."
       deadline_exceeded: "Die Bewerbungsfrist ist abgelaufen. Die Bewerbung kann nicht mehr bearbeitet werden."
       my_application: "Meine Bewerbung"
-      my_personal_data: "Meine persönlichen Daten (unwichtig für den Auswahlprozess)"
+      my_personal_data: "Meine persönlichen Daten"
       check_application_for: "Bewerbung für %{event_name} prüfen"
       eating_habits: "Essgewohnheiten"
     confirm_deletion: "Willst du diese Bewerbung wirklich löschen?"
