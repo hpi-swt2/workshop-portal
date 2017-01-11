@@ -8,6 +8,7 @@ de:
         other: "Benutzer"
     attributes:
       user:
+        password_confirmation: "Passwort bestätigen"
         accepted_application_count: "Angenommene Bewerbungen"
         rejected_application_count: "Abgelehnte Bewerbungen"
         role: Rolle
