@@ -22,7 +22,7 @@
 de:
   app_name: "Workshop-Portal"
   website_name: "WorkshopPortal"
-  host_name: "HPI-Schülerklub"
+  host_name: "Hasso-Plattner-Institut"
   unauthorized:
       manage:
         all: "Du bist nicht authorisiert diese Aktion auszuführen."

@@ -51,25 +51,6 @@ footer {
         margin-bottom: 15px;
     }
 }
-.front-section {
-    border-bottom: 1px solid #eee;
-    padding: 120px 0;
-}
-.front-section:first-child {
-    padding-top: 30px;
-}
 
-.front-section:first-of-type {
-    background-image: url('abbinder.png');
-    background-position: bottom center;
-    background-repeat: no-repeat;
-}
-.front-section:last-of-type {
-    border: none;
-}
-.front-section:nth-child(even), footer {
-    background-color: #333;
-    color: #eee;
-}
 
 

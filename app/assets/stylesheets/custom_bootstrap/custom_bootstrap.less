@@ -142,3 +142,38 @@ body {
 	.wsp-border(2px);
 	padding-top: 15px;
 }
+
+// Fontpage 
+
+#wsp-welcome {
+
+	ul {
+		list-style: none;
+		li {
+			display: inline;
+			margin-right: 15px;
+		}
+	}
+}
+ 
+.front-section {
+   border-bottom: 1px solid #eee;
+   padding: 120px 0;
+   &:first-child {
+   	padding-top: 30px;
+ 	}
+ 	&:last-of-type {
+    	border: none;
+	}
+
+	&:nth-child(odd), footer {
+	   background-color: lighten(#F7B21C, 30%);
+	   color: #eee;
+	}
+
+	&:first-of-type {
+		margin-top: -120px;
+		padding-top: 120px;
+		min-height: 100vh;
+	}
+}
