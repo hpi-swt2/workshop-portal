@@ -23,7 +23,9 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
+  has_one :profile
   has_many :agreement_letters
+  has_many :application_letters
 
   before_create :set_default_role
 
@@ -37,6 +39,11 @@ class User < ActiveRecord::Base
 
   def set_default_role
     self.role ||= :pupil
+  end
+
+  def name
+    return profile.name if profile
+    email
   end
 
   # Returns the events for which the user's application has been accepted
@@ -82,10 +89,6 @@ class User < ActiveRecord::Base
     age_at_event_start = self.profile.age_at_time(given_event.start_date)
 	  return age_at_event_start >= age
   end
-  
-  has_one :profile
-  has_many :application_letters
-  has_many :agreement_letters
 
   # Returns the number of accepted applications from the user without counting status of current event application
   #
@@ -103,4 +106,12 @@ class User < ActiveRecord::Base
     ApplicationLetter.where(user_id: id, status: false).where.not(event: event).count()
   end
 
+  # Searches all users with last/first_name containing pattern
+  #
+  # @param pattern to search for
+  # @return [Array<User>] all users with pattern in their name
+  def self.search(pattern)
+    joins(:profile).where("profiles.first_name LIKE ? or profiles.last_name LIKE ?",
+                          "%#{pattern}%", "%#{pattern}%")
+  end
 end

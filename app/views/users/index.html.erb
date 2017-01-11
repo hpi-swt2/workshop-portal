@@ -1,0 +1,42 @@
+<%- model_class = User -%>
+<div class="page-header">
+  <h1><%=t '.title', :default => model_class.model_name.human(count: 2).titleize %></h1>
+
+  <%= form_tag(users_path, :method => "get", id: "search-form") do %>
+  <%= text_field_tag :search, params[:search], placeholder: t(".search_users", :default => "Search users") %>
+  <%= submit_tag t('.search', :default => "Search"), class: "btn btn-xs btn-primary" %>
+  <% end %>
+</div>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th><%= model_class.human_attribute_name(:name) %></th>
+      <th><%= model_class.human_attribute_name(:created_at) %></th>
+      <th><%= model_class.human_attribute_name(:role) %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @users.each do |user| %>
+      <% if can? :destroy, user %>
+        <tr>
+          <td>
+            <% if not user.profile.nil? %>
+                <%= link_to user.name, profile_path(user.profile) %>
+            <% else %>
+                <%= user.name %>
+            <% end %>
+          </td>
+          <td><%= user.created_at %></td>
+          <td>
+            <%= form_for user, url: update_user_role_path(user) do |f| %>
+                <%= f.collection_select(:role, User::ROLES, :to_s, lambda{|i| t("users.roles." + i.to_s)}, {:selected => user.role.to_s })  %>
+                <%= f.submit t('.save', :default => "Save"), class: "btn btn-xs btn-primary" %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>
+<%= will_paginate @users  %>

@@ -237,13 +237,13 @@ class Event < ActiveRecord::Base
 
   protected
   # Compares two participants to achieve following order:
-  # 1. All participants that have to submit an letter of agreement but did not yet do so, ordered by name.
-  # 2. All participants that have to submit an letter of agreement and did do so, ordered by name.
-  # 3. All participants that do not have to submit an letter of agreement, ordered by name.
+  # 1. All participants that have to submit an letter of agreement but did not yet do so, ordered by email.
+  # 2. All participants that have to submit an letter of agreement and did do so, ordered by email.
+  # 3. All participants that do not have to submit an letter of agreement, ordered by email.
   def compare_participants_by_agreement(participant1, participant2)
     if participant1.requires_agreement_letter_for_event?(self)
       if participant2.requires_agreement_letter_for_event?(self)
-        return participant1.name <=> participant2.name
+        return participant1.email <=> participant2.email
       end
       return 1
     end
@@ -252,13 +252,13 @@ class Event < ActiveRecord::Base
     end
     if participant1.agreement_letter_for_event?(self)
       if participant2.agreement_letter_for_event?(self)
-        return participant1.name <=> participant2.name
+        return participant1.email <=> participant2.email
       end
       return 1
     end
     if participant2.agreement_letter_for_event?(self)
       return -1
     end
-    return participant1.name <=> participant2.name
+    return participant1.email <=> participant2.email
   end
 end
