@@ -20,6 +20,8 @@ Rails.application.routes.draw do
   end
   resources :profiles
   devise_for :users, :controllers => {:registrations => "users/registrations"}
+  resources :users, only: [:index] # index page for devise users
+  patch 'users/:id/role' => 'users#update_role', as: :update_user_role
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

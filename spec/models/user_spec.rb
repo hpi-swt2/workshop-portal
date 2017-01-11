@@ -108,4 +108,13 @@ describe User do
     expect(current_application_letter.user.rejected_applications_count(current_event)).to eq(1)
   end
 
+  it "filters for users with Max in their name" do
+    max = FactoryGirl.create(:user)
+    max.profile = FactoryGirl.create(:profile, first_name: "Max")
+    user3 = FactoryGirl.create(:user_with_profile)
+
+    expect(User.search("Max")).to include(max)
+    expect(User.search("Max")).to_not include(user3)
+  end
+
 end
