@@ -1,3 +1,4 @@
+<% if event.published or can? :view_unpublished, Event %>
 <div class="event-preview <%= 'event-past' if event.is_past %> clearfix">
   <%= image_tag "example.png", class: "img-rounded img-responsive img-float-corner-tr center-block" %>
   <div class="event-date">
@@ -11,7 +12,8 @@
   <h3>
     <%= event.name %>
     <small>
-      <%= tag_label t('activerecord.attributes.event.draft'), :default if event.draft %>
+      <%= tag_label t('events.notices.is_published'), :success if event.published and can? :view_unpublished, Event %>
+      <%= tag_label t('activerecord.attributes.event.draft'), :default if not event.published and can? :view_unpublished, Event %>
       <%= tag_label t('events.notices.past_event'), :default if event.is_past %>
     </small>
   </h3>
@@ -43,3 +45,4 @@
       :class => 'btn btn-sm btn-danger' if can? :destroy, event %>
   </div>
 </div>
+<% end %>

@@ -30,9 +30,6 @@ class EventsController < ApplicationController
   # POST /events
   def create
     @event = Event.new(event_params)
-
-    @event.draft = (params[:draft] != nil)
-
     if @event.save
       redirect_to @event, notice: I18n.t('.events.notices.created')
     else
@@ -43,9 +40,6 @@ class EventsController < ApplicationController
   # PATCH/PUT /events/1
   def update
     attrs = event_params
-
-    @event.draft = (params[:commit] == "draft")
-
     if @event.update(attrs)
       redirect_to @event, notice: I18n.t('events.notices.updated')
     else
@@ -196,7 +190,7 @@ class EventsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def event_params
-      params.require(:event).permit(:name, :description, :max_participants, :kind, :organizer, :knowledge_level, :application_deadline, date_ranges_attributes: [:start_date, :end_date, :id])
+      params.require(:event).permit(:name, :description, :max_participants, :kind, :organizer, :knowledge_level, :application_deadline, :published, date_ranges_attributes: [:start_date, :end_date, :id])
     end
 
     # Generate all names to print from the query-params

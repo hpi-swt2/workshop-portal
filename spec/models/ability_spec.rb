@@ -244,4 +244,10 @@ describe User do
     ability = Ability.new(user)
     expect(ability).to be_able_to(:manage, Request)
   end
+
+  it "can view unpublished events as organizer" do
+    user = FactoryGirl.create(:user, role: :organizer)
+    ability = Ability.new(user)
+    expect(ability).to be_able_to(:view_unpublished, Event)
+  end
 end

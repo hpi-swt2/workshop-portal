@@ -12,7 +12,6 @@ def event_programmierkurs
       knowledge_level: 'Anfänger',
       date_ranges: [date_range_singleday], 
       application_deadline: Date.tomorrow,
-      draft: false, 
       application_status_locked: false,
       published: true
   )
@@ -32,7 +31,6 @@ def event_mintcamp
       knowledge_level: 'Fortgeschrittene',
       date_ranges: [date_range_mint_camp], 
       application_deadline: Date.tomorrow,
-      draft: false, 
       application_status_locked: false,
       published: true
   )
@@ -54,7 +52,6 @@ die richtige Größe für Becher-Stapel herausfindet und anwendet.',
       knowledge_level: 'Anfänger',
       date_ranges: [date_range_singleday], 
       application_deadline: Date.tomorrow,
-      draft: false, 
       application_status_locked: false,
       published: true
   )
@@ -77,8 +74,7 @@ Ding Gong-Verein Berlin. Bei Bedarf können wir eine zweite Veranstaltung durchf
       max_participants: 19,
       knowledge_level: 'Ihr braucht kein besonderes Vorwissen, jeder ist Willkommen!',
       date_ranges: [date_range_long], 
-      application_deadline: Date.tomorrow, 
-      draft: false, 
+      application_deadline: Date.tomorrow,
       application_status_locked: false,
       published: true
   )
@@ -109,7 +105,6 @@ Arbeitsmarkt. Bitte beachtet die maximale Teilnehmeranzahl! Wichtig: Es gilt fir
       organizer: 'IAB',
       date_ranges: [date_range_short, date_range_medium],  
       application_deadline: Date.tomorrow,
-      draft: false, 
       application_status_locked: false,
       published: false
   )
@@ -134,8 +129,7 @@ def event_bachlorpodium
 bei diesem jährlich mit größter Sorgfalt organisierten spektakulären PR Gag',
       max_participants: 442,
       date_ranges: [date_range_singleday1, date_range_singleday2, date_range_singleday3], 
-      application_deadline: Date.tomorrow, 
-      draft: false, 
+      application_deadline: Date.tomorrow,
       application_status_locked: false ,
       published: true
   )
