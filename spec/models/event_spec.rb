@@ -173,16 +173,6 @@ describe Event do
       @event = FactoryGirl.create(:event)
     end
 
-    it "returns email address of accepted application" do
-      @application = FactoryGirl.create(:application_letter_accepted, event: @event, user: FactoryGirl.create(:user))
-      expect(@event.email_addresses_of_type(:accepted)).to eq(@application.user.email)
-    end
-
-    it "returns email address of rejected application" do
-      @application = FactoryGirl.create(:application_letter_rejected, event: @event, user: FactoryGirl.create(:user))
-      expect(@event.email_addresses_of_type(:rejected)).to eq(@application.user.email)
-    end
-
     it "returns email address only of the given type" do
       @accepted_application = FactoryGirl.create(:application_letter_accepted, event: @event, user: FactoryGirl.create(:user))
       @rejected_application = FactoryGirl.create(:application_letter_rejected, event: @event, user: FactoryGirl.create(:user))

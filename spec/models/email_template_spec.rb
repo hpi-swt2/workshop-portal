@@ -24,7 +24,9 @@ describe EmailTemplate do
   it "accepts valid status values" do
     expect(FactoryGirl.build(:email_template, status: :accepted)).to be_valid
     expect(FactoryGirl.build(:email_template, status: :rejected)).to be_valid
-
+  end
+  
+  it "rejects invalid status values" do
     expect { FactoryGirl.build(:email_template, status: :fubar) }.to raise_error(ArgumentError)
     expect { FactoryGirl.build(:email_template, status: 'fubar') }.to raise_error(ArgumentError)
     expect { FactoryGirl.build(:email_template, status: 42) }.to raise_error(ArgumentError)
