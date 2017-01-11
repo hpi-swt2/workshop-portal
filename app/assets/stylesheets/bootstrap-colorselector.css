@@ -64,6 +64,19 @@
   line-height: 20px;
 }
 
+.dropdown-colorselector>.dropdown-menu>li>.color-btn[data-value="0"]:after {
+  content: "\f00d";
+  font-family: 'FontAwesome';
+  display: inline-block;
+  font-size: 14px;
+  color: #000;
+  position: absolute;
+  left: 0;
+  right: 0;
+  text-align: center;
+  line-height: 20px;
+}
+
 .btn-colorselector {
   display: inline-block;
   width: 20px;
