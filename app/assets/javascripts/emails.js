@@ -14,3 +14,12 @@ jQuery(function() {
         }
     });
 });
+
+function loadTemplate(elem) {
+    console.log(elem);
+    var subject = elem.getElementsByClassName('template-subject')[0].innerHTML;
+    var content = elem.getElementsByClassName('template-content')[0].innerHTML;
+
+    document.getElementById('email_subject').value = subject;
+    document.getElementById('email_content').value = content;
+}
