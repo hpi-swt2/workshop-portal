@@ -1,0 +1,28 @@
+# German translations for the participant groups
+
+de:
+  participant_groups:
+    update:
+      successful: "Die Gruppe wurde erfolgreich gesetzt."
+      failed: "Beim Setzen der Gruppe ist ein Fehler aufgetreten."
+    options:
+      none: "keine"
+      darkblue: "dunkelblau"
+      red: "rot"
+      yellow: "gelb"
+      orange: "orange"
+      lightgreen: "hellgrün"
+      purple: "violett"
+      deeppink: "pink"
+      darkgreen: "dunkelgrün"
+      lightblue: "hellblau"
+      gray: "grau"
+
+  activerecord:
+    models:
+      participant_group:
+        one: "Gruppe"
+        other: "Gruppen"
+    attributes:
+      participant_group:
+          group: "Gruppe"

@@ -15,6 +15,7 @@ class ApplicationLetter < ActiveRecord::Base
   belongs_to :event
 
   has_many :application_notes
+  has_one :participant_group
 
   VALID_GRADES = 5..13
 
@@ -28,7 +29,7 @@ class ApplicationLetter < ActiveRecord::Base
 
   enum status: {accepted: 1, rejected: 0, pending: 2, alternative: 3}
   validates :status, inclusion: { in: statuses.keys }
-  
+
 
   # Checks if the deadline is over
   # additionally only return if event and event.application_deadline is present

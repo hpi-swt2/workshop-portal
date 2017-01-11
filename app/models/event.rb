@@ -82,6 +82,18 @@ class Event < ActiveRecord::Base
     self.application_letters.where(user: user).take
   end
 
+  # Returns the participant group for this event for a given participant (user). If it doesn't exist, it is created
+  #
+  # @param user [User] the user whose participant group we want
+  # @return [ParticipantGroup] the user's participant group
+  def participantgroup_for(user)
+    application_letter = self.application_letters.where(user: user).take
+    if application_letter.participant_group.nil?
+      application_letter.create_participant_group(group: 0)
+    end
+    self.application_letters.where(user: user).take.participant_group
+  end
+
   # Returns the agreement letter a user submitted for this event
   #
   # @param user [User] the user whose agreement letter we want

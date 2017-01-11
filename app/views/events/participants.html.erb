@@ -1,6 +1,8 @@
 <%- model_class = Event -%>
 <div class="page-header">
   <h1><%=t '.title', :default => model_class.model_name.human.titleize %> (<%= @event.kind.humanize %>)</h1>
+  <%= stylesheet_link_tag "bootstrap-colorselect" %>
+  <%= javascript_include_tag "bootstrap-colorselect" %>
 </div>
 <% if can? :view_participants, Event %>
   <%= render :partial => 'show_event' %>
@@ -11,14 +13,21 @@
       <th><%= t 'activerecord.attributes.profile.name' %></th>
       <th><%= t 'activerecord.attributes.profile.email' %></th>
   	  <th><%= t 'agreement_letters.agreement_letter' %></th>
-      <th><%= t 'activerecord.attributes.application_letter.group'%></th>
+      <th><%= sort_caret(ParticipantGroup.human_attribute_name(:group), :group) %></th>
     </tr>
 
-    <% @participants.each do |participant| %>
+    <% #@participants.each do |participant| %>
+    <% @participants.sort_by! {|l| @event.participantgroup_for(l).send(params[:sort]) } if params[:sort]
+    @participants.reverse! if params[:order] == 'descending'
+    @participants.select {|l| @event.participantgroup_for(l) }.each do | participant | %>
     <tr>
 
       <td>
-      <%= participant.name %>
+        <% unless participant.profile.nil? %>
+          <%= participant.profile.name %>
+        <% else %>
+          <%= participant.name %>
+        <% end %>
       </td>
       <td>
       <%= participant.email %>
@@ -33,7 +42,7 @@
         <% end %>
       </td>
       <td>
-        <%= @event.application_letter_for(participant).group %>
+        <%= render 'colorselect', participant_group: @event.participantgroup_for(participant) %>
       </td>
     </tr>
     <% end %>
@@ -42,4 +51,7 @@
 
   <%= link_to t('.back', :default => t('helpers.links.back')),
               event_path(@event), :class => 'btn btn-default'  %>
+  <script>
+    $('.colorselector').colorselector();
+  </script>
 <% end %>
