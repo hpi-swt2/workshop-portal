@@ -4,7 +4,7 @@
 </div>
 
 <% if can? :show, @application_letter.user.profile  %>
-    <h3><%= link_to @application_letter.user.profile.name, profile_path(@application_letter.user) %></h3>
+    <h3><%= link_to @application_letter.user.profile.name, profile_path(@application_letter.user.profile) %></h3>
 <% else %>
     <h3><%= @application_letter.user.profile.name %></h3>
 <% end %>
