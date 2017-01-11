@@ -7,7 +7,7 @@
 #  description      :string
 #  max_participants :integer
 #  date_ranges      :Collection
-#  active           :boolean
+#  published        :boolean
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  application_status_locked  :boolean
@@ -31,7 +31,7 @@ class Event < ActiveRecord::Base
   # @return [Array<User>] the event's participants in that order.
   def participants_by_agreement_letter
     @participants = self.participants
-	@participants.sort { |x, y| self.compare_participants_by_agreement(x,y) }
+    @participants.sort { |x, y| self.compare_participants_by_agreement(x,y) }
   end
 
   validates :max_participants, numericality: { only_integer: true, greater_than: 0 }

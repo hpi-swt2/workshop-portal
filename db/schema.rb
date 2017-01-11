@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170104135212) do
+ActiveRecord::Schema.define(version: 20170111150450) do
 
   create_table "agreement_letters", force: :cascade do |t|
     t.integer  "user_id",    null: false
@@ -75,6 +75,7 @@ ActiveRecord::Schema.define(version: 20170104135212) do
     t.string   "knowledge_level"
     t.date     "application_deadline"
     t.boolean  "application_status_locked"
+    t.boolean  "published"
   end
 
   create_table "profiles", force: :cascade do |t|

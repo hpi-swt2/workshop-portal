@@ -13,7 +13,8 @@ def event_programmierkurs
       date_ranges: [date_range_singleday], 
       application_deadline: Date.tomorrow,
       draft: false, 
-      application_status_locked: false
+      application_status_locked: false,
+      published: true
   )
 end
 
@@ -32,7 +33,8 @@ def event_mintcamp
       date_ranges: [date_range_mint_camp], 
       application_deadline: Date.tomorrow,
       draft: false, 
-      application_status_locked: false
+      application_status_locked: false,
+      published: true
   )
 end
 
@@ -53,7 +55,8 @@ die richtige Größe für Becher-Stapel herausfindet und anwendet.',
       date_ranges: [date_range_singleday], 
       application_deadline: Date.tomorrow,
       draft: false, 
-      application_status_locked: false
+      application_status_locked: false,
+      published: true
   )
 end
 
@@ -76,7 +79,8 @@ Ding Gong-Verein Berlin. Bei Bedarf können wir eine zweite Veranstaltung durchf
       date_ranges: [date_range_long], 
       application_deadline: Date.tomorrow, 
       draft: false, 
-      application_status_locked: false
+      application_status_locked: false,
+      published: true
   )
 end
 
@@ -106,7 +110,8 @@ Arbeitsmarkt. Bitte beachtet die maximale Teilnehmeranzahl! Wichtig: Es gilt fir
       date_ranges: [date_range_short, date_range_medium],  
       application_deadline: Date.tomorrow,
       draft: false, 
-      application_status_locked: false 
+      application_status_locked: false,
+      published: false
   )
 end
 
@@ -131,6 +136,7 @@ bei diesem jährlich mit größter Sorgfalt organisierten spektakulären PR Gag'
       date_ranges: [date_range_singleday1, date_range_singleday2, date_range_singleday3], 
       application_deadline: Date.tomorrow, 
       draft: false, 
-      application_status_locked: false 
+      application_status_locked: false ,
+      published: true
   )
 end
