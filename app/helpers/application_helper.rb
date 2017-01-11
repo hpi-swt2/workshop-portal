@@ -59,8 +59,8 @@ module ApplicationHelper
       o << (menu_item t(:my_application_letters, scope: 'navbar'), application_letters_path)
     end
     # admins get user management
-    if current_user.role == "admin"
-      o << (menu_item t(:user_management, scope: 'navbar'), profiles_path)
+    if current_user.role == "admin" || current_user.role == "organizer"
+      o << (menu_item t(:user_management, scope: 'navbar'), users_path)
     end
     # everyone gets logout
     o << (menu_item t(:logout, scope: 'navbar'), destroy_user_session_path, :method => :delete)

@@ -67,4 +67,24 @@ RSpec.feature "Account creation", :type => :feature do
     # Error message
     expect(page).to have_css('.alert-danger')
   end
+
+end
+
+RSpec.feature "Role management page", :type => :feature do
+
+  it "can change to role of a user" do
+    pupil = FactoryGirl.create(:user)
+    login(:admin)
+    visit users_path
+    expect(page).to have_select('user_role', selected: I18n.t("users.roles.pupil"))
+    first('#user_role').find(:xpath, 'option[2]').select_option
+    expect(page).to have_select('user_role', selected: I18n.t("users.roles.coach"))
+    first('input[value="%s"]' % I18n.t("users.index.save") ).click
+  end
+
+  def login(role)
+    @profile = FactoryGirl.create(:profile)
+    @profile.user.role = role
+    login_as(@profile.user, :scope => :user)
+  end
 end
