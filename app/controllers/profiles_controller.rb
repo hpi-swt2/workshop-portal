@@ -1,7 +1,7 @@
 class ProfilesController < ApplicationController
   load_and_authorize_resource
 
-  before_action :set_profile, only: [:show, :edit, :update, :destroy]
+  before_action :set_profile, only: [:show, :edit, :update]
 
   # GET /profiles/1
   def show
@@ -40,12 +40,6 @@ class ProfilesController < ApplicationController
     else
       render :edit
     end
-  end
-
-  # DELETE /profiles/1
-  def destroy
-    @profile.destroy
-    redirect_to profiles_url, notice: I18n.t('profiles.successful_deletion')
   end
 
   private
