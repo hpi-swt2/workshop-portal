@@ -60,6 +60,7 @@ class Ability
     end
     if user.role? :admin
       can :manage, :all
+      cannot :destroy, Profile
     end
   end
 end

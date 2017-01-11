@@ -13,7 +13,7 @@
   </thead>
   <tbody>
     <% @profiles.each do |profile| %>
-      <% if can? :destroy, profile %>
+      <% if can? :edit, profile %>
         <tr>
           <td><%= link_to profile.id, profile_path(profile) %></td>
           <td><%= profile.user_id %></td>
@@ -21,11 +21,6 @@
           <td>
             <%= link_to t('.edit', :default => t("helpers.links.edit")),
                         edit_profile_path(profile), :class => 'btn btn-default btn-xs' %>
-            <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-                        profile_path(profile),
-                        :method => :delete,
-                        :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
-                        :class => 'btn btn-xs btn-danger' %>
           </td>
         </tr>
       <% end %>
