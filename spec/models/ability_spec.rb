@@ -106,6 +106,20 @@ describe User do
 
       expect(ability).to be_able_to(:view_applicants, Event)
     end
+
+    it "can print an event's applications as #{role}" do
+      user = FactoryGirl.create(:user, role: role)
+      ability = Ability.new(user)
+
+      expect(ability).to be_able_to(:print_applications, Event)
+    end
+  end
+
+  it "can download an participants agreement letters as organizer" do
+    user = FactoryGirl.create(:user, role: :organizer)
+    ability = Ability.new(user)
+
+    expect(ability).to be_able_to(:print_agreement_letters, Event)
   end
 
   it "cannot view and add notes to application letters as pupil" do
@@ -122,6 +136,26 @@ describe User do
     expect(ability).to_not be_able_to(:view_applicants, Event)
   end
 
+  it "cannot print applications for an event as pupil" do
+    user = FactoryGirl.create(:user, role: :pupil)
+    ability = Ability.new(user)
+
+    expect(ability).to_not be_able_to(:print_applications, Event)
+  end
+
+  it "cannot print agreement letters for an event as pupil" do
+    user = FactoryGirl.create(:user, role: :pupil)
+    ability = Ability.new(user)
+
+    expect(ability).to_not be_able_to(:print_agreement_letters, Event)
+  end  
+
+  it "cannot print agreement letters for an event as coach" do
+    user = FactoryGirl.create(:user, role: :coach)
+    ability = Ability.new(user)
+
+    expect(ability).to_not be_able_to(:print_agreement_letters, Event)
+  end  
   it "can do everything as admin" do
     user = FactoryGirl.create(:user, role: :admin)
     ability = Ability.new(user)
@@ -159,6 +193,30 @@ describe User do
     end
   end
 
+  it "can check its own application as pupil" do
+    user = FactoryGirl.create(:user, role: :pupil)
+    application = FactoryGirl.create(:application_letter, user: user)
+    ability = Ability.new(user)
+    expect(ability).to be_able_to(:check, application)
+  end
+
+  it "cannot check other pupil's applications" do
+    user = FactoryGirl.create(:user, role: :pupil)
+    another_user = FactoryGirl.create(:user, role: :pupil)
+    application = FactoryGirl.create(:application_letter, user: another_user)
+    ability = Ability.new(user)
+    expect(ability).to_not be_able_to(:check, application)
+  end
+
+ %i[coach organizer].each do |role|
+    it "cannot check applications as #{role}" do
+      user = FactoryGirl.create(:user, role: role)
+      ability = Ability.new(user)
+
+      expect(ability).to_not be_able_to(:check, ApplicationLetter)
+    end
+  end
+
   it "can update application letter status as organizer" do
     user = FactoryGirl.create(:user, role: :organizer)
     another_user = FactoryGirl.create(:user)
@@ -166,5 +224,24 @@ describe User do
     ability = Ability.new(user)
 
     expect(ability).to be_able_to(:update_status, another_application)
+  end
+
+  it "can manage events as organzier" do
+    user = FactoryGirl.create(:user, role: :organizer)
+    ability = Ability.new(user)
+    expect(ability).to be_able_to(:manage, Event)
+  end
+
+  it "can create requests as pupil" do
+    user = FactoryGirl.create(:user, role: :pupil)
+    ability = Ability.new(user)
+    expect(ability).to be_able_to(:create, Request)
+    expect(ability).to be_able_to(:new, Request)
+  end
+
+  it "can manage requests as organzier" do
+    user = FactoryGirl.create(:user, role: :organizer)
+    ability = Ability.new(user)
+    expect(ability).to be_able_to(:manage, Request)
   end
 end

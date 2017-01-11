@@ -20,9 +20,9 @@ require 'rails_helper'
 
 RSpec.describe RequestsController, type: :controller do
 
-  let(:valid_attributes) { FactoryGirl.build(:request).attributes }
+  let(:valid_attributes) { FactoryGirl.attributes_for(:request) }
 
-  let(:invalid_attributes) { FactoryGirl.build(:request, user: nil).attributes }
+  let(:invalid_attributes) { FactoryGirl.build(:request, form_of_address: nil).attributes }
 
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
@@ -67,14 +67,14 @@ RSpec.describe RequestsController, type: :controller do
       context "with valid params" do
         let(:new_attributes) {
           {
-              topics: "New awesome topics"
+              topic_of_workshop: "New awesome topics"
           }
         }
 
         it "updates the requested request" do
           put :update, id: @a_request.to_param, request: new_attributes, session: valid_session
           @a_request.reload
-          expect(@a_request.topics).to eq(new_attributes[:topics])
+          expect(@a_request.topic_of_workshop).to eq(new_attributes[:topic_of_workshop])
         end
 
         it "assigns the requested request as @request" do

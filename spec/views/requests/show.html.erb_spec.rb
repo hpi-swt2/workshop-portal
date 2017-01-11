@@ -2,11 +2,25 @@ require 'rails_helper'
 
 RSpec.describe "requests/show", type: :view do
   before(:each) do
-    @request = assign(:request, FactoryGirl.create(:request, topics: 'Topics'))
+    @aRequest = assign(:request, FactoryGirl.create(:request, topic_of_workshop: 'Topics'))
   end
 
   it "renders attributes" do
     render
-    expect(rendered).to have_text(@request.topics)
+    expect(rendered).to have_text(@aRequest.topic_of_workshop)
+  end
+
+  it "should not display edit, delete buttons for non-organizers" do
+    sign_in(FactoryGirl.create(:user, role: :coach))
+    render
+    expect(rendered).to_not have_link(I18n.t('helpers.links.edit'))
+    expect(rendered).to_not have_link(I18n.t('helpers.links.destroy'))
+  end
+
+  it "should display edit, delete buttons for organizers" do
+    sign_in(FactoryGirl.create(:user, role: :organizer))
+    render
+    expect(rendered).to have_link(I18n.t('helpers.links.edit'))
+    expect(rendered).to have_link(I18n.t('helpers.links.destroy'))
   end
 end

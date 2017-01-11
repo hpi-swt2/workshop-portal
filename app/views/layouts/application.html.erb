@@ -16,31 +16,41 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-<div class="container">
-  <%# https://github.com/seyhunak/twitter-bootstrap-rails#using-helpers %>
-  <%= nav_bar do %>
-    <%= menu_group do %>
-      <%= menu_items %>
-      <% if user_signed_in? %>
-        <%= drop_down current_user.name do %>
-          <%= dropdown_items %>
-        <% end %>
-      <% else %>
-        <%= menu_item t(:login, scope: 'navbar'), new_user_session_path %>
+<%# https://github.com/seyhunak/twitter-bootstrap-rails#using-helpers %>
+<%= nav_bar brand: t(:app_name), responsive: true, static: :top do %>
+  <%= menu_group do %>
+    <%= menu_items %>
+    <% if user_signed_in? %>
+      <%= drop_down current_user.name do %>
+        <%= dropdown_items %>
       <% end %>
-
+    <% else %>
+      <%= menu_item t(:login, scope: 'navbar'), new_user_session_path %>
     <% end %>
+
+  <% end %>
+<% end %>
+
+<%# https://github.com/seyhunak/twitter-bootstrap-rails#flash-helper %>
+<%= bootstrap_flash %>
+
+<main>
+  <% if not local_assigns[:full_width] %>
+    <div class="container">
+      <%= yield %>
+    </div>
+  <% else %>
+    <%= yield %>
   <% end %>
 
-  <%# https://github.com/seyhunak/twitter-bootstrap-rails#flash-helper %>
-  <%= bootstrap_flash %>
+  <footer class="front-section">
+    <div class="container">
+      <%= t "footer" %>
+    </div>
+  </footer>
+</main>
 
-  <main>
-    <%= yield %>
-  </main>
-
-  <%= image_tag "loader.svg", class: "loader" %>
-</div>
+<%= image_tag "loader.svg", class: "loader" %>
 
 </body>
 </html>
