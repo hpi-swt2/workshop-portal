@@ -41,7 +41,7 @@ RSpec.describe 'navbar', type: :view do
     end
   end
 
-  context "logged in as an admin" do
+  context "logged in as an admin or organizer" do
     it "shows Einstellungen, Mein Profil, Benutzerverwaltung, Ausloggen" do
       profile = FactoryGirl.create(:profile, user: (FactoryGirl.create :user, role: :admin))
       sign_in profile.user
@@ -74,7 +74,6 @@ RSpec.describe 'navbar', type: :view do
       end
     end
   end
-
 
   context "not logged in" do
     it "has a link to make a new event request" do
