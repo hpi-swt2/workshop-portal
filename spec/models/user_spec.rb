@@ -32,6 +32,14 @@ describe User do
     expect(user).to_not be_valid
   end
 
+  it "has a username described by either email or profile name if it exists" do
+    user = FactoryGirl.build(:user, email: 'email@example.com')
+    expect(user.name).to eq 'email@example.com'
+
+    user = FactoryGirl.build(:user_with_profile)
+    expect(user.name).to eq user.profile.name
+  end
+
   it "returns the users events" do
 	user = FactoryGirl.build(:user)
     true_letter = FactoryGirl.create(:application_letter_accepted, user: user)
@@ -98,6 +106,15 @@ describe User do
     current_application_letter = FactoryGirl.create(:application_letter_rejected, user: user, event: current_event)
 
     expect(current_application_letter.user.rejected_applications_count(current_event)).to eq(1)
+  end
+
+  it "filters for users with Max in their name" do
+    max = FactoryGirl.create(:user)
+    max.profile = FactoryGirl.create(:profile, first_name: "Max")
+    user3 = FactoryGirl.create(:user_with_profile)
+
+    expect(User.search("Max")).to include(max)
+    expect(User.search("Max")).to_not include(user3)
   end
 
 end
