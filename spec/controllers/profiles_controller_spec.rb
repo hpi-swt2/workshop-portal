@@ -38,13 +38,6 @@ RSpec.describe ProfilesController, type: :controller do
       sign_in @profile.user
     end
 
-    describe "GET #index" do
-      it "assigns all profiles as @profiles" do
-        get :index, params: {}, session: valid_session
-        expect(assigns(:profiles)).to eq([@profile])
-      end
-    end
-
     describe "GET #show" do
       it "assigns the requested profile as @profile" do
         get :show, id: @profile.to_param, session: valid_session
@@ -111,19 +104,6 @@ RSpec.describe ProfilesController, type: :controller do
           put :update, id: @profile.to_param, profile: invalid_attributes, session: valid_session
           expect(response).to render_template("edit")
         end
-      end
-    end
-
-    describe "DELETE #destroy" do
-      it "destroys the requested profile" do
-        expect {
-          delete :destroy, id: @profile.to_param, session: valid_session
-        }.to change(Profile, :count).by(-1)
-      end
-
-      it "redirects to the profiles list" do
-        delete :destroy, id: @profile.to_param, session: valid_session
-        expect(response).to redirect_to(profiles_url)
       end
     end
   end
