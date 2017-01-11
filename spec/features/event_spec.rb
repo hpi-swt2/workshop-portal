@@ -196,7 +196,7 @@ describe "Event", type: :feature do
     it "should display a single day date range as a single date" do
       event = FactoryGirl.create(:event, :single_day)
       visit event_path(event)
-      expect(page).to have_text(event.date_ranges.first.start_date)
+      expect(page).to have_text(I18n.l(event.date_ranges.first.start_date))
       expect(page).to_not have_text(" bis " + I18n.l(event.date_ranges.first.end_date))
     end
 
