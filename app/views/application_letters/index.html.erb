@@ -16,13 +16,13 @@
         <td><%= link_to application.event.name, event_path(application.event) %></td>
         <td><%= application.status_type %></td>
         <td>
+        <%= link_to t('.details'),
+                      check_application_letter_path(application), :class => 'btn btn-default btn-xs' %>
           <% if not application.after_deadline? %>
-              <%= link_to t('.edit', :default => t("helpers.links.edit")),
-                          edit_application_letter_path(application), :class => 'btn btn-default btn-xs' %>
               <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
                           application_letter_path(application),
                           :method => :delete,
-                          :data => {:confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?'))},
+                          :data => {:confirm => t('.confirm', :default => t("helpers.links.confirm", :default => t("application_letters.confirmApplicationDelete")))},
                           :class => 'btn btn-xs btn-danger' %>
           <% end %>
         </td>

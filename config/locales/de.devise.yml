@@ -2,6 +2,9 @@
 
 de:
   devise:
+    messages:
+      leave_blank_if_you_don_t_want_to_change_it: "Leer lassen, falls du dein Passwort jetzt nicht verändern möchtest."
+      we_need_your_current_password_to_confirm_your_changes: "Bitte ausfüllen, falls du Änderungen speichern möchtest."
     confirmations:
       confirmed: "Vielen Dank für Deine Registrierung. Bitte melde dich jetzt an."
       confirmed_and_signed_in: "Vielen Dank für Deine Registrierung. Du bist jetzt angemeldet."
@@ -35,7 +38,7 @@ de:
       updated_not_active: "Dein Passwort wurde geändert."
     registrations:
       destroyed: "Dein Account wurde gelöscht."
-      signed_up: "Du hast dich erfolgreich registriert."
+      signed_up: "Fülle nun dein Profil aus, um die Registrierung abzuschließen."
       signed_up_but_inactive: "Du hast dich erfolgreich registriert. Wir konnten Dich noch nicht anmelden, da Dein Account inaktiv ist."
       signed_up_but_locked: "Du hast dich erfolgreich registriert. Wir konnten Dich noch nicht anmelden, da Dein Account gesperrt ist."
       signed_up_but_unconfirmed: "Du hast Dich erfolgreich registriert. Wir konnten Dich noch nicht anmelden, da Dein Account noch nicht bestätigt ist. Du erhältst in Kürze eine E-Mail mit der Anleitung, wie Du Deinen Account freischalten kannst."
@@ -44,6 +47,7 @@ de:
     sessions:
       signed_in: "Erfolgreich angemeldet."
       signed_out: "Erfolgreich abgemeldet."
+      already_signed_out: "Du bist bereits ausgeloggt."
     unlocks:
       send_instructions: "Du erhältst in wenigen Minuten eine E-Mail mit der Anleitung, wie Du Deinen Account entsperren können."
       send_paranoid_instructions: "Falls Deine E-Mail-Adresse in unserer Datenbank existiert erhältst Du in wenigen Minuten eine E-Mail mit der Anleitung, wie Du Deinen Account entsperren kannst."
@@ -56,5 +60,5 @@ de:
       not_found: "nicht gefunden"
       not_locked: "ist nicht gesperrt"
       not_saved:
-        one: "Konnte %{resource} nicht speichern: ein Fehler."
-        other: "Konnte %{resource} nicht speichern: %{count} Fehler."
+        one: "%{resource} konnte nicht gespeichert werden: ein Fehler. Bitte korrigiere deine Eingabe, um fortzufahren."
+        other: "%{resource} konnte nicht gespeichert werden: %{count} Fehler. Bitte korrigiere deine Eingaben, um fortzufahren."

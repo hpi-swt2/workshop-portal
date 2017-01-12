@@ -27,3 +27,63 @@
 .tooltip .btn[disabled] {
     pointer-events: none;
 }
+
+/* styles for the event preview (every item in an event list) */
+.event-preview {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    margin: 15px 0;
+    padding-bottom: 15px;
+}
+.event-preview.event-past {
+    opacity: 0.7;
+}
+.front-section:nth-child(even) .event-preview {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+.event-list .event-preview:last-of-type {
+    border-bottom: none;
+}
+.event-preview h3 {
+    margin-top: 0;
+}
+.event-preview p {
+    overflow: hidden;
+}
+.event-date {
+    text-align: center;
+    line-height: 3em;
+    margin-right: 15px;
+    float: left;
+}
+.event-date > span {
+    display: block;
+}
+.event-day {
+    font-weight: 800;
+    font-size: 4em;
+}
+.event-month {
+    font-size: 2em;
+    font-weight: 100;
+}
+.event-year {
+    margin: -1.2em 0;
+}
+@media (max-width: 768px) {
+    .event-date {
+        float: none;
+        margin-bottom: 15px;
+    }
+    .event-day:after {
+        content: '.';
+    }
+    .event-year {
+    }
+    .event-date > span {
+        margin-left: 5px;
+        font-weight: 100;
+        display: inline-block;
+        vertical-align: middle;
+        font-size: 1.5em;
+    }
+}

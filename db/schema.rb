@@ -104,13 +104,21 @@ ActiveRecord::Schema.define(version: 20170110015814) do
   add_index "profiles", ["user_id"], name: "index_profiles_on_user_id"
 
   create_table "requests", force: :cascade do |t|
-    t.string   "topics"
-    t.integer  "user_id",    null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
+    t.integer  "form_of_address"
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "phone_number"
+    t.string   "address"
+    t.string   "email"
+    t.text     "topic_of_workshop"
+    t.text     "time_period"
+    t.integer  "number_of_participants"
+    t.string   "knowledge_level"
+    t.text     "annotations"
+    t.integer  "status",                 default: 0
   end
-
-  add_index "requests", ["user_id"], name: "index_requests_on_user_id"
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
@@ -125,7 +133,6 @@ ActiveRecord::Schema.define(version: 20170110015814) do
     t.string   "last_sign_in_ip"
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
-    t.string   "name"
     t.string   "role"
   end
 

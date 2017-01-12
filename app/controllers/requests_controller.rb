@@ -3,6 +3,7 @@ class RequestsController < ApplicationController
 
   # GET /requests
   def index
+    authorize! :index, Request
     @requests = Request.all
   end
 
@@ -53,6 +54,6 @@ class RequestsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def request_params
-      params.require(:request).permit(:topics, :user_id)
+      params.require(:request).permit(:form_of_address, :first_name, :last_name, :phone_number, :address, :topic_of_workshop, :time_period, :email, :number_of_participants, :knowledge_level, :annotations)
     end
 end

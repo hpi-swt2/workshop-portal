@@ -75,18 +75,33 @@ gem 'rubocop', '~> 0.29.1'
 # See https://github.com/plataformatec/simple_form
 # gem 'simple_form'
 
+
 # coveralls.io
 gem 'coveralls', require: false
 
 # pdf generation
 gem 'prawn'
 gem 'prawn-table'
+gem 'combine_pdf'
+
+#zip generation
+gem 'rubyzip', require: 'zip'
+
+# pdf inspection
+gem 'pdf-inspector', require: "pdf/inspector"
 
 # Simple, Heroku-friendly Rails app configuration using ENV and a single YAML file
 gem 'figaro'
 
 # Allow ORM functionality in plain ruby models
 gem 'active_attr'
+
+#to only display a limited number of items on an index page
+gem 'will_paginate', '~> 3.1.0'
+
+# Markdown renderer
+gem 'redcarpet'
+
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -135,9 +150,9 @@ group :test do
   gem 'parser', '~> 2.2.2.5'
   # Stubbing external calls by blocking traffic with WebMock.disable_net_connect! or allow:
   # gem 'webmock'
+  
+end
 
-  # PDF testing
-  gem 'pdf-inspector', require: "pdf/inspector"end
 
 group :production do
   # Use Puma web server
