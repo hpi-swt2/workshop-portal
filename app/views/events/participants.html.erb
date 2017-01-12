@@ -1,8 +1,6 @@
 <%- model_class = Event -%>
 <div class="page-header">
   <h1><%=t '.title', :default => model_class.model_name.human.titleize %> (<%= @event.kind.humanize %>)</h1>
-  <%= stylesheet_link_tag "bootstrap-colorselect" %>
-  <%= javascript_include_tag "bootstrap-colorselect" %>
 </div>
 <% if can? :view_participants, Event %>
   <%= render :partial => 'show_event' %>
