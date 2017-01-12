@@ -12,7 +12,7 @@ RSpec.feature "Event participants overview", :type => :feature do
     @application_letter = FactoryGirl.create(:application_letter_accepted, user: @user, event: @event)
     @participant_group = FactoryGirl.create(:participant_group, application_letter: @application_letter)
     visit "/events/#{@event.id}/participants"
-    select I18n.t("participant_groups.options.#{ParticipantGroup::GROUPS[9]}"), from: "participant_group[group]"
+    select I18n.t("participant_groups.options.#{ParticipantGroup::GROUPS[9]}"), from: "participant_group[group]", match: :first, visible: false
     expect(page).to have_text(I18n.t("participant_groups.update.successful"))
   end
 
