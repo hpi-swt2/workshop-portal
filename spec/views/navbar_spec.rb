@@ -62,16 +62,24 @@ RSpec.describe 'navbar', type: :view do
         render template: 'application/index', layout: 'layouts/application'
       end
 
-      it "shows Einstellungen, Mein Profil, Ausloggen" do
-        expect(rendered).to have_css(".nav .dropdown-menu a", text: I18n.t('navbar.settings'))
-        expect(rendered).to have_css(".nav .dropdown-menu a", text: I18n.t('navbar.profile'))
-        expect(rendered).to have_css(".nav .dropdown-menu a", text: I18n.t('navbar.logout'))
-        expect(rendered).to have_css(".nav .dropdown-menu a", count: 3)
-      end
-
       it "has a link to requests overview" do
         expect(rendered).to have_link(I18n.t('navbar.requests'), :href => requests_path)
       end
+    end
+  end
+
+  context "logged in as coach" do
+    before(:each) do
+      profile = FactoryGirl.create(:profile, user: (FactoryGirl.create :user, role: :coach))
+      sign_in profile.user
+      render template: 'application/index', layout: 'layouts/application'
+    end
+
+    it "shows Einstellungen, Mein Profil, Ausloggen" do
+      expect(rendered).to have_css(".nav .dropdown-menu a", text: I18n.t('navbar.settings'))
+      expect(rendered).to have_css(".nav .dropdown-menu a", text: I18n.t('navbar.profile'))
+      expect(rendered).to have_css(".nav .dropdown-menu a", text: I18n.t('navbar.logout'))
+      expect(rendered).to have_css(".nav .dropdown-menu a", count: 3)
     end
   end
 
