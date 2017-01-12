@@ -1,0 +1,22 @@
+
+.loader {
+    position: fixed;
+    width: 30px;
+    height: 30px;
+    bottom: 15px;
+    right: 15px;
+    animation: turn 2000ms linear infinite;
+    -webkit-animation: turn 2000ms linear infinite;
+    -moz-animation: turn 2000ms linear infinite;
+    -ms-animation: turn 2000ms linear infinite;
+}
+
+@keyframes turn {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+@-webkit-keyframes turn {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+

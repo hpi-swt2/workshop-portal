@@ -11,16 +11,18 @@ RSpec.describe "requests/show", type: :view do
   end
 
   it "should not display edit, delete buttons for non-organizers" do
-    sign_in(FactoryGirl.create(:user, role: :coach))
+    sign_in(FactoryGirl.create(:user, role: :pupil))
     render
     expect(rendered).to_not have_link(I18n.t('helpers.links.edit'))
     expect(rendered).to_not have_link(I18n.t('helpers.links.destroy'))
   end
 
-  it "should display edit, delete buttons for organizers" do
-    sign_in(FactoryGirl.create(:user, role: :organizer))
-    render
-    expect(rendered).to have_link(I18n.t('helpers.links.edit'))
-    expect(rendered).to have_link(I18n.t('helpers.links.destroy'))
+  it "should display edit, delete buttons for organizers and coaches" do
+    [:organizer, :coach].each do |role|
+      sign_in(FactoryGirl.create(:user, role: role))
+      render
+      expect(rendered).to have_link(I18n.t('helpers.links.edit'))
+      expect(rendered).to have_link(I18n.t('helpers.links.destroy'))
+    end
   end
 end
