@@ -16,7 +16,7 @@ de:
       deeppink: "pink"
       darkgreen: "dunkelgrün"
       lightblue: "hellblau"
-      gray: "grau"
+      black: "schwarz"
 
   activerecord:
     models:

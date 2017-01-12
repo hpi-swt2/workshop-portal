@@ -51,7 +51,7 @@ RSpec.describe ParticipantGroupsController, type: :controller do
           expect(assigns(:participant_group)).to eq(@participant_group)
         end
 
-        it "does not change the group" do
+        it "does not update the group" do
           put :update, id: @participant_group.to_param, participant_group: invalid_group, session: valid_session
           expect(@participant_group.group).to_not eq(invalid_group[:group])
         end

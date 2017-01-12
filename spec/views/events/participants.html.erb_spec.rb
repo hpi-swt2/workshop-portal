@@ -49,24 +49,28 @@ RSpec.describe "events/participants", type: :view do
     expect(rendered).to have_text(t(:unnecessary, scope:'events.participants'))
   end
 
-  it "displays groups" do
-    pending("todo")
-    fail
+  it "displays correct groups" do
+    @user = FactoryGirl.create(:user)
+    @profile = FactoryGirl.create(:profile, user: @user)
+    @event = FactoryGirl.create(:event)
+    @application_letter = FactoryGirl.create(:application_letter_accepted, user: @user, event: @event)
+    @participant_group = FactoryGirl.create(:participant_group, application_letter: @application_letter)
+    assign(:event, @event)
+    assign(:participants, @event.participants)
+    render
+    expect(rendered).to have_select('participant_group_group', selected: I18n.t("participant_groups.options.#{ParticipantGroup::GROUPS[@participant_group.group]}"))
   end
 
-  it "displays color picker with all options" do
-    pending("todo")
-    fail
-  end
-
-  it "displays success notice after new selection has been saved" do
-    pending("todo")
-    fail
-  end
-
-  it "displays alert notice after new selection failed to save" do
-    pending("todo")
-    fail
+  it "displays select element with all options" do
+    @user = FactoryGirl.create(:user)
+    @profile = FactoryGirl.create(:profile, user: @user)
+    @event = FactoryGirl.create(:event)
+    @application_letter = FactoryGirl.create(:application_letter_accepted, user: @user, event: @event)
+    @participant_group = FactoryGirl.create(:participant_group, application_letter: @application_letter)
+    assign(:event, @event)
+    assign(:participants, @event.participants)
+    render
+    expect(rendered).to have_select('participant_group_group', options: ParticipantGroup::GROUPS.map { |m| I18n.t("participant_groups.options.#{m.last}") })
   end
 
 end

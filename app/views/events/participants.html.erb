@@ -16,12 +16,11 @@
       <th><%= sort_caret(ParticipantGroup.human_attribute_name(:group), :group) %></th>
     </tr>
 
-    <% #@participants.each do |participant| %>
-    <% @participants.sort_by! {|l| @event.participantgroup_for(l).send(params[:sort]) } if params[:sort]
+    <%
+    @participants.sort_by! {|l| @event.participant_group_for(l).send(params[:sort]) } if params[:sort]
     @participants.reverse! if params[:order] == 'descending'
-    @participants.select {|l| @event.participantgroup_for(l) }.each do | participant | %>
+    @participants.select {|l| @event.participant_group_for(l) }.each do | participant | %>
     <tr>
-
       <td>
         <% unless participant.profile.nil? %>
           <%= participant.profile.name %>
@@ -42,7 +41,7 @@
         <% end %>
       </td>
       <td>
-        <%= render 'colorselect', participant_group: @event.participantgroup_for(participant) %>
+        <%= render 'colorselect', participant_group: @event.participant_group_for(participant) %>
       </td>
     </tr>
     <% end %>

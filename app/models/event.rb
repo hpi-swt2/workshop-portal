@@ -74,19 +74,11 @@ class Event < ActiveRecord::Base
     accepted_applications.collect { |a| a.user }
   end
 
-  # Returns the application letter of this event for a given user
-  #
-  # @param user [User] the user whose application letter we want
-  # @return [ApplicationLetter, nil] the user's application letter or nil
-  def application_letter_for(user)
-    self.application_letters.where(user: user).take
-  end
-
   # Returns the participant group for this event for a given participant (user). If it doesn't exist, it is created
   #
   # @param user [User] the user whose participant group we want
   # @return [ParticipantGroup] the user's participant group
-  def participantgroup_for(user)
+  def participant_group_for(user)
     application_letter = self.application_letters.where(user: user).take
     if application_letter.participant_group.nil?
       application_letter.create_participant_group(group: 0)
