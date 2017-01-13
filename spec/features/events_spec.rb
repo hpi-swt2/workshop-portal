@@ -253,7 +253,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     expect(page).to contain_ordered(names.reverse)
   end
 
-  scenario "logged in as Organizer I can filter displayed application letters by their status", js: true do
+  scenario "logged in as Organizer I can filter displayed application letters by their status and simultaneously sort them", js: true do
     login(:organizer)
     @event = FactoryGirl.create(:event_with_accepted_applications)
     @event.application_letters.each do |letter|
@@ -271,6 +271,17 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     expect(page).to have_every_text(accepted_names)
     expect(page).to have_no_text(not_accepted_names)
 
+    # sort this list by name
+    click_link I18n.t('activerecord.attributes.profile.name')
+
+    sorted_accepted_names = @event.application_letters
+      .to_a
+      .sort_by { |letter| letter.applicant_age_when_event_starts }
+      .select { |letter| letter.status.to_sym == :accepted }
+      .map {|l| l.user.profile.name }
+    expect(page).to contain_ordered(sorted_accepted_names)
+
+    # list rejected, pending
     click_button I18n.t 'events.applicants_overview.filter_by'
     uncheck I18n.t 'application_status.accepted'
     check I18n.t 'application_status.rejected'
