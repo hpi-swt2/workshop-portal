@@ -178,12 +178,24 @@ describe "Event", type: :feature do
     end
 
     it "should allow to add custom fields", js: true do
+      login_as(FactoryGirl.create(:user, role: :organizer), :scope => :user)
+
       visit new_event_path
-      click_link "Neues Feld hinzufügen"
-      fill_in "event[custom_application_fields][]", with: "Lieblingsfarbe"
 
       click_link "Neues Feld hinzufügen"
-      fill_in "event[custom_application_fields][]", with: "Lieblings 'Friends' Charakter"
+      within page.find("#custom-application-fields").all(".input-group")[0] do
+        fill_in "event[custom_application_fields][]", with: "Lieblingsfarbe"
+      end
+
+      click_link "Neues Feld hinzufügen"
+      within page.find("#custom-application-fields").all(".input-group")[1] do
+        fill_in "event[custom_application_fields][]", with: "Lieblings 'Friends' Charakter"
+      end
+
+      fill_in "Maximale Teilnehmerzahl", :with => 25
+      fill_in "event[date_ranges_attributes][][start_date]", :with => I18n.l(Date.tomorrow.next_day(2))
+      fill_in "event[date_ranges_attributes][][end_date]", :with => I18n.l(Date.tomorrow.next_day(3))
+      fill_in "event_application_deadline", :with => I18n.l(Date.tomorrow)
 
       click_button I18n.t(".events.form.publish")
 
@@ -192,7 +204,8 @@ describe "Event", type: :feature do
     end
 
     it "should not allow adding fields after event creation" do
-      visit new_event_path
+      event = FactoryGirl.create(:event)
+      visit edit_event_path(event)
       expect(page).to_not have_text("Neues Feld hinzufügen")
     end
   end
