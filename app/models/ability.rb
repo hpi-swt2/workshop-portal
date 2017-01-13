@@ -45,17 +45,19 @@ class Ability
       can [:new, :create], Request
     end
     if user.role? :coach
-      # Coaches can view Applications and participants for and upload materials for Event
-      can [:view_applicants, :view_participants, :upload_material, :print_applications], Event
+      # Coaches can view Applications and participants for and view and upload materials for Event
+      can [:view_applicants, :view_participants, :view_material, :upload_material, :print_applications], Event
       can [:view_and_add_notes, :show], ApplicationLetter
+      can [:print_applications], Event
+      can :manage, Request
       cannot [:check], ApplicationLetter
     end
     if user.role? :organizer
       can [:index, :show], Profile
       can [:index, :show, :view_and_add_notes, :update_status], ApplicationLetter
       cannot :update, ApplicationLetter
-      # Organizers can view, edit and print Applications, view participants for, upload materials for, print agreement letters for and manage Events
-      can [:view_applicants, :edit_applicants, :view_participants, :print_applications, :manage, :upload_material, :print_agreement_letters], Event
+      # Organizers can view, edit and print Applications, view participants for, view and upload materials for, print agreement letters for and manage Events
+      can [:view_applicants, :edit_applicants, :view_participants, :print_applications, :manage, :view_material, :upload_material, :print_agreement_letters], Event
       can :manage, Request
     end
     if user.role? :admin
