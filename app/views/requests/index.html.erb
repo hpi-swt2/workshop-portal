@@ -5,21 +5,20 @@
 <table class="table table-striped">
   <thead>
     <tr>
-      <th><%= model_class.human_attribute_name(:id) %></th>
-      <th><%= model_class.human_attribute_name(:first_name) %></th>
-      <th><%= model_class.human_attribute_name(:last_name) %></th>
-      <th><%= model_class.human_attribute_name(:created_at) %></th>
+      <th><%= model_class.human_attribute_name(:topic_of_workshop) %></th>
+      <th><%= model_class.human_attribute_name(:name) %></th>
+      <th><%= model_class.human_attribute_name(:time_period) %></th>
+      <th><%= model_class.human_attribute_name(:number_of_participants) %></th>
       <th><%=t '.actions', :default => t("helpers.actions") %></th>
     </tr>
   </thead>
   <tbody>
     <% @requests.each do |request| %>
       <tr>
-        <td><%= link_to request.id, request_path(request) %></td>
-        <td><%= request.first_name %></td>
-        <td><%= request.last_name %></td>
-        <td><%= request.topic_of_workshop %></td>
-        <td><%=l request.created_at %></td>
+        <td><%= link_to request.topic_of_workshop, request_path(request) %></td>
+        <td><%= request.name %></td>
+        <td><%= request.time_period %></td>
+        <td><%= request.number_of_participants %></td>
         <td>
           <% if can? :edit, request %>
             <%= link_to t('.edit', :default => t("helpers.links.edit")),

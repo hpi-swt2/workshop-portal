@@ -10,7 +10,7 @@ def user_pupil
   )
 end
 
-def user_teacher 
+def user_teacher
   User.new(
     email: "lehrer@example.com",
     password: user_password,
@@ -50,18 +50,26 @@ def user_tobi
   )
 end
 
-def user_organizer
+def user_coach
   User.new(
-    email: "organizer@workshops.hpi.de",
+    email: "coach@hpi.de",
     password: user_password,
-    role: :admin
+    role: :coach
   )
 end
 
-def user_coach
+def user_organizer
   User.new(
-    email: "coach@workshops.hpi.de",
+    email: "organizer@hpi.de",
     password: user_password,
-    role: :coach
+    role: :organizer
+  )
+end
+
+def user_admin
+  User.new(
+    email: "admin@hpi.de",
+    password: user_password,
+    role: :admin
   )
 end
