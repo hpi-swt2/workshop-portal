@@ -66,7 +66,7 @@ class Event < ActiveRecord::Base
     errors.add(:application_deadline, I18n.t('events.errors.application_deadline_before_start_of_event')) if application_deadline.present? && !date_ranges.blank? && application_deadline > start_date
   end
 
-  # Checks if the deadline is over
+  # Checks if the application deadline is over
   #
   # @param none
   # @return [Boolean] true if deadline is over

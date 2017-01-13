@@ -192,14 +192,14 @@ describe Event do
   it "is in draft phase" do
     event = FactoryGirl.build(:event)
     event.draft = true
-    expect(event.phase) to eq(:draft)
+    expect(event.phase).to eq(:draft)
   end
 
   it "is in application phase" do
     event = FactoryGirl.build(:event)
     event.draft = false
     event.application_deadline = Date.tomorrow
-    expect(event.phase) to eq(:application)
+    expect(event.phase).to eq(:application)
   end
 
   it "is in selection phase" do
@@ -207,7 +207,7 @@ describe Event do
     event.draft = false
     event.application_deadline = Date.yesterday
     event.application_status_locked = false
-    expect(event.phase) to eq(:selection)
+    expect(event.phase).to eq(:selection)
   end
 
   it "is in execution phase" do
@@ -215,6 +215,18 @@ describe Event do
     event.draft = false
     event.application_deadline = Date.yesterday
     event.application_status_locked = true
-    expect(event.phase) to eq(:execution)
+    expect(event.phase).to eq(:execution)
+  end
+
+  it "is not after application deadline" do
+    event = FactoryGirl.build(:event)
+    event.application_deadline = Date.tomorrow
+    expect(event.after_deadline?).to eq(false)
+  end
+
+  it "is after application deadline" do
+    event = FactoryGirl.build(:event)
+    event.application_deadline = Date.yesterday
+    expect(event.after_deadline?).to eq(true)
   end
 end
