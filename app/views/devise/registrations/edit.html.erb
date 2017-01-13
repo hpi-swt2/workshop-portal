@@ -4,7 +4,7 @@
     <h4><%= t('.title', :resource => Profile.model_name.human , :default => "Edit #{resource_name.to_s.humanize}") %></h4>
   </div>
   <div class="panel-body">
-
+      <%= render "profiles/form", :@profile => @user.profile %>
   </div>
 </div>
 <div class="panel panel-default devise-bs">
