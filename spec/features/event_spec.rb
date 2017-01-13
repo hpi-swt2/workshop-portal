@@ -176,6 +176,25 @@ describe "Event", type: :feature do
       expect(page).to have_css("div.has-error")
       expect(page).to have_content("kann nicht vor Start-Datum liegen", count: 1)
     end
+
+    it "should allow to add custom fields", js: true do
+      visit new_event_path
+      click_link "Neues Feld hinzufügen"
+      fill_in "event[custom_application_fields][]", with: "Lieblingsfarbe"
+
+      click_link "Neues Feld hinzufügen"
+      fill_in "event[custom_application_fields][]", with: "Lieblings 'Friends' Charakter"
+
+      click_button I18n.t(".events.form.publish")
+
+      expect(page).to have_text("Lieblingsfarbe")
+      expect(page).to have_text("Lieblings 'Friends' Charakter")
+    end
+
+    it "should not allow adding fields after event creation" do
+      visit new_event_path
+      expect(page).to_not have_text("Neues Feld hinzufügen")
+    end
   end
 
   describe "show page" do
