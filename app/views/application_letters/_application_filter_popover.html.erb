@@ -7,5 +7,7 @@
       <% end %>
       <br>
     <% end %>
+    <%= hidden_field_tag 'sort', params[:sort] if params[:sort] %>
+    <%= hidden_field_tag 'order', params[:order] if params[:order] %>
     <input class="btn btn-default btn-sm" type="submit" value="<%= t 'events.applicants_overview.filter' %>">
 </form>
