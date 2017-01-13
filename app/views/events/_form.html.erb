@@ -35,7 +35,6 @@
       <%=f.error_span(:max_participants) %>
     </div>
   </div>
-
   <div class="form-group">
     <%= f.label :date_ranges, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10 <%= 'has-error' unless @event.errors.messages[:date_ranges].empty? %>" id="event-date-pickers">
