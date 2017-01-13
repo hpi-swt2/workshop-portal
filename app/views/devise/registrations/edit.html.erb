@@ -21,10 +21,6 @@
           <%= f.label :current_password %> <i>(<%= t('devise.messages.we_need_your_current_password_to_confirm_your_changes', :default => 'we need your current password to confirm your changes') %>)</i>
           <%= f.password_field :current_password, class: "form-control" %>
         </div>
-        <div class="form-group">
-          <%= f.label :role %>
-          <%= f.collection_select(:role, User::ROLES, :to_s, lambda{|i| i.to_s.humanize}) %>
-        </div>
         <%= f.submit t('.update', :default => "Update"), class: "btn btn-primary" %>
     <% end %>
   </div>
@@ -35,25 +31,6 @@
   </div>
   <div class="panel-body">
     <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put }) do |f| %>
-<<<<<<< HEAD
-        <div class="form-group">
-          <%= f.label :password %> <i>(<%= t('devise.messages.leave_blank_if_you_don_t_want_to_change_it', :default => "leave blank if you don't want to change it") %>)</i>
-          <%= f.password_field :password, :autocomplete => "off", class: "form-control" %>
-        </div>
-        <div class="form-group">
-          <%= f.label :password_confirmation %> <i>(<%= t('devise.messages.leave_blank_if_you_don_t_want_to_change_it', :default => "leave blank if you don't want to change it") %>)</i>
-          <%= f.password_field :password_confirmation, class: "form-control"  %>
-        </div>
-        <div class="form-group">
-          <%= f.label :current_password %> <i>(<%= t('devise.messages.we_need_your_current_password_to_confirm_your_changes', :default => 'we need your current password to confirm your changes') %>)</i>
-          <%= f.password_field :current_password, class: "form-control" %>
-        </div>
-        <div class="form-group">
-          <%= f.label :role %>
-          <%= f.collection_select(:role, User::ROLES, :to_s, lambda{|i| i.to_s.humanize}) %>
-        </div>
-        <%= f.submit t('.update', :default => "Update"), class: "btn btn-primary" %>
-=======
       <div class="form-group">
         <%= f.label :email %>
         <%= f.email_field :email, autofocus: true, class: "form-control" %>
@@ -71,7 +48,6 @@
         <%= f.password_field :current_password, class: "form-control" %>
       </div>
       <%= f.submit t('.update', :default => "Update"), class: "btn btn-primary" %>
->>>>>>> dev
     <% end %>
   </div>
 </div>
