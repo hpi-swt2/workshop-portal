@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170104135212) do
+ActiveRecord::Schema.define(version: 20170111135212) do
 
   create_table "agreement_letters", force: :cascade do |t|
     t.integer  "user_id",    null: false

@@ -1,4 +1,3 @@
-<% if event.published or can? :view_unpublished, Event %>
 <div class="event-preview <%= 'event-past' if event.is_past %> clearfix">
   <%= image_tag "example.png", class: "img-rounded img-responsive img-float-corner-tr center-block" %>
   <div class="event-date">
@@ -45,4 +44,3 @@
       :class => 'btn btn-sm btn-danger' if can? :destroy, event %>
   </div>
 </div>
-<% end %>
