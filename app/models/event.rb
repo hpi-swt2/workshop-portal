@@ -180,7 +180,6 @@ class Event < ActiveRecord::Base
     return :application if !draft && !after_deadline?
     return :selection if !draft && after_deadline? && !application_status_locked
     return :execution if !draft && after_deadline? && application_status_locked
-    return :invalid
   end
 
   # Returns a label listing the number of days to the deadline if

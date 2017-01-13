@@ -188,4 +188,33 @@ describe Event do
     event.lock_application_status
     expect(event.application_status_locked).to eq(true)
   end
+
+  it "is in draft phase" do
+    event = FactoryGirl.build(:event)
+    event.draft = true
+    expect(event.phase) to eq(:draft)
+  end
+
+  it "is in application phase" do
+    event = FactoryGirl.build(:event)
+    event.draft = false
+    event.application_deadline = Date.tomorrow
+    expect(event.phase) to eq(:application)
+  end
+
+  it "is in selection phase" do
+    event = FactoryGirl.build(:event)
+    event.draft = false
+    event.application_deadline = Date.yesterday
+    event.application_status_locked = false
+    expect(event.phase) to eq(:selection)
+  end
+
+  it "is in execution phase" do
+    event = FactoryGirl.build(:event)
+    event.draft = false
+    event.application_deadline = Date.yesterday
+    event.application_status_locked = true
+    expect(event.phase) to eq(:execution)
+  end
 end
