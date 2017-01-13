@@ -48,7 +48,6 @@ class Ability
       # Coaches can view Applications and participants for and upload materials for Event
       can [:view_applicants, :view_participants, :upload_material, :print_applications], Event
       can [:view_and_add_notes, :show], ApplicationLetter
-      can :show, Profile, user: { id: user.id }
       cannot :show, Profile, user: { id: !user.id }
       cannot :view_personal_details, ApplicationLetter, user: { id: !user.id }
       cannot :check, ApplicationLetter
