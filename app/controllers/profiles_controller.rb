@@ -38,7 +38,7 @@ class ProfilesController < ApplicationController
     if @profile.update(profile_params)
       redirect_to edit_user_registration_path, notice: I18n.t('profiles.successful_update')
     else
-      render :edit
+      render "devise/registrations/edit"
     end
   end
 
