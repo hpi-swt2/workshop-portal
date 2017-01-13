@@ -4,7 +4,15 @@
     <h4><%= t('.title', :resource => Profile.model_name.human , :default => "Edit #{resource_name.to_s.humanize}") %></h4>
   </div>
   <div class="panel-body">
-      <%= render "profiles/form", :@profile => @user.profile %>
+      <% if @user.profile.present? %>
+        <%= render "profiles/form", :@profile => @user.profile %>
+      <% else %>
+          <div class="row">
+              <div class="col-lg-10 col-lg-offset-2">
+                <a href="<%= new_profile_path %>" class="btn btn-primary"> <%= I18n.t('navbar.create_profile') %> </a>
+              </div>
+          </div>
+      <% end %>
   </div>
 </div>
 <div class="panel panel-default devise-bs">
@@ -43,12 +51,6 @@
   <div class="panel-body">
     <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put, :class => 'form-horizontal' }) do |f| %>
         <div class="form-group">
-          <%= f.label :email, :class => 'control-label col-lg-2' %>
-          <div class="col-lg-10">
-            <%= f.email_field :email, autofocus: true, class: "form-control" %>
-          </div>
-        </div>
-        <div class="form-group">
           <%= f.label :password, :class => 'control-label col-lg-2' %>
           <div class="col-lg-10">
             <%= f.password_field :password, :autocomplete => "off", class: "form-control" %>
@@ -84,17 +86,6 @@
   </div>
 </div>
 
-<div class="panel panel-danger devise-bs">
-  <div class="panel-heading">
-    <h4><%= t('danger_zone') %></h4>
-  </div>
-  <div class="panel-body">
-    <div class="form-group">
-      <div class="col-lg-10 col-lg-offset-2">
-        <p>
-          <%= link_to t('.cancel_my_account', :default => "Cancel my account"), registration_path(resource_name), :data => { :confirm => t('.are_you_sure', :default => "Are you sure?") }, :method => :delete, :class => 'btn btn-danger' %>.
-        </p>
-      </div>
-    </div>
-  </div>
-</div>
+<p class="text-right">
+  <%= link_to t('.cancel_my_account', :default => "Cancel my account"), registration_path(resource_name), :data => { :confirm => t('.are_you_sure', :default => "Are you sure?") }, :method => :delete, :class => 'btn btn-danger' %>
+</p>
