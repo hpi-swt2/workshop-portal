@@ -13,4 +13,8 @@ class Request < ActiveRecord::Base
   validates_format_of :email, :with => Devise::email_regexp
   
   enum form_of_address: [:mr, :mrs, :prefer_to_omit]
+
+  def name
+    "#{first_name} #{last_name}"
+  end
 end
