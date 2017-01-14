@@ -15,3 +15,7 @@ de:
         password: Passwort
         password_confirmation: Passwort-Wiederholung
         email: E-Mail-Adresse 
+  sessions:
+    new:
+      website_name: "WorkshopPortal"
+      host_name: "Hasso-Plattner-Institut" 

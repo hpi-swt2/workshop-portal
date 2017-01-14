@@ -2,8 +2,8 @@
   <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 col-md-offset-2 col-lg-offset-2" id="wsp-login">
     <div class="row">
       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
-        <h4><%= t('.host_name') %></h4>
-        <h1><%= t('.website_name') %></h1>
+        <h4><%= t('host_name') %></h4>
+        <h1><%= t('website_name') %></h1>
       </div>
     </div>
     <div class="row">
@@ -21,11 +21,11 @@
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
               <div class="form-group">
                 <%= f.label :email %>
-                <%= f.email_field :email, autofocus: true, class: "form-control" %>
+                <%= f.email_field :email, autofocus: true, class: "form-control input-lg" %>
               </div>
               <div class="form-group">
                 <%= f.label :password %>
-                <%= f.password_field :password, autocomplete: "off", class: "form-control" %>
+                <%= f.password_field :password, autocomplete: "off", class: "form-control input-lg" %>
               </div>
               <% if devise_mapping.rememberable? %>
                 <div class="checkbox">
