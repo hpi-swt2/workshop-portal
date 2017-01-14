@@ -1,6 +1,22 @@
 # German translation for the users
 
 de:
+  users:
+    successful_role_update: "Die Rolle wurde erfolgreich aktualisiert."
+
+    index:
+      search_users: "Suche Benutzer"
+      search: "Suche"
+      save: "Speichern"
+      role: "Rolle"
+
+    roles:
+      pupil: "Nutzer"
+      coach: "Betreuer"
+      organizer: "Organisator"
+      admin: "Administrator"
+
+
   activerecord:
     models:
       user:
@@ -8,14 +24,16 @@ de:
         other: "Benutzer"
     attributes:
       user:
+        password_confirmation: "Passwort bestätigen"
         accepted_application_count: "Angenommene Bewerbungen"
         rejected_application_count: "Abgelehnte Bewerbungen"
         role: Rolle
+        created_at: "Erstellt am"
         current_password: Aktives Passwort
         password: Passwort
-        password_confirmation: Passwort-Wiederholung
         email: E-Mail-Adresse 
   sessions:
     new:
       website_name: "WorkshopPortal"
       host_name: "Hasso-Plattner-Institut" 
+

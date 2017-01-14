@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170104135212) do
+ActiveRecord::Schema.define(version: 20170110132223) do
 
   create_table "agreement_letters", force: :cascade do |t|
     t.integer  "user_id",    null: false
@@ -75,6 +75,7 @@ ActiveRecord::Schema.define(version: 20170104135212) do
     t.string   "knowledge_level"
     t.date     "application_deadline"
     t.boolean  "application_status_locked"
+    t.boolean  "participants_are_unlimited"
   end
 
   create_table "profiles", force: :cascade do |t|
@@ -97,8 +98,8 @@ ActiveRecord::Schema.define(version: 20170104135212) do
   add_index "profiles", ["user_id"], name: "index_profiles_on_user_id"
 
   create_table "requests", force: :cascade do |t|
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
     t.integer  "form_of_address"
     t.string   "first_name"
     t.string   "last_name"
@@ -110,6 +111,7 @@ ActiveRecord::Schema.define(version: 20170104135212) do
     t.integer  "number_of_participants"
     t.string   "knowledge_level"
     t.text     "annotations"
+    t.integer  "status",                 default: 0
   end
 
   create_table "users", force: :cascade do |t|
@@ -125,7 +127,6 @@ ActiveRecord::Schema.define(version: 20170104135212) do
     t.string   "last_sign_in_ip"
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
-    t.string   "name"
     t.string   "role"
   end
 

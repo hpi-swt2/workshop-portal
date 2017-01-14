@@ -144,6 +144,15 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     end
   end
 
+  scenario "logged in as Organizer I can push the accept all button to accept all applicants" do
+    login(:organizer)
+    @event = FactoryGirl.create :event, :with_diverse_open_applications, participants_are_unlimited: true
+    visit event_path(@event)
+    click_link I18n.t "events.applicants_overview.accept_all"
+    application_letters = ApplicationLetter.where(event: @event.id)
+    expect(application_letters.all? { |application_letter| application_letter.status == 'accepted' }).to eq(true)
+  end
+
   scenario "logged in as Organizer and viewing the participants page all checkboxes are checked when pressing the \"check all\" button", js: true do
     login(:organizer)
     @user = FactoryGirl.create(:user)
@@ -253,7 +262,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     expect(page).to contain_ordered(names.reverse)
   end
 
-  scenario "logged in as Organizer I can filter displayed application letters by their status", js: true do
+  scenario "logged in as Organizer I can filter displayed application letters by their status and simultaneously sort them", js: true do
     login(:organizer)
     @event = FactoryGirl.create(:event_with_accepted_applications)
     @event.application_letters.each do |letter|
@@ -271,6 +280,17 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     expect(page).to have_every_text(accepted_names)
     expect(page).to have_no_text(not_accepted_names)
 
+    # sort this list by name
+    click_link I18n.t('activerecord.attributes.profile.name')
+
+    sorted_accepted_names = @event.application_letters
+      .to_a
+      .sort_by { |letter| letter.applicant_age_when_event_starts }
+      .select { |letter| letter.status.to_sym == :accepted }
+      .map {|l| l.user.profile.name }
+    expect(page).to contain_ordered(sorted_accepted_names)
+
+    # list rejected, pending
     click_button I18n.t 'events.applicants_overview.filter_by'
     uncheck I18n.t 'application_status.accepted'
     check I18n.t 'application_status.rejected'

@@ -79,6 +79,7 @@ gem 'rubocop', '~> 0.29.1'
 # See https://github.com/plataformatec/simple_form
 # gem 'simple_form'
 
+
 # coveralls.io
 gem 'coveralls', require: false
 
@@ -99,8 +100,12 @@ gem 'figaro'
 # Allow ORM functionality in plain ruby models
 gem 'active_attr'
 
+#to only display a limited number of items on an index page
+gem 'will_paginate', '~> 3.1.0'
+
 # Markdown renderer
 gem 'redcarpet'
+
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
