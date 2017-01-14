@@ -13,13 +13,7 @@
   <dt><strong><%= model_class.human_attribute_name(:number_of_participants) %>:</strong></dt>
   <dd><%= @request.number_of_participants %></dd>
   <dt><strong><%= model_class.human_attribute_name(:status) %>:</strong></dt>
-  <dd>
-    <%= @request.status %>
-    <% if (can? :edit, @request) && (@request.open?) %>
-      <%= link_to t('requests.form.accept'),
-                accept_request_path(@request.id), :class => 'btn btn-success' %>
-    <% end %>
-  </dd>
+  <dd><%= @request.status %></dd>
 </dl>
 
 <%= link_to t('.back', :default => t("helpers.links.back")),
@@ -27,6 +21,10 @@
 <% if can? :edit, @request %>
   <%= link_to t('.edit', :default => t("helpers.links.edit")),
               edit_request_path(@request), :class => 'btn btn-default' %>
+  <% if @request.open? %>
+    <%= link_to t('requests.form.accept'),
+              accept_request_path(@request.id), :class => 'btn btn-success' %>
+  <% end %>
 <% end %>
 <% if can? :destroy, @request %>
   <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
