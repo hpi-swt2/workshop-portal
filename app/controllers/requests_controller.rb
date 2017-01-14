@@ -49,11 +49,8 @@ class RequestsController < ApplicationController
   def accept
     authorize! :change_status, @request
     @request.status = :accepted
-    if @request.save
-      redirect_to @request, notice: I18n.t('requests.notice.was_accepted')
-    else
-      render :show
-    end
+    @request.save!
+    redirect_to @request, notice: I18n.t('requests.notice.was_accepted')
   end
 
   private
