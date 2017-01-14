@@ -65,6 +65,7 @@ RSpec.describe "events/show", type: :view do
   end
 
   it "should not display accept-all-button for non-organizers" do
+    @event.max_participants = Float::INFINITY
     [:coach, :student].each do | each |
       sign_in(FactoryGirl.create(:user, role: each))
       render
@@ -83,7 +84,7 @@ RSpec.describe "events/show", type: :view do
     sign_in(FactoryGirl.create(:user, role: :organizer))
     @event.max_participants = 1
     2.times do
-      @application_letter = FactoryGirl.create(:application_letter, user: FactoryGirl.create(:user, role: :admin), event: @event)
+      @application_letter = FactoryGirl.create(:application_letter, user: FactoryGirl.create(:user), event: @event)
       @application_letter.user.profile = FactoryGirl.build(:profile)
       @event.application_letters.push(@application_letter)
     end
