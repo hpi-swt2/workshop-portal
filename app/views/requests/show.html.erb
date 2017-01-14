@@ -13,7 +13,7 @@
   <dt><strong><%= model_class.human_attribute_name(:number_of_participants) %>:</strong></dt>
   <dd><%= @request.number_of_participants %></dd>
   <dt><strong><%= model_class.human_attribute_name(:status) %>:</strong></dt>
-  <dd><%= @request.status %></dd>
+  <dd><%= t(@request.status, scope: 'activerecord.attributes.request.statuses') %></dd>
 </dl>
 
 <%= link_to t('.back', :default => t("helpers.links.back")),
