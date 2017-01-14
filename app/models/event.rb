@@ -22,6 +22,25 @@ class Event < ActiveRecord::Base
   has_many :date_ranges
   accepts_nested_attributes_for :date_ranges
 
+  # Setter for max_participants
+  # @param [Int Float] the max number of participants for the event or infinity if it is not limited
+  # @return none
+  def max_participants=(value)
+    if value == Float::INFINITY
+      self[:participants_are_unlimited] = true
+    else
+      self[:participants_are_unlimited] = false
+      self[:max_participants] = value
+    end
+  end
+
+  # Getter for max_participants
+  # @param none
+  # @return [Int Float] the max number of participants for the event or infinity if it is not limited
+  def max_participants
+    participants_are_unlimited ? Float::INFINITY : self[:max_participants]
+  end
+
   # Returns all participants for this event in following order:
   # 1. All participants that have to submit an letter of agreement but did not yet do so, ordered by name.
   # 2. All participants that have to submit an letter of agreement and did do so, ordered by name.
@@ -91,6 +110,16 @@ class Event < ActiveRecord::Base
   # @return [Boolean] if status of all application_letters is not pending
   def applications_classified?
     application_letters.all? { |application_letter| application_letter.status != 'pending' }
+  end
+
+  # Sets the status of all the event's application letters to accepted
+  #
+  # @param none
+  # @return none
+  def accept_all_application_letters
+    application_letters.each do |application_letter|
+      application_letter.update(status: :accepted)
+    end
   end
 
   # Returns a string of all email addresses of accepted applications

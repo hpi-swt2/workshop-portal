@@ -181,11 +181,30 @@ describe Event do
     expect(email).to have_attributes(hide_recipients: false, recipients: event.email_adresses_of_rejected_applicants, reply_to: 'workshop.portal@hpi.de', subject: '', content: '')
   end
 
+  it "accepts all its application letters" do
+    event = FactoryGirl.create :event, :with_diverse_open_applications
+    event.accept_all_application_letters
+    application_letters = ApplicationLetter.where(event: event.id)
+    expect(application_letters.all? { |application_letter| application_letter.status == 'accepted' }).to eq(true)
+  end
+
   it "locks the application status changing of the event" do
     event = FactoryGirl.create(:event)
     event.application_status_locked = false
     event.save
     event.lock_application_status
     expect(event.application_status_locked).to eq(true)
+  end
+
+  it "can have unlimited participants" do
+    event = FactoryGirl.create(:event)
+    event.max_participants = Float::INFINITY
+    expect(event.participants_are_unlimited).to be(true)
+  end
+
+  it "has infinite max participants if max participants is unlimited" do
+    event = FactoryGirl.create(:event)
+    event.participants_are_unlimited = true
+    expect(event.max_participants).to be(Float::INFINITY)
   end
 end
