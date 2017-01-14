@@ -188,6 +188,17 @@ class EventsController < ApplicationController
     redirect_to event_path(event), notice: I18n.t("events.material_area.success_message")
   end
 
+  # POST /events/1/download_material
+  def download_material
+    event = Event.find(params[:event_id])
+    file_full_path = File.join(event.material_path, params[:file])
+    unless File.exists?(file_full_path)
+      redirect_to event_path(event), alert: t("events.material_area.download_file_not_found")
+      return false
+    end
+    send_file file_full_path, :x_sendfile => true
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_event

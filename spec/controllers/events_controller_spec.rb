@@ -239,6 +239,31 @@ RSpec.describe EventsController, type: :controller do
     end
   end
 
+  describe "POST #download_material" do
+    before :each do
+      filepath = Rails.root.join('spec/testfiles/actual.pdf')
+      @file = fixture_file_upload(filepath, 'application/pdf')
+      @event = Event.create! valid_attributes
+      File.write(File.join(@event.material_path, @file.original_filename), @file.read, mode: "wb")
+    end
+
+    after :each do
+      filepath = File.join(@event.material_path, @file.original_filename)
+      File.delete(filepath) if File.exist?(filepath)
+    end
+
+    it "download a file from the event's material directory" do
+      post :download_material, event_id: @event.to_param, session: valid_session, file: @file.original_filename
+      response.header['Content-Type'].should eql 'application/pdf'
+    end
+
+    it "shows error if file was not found in event's material directory" do
+      post :download_material, event_id: @event.to_param, session: valid_session, file: "dump.pdf"
+      expect(response).to redirect_to :action => :show, :id => @event.id
+      expect(flash[:alert]).to match(I18n.t(:download_file_not_found, scope: 'events.material_area'))
+    end
+  end
+
   describe "POST #create" do
     context "with valid params" do
       it "creates a new Event" do

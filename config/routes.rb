@@ -17,6 +17,7 @@ Rails.application.routes.draw do
     get 'badges'
     post 'badges' => 'events#print_badges', as: :print_badges
     post 'upload_material' => 'events#upload_material', as: :upload_material
+    post 'download_material' => 'events#download_material', as: :download_material
   end
   resources :profiles, except: [:index, :destroy]
   devise_for :users, :controllers => {:registrations => "users/registrations"}
