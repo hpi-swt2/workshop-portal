@@ -43,7 +43,6 @@ class Ability
       # Pupils can upload their letters of agreement
       can [:create], AgreementLetter
       can [:new, :create], Request
-      cannot :check, ApplicationLetter, user: { id: !user.id }
       cannot :view_personal_details, ApplicationLetter, user: { id: !user.id }
     end
     if user.role? :coach
@@ -52,6 +51,7 @@ class Ability
       can [:view_and_add_notes, :show], ApplicationLetter
       can [:print_applications], Event
       can :manage, Request
+      cannot :check, ApplicationLetter
     end
     if user.role? :organizer
       can [:index, :show], Profile
