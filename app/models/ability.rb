@@ -50,7 +50,6 @@ class Ability
       can [:view_and_add_notes, :show], ApplicationLetter
       can [:print_applications], Event
       can :manage, Request
-      cannot [:check], ApplicationLetter
       cannot :show, Profile, user: { id: !user.id }
       cannot :view_personal_details, ApplicationLetter, user: { id: !user.id }
       cannot :check, ApplicationLetter
