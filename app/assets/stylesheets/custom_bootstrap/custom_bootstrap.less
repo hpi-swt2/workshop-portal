@@ -163,10 +163,17 @@ body {
 		}
 	}
 }
+
+.wsp-home {
+	background-color: lighten(#F7B21C, 30%);
+}
  
 .front-section {
    border-bottom: 1px solid #eee;
-   padding: 120px 0;
+   .container {
+   	margin-top: 120px;
+   	margin-bottom: 120px;
+   }
    &:first-child {
    	padding-top: 30px;
  	}
@@ -179,8 +186,6 @@ body {
 	}
 
 	&:first-of-type {
-		margin-top: -120px;
-		padding-top: 120px;
 		min-height: 100vh;
 
 		h1 {
