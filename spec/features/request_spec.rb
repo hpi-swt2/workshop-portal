@@ -70,7 +70,8 @@ describe "workshop requests", type: :feature do
       it "should allow me to change the status to :accepted" do
         request = FactoryGirl.create(:request, status: :open)
         visit(request_path(request))
-        expect(page).to have_text(request.status)
+        status = I18n.t(@request.status, scope: 'activerecord.attributes.request.statuses')
+        expect(page).to have_text(status)
         click_link I18n.t('requests.form.accept')
         request = Request.find(request.id)
         expect(request.status.to_sym).to eq(:accepted)

@@ -11,7 +11,7 @@ RSpec.describe "requests/show", type: :view do
     expect(rendered).to have_text(@aRequest.first_name)
     expect(rendered).to have_text(@aRequest.last_name)
     expect(rendered).to have_text(@aRequest.number_of_participants)
-    expect(rendered).to have_text(@aRequest.status)
+    expect(rendered).to have_text(I18n.t(@aRequest.status, scope: 'activerecord.attributes.request.statuses'))
   end
 
   it "should not display edit, delete buttons for non-organizers" do
