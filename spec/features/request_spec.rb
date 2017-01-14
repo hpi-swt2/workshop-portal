@@ -73,7 +73,7 @@ describe "workshop requests", type: :feature do
         expect(page).to have_text(request.status)
         click_link I18n.t('requests.form.accept')
         request = Request.find(request.id)
-        expect(request.status).to eql(:accepted)
+        expect(request.status.to_sym).to eq(:accepted)
         expect(page).to have_text(I18n.t('requests.notice.was_accepted'))
       end
     end
