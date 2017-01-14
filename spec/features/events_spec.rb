@@ -144,6 +144,63 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     end
   end
 
+  scenario "logged in as Organizer and viewing the participants page all checkboxes are checked when pressing the \"check all\" button", js: true do
+    login(:organizer)
+    @user = FactoryGirl.create(:user)
+    @profile = FactoryGirl.create(:profile, user: @user, birth_date: 15.years.ago)
+    @event = FactoryGirl.create(:event)
+    @application = FactoryGirl.create(:application_letter_accepted, user: @user, event: @event)
+    @agreement = FactoryGirl.create(:agreement_letter, user: @user, event: @event)
+    visit event_participants_path(@event)
+    check 'select_all_participants'
+    all('input[type=checkbox]').each do |checkbox|
+      expect(checkbox).to be_checked
+    end
+  end
+
+  scenario "logged in as Organizer when I want to download agreement letters but no participants are selected, it displays error message" do
+    login(:organizer)
+    @event = FactoryGirl.create(:event_with_accepted_applications_and_agreement_letters)
+    visit event_participants_path(@event)
+    click_button I18n.t "events.agreement_letters_download.download_all_as"
+    expect(page).to have_text(I18n.t "events.agreement_letters_download.notices.no_participants_selected")
+  end
+
+  scenario "logged in as Organizer when I want to download agreement letters but no participants have agreement letters, it displays error message" do
+    login(:organizer)
+    @event = FactoryGirl.create(:event_with_accepted_applications_and_agreement_letters)
+    visit event_participants_path(@event)
+    find(:css, "#selected_participants_[value='2']").set(true)
+    find("option[value='zip']").select_option
+    click_button I18n.t "events.agreement_letters_download.download_all_as"
+    expect(page).to have_text(I18n.t "events.agreement_letters_download.notices.no_agreement_letters")
+    visit event_participants_path(@event)
+    find(:css, "#selected_participants_[value='2']").set(true)
+    find("option[value='pdf']").select_option
+    click_button I18n.t "events.agreement_letters_download.download_all_as"
+    expect(page).to have_text(I18n.t "events.agreement_letters_download.notices.no_agreement_letters")
+  end
+
+  scenario "logged in as Organizer when I want to download agreement letters in a zip file, I can do so", js: true do
+    login(:organizer)
+    @event = FactoryGirl.create(:event_with_accepted_applications_and_agreement_letters)
+    visit event_participants_path(@event)
+    check 'select_all_participants'
+    find("option[value='zip']").select_option
+    click_button I18n.t "events.agreement_letters_download.download_all_as"
+    page.response_headers['Content-Type'].should eq "application/zip"
+  end
+
+  scenario "logged in as Organizer when I want to download agreement letters in a pdf file, I can do so", js: true do
+    login(:organizer)
+    @event = FactoryGirl.create(:event_with_accepted_applications_and_agreement_letters)
+    visit event_participants_path(@event)
+    check 'select_all_participants'
+    find("option[value='pdf']").select_option
+    click_button I18n.t "events.agreement_letters_download.download_all_as"
+    page.response_headers['Content-Type'].should eq "application/pdf"
+  end
+
   scenario "logged in as Organizer I can lock the event application statuses by pressing one of the email buttons" do
     login(:organizer)
     @pupil = FactoryGirl.create(:profile)
@@ -196,7 +253,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     expect(page).to contain_ordered(names.reverse)
   end
 
-  scenario "logged in as Organizer I can filter displayed application letters by their status", js: true do
+  scenario "logged in as Organizer I can filter displayed application letters by their status and simultaneously sort them", js: true do
     login(:organizer)
     @event = FactoryGirl.create(:event_with_accepted_applications)
     @event.application_letters.each do |letter|
@@ -214,6 +271,17 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     expect(page).to have_every_text(accepted_names)
     expect(page).to have_no_text(not_accepted_names)
 
+    # sort this list by name
+    click_link I18n.t('activerecord.attributes.profile.name')
+
+    sorted_accepted_names = @event.application_letters
+      .to_a
+      .sort_by { |letter| letter.applicant_age_when_event_starts }
+      .select { |letter| letter.status.to_sym == :accepted }
+      .map {|l| l.user.profile.name }
+    expect(page).to contain_ordered(sorted_accepted_names)
+
+    # list rejected, pending
     click_button I18n.t 'events.applicants_overview.filter_by'
     uncheck I18n.t 'application_status.accepted'
     check I18n.t 'application_status.rejected'

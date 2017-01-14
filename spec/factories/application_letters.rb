@@ -52,4 +52,11 @@ FactoryGirl.define do
   factory :application_letter_alternative, parent: :application_letter do
     status :alternative
   end
+
+  factory :accepted_application_with_agreement_letters, parent: :application_letter do
+    status :accepted
+    after(:build) do |application_letter|
+      FactoryGirl.create(:real_agreement_letter, user: application_letter.user, event: application_letter.event)
+    end
+  end
 end

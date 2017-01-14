@@ -3,6 +3,7 @@ class RequestsController < ApplicationController
 
   # GET /requests
   def index
+    authorize! :index, Request
     @requests = Request.all
   end
 

@@ -14,4 +14,8 @@ class Request < ActiveRecord::Base
 
   enum form_of_address: [:mr, :mrs, :prefer_to_omit]
   enum status: [:open, :accepted]  # per database declaration, the first value is default
+
+  def name
+    "#{first_name} #{last_name}"
+  end
 end
