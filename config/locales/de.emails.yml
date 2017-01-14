@@ -4,6 +4,7 @@ de:
   emails:
     send_email:
       sending_successful: 'Email wurde erfolgreich versendet'
+      sending_failed: 'Email konnte nicht versenden werden'
     email_form:
       further_recipients: 'Andere Empfänger'
       show_recipients: 'Sichtbar'

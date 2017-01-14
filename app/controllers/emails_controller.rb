@@ -1,8 +1,13 @@
 class EmailsController < ApplicationController
   def send_email
     @email = Email.new(email_params)
-    Mailer.send_generic_email(@email.hide_recipients, @email.recipients, @email.reply_to, @email.subject, @email.content)
-    redirect_to :events, notice: t('.sending_successful')
+    if @email.valid?
+      Mailer.send_generic_email(@email.hide_recipients, @email.recipients, @email.reply_to, @email.subject, @email.content)
+      redirect_to :events, notice: t('.sending_successful')
+    elsif
+      redirect_to :back, alert: t('.sending_failed')
+    end
+
   end
 
   private
