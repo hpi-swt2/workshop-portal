@@ -64,10 +64,6 @@ RSpec.describe RequestsController, type: :controller do
     end
 
     describe "GET #accept" do
-      it "sets the status to accepted if requested by an organizer" do
-        get :accept, id: @a_request.to_param, session: valid_session
-        expect(@a_request.status.to_sym).to eq(:accepted)
-      end
       it "rejects the request for normal users" do
         get :accept, id: @a_request.to_param, session: valid_session
         expect(@a_request.status.to_sym).to eq(:open)
