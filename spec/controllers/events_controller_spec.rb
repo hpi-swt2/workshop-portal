@@ -244,7 +244,7 @@ RSpec.describe EventsController, type: :controller do
       filepath = Rails.root.join('spec/testfiles/actual.pdf')
       @file = fixture_file_upload(filepath, 'application/pdf')
       @event = Event.create! valid_attributes
-      File.write(File.join(@event.material_path, @file.original_filename), @file.read, mode: "wb")
+      post :upload_material, event_id: @event.to_param, session: valid_session, file_upload: @file
     end
 
     after :each do
