@@ -241,6 +241,10 @@ RSpec.describe EventsController, type: :controller do
 
   describe "POST #download_material" do
     before :each do
+      @user = FactoryGirl.create(:user, role: :coach)
+      @user.profile ||= FactoryGirl.create(:profile)
+      sign_in @user
+
       filepath = Rails.root.join('spec/testfiles/actual.pdf')
       @file = fixture_file_upload(filepath, 'application/pdf')
       @event = Event.create! valid_attributes
@@ -254,7 +258,13 @@ RSpec.describe EventsController, type: :controller do
 
     it "download a file from the event's material directory" do
       post :download_material, event_id: @event.to_param, session: valid_session, file: @file.original_filename
-      response.header['Content-Type'].should eql 'application/pdf'
+      expect(response.header['Content-Type']).to match('application/pdf')
+    end
+
+    it "shows error if no file was given" do
+      post :download_material, event_id: @event.to_param, session: valid_session
+      expect(response).to redirect_to :action => :show, :id => @event.id
+      expect(flash[:alert]).to match(I18n.t(:no_file_given, scope: 'events.material_area'))
     end
 
     it "shows error if file was not found in event's material directory" do
