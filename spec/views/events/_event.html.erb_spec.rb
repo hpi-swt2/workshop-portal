@@ -6,6 +6,13 @@ RSpec.describe "events/_event", type: :view do
     @event = assign(:event, FactoryGirl.create(:event))
   end
 
+  %i[pupil admin].each do |role|
+    it "as #{role} you can see the apply button" do
+      render partial: 'events/event.html.erb', locals: {event: @event}
+      expect(rendered).to have_link(t('helpers.links.apply'), href: new_application_letter_path(event_id: @event.id))
+    end
+  end
+
   %i[coach organizer].each do |role|
     it "as #{role} you can not see the apply button" do
       render partial: 'events/event.html.erb', locals: {event: @event}
