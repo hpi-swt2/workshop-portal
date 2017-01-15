@@ -68,15 +68,16 @@ describe "workshop requests", type: :feature do
         login_as(organizer, scope: :user)
       end
 
-      it "should allow me to change the status to :accepted" do
+      it "should allow me to change the status to :accepted and display the change" do
         request = FactoryGirl.create(:request, status: :open)
         visit(request_path(request))
         status = I18n.t(@request.status, scope: 'activerecord.attributes.request.statuses')
         expect(page).to have_text(status)
         click_link I18n.t('requests.form.accept')
-        request = Request.find(request.id)
-        expect(request.status.to_sym).to eq(:accepted)
         expect(page).to have_text(I18n.t('requests.notice.was_accepted'))
+        visit(request_path(request))
+        accepted_status = I18n.t 'activerecord.attributes.request.statuses.accepted'
+        expect(page).to have_text(accepted_status)
       end
     end
   end
