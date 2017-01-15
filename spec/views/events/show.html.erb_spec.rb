@@ -7,7 +7,7 @@ RSpec.describe "events/show", type: :view do
     @application_letter.user.profile = FactoryGirl.build(:profile)
     @event.application_letters.push(@application_letter)
     @application_letters = @event.application_letters
-    @material_files = []
+    @material_files = ["spec/testfiles/actual.pdf"]
     sign_in(@application_letter.user)
   end
 
@@ -97,6 +97,8 @@ RSpec.describe "events/show", type: :view do
     expect(rendered).to have_text(t(:title, title: @event.name, scope: 'events.material_area'))
     expect(rendered).to have_css("th", :text => t(:table_name, scope:'events.material_area'))
     expect(rendered).to have_css("th", :text => t(:table_type, scope:'events.material_area'))
+    expect(rendered).to have_css("th", :text => t(:table_action, scope:'events.material_area'))
     expect(rendered).to have_button(t(:upload, scope: 'events.material_area'))
+    expect(rendered).to have_button(t(:download, scope: 'events.material_area'))
   end
 end
