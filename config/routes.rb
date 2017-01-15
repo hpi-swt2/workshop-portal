@@ -38,6 +38,12 @@ Rails.application.routes.draw do
 
   post 'send_email' => 'emails#send_email'
 
+  resources :requests do
+    member do
+      get :accept
+    end
+  end
+
   # Example of named route that can be invoked with purchase_url(id: product.id)
   #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase
 
