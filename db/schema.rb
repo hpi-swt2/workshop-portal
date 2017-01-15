@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170110132223) do
+ActiveRecord::Schema.define(version: 20170114132153) do
 
   create_table "agreement_letters", force: :cascade do |t|
     t.integer  "user_id",    null: false
@@ -104,13 +104,14 @@ ActiveRecord::Schema.define(version: 20170110132223) do
     t.string   "first_name"
     t.string   "last_name"
     t.string   "phone_number"
-    t.string   "address"
+    t.string   "street"
     t.string   "email"
     t.text     "topic_of_workshop"
     t.text     "time_period"
     t.integer  "number_of_participants"
     t.string   "knowledge_level"
     t.text     "annotations"
+    t.string   "zip_code_city"
   end
 
   create_table "users", force: :cascade do |t|
