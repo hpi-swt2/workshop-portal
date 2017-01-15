@@ -11,7 +11,8 @@ describe "workshop requests", type: :feature do
       fill_in "Vorname", :with => "Martina"
       fill_in "Nachname", :with => "Mustermann"
       fill_in "Telefonnummer", :with => "0123456789"
-      fill_in "Adresse", :with => "Musterstraße 3"
+      fill_in "Straße und Hausnummer", :with => "Musterstraße 3"
+      fill_in "PLZ und Stadt", :with => "12345 Musterstadt"
       fill_in "E-Mail-Adresse", :with => "martina@mustermann.de"
       fill_in "Thema des Workshops", :with => "Musterthema"
     end
