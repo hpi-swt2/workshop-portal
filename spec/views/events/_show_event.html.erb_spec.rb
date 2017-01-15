@@ -1,0 +1,15 @@
+require 'rails_helper'
+require 'cancan/matchers'
+
+RSpec.describe "events/_show_event", type: :view do
+  before(:each) do
+    @event = assign(:event, FactoryGirl.create(:event))
+  end
+
+  %i[coach organizer].each do |role|
+    it "as #{role} you can not see the apply button" do
+      render
+      expect(rendered).to_not have_link(t('helpers.links.apply'), href: new_application_letter_path(event_id: @event.id))
+    end
+  end
+end
