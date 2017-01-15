@@ -170,6 +170,13 @@ RSpec.describe EventsController, type: :controller do
         expect(assigns(:email)).to have_attributes(hide_recipients: false, recipients: @event.email_adresses_of_rejected_applicants, reply_to: 'workshop.portal@hpi.de', subject: '', content: '')
       end
     end
+
+    describe "GET #accept_all_applicants" do
+      it "should redirect to the event" do
+        get :accept_all_applicants, id: @event.to_param, session: valid_session
+        expect(response).to redirect_to(@event)
+      end
+    end
   end
 
   describe "GET #badges" do
