@@ -21,7 +21,9 @@
   end %></p>
 
   <div class="pull-right">
-    <%= link_to t("helpers.links.apply"), new_application_letter_path(:event_id => event.id), class: "btn btn-success btn-sm" %>
+    <% if can? :apply, Event %>
+      <%= link_to t('helpers.links.apply'), new_application_letter_path(:event_id => event.id), class: "btn btn-success btn-sm" %>
+    <% end %>
     <%= link_to t('events.list.more'), event_path(event), class: "btn btn-default btn-sm" %>
   </div>
 
