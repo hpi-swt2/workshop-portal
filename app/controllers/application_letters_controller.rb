@@ -25,7 +25,14 @@ class ApplicationLettersController < ApplicationController
       flash.keep(:event_id)
       return redirect_to new_profile_path, :alert => message
     end
-    @application_letter = ApplicationLetter.new
+
+    last_application_letter = ApplicationLetter.where(user: current_user).order("created_at").last
+    if last_application_letter.nil?
+      @application_letter = ApplicationLetter.new
+    else
+      @application_letter = last_application_letter.dup
+      @application_letter.event = nil
+    end
     authorize! :new, @application_letter
   end
 
