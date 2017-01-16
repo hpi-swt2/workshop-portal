@@ -32,6 +32,9 @@ de:
       saving_fails: "Datei konnte nicht gespeichert werden"
       table_name: "Dateiname"
       table_type: "Dateityp"
+      table_action: "Aktion"
+      download: "Herunterladen"
+      download_file_not_found: "Datei wurde nicht gefunden"
     badges:
         print: "Namensschilder drucken"
         title: "Namensschilder drucken für das Event "

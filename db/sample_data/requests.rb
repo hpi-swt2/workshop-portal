@@ -8,6 +8,7 @@ def request_hardware_entwicklung
     zip_code_city: "12345 Musterstadt",
     email: "mustermann@example.de",
     topic_of_workshop: "Hardware-Entwicklung mit einem CAD-System",
-    number_of_participants: 12
+    number_of_participants: 12,
+    status: :open
   )
 end

@@ -17,6 +17,7 @@ Rails.application.routes.draw do
     get 'badges'
     post 'badges' => 'events#print_badges', as: :print_badges
     post 'upload_material' => 'events#upload_material', as: :upload_material
+    post 'download_material' => 'events#download_material', as: :download_material
   end
   resources :profiles, except: [:index, :destroy]
   devise_for :users, :controllers => {:registrations => "users/registrations"}
@@ -37,6 +38,12 @@ Rails.application.routes.draw do
   get 'events/:id/accept_all_applicants' => 'events#accept_all_applicants', as: :event_accept_all_applicants
 
   post 'send_email' => 'emails#send_email'
+
+  resources :requests do
+    member do
+      get :accept
+    end
+  end
 
   # Example of named route that can be invoked with purchase_url(id: product.id)
   #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase
