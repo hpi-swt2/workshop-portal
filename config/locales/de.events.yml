@@ -52,7 +52,7 @@ de:
         no_participants_selected: "Keine Teilnehmer ausgewählt"
         no_agreement_letters: "Keiner der gewählten Teilnehmer hat eine Einverständniserklärung"
       select_all: "Alle auswählen"
-      download_all_as: "Alle herunterladen als"
+      download_all_as: "Einverständniserklärungen herunterladen als"
     kinds:
      workshop: "Workshop"
      camp: "Camp"
