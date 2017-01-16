@@ -23,6 +23,7 @@ FactoryGirl.define do
     allergies "Many"
     user
     event
+    custom_application_fields ["Value 1", "Value 2", "Value 3"]
   end
 
   factory :application_letter2, parent: :application_letter do
