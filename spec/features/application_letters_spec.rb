@@ -54,8 +54,6 @@ RSpec.feature "Application Letter Overview", :type => :feature do
                                  checked: @application_letter.send(attr))
     end
 
-    check_filled_field.call(:experience)
-    check_filled_field.call(:motivation)
     check_filled_field.call(:coding_skills)
     check_filled_field.call(:emergency_number)
     check_filled_field.call(:allergies)
