@@ -63,6 +63,14 @@ RSpec.describe RequestsController, type: :controller do
       end
     end
 
+    describe "GET #accept" do
+      it "rejects the request for normal users" do
+        get :accept, id: @a_request.to_param, session: valid_session
+        expect(@a_request.status.to_sym).to eq(:open)
+      end
+    end
+
+
     describe "PUT #update" do
       context "with valid params" do
         let(:new_attributes) {
