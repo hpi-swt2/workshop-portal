@@ -11,7 +11,6 @@ RSpec.describe 'navbar', type: :view do
       sign_in user
       render template: 'application/index', layout: 'layouts/application'
       expect(rendered).to have_css(".nav a", text: I18n.t('navbar.events'))
-      expect(rendered).to have_css(".nav a", text: I18n.t('navbar.requests'))
     end
   end
 
@@ -29,6 +28,7 @@ RSpec.describe 'navbar', type: :view do
       expect(rendered).to have_css(".nav .dropdown-menu a", text: I18n.t('navbar.logout'))
       expect(rendered).to have_css(".nav .dropdown-menu a", count: 4)
     end
+
   end
 
   context "logged in as pupil with a profile" do
@@ -41,7 +41,7 @@ RSpec.describe 'navbar', type: :view do
     end
   end
 
-  context "logged in as an admin" do
+  context "logged in as an admin or organizer" do
     it "shows Einstellungen, Mein Profil, Benutzerverwaltung, Ausloggen" do
       profile = FactoryGirl.create(:profile, user: (FactoryGirl.create :user, role: :admin))
       sign_in profile.user
@@ -54,18 +54,40 @@ RSpec.describe 'navbar', type: :view do
     end
   end
 
-  context "logged in as an organizer or coach" do
-    %i[organizer coach].each do |role|
-      it "shows Einstellungen, Mein Profil, Ausloggen" do
+  %i[organizer coach].each do |role|
+    context "logged in as #{role}" do
+      before(:each) do
         profile = FactoryGirl.create(:profile, user: (FactoryGirl.create :user, role: role))
         sign_in profile.user
         render template: 'application/index', layout: 'layouts/application'
-        expect(rendered).to have_css(".nav .dropdown-menu a", text: I18n.t('navbar.settings'))
-        expect(rendered).to have_css(".nav .dropdown-menu a", text: I18n.t('navbar.profile'))
-        expect(rendered).to have_css(".nav .dropdown-menu a", text: I18n.t('navbar.logout'))
-        expect(rendered).to have_css(".nav .dropdown-menu a", count: 3)
+      end
+
+      it "has a link to requests overview" do
+        expect(rendered).to have_link(I18n.t('navbar.requests'), :href => requests_path)
       end
     end
   end
-end
 
+  context "logged in as coach" do
+    before(:each) do
+      profile = FactoryGirl.create(:profile, user: (FactoryGirl.create :user, role: :coach))
+      sign_in profile.user
+      render template: 'application/index', layout: 'layouts/application'
+    end
+
+    it "shows Einstellungen, Mein Profil, Ausloggen" do
+      expect(rendered).to have_css(".nav .dropdown-menu a", text: I18n.t('navbar.settings'))
+      expect(rendered).to have_css(".nav .dropdown-menu a", text: I18n.t('navbar.profile'))
+      expect(rendered).to have_css(".nav .dropdown-menu a", text: I18n.t('navbar.logout'))
+      expect(rendered).to have_css(".nav .dropdown-menu a", count: 3)
+    end
+  end
+
+  context "not logged in" do
+    it "has a link to make a new event request" do
+      render template: 'application/index', layout: 'layouts/application'
+      expect(rendered).to have_link(I18n.t('navbar.new_request'), :href => new_request_path)
+    end
+  end
+
+end
