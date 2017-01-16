@@ -14,7 +14,7 @@
     </div>
   </div>
 
-  <% [:first_name, :last_name, :phone_number, :address, :email ].each do |attribute_name| %>
+  <% [:first_name, :last_name, :phone_number, :street, :zip_code_city, :email ].each do |attribute_name| %>
     <div class="form-group">
       <%= f.label attribute_name, :class => 'control-label col-lg-2 required'%>
       <div class="col-lg-10">

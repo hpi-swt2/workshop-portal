@@ -33,6 +33,8 @@
     <div class="col-lg-10">
       <%= f.text_field :max_participants, :class => 'form-control' %>
       <%=f.error_span(:max_participants) %>
+      <%= f.label :participants_are_unlimited %>
+      <%= f.check_box :participants_are_unlimited, :class => 'form_control' %>
     </div>
   </div>
   <div class="form-group">

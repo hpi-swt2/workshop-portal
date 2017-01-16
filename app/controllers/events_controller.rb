@@ -114,6 +114,13 @@ class EventsController < ApplicationController
     render :email
   end
 
+  # GET /events/1/accept-all-applicants
+  def accept_all_applicants
+    event = Event.find(params[:id])
+    event.accept_all_application_letters
+    redirect_to event_path(event)
+  end
+
   #POST /events/1/participants/agreement_letters
   # creates either a zip or a pdf containing all agreement letters for all selected participants
   def download_agreement_letters
@@ -188,6 +195,21 @@ class EventsController < ApplicationController
     redirect_to event_path(event), notice: I18n.t("events.material_area.success_message")
   end
 
+  # POST /events/1/download_material
+  def download_material
+    event = Event.find(params[:event_id])
+    unless params.has_key?(:file)
+      redirect_to event_path(event), alert: I18n.t('events.material_area.no_file_given') and return
+    end
+    authorize! :download_material, event
+
+    file_full_path = File.join(event.material_path, params[:file])
+    unless File.exists?(file_full_path)
+      redirect_to event_path(event), alert: t("events.material_area.download_file_not_found") and return
+    end
+    send_file file_full_path, :x_sendfile => true
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_event
@@ -196,7 +218,7 @@ class EventsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def event_params
-      params.require(:event).permit(:name, :description, :max_participants, :kind, :organizer, :knowledge_level, :application_deadline, :custom_application_fields => [], date_ranges_attributes: [:start_date, :end_date, :id])
+      params.require(:event).permit(:name, :description, :max_participants, :participants_are_unlimited, :kind, :organizer, :knowledge_level, :application_deadline, :custom_application_fields => [], date_ranges_attributes: [:start_date, :end_date, :id])
     end
 
     # Generate all names to print from the query-params
