@@ -226,6 +226,25 @@ class Event < ActiveRecord::Base
     end
   end
 
+  # Returns the application letters ordered by either "email", "first_name", "last_name", "birth_date"
+  # either "asc" (ascending) or "desc" (descending).
+  #
+  # @param field [String] the field that should be used to order
+  # @param order_by [String] the order that should be used
+  # @return [ApplicationLetter] the application letters found
+  def application_letters_ordered(field, order_by)
+    field = case field
+              when "email"
+                "users.email"
+              when "birth_date", "first_name", "last_name"
+                "profiles." + field
+              else
+                "users.email"
+            end
+    order_by = 'asc' unless order_by == 'asc' || order_by == 'desc'
+    application_letters.joins(user: :profile).order(field + ' ' + order_by)
+  end
+
   # Make sure any assignment coming from the controller
   # replaces all date ranges instead of adding new ones
   def date_ranges_attributes=(*args)

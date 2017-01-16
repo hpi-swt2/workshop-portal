@@ -179,6 +179,30 @@ RSpec.describe EventsController, type: :controller do
     end
   end
 
+  describe "GET #participants_pdf" do
+    let(:valid_attributes) { FactoryGirl.attributes_for(:event_with_accepted_applications) }
+
+    it "should return an pdf" do
+      event = Event.create! valid_attributes
+      get :participants_pdf, id: event.to_param, session: valid_session
+      expect(response.content_type).to eq('application/pdf')
+    end
+
+    it "should return an pdf with the name of the user" do
+      event = Event.create! valid_attributes
+      profile = FactoryGirl.create(:profile)
+      user = FactoryGirl.create(:user, profile: profile)
+      application_letter = FactoryGirl.create(:application_letter, status: ApplicationLetter.statuses[:accepted], event: event, user: user)
+      response = get :participants_pdf, id: event.to_param, session: valid_session
+      expect(response.content_type).to eq('application/pdf')
+
+      pdf = PDF::Inspector::Text.analyze(response.body)
+      expect(pdf.strings).to include("Vorname")
+      expect(pdf.strings).to include("Nachname")
+      expect(pdf.strings).to include(application_letter.user.profile.first_name)
+    end
+  end
+
   describe "GET #badges" do
     let(:valid_attributes) { FactoryGirl.attributes_for(:event_with_accepted_applications) }
 
@@ -207,6 +231,7 @@ RSpec.describe EventsController, type: :controller do
                           "1243_print"  => "Max Mustermann",
                           "1244_print"  => "Max Mustermann",
                           "1245_print"  => "Max Mustermann"
+
       pdf = PDF::Inspector::Text.analyze(rendered_pdf.body)
       expect(pdf.strings).to include("Max Mustermann")
       expect(pdf.strings).to include("John Doe")
