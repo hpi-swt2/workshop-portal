@@ -171,8 +171,11 @@ body {
 .front-section {
    border-bottom: 1px solid #eee;
    .container {
-   	margin-top: 120px;
-   	margin-bottom: 120px;
+   	padding-top: 120px;
+   	padding-bottom: 120px;
+   	&:first-of-type{
+   		padding-top: 0;
+   	}
    }
    &:first-child {
    	padding-top: 30px;
@@ -181,8 +184,8 @@ body {
     	border: none;
 	}
 
-	&:nth-child(odd), footer {
-	   background-color: lighten(#F7B21C, 30%);
+	&:nth-of-type(even), footer {
+	   background-color: @body-bg;
 	}
 
 	&:first-of-type {
