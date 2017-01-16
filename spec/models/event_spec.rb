@@ -186,7 +186,7 @@ describe Event do
     @profile2 = FactoryGirl.create(:profile, user: @user2, birth_date: 16.years.ago, first_name:'John')
     @application2 = FactoryGirl.create(:application_letter_accepted, user: @user2, event: @event)
 
-    expect(@event.application_letters_ordered('first_name','ASC')).to eq([@application1,@application2])
+    expect(@event.application_letters_ordered('first_name','asc')).to eq([@application1,@application2])
   end
 
   it "generates an application letter list ordered by anything else" do

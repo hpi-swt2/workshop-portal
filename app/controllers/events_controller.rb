@@ -196,7 +196,7 @@ class EventsController < ApplicationController
 
   # GET /event/1/participants_pdf
   def participants_pdf
-    default = {:order_by => 'email', :order_direction => 'ASC'}
+    default = {:order_by => 'email', :order_direction => 'asc'}
     default = default.merge(params)
 
     @application_letters = @event.application_letters_ordered(default[:order_by], default[:order_direction])
