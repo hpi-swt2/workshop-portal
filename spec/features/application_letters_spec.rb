@@ -162,6 +162,11 @@ RSpec.feature "Application Letter Overview", :type => :feature do
     expect(page).to have_text(@application_letter.user.profile.address)
   end
 
+  it "logged in as admin I cannot see the school of an applicant" do
+    login(:admin)
+    expect(page).to_not have_text(@application_letter.user.profile.school)
+  end
+
   %i[organizer admin].each do |role|
     it "logged in as #{role} I can click on the applicants name" do
       login(role)
