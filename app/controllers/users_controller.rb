@@ -4,9 +4,9 @@ class UsersController < ApplicationController
 
   # GET /users
   def index
-    @users = User.with_profiles.paginate(:page => params[:page], :per_page => 5)
+    @users = User.with_profiles.paginate(:page => params[:page], :per_page => 100)
     if params[:search]
-      @users = User.search(params[:search]).paginate(:page => params[:page], :per_page => 5)
+      @users = User.search(params[:search]).paginate(:page => params[:page], :per_page => 100)
     end
   end
 
