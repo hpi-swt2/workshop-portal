@@ -50,6 +50,10 @@ RSpec.describe ApplicationLettersController, type: :controller do
         get :show, id: @application.to_param
         expect(assigns(:application_letter)).to eq(@application)
       end
+      it "assigns selectable statuses" do
+        get :show, id: @application.to_param
+        expect(assigns(:selectable_statuses)).to eq([:accepted,:rejected,:pending,:alternative])
+      end
     end
 
     describe "GET #edit" do

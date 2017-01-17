@@ -12,6 +12,7 @@ class ApplicationLettersController < ApplicationController
   # GET /applications/1
   def show
     @application_note = ApplicationNote.new
+    @selectable_statuses = [:accepted,:rejected,:pending,:alternative]
   end
 
   # GET /applications/new

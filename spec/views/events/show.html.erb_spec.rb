@@ -7,6 +7,7 @@ RSpec.describe "events/show", type: :view do
     @application_letter.user.profile = FactoryGirl.build(:profile)
     @event.application_letters.push(@application_letter)
     @application_letters = @event.application_letters
+    assign(:selectable_statuses, [:accepted,:rejected,:pending,:alternative])
     @material_files = ["spec/testfiles/actual.pdf"]
     sign_in(@application_letter.user)
   end
@@ -47,6 +48,17 @@ RSpec.describe "events/show", type: :view do
     expect(rendered).to have_css("td", :text => @application_letter.user.profile.name)
     expect(rendered).to have_css("td", :text => @application_letter.user.profile.gender)
     expect(rendered).to have_css("td", :text => @application_letter.user.profile.age_at_time(@event.start_date))
+  end
+
+  it "logged in as organizer it renders radio buttons for accept reject pending and alternative" do
+    sign_in(FactoryGirl.create(:user, role: :organizer))
+    render
+    expect(rendered).to have_css("label", text: I18n.t('application_status.accepted'))
+    expect(rendered).to have_css("label", text: I18n.t('application_status.rejected'))
+    expect(rendered).to have_css("label", text: I18n.t('application_status.pending'))
+    expect(rendered).to have_css("label", text: I18n.t('application_status.alternative'))
+    expect(rendered).to_not have_css("label", text: I18n.t('application_status.canceled'))
+    expect(rendered).to_not have_css("label", text: I18n.t('application_status.pre_accepted'))
   end
 
   it "displays application details button" do
