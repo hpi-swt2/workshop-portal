@@ -52,8 +52,8 @@
 }
 
 .dropdown-colorselector>.dropdown-menu>li>.color-btn.selected:after {
-  content: "\f00c";
-  font-family: 'FontAwesome';
+  content: "\e013";
+  font-family: 'Glyphicons Halflings';
   display: inline-block;
   font-size: 11px;
   color: #FFF;
@@ -65,8 +65,8 @@
 }
 
 .dropdown-colorselector>.dropdown-menu>li>.color-btn[data-value="0"]:after {
-  content: "\f00d";
-  font-family: 'FontAwesome';
+  content: "\e014";
+  font-family: 'Glyphicons Halflings';
   display: inline-block;
   font-size: 14px;
   color: #000;
