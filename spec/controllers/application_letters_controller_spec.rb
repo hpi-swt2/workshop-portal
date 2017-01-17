@@ -129,7 +129,7 @@ RSpec.describe ApplicationLettersController, type: :controller do
         sign_in FactoryGirl.create(:user, role: :admin)
       end
       context "with valid params" do
-        let(:new_status) { {status: 'accepted'} }
+        let(:new_status) { {status: 'pre_accepted'} }
 
         it "assigns the requested application as @application" do
           put :update_status, id: @application.to_param, application_letter: new_status, session: valid_session

@@ -26,7 +26,7 @@ class ApplicationLetter < ActiveRecord::Base
   validate :deadline_cannot_be_in_the_past, :if => Proc.new { |letter| !(letter.status_changed?) }
   validate :status_cannot_be_changed, :if => Proc.new { |letter| letter.status_changed?}
 
-  enum status: {accepted: 1, rejected: 0, pending: 2, alternative: 3}
+  enum status: {accepted: 1, rejected: 0, pending: 2, alternative: 3, canceled: 4, pre_accepted: 5}
   validates :status, inclusion: { in: statuses.keys }
     
 
@@ -66,6 +66,14 @@ class ApplicationLetter < ActiveRecord::Base
       when ApplicationLetter.statuses[:rejected]
         return I18n.t("application_status.rejected")
       when ApplicationLetter.statuses[:pending]
+        if after_deadline?
+          return I18n.t("application_status.pending_after_deadline")
+        else
+          return I18n.t("application_status.pending_before_deadline")
+        end
+      when ApplicationLetter.statuses[:canceled]
+        return I18n.t("application_status.canceled")
+      when ApplicationLetter.statuses[:pre_accepted]
         if after_deadline?
           return I18n.t("application_status.pending_after_deadline")
         else

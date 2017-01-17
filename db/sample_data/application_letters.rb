@@ -31,7 +31,7 @@ def application_letter_applicant_gongakrobatik_rejected(user, event)
   )
 end
 
-def application_letter_applicant_gongakrobatik_accepted(user, event)
+def application_letter_applicant_gongakrobatik_pre_accepted(user, event)
   ApplicationLetter.new(
       motivation: "Den normalen Unterricht in der Schule finde ich ziemlich langweilig und würde mich darüber freuen, etwas über den Tellerrand zu schauen und spannende Dinge lernen. Ich arbeite sehr gerne im Team und freue mich darauf, Gleichgesinnte kennen zu lernen.",
       grade: 9,
@@ -44,7 +44,7 @@ def application_letter_applicant_gongakrobatik_accepted(user, event)
       allergies: "Tomaten",
       user: user,
       event: event,
-      status: ApplicationLetter.statuses[:accepted]
+      status: ApplicationLetter.statuses[:pre_accepted]
   )
 end
 

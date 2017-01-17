@@ -53,6 +53,14 @@ FactoryGirl.define do
     status :alternative
   end
 
+  factory :application_letter_pre_accepted, parent: :application_letter do
+    status :pre_accepted
+  end
+
+  factory :application_letter_canceled, parent: :application_letter do
+    status :canceled
+  end
+
   factory :accepted_application_with_agreement_letters, parent: :application_letter do
     status :accepted
     after(:build) do |application_letter|

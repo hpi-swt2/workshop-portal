@@ -120,22 +120,22 @@ class Event < ActiveRecord::Base
     application_letters.all? { |application_letter| application_letter.status != 'pending' }
   end
 
-  # Sets the status of all the event's application letters to accepted
+  # Sets the status of all the event's application letters to pre_accepted
   #
   # @param none
   # @return none
-  def accept_all_application_letters
+  def pre_accept_all_application_letters
     application_letters.each do |application_letter|
-      application_letter.update(status: :accepted)
+      application_letter.update(status: :pre_accepted)
     end
   end
 
-  # Returns a string of all email addresses of accepted applications
+  # Returns a string of all email addresses of pre_accepted applications
   #
   # @param none
-  # @return [String] Concatenation of all email addresses of accepted applications, seperated by ','
-  def email_adresses_of_accepted_applicants
-    accepted_applications = application_letters.where(status: ApplicationLetter.statuses[:accepted])
+  # @return [String] Concatenation of all email addresses of pre_accepted applications, seperated by ','
+  def email_adresses_of_pre_accepted_applicants
+    accepted_applications = application_letters.where(status: ApplicationLetter.statuses[:pre_accepted])
     accepted_applications.map{ |application_letter| application_letter.user.email }.join(',')
   end
 
@@ -155,7 +155,7 @@ class Event < ActiveRecord::Base
   def generate_acceptances_email
     email = Email.new
     email.hide_recipients = false
-    email.recipients = email_adresses_of_accepted_applicants
+    email.recipients = email_adresses_of_pre_accepted_applicants
     email.reply_to = 'workshop.portal@hpi.de'
     email.subject = ''
     email.content = ''
@@ -189,7 +189,7 @@ class Event < ActiveRecord::Base
   # @param none
   # @return [Int] for number of occupied places
   def compute_occupied_places
-    application_letters.where(status: ApplicationLetter.statuses[:accepted]).count
+    application_letters.where(status: [ApplicationLetter.statuses[:accepted], ApplicationLetter.statuses[:pre_accepted]]).count
   end
 
   # Locks the ability to change application statuses

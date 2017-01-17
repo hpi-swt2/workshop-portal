@@ -29,6 +29,24 @@ RSpec.describe "application_letters/index", type: :view do
       render
       expect(rendered).to have_content(I18n.t("application_status.alternative"))
     end
+    it "checks if page displays canceled status application letter" do
+      @application_letters = [FactoryGirl.create(:application_letter_canceled)]
+      render
+      expect(rendered).to have_content(I18n.t("application_status.canceled"))
+    end
+    it "checks if page doesnt display pre_accepted status application letter but pending before deadline" do
+      @application_letters = [FactoryGirl.create(:application_letter_pre_accepted)]
+      render
+      expect(rendered).to_not have_content(I18n.t("application_status.pre_accepted"))
+      expect(rendered).to have_content(I18n.t("application_status.pending_before_deadline"))
+    end
+    it "checks if page doesnt display pre_accepted status application letter but pending after deadline" do
+      @application_letters = [FactoryGirl.create(:application_letter_pre_accepted)]
+      @application_letters[0].event.application_deadline = Date.yesterday
+      render
+      expect(rendered).to_not have_content(I18n.t("application_status.pre_accepted"))
+      expect(rendered).to have_content(I18n.t("application_status.pending_after_deadline"))
+    end
   end
 
   it "should display the name of the event" do

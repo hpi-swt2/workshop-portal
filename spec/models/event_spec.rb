@@ -71,14 +71,14 @@ describe Event do
     expect(event.applications_classified?).to eq(false)
   end
 
-  it "computes the email addresses of the accepted and the rejected applications" do
+  it "computes the email addresses of the pre_accepted and the rejected applications" do
     event = FactoryGirl.create(:event)
-    accepted_application_letter_1 = FactoryGirl.create(:application_letter_accepted, :event => event, :user => FactoryGirl.create(:user))
-    accepted_application_letter_2 = FactoryGirl.create(:application_letter_accepted, :event => event, :user => FactoryGirl.create(:user))
-    accepted_application_letter_3 = FactoryGirl.create(:application_letter_accepted, :event => event, :user => FactoryGirl.create(:user))
+    accepted_application_letter_1 = FactoryGirl.create(:application_letter_pre_accepted, :event => event, :user => FactoryGirl.create(:user))
+    accepted_application_letter_2 = FactoryGirl.create(:application_letter_pre_accepted, :event => event, :user => FactoryGirl.create(:user))
+    accepted_application_letter_3 = FactoryGirl.create(:application_letter_pre_accepted, :event => event, :user => FactoryGirl.create(:user))
     rejected_application_letter = FactoryGirl.create(:application_letter_rejected, :event => event, :user => FactoryGirl.create(:user))
     [accepted_application_letter_1, accepted_application_letter_2, accepted_application_letter_3, rejected_application_letter].each { |letter| event.application_letters.push(letter) }
-    expect(event.email_adresses_of_accepted_applicants).to eq([accepted_application_letter_1.user.email, accepted_application_letter_2.user.email, accepted_application_letter_3.user.email].join(','))
+    expect(event.email_adresses_of_pre_accepted_applicants).to eq([accepted_application_letter_1.user.email, accepted_application_letter_2.user.email, accepted_application_letter_3.user.email].join(','))
     expect(event.email_adresses_of_rejected_applicants).to eq([rejected_application_letter.user.email].join(','))
   end
 
@@ -172,7 +172,7 @@ describe Event do
   it "generates a new email for acceptance" do
     event = FactoryGirl.create(:event_with_accepted_applications)
     email = event.generate_acceptances_email
-    expect(email).to have_attributes(hide_recipients: false, recipients: event.email_adresses_of_accepted_applicants, reply_to: 'workshop.portal@hpi.de', subject: '', content: '')
+    expect(email).to have_attributes(hide_recipients: false, recipients: event.email_adresses_of_pre_accepted_applicants, reply_to: 'workshop.portal@hpi.de', subject: '', content: '')
   end
 
   it "generates an application letter list ordered by first name" do
@@ -209,11 +209,11 @@ describe Event do
     expect(email).to have_attributes(hide_recipients: false, recipients: event.email_adresses_of_rejected_applicants, reply_to: 'workshop.portal@hpi.de', subject: '', content: '')
   end
 
-  it "accepts all its application letters" do
+  it "pre accepts all its application letters" do
     event = FactoryGirl.create :event, :with_diverse_open_applications
-    event.accept_all_application_letters
+    event.pre_accept_all_application_letters
     application_letters = ApplicationLetter.where(event: event.id)
-    expect(application_letters.all? { |application_letter| application_letter.status == 'accepted' }).to eq(true)
+    expect(application_letters.all? { |application_letter| application_letter.status == 'pre_accepted' }).to eq(true)
   end
 
   it "locks the application status changing of the event" do

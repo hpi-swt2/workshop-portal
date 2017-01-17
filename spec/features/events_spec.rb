@@ -70,13 +70,13 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     expect(page).to have_button(I18n.t('events.applicants_overview.sending_rejections'), disabled: true)
   end
 
-  scenario "logged in as Organizer I want to be able to send an email to all accepted applicants" do
+  scenario "logged in as Organizer I want to be able to send an email to all pre accepted applicants" do
     login(:organizer)
     @event.update!(max_participants: 2)
     2.times do |n|
       @pupil = FactoryGirl.create(:profile)
       @pupil.user.role = :pupil
-      FactoryGirl.create(:application_letter_accepted, :event => @event, :user => @pupil.user)
+      FactoryGirl.create(:application_letter_pre_accepted, :event => @event, :user => @pupil.user)
     end
     visit event_path(@event)
     click_link I18n.t('events.applicants_overview.sending_acceptances')
@@ -144,13 +144,13 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     end
   end
 
-  scenario "logged in as Organizer I can push the accept all button to accept all applicants" do
+  scenario "logged in as Organizer I can push the accept all button to pre accept all applicants" do
     login(:organizer)
     @event = FactoryGirl.create :event, :with_diverse_open_applications, participants_are_unlimited: true
     visit event_path(@event)
     click_link I18n.t "events.applicants_overview.accept_all"
     application_letters = ApplicationLetter.where(event: @event.id)
-    expect(application_letters.all? { |application_letter| application_letter.status == 'accepted' }).to eq(true)
+    expect(application_letters.all? { |application_letter| application_letter.status == 'pre_accepted' }).to eq(true)
   end
 
   scenario "logged in as Organizer and viewing the participants page all checkboxes are checked when pressing the \"check all\" button", js: true do

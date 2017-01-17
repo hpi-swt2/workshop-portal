@@ -90,20 +90,21 @@ class User < ActiveRecord::Base
 	  return age_at_event_start >= age
   end
 
-  # Returns the number of accepted applications from the user without counting status of current event application
+  # Returns the number of (pre) accepted applications from the user without counting status of current event application
   #
   # @param [Event] current event (which application status will be excluded)
   # @return [Int] of number of currently accepted applications
   def accepted_applications_count(event)
-    ApplicationLetter.where(user_id: id, status: true).where.not(event: event).count()
+    ApplicationLetter.where(user_id: id, status: [ApplicationLetter.statuses[:accepted], ApplicationLetter.statuses[:pre_accepted]])
+        .where.not(event: event).count()
   end
 
-  # Returns the number of accepted applications from the user without counting status of current event application
+  # Returns the number of rejected applications from the user without counting status of current event application
   #
   # @param current event (which application status will be excluded)
-  # @return [Int] of number of currently accepted applications
+  # @return [Int] of number of currently rejected applications
   def rejected_applications_count(event)
-    ApplicationLetter.where(user_id: id, status: false).where.not(event: event).count()
+    ApplicationLetter.where(user_id: id, status: ApplicationLetter.statuses[:rejected]).where.not(event: event).count()
   end
 
   # Searches all users with last/first_name containing pattern
