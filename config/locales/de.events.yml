@@ -33,6 +33,9 @@ de:
       saving_fails: "Datei konnte nicht gespeichert werden"
       table_name: "Dateiname"
       table_type: "Dateityp"
+      table_action: "Aktion"
+      download: "Herunterladen"
+      download_file_not_found: "Datei wurde nicht gefunden"
     badges:
         print: "Namensschilder drucken"
         title: "Namensschilder drucken für das Event "
@@ -50,7 +53,7 @@ de:
         no_participants_selected: "Keine Teilnehmer ausgewählt"
         no_agreement_letters: "Keiner der gewählten Teilnehmer hat eine Einverständniserklärung"
       select_all: "Alle auswählen"
-      download_all_as: "Alle herunterladen als"
+      download_all_as: "Einverständniserklärungen herunterladen als"
     email_modal:
       send_email: "E-Mail an Teilnehmer senden"
       select_users: "Nutzer auswählen"
@@ -65,6 +68,18 @@ de:
     list:
       more: "Mehr dazu"
       read_on: "Weiterlesen"
+    participants_modal:
+      print_names: 'Teilnehmerliste drucken'
+      order_by: 'Sortieren nach'
+      email: 'E-Mail'
+      date_of_birth: 'Geburtsdatum'
+      first_name: 'Vorname'
+      last_name: 'Nachname'
+      order_direction: 'Sortierung'
+      order_ascending: 'Aufsteigend'
+      order_descending: 'Absteigend'
+      close_modal: 'Schließen'
+      create_pdf: 'Erstellen'
 
     notices:
       created: "Event wurde erstellt."
@@ -109,6 +124,7 @@ de:
           name: "Name"
           description: "Beschreibung"
           max_participants: "Maximale Teilnehmerzahl"
+          participants_are_unlimited: "Unbegrenzte Teilnehmerzahl"
           kind: "Art"
           active: "Aktiv"
           start_date: "Beginn"
@@ -124,3 +140,11 @@ de:
     submit:
       event:
         create: "Veröffentlichen"
+
+  controllers:
+    events:
+      participants_pdf:
+        first_name: 'Vorname'
+        last_name: 'Nachname'
+        date_of_birth: 'Geburtsdatum'
+        allergies: 'Allergien'

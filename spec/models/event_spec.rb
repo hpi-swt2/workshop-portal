@@ -28,34 +28,35 @@ describe Event do
 
   it "sorts participants in the expected order" do
     @event = FactoryGirl.create(:event)
-    @user1 = FactoryGirl.create(:user, name: 'ghk')
+    @user1 = FactoryGirl.create(:user, email: 'ghk@example.com')
     @profile1 = FactoryGirl.create(:profile, user: @user1, birth_date: 15.years.ago)
     @application1 = FactoryGirl.create(:application_letter_accepted, user: @user1, event: @event)
     @agreement1 = FactoryGirl.create(:agreement_letter, user: @user1, event: @event)
 
-    @user2 = FactoryGirl.create(:user, name: 'bba')
+    @user2 = FactoryGirl.create(:user, email: 'bba@example.com')
     @profile2 = FactoryGirl.create(:profile, user: @user2, birth_date: 16.years.ago)
     @application2 = FactoryGirl.create(:application_letter_accepted, user: @user2, event: @event)
 
-    @user3 = FactoryGirl.create(:user, name: 'eee')
+    @user3 = FactoryGirl.create(:user, email: 'eee@example.com')
     @profile3 = FactoryGirl.create(:profile, user: @user3, birth_date: 19.years.ago)
     @application3 = FactoryGirl.create(:application_letter_accepted, user: @user3, event: @event)
     @agreement3 = FactoryGirl.create(:agreement_letter, user: @user3, event: @event)
 
-    @user4 = FactoryGirl.create(:user, name: 'ddd')
+    @user4 = FactoryGirl.create(:user, email: 'ddd@example.com')
     @profile4 = FactoryGirl.create(:profile, user: @user4, birth_date: 16.years.ago)
     @application4 = FactoryGirl.create(:application_letter_accepted, user: @user4, event: @event)
 
-    @user5 = FactoryGirl.create(:user, name: 'bbb')
+    @user5 = FactoryGirl.create(:user, email: 'bbb@example.com')
     @profile5 = FactoryGirl.create(:profile, user: @user5, birth_date: 20.years.ago)
     @application5 = FactoryGirl.create(:application_letter_accepted, user: @user5, event: @event)
 
-    @user6 = FactoryGirl.create(:user, name: 'abc')
+    @user6 = FactoryGirl.create(:user, email: 'abc@example.com')
+
     @profile6 = FactoryGirl.create(:profile, user: @user6, birth_date: 16.years.ago)
     @application6 = FactoryGirl.create(:application_letter_accepted, user: @user6, event: @event)
     @agreement6 = FactoryGirl.create(:agreement_letter, user: @user6, event: @event)
     #2,4,6,1,5,3
-	expect(@event.participants_by_agreement_letter).to eq([@user2, @user4, @user6, @user1, @user5, @user3])
+  expect(@event.participants_by_agreement_letter).to eq([@user2, @user4, @user6, @user1, @user5, @user3])
   end
 
 
@@ -174,10 +175,45 @@ describe Event do
     expect(email).to have_attributes(hide_recipients: false, recipients: event.email_addresses_of_accepted_applicants, reply_to: 'workshop.portal@hpi.de', subject: '', content: '')
   end
 
+  it "generates an application letter list ordered by first name" do
+    @event = FactoryGirl.create(:event)
+    @user1 = FactoryGirl.create(:user, email:'a@b.com')
+    @profile1 = FactoryGirl.create(:profile, user: @user1, birth_date: 15.years.ago, first_name:'Corny')
+    @application1 = FactoryGirl.create(:application_letter_accepted, user: @user1, event: @event)
+    @agreement1 = FactoryGirl.create(:agreement_letter, user: @user1, event: @event)
+
+    @user2 = FactoryGirl.create(:user, email:'b@c.com')
+    @profile2 = FactoryGirl.create(:profile, user: @user2, birth_date: 16.years.ago, first_name:'John')
+    @application2 = FactoryGirl.create(:application_letter_accepted, user: @user2, event: @event)
+
+    expect(@event.application_letters_ordered('first_name','asc')).to eq([@application1,@application2])
+  end
+
+  it "generates an application letter list ordered by anything else" do
+    @event = FactoryGirl.create(:event)
+    @user1 = FactoryGirl.create(:user, email:'a@b.com')
+    @profile1 = FactoryGirl.create(:profile, user: @user1, birth_date: 15.years.ago, first_name:'Corny')
+    @application1 = FactoryGirl.create(:application_letter_accepted, user: @user1, event: @event)
+    @agreement1 = FactoryGirl.create(:agreement_letter, user: @user1, event: @event)
+
+    @user2 = FactoryGirl.create(:user, email:'b@c.com')
+    @profile2 = FactoryGirl.create(:profile, user: @user2, birth_date: 16.years.ago, first_name:'John')
+    @application2 = FactoryGirl.create(:application_letter_accepted, user: @user2, event: @event)
+
+    expect(@event.application_letters_ordered('unknown','desc')).to eq([@application2,@application1])
+  end
+
   it "generates a new email for rejections" do
     event = FactoryGirl.create(:event_with_accepted_applications)
     email = event.generate_rejections_email
     expect(email).to have_attributes(hide_recipients: false, recipients: event.email_addresses_of_rejected_applicants, reply_to: 'workshop.portal@hpi.de', subject: '', content: '')
+  end
+
+  it "accepts all its application letters" do
+    event = FactoryGirl.create :event, :with_diverse_open_applications
+    event.accept_all_application_letters
+    application_letters = ApplicationLetter.where(event: event.id)
+    expect(application_letters.all? { |application_letter| application_letter.status == 'accepted' }).to eq(true)
   end
 
   it "locks the application status changing of the event" do
@@ -186,6 +222,18 @@ describe Event do
     event.save
     event.lock_application_status
     expect(event.application_status_locked).to eq(true)
+  end
+
+  it "can have unlimited participants" do
+    event = FactoryGirl.create(:event)
+    event.max_participants = Float::INFINITY
+    expect(event.participants_are_unlimited).to be(true)
+  end
+
+  it "has infinite max participants if max participants is unlimited" do
+    event = FactoryGirl.create(:event)
+    event.participants_are_unlimited = true
+    expect(event.max_participants).to be(Float::INFINITY)
   end
 
   it "computes the email addresses of all participants" do

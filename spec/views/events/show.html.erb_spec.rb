@@ -7,7 +7,7 @@ RSpec.describe "events/show", type: :view do
     @application_letter.user.profile = FactoryGirl.build(:profile)
     @event.application_letters.push(@application_letter)
     @application_letters = @event.application_letters
-    @material_files = []
+    @material_files = ["spec/testfiles/actual.pdf"]
     sign_in(@application_letter.user)
   end
 
@@ -64,12 +64,42 @@ RSpec.describe "events/show", type: :view do
     expect(rendered).to have_link(t(:print_button_label, scope: 'events.badges'))
   end
 
+  it "should not display accept-all-button for non-organizers" do
+    @event.max_participants = Float::INFINITY
+    [:coach, :student].each do | each |
+      sign_in(FactoryGirl.create(:user, role: each))
+      render
+      expect(rendered).to_not have_link(I18n.t('events.applicants_overview.accept_all'))
+    end
+  end
+
+  it "should display accept-all-button for organizers if there are enough free places" do
+    sign_in(FactoryGirl.create(:user, role: :organizer))
+    @event.max_participants = Float::INFINITY
+    render
+    expect(rendered).to have_link(I18n.t('events.applicants_overview.accept_all'))
+  end
+
+  it "should not display accept-all-button if there are not enough free places" do
+    sign_in(FactoryGirl.create(:user, role: :organizer))
+    @event.max_participants = 1
+    2.times do
+      @application_letter = FactoryGirl.create(:application_letter, user: FactoryGirl.create(:user), event: @event)
+      @application_letter.user.profile = FactoryGirl.build(:profile)
+      @event.application_letters.push(@application_letter)
+    end
+    render
+    expect(rendered).to_not have_link(I18n.t('events.applicants_overview.accept_all'))
+  end
+
   it "displays material area" do
     render
     expect(rendered).to have_text(t(:title, title: @event.name, scope: 'events.material_area'))
     expect(rendered).to have_css("th", :text => t(:table_name, scope:'events.material_area'))
     expect(rendered).to have_css("th", :text => t(:table_type, scope:'events.material_area'))
+    expect(rendered).to have_css("th", :text => t(:table_action, scope:'events.material_area'))
     expect(rendered).to have_button(t(:upload, scope: 'events.material_area'))
+    expect(rendered).to have_button(t(:download, scope: 'events.material_area'))
   end
 
   it "displays an modal that allows selection of email target" do
