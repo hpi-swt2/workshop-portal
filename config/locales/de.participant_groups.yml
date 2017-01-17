@@ -6,17 +6,17 @@ de:
       successful: "Die Gruppe wurde erfolgreich gesetzt."
       failed: "Beim Setzen der Gruppe ist ein Fehler aufgetreten."
     options:
-      none: "keine"
-      darkblue: "dunkelblau"
-      red: "rot"
-      yellow: "gelb"
-      orange: "orange"
-      lightgreen: "hellgrün"
-      purple: "violett"
-      deeppink: "pink"
-      darkgreen: "dunkelgrün"
-      lightblue: "hellblau"
-      black: "schwarz"
+      '0': "keine"
+      '00008B': "dunkelblau"
+      'FF0000': "rot"
+      'FFFF00': "gelb"
+      'FFA500': "orange"
+      '90EE90': "hellgrün"
+      '800080': "violett"
+      'FF1493': "pink"
+      '006400': "dunkelgrün"
+      'ADD8E6': "hellblau"
+      '000000': "schwarz"
 
   activerecord:
     models:
