@@ -9,16 +9,16 @@
 </div>
 <%= image_tag "event-detail.png", class: "img-rounded img-responsive center-block m-t-1 m-b-1" %>
 <div class="row">
-  <div class="col-md-1 col-md-offset-1 text-center">
+  <div class="col-md-1 col-md-offset-1 text-center col-sm-2">
     <%= render "event_date_large", event: @event %>
     <div class="m-t-1">
       <%= render @event.date_ranges %>
     </div>
   </div>
-  <div class="col-md-7">
+  <div class="col-md-7 col-sm-10">
     <%= markdown @event.description %>
   </div>
-  <div class="col-md-2">
+  <div class="col-md-2 col-sm-offset-2">
     <dl>
       <dt><strong><%= model_class.human_attribute_name(:knowledge_level) %>:</strong></dt>
       <dd><%= @event.knowledge_level %></dd>
