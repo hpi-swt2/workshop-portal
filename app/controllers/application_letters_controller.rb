@@ -42,10 +42,23 @@ class ApplicationLettersController < ApplicationController
   def create
     @application_letter = ApplicationLetter.new(application_params)
     #event must be param to new_application_letter_path
+    seminar_name = ''
     if params[:event_id]
       @application_letter.event_id = params[:event_id]
+      seminar_name = Event.find(:event_id).name
     end
     @application_letter.user_id = current_user.id
+
+    # Send Confirmation E-Mail
+    email_params = {
+        :hide_recipients => true,
+        :recipients => [current_user.email],
+        :reply_to => I18n.t('controllers.application_letters.confirmation_mail.sender'),
+        :subject => I18n.t('controllers.application_letters.confirmation_mail.subject'),
+        :content => I18n.t('controllers.application_letters.confirmation_mail.content', :seminar_name => seminar_name)
+    }
+    @email = Email.new(email_params)
+    Mailer.send_generic_email(@email.hide_recipients, @email.recipients, @email.reply_to, @email.subject, @email.content)
 
     if @application_letter.save
       redirect_to check_application_letter_path(@application_letter), notice: I18n.t('application_letters.successful_creation')
