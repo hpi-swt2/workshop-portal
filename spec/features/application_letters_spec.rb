@@ -149,6 +149,31 @@ RSpec.feature "Application Letter Overview", :type => :feature do
     expect(page).to have_text('Bewerbung erstellen')
   end
 
+  %i[coach organizer].each do |role|
+    it "logged in as #{role} I cannot see personal details" do
+      login(role)
+      expect(page).to_not have_text(@application_letter.user.profile.address)
+      expect(page).to_not have_text(@application_letter.user.profile.school)
+    end
+  end
+
+  it "logged in as admin I can see personal details" do
+    login(:admin)
+    expect(page).to have_text(@application_letter.user.profile.address)
+  end
+
+  it "logged in as admin I cannot see the school of an applicant" do
+    login(:admin)
+    expect(page).to_not have_text(@application_letter.user.profile.school)
+  end
+
+  %i[organizer admin].each do |role|
+    it "logged in as #{role} I can click on the applicants name" do
+      login(role)
+      expect(page).to have_link(@application_letter.user.profile.name, :href => profile_path(@application_letter.user.profile))
+    end
+  end
+
   def login(role)
     @event = FactoryGirl.create(:event)
     @profile = FactoryGirl.create(:profile)
