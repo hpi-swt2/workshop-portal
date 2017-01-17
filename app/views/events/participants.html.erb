@@ -71,9 +71,7 @@
   <%= link_to t('.back', :default => t('helpers.links.back')),
               event_path(@event), :class => 'btn btn-default'  %>
   <script>
-    document.addEventListener('turbolinks:load', function() {
-      addColorSelector();
-      addSubmitListener();
-    });
+  $(document).bind('turbolinks:load', addColorSelector);
+  $(document).bind('turbolinks:load', addSubmitListener);
   </script>
 <% end %>
