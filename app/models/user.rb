@@ -111,7 +111,15 @@ class User < ActiveRecord::Base
   # @param pattern to search for
   # @return [Array<User>] all users with pattern in their name
   def self.search(pattern)
-    joins(:profile).where("profiles.first_name LIKE ? or profiles.last_name LIKE ?",
-                          "%#{pattern}%", "%#{pattern}%")
+    with_profiles.where("profiles.first_name LIKE ? or profiles.last_name LIKE ?", "%#{pattern}%", "%#{pattern}%")
+  end
+
+  # Provides access to profile information
+  # and orders users by first, last name and email (if user has no profile)
+  #
+  # @return [Array<User>] all users including their profile information
+  def self.with_profiles()
+    joins("LEFT JOIN profiles ON users.id = profiles.user_id")
+         .order('profiles.first_name, profiles.last_name, users.email ASC')
   end
 end
