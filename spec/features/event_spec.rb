@@ -249,16 +249,17 @@ describe "Event", type: :feature do
 
   describe "printing badges" do
     before :each do
+      login_as(FactoryGirl.create(:user, role: :organizer), :scope => :user)
       @event = FactoryGirl.create(:event)
       @users = 12.times.collect do
         user = FactoryGirl.create(:user_with_profile)
         FactoryGirl.create(:application_letter_accepted, user: user, event: @event)
         user
       end
+      visit badges_event_path(@event)
     end
 
     it "creates a pdf with the selected names" do
-      visit badges_event_path(@event)
       @users.each do |u|
         find(:css, "#selected_ids_[value='#{u.id}']").set(true) if u.id.even?
       end
@@ -274,7 +275,6 @@ describe "Event", type: :feature do
     end
 
     it "uses the correct name format" do
-      visit badges_event_path(@event)
       all(:css, "#selected_ids_").each { |check| check.set(true) }
       select(I18n.t('events.badges.last_name'))
       click_button I18n.t('events.badges.print')
@@ -286,7 +286,6 @@ describe "Event", type: :feature do
     end
 
     it "selects all participants when the 'select all' checkbox is checked", js: true do
-      visit badges_event_path(@event)
       check('select-all-print')
       all('input[type=checkbox].selected_ids').each { |checkbox| expect(checkbox).to be_checked }
       uncheck('select-all-print')
@@ -294,7 +293,6 @@ describe "Event", type: :feature do
     end
 
     it "creates a pdf with the correct schools" do
-      visit badges_event_path(@event)
       all(:css, "#selected_ids_").each { |check| check.set(true) }
       check('show_school')
       click_button I18n.t('events.badges.print')
@@ -304,7 +302,6 @@ describe "Event", type: :feature do
 
     it "executes the correct code when colors are selected" do
       #testing if the actual colors are used is kinda hard
-      visit badges_event_path(@event)
       all(:css, "#selected_ids_").each { |check| check.set(true) }
       check('show_color')
       expect_any_instance_of(BadgesPDF).to receive(:create_color).exactly(@users.count).times
@@ -312,14 +309,12 @@ describe "Event", type: :feature do
     end
 
     it "does not throw an error with a logo" do
-      visit badges_event_path(@event)
       attach_file(:logo_upload, './spec/testfiles/actual.jpg')
       all(:css, "#selected_ids_").each { |check| check.set(true) }
       click_button I18n.t('events.badges.print')
     end
 
     it "shows an error message if logo is wrong filetype" do
-      visit badges_event_path(@event)
       attach_file(:logo_upload, './spec/testfiles/fake.jpg')
       all(:css, "#selected_ids_").each { |check| check.set(true) }
       click_button I18n.t('events.badges.print')
@@ -328,7 +323,6 @@ describe "Event", type: :feature do
     end
 
     it "shows an error message if no participant was selected" do
-      visit badges_event_path(@event)
       all(:css, "#selected_ids_").each { |check| check.set(false) }
       click_button I18n.t('events.badges.print')
       expect(page).to have_current_path(badges_event_path(@event))

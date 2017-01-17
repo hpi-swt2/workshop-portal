@@ -184,6 +184,8 @@ RSpec.describe EventsController, type: :controller do
 
   describe "POST #badges" do
     before :each do
+      @user = FactoryGirl.create(:user, role: :organizer)
+      sign_in @user
       @event = Event.create! valid_attributes
       @params = {
         id: @event.to_param,
