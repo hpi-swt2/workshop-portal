@@ -39,8 +39,11 @@ function flipAllCheckboxes(rootCheckbox) {
   }
 }
 
-document.addEventListener('turbolinks:load', function() {
+function addColorSelector() {
   $('.colorselector').colorselector();
+}
+
+function addSubmitListener() {
   $('#downloadLettersForm').submit(function() {
     $('[name="selected_participants[]"]').each(function() {
       if (this.checked) {
@@ -52,4 +55,4 @@ document.addEventListener('turbolinks:load', function() {
       }
     });
   });
-});
+};
