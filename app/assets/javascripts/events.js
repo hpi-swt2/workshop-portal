@@ -38,21 +38,3 @@ function flipAllCheckboxes(rootCheckbox) {
     });
   }
 }
-
-function addColorSelector() {
-  $('.colorselector').colorselector();
-}
-
-function addSubmitListener() {
-  $('#downloadLettersForm').submit(function() {
-    $('[name="selected_participants[]"]').each(function() {
-      if (this.checked) {
-        var input = document.createElement("input");
-        input.setAttribute("type", "hidden");
-        input.setAttribute("name", this.name);
-        input.setAttribute("value", this.value);
-        document.getElementById("downloadLettersForm").appendChild(input);
-      }
-    });
-  });
-};

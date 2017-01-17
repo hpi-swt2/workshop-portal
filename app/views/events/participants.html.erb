@@ -71,7 +71,17 @@
   <%= link_to t('.back', :default => t('helpers.links.back')),
               event_path(@event), :class => 'btn btn-default'  %>
   <script>
-  $(document).bind('turbolinks:load', addColorSelector);
-  $(document).bind('turbolinks:load', addSubmitListener);
+  $('.colorselector').colorselector();
+  $('#downloadLettersForm').submit(function() {
+    $('[name="selected_participants[]"]').each(function() {
+      if (this.checked) {
+        var input = document.createElement("input");
+        input.setAttribute("type", "hidden");
+        input.setAttribute("name", this.name);
+        input.setAttribute("value", this.value);
+        document.getElementById("downloadLettersForm").appendChild(input);
+      }
+    });
+  });
   </script>
 <% end %>
