@@ -3,6 +3,7 @@
   <h1><%=t '.title', :default => model_class.model_name.human.titleize %> (<%= @event.kind.humanize %>)</h1>
 </div>
 <% if can? :view_participants, Event %>
+  <%= render :partial => 'participants_modal' %>
   <%= render :partial => 'show_event' %>
 
   <h1><%= t '.participants' %></h1>
@@ -11,6 +12,7 @@
       <tr>
         <th><%= t 'activerecord.attributes.profile.name' %></th>
         <th><%= t 'activerecord.attributes.profile.email' %></th>
+        <th><%= t 'agreement_letters.agreement_letter' %></th>
         <th><%= t 'agreement_letters.agreement_letter' %></th>
         <th><%= sort_caret(ParticipantGroup.human_attribute_name(:group), :group) %></th>
         <% if can? :print_agreement_letters, Event and @has_agreement_letters %>
@@ -28,6 +30,7 @@
       @participants.reverse! if params[:order] == 'descending'
       @participants.select {|l| @event.participant_group_for(l) }.each do | participant | %>
       <tr>
+        
         <td>
         <%= participant.name %>
         </td>

@@ -144,6 +144,15 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     end
   end
 
+  scenario "logged in as Organizer I can push the accept all button to accept all applicants" do
+    login(:organizer)
+    @event = FactoryGirl.create :event, :with_diverse_open_applications, participants_are_unlimited: true
+    visit event_path(@event)
+    click_link I18n.t "events.applicants_overview.accept_all"
+    application_letters = ApplicationLetter.where(event: @event.id)
+    expect(application_letters.all? { |application_letter| application_letter.status == 'accepted' }).to eq(true)
+  end
+
   scenario "logged in as Organizer and viewing the participants page all checkboxes are checked when pressing the \"check all\" button", js: true do
     login(:organizer)
     @user = FactoryGirl.create(:user)

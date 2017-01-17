@@ -73,4 +73,10 @@ RSpec.describe "events/participants", type: :view do
     expect(rendered).to have_select('participant_group_group', options: ParticipantGroup::GROUPS.map { |m| I18n.t("participant_groups.options.#{m.last}") })
   end
 
+  it "contains a modal to print participant lists" do
+    render
+    expect(rendered).to have_css('div#print_participant_modal')
+    expect(rendered).to have_css('button#open_print_modal')
+    expect(rendered).to have_css('input#print_participant_list')
+  end
 end
