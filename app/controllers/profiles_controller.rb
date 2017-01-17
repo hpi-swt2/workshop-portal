@@ -42,12 +42,6 @@ class ProfilesController < ApplicationController
     end
   end
 
-  # DELETE /profiles/1
-  def destroy
-    @profile.destroy
-    redirect_to profiles_url, notice: I18n.t('profiles.successful_deletion')
-  end
-
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_profile

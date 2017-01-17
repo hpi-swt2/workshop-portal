@@ -3,15 +3,24 @@ require 'rails_helper'
 RSpec.describe "requests/index", type: :view do
   before(:each) do
     @topic_of_workshop = 'Topics'
-    assign(:requests, [
-      FactoryGirl.create(:request, topic_of_workshop: @topic_of_workshop),
+    @requests = [
+      FactoryGirl.create(:request, topic_of_workshop: @topic_of_workshop, first_name: 'Matthias'),
       FactoryGirl.create(:request, topic_of_workshop: @topic_of_workshop)
-    ])
+    ]
+    assign(:requests, @requests)
   end
 
-  it "renders a list of requests" do
+  it "renders a list of requests with their attributes" do
     render
-    assert_select "tr>td", :text => @topic_of_workshop, :count => 2
+    @requests.each do |r|
+      assert_select "tr" do
+        assert_select 'td>a', :text => r.topic_of_workshop
+        assert_select 'td', :text => r.name
+        assert_select 'td', :text => r.time_period
+        assert_select 'td', :text => r.number_of_participants.to_s
+      end
+    end
+
   end
 
   it "should not display the new button for non-pupils" do
@@ -19,20 +28,13 @@ RSpec.describe "requests/index", type: :view do
     expect(rendered).to_not have_link(I18n.t('helpers.links.new'))
   end
 
-  it "should display new button but not display edit, delete buttons for non-organizers" do
-    sign_in(FactoryGirl.create(:user, role: :coach))
-    render
-    expect(rendered).to have_link(I18n.t('helpers.links.new'))
+  it "should display edit, delete buttons for organizers and coaches" do
+    [:organizer, :coach].each do |role|
+      sign_in(FactoryGirl.create(:user, role: role))
+      render
 
-    expect(rendered).to_not have_link(I18n.t('helpers.links.edit'))
-    expect(rendered).to_not have_link(I18n.t('helpers.links.destroy'))
-  end
-
-  it "should display edit, delete buttons for organizers" do
-    sign_in(FactoryGirl.create(:user, role: :organizer))
-    render
-
-    expect(rendered).to have_link(I18n.t('helpers.links.edit'))
-    expect(rendered).to have_link(I18n.t('helpers.links.destroy'))
+      expect(rendered).to have_link(I18n.t('helpers.links.edit'))
+      expect(rendered).to have_link(I18n.t('helpers.links.destroy'))
+    end
   end
 end

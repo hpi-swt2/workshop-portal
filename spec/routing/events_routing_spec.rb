@@ -19,6 +19,10 @@ RSpec.describe EventsController, type: :routing do
       expect(:get => "/events/1/edit").to route_to("events#edit", :id => "1")
     end
 
+    it "routes to #accept_all_applicants" do
+      expect(:get => "/events/1/accept_all_applicants").to route_to("events#accept_all_applicants", :id => "1")
+    end
+
     it "routes to #create" do
       expect(:post => "/events").to route_to("events#create")
     end

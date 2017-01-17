@@ -27,8 +27,8 @@ RSpec.describe ProfilesController, type: :routing do
       expect(:patch => "/profiles/1").to route_to("profiles#update", :id => "1")
     end
 
-    it "routes to #destroy" do
-      expect(:delete => "/profiles/1").to route_to("profiles#destroy", :id => "1")
+    it "routes to #destroy do NOT exist" do
+      expect(:delete => "/profiles/1").to_not route_to("profiles#destroy", :id => "1")
     end
 
   end
