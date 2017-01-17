@@ -1,35 +1,46 @@
-<div class="col-xs-12 col-sm-12 col-md-10 col-lg-10 col-xs-offset-0 col-sm-offset-0 col-md-offset-1 col-lg-offset-1" id="event_material_area">
-  <h3><%= t '.title', title: @event.name %></h3>
+<% if can? :view_material, Event %>
+  <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10 col-xs-offset-0 col-sm-offset-0 col-md-offset-1 col-lg-offset-1" id="event_material_area">
+    <h3><%= t '.title', title: @event.name %></h3>
 
-  <table class="table table-striped">
-    <thead>
-    <tr>
-      <th><%=t '.table_name' %></th>
-      <th><%=t '.table_type' %></th>
-    </tr>
-    </thead>
-    <tbody>
-    <% @material_files.each do |file| %>
-        <tr>
-          <td><%= File.basename(file, File.extname(file))  %></td>
-          <td><%= File.extname(file) %></td>
-        </tr>
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th><%=t '.table_name' %></th>
+        <th><%=t '.table_type' %></th>
+        <th><%=t '.table_action' %></th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @material_files.each do |file| %>
+          <tr>
+            <td><%= File.basename(file, File.extname(file))  %></td>
+            <td><%= File.extname(file) %></td>
+            <td>
+              <%= form_tag(event_download_material_path(@event)) do %>
+                  <%= hidden_field_tag "file", File.basename(file) %>
+                  <%= submit_tag t('.download'),
+                                 class: 'btn btn-primary',
+                                 id: "material_upload_btn_#{@event.id}_#{File.basename(file)}"%>
+            </td>
+              <% end %>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+
+    <% if can? :upload_material, Event %>
+      <%= form_tag(event_upload_material_path(@event), class: 'btn btn-default', multipart: true) do %>
+
+          <%= file_field_tag "file_upload",
+                             class: "btn btn-default btn-file",
+                             style: 'display:inline',
+                             id: "material_upload_#{@event.id}" %>
+          <%= submit_tag t('.upload'),
+                         class: 'btn btn-default',
+                         id: "material_upload_btn_#{@event.id}"%>
+      <% end %>
     <% end %>
-    </tbody>
-  </table>
-
-  <% if can? :upload_material, Event %>
-    <%= form_tag(event_upload_material_path(@event), class: 'btn btn-default', multipart: true) do %>
-
-        <%= file_field_tag "file_upload",
-                           class: "btn btn-default btn-file",
-                           style: 'display:inline',
-                           id: "material_upload_#{@event.id}" %>
-        <%= submit_tag t('.upload'),
-                       class: 'btn btn-default',
-                       id: "material_upload_btn_#{@event.id}"%>
-    <% end %>
-  <% end %>
-  <div class="spacer-30"></div>
-</div>
+    <div class="spacer-30"></div>
+  </div>
+<% end %>
 

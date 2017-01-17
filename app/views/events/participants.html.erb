@@ -3,6 +3,7 @@
   <h1><%=t '.title', :default => model_class.model_name.human.titleize %> (<%= @event.kind.humanize %>)</h1>
 </div>
 <% if can? :view_participants, Event %>
+  <%= render :partial => 'participants_modal' %>
   <%= render :partial => 'show_event' %>
 
   <h1><%= t '.participants' %></h1>
@@ -24,6 +25,10 @@
 
       <% @participants.each do |participant| %>
       <tr>
+<<<<<<< HEAD
+=======
+
+>>>>>>> dev
         <td>
           <%= participant.name %>
         </td>
@@ -47,9 +52,11 @@
       </tr>
       <% end %>
     </table>
+
+    <button class="btn btn-default" type="button" data-toggle="modal" data-target="#print_participant_modal" id="open_print_modal">Teilnehmerliste (PDF)</button>
     <% if can? :print_agreement_letters, Event and @has_agreement_letters %>
       <div id="participants_download_submit_button">
-      <%= submit_tag t('events.agreement_letters_download.download_all_as'), name: "download_all" %>
+      <%= submit_tag t('events.agreement_letters_download.download_all_as'), name: "download_all", class: "btn btn-default" %>
       <%= select_tag :download_type, options_for_select([['pdf'], ['zip']]) %>
       </div>
     <% end %>

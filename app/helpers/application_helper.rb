@@ -16,7 +16,16 @@ end
 module ApplicationHelper
   def menu_items
     (menu_item t(:events, scope: 'navbar'), events_path) +
-    (menu_item t(:requests, scope: 'navbar'), requests_path)
+    request_menu_item
+  end
+
+  def request_menu_item
+    if can? :index, Request
+      item = (menu_item t(:requests, scope: 'navbar'), requests_path)
+    else
+      item = (menu_item t(:new_request, scope: 'navbar'), new_request_path)
+    end
+    item
   end
 
   # Render the given string as markdown

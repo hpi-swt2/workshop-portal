@@ -1,6 +1,10 @@
 <div class="container-fluid" id="applicants_overview">
   <h3><%= t '.title', title: @event.name %></h3>
-  <div id="free_places"><%= t '.free_places', count: @free_places %></div>
+  <% if @free_places == Float::INFINITY %>
+    <%= Event.human_attribute_name(:participants_are_unlimited) %>
+  <% else %>
+    <div id="free_places"><%= t '.free_places', count: @free_places %></div>
+  <% end %>
   <div id="occupied_places"><%= t '.occupied_places', count: @occupied_places %></div>
 
   <table id="applicants" class="table table-striped">
@@ -53,11 +57,10 @@
 
   <div class="container-fluid no-padding">
     <div class="btn-group" role="group">
-      <%= link_to t('.accept_all'),
-          events_path, :class => 'btn btn-default'%>
-
-      <%= link_to t('.print_all'),
-                  print_applications_event_path(@event.id), :target => "_blank", :class => 'btn btn-default'%>
+      <% if (can? :edit_applicants, Event) && (@event.application_letters.count <= @event.max_participants) %>
+        <%= link_to t('.accept_all'), event_accept_all_applicants_path(@event.to_param), :class => 'btn btn-default' %>
+      <% end %>
+      <%= link_to t('.print_all'), print_applications_event_path(@event.to_param), :target => "_blank", :class => 'btn btn-default' %>
     </div>
 
     <% if not @event.applications_classified? %>
