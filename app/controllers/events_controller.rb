@@ -62,11 +62,13 @@ class EventsController < ApplicationController
 
   # GET /events/1/badges
   def badges
+    authorize! :print_badges, @event
     @participants = @event.participants
   end
 
   # POST /events/1/badges
   def print_badges
+    authorize! :print_badges, @event
     @participants = @event.participants
     name_format = params[:name_format]
     show_color = params[:show_color]

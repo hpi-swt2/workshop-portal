@@ -4,14 +4,14 @@
 </div>
 <% if can? :view_participants, Event %>
   <%= render :partial => 'show_event' %>
-  
+
   <h1><%= t '.participants' %></h1>
   <%= form_tag(event_path(@event) + "/participants/agreement_letters") do %>
     <table class="table table-striped">
       <tr>
         <th><%= t 'activerecord.attributes.profile.name' %></th>
         <th><%= t 'activerecord.attributes.profile.email' %></th>
-    	  <th><%= t 'agreement_letters.agreement_letter' %></th>
+        <th><%= t 'agreement_letters.agreement_letter' %></th>
         <% if can? :print_agreement_letters, Event and @has_agreement_letters %>
           <th>
             <label>
@@ -20,16 +20,15 @@
             </label>
           </th>
         <% end %>
-      </tr>  
-    
+      </tr>
+
       <% @participants.each do |participant| %>
       <tr>
-        
         <td>
-        <%= participant.name %>
+          <%= participant.name %>
         </td>
         <td>
-        <%= participant.email %>
+          <%= participant.email %>
         </td>
         <td>
           <% if participant.requires_agreement_letter_for_event?(@event) %>
@@ -52,11 +51,14 @@
       <div id="participants_download_submit_button">
       <%= submit_tag t('events.agreement_letters_download.download_all_as'), name: "download_all" %>
       <%= select_tag :download_type, options_for_select([['pdf'], ['zip']]) %>
-      <%= link_to t('events.badges.print_button_label'), badges_event_path(@event), :class => 'btn btn-default'%>
       </div>
     <% end %>
   <% end %>
   <br>
   <%= link_to t('.back', :default => t('helpers.links.back')),
               event_path(@event), :class => 'btn btn-default'  %>
+  <%= link_to t('events.badges.print_button_label'),
+              badges_event_path(@event),
+              class: 'btn btn-default',
+              disabled: @participants.empty? %>
 <% end %>
