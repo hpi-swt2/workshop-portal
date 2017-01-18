@@ -30,7 +30,11 @@
           <td><%= I18n.l(user.created_at) %></td>
           <td>
             <%= form_for user, url: update_user_role_path(user) do |f| %>
-                <%= f.collection_select(:role, User::ROLES, :to_s, lambda{|i| t("users.roles." + i.to_s)}, {:selected => user.role.to_s })  %>
+                <% if can? :update_role_to_admin, @user %>
+                    <%= f.collection_select(:role, User::ROLES, :to_s, lambda{|i| t("users.roles." + i.to_s)}, {:selected => user.role.to_s })  %>
+                <% else %>
+                    <%= f.collection_select(:role, User::ROLES.reject{|r| r == :admin}, :to_s, lambda{|i| t("users.roles." + i.to_s)}, {:selected => user.role.to_s })  %>
+                <% end %>
                 <%= f.submit t('.save', :default => "Save"), class: "btn btn-xs btn-primary" %>
             <% end %>
           </td>

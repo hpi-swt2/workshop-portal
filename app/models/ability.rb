@@ -59,6 +59,11 @@ class Ability
       # Organizers can view, edit and print Applications, view participants for, view, upload and download materials for, print agreement letters for and manage Events
       can [:view_applicants, :edit_applicants, :view_participants, :print_applications, :manage, :view_material, :upload_material, :print_agreement_letters, :download_material], Event
       can :manage, Request
+
+      can :manage, User, role: ["pupil", "coach", "organizer"]
+      #cannot :update_role, User, role: "admin"
+      cannot :update_role_to_admin, User
+
     end
     if user.role? :admin
       can :manage, :all
