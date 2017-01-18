@@ -405,7 +405,6 @@ RSpec.describe EventsController, type: :controller do
           a.user.accepted_applications_count(@event).to_s,
           a.user.rejected_applications_count(@event).to_s,
           I18n.t("application_status.#{a.status}"),
-          a.user.profile.address,
           a.motivation
         )
         a.application_notes.each do |note|

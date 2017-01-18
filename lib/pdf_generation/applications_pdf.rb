@@ -115,7 +115,6 @@ class ApplicationsPDF
     def applicants_detail_data(application_letter)
       [[Profile.human_attribute_name(:gender)+":", application_letter.user.profile.gender],
        [t('application_letters.show.age_when_event_starts')+":", application_letter.applicant_age_when_event_starts],
-       [Profile.human_attribute_name(:address)+":", application_letter.user.profile.address],
        [User.human_attribute_name(:accepted_application_count)+":", application_letter.user.accepted_applications_count(@event)],
        [User.human_attribute_name(:rejected_application_count)+":", application_letter.user.rejected_applications_count(@event)],
        [Profile.human_attribute_name(:status)+":", t("application_status.#{application_letter.status}")]]
