@@ -145,6 +145,19 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     end
   end
 
+  scenario "logged in as Organizer I can cancel accepted applications" do
+    login(:organizer)
+    @pupil = FactoryGirl.create(:profile)
+    @application_letter = FactoryGirl.create(:application_letter_accepted, event: @event, user: @pupil.user)
+    @event.lock_application_status
+    visit event_path(@event)
+    expect(page).to have_link(I18n.t "application_status.canceled")
+    click_link I18n.t "application_status.canceled"
+    expect(page).to_not have_link(I18n.t "application_status.canceled")
+    @application_letter.reload
+    expect(@application_letter.status).to eq('canceled')
+  end
+
   scenario "logged in as Organizer I can push the accept all button to pre accept all applicants" do
     login(:organizer)
     @event = FactoryGirl.create :event, :with_diverse_open_applications, participants_are_unlimited: true
