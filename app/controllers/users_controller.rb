@@ -5,9 +5,9 @@ class UsersController < ApplicationController
   # GET /users
   def index
     authorize! :index, User
-    @users = User.with_profiles.paginate(:page => params[:page], :per_page => 100)
+    @users = User.with_profiles.paginate(:page => params[:page], :per_page => 20)
     if params[:search]
-      @users = User.search(params[:search]).paginate(:page => params[:page], :per_page => 100)
+      @users = User.search(params[:search]).paginate(:page => params[:page], :per_page => 20)
     end
   end
 
