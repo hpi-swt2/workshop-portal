@@ -158,6 +158,33 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     expect(@application_letter.status).to eq('canceled')
   end
 
+  scenario "logged in as Organizer I can pre accept alternative applications" do
+    login(:organizer)
+    @pupil = FactoryGirl.create(:profile)
+    @application_letter_alternative = FactoryGirl.create(:application_letter_alternative, event: @event, user: @pupil.user)
+    @event.max_participants = 1
+    @event.save!
+    @event.lock_application_status
+    visit event_path(@event)
+    expect(page).to have_link(I18n.t "application_status.pre_accepted")
+    click_link I18n.t "application_status.pre_accepted"
+    expect(page).to_not have_link(I18n.t "application_status.pre_accepted")
+    @application_letter_alternative.reload
+    expect(@application_letter_alternative.status).to eq('pre_accepted')
+  end
+
+  scenario "logged in as Organizer I cannot pre accept alternative applications if no free places are available" do
+    login(:organizer)
+    @pupil = FactoryGirl.create(:profile)
+    @application_letter_accepted = FactoryGirl.create(:application_letter_accepted, event: @event, user: @pupil.user)
+    @application_letter_alternative = FactoryGirl.create(:application_letter_alternative, event: @event, user: @pupil.user)
+    @event.max_participants = 1
+    @event.save!
+    @event.lock_application_status
+    visit event_path(@event)
+    expect(page).to_not have_link(I18n.t "application_status.pre_accepted")
+  end
+
   scenario "logged in as Organizer I can push the accept all button to pre accept all applicants" do
     login(:organizer)
     @event = FactoryGirl.create :event, :with_diverse_open_applications, participants_are_unlimited: true

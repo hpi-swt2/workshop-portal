@@ -46,7 +46,7 @@ class ApplicationLetter < ActiveRecord::Base
   def status_change_allowed?
     # TODO use event states instead
     if (event.application_status_locked)
-      status_was == 'accepted' && status == 'canceled'
+      status_was == 'accepted' && status == 'canceled' || status_was == 'alternative' && status == 'pre_accepted'
     else
       true
     end
