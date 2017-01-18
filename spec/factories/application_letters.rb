@@ -21,7 +21,7 @@ FactoryGirl.define do
     vegan false
     allergic true
     allergies "Many"
-    user
+    association :user, factory: :user_with_profile
     event
   end
 

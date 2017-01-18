@@ -80,8 +80,6 @@ FactoryGirl.define do
     trait :with_diverse_open_applications do
       after(:build) do |event, evaluator|
         create_list(:application_letter, 2, event: event)
-        event.application_letters[0].user.profile = FactoryGirl.build :profile, :high_values, user: event.application_letters[0].user
-        event.application_letters[1].user.profile = FactoryGirl.build :profile, :low_values, user: event.application_letters[1].user
       end
     end
 

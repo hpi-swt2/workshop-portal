@@ -265,9 +265,6 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
   scenario "logged in as Organizer I can filter displayed application letters by their status and simultaneously sort them", js: true do
     login(:organizer)
     @event = FactoryGirl.create(:event_with_accepted_applications)
-    @event.application_letters.each do |letter|
-      letter.user.profile = FactoryGirl.build(:profile, user: letter.user)
-    end
 
     visit event_path(@event)
     click_button I18n.t 'events.applicants_overview.filter_by'
