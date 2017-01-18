@@ -325,6 +325,7 @@ RSpec.describe EventsController, type: :controller do
         event = Event.create! valid_attributes
         expect(assigns(:event).organizer).to eq(event.organizer)
         expect(assigns(:event).knowledge_level).to eq(event.knowledge_level)
+        expect(assigns(:event).custom_application_fields).to eq(event.custom_application_fields)
       end
 
       it "redirects to the created event" do
