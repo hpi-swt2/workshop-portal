@@ -11,7 +11,8 @@ describe "workshop requests", type: :feature do
       fill_in "Vorname", :with => "Martina"
       fill_in "Nachname", :with => "Mustermann"
       fill_in "Telefonnummer", :with => "0123456789"
-      fill_in "Adresse", :with => "Musterstraße 3"
+      fill_in "Straße und Hausnummer", :with => "Musterstraße 3"
+      fill_in "PLZ und Stadt", :with => "12345 Musterstadt"
       fill_in "E-Mail-Adresse", :with => "martina@mustermann.de"
       fill_in "Thema des Workshops", :with => "Musterthema"
     end
@@ -56,6 +57,28 @@ describe "workshop requests", type: :feature do
       login_as(organizer, scope: :user)
       visit requests_path
       expect(page).to have_text(@request.topic_of_workshop)
+    end
+  end
+
+  describe "show page" do
+    context "as an organizer" do
+      before(:each) do
+        profile = FactoryGirl.create(:profile)
+        organizer = FactoryGirl.create(:user, role: :organizer, profile: profile)
+        login_as(organizer, scope: :user)
+      end
+
+      it "should allow me to change the status to :accepted and display the change" do
+        request = FactoryGirl.create(:request, status: :open)
+        visit(request_path(request))
+        status = I18n.t(@request.status, scope: 'activerecord.attributes.request.statuses')
+        expect(page).to have_text(status)
+        click_link I18n.t('requests.form.accept')
+        expect(page).to have_text(I18n.t('requests.notice.was_accepted'))
+        visit(request_path(request))
+        accepted_status = I18n.t 'activerecord.attributes.request.statuses.accepted'
+        expect(page).to have_text(accepted_status)
+      end
     end
   end
 end

@@ -170,6 +170,37 @@ RSpec.describe EventsController, type: :controller do
         expect(assigns(:email)).to have_attributes(hide_recipients: false, recipients: @event.email_adresses_of_rejected_applicants, reply_to: 'workshop.portal@hpi.de', subject: '', content: '')
       end
     end
+
+    describe "GET #accept_all_applicants" do
+      it "should redirect to the event" do
+        get :accept_all_applicants, id: @event.to_param, session: valid_session
+        expect(response).to redirect_to(@event)
+      end
+    end
+  end
+
+  describe "GET #participants_pdf" do
+    let(:valid_attributes) { FactoryGirl.attributes_for(:event_with_accepted_applications) }
+
+    it "should return an pdf" do
+      event = Event.create! valid_attributes
+      get :participants_pdf, id: event.to_param, session: valid_session
+      expect(response.content_type).to eq('application/pdf')
+    end
+
+    it "should return an pdf with the name of the user" do
+      event = Event.create! valid_attributes
+      profile = FactoryGirl.create(:profile)
+      user = FactoryGirl.create(:user, profile: profile)
+      application_letter = FactoryGirl.create(:application_letter, status: ApplicationLetter.statuses[:accepted], event: event, user: user)
+      response = get :participants_pdf, id: event.to_param, session: valid_session
+      expect(response.content_type).to eq('application/pdf')
+
+      pdf = PDF::Inspector::Text.analyze(response.body)
+      expect(pdf.strings).to include("Vorname")
+      expect(pdf.strings).to include("Nachname")
+      expect(pdf.strings).to include(application_letter.user.profile.first_name)
+    end
   end
 
   describe "GET #badges" do
@@ -200,6 +231,7 @@ RSpec.describe EventsController, type: :controller do
                           "1243_print"  => "Max Mustermann",
                           "1244_print"  => "Max Mustermann",
                           "1245_print"  => "Max Mustermann"
+
       pdf = PDF::Inspector::Text.analyze(rendered_pdf.body)
       expect(pdf.strings).to include("Max Mustermann")
       expect(pdf.strings).to include("John Doe")
@@ -236,6 +268,41 @@ RSpec.describe EventsController, type: :controller do
       post :upload_material, event_id: @event.to_param, session: valid_session, file_upload: @file
       expect(response).to redirect_to :action => :show, :id => @event.id
       expect(flash[:alert]).to match(I18n.t(:saving_fails, scope: 'events.material_area'))
+    end
+  end
+
+  describe "POST #download_material" do
+    before :each do
+      @user = FactoryGirl.create(:user, role: :coach)
+      @user.profile ||= FactoryGirl.create(:profile)
+      sign_in @user
+
+      filepath = Rails.root.join('spec/testfiles/actual.pdf')
+      @file = fixture_file_upload(filepath, 'application/pdf')
+      @event = Event.create! valid_attributes
+      post :upload_material, event_id: @event.to_param, session: valid_session, file_upload: @file
+    end
+
+    after :each do
+      filepath = File.join(@event.material_path, @file.original_filename)
+      File.delete(filepath) if File.exist?(filepath)
+    end
+
+    it "download a file from the event's material directory" do
+      post :download_material, event_id: @event.to_param, session: valid_session, file: @file.original_filename
+      expect(response.header['Content-Type']).to match('application/pdf')
+    end
+
+    it "shows error if no file was given" do
+      post :download_material, event_id: @event.to_param, session: valid_session
+      expect(response).to redirect_to :action => :show, :id => @event.id
+      expect(flash[:alert]).to match(I18n.t(:no_file_given, scope: 'events.material_area'))
+    end
+
+    it "shows error if file was not found in event's material directory" do
+      post :download_material, event_id: @event.to_param, session: valid_session, file: "dump.pdf"
+      expect(response).to redirect_to :action => :show, :id => @event.id
+      expect(flash[:alert]).to match(I18n.t(:download_file_not_found, scope: 'events.material_area'))
     end
   end
 
