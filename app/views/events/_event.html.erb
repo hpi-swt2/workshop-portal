@@ -21,7 +21,7 @@
     <%= link_to t("helpers.links.apply"), new_application_letter_path(:event_id => event.id), class: "btn btn-success btn-sm" %>
 
     <%= link_to edit_event_path(event),
-      :class => 'btn btn-default btn-sm' do '<span class="glyphicon glyphicon-edit"></span>'.html_safe end if can? :edit, event %>
+      :class => 'btn btn-default btn-sm' do glyph 'edit' end if can? :edit, event %>
 
     <%= link_to event_path(event),
       :method => :delete,
@@ -29,7 +29,7 @@
         :confirm => t('events.confirmation_prompts.confirm_delete',
           :default => t("helpers.links.confirm",
             :default => 'Löschen kann nicht rückgängig gemacht werden!')) },
-           :class => 'btn btn-sm btn-danger' do '<span class="glyphicon glyphicon-trash"></span>'.html_safe end if can? :destroy, event %>
+           :class => 'btn btn-sm btn-danger' do glyph 'trash' end if can? :destroy, event %>
   </div>
 
   <div class="m-b-1">

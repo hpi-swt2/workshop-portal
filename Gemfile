@@ -42,6 +42,8 @@ gem 'devise_openid_authenticatable'
 # https://github.com/seyhunak/twitter-bootstrap-rails#using-helpers
 gem "therubyracer"
 #gem 'less-rails-bootstrap'
+# less-rails requires an older sprockets
+gem "sprockets", '3.6.3'
 gem "less-rails"
 gem 'twitter-bootstrap-rails'
 gem 'ref'
