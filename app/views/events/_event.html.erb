@@ -15,7 +15,12 @@
   <p>
     <%= truncate(markdown(event.description, true), length: Event::TRUNCATE_DESCRIPTION_TEXT_LENGTH) %>
     <%= link_to " " + I18n.t('events.list.read_on'), event_path(event) %>
-  </p>
+  <div class="pull-left">
+    <div class="m-b-1">
+      <%= event.application_deadline_label.try { |label| tag_label label, :default } %>
+      <%= event.duration_label.try { |label| tag_label label, :default } %>
+    </div>
+  </div>
 
   <div class="pull-right">
     <%= link_to t("helpers.links.apply"), new_application_letter_path(:event_id => event.id), class: "btn btn-success btn-sm" %>
@@ -31,9 +36,6 @@
             :default => 'Löschen kann nicht rückgängig gemacht werden!')) },
            :class => 'btn btn-sm btn-danger' do glyph 'trash' end if can? :destroy, event %>
   </div>
+  </p>
 
-  <div class="m-b-1">
-    <%= event.application_deadline_label.try { |label| tag_label label, :default } %>
-    <%= event.duration_label.try { |label| tag_label label, :default } %>
-  </div>
 </div>
