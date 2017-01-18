@@ -5,19 +5,19 @@ RSpec.describe "application_letters/show", type: :view do
     @application_letter = assign(:application_letter, FactoryGirl.create(:application_letter))
     @application_note = assign(:application_note, FactoryGirl.create(:application_note, application_letter: @application_letter))
     @application_letter.user.profile = FactoryGirl.build(:profile)
-    assign(:selectable_statuses, [:accepted,:rejected,:pending,:alternative])
+    assign(:selectable_statuses, [:pre_accepted,:rejected,:pending,:alternative])
     profile = FactoryGirl.create(:profile, user: (FactoryGirl.create :user, role: :organizer))
     sign_in profile.user
     render
   end
 
   it "renders radio buttons for accept reject pending and alternative" do
-    expect(rendered).to have_css("label", text: I18n.t('application_status.accepted'))
+    expect(rendered).to have_css("label", text: I18n.t('application_status.pre_accepted'))
     expect(rendered).to have_css("label", text: I18n.t('application_status.rejected'))
     expect(rendered).to have_css("label", text: I18n.t('application_status.pending'))
     expect(rendered).to have_css("label", text: I18n.t('application_status.alternative'))
     expect(rendered).to_not have_css("label", text: I18n.t('application_status.canceled'))
-    expect(rendered).to_not have_css("label", text: I18n.t('application_status.pre_accepted'))
+    expect(rendered).to_not have_css("label", text: I18n.t('application_status.accepted'))
   end
 
   it "renders application's attributes" do

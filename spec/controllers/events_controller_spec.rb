@@ -74,7 +74,7 @@ RSpec.describe EventsController, type: :controller do
 
       it "assigns selectable statuses" do
         get :show, id: @event.to_param, session: valid_session
-        expect(assigns(:selectable_statuses)).to eq([:accepted,:rejected,:pending,:alternative])
+        expect(assigns(:selectable_statuses)).to eq([:pre_accepted,:rejected,:pending,:alternative])
       end
     end
 

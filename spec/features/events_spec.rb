@@ -125,7 +125,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     @pupil = FactoryGirl.create(:profile)
     @application_letter = FactoryGirl.create(:application_letter, event: @event, user: @pupil.user)
     visit event_path(@event)
-    selectable_statuses = [:accepted,:rejected,:pending,:alternative]
+    selectable_statuses = [:pre_accepted,:rejected,:pending,:alternative]
     selectable_statuses.each do |new_status|
       choose(I18n.t "application_status.#{new_status}")
       expect(ApplicationLetter.where(id: @application_letter.id)).to exist
@@ -265,7 +265,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
 
   scenario "logged in as Organizer I can filter displayed application letters by their status and simultaneously sort them", js: true do
     login(:organizer)
-    @event = FactoryGirl.create(:event_with_accepted_applications)
+    @event = FactoryGirl.create(:event_with_applications_in_various_states)
     @event.application_letters.each do |letter|
       letter.user.profile = FactoryGirl.build(:profile, user: letter.user)
     end
@@ -291,11 +291,14 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
       .map {|l| l.user.profile.name }
     expect(page).to contain_ordered(sorted_accepted_names)
 
-    # list rejected, pending
+    # list all others
     click_button I18n.t 'events.applicants_overview.filter_by'
     uncheck I18n.t 'application_status.accepted'
     check I18n.t 'application_status.rejected'
     check I18n.t 'application_status.pending'
+    check I18n.t 'application_status.pre_accepted'
+    check I18n.t 'application_status.alternative'
+    check I18n.t 'application_status.canceled'
     click_button I18n.t 'events.applicants_overview.filter'
 
     expect(page).to have_every_text(not_accepted_names)
