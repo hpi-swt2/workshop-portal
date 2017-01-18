@@ -75,7 +75,6 @@ ActiveRecord::Schema.define(version: 20170114132153) do
     t.string   "knowledge_level"
     t.date     "application_deadline"
     t.boolean  "application_status_locked"
-    t.text     "custom_application_fields"
     t.boolean  "participants_are_unlimited", default: false
   end
 
