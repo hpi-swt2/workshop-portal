@@ -127,6 +127,16 @@ describe User do
 
       expect(ability).to be_able_to(:download_material, Event)
     end
+
+    it "cannot delete applications as #{role}" do
+      user = FactoryGirl.create(:user, role: role)
+      another_user = FactoryGirl.create(:user)
+      another_application = FactoryGirl.create(:application_letter, user: another_user)
+      ability = Ability.new(user)
+
+
+      expect(ability).to_not be_able_to(:destroy, another_application)
+    end
   end
 
   it "can download an participants agreement letters as organizer" do

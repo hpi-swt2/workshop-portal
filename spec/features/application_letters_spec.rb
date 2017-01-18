@@ -26,6 +26,18 @@ RSpec.feature "Application Letter Overview", :type => :feature do
     end
   end
 
+  %i[pupil coach organizer].each do |role|
+    scenario "logged in as #{role} I cannot see a delete button" do
+      login(role)
+      expect(page).to_not have_link(I18n.t "application_letters.show.delete")
+    end
+  end
+
+  scenario "logged in as admin I can see a delete button" do
+    login(:admin)
+    expect(page).to have_link(I18n.t "application_letters.show.delete")
+  end
+
   scenario "logged in as pupil I can edit my profile from the checking page" do
     login(:pupil)
     visit check_application_letter_path(@application_letter)
