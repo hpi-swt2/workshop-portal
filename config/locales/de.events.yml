@@ -57,7 +57,6 @@ de:
      workshop: "Workshop"
      camp: "Camp"
     list:
-      more: "Mehr dazu"
       read_on: "Weiterlesen"
     participants_modal:
       print_names: 'Teilnehmerliste drucken'
