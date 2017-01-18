@@ -20,7 +20,7 @@ describe ApplicationLetter do
   end
 
   it "can't be created without mandatory fields" do
-    [:grade, :experience, :motivation, :coding_skills, :emergency_number, :vegeterian, :vegan, :allergic].each do |attr|
+    [:grade, :experience, :motivation, :coding_skills, :emergency_number, :vegetarian, :vegan, :allergic].each do |attr|
       application = FactoryGirl.build(:application_letter, attr => nil)
       expect(application).to_not be_valid
     end
@@ -48,7 +48,7 @@ describe ApplicationLetter do
  it "returns an empty array when no eating habits exist" do
     application = FactoryGirl.build(:application_letter)
     application.vegan = false
-    application.vegeterian = false
+    application.vegetarian = false
     application.allergic = false
     expect(application.eating_habits).to eq([])
   end
@@ -56,7 +56,7 @@ describe ApplicationLetter do
   it "returns a single eating habit" do
     application = FactoryGirl.build(:application_letter)
     application.vegan = true
-    application.vegeterian = false
+    application.vegetarian = false
     application.allergic = false
     expect(application.eating_habits).to eq([ApplicationLetter.human_attribute_name(:vegan)])
   end
@@ -64,9 +64,9 @@ describe ApplicationLetter do
   it "returns multiple eating habits" do
     application = FactoryGirl.build(:application_letter)
     application.vegan = false
-    application.vegeterian = true
+    application.vegetarian = true
     application.allergic = true
-    expect(application.eating_habits).to eq([ApplicationLetter.human_attribute_name(:vegeterian), ApplicationLetter.human_attribute_name(:allergic)])
+    expect(application.eating_habits).to eq([ApplicationLetter.human_attribute_name(:vegetarian), ApplicationLetter.human_attribute_name(:allergic)])
   end
 
   it "can not be updated after event application deadline"  do
