@@ -139,7 +139,7 @@ RSpec.describe RequestsController, type: :controller do
         expect(assigns(:request)).to be_persisted
       end
 
-      it "redirects to the created request" do
+      it "redirects to start page" do
         post :create, request: valid_attributes, session: valid_session
         expect(response).to redirect_to(root_path)
       end
