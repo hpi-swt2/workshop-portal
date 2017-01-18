@@ -89,6 +89,8 @@
     </div>
   </div>
 
+  <%= (render 'custom_application_fields_input', form: f) if @event.new_record? %>
+
   <div class="form-group">
     <div class="col-lg-offset-2 col-lg-10">
       <% if @event.draft == false %>

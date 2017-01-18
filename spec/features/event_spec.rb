@@ -176,6 +176,38 @@ describe "Event", type: :feature do
       expect(page).to have_css("div.has-error")
       expect(page).to have_content("kann nicht vor Start-Datum liegen", count: 1)
     end
+
+    it "should allow to add custom fields", js: true do
+      login_as(FactoryGirl.create(:user, role: :organizer), :scope => :user)
+
+      visit new_event_path
+
+      click_link I18n.t "events.form.add_field"
+      within page.find("#custom-application-fields").all(".input-group")[0] do
+        fill_in "event[custom_application_fields][]", with: "Lieblingsfarbe"
+      end
+
+      click_link I18n.t "events.form.add_field"
+      within page.find("#custom-application-fields").all(".input-group")[1] do
+        fill_in "event[custom_application_fields][]", with: "Lieblings 'Friends' Charakter"
+      end
+
+      fill_in "Maximale Teilnehmerzahl", :with => 25
+      fill_in "event[date_ranges_attributes][][start_date]", :with => I18n.l(Date.tomorrow.next_day(2))
+      fill_in "event[date_ranges_attributes][][end_date]", :with => I18n.l(Date.tomorrow.next_day(3))
+      fill_in "event_application_deadline", :with => I18n.l(Date.tomorrow)
+
+      click_button I18n.t(".events.form.publish")
+
+      expect(page).to have_text("Lieblingsfarbe")
+      expect(page).to have_text("Lieblings 'Friends' Charakter")
+    end
+
+    it "should not allow adding fields after event creation" do
+      event = FactoryGirl.create(:event)
+      visit edit_event_path(event)
+      expect(page).to_not have_text(I18n.t "events.form.add_field")
+    end
   end
 
   describe "show page" do
