@@ -15,7 +15,7 @@ RSpec.describe "events/_event", type: :view do
   end
 
   %i[coach organizer].each do |role|
-    it "as #{role} you can not see the apply button" do
+    it "as #{role} you cannot see the apply button" do
       user = FactoryGirl.create(:user, role: role)
       sign_in user
       render partial: 'events/event.html.erb', locals: {event: @event}
