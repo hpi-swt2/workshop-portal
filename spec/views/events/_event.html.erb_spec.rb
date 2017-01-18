@@ -1,5 +1,4 @@
 require 'rails_helper'
-require 'cancan/matchers'
 
 RSpec.describe "events/_event", type: :view do
   before(:each) do
@@ -8,6 +7,8 @@ RSpec.describe "events/_event", type: :view do
 
   %i[pupil admin].each do |role|
     it "as #{role} you can see the apply button" do
+      user = FactoryGirl.create(:user, role: role)
+      sign_in user
       render partial: 'events/event.html.erb', locals: {event: @event}
       expect(rendered).to have_link(t('helpers.links.apply'), href: new_application_letter_path(event_id: @event.id))
     end
@@ -15,6 +16,8 @@ RSpec.describe "events/_event", type: :view do
 
   %i[coach organizer].each do |role|
     it "as #{role} you can not see the apply button" do
+      user = FactoryGirl.create(:user, role: role)
+      sign_in user
       render partial: 'events/event.html.erb', locals: {event: @event}
       expect(rendered).to_not have_link(t('helpers.links.apply'), href: new_application_letter_path(event_id: @event.id))
     end
