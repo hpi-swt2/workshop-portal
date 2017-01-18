@@ -87,7 +87,8 @@ class ApplicationLettersController < ApplicationController
     # Only allow a trusted parameter "white list" through.
     # Don't allow user_id as you shouldn't be able to set the user from outside of create/update.
     def application_params
-      params.require(:application_letter).permit(:grade, :experience, :motivation, :coding_skills, :emergency_number, :vegeterian, :vegan, :allergic, :allergies, :user_id, :event_id)
+      params.require(:application_letter).permit(:grade, :experience, :motivation, :coding_skills, :emergency_number,
+                                                 :vegetarian, :vegan, :allergic, :allergies, :user_id, :event_id)
     end
 
     # Only allow to update the status

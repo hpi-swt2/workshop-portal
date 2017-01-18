@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170118132170) do
+ActiveRecord::Schema.define(version: 20170118161954) do
 
   create_table "agreement_letters", force: :cascade do |t|
     t.integer  "user_id",    null: false
@@ -35,7 +35,7 @@ ActiveRecord::Schema.define(version: 20170118132170) do
     t.string   "experience"
     t.string   "coding_skills"
     t.string   "emergency_number"
-    t.boolean  "vegeterian"
+    t.boolean  "vegetarian"
     t.boolean  "vegan"
     t.boolean  "allergic"
     t.string   "allergies"
