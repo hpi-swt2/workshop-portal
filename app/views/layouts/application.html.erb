@@ -16,9 +16,7 @@
   </script>
   <%= csrf_meta_tags %>
 </head>
-<body <% if current_page?('/') %> 
-        class="wsp-home"
-         <% end %> >
+<body <%= 'class="wsp-home"' if current_page?('/') %>>
 <%# https://github.com/seyhunak/twitter-bootstrap-rails#using-helpers %>
 <%= nav_bar :brand => image_tag("hpi-workshop-200.png"), responsive: true, fixed: :top do %>
    <%= menu_group pull: :right do %>
