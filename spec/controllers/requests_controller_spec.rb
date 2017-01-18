@@ -141,7 +141,7 @@ RSpec.describe RequestsController, type: :controller do
 
       it "redirects to the created request" do
         post :create, request: valid_attributes, session: valid_session
-        expect(response).to redirect_to(Request.last)
+        expect(response).to redirect_to(root_path)
       end
     end
 
