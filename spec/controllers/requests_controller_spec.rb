@@ -36,9 +36,9 @@ RSpec.describe RequestsController, type: :controller do
     end
 
     describe "GET #index" do
-      it "assigns all requests as @requests" do
+      it "disallows viewing all requests per default" do
         get :index, session: valid_session
-        expect(assigns(:requests)).to eq([@a_request])
+        expect(response).to redirect_to(root_url)
       end
     end
 
@@ -62,6 +62,14 @@ RSpec.describe RequestsController, type: :controller do
         expect(assigns(:request)).to eq(@a_request)
       end
     end
+
+    describe "GET #accept" do
+      it "rejects the request for normal users" do
+        get :accept, id: @a_request.to_param, session: valid_session
+        expect(@a_request.status.to_sym).to eq(:open)
+      end
+    end
+
 
     describe "PUT #update" do
       context "with valid params" do

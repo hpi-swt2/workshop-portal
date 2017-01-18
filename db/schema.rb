@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170104135212) do
+ActiveRecord::Schema.define(version: 20170114132153) do
 
   create_table "agreement_letters", force: :cascade do |t|
     t.integer  "user_id",    null: false
@@ -67,14 +67,16 @@ ActiveRecord::Schema.define(version: 20170104135212) do
     t.string   "name"
     t.string   "description"
     t.integer  "max_participants"
-    t.datetime "created_at",                            null: false
-    t.datetime "updated_at",                            null: false
-    t.integer  "kind",                      default: 0
+    t.datetime "created_at",                                 null: false
+    t.datetime "updated_at",                                 null: false
+    t.integer  "kind",                       default: 0
     t.boolean  "draft"
     t.string   "organizer"
     t.string   "knowledge_level"
     t.date     "application_deadline"
     t.boolean  "application_status_locked"
+    t.text     "custom_application_fields"
+    t.boolean  "participants_are_unlimited", default: false
   end
 
   create_table "profiles", force: :cascade do |t|
@@ -97,19 +99,21 @@ ActiveRecord::Schema.define(version: 20170104135212) do
   add_index "profiles", ["user_id"], name: "index_profiles_on_user_id"
 
   create_table "requests", force: :cascade do |t|
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
     t.integer  "form_of_address"
     t.string   "first_name"
     t.string   "last_name"
     t.string   "phone_number"
-    t.string   "address"
+    t.string   "street"
     t.string   "email"
     t.text     "topic_of_workshop"
     t.text     "time_period"
     t.integer  "number_of_participants"
     t.string   "knowledge_level"
     t.text     "annotations"
+    t.integer  "status",                 default: 0
+    t.string   "zip_code_city"
   end
 
   create_table "users", force: :cascade do |t|
@@ -125,7 +129,6 @@ ActiveRecord::Schema.define(version: 20170104135212) do
     t.string   "last_sign_in_ip"
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
-    t.string   "name"
     t.string   "role"
   end
 

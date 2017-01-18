@@ -23,8 +23,9 @@ def add_sample_data
   users[:tobi] = user_tobi
   users[:lisa] = user_lisa
   users[:max] = user_max
-  users[:organizer] = user_organizer
   users[:coach] = user_coach
+  users[:organizer] = user_organizer
+  users[:hpi_admin] = user_admin
 
   profiles = Hash.new
   profiles[:pupil] = profile_pupil(users[:pupil])
