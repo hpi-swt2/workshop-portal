@@ -23,8 +23,9 @@ class RequestsController < ApplicationController
   # POST /requests
   def create
     @request = Request.new(request_params)
-
     if @request.save
+      Mailer.send_generic_email(false, @request.email, 'workshop.portal@gmail.com', I18n.t('requests.email.topic'),
+                                I18n.t('requests.email.content'))
       redirect_to root_path, notice: I18n.t('requests.notice.was_created')
     else
       render :new
