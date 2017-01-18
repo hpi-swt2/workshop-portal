@@ -182,12 +182,12 @@ describe "Event", type: :feature do
 
       visit new_event_path
 
-      click_link "Neues Feld hinzufügen"
+      click_link I18n.t "events.form.add_field"
       within page.find("#custom-application-fields").all(".input-group")[0] do
         fill_in "event[custom_application_fields][]", with: "Lieblingsfarbe"
       end
 
-      click_link "Neues Feld hinzufügen"
+      click_link I18n.t "events.form.add_field"
       within page.find("#custom-application-fields").all(".input-group")[1] do
         fill_in "event[custom_application_fields][]", with: "Lieblings 'Friends' Charakter"
       end
@@ -206,7 +206,7 @@ describe "Event", type: :feature do
     it "should not allow adding fields after event creation" do
       event = FactoryGirl.create(:event)
       visit edit_event_path(event)
-      expect(page).to_not have_text("Neues Feld hinzufügen")
+      expect(page).to_not have_text(I18n.t "events.form.add_field")
     end
   end
 

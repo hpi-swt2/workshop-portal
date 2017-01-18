@@ -3,15 +3,21 @@
   <h1><%=t '.title', :default => model_class.model_name.human.titleize %></h1>
 </div>
 
-<h3><%= @application_letter.user.profile.name %></h3>
+<% if can? :show, @application_letter.user.profile  %>
+    <h3><%= link_to @application_letter.user.profile.name, profile_path(@application_letter.user.profile) %></h3>
+<% else %>
+    <h3><%= @application_letter.user.profile.name %></h3>
+<% end %>
 
 <dl class="dl-horizontal" id="applicant_details">
   <dt><strong><%= Profile.human_attribute_name(:gender) %>:</strong></dt>
   <dd><%= @application_letter.user.profile.gender %></dd>
   <dt><strong><%= t('.age_when_event_starts') %>:</strong></dt>
   <dd><%= @application_letter.user.profile.age_at_time(@application_letter.event.start_date) %></dd>
-  <dt><strong><%= Profile.human_attribute_name(:address) %>:</strong></dt>
-  <dd><%= @application_letter.user.profile.address %></dd>
+  <% if can? :view_personal_details, ApplicationLetter  %>
+    <dt><strong><%= Profile.human_attribute_name(:address) %>:</strong></dt>
+    <dd><%= @application_letter.user.profile.address %></dd>
+  <% end %>
   <dt><strong><%= User.human_attribute_name(:accepted_application_count) %>:</strong></dt>
   <dd><%= @application_letter.user.accepted_applications_count(@application_letter.event) %></dd>
   <dt><strong><%= User.human_attribute_name(:rejected_application_count) %>:</strong></dt>
