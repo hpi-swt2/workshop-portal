@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170114132153) do
+ActiveRecord::Schema.define(version: 20170118185870) do
 
   create_table "agreement_letters", force: :cascade do |t|
     t.integer  "user_id",    null: false
@@ -35,10 +35,11 @@ ActiveRecord::Schema.define(version: 20170114132153) do
     t.string   "experience"
     t.string   "coding_skills"
     t.string   "emergency_number"
-    t.boolean  "vegeterian"
+    t.boolean  "vegetarian"
     t.boolean  "vegan"
     t.boolean  "allergic"
     t.string   "allergies"
+    t.text     "custom_application_fields"
   end
 
   add_index "application_letters", ["event_id"], name: "index_application_letters_on_event_id"
@@ -76,6 +77,7 @@ ActiveRecord::Schema.define(version: 20170114132153) do
     t.date     "application_deadline"
     t.boolean  "application_status_locked"
     t.boolean  "participants_are_unlimited", default: false
+    t.text     "custom_application_fields"
   end
 
   create_table "profiles", force: :cascade do |t|
@@ -98,8 +100,8 @@ ActiveRecord::Schema.define(version: 20170114132153) do
   add_index "profiles", ["user_id"], name: "index_profiles_on_user_id"
 
   create_table "requests", force: :cascade do |t|
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
     t.integer  "form_of_address"
     t.string   "first_name"
     t.string   "last_name"
