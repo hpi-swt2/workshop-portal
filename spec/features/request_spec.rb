@@ -22,8 +22,8 @@ describe "workshop requests", type: :feature do
       	visit new_request_path
       	choose(form_of_address)
       	fill_in_required_fields
-      	click_button I18n.t('.requests.form.create_request')
-      	expect(page).to have_current_path(request_path(Request.last))
+      	click_button I18n.t('requests.form.create_request')
+      	expect(page).to have_current_path(root_path)
       end
     end
   end

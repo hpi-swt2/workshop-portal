@@ -16,7 +16,10 @@ de:
     hints:
       please_enter_two_topics: "Bitte 2 Wünsche angeben"
     notice:
+      was_created: "Ihre Anfrage wurde erfolgreich abgesendet"
+      was_updated: "Die Anfrage wurde aktualisiert"
       was_accepted: "Die Anfrage wurde angenommen"
+      was_deleted: "Die Anfrage wurde gelöscht"
   activerecord:
     models:
       request:
