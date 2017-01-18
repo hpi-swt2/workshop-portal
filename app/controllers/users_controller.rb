@@ -13,7 +13,7 @@ class UsersController < ApplicationController
 
   # PATCH/PUT /users/1/role
   def update_role
-    #authorize! :update_role, @user
+    authorize! :update_role, @user
     if user_params[:role] == "admin"
       authorize! :update_role_to_admin, @user
     end
