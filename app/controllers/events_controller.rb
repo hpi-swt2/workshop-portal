@@ -96,6 +96,13 @@ class EventsController < ApplicationController
     send_data pdf, filename: "applications_#{@event.name}_#{Date.today}.pdf", type: "application/pdf", disposition: "inline"
   end
 
+  # GET /events/1/accept-all-applicants
+  def accept_all_applicants
+    event = Event.find(params[:id])
+    event.accept_all_application_letters
+    redirect_to event_path(event)
+  end
+
   #POST /events/1/participants/agreement_letters
   # creates either a zip or a pdf containing all agreement letters for all selected participants
   def download_agreement_letters
