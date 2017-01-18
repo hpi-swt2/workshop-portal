@@ -1,0 +1,31 @@
+<div class="modal fade" id="print_participant_modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <%= form_tag(participants_pdf_event_path(@event), method: :get, class:'form') do %>
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title"><%= t('.print_names') %></h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <%= label_tag(:order_by, t('.order_by')) %>
+          <%= select_tag(:order_by, options_for_select([
+                                                          [t('.email'),'email'],
+                                                          [t('.date_of_birth'),'birth_date'],
+                                                          [t('.first_name'),'first_name'],
+                                                          [t('.last_name'),'last_name']
+          ]), class:'form-control') %>
+        </div>
+        <div class="form-group">
+          <%= label_tag(:order_direction, t('.order_direction')) %>
+          <%= select_tag(:order_direction, options_for_select([[t('.order_ascending'),'asc'],[t('.order_descending'),'desc']]), class:'form-control') %>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal"><%= t('.close_modal') %></button>
+        <%= submit_tag(t('.create_pdf'), class: 'btn btn-default', id:'print_participant_list' ) %>
+      </div>
+    </div><!-- /.modal-content -->
+    <% end %>
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

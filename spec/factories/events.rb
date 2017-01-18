@@ -22,6 +22,7 @@ FactoryGirl.define do
     organizer "Workshop-Organizer"
     knowledge_level "Workshop-Knowledge Level"
     application_deadline Date.tomorrow
+    custom_application_fields ["Field 1", "Field 2", "Field 3"]
     date_ranges { build_list :date_range, 1 }
 
     trait :with_two_date_ranges do
