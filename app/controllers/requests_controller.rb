@@ -25,7 +25,7 @@ class RequestsController < ApplicationController
     @request = Request.new(request_params)
 
     if @request.save
-      redirect_to @request, notice: 'Request was successfully created.'
+      redirect_to root_path, notice: I18n.t('requests.notice.was_created')
     else
       render :new
     end
@@ -34,7 +34,7 @@ class RequestsController < ApplicationController
   # PATCH/PUT /requests/1
   def update
     if @request.update(request_params)
-      redirect_to @request, notice: 'Request was successfully updated.'
+      redirect_to @request, notice: I18n.t('requests.notice.was_updated')
     else
       render :edit
     end
@@ -43,7 +43,7 @@ class RequestsController < ApplicationController
   # DELETE /requests/1
   def destroy
     @request.destroy
-    redirect_to requests_url, notice: 'Request was successfully destroyed.'
+    redirect_to requests_url, notice:I18n.t('requests.notice.was_deleted')
   end
 
   def accept

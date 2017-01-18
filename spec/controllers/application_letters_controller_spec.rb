@@ -87,7 +87,7 @@ RSpec.describe ApplicationLettersController, type: :controller do
               motivation: "None",
               coding_skills: "None",
               emergency_number: "01234567891",
-              vegeterian: true,
+              vegetarian: true,
               vegan: true,
               allergic: true,
               allergys: "Many"
