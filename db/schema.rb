@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170114132153) do
+ActiveRecord::Schema.define(version: 20170118132170) do
 
   create_table "agreement_letters", force: :cascade do |t|
     t.integer  "user_id",    null: false
@@ -77,6 +77,7 @@ ActiveRecord::Schema.define(version: 20170114132153) do
     t.boolean  "application_status_locked"
     t.text     "custom_application_fields"
     t.boolean  "participants_are_unlimited", default: false
+    t.text     "custom_application_fields"
   end
 
   create_table "profiles", force: :cascade do |t|
@@ -99,8 +100,8 @@ ActiveRecord::Schema.define(version: 20170114132153) do
   add_index "profiles", ["user_id"], name: "index_profiles_on_user_id"
 
   create_table "requests", force: :cascade do |t|
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
     t.integer  "form_of_address"
     t.string   "first_name"
     t.string   "last_name"
