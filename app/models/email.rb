@@ -1,4 +1,4 @@
-# == Schema Information
+# == Model Information
 #
 #  hide_recipients        :boolean          not null
 #  recipients             :string           not null
