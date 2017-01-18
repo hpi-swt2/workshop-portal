@@ -171,7 +171,7 @@ class Event < ActiveRecord::Base
     update(application_status_locked: true)
   end
 
-  # Returns the current statse of the event (draft-, application-, selection- and execution-phase)
+  # Returns the current state of the event (draft-, application-, selection- and execution-phase)
   #
   # @param none
   # @return [Symbol] state
