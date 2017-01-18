@@ -21,8 +21,8 @@ class ApplicationLetter < ActiveRecord::Base
   validates :user, :event, :experience, :motivation, :coding_skills, :emergency_number, presence: true
   validates :grade, presence: true, numericality: { only_integer: true }
   validates_inclusion_of :grade, :in => VALID_GRADES
-  validates :vegeterian, :vegan, :allergic, inclusion: { in: [true, false] }
-  validates :vegeterian, :vegan, :allergic, exclusion: { in: [nil] }
+  validates :vegetarian, :vegan, :allergic, inclusion: { in: [true, false] }
+  validates :vegetarian, :vegan, :allergic, exclusion: { in: [nil] }
   validate :deadline_cannot_be_in_the_past, :if => Proc.new { |letter| !(letter.status_changed?) }
   validate :status_cannot_be_changed, :if => Proc.new { |letter| letter.status_changed?}
 
@@ -92,13 +92,13 @@ class ApplicationLetter < ActiveRecord::Base
     user.profile.age_at_time(event.start_date)
   end
 
-  # Returns an array of eating habits (including allergies, vegan and vegeterian)
+  # Returns an array of eating habits (including allergies, vegan and vegetarian)
   #
   # @param none
   # @return [Array <String>] array of eating habits, empty if none
   def eating_habits
     habits = Array.new
-    habits.push(ApplicationLetter.human_attribute_name(:vegeterian)) if vegeterian
+    habits.push(ApplicationLetter.human_attribute_name(:vegetarian)) if vegetarian
     habits.push(ApplicationLetter.human_attribute_name(:vegan)) if vegan
     habits.push(ApplicationLetter.human_attribute_name(:allergic)) if allergic
     habits

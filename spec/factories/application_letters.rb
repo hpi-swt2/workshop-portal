@@ -17,7 +17,7 @@ FactoryGirl.define do
     motivation "None"
     coding_skills "None"
     emergency_number "01234567891"
-    vegeterian false
+    vegetarian false
     vegan false
     allergic true
     allergies "Many"
@@ -30,7 +30,7 @@ FactoryGirl.define do
     experience "A lot"
     motivation "Ich bin sehr motiviert, glaubt mir."
     emergency_number "110"
-    vegeterian true
+    vegetarian true
   end
 
   factory :application_letter_long, parent: :application_letter do
