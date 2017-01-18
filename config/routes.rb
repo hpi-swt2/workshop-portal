@@ -13,10 +13,13 @@ Rails.application.routes.draw do
   end
   resources :events do
     resources :agreement_letters, only: [:create], shallow: true
-    get 'print_applications', on: :member
     get 'badges'
     post 'badges' => 'events#print_badges', as: :print_badges
     post 'upload_material' => 'events#upload_material', as: :upload_material
+    member do
+      get 'participants_pdf'
+      get 'print_applications'
+    end
     post 'download_material' => 'events#download_material', as: :download_material
   end
   resources :profiles, except: [:index, :destroy]

@@ -52,6 +52,8 @@
 .event-date {
     text-align: center;
     line-height: 3em;
+}
+.event-list .event-date {
     margin-right: 15px;
     float: left;
 }
@@ -70,7 +72,7 @@
     margin: -1.2em 0;
 }
 @media (max-width: 768px) {
-    .event-date {
+    .event-list .event-date {
         float: none;
         margin-bottom: 15px;
     }
