@@ -111,7 +111,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     2.times do |i| #2 to also test negative free places, those are fine
       @pupil = FactoryGirl.create(:profile)
       @pupil.user.role = :pupil
-      @application_letter = FactoryGirl.create(:application_letter_accepted, event: @event, user: @pupil.user)
+      @application_letter = FactoryGirl.create(:application_letter_pre_accepted, event: @event, user: @pupil.user)
       visit event_path(@event)
       expect(page).to have_text(I18n.t "free_places", count: (@event.max_participants).to_i - (i+1), scope: [:events, :applicants_overview])
       expect(page).to have_text(I18n.t "occupied_places", count: (i+1), scope: [:events, :applicants_overview])
