@@ -59,6 +59,11 @@ describe Event do
   expect(@event.participants_by_agreement_letter).to eq([@user2, @user4, @user6, @user1, @user5, @user3])
   end
 
+  it "saves custom application fields serialized to the database" do
+    array = ['Field 1', 'Field 2']
+    event = FactoryGirl.create(:event, custom_application_fields: array)
+    expect(event.custom_application_fields).to eq(array)
+  end
 
   it "checks if there are unclassified applications_letters" do
     event = FactoryGirl.create(:event)

@@ -104,6 +104,9 @@ de:
       draft: "Speichern"
       publish: "Veröffentlichen"
       update: "Aktualisieren"
+      add_field: "Neues Feld hinzufügen"
+      label_of_custom_field: "Name des eigenen Felds"
+      custom_application_fields_cant_be_changed_later: "Die eigenen Felder für die Bewerbung können nach dem ersten Speichern nicht mehr geändert werden."
       add_timespan: "Zeitspanne hinzufügen"
     email:
       templates: "Vorlagen"
@@ -132,6 +135,7 @@ de:
           draft: "Entwurf"
           organizer: "Veranstalter"
           knowledge_level: "Kenntnisstand"
+          custom_application_fields: "Eigene Bewerbungs-Felder"
           date_ranges:
             one: "Zeitspanne"
             other: "Zeitspannen"
