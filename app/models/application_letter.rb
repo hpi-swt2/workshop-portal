@@ -15,6 +15,7 @@ class ApplicationLetter < ActiveRecord::Base
   belongs_to :event
 
   has_many :application_notes
+  serialize :custom_application_fields, Array
 
   VALID_GRADES = 5..13
 
