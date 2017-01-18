@@ -4,7 +4,7 @@ class EmailsController < ApplicationController
     authorize! :send_email, Email
     @event = Event.find(params[:event_id])
 
-    @templates = get_templates
+    @templates = EmailTemplate.with_status(get_status)
     @addresses = @event.email_addresses_of_type(get_status)
 
     @email = Email.new(hide_recipients: true, reply_to: 'workshop.portal@hpi.de', recipients: @addresses,
@@ -14,9 +14,9 @@ class EmailsController < ApplicationController
 
   def submit
     authorize! :send_email, Email
-    if send?
+    if params[:send]
       send_email
-    elsif save_template?
+    elsif params[:save]
       save_template
     end
   end
@@ -29,12 +29,13 @@ class EmailsController < ApplicationController
     @event = Event.find(params[:event_id])
 
     if @email.valid?
-      Mailer.send_generic_email(@email.hide_recipients, @email.recipients, @email.reply_to, @email.subject, @email.content)
+      @email.send_email
+
       @event.lock_application_status
 
       redirect_to @event, notice: t('.sending_successful')
     else
-      @templates = get_templates
+      @templates = EmailTemplate.with_status(get_status)
 
       flash.now[:alert] = t('.sending_failed')
       render :email
@@ -47,31 +48,19 @@ class EmailsController < ApplicationController
     @template = EmailTemplate.new({ status: get_status, hide_recipients: @email.hide_recipients,
                                     subject: @email.subject, content: @email.content })
 
-    if @email.validate_attributes([:subject, :content]) && @template.save
+    if @email.validates_presence_of(:subject, :content) && @template.save
       flash.now[:success] = t('.saving_successful')
     else
       flash.now[:alert] = t('.saving_failed')
     end
     @event = Event.find(params[:event_id])
-    @templates = get_templates
+    @templates = EmailTemplate.with_status(get_status)
 
     render :email
   end
 
-  def get_templates
-      EmailTemplate.where(status: EmailTemplate.statuses[get_status]).to_a
-  end
-
   def get_status
     params[:status] ? params[:status].to_sym : :default
-  end
-
-  def send?
-    params[:commit] == t('emails.email_form.send')
-  end
-
-  def save_template?
-    params[:commit] == t('emails.email_form.save_template')
   end
 
   # Only allow a trusted parameter "white list" through.

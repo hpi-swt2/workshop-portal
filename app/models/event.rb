@@ -17,10 +17,31 @@ class Event < ActiveRecord::Base
   UNREASONABLY_LONG_DATE_SPAN = 300
   TRUNCATE_DESCRIPTION_TEXT_LENGTH = 250
 
+  serialize :custom_application_fields, Array
+
   has_many :application_letters
   has_many :agreement_letters
   has_many :date_ranges
   accepts_nested_attributes_for :date_ranges
+
+  # Setter for max_participants
+  # @param [Int Float] the max number of participants for the event or infinity if it is not limited
+  # @return none
+  def max_participants=(value)
+    if value == Float::INFINITY
+      self[:participants_are_unlimited] = true
+    else
+      self[:participants_are_unlimited] = false
+      self[:max_participants] = value
+    end
+  end
+
+  # Getter for max_participants
+  # @param none
+  # @return [Int Float] the max number of participants for the event or infinity if it is not limited
+  def max_participants
+    participants_are_unlimited ? Float::INFINITY : self[:max_participants]
+  end
 
   # Returns all participants for this event in following order:
   # 1. All participants that have to submit an letter of agreement but did not yet do so, ordered by name.
@@ -93,7 +114,17 @@ class Event < ActiveRecord::Base
     application_letters.all? { |application_letter| application_letter.status != 'pending' }
   end
 
-  # Returns a string of all email addresses of applications with certain type
+  # Sets the status of all the event's application letters to accepted
+  #
+  # @param none
+  # @return none
+  def accept_all_application_letters
+    application_letters.each do |application_letter|
+      application_letter.update(status: :accepted)
+    end
+  end
+
+  # Returns a string of all email addresses of accepted applications
   #
   # @param type [Type] the type of the email addresses that will be returned
   # @return [String] Concatenation of all email addresses of applications with given type, seperated by ','
@@ -158,6 +189,25 @@ class Event < ActiveRecord::Base
     elsif days > 1
       I18n.t('events.notices.time_span_consecutive', count: days)
     end
+  end
+
+  # Returns the application letters ordered by either "email", "first_name", "last_name", "birth_date"
+  # either "asc" (ascending) or "desc" (descending).
+  #
+  # @param field [String] the field that should be used to order
+  # @param order_by [String] the order that should be used
+  # @return [ApplicationLetter] the application letters found
+  def application_letters_ordered(field, order_by)
+    field = case field
+              when "email"
+                "users.email"
+              when "birth_date", "first_name", "last_name"
+                "profiles." + field
+              else
+                "users.email"
+            end
+    order_by = 'asc' unless order_by == 'asc' || order_by == 'desc'
+    application_letters.joins(user: :profile).order(field + ' ' + order_by)
   end
 
   # Make sure any assignment coming from the controller

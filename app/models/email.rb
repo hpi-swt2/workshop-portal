@@ -27,10 +27,8 @@ class Email
     end
   end
 
-  def validate_attributes(attributes = [])
-    attributes.each do |attribute|
-      validates_presence_of attribute
-    end
+  def send_email
+    Mailer.send_generic_email(hide_recipients, recipients, reply_to, subject, content)
   end
 
   def persisted?

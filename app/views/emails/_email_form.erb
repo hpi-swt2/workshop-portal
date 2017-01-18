@@ -45,7 +45,7 @@
     </div>
   </div>
   <div class="btn-group pull-right" role="group">
-    <%= f.submit t('.save_template'), class: 'email-submit btn btn-default' %>
-    <%= f.submit t('.send'), class: 'email-submit btn btn-primary' %>
+    <%= f.submit t('.save_template'), name: 'save', class: 'email-submit btn btn-default' %>
+    <%= f.submit t('.send'), name: 'send', class: 'email-submit btn btn-primary' %>
   </div>
 <% end %>
