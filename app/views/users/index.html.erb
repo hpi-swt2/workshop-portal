@@ -1,10 +1,14 @@
 <%- model_class = User -%>
 <div class="page-header">
-  <h1><%=t '.title', :default => model_class.model_name.human(count: 2).titleize %></h1>
+  <h1><%= t '.title', :default => model_class.model_name.human(count: 2).titleize %></h1>
 
   <%= form_tag(users_path, :method => "get", id: "search-form") do %>
-  <%= text_field_tag :search, params[:search], placeholder: t(".search_users", :default => "Search users") %>
-  <%= submit_tag t('.search', :default => "Search"), class: "btn btn-xs btn-primary" %>
+      <div class="input-group col-md-4">
+        <%= text_field_tag :search, params[:search], class: "form-control", placeholder: t(".search_users", :default => "Search users") %>
+        <div class="input-group-btn">
+          <button class="btn btn-primary" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+        </div>
+      </div>
   <% end %>
 </div>
 
