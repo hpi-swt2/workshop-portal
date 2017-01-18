@@ -13,6 +13,7 @@
  *= require bootstrap-datepicker
  *= require_tree .
  *= require_self
+ *= require multi-select
  */
 
 label.required:after {

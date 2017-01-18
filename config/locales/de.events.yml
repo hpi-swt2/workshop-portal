@@ -24,7 +24,6 @@ de:
       maximum_number_of_participants_exeeded: 'Maximale Teilnehmeranzahl wurde überschritten'
       sending_acceptances: 'Zusagen verschicken'
       sending_rejections: 'Absagen verschicken'
-      send_email: "Email an Teilnehmer versenden"
     material_area:
       title: "Materialbereich für %{title}"
       upload: "Datei hochladen"
@@ -48,6 +47,7 @@ de:
       unnecessary: "nicht benötigt"
       available: "vorhanden"
       unavailable: "nicht vorhanden"
+      send_email: "Email an Teilnehmer versenden"
     agreement_letters_download:
       notices:
         no_participants_selected: "Keine Teilnehmer ausgewählt"

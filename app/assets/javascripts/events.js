@@ -12,6 +12,26 @@ jQuery(function() {
         modal.find('#send-emails-mailto').attr('href', 'mailto:' + list);
         modal.find('#send-emails-list').val(list);
     });
+
+    var users = $('#users');
+    var groups = $('#groups');
+
+    $('#all').change(function(event) {
+        var method = event.target.checked ? 'select_all' : 'deselect_all';
+        users.multiSelect(method);
+        groups.multiSelect(method);
+    });
+
+    var unable_all_on_deselect = function() {
+        $('#all').attr('checked', false);
+    };
+
+    users.multiSelect({
+        afterDeselect: unable_all_on_deselect
+    });
+    groups.multiSelect({
+        afterDeselect: unable_all_on_deselect
+    });
 });
 
 function addEventDatePicker() {
