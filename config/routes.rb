@@ -38,6 +38,7 @@ Rails.application.routes.draw do
   #   get 'products/:id' => 'catalog#view'
   get 'events/:id/participants' => 'events#participants', as: :event_participants
   post 'events/:id/participants/agreement_letters' => 'events#download_agreement_letters', as: :event_download_agreement_letters
+  get 'events/:id/accept_all_applicants' => 'events#accept_all_applicants', as: :event_accept_all_applicants
 
   resources :requests do
     member do
