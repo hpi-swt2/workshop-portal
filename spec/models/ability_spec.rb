@@ -243,6 +243,13 @@ describe User do
 
       expect(ability).to_not be_able_to(:check, ApplicationLetter)
     end
+
+    it "cannot view personal details in the applications as #{role}" do
+      user = FactoryGirl.create(:user, role: role)
+      ability = Ability.new(user)
+
+      expect(ability).to_not be_able_to(:view_personal_details, ApplicationLetter)
+    end
   end
 
   it "can update application letter status as organizer" do
