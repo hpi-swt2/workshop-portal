@@ -58,17 +58,17 @@ RSpec.describe EmailsController, type: :controller do
 
       it "sends an Email" do
         expect{
-          post :submit, commit: I18n.t('.emails.email_form.send'), event_id: @event.id, email: @email
+          post :submit, send: I18n.t('.emails.email_form.send'), event_id: @event.id, email: @email
         }.to change{ActionMailer::Base.deliveries.count}.by(1)
       end
 
       it "redirects to event view page" do
-        post :submit, commit: I18n.t('.emails.email_form.send'), event_id: @event.id, email: @email
+        post :submit, send: I18n.t('.emails.email_form.send'), event_id: @event.id, email: @email
         expect(subject).to redirect_to(@event)
       end
 
       it "shows success message" do
-        post :submit, commit: I18n.t('.emails.email_form.send'), event_id: @event.id, email: @email
+        post :submit, send: I18n.t('.emails.email_form.send'), event_id: @event.id, email: @email
         expect(flash[:notice]).to eq(I18n.t('.emails.submit.sending_successful'))
       end
     end
@@ -80,17 +80,17 @@ RSpec.describe EmailsController, type: :controller do
 
       it "does not send an Email" do
         expect{
-          post :submit, commit: I18n.t('.emails.email_form.send'), event_id: @event.id, email: @email
+          post :submit, send: I18n.t('.emails.email_form.send'), event_id: @event.id, email: @email
         }.to change{ActionMailer::Base.deliveries.count}.by(0)
       end
 
       it "shows the current email to make corrections" do
-        post :submit, commit: I18n.t('.emails.email_form.send'), event_id: @event.id, email: @email
+        post :submit, send: I18n.t('.emails.email_form.send'), event_id: @event.id, email: @email
         expect(subject).to render_template(:email)
       end
 
       it "shows error message" do
-        post :submit, commit: I18n.t('.emails.email_form.send'), event_id: @event.id, email: @email
+        post :submit, send: I18n.t('.emails.email_form.send'), event_id: @event.id, email: @email
         expect(flash[:alert]).to eq(I18n.t('.emails.submit.sending_failed'))
       end
     end
@@ -102,12 +102,12 @@ RSpec.describe EmailsController, type: :controller do
 
       it "saves the current email as template" do
         expect {
-          post :submit, commit: I18n.t('.emails.email_form.save_template'), event_id: @event.id, email: @email, status: :accepted
+          post :submit, save: I18n.t('.emails.email_form.save_template'), event_id: @event.id, email: @email, status: :accepted
         }.to change(EmailTemplate, :count).by(1)
       end
 
       it "shows success message" do
-        post :submit, commit: I18n.t('.emails.email_form.save_template'), event_id: @event.id, email: @email, status: :accepted
+        post :submit, save: I18n.t('.emails.email_form.save_template'), event_id: @event.id, email: @email, status: :accepted
         expect(flash[:success]).to eq(I18n.t('.emails.submit.saving_successful'))
       end
     end
@@ -119,12 +119,12 @@ RSpec.describe EmailsController, type: :controller do
 
       it "does not save the current email as template" do
         expect {
-          post :submit, commit: I18n.t('.emails.email_form.save_template'), event_id: @event.id, email: @email, status: :accepted
+          post :submit, save: I18n.t('.emails.email_form.save_template'), event_id: @event.id, email: @email, status: :accepted
         }.to change(EmailTemplate, :count).by(0)
       end
 
       it "shows error message" do
-        post :submit, commit: I18n.t('.emails.email_form.save_template'), event_id: @event.id, email: @email, status: :accepted
+        post :submit, save: I18n.t('.emails.email_form.save_template'), event_id: @event.id, email: @email, status: :accepted
         expect(flash[:alert]).to eq(I18n.t('.emails.submit.saving_failed'))
       end
     end

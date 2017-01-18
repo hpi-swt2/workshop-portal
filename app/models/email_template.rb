@@ -14,4 +14,6 @@ class EmailTemplate < ActiveRecord::Base
   validates_inclusion_of :status, in: statuses.keys
   validates_inclusion_of :hide_recipients, in: [ true, false ]
   validates_presence_of :subject, :content
+
+  scope :with_status, ->(status) { where(status: statuses[status]).to_a }
 end
