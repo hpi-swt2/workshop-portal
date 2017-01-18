@@ -3,15 +3,16 @@
   <h1><%=t '.title', :default => model_class.model_name.human.titleize %> (<%= @event.kind.humanize %>)</h1>
 </div>
 <% if can? :view_participants, Event %>
+  <%= render :partial => 'participants_modal' %>
   <%= render :partial => 'show_event' %>
-  
+
   <h1><%= t '.participants' %></h1>
   <%= form_tag(event_path(@event) + "/participants/agreement_letters") do %>
     <table class="table table-striped">
       <tr>
         <th><%= t 'activerecord.attributes.profile.name' %></th>
         <th><%= t 'activerecord.attributes.profile.email' %></th>
-    	  <th><%= t 'agreement_letters.agreement_letter' %></th>
+        <th><%= t 'agreement_letters.agreement_letter' %></th>
         <% if can? :print_agreement_letters, Event and @has_agreement_letters %>
           <th>
             <label>
@@ -20,11 +21,11 @@
             </label>
           </th>
         <% end %>
-      </tr>  
-    
+      </tr>
+
       <% @participants.each do |participant| %>
       <tr>
-        
+
         <td>
         <%= participant.name %>
         </td>
@@ -48,9 +49,11 @@
       </tr>
       <% end %>
     </table>
+
+    <button class="btn btn-default" type="button" data-toggle="modal" data-target="#print_participant_modal" id="open_print_modal">Teilnehmerliste (PDF)</button>
     <% if can? :print_agreement_letters, Event and @has_agreement_letters %>
       <div id="participants_download_submit_button">
-      <%= submit_tag t('events.agreement_letters_download.download_all_as'), name: "download_all" %>
+      <%= submit_tag t('events.agreement_letters_download.download_all_as'), name: "download_all", class: "btn btn-default" %>
       <%= select_tag :download_type, options_for_select([['pdf'], ['zip']]) %>
       </div>
     <% end %>
