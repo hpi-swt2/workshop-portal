@@ -136,7 +136,7 @@ RSpec.feature "Role management page", :type => :feature do
     expect(page).to have_text(user3.profile.last_name)
 
     fill_in :search, with: "Max"
-    click_button I18n.t('users.index.search')
+    find('#search-button').click
 
     expect(page).to have_text(max1.profile.last_name)
     expect(page).to have_text(max2.profile.last_name)
