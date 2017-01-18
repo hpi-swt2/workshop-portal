@@ -2,6 +2,10 @@
 
 de:
   requests:
+    new:
+      title: "Neue Anfrage stellen"
+      workshop_information: "Informationen über den gewünschten Workshop"
+      personal_information: "Persönliche Daten"
     form_of_addresses:
       mr: "Herr"
       mrs: "Frau"
