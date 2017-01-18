@@ -258,4 +258,18 @@ describe User do
     ability = Ability.new(user)
     expect(ability).to be_able_to(:manage, Request)
   end
+
+  it "can apply for events as pupil" do
+    user = FactoryGirl.create(:user, role: :pupil)
+    ability = Ability.new(user)
+    expect(ability).to be_able_to(:apply, Event)
+  end
+
+  %i[coach organizer].each do |role|
+    it "can apply for events as #{role}" do
+      user = FactoryGirl.create(:user, role: role)
+      ability = Ability.new(user)
+      expect(ability).to_not be_able_to(:apply, Event)
+    end
+  end
 end
