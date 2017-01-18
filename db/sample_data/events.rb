@@ -10,10 +10,11 @@ def event_programmierkurs
       max_participants: 25,
       organizer: 'HPI Schülerklub',
       knowledge_level: 'Anfänger',
-      date_ranges: [date_range_singleday], 
+      date_ranges: [date_range_singleday],
       application_deadline: Date.tomorrow,
-      draft: false, 
-      application_status_locked: false
+      draft: false,
+      application_status_locked: false,
+      custom_application_fields: ['Lieblingsapp']
   )
 end
 
@@ -29,9 +30,9 @@ def event_mintcamp
       max_participants: 25,
       organizer: 'HPI Schülerklub',
       knowledge_level: 'Fortgeschrittene',
-      date_ranges: [date_range_mint_camp], 
+      date_ranges: [date_range_mint_camp],
       application_deadline: Date.tomorrow,
-      draft: false, 
+      draft: false,
       application_status_locked: false
   )
 end
@@ -50,10 +51,11 @@ die richtige Größe für Becher-Stapel herausfindet und anwendet.',
       max_participants: 25,
       organizer: 'FSR',
       knowledge_level: 'Anfänger',
-      date_ranges: [date_range_singleday], 
+      date_ranges: [date_range_singleday],
       application_deadline: Date.tomorrow,
-      draft: false, 
-      application_status_locked: false
+      draft: false,
+      application_status_locked: false,
+      custom_application_fields: ['Lieblings-Becherart', 'Kannst du eine eigene Spülmaschine mitbringen?']
   )
 end
 
@@ -73,9 +75,9 @@ Höhepunkt der Veranstaltung ist demnach unser Besuch einer echten Gongmanufakto
 Ding Gong-Verein Berlin. Bei Bedarf können wir eine zweite Veranstaltung durchführen, bis dahin gilt first come first serve :)',
       max_participants: 19,
       knowledge_level: 'Ihr braucht kein besonderes Vorwissen, jeder ist Willkommen!',
-      date_ranges: [date_range_long], 
-      application_deadline: Date.tomorrow, 
-      draft: false, 
+      date_ranges: [date_range_long],
+      application_deadline: Date.tomorrow,
+      draft: false,
       application_status_locked: false
   )
 end
@@ -103,10 +105,11 @@ Veranstaltungen zum Thema teilzunehmen. Gerade in Zeit von E-Autos ist dies ein 
 Arbeitsmarkt. Bitte beachtet die maximale Teilnehmeranzahl! Wichtig: Es gilt first come last served.',
       max_participants: 32,
       organizer: 'IAB',
-      date_ranges: [date_range_short, date_range_medium],  
+      date_ranges: [date_range_short, date_range_medium],
       application_deadline: Date.tomorrow,
-      draft: false, 
-      application_status_locked: false 
+      draft: false,
+      application_status_locked: false,
+      custom_application_fields: ['Spielst du gerne in deiner Freizeit mit Batterien?']
   )
 end
 
@@ -128,9 +131,9 @@ def event_bachlorpodium
       description: 'Trotz modernem Videostreaming in HD in die anderen Hörsäle bleibt Hörsaal 1 doch der Publikumsliebling
 bei diesem jährlich mit größter Sorgfalt organisierten spektakulären PR Gag',
       max_participants: 442,
-      date_ranges: [date_range_singleday1, date_range_singleday2, date_range_singleday3], 
-      application_deadline: Date.tomorrow, 
-      draft: false, 
-      application_status_locked: false 
+      date_ranges: [date_range_singleday1, date_range_singleday2, date_range_singleday3],
+      application_deadline: Date.tomorrow,
+      draft: false,
+      application_status_locked: false
   )
 end
