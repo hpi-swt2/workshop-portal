@@ -125,6 +125,28 @@ RSpec.describe RequestsController, type: :controller do
     end
   end
 
+  describe "PATCH #set_contact_person" do
+    before :each do
+      @a_request = Request.create! valid_attributes
+    end
+
+    context "with valid params" do
+      it "saves the name" do
+        name = 'Me'
+        patch :set_contact_person, request_id: @a_request.to_param, request: {contact_person: name}, session: valid_session
+        @a_request.reload
+        expect(@a_request.contact_person).to eq(name)
+      end
+    end
+
+    context "with invalid params" do
+      it "re-renders the 'show' template" do
+        patch :set_contact_person, request_id: @a_request.to_param, request: invalid_attributes, session: valid_session
+        expect(response).to render_template("show")
+      end
+    end
+  end
+
   describe "POST #create" do
     context "with valid params" do
       it "creates a new Request" do
