@@ -87,6 +87,14 @@ class Event < ActiveRecord::Base
     errors.add(:application_deadline, I18n.t('events.errors.application_deadline_before_start_of_event')) if application_deadline.present? && !date_ranges.blank? && application_deadline > start_date
   end
 
+  # Checks if the application deadline is over
+  #
+  # @param none
+  # @return [Boolean] true if deadline is over
+  def after_deadline?
+    Date.current > application_deadline
+  end
+
   # Returns the participants whose application for this Event has been accepted
   #
   # @param none
@@ -192,6 +200,17 @@ class Event < ActiveRecord::Base
   # @return none
   def lock_application_status
     update(application_status_locked: true)
+  end
+
+  # Returns the current state of the event (draft-, application-, selection- and execution-phase)
+  #
+  # @param none
+  # @return [Symbol] state
+  def phase
+    return :draft if draft
+    return :application if !draft && !after_deadline?
+    return :selection if !draft && after_deadline? && !application_status_locked
+    return :execution if !draft && after_deadline? && application_status_locked
   end
 
   # Returns a label listing the number of days to the deadline if
