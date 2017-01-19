@@ -27,6 +27,9 @@ class ApplicationLettersController < ApplicationController
     end
     @application_letter = ApplicationLetter.new
     authorize! :new, @application_letter
+    if params[:event_id]
+      @application_letter.event_id = params[:event_id]
+    end
   end
 
   # GET /applications/1/check
@@ -89,6 +92,7 @@ class ApplicationLettersController < ApplicationController
     def application_params
       params.require(:application_letter).permit(:grade, :experience, :motivation, :coding_skills, :emergency_number,
                                                  :vegetarian, :vegan, :allergic, :allergies, :user_id, :event_id)
+      .merge({:custom_application_fields => params[:custom_application_fields]})
     end
 
     # Only allow to update the status
