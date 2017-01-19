@@ -22,10 +22,8 @@ class ProfilesController < ApplicationController
     @profile = Profile.new(profile_params)
     @profile.user_id = current_user.id
 
-    if Profile.find_by(user: current_user.id).present?
-      redirect_to @profile
-      return
-    end
+    existing_profile = Profile.find_by(user: current_user.id)
+    return redirect_to existing_profile if existing_profile.present?
 
     if @profile.save
       if flash[:event_id]

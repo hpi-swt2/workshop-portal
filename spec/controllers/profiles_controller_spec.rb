@@ -126,6 +126,7 @@ RSpec.describe ProfilesController, type: :controller do
         expect {
           post :create, profile: valid_attributes, session: valid_session
         }.to_not change(Profile, :count)
+        expect(response).to redirect_to(Profile.last)
       end
 
       it "assigns a newly created profile as @profile" do
