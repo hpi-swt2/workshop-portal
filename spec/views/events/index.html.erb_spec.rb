@@ -22,15 +22,15 @@ RSpec.describe "events/index", type: :view do
     sign_in(FactoryGirl.create(:user, role: :coach))
     render
     expect(rendered).to_not have_link(I18n.t('helpers.links.new'))
-    expect(rendered).to_not have_link(I18n.t('helpers.links.edit'))
-    expect(rendered).to_not have_link(I18n.t('helpers.links.destroy'))
+    expect(rendered).to_not have_link(href: edit_event_path(@event))
+    expect(rendered).to_not have_link(href: event_path(@event), class: 'btn-danger')
   end
 
   it "should display new, edit, delete buttons for organizers" do
     sign_in(FactoryGirl.create(:user, role: :organizer))
     render
     expect(rendered).to have_link(I18n.t('helpers.links.new'))
-    expect(rendered).to have_link(I18n.t('helpers.links.edit'))
-    expect(rendered).to have_link(I18n.t('helpers.links.destroy'))
+    expect(rendered).to have_link(href: edit_event_path(@event))
+    expect(rendered).to have_link(href: event_path(@event), class: 'btn-danger')
   end
 end
