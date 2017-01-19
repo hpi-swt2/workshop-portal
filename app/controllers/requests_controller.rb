@@ -1,4 +1,6 @@
 class RequestsController < ApplicationController
+  load_and_authorize_resource
+  skip_authorize_resource only: [:new, :create]
   before_action :set_request, only: [:show, :edit, :update, :destroy, :accept]
 
   # GET /requests
