@@ -82,8 +82,7 @@ end
 
 def application_letter_applicant_programmierkurs_3(user, event)
   ApplicationLetter.new(
-      motivation: "Ich habe vor LANGEM davon erfahren und war direkt hellaufbegeistert. Gerne würde ich mich bei Ihnen
-näher über das Thema informieren",
+      motivation: "Ich habe vor LANGEM davon erfahren und war direkt hellaufbegeistert. Gerne würde ich mich bei Ihnen näher über das Thema informieren",
       grade: 10,
       experience: "Suche im Internetz",
       coding_skills: "absolut keine",

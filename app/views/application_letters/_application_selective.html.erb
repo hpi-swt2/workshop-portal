@@ -3,7 +3,7 @@
         <div class="form-group">
           <div class="btn-group" data-toggle="buttons">
             <% ApplicationLetter.statuses.keys.each do |key| %>
-                <label class="btn btn-default <%= 'active' if application_letter.status == key %>">
+                <label class="btn btn-xs btn-default <%= 'active' if application_letter.status == key %>">
                     <%= f.radio_button :status,
                         key,
                         checked: application_letter.status == key,
