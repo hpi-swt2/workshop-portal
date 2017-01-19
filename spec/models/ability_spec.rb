@@ -266,7 +266,7 @@ describe User do
   end
 
   %i[coach organizer].each do |role|
-    it "can apply for events as #{role}" do
+    it "cannot apply for events as #{role}" do
       user = FactoryGirl.create(:user, role: role)
       ability = Ability.new(user)
       expect(ability).to_not be_able_to(:apply, Event)
