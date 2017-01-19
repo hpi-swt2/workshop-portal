@@ -229,6 +229,38 @@ describe Event do
     expect(event.application_status_locked).to eq(true)
   end
 
+  it "is in draft phase" do
+    event = FactoryGirl.build(:event, :in_draft_phase)
+    expect(event.phase).to eq(:draft)
+  end
+
+  it "is in application phase" do
+    event = FactoryGirl.build(:event, :in_application_phase)
+    expect(event.phase).to eq(:application)
+  end
+
+  it "is in selection phase" do
+    event = FactoryGirl.build(:event, :in_selection_phase)
+    expect(event.phase).to eq(:selection)
+  end
+
+  it "is in execution phase" do
+    event = FactoryGirl.build(:event, :in_execution_phase)
+    expect(event.phase).to eq(:execution)
+  end
+
+  it "is not after application deadline" do
+    event = FactoryGirl.build(:event)
+    event.application_deadline = Date.tomorrow
+    expect(event.after_deadline?).to eq(false)
+  end
+
+  it "is after application deadline" do
+    event = FactoryGirl.build(:event)
+    event.application_deadline = Date.yesterday
+    expect(event.after_deadline?).to eq(true)
+  end
+
   it "can have unlimited participants" do
     event = FactoryGirl.create(:event)
     event.max_participants = Float::INFINITY
