@@ -53,26 +53,36 @@ RSpec.feature "Application Letter Overview", :type => :feature do
     expect(page).to have_css(".has-error", count: 12)
   end
 
-   it "should save" do
-    login(:pupil)
-    visit new_application_letter_path(:event_id => @event.id)
-    select "11", from: "application_letter_grade"
-    fill_in "application_letter_experience", with:   "None"
-    fill_in "application_letter_motivation", with:   "None"
-    fill_in "application_letter_coding_skills", with:   "None"
-    fill_in "application_letter_emergency_number", with:   "0123456789"
-    check "application_letter_allergic"
-    fill_in "application_letter_allergies", with:   "Many"
-    expect(ApplicationLetter.where(grade:"11")).to_not exist
-    find('input[name=commit]').click
-    expect(ApplicationLetter.where(grade:"11")).to exist
-  end
+  describe "Application creation" do
+    it "saves the application with basic attributes" do
+      login(:pupil)
+      visit new_application_letter_path(:event_id => @event.id)
+      fill_in_application
+      expect(ApplicationLetter.where(grade:"11")).to_not exist
+      find('input[name=commit]').click
+      expect(ApplicationLetter.where(grade:"11")).to exist
+    end
 
-  it "displays help text for motivation textarea" do
-    login(:pupil)
-    visit new_application_letter_path(:event_id => @event.id, :locale => :de)
+    it "saves and displays custom fields in the application" do
+      login(:pupil)
+      visit new_application_letter_path(:event_id => @event.id)
+      fill_in_application
+      all('#custom_application_fields_').each_with_index do |field, index|
+        field.set "value #{index}"
+      end
+      find('input[name=commit]').click
 
-    expect(page).to have_text(I18n.t 'application_letters.form.help_text_coding_skills')
+      @event.custom_application_fields.each_with_index do |field_name, index|
+        expect(page).to have_text("#{field_name}: value #{index}")
+      end
+    end
+
+    it "displays help text for motivation textarea" do
+      login(:pupil)
+      visit new_application_letter_path(:event_id => @event.id, :locale => :de)
+
+      expect(page).to have_text(I18n.t 'application_letters.form.help_text_coding_skills')
+    end
   end
 
   %i[pupil coach].each do |role|
@@ -184,5 +194,15 @@ RSpec.feature "Application Letter Overview", :type => :feature do
     @application_note2 = FactoryGirl.create(:application_note, application_letter: @application_letter, note: "This is note 2")
     @application_letter.reload
     visit application_letter_path(@application_letter)
+  end
+
+  def fill_in_application
+    select "11", from: "application_letter_grade"
+    fill_in "application_letter_experience", with:   "None"
+    fill_in "application_letter_motivation", with:   "None"
+    fill_in "application_letter_coding_skills", with:   "None"
+    fill_in "application_letter_emergency_number", with:   "0123456789"
+    check "application_letter_allergic"
+    fill_in "application_letter_allergies", with:   "Many"
   end
 end
