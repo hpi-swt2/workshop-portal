@@ -140,8 +140,16 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     visit event_path(@event)
     find('label', text: I18n.t('application_status.accepted')).click
 
-    expect(page).to have_text(I18n.t "free_places", count: (@event.max_participants).to_i - 1, scope: [:events, :applicants_overview])
-    expect(page).to have_text(I18n.t "occupied_places", count: 1, scope: [:events, :applicants_overview])
+    check_values = lambda {
+      expect(page).to have_text(I18n.t "free_places", count: (@event.max_participants).to_i - 1, scope: [:events, :applicants_overview])
+      expect(page).to have_text(I18n.t "occupied_places", count: 1, scope: [:events, :applicants_overview])
+    }
+
+    check_values.call
+    # verify that the state was actually persisted by reloading the page
+    visit event_path(@event)
+    check_values.call
+    expect(page).to have_css('label.active', text: I18n.t('application_status.accepted'))
   end
 
   scenario "logged in as Organizer I can not change application status with radio buttons if the applications are locked" do
