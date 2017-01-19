@@ -22,6 +22,11 @@ class ProfilesController < ApplicationController
     @profile = Profile.new(profile_params)
     @profile.user_id = current_user.id
 
+    if Profile.find_by(user: current_user.id).present?
+      redirect_to @profile
+      return
+    end
+
     if @profile.save
       if flash[:event_id]
         redirect_to new_application_letter_path(:event_id => flash[:event_id]), notice: I18n.t('profiles.successful_creation')
