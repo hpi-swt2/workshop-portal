@@ -43,7 +43,7 @@ class RequestsController < ApplicationController
   def set_contact_person
     @request = Request.find(params[:request_id])
     update_params = contact_person_params
-    if update_params[:contact_person] and @request.update(update_params)
+    if !update_params[:contact_person].nil? and @request.update(update_params)
       redirect_to @request, notice: I18n.t('requests.notice.was_updated')
     else
       render :show
