@@ -210,19 +210,6 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     page.response_headers['Content-Type'].should eq "application/pdf"
   end
 
-  scenario "logged in as Organizer I can lock the event application statuses by pressing one of the email buttons" do
-    login(:organizer)
-    @pupil = FactoryGirl.create(:profile)
-    @application_letter = FactoryGirl.create(:application_letter_accepted, event: @event, user: @pupil.user)
-    ['.events.applicants_overview.sending_acceptances', '.events.applicants_overview.sending_rejections'].each do | email_button |
-      @event.application_status_locked = false
-      @event.save
-      visit event_path(@event)
-      click_link I18n.t email_button
-      expect(Event.find(@event.id).application_status_locked).to be(true)
-    end
-  end
-
   scenario "logged in as Coach I can see application status" do
     login(:coach)
     @pupil = FactoryGirl.create(:profile)

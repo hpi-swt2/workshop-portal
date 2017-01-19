@@ -15,6 +15,8 @@ Rails.application.routes.draw do
     resources :agreement_letters, only: [:create], shallow: true
     get 'badges'
     post 'badges' => 'events#print_badges', as: :print_badges
+    get 'emails' => 'emails#show', as: :email_show
+    post 'emails' => 'emails#submit', as: :email_submit
     post 'upload_material' => 'events#upload_material', as: :upload_material
     member do
       get 'participants_pdf'
@@ -36,11 +38,7 @@ Rails.application.routes.draw do
   #   get 'products/:id' => 'catalog#view'
   get 'events/:id/participants' => 'events#participants', as: :event_participants
   post 'events/:id/participants/agreement_letters' => 'events#download_agreement_letters', as: :event_download_agreement_letters
-  get 'events/:id/send-acceptance-emails' => 'events#send_acceptance_emails', as: :event_send_acceptance_emails
-  get 'events/:id/send-rejection-emails' => 'events#send_rejection_emails', as: :event_send_rejection_emails
   get 'events/:id/accept_all_applicants' => 'events#accept_all_applicants', as: :event_accept_all_applicants
-
-  post 'send_email' => 'emails#send_email'
 
   resources :requests do
     member do

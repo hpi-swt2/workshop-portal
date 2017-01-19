@@ -6,7 +6,6 @@ class PortalMailer < ApplicationMailer
   # @param content [String] - content of the mail
   # @return [ActionMailer::MessageDelivery] a mail object with the given parameters.
   def generic_email(recipients, reply_to, subject, content)
-    @content = content
-    mail(to: recipients, reply_to: reply_to, subject: subject)
+    mail(to: recipients, reply_to: reply_to, subject: subject, body: content)
   end
 end
