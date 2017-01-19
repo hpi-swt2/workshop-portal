@@ -5,7 +5,7 @@ describe "Event", type: :feature do
     it "should link to the show page when an event's read more button is clicked" do
       event = FactoryGirl.create :event
       visit events_path
-      click_link I18n.t('events.list.more')
+      click_link event.name
       expect(page).to have_current_path(event_path(event))
     end
 
@@ -211,14 +211,6 @@ describe "Event", type: :feature do
   end
 
   describe "show page" do
-    it "should display the event kind" do
-      %i[camp workshop].each do |kind|
-        event = FactoryGirl.create(:event, kind: kind)
-        visit event_path(event)
-        expect(page).to have_text(kind.to_s.humanize)
-      end
-    end
-
     it "should render markdown for the description" do
       event = FactoryGirl.create(:event, description: "# Test Headline")
       visit event_path(event)

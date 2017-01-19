@@ -18,7 +18,7 @@
   <div class="col-md-7 col-sm-10">
     <%= markdown @event.description %>
   </div>
-  <div class="col-md-2 col-sm-offset-2">
+  <div class="col-md-2 col-sm-offset-2 col-md-offset-0">
     <dl>
       <dt><strong><%= model_class.human_attribute_name(:knowledge_level) %>:</strong></dt>
       <dd><%= @event.knowledge_level %></dd>
