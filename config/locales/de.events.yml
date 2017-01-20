@@ -11,6 +11,7 @@ de:
       filter: "Filtern"
       status: "Status"
       details: "Details"
+      failed_to_update: "Bewerbungs-Status ändern ist fehlgeschlagen!"
       age_when_event_starts: "Alter bei Beginn"
       free_places:
         one: '%{count} Platz frei'
@@ -57,7 +58,6 @@ de:
       workshop: "Workshop"
       camp: "Camp"
     list:
-      more: "Mehr dazu"
       read_on: "Weiterlesen"
     participants_modal:
       print_names: 'Teilnehmerliste drucken'

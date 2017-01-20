@@ -26,6 +26,11 @@ RSpec.describe "application_letters/check", type: :view do
       expect(rendered).to have_text(@application_letter.emergency_number)
       expect(rendered).to have_text(@application_letter.allergies)
       expect(rendered).to have_text(@application_letter.eating_habits.join(', '))
+      @application_letter.event.custom_application_fields
+        .zip(@application_letter.custom_application_fields)
+        .each do |field_name, field_value|
+          expect(rendered).to have_text("#{field_name}: #{field_value}")
+        end
     end
 
     it "renders applicant's attributes" do

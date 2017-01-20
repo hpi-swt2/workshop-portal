@@ -131,6 +131,27 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     end
   end
 
+  scenario "logged in as Organizer I can change application status with radio buttons without the page reloading", js: true do
+    login(:organizer)
+    @event.application_status_locked = false
+    @event.save
+    @pupil = FactoryGirl.create(:profile)
+    @application_letter = FactoryGirl.create(:application_letter, event: @event, user: @pupil.user)
+    visit event_path(@event)
+    find('label', text: I18n.t('application_status.accepted')).click
+
+    check_values = lambda {
+      expect(page).to have_text(I18n.t "free_places", count: (@event.max_participants).to_i - 1, scope: [:events, :applicants_overview])
+      expect(page).to have_text(I18n.t "occupied_places", count: 1, scope: [:events, :applicants_overview])
+    }
+
+    check_values.call
+    # verify that the state was actually persisted by reloading the page
+    visit event_path(@event)
+    check_values.call
+    expect(page).to have_css('label.active', text: I18n.t('application_status.accepted'))
+  end
+
   scenario "logged in as Organizer I can not change application status with radio buttons if the applications are locked" do
     login(:organizer)
     @event.lock_application_status
@@ -208,19 +229,6 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     find("option[value='pdf']").select_option
     click_button I18n.t "events.agreement_letters_download.download_all_as"
     expect(page.response_headers['Content-Type']).to eq("application/pdf")
-  end
-
-  scenario "logged in as Organizer I can lock the event application statuses by pressing one of the email buttons" do
-    login(:organizer)
-    @pupil = FactoryGirl.create(:profile)
-    @application_letter = FactoryGirl.create(:application_letter_accepted, event: @event, user: @pupil.user)
-    ['.events.applicants_overview.sending_acceptances', '.events.applicants_overview.sending_rejections'].each do | email_button |
-      @event.application_status_locked = false
-      @event.save
-      visit event_path(@event)
-      click_link I18n.t email_button
-      expect(Event.find(@event.id).application_status_locked).to be(true)
-    end
   end
 
   scenario "logged in as Coach I can see application status" do

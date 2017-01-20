@@ -1,0 +1,224 @@
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// !!! AUTOMATICALLY GENERATED FILE. DO NOT MODIFY !!!
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// Set correct font paths 
+@glyphiconsEotPath: font-url("glyphicons-halflings-regular.eot"); 
+@glyphiconsEotPath_iefix: font-url("glyphicons-halflings-regular.eot?#iefix"); 
+@glyphiconsWoffPath: font-url("glyphicons-halflings-regular.woff"); 
+@glyphiconsTtfPath: font-url("glyphicons-halflings-regular.ttf"); 
+@glyphiconsSvgPath: font-url("glyphicons-halflings-regular.svg#glyphicons_halflingsregular"); 
+
+ 
+// Set the Font Awesome (Font Awesome is default. You can disable by commenting below lines) 
+@fontAwesomeEotPath: font-url("fontawesome-webfont.eot"); 
+@fontAwesomeEotPath_iefix: font-url("fontawesome-webfont.eot?#iefix"); 
+@fontAwesomeWoffPath: font-url("fontawesome-webfont.woff"); 
+@fontAwesomeTtfPath: font-url("fontawesome-webfont.ttf"); 
+@fontAwesomeSvgPath: font-url("fontawesome-webfont.svg#fontawesomeregular"); 
+/*!
+ * Bootstrap v3.3.5 (http://getbootstrap.com)
+ * Copyright 2011-2015 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ */
+
+// Core variables and mixins
+@import "twitter/bootstrap/variables.less";
+@import "custom_bootstrap/variables.less"; // Modify this for custom colors, font-sizes, etc
+@import "twitter/bootstrap/mixins.less";
+@import "custom_bootstrap/mixins.less"; // Modify this for custom mixins
+
+// Reset and dependencies
+@import "twitter/bootstrap/normalize.less";
+@import "twitter/bootstrap/print.less";
+@import "twitter/bootstrap/glyphicons.less";
+
+// Core CSS
+@import "twitter/bootstrap/scaffolding.less";
+@import "twitter/bootstrap/type.less";
+@import "twitter/bootstrap/code.less";
+@import "twitter/bootstrap/grid.less";
+@import "twitter/bootstrap/tables.less";
+@import "twitter/bootstrap/forms.less";
+@import "twitter/bootstrap/buttons.less";
+
+// Components
+@import "twitter/bootstrap/component-animations.less";
+@import "twitter/bootstrap/dropdowns.less";
+@import "twitter/bootstrap/button-groups.less";
+@import "twitter/bootstrap/input-groups.less";
+@import "twitter/bootstrap/navs.less";
+@import "twitter/bootstrap/navbar.less";
+@import "twitter/bootstrap/breadcrumbs.less";
+@import "twitter/bootstrap/pagination.less";
+@import "twitter/bootstrap/pager.less";
+@import "twitter/bootstrap/labels.less";
+@import "twitter/bootstrap/badges.less";
+@import "twitter/bootstrap/jumbotron.less";
+@import "twitter/bootstrap/thumbnails.less";
+@import "twitter/bootstrap/alerts.less";
+@import "twitter/bootstrap/progress-bars.less";
+@import "twitter/bootstrap/media.less";
+@import "twitter/bootstrap/list-group.less";
+@import "twitter/bootstrap/panels.less";
+@import "twitter/bootstrap/responsive-embed.less";
+@import "twitter/bootstrap/wells.less";
+@import "twitter/bootstrap/close.less";
+
+// Components w/ JavaScript
+@import "twitter/bootstrap/modals.less";
+@import "twitter/bootstrap/tooltip.less";
+@import "twitter/bootstrap/popovers.less";
+@import "twitter/bootstrap/carousel.less";
+
+// Utility classes
+@import "twitter/bootstrap/utilities.less";
+@import "twitter/bootstrap/responsive-utilities.less";
+
+body {
+	padding-top: 120px;
+}
+
+a:hover h1, a:hover h2, a:hover h3, a:hover h4 {
+   color: inherit;
+}
+
+// WSP Mixins
+.wsp-border(@thickness) {
+	border-top: @thickness #000 solid;
+	border-bottom: @thickness #000 solid;
+	margin-top: 20px;
+
+}
+
+.navbar {
+    -webkit-box-shadow: 0 8px 6px -6px #999;
+    -moz-box-shadow: 0 8px 6px -6px #999;
+    box-shadow: 0 8px 6px -6px #999;
+
+    a {
+    	font-family: @font-family-serif;
+    	transition: all 0.5;
+    	
+    	&:hover {
+    		transition: all 0.5s;
+    	}
+    }
+
+    .navbar-brand {
+    	img {
+    		width: 120px;
+    		height: auto;
+    		margin-top: -35px;
+    	}
+    }
+}
+
+#wsp-login {
+	min-height: 80vh;
+}
+	h4 {
+		font-family: @font-family-sans-serif;
+		font-weight: 100;
+		font-size: 18px;
+		letter-spacing: 2px;
+		text-transform: uppercase;
+		line-height: 1.3;
+		color: @gray;
+	}
+
+	h1 {
+		font-weight: 700;
+		font-size: 60px;
+		letter-spacing: 1px;
+		line-height: 1.3;
+	}
+
+	h2 {
+		font-weight: 700;
+		font-size: 60px;
+		letter-spacing: 1px;
+		line-height: 0.8;
+		padding-bottom: 30px;
+	}
+
+
+.subheadline--wrapper {
+	.wsp-border(2px);
+	padding-top: 15px;
+}
+
+
+.spacer-20	{
+	width: 100%;
+	height: 20px;
+	min-height: 20px; 
+}
+// Fontpage 
+
+#wsp-welcome {
+	padding-top: 0px !important;
+
+	ul {
+		list-style: none;
+		float: left;
+		padding-left: 0;
+		li {
+			display: inline;
+			margin-right: 15px;
+		}
+	}
+}
+
+.wsp-home {
+	background-color: lighten(#F7B21C, 30%);
+}
+ 
+.front-section {
+   
+   border-bottom: 1px solid #eee;
+   
+   h1 {
+		font-size: 90px;
+		line-height: 0.8;
+	}
+   .container {
+   	padding-top: 120px;
+   	padding-bottom: 120px;
+   }
+
+   &:first-child {
+   	padding-top: 30px;
+ 	}
+
+ 	&:last-of-type {
+    	border: none;
+	}
+
+	&:nth-of-type(even), footer {
+	   background-color: @body-bg;
+	}
+
+	&:first-of-type {
+		min-height: 70vh;
+
+		h1 {
+			line-height: 0.9 !important;
+			font-size: 75px;
+		}
+	}
+}
+
+input.form-control {
+    font-family: @font-family-serif;
+}
+
+
+.event-date {
+	.event-month {
+		text-transform: uppercase;
+	}
+
+	.event-day {
+		font-weight: 700;
+	}
+}

@@ -3,6 +3,20 @@
   They will automatically be included in application.css.
 */
 
+#event_overview dt {
+    width: 200px;
+}
+
+#event_overview dd {
+    margin-left: 220px;
+}
+
+#event_overview ul {
+    margin-bottom: 0;
+    padding-left: 0;
+    list-style-type: none;
+}
+
 .event-date-picker-start, .event-date-picker-end {
 }
 
