@@ -33,13 +33,7 @@ RSpec.describe RequestsController, type: :controller do
     before :each do
       # Cannot use @request, because this variable is already in use.
       @a_request = Request.create! valid_attributes
-    end
-
-    describe "GET #index" do
-      it "disallows viewing all requests per default" do
-        get :index, session: valid_session
-        expect(response).to redirect_to(root_url)
-      end
+      sign_in FactoryGirl.create(:user, role: :organizer)
     end
 
     describe "GET #show" do
@@ -111,23 +105,50 @@ RSpec.describe RequestsController, type: :controller do
 
     describe "DELETE #destroy" do
       it "destroys the requested request" do
-        request = Request.create! valid_attributes
+        Request.create! valid_attributes
         expect {
           delete :destroy, id: @a_request.to_param, session: valid_session
         }.to change(Request, :count).by(-1)
       end
 
       it "redirects to the requests list" do
-        request = Request.create! valid_attributes
+        Request.create! valid_attributes
         delete :destroy, id: @a_request.to_param, session: valid_session
         expect(response).to redirect_to(requests_url)
       end
     end
   end
 
+  context "as user without login" do
+    before :each do
+      @a_request = Request.create! valid_attributes
+    end
+
+    it "redirects to home when updating" do
+      put :update, id: @a_request.to_param, request: valid_attributes, session: valid_session
+      expect(response).to redirect_to(root_path)
+    end
+
+    it "redirects to home when showing" do
+      get :show, id: @a_request.to_param, session: valid_session
+      expect(response).to redirect_to(root_path)
+    end
+
+    it "redirects to home when deleting" do
+      delete :destroy, id: @a_request.to_param, session: valid_session
+      expect(response).to redirect_to(root_path)
+    end
+
+    it "redirects to home when viewing the index page" do
+      get :index, session: valid_session
+      expect(response).to redirect_to(root_path)
+    end
+  end
+
   describe "PATCH #set_contact_person" do
     before :each do
       @a_request = Request.create! valid_attributes
+      sign_in FactoryGirl.create(:user, role: :organizer)
     end
 
     context "with valid params" do
@@ -161,7 +182,7 @@ RSpec.describe RequestsController, type: :controller do
         expect(assigns(:request)).to be_persisted
       end
 
-      it "redirects to the created request" do
+      it "redirects to the homepage" do
         post :create, request: valid_attributes, session: valid_session
         expect(response).to redirect_to(root_path)
       end
