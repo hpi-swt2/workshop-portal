@@ -83,8 +83,8 @@ ActiveRecord::Schema.define(version: 20170119223355) do
     t.boolean  "draft"
     t.date     "application_deadline"
     t.boolean  "application_status_locked"
-    t.text     "custom_application_fields"
     t.boolean  "participants_are_unlimited", default: false
+    t.text     "custom_application_fields"
   end
 
   create_table "profiles", force: :cascade do |t|

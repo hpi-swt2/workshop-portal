@@ -1,24 +1,21 @@
 <%- model_class = ApplicationLetter -%>
 
+<p class='alert alert-info' >
+  <% if @application_deadline_exceeded %>
+    <%= t('.deadline_exceeded') %>
+  <% else %>
+    <%= t('.can_change_until', application_deadline: l(@application_letter.event.application_deadline)) %>
+  <% end %>
+</p>
 <div class="page-header">
   <h1><%=t '.check_application_for', event_name: @application_letter.event.name %></h1>
-  <p class='alert alert-info' >
-    <% if @application_deadline_exceeded %>
-      <%= t('.deadline_exceeded') %>
-    <% else %>
-      <%= t('.can_change_until', application_deadline: l(@application_letter.event.application_deadline)) %>
-    <% end %>
-  </p>
 </div>
 
 
-<h3><%= t('agreement_letters.please_upload', event: @application_letter.event.name)%></h3>
-          <% if current_user.profile.adult? %>
-            <%= render('upload_form',
-              event_id: @application_letter.event.id,
-              agreement_letter: @application_letter.event.agreement_letter_for(current_user)) %>
-          <% end %>
-</table>
+<% if @application_letter.user.profile.adult? %>
+  <h3><%= t('agreement_letters.please_upload', event: @application_letter.event.name)%></h3>
+  <%= render('upload_form', event_id: @application_letter.event.id, agreement_letter: @application_letter.event.agreement_letter_for(@application_letter.user)) %>
+<% end %>
 
 <h3><%= t('.my_application') %></h3>
 <div id='application_details'>

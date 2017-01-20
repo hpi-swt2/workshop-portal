@@ -60,7 +60,7 @@ class User < ActiveRecord::Base
   # @param none
   # @return [Array<Event>]
   def events_with_missing_agreement_letters
-    events.select{ |e| AgreementLetter.where(user_id: self.id, event_id: e.id).blank?}
+    events.select{ |e| (AgreementLetter.where(user_id: self.id, event_id: e.id).blank? and not requires_agreement_letter_for_event?(e))}
   end
 
   # Returns true iff. user has submitted an agreement_letter for the given event
