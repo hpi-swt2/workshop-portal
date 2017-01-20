@@ -95,23 +95,6 @@ class EventsController < ApplicationController
     pdf = ApplicationsPDF.generate(@event)
     send_data pdf, filename: "applications_#{@event.name}_#{Date.today}.pdf", type: "application/pdf", disposition: "inline"
   end
-  # GET /events/1/send-acceptances-email
-  def send_acceptance_emails
-    event = Event.find(params[:id])
-    event.lock_application_status
-    @email = event.generate_acceptances_email
-    @templates = [{subject: 'Zusage 1', content: 'Lorem Ispum...'}, {subject: 'Zusage 2', content: 'Lorem Ispum...'}, {subject: 'Zusage 3', content: 'Lorem Ispum...'}]
-    render :email
-  end
-
-  # GET /events/1/send-rejections-email
-  def send_rejection_emails
-    event = Event.find(params[:id])
-    event.lock_application_status
-    @email = event.generate_rejections_email
-    @templates = [{subject: 'Absage 1', content: 'Lorem Ispum...'}, {subject: 'Absage 2', content: 'Lorem Ispum...'}, {subject: 'Absage 3', content: 'Lorem Ispum...'}]
-    render :email
-  end
 
   # GET /events/1/accept-all-applicants
   def accept_all_applicants
@@ -250,7 +233,7 @@ class EventsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def event_params
-      params.require(:event).permit(:name, :description, :max_participants, :participants_are_unlimited, :kind, :organizer, :knowledge_level, :application_deadline, date_ranges_attributes: [:start_date, :end_date, :id])
+      params.require(:event).permit(:name, :description, :max_participants, :participants_are_unlimited, :kind, :organizer, :knowledge_level, :application_deadline, :custom_application_fields => [], date_ranges_attributes: [:start_date, :end_date, :id])
     end
 
     # Generate all names to print from the query-params

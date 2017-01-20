@@ -28,6 +28,9 @@ class ApplicationLettersController < ApplicationController
     end
     @application_letter = ApplicationLetter.new
     authorize! :new, @application_letter
+    if params[:event_id]
+      @application_letter.event_id = params[:event_id]
+    end
   end
 
   # GET /applications/1/check
@@ -67,7 +70,16 @@ class ApplicationLettersController < ApplicationController
   # PATCH/PUT /applications/1/status
   def update_status
     if @application_letter.update_attributes(application_status_param)
-      redirect_to :back, notice: I18n.t('application_letters.successful_update') rescue ActionController::RedirectBackError redirect_to root_path
+      if request.xhr?
+        render json: {
+          free_places: I18n.t('events.applicants_overview.free_places',
+                              count: @application_letter.event.compute_free_places),
+          occupied_places: I18n.t('events.applicants_overview.occupied_places',
+                                  count: @application_letter.event.compute_occupied_places)
+        }
+      else
+        redirect_to :back, notice: I18n.t('application_letters.successful_update') rescue ActionController::RedirectBackError redirect_to root_path
+      end
     else
       render :edit
     end
@@ -88,7 +100,9 @@ class ApplicationLettersController < ApplicationController
     # Only allow a trusted parameter "white list" through.
     # Don't allow user_id as you shouldn't be able to set the user from outside of create/update.
     def application_params
-      params.require(:application_letter).permit(:grade, :experience, :motivation, :coding_skills, :emergency_number, :vegeterian, :vegan, :allergic, :allergies, :user_id, :event_id)
+      params.require(:application_letter).permit(:grade, :experience, :motivation, :coding_skills, :emergency_number,
+                                                 :vegetarian, :vegan, :allergic, :allergies, :user_id, :event_id)
+      .merge({:custom_application_fields => params[:custom_application_fields]})
     end
 
     # Only allow to update the status

@@ -5,7 +5,7 @@ describe "Event", type: :feature do
     it "should link to the show page when an event's read more button is clicked" do
       event = FactoryGirl.create :event
       visit events_path
-      click_link I18n.t('events.list.more')
+      click_link event.name
       expect(page).to have_current_path(event_path(event))
     end
 
@@ -176,17 +176,41 @@ describe "Event", type: :feature do
       expect(page).to have_css("div.has-error")
       expect(page).to have_content("kann nicht vor Start-Datum liegen", count: 1)
     end
+
+    it "should allow to add custom fields", js: true do
+      login_as(FactoryGirl.create(:user, role: :organizer), :scope => :user)
+
+      visit new_event_path
+
+      click_link I18n.t "events.form.add_field"
+      within page.find("#custom-application-fields").all(".input-group")[0] do
+        fill_in "event[custom_application_fields][]", with: "Lieblingsfarbe"
+      end
+
+      click_link I18n.t "events.form.add_field"
+      within page.find("#custom-application-fields").all(".input-group")[1] do
+        fill_in "event[custom_application_fields][]", with: "Lieblings 'Friends' Charakter"
+      end
+
+      fill_in "Maximale Teilnehmerzahl", :with => 25
+      fill_in "event[date_ranges_attributes][][start_date]", :with => I18n.l(Date.tomorrow.next_day(2))
+      fill_in "event[date_ranges_attributes][][end_date]", :with => I18n.l(Date.tomorrow.next_day(3))
+      fill_in "event_application_deadline", :with => I18n.l(Date.tomorrow)
+
+      click_button I18n.t(".events.form.publish")
+
+      expect(page).to have_text("Lieblingsfarbe")
+      expect(page).to have_text("Lieblings 'Friends' Charakter")
+    end
+
+    it "should not allow adding fields after event creation" do
+      event = FactoryGirl.create(:event)
+      visit edit_event_path(event)
+      expect(page).to_not have_text(I18n.t "events.form.add_field")
+    end
   end
 
   describe "show page" do
-    it "should display the event kind" do
-      %i[camp workshop].each do |kind|
-        event = FactoryGirl.create(:event, kind: kind)
-        visit event_path(event)
-        expect(page).to have_text(kind.to_s.humanize)
-      end
-    end
-
     it "should render markdown for the description" do
       event = FactoryGirl.create(:event, description: "# Test Headline")
       visit event_path(event)
@@ -196,7 +220,7 @@ describe "Event", type: :feature do
     it "should display a single day date range as a single date" do
       event = FactoryGirl.create(:event, :single_day)
       visit event_path(event)
-      expect(page).to have_text(event.date_ranges.first.start_date)
+      expect(page).to have_text(I18n.l(event.date_ranges.first.start_date))
       expect(page).to_not have_text(" bis " + I18n.l(event.date_ranges.first.end_date))
     end
 
