@@ -40,7 +40,9 @@
               <%= I18n.t :"requests.form_of_addresses.#{key}" %>
             </label>
         <% end %>
-        <%= f.error_span(:form_of_address) %>
+      </div>
+      <div class="col-lg-offset-2 col-lg-10">
+          <%= f.error_span(:form_of_address) %>
       </div>
     </div>
 
