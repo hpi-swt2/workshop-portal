@@ -10,7 +10,7 @@
 class Profile < ActiveRecord::Base
   POSSIBLE_GENDERS = ['male', 'female', 'other']
   
-  belongs_to :user
+  belongs_to :user, autosave: true
 
   validates :user, presence: true
   validates_presence_of :first_name, :last_name, :gender, :birth_date, :school, :street_name, :zip_code, :city, :state, :country

@@ -1,6 +1,6 @@
 class Users::RegistrationsController < Devise::RegistrationsController
 # before_action :configure_sign_up_params, only: [:create]
-# before_action :configure_account_update_params, only: [:update]
+before_action :configure_account_update_params, only: [:update]
 
   # GET /resource/sign_up
   # def new
@@ -44,9 +44,11 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # end
 
   # If you have extra params to permit, append them to the sanitizer.
-  # def configure_account_update_params
-  #   devise_parameter_sanitizer.permit(:account_update, keys: [:attribute])
-  # end
+  def configure_account_update_params
+    devise_parameter_sanitizer.permit(:account_update) do |user|
+      user.permit(:email, :password, :password_confirmation, :current_password, {:profile => [:first_name, :last_name, :gender, :birth_date, :school, :street_name, :zip_code, :city, :state, :country, :graduates_school_in]})
+    end
+  end
 
   def after_update_path_for(resource)
     edit_user_registration_path(resource)
