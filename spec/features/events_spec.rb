@@ -6,10 +6,11 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
   end
 
   scenario "logged in as Pupil I can click the apply button on the index page" do
+    @event.application_deadline = Date.tomorrow
     login(:pupil)
     visit events_path
 
-    click_link 'Bewerben'
+    click_link I18n.t("helpers.links.apply")
     expect(page).to have_current_path(new_application_letter_path(:event_id => @event.id))
   end
 
@@ -17,7 +18,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     login(:pupil)
     visit event_path(@event)
 
-    click_link 'Bewerben'
+    click_link I18n.t("helpers.links.apply")
     expect(page).to have_current_path(new_application_letter_path(:event_id => @event.id))
   end
 

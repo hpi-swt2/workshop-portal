@@ -101,4 +101,13 @@ RSpec.describe "events/show", type: :view do
     expect(rendered).to have_button(t(:upload, scope: 'events.material_area'))
     expect(rendered).to have_button(t(:download, scope: 'events.material_area'))
   end
+
+  it "does not display apply button when application deadline is over" do
+    @event.application_deadline = Date.yesterday
+    [:pupil, :coach, :organizer].each do |role|
+      sign_in FactoryGirl.create(:user, role: role)
+      render
+      expect(rendered).to_not have_link(I18n.t("helpers.links.apply"))
+    end
+  end
 end

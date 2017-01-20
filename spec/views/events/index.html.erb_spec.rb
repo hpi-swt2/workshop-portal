@@ -33,4 +33,15 @@ RSpec.describe "events/index", type: :view do
     expect(rendered).to have_link(href: edit_event_path(@event))
     expect(rendered).to have_link(href: event_path(@event), class: 'btn-danger')
   end
+
+  it "should not display apply button if application deadline if over" do
+    @event.application_deadline = Date.yesterday
+    assign(:events, [@event])
+    [:pupil, :coach, :organizer].each do |role|
+      sign_in FactoryGirl.create(:user, role: role)
+      render
+      expect(rendered).to_not have_link(I18n.t("helpers.links.apply"))
+    end
+  end
+
 end
