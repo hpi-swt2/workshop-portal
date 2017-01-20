@@ -13,6 +13,7 @@ de:
     form:
       create_request: "Anfrage erstellen"
       accept: "Annehmen"
+      set_contact_person: "Ansprechpartner festlegen"
     hints:
       please_enter_two_topics: "Bitte 2 Wünsche angeben"
     notice:
@@ -40,6 +41,7 @@ de:
         annotations: "Anmerkungen"
         id: "Nummer"
         created_at: "Erstellt am"
+        contact_person: "Ansprechpartner"
         status: "Status"
         statuses:
           open: "Noch nicht angenommen"
