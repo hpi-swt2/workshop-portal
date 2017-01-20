@@ -3,6 +3,7 @@ class ApplicationLettersController < ApplicationController
   skip_authorize_resource :only => :new
 
   before_action :set_application, only: [:show, :edit, :update, :destroy, :check]
+  before_action :add_missing_permission_flashes, only: [:index, :check]
 
   # GET /applications
   def index
