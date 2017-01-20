@@ -105,10 +105,10 @@
   </div>
   <div class="form-group">
     <div class="col-lg-offset-2 col-lg-10">
-      <% if @event.published %>
-        <%= f.submit t('.update'), :name => 'update', :class => 'btn btn-primary' %>
-      <% else %>
+      <% if @event.new_record? %>
         <%= f.submit t('.create'), :name => 'create', :class => 'btn btn-primary' %>
+      <% else %>
+        <%= f.submit t('.update'), :name => 'update', :class => 'btn btn-primary' %>
       <% end %>
       <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
                 events_path, :class => 'btn btn-default' %>

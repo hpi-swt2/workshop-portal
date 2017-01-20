@@ -32,7 +32,7 @@ RSpec.feature "Draft events", :type => :feature do
 
     visit edit_event_path(@event)
     choose I18n.t "events.form.published.myon"
-    click_button I18n.t "events.form.create"
+    click_button I18n.t "events.form.update"
 
     expect(page).to have_css(".alert-success")
 
