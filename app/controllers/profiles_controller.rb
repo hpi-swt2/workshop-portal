@@ -9,6 +9,9 @@ class ProfilesController < ApplicationController
 
   # GET /profiles/new
   def new
+    existing_profile = Profile.find_by(user: current_user.id)
+    return redirect_to existing_profile if existing_profile.present?
+
     @profile = Profile.new
     flash.keep(:event_id)
   end
