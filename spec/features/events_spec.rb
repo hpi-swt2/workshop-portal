@@ -296,6 +296,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
       .sort_by { |letter| letter.applicant_age_when_event_starts }
       .select { |letter| letter.status.to_sym == :accepted }
       .map {|l| l.user.profile.name }
+    print page.body
     expect(page).to contain_ordered(sorted_accepted_names)
 
     # list rejected, pending
