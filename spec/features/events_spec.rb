@@ -131,6 +131,27 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     end
   end
 
+  scenario "logged in as Organizer I can change application status with radio buttons without the page reloading", js: true do
+    login(:organizer)
+    @event.application_status_locked = false
+    @event.save
+    @pupil = FactoryGirl.create(:profile)
+    @application_letter = FactoryGirl.create(:application_letter, event: @event, user: @pupil.user)
+    visit event_path(@event)
+    find('label', text: I18n.t('application_status.accepted')).click
+
+    check_values = lambda {
+      expect(page).to have_text(I18n.t "free_places", count: (@event.max_participants).to_i - 1, scope: [:events, :applicants_overview])
+      expect(page).to have_text(I18n.t "occupied_places", count: 1, scope: [:events, :applicants_overview])
+    }
+
+    check_values.call
+    # verify that the state was actually persisted by reloading the page
+    visit event_path(@event)
+    check_values.call
+    expect(page).to have_css('label.active', text: I18n.t('application_status.accepted'))
+  end
+
   scenario "logged in as Organizer I can not change application status with radio buttons if the applications are locked" do
     login(:organizer)
     @event.lock_application_status
