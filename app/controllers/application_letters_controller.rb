@@ -69,7 +69,16 @@ class ApplicationLettersController < ApplicationController
   # PATCH/PUT /applications/1/status
   def update_status
     if @application_letter.update_attributes(application_status_param)
-      redirect_to :back, notice: I18n.t('application_letters.successful_update') rescue ActionController::RedirectBackError redirect_to root_path
+      if request.xhr?
+        render json: {
+          free_places: I18n.t('events.applicants_overview.free_places',
+                              count: @application_letter.event.compute_free_places),
+          occupied_places: I18n.t('events.applicants_overview.occupied_places',
+                                  count: @application_letter.event.compute_occupied_places)
+        }
+      else
+        redirect_to :back, notice: I18n.t('application_letters.successful_update') rescue ActionController::RedirectBackError redirect_to root_path
+      end
     else
       render :edit
     end
