@@ -80,6 +80,18 @@ describe 'workshop requests', type: :feature do
         accepted_status = I18n.t 'activerecord.attributes.request.statuses.accepted'
         expect(page).to have_text(accepted_status)
       end
+
+      it 'should allow me to enter an contact person' do
+        request = FactoryGirl.create(:request)
+
+        visit(request_path(request))
+        expect(page).to have_field('request_contact_person')
+        fill_in 'request_contact_person', with: 'Me'
+        click_button I18n.t('requests.form.set_contact_person')
+
+        visit(request_path(request))
+        expect(page).to have_field('request_contact_person', with: 'Me')
+      end
     end
   end
 end
