@@ -86,6 +86,35 @@ FactoryGirl.define do
       end
     end
 
+    trait :in_draft_phase do
+      after(:build) do |event|
+        event.draft = true
+      end
+    end
+
+    trait :in_application_phase do
+      after(:build) do |event|
+        event.draft = false
+        event.application_deadline = Date.tomorrow
+      end
+    end
+
+    trait :in_selection_phase do
+      after(:build) do |event|
+        event.draft = false
+        event.application_deadline = Date.yesterday
+        event.application_status_locked = false
+      end
+    end
+
+    trait :in_execution_phase do
+      after(:build) do |event|
+        event.draft = false
+        event.application_deadline = Date.yesterday
+        event.application_status_locked = true
+      end
+    end
+
     factory :event_with_accepted_applications do
       name "Event-Name"
       description "Event-Description"
