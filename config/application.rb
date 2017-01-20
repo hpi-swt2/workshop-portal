@@ -28,5 +28,8 @@ module WorkshopPortal
 
     # see Event::unreasonably_long, unit in days
     config.unreasonably_long_event_time_span = 300
+
+    # default reply_to email adress
+    config.default_reply_to_email = 'workshop-portal@gmail.com'
   end
 end
