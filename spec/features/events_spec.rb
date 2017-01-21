@@ -131,6 +131,27 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     end
   end
 
+  scenario "logged in as Organizer I can change application status with radio buttons without the page reloading", js: true do
+    login(:organizer)
+    @event.application_status_locked = false
+    @event.save
+    @pupil = FactoryGirl.create(:profile)
+    @application_letter = FactoryGirl.create(:application_letter, event: @event, user: @pupil.user)
+    visit event_path(@event)
+    find('label', text: I18n.t('application_status.accepted')).click
+
+    check_values = lambda {
+      expect(page).to have_text(I18n.t "free_places", count: (@event.max_participants).to_i - 1, scope: [:events, :applicants_overview])
+      expect(page).to have_text(I18n.t "occupied_places", count: 1, scope: [:events, :applicants_overview])
+    }
+
+    check_values.call
+    # verify that the state was actually persisted by reloading the page
+    visit event_path(@event)
+    check_values.call
+    expect(page).to have_css('label.active', text: I18n.t('application_status.accepted'))
+  end
+
   scenario "logged in as Organizer I can not change application status with radio buttons if the applications are locked" do
     login(:organizer)
     @event.lock_application_status
@@ -197,7 +218,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     check 'select_all_participants'
     find("option[value='zip']").select_option
     click_button I18n.t "events.agreement_letters_download.download_all_as"
-    page.response_headers['Content-Type'].should eq "application/zip"
+    expect(page.response_headers['Content-Type']).to eq("application/zip")
   end
 
   scenario "logged in as Organizer when I want to download agreement letters in a pdf file, I can do so", js: true do
@@ -207,7 +228,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     check 'select_all_participants'
     find("option[value='pdf']").select_option
     click_button I18n.t "events.agreement_letters_download.download_all_as"
-    page.response_headers['Content-Type'].should eq "application/pdf"
+    expect(page.response_headers['Content-Type']).to eq("application/pdf")
   end
 
   scenario "logged in as Coach I can see application status" do
@@ -272,9 +293,9 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
 
     sorted_accepted_names = @event.application_letters
       .to_a
-      .sort_by { |letter| letter.applicant_age_when_event_starts }
+      .sort_by { |letter| letter.user.profile.name }
       .select { |letter| letter.status.to_sym == :accepted }
-      .map {|l| l.user.profile.name }
+      .map {|letter| letter.user.profile.name }
     expect(page).to contain_ordered(sorted_accepted_names)
 
     # list rejected, pending

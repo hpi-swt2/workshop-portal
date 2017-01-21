@@ -7,7 +7,7 @@
 #  description      :string
 #  max_participants :integer
 #  date_ranges      :Collection
-#  active           :boolean
+#  published        :boolean
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  application_status_locked  :boolean
@@ -52,7 +52,7 @@ class Event < ActiveRecord::Base
   # @return [Array<User>] the event's participants in that order.
   def participants_by_agreement_letter
     @participants = self.participants
-	@participants.sort { |x, y| self.compare_participants_by_agreement(x,y) }
+    @participants.sort { |x, y| self.compare_participants_by_agreement(x,y) }
   end
 
   validates :max_participants, numericality: { only_integer: true, greater_than: 0 }
@@ -170,10 +170,10 @@ class Event < ActiveRecord::Base
   # @param none
   # @return [Symbol] state
   def phase
-    return :draft if draft
-    return :application if !draft && !after_deadline?
-    return :selection if !draft && after_deadline? && !application_status_locked
-    return :execution if !draft && after_deadline? && application_status_locked
+    return :draft if !published
+    return :application if published && !after_deadline?
+    return :selection if published && after_deadline? && !application_status_locked
+    return :execution if published && after_deadline? && application_status_locked
   end
 
   # Returns a label listing the number of days to the deadline if
@@ -254,7 +254,7 @@ class Event < ActiveRecord::Base
     end
   end
 
-  scope :draft_is, ->(draft) { where("draft = ?", draft) }
+  scope :draft_is, ->(status) { where("not published = ?", status) }
 
   # Returns events sorted by start date, returning only public ones
   # if requested

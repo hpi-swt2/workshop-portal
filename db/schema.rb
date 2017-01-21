@@ -11,9 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-
-ActiveRecord::Schema.define(version: 20170118185870) do
-
+ActiveRecord::Schema.define(version: 20170119223355) do
 
   create_table "agreement_letters", force: :cascade do |t|
     t.integer  "user_id",    null: false
@@ -28,11 +26,11 @@ ActiveRecord::Schema.define(version: 20170118185870) do
 
   create_table "application_letters", force: :cascade do |t|
     t.string   "motivation"
-    t.integer  "user_id",                      null: false
-    t.integer  "event_id",                     null: false
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
-    t.integer  "status",           default: 2, null: false
+    t.integer  "user_id",                               null: false
+    t.integer  "event_id",                              null: false
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
+    t.integer  "status",                    default: 2, null: false
     t.integer  "grade"
     t.string   "experience"
     t.string   "coding_skills"
@@ -80,7 +78,7 @@ ActiveRecord::Schema.define(version: 20170118185870) do
     t.datetime "created_at",                                 null: false
     t.datetime "updated_at",                                 null: false
     t.integer  "kind",                       default: 0
-    t.boolean  "draft"
+    t.boolean  "published"
     t.string   "organizer"
     t.string   "knowledge_level"
     t.date     "application_deadline"
@@ -124,6 +122,7 @@ ActiveRecord::Schema.define(version: 20170118185870) do
     t.text     "annotations"
     t.integer  "status",                 default: 0
     t.string   "zip_code_city"
+    t.string   "contact_person"
   end
 
   create_table "users", force: :cascade do |t|
