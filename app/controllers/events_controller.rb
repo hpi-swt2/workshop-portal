@@ -3,7 +3,7 @@ require 'rubygems'
 require 'zip'
 
 class EventsController < ApplicationController
-  before_action :set_event, only: [:show, :edit, :update, :destroy, :print_applications]
+  before_action :set_event, only: [:show, :edit, :update, :destroy, :participants, :participants_pdf, :print_applications]
 
   # GET /events
   def index
@@ -85,7 +85,6 @@ class EventsController < ApplicationController
 
   # GET /events/1/participants
   def participants
-    @event = Event.find(params[:id])
     @participants = @event.participants_by_agreement_letter
     @has_agreement_letters = @event.agreement_letters.any?
   end
@@ -95,23 +94,6 @@ class EventsController < ApplicationController
     authorize! :print_applications, @event
     pdf = ApplicationsPDF.generate(@event)
     send_data pdf, filename: "applications_#{@event.name}_#{Date.today}.pdf", type: "application/pdf", disposition: "inline"
-  end
-  # GET /events/1/send-acceptances-email
-  def send_acceptance_emails
-    event = Event.find(params[:id])
-    event.lock_application_status
-    @email = event.generate_acceptances_email
-    @templates = [{subject: 'Zusage 1', content: 'Lorem Ispum...'}, {subject: 'Zusage 2', content: 'Lorem Ispum...'}, {subject: 'Zusage 3', content: 'Lorem Ispum...'}]
-    render :email
-  end
-
-  # GET /events/1/send-rejections-email
-  def send_rejection_emails
-    event = Event.find(params[:id])
-    event.lock_application_status
-    @email = event.generate_rejections_email
-    @templates = [{subject: 'Absage 1', content: 'Lorem Ispum...'}, {subject: 'Absage 2', content: 'Lorem Ispum...'}, {subject: 'Absage 3', content: 'Lorem Ispum...'}]
-    render :email
   end
 
   # GET /events/1/accept-all-applicants
@@ -164,7 +146,7 @@ class EventsController < ApplicationController
       params[:selected_participants].each do |participant_id|
         agreement_letter = User.find(participant_id).agreement_letter_for_event(@event)
         unless agreement_letter.nil?
-          pdf << CombinePDF.load(agreement_letter.path) 
+          pdf << CombinePDF.load(agreement_letter.path)
           empty = false
         end
       end
@@ -195,6 +177,39 @@ class EventsController < ApplicationController
     redirect_to event_path(event), notice: I18n.t("events.material_area.success_message")
   end
 
+  # GET /event/1/participants_pdf
+  def participants_pdf
+    default = {:order_by => 'email', :order_direction => 'asc'}
+    default = default.merge(params)
+
+    @application_letters = @event.application_letters_ordered(default[:order_by], default[:order_direction])
+                               .where(:status => ApplicationLetter.statuses[:accepted])
+
+    data = @application_letters.collect do |application_letter|
+      [
+        application_letter.user.profile.first_name,
+        application_letter.user.profile.last_name,
+        application_letter.user.profile.birth_date,
+        application_letter.allergies
+      ]
+    end
+
+    data.unshift([
+                     I18n.t('controllers.events.participants_pdf.first_name'),
+                     I18n.t('controllers.events.participants_pdf.last_name'),
+                     I18n.t('controllers.events.participants_pdf.first_name'),
+                     I18n.t('controllers.events.participants_pdf.allergies')
+                 ])
+
+    name = @event.name
+    doc = Prawn::Document.new(:page_size => 'A4') do
+      text "Teilnehmerliste - " + name
+      table(data, width: bounds.width)
+    end
+
+    send_data doc.render, :filename => "participants.pdf", :type => "application/pdf", disposition: "inline"
+  end
+
   # POST /events/1/download_material
   def download_material
     event = Event.find(params[:event_id])
@@ -218,7 +233,7 @@ class EventsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def event_params
-      params.require(:event).permit(:name, :description, :max_participants, :participants_are_unlimited, :kind, :organizer, :knowledge_level, :application_deadline, date_ranges_attributes: [:start_date, :end_date, :id])
+      params.require(:event).permit(:name, :description, :max_participants, :participants_are_unlimited, :kind, :organizer, :knowledge_level, :application_deadline, :custom_application_fields => [], date_ranges_attributes: [:start_date, :end_date, :id])
     end
 
     # Generate all names to print from the query-params

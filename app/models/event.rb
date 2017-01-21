@@ -17,6 +17,8 @@ class Event < ActiveRecord::Base
   UNREASONABLY_LONG_DATE_SPAN = 300
   TRUNCATE_DESCRIPTION_TEXT_LENGTH = 250
 
+  serialize :custom_application_fields, Array
+
   has_many :application_letters
   has_many :agreement_letters
   has_many :date_ranges
@@ -85,6 +87,14 @@ class Event < ActiveRecord::Base
     errors.add(:application_deadline, I18n.t('events.errors.application_deadline_before_start_of_event')) if application_deadline.present? && !date_ranges.blank? && application_deadline > start_date
   end
 
+  # Checks if the application deadline is over
+  #
+  # @param none
+  # @return [Boolean] true if deadline is over
+  def after_deadline?
+    Date.current > application_deadline
+  end
+
   # Returns the participants whose application for this Event has been accepted
   #
   # @param none
@@ -124,48 +134,11 @@ class Event < ActiveRecord::Base
 
   # Returns a string of all email addresses of accepted applications
   #
-  # @param none
-  # @return [String] Concatenation of all email addresses of accepted applications, seperated by ','
-  def email_adresses_of_accepted_applicants
-    accepted_applications = application_letters.where(status: ApplicationLetter.statuses[:accepted])
-    accepted_applications.map{ |application_letter| application_letter.user.email }.join(',')
-  end
-
-  # Returns a string of all email addresses of rejected applications
-  #
-  # @param none
-  # @return [String] Concatenation of all email addresses of rejected applications, seperated by ','
-  def email_adresses_of_rejected_applicants
-    rejected_applications = application_letters.where(status: ApplicationLetter.statuses[:rejected])
-    rejected_applications.map{ |applications_letter| applications_letter.user.email }.join(',')
-  end
-
-  # Returns a new acceptance email
-  #
-  # @param none
-  # @return [Email] new acceptance email
-  def generate_acceptances_email
-    email = Email.new
-    email.hide_recipients = false
-    email.recipients = email_adresses_of_accepted_applicants
-    email.reply_to = 'workshop.portal@hpi.de'
-    email.subject = ''
-    email.content = ''
-    return email
-  end
-
-  # Returns a new rejection email
-  #
-  # @param none
-  # @return [Email] new rejection email
-  def generate_rejections_email
-    email = Email.new
-    email.hide_recipients = false
-    email.recipients = email_adresses_of_rejected_applicants
-    email.reply_to = 'workshop.portal@hpi.de'
-    email.subject = ''
-    email.content = ''
-    return email
+  # @param type [Type] the type of the email addresses that will be returned
+  # @return [String] Concatenation of all email addresses of applications with given type, seperated by ','
+  def email_addresses_of_type(type)
+    applications = application_letters.where(status: ApplicationLetter.statuses[type])
+    applications.map{ |application_letter| application_letter.user.email }.join(',')
   end
 
   # Returns the number of free places of the event, this value may be negative
@@ -190,6 +163,17 @@ class Event < ActiveRecord::Base
   # @return none
   def lock_application_status
     update(application_status_locked: true)
+  end
+
+  # Returns the current state of the event (draft-, application-, selection- and execution-phase)
+  #
+  # @param none
+  # @return [Symbol] state
+  def phase
+    return :draft if draft
+    return :application if !draft && !after_deadline?
+    return :selection if !draft && after_deadline? && !application_status_locked
+    return :execution if !draft && after_deadline? && application_status_locked
   end
 
   # Returns a label listing the number of days to the deadline if
@@ -224,6 +208,25 @@ class Event < ActiveRecord::Base
     elsif days > 1
       I18n.t('events.notices.time_span_consecutive', count: days)
     end
+  end
+
+  # Returns the application letters ordered by either "email", "first_name", "last_name", "birth_date"
+  # either "asc" (ascending) or "desc" (descending).
+  #
+  # @param field [String] the field that should be used to order
+  # @param order_by [String] the order that should be used
+  # @return [ApplicationLetter] the application letters found
+  def application_letters_ordered(field, order_by)
+    field = case field
+              when "email"
+                "users.email"
+              when "birth_date", "first_name", "last_name"
+                "profiles." + field
+              else
+                "users.email"
+            end
+    order_by = 'asc' unless order_by == 'asc' || order_by == 'desc'
+    application_letters.joins(user: :profile).order(field + ' ' + order_by)
   end
 
   # Make sure any assignment coming from the controller

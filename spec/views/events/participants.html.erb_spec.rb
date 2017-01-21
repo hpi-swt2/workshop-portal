@@ -49,4 +49,10 @@ RSpec.describe "events/participants", type: :view do
     expect(rendered).to have_text(t(:unnecessary, scope:'events.participants'))
   end
   
+  it "contains a modal to print participant lists" do
+    render
+    expect(rendered).to have_css('div#print_participant_modal')
+    expect(rendered).to have_css('button#open_print_modal')
+    expect(rendered).to have_css('input#print_participant_list')
+  end
 end

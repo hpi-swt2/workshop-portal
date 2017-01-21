@@ -157,25 +157,35 @@ RSpec.describe EventsController, type: :controller do
       end
     end
 
-    describe "GET #send_acceptances_email" do
-      it "should assign a new email to accepted applications as @email" do
-        get :send_acceptance_emails, id: @event.to_param, session: valid_session
-        expect(assigns(:email)).to have_attributes(hide_recipients: false, recipients: @event.email_adresses_of_accepted_applicants, reply_to: 'workshop.portal@hpi.de', subject: '', content: '')
-      end
-    end
-
-    describe "GET #send_rejections_email" do
-      it "should assign a new email to rejected applications as @email" do
-        get :send_rejection_emails, id: @event.to_param, session: valid_session
-        expect(assigns(:email)).to have_attributes(hide_recipients: false, recipients: @event.email_adresses_of_rejected_applicants, reply_to: 'workshop.portal@hpi.de', subject: '', content: '')
-      end
-    end
-
     describe "GET #accept_all_applicants" do
       it "should redirect to the event" do
         get :accept_all_applicants, id: @event.to_param, session: valid_session
         expect(response).to redirect_to(@event)
       end
+    end
+  end
+
+  describe "GET #participants_pdf" do
+    let(:valid_attributes) { FactoryGirl.attributes_for(:event_with_accepted_applications) }
+
+    it "should return an pdf" do
+      event = Event.create! valid_attributes
+      get :participants_pdf, id: event.to_param, session: valid_session
+      expect(response.content_type).to eq('application/pdf')
+    end
+
+    it "should return an pdf with the name of the user" do
+      event = Event.create! valid_attributes
+      profile = FactoryGirl.create(:profile)
+      user = FactoryGirl.create(:user, profile: profile)
+      application_letter = FactoryGirl.create(:application_letter, status: ApplicationLetter.statuses[:accepted], event: event, user: user)
+      response = get :participants_pdf, id: event.to_param, session: valid_session
+      expect(response.content_type).to eq('application/pdf')
+
+      pdf = PDF::Inspector::Text.analyze(response.body)
+      expect(pdf.strings).to include("Vorname")
+      expect(pdf.strings).to include("Nachname")
+      expect(pdf.strings).to include(application_letter.user.profile.first_name)
     end
   end
 
@@ -207,6 +217,7 @@ RSpec.describe EventsController, type: :controller do
                           "1243_print"  => "Max Mustermann",
                           "1244_print"  => "Max Mustermann",
                           "1245_print"  => "Max Mustermann"
+
       pdf = PDF::Inspector::Text.analyze(rendered_pdf.body)
       expect(pdf.strings).to include("Max Mustermann")
       expect(pdf.strings).to include("John Doe")
@@ -300,6 +311,7 @@ RSpec.describe EventsController, type: :controller do
         event = Event.create! valid_attributes
         expect(assigns(:event).organizer).to eq(event.organizer)
         expect(assigns(:event).knowledge_level).to eq(event.knowledge_level)
+        expect(assigns(:event).custom_application_fields).to eq(event.custom_application_fields)
       end
 
       it "redirects to the created event" do

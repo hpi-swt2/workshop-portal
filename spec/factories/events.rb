@@ -22,6 +22,7 @@ FactoryGirl.define do
     organizer "Workshop-Organizer"
     knowledge_level "Workshop-Knowledge Level"
     application_deadline Date.tomorrow
+    custom_application_fields ["Field 1", "Field 2", "Field 3"]
     date_ranges { build_list :date_range, 1 }
 
     trait :with_two_date_ranges do
@@ -82,6 +83,35 @@ FactoryGirl.define do
         create_list(:application_letter, 2, event: event)
         event.application_letters[0].user.profile = FactoryGirl.build :profile, :high_values, user: event.application_letters[0].user
         event.application_letters[1].user.profile = FactoryGirl.build :profile, :low_values, user: event.application_letters[1].user
+      end
+    end
+
+    trait :in_draft_phase do
+      after(:build) do |event|
+        event.draft = true
+      end
+    end
+
+    trait :in_application_phase do
+      after(:build) do |event|
+        event.draft = false
+        event.application_deadline = Date.tomorrow
+      end
+    end
+
+    trait :in_selection_phase do
+      after(:build) do |event|
+        event.draft = false
+        event.application_deadline = Date.yesterday
+        event.application_status_locked = false
+      end
+    end
+
+    trait :in_execution_phase do
+      after(:build) do |event|
+        event.draft = false
+        event.application_deadline = Date.yesterday
+        event.application_status_locked = true
       end
     end
 
