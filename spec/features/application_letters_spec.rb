@@ -57,7 +57,7 @@ RSpec.feature "Application Letter Overview", :type => :feature do
     check_filled_field.call(:coding_skills)
     check_filled_field.call(:emergency_number)
     check_filled_field.call(:allergies)
-    check_checked_checkbox.call(:vegeterian)
+    check_checked_checkbox.call(:vegetarian)
     check_checked_checkbox.call(:vegan)
     check_checked_checkbox.call(:allergic)
     expect(page).to have_select(ApplicationLetter.human_attribute_name(:grade),

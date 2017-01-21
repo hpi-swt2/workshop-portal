@@ -30,8 +30,7 @@ class ApplicationLettersController < ApplicationController
     last_application_letter = ApplicationLetter.where(user: current_user).order("created_at").last
     if last_application_letter
       attrs_to_fill_in = last_application_letter.attributes
-        .slice("grade", "coding_skills", "emergency_number", "vegeterian", "vegan", "allergic", "allergies")
-      puts(attrs_to_fill_in)
+        .slice("grade", "coding_skills", "emergency_number", "vegetarian", "vegan", "allergic", "allergies")
       @application_letter.attributes = attrs_to_fill_in
       flash.now[:notice] = I18n.t('application_letters.fields_filled_in')
     end
