@@ -280,6 +280,12 @@ describe User do
     expect(ability).to be_able_to(:manage, Request)
   end
 
+  it "can view unpublished events as organizer" do
+    user = FactoryGirl.create(:user, role: :organizer)
+    ability = Ability.new(user)
+    expect(ability).to be_able_to(:view_unpublished, Event)
+  end
+
   %i[pupil coach].each do |role|
     it "cannot send emails to applicants as #{role}" do
       user = FactoryGirl.create(:user, role: role)

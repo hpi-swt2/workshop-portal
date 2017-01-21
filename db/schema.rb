@@ -78,13 +78,13 @@ ActiveRecord::Schema.define(version: 20170119223355) do
     t.datetime "created_at",                                 null: false
     t.datetime "updated_at",                                 null: false
     t.integer  "kind",                       default: 0
-    t.boolean  "draft"
+    t.boolean  "published"
     t.string   "organizer"
     t.string   "knowledge_level"
     t.date     "application_deadline"
     t.boolean  "application_status_locked"
-    t.text     "custom_application_fields"
     t.boolean  "participants_are_unlimited", default: false
+    t.text     "custom_application_fields"
   end
 
   create_table "profiles", force: :cascade do |t|
