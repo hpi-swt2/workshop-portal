@@ -5,7 +5,7 @@ class RenameDraftToPublished < ActiveRecord::Migration
         Event.all.each {|e| e.toggle!(:draft)}
       end
       dir.down do
-        Event.all.each {|e| e.toggle!(:published)}
+        Event.all.each {|e| e.toggle!(:draft)}
       end
     end
 
