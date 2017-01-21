@@ -21,9 +21,15 @@
             </label>
           </th>
         <% end %>
+        <% if can? :show_eatings_habits, Event %>
+          <th>
+            <%= sort_caret(t('activerecord.methods.application_letter.eating_habits'), 'eating-habits') %>
+          </th>
+        <% end %>
       </tr>
 
-      <% @participants.each do |participant| %>
+      <% @participants.each do |participant| 
+          application_letter = ApplicationLetter.find_by(user_id: participant.id, event_id: @event.id) %>
       <tr>
 
         <td>
@@ -46,6 +52,51 @@
             <%= check_box_tag('selected_participants[]', participant.id, false, class: 'participant_selection') %>
           </td>
         <% end %>
+        
+
+
+
+        <% if can? :show_eatings_habits, Event %>
+          <td>
+           <% if application_letter.vegan || application_letter.vegetarian || application_letter.allergic %>
+             <ul id="eating-habit--list">
+             <% if application_letter.vegan %>
+               <li>
+                 <img 
+                   class="img img-responsive eating-habit--icon"
+                   src="<%= image_url('application_letter_vegan.png') %>"
+                 >
+               </li>
+             <% end %>                
+             <% if application_letter.vegetarian %>
+               <li>
+                 <img 
+                   class="img img-responsive eating-habit--icon"
+                   src="<%= image_url('application_letter_vegetarian.png') %>"
+                 >
+               </li>
+             <% end %>
+             <% if application_letter.allergic %>
+               <li>
+                 <%= image_tag('application_letter_allergic.png',
+                                  class: "img img-responsive eating-habit--icon has-popover",
+                                  tabindex: 50,
+                                  data: { 
+                                    toggle: "popover", 
+                                    content: application_letter.allergies, 
+                                    placement: "bottom" 
+                                    }) 
+                  %>
+               </li>
+             <% end %>
+           </ul>
+           <% end %> 
+
+
+
+
+          </td>
+        <% end %>
       </tr>
       <% end %>
     </table>
@@ -58,7 +109,15 @@
       </div>
     <% end %>
   <% end %>
-  <br>
-  <%= link_to t('.back', :default => t('helpers.links.back')),
-              event_path(@event), :class => 'btn btn-default'  %>
+  <div class="row spacer-15"></div>
+  <div class="row">
+    <div class="btn-group" role="group">
+      <% if can? :print_applications_eating_habits, Event %>
+        <%= link_to t('application_letters.print_accepted_with_eatings_habits'),
+          print_applications_eating_habits_event_path(@event.id), :target => "_blank", :class => 'btn btn-default'%>
+      <% end %>
+      <%= link_to t('.back', :default => t('helpers.links.back')),
+                  event_path(@event), :class => 'btn btn-default'  %>      
+    </div>
+  </div>       
 <% end %>

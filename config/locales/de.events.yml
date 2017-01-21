@@ -48,6 +48,12 @@ de:
       unnecessary: "nicht benötigt"
       available: "vorhanden"
       unavailable: "nicht vorhanden"
+      print_title: "Essgewohnheiten der Teilnehmer für %{title}"
+      print_summary: "Insgesamt werden wir bei dieser Veranstaltung %{number} Teilnehmer/-innen haben. "
+      print_summary_vegetarian: "%{number} Personen ernähren sich vegetarisch."
+      print_summary_vegan: "%{number} Personen ernähren sich vegan."
+      print_summary_omnivorous: "%{number} Personen ernähren sich omnivor."
+      print_summary_allergic: "Außerdem haben folgende Teilnehmer Allergien oder Unverträglichkeiten:"
     agreement_letters_download:
       notices:
         no_participants_selected: "Keine Teilnehmer ausgewählt"

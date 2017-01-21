@@ -33,6 +33,7 @@ de:
       check_application_for: "Bewerbung für %{event_name} prüfen"
       eating_habits: "Essgewohnheiten"
     confirm_deletion: "Willst du diese Bewerbung wirklich löschen?"
+    print_accepted_with_eatings_habits: "Drucke Teilnehmer mit Essgewohnheiten"
 
   activerecord:
     models:
@@ -53,6 +54,10 @@ de:
           vegan: "Vegan"
           allergic: "Allergien vorhanden"
           allergies: "Falls Allergien vorhanden, welche?"
+          omnivorous: "Omnivor"
+    methods:
+      application_letter:
+        eating_habits: "Essgewohnheiten"
 
   application_status:
     accepted: "Angenommen"

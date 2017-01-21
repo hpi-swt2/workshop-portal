@@ -1,9 +1,11 @@
 require 'pdf_generation/applications_pdf'
+require 'pdf_generation/participants_pdf'
 require 'rubygems'
 require 'zip'
 
 class EventsController < ApplicationController
-  before_action :set_event, only: [:show, :edit, :update, :destroy, :participants, :participants_pdf, :print_applications]
+  before_action :set_event, only: [:show, :edit, :update, :destroy, :participants, 
+    :participants_pdf, :print_applications,  :print_applications_eating_habits]
 
   # GET /events
   def index
@@ -88,6 +90,12 @@ class EventsController < ApplicationController
     authorize! :print_applications, @event
     pdf = ApplicationsPDF.generate(@event)
     send_data pdf, filename: "applications_#{@event.name}_#{Date.today}.pdf", type: "application/pdf", disposition: "inline"
+  end
+
+  def print_applications_eating_habits
+    authorize! :print_applications_eating_habits, @event
+    pdf = ParticipantsPDF.generate(@event)
+    send_data pdf, filename: "applications_eating_habits_#{@event.name}_#{Date.today}.pdf", type: "application/pdf", disposition: "inline"
   end
 
   # GET /events/1/accept-all-applicants

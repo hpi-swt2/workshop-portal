@@ -23,6 +23,7 @@ Rails.application.routes.draw do
     member do
       get 'participants_pdf'
       get 'print_applications'
+      get 'print_applications_eating_habits'
     end
     post 'download_material' => 'events#download_material', as: :download_material
   end
