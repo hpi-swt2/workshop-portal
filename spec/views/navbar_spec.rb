@@ -41,16 +41,18 @@ RSpec.describe 'navbar', type: :view do
     end
   end
 
-  context "logged in as an admin or organizer" do
-    it "shows Einstellungen, Mein Profil, Benutzerverwaltung, Ausloggen" do
-      profile = FactoryGirl.create(:profile, user: (FactoryGirl.create :user, role: :admin))
-      sign_in profile.user
-      render template: 'application/index', layout: 'layouts/application'
-      expect(rendered).to have_css(".nav .dropdown-menu a", text: I18n.t('navbar.settings'))
-      expect(rendered).to have_css(".nav .dropdown-menu a", text: I18n.t('navbar.profile'))
-      expect(rendered).to have_css(".nav .dropdown-menu a", text: I18n.t('navbar.user_management'))
-      expect(rendered).to have_css(".nav .dropdown-menu a", text: I18n.t('navbar.logout'))
-      expect(rendered).to have_css(".nav .dropdown-menu a", count: 4)
+  %i[admin organizer].each do |role|
+    context "logged in as an #{role}" do
+      it "shows Einstellungen, Mein Profil, Benutzerverwaltung, Ausloggen" do
+        profile = FactoryGirl.create(:profile, user: (FactoryGirl.create :user, role: role))
+        sign_in profile.user
+        render template: 'application/index', layout: 'layouts/application'
+        expect(rendered).to have_css(".nav .dropdown-menu a", text: I18n.t('navbar.settings'))
+        expect(rendered).to have_css(".nav .dropdown-menu a", text: I18n.t('navbar.profile'))
+        expect(rendered).to have_css(".nav .dropdown-menu a", text: I18n.t('navbar.user_management'))
+        expect(rendered).to have_css(".nav .dropdown-menu a", text: I18n.t('navbar.logout'))
+        expect(rendered).to have_css(".nav .dropdown-menu a", count: 4)
+      end
     end
   end
 
