@@ -12,7 +12,7 @@ describe "Event", type: :feature do
     it "should mark an event as draft by showing a label" do
       login_as(FactoryGirl.create(:user, role: :organizer), :scope => :user)
 
-      FactoryGirl.create :event, draft: true
+      FactoryGirl.create :event, published: false
       visit events_path
       expect(page).to have_css(".label", text: I18n.t(".activerecord.attributes.event.draft"))
     end
@@ -21,7 +21,7 @@ describe "Event", type: :feature do
       %i[coach pupil].each do |role|
         login_as(FactoryGirl.create(:user, role: role), :scope => :user)
 
-        FactoryGirl.create :event, draft: true
+        FactoryGirl.create :event, published: false
         visit events_path
         expect(page).to_not have_css(".label", text: I18n.t(".activerecord.attributes.event.draft"))
       end
@@ -72,7 +72,7 @@ describe "Event", type: :feature do
         visit new_event_path
         fill_in "Maximale Teilnehmerzahl", :with => 25
         choose(kind)
-        click_button I18n.t('.events.form.publish')
+        click_button I18n.t('.events.form.create')
         expect(page).to have_text(kind)
       end
     end
@@ -81,7 +81,7 @@ describe "Event", type: :feature do
       visit new_event_path
       fill_in "event[date_ranges_attributes][][start_date]", with: Date.yesterday.prev_day
       fill_in "event[date_ranges_attributes][][end_date]", with: Date.yesterday
-      click_button I18n.t('.events.form.publish')
+      click_button I18n.t('.events.form.create')
       expect(page).to have_text('Anfangs-Datum darf nicht in der Vergangenheit liegen')
     end
 
@@ -91,7 +91,7 @@ describe "Event", type: :feature do
       fill_in "event_application_deadline", :with => Date.current
       fill_in "event[date_ranges_attributes][][start_date]", with: Date.current
       fill_in "event[date_ranges_attributes][][end_date]", with: Date.current.next_year(3)
-      click_button I18n.t('.events.form.publish')
+      click_button I18n.t('.events.form.create')
       expect(page).to have_text('End-Datum liegt ungewöhnlich weit vom Start-Datum entfernt.')
     end
 
@@ -99,7 +99,7 @@ describe "Event", type: :feature do
       visit new_event_path
       fill_in "event[date_ranges_attributes][][start_date]", with: Date.current
       fill_in "event[date_ranges_attributes][][end_date]", with: Date.current.prev_day(2)
-      click_button I18n.t('.events.form.publish')
+      click_button I18n.t('.events.form.create')
 
       expect(page).to have_text('End-Datum kann nicht vor Start-Datum liegen')
     end
@@ -123,7 +123,7 @@ describe "Event", type: :feature do
         fill_in "event[date_ranges_attributes][][end_date]", with: I18n.l(second_to)
       end
       fill_in "event_application_deadline", :with => I18n.l(Date.tomorrow)
-      click_button I18n.t('.events.form.publish')
+      click_button I18n.t('.events.form.create')
 
       expect(page).to have_text (DateRange.new start_date: first_from, end_date: first_to)
       expect(page).to have_text (DateRange.new start_date: second_from, end_date: second_to)
@@ -138,7 +138,7 @@ describe "Event", type: :feature do
       fill_in "event[date_ranges_attributes][][start_date]", :with => Date.current.next_day(2)
       fill_in "event[date_ranges_attributes][][end_date]", :with => Date.current.next_day(3)
 
-      click_button I18n.t('.events.form.publish')
+      click_button I18n.t('.events.form.create')
 
       expect(page).to have_text("Bewerbungsschluss: " + I18n.l(deadline))
     end
@@ -149,7 +149,7 @@ describe "Event", type: :feature do
       fill_in "event_application_deadline", :with => Date.tomorrow
       fill_in "event[date_ranges_attributes][][start_date]", :with => Date.current
 
-      click_button I18n.t('.events.form.publish')
+      click_button I18n.t('.events.form.create')
 
       expect(page).to have_text("Bewerbungsschluss muss vor Beginn der Veranstaltung liegen")
     end
@@ -171,7 +171,7 @@ describe "Event", type: :feature do
         fill_in "event[date_ranges_attributes][][end_date]", with: I18n.l(Date.yesterday)
       end
 
-      click_button I18n.t(".events.form.publish")
+      click_button I18n.t(".events.form.create")
 
       expect(page).to have_css("div.has-error")
       expect(page).to have_content("kann nicht vor Start-Datum liegen", count: 1)
@@ -197,7 +197,7 @@ describe "Event", type: :feature do
       fill_in "event[date_ranges_attributes][][end_date]", :with => I18n.l(Date.tomorrow.next_day(3))
       fill_in "event_application_deadline", :with => I18n.l(Date.tomorrow)
 
-      click_button I18n.t(".events.form.publish")
+      click_button I18n.t(".events.form.create")
 
       expect(page).to have_text("Lieblingsfarbe")
       expect(page).to have_text("Lieblings 'Friends' Charakter")

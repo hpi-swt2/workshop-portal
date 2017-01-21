@@ -218,7 +218,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     check 'select_all_participants'
     find("option[value='zip']").select_option
     click_button I18n.t "events.agreement_letters_download.download_all_as"
-    page.response_headers['Content-Type'].should eq "application/zip"
+    expect(page.response_headers['Content-Type']).to eq("application/zip")
   end
 
   scenario "logged in as Organizer when I want to download agreement letters in a pdf file, I can do so", js: true do
@@ -228,7 +228,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     check 'select_all_participants'
     find("option[value='pdf']").select_option
     click_button I18n.t "events.agreement_letters_download.download_all_as"
-    page.response_headers['Content-Type'].should eq "application/pdf"
+    expect(page.response_headers['Content-Type']).to eq("application/pdf")
   end
 
   scenario "logged in as Coach I can see application status" do
@@ -293,9 +293,9 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
 
     sorted_accepted_names = @event.application_letters
       .to_a
-      .sort_by { |letter| letter.applicant_age_when_event_starts }
+      .sort_by { |letter| letter.user.profile.name }
       .select { |letter| letter.status.to_sym == :accepted }
-      .map {|l| l.user.profile.name }
+      .map {|letter| letter.user.profile.name }
     expect(page).to contain_ordered(sorted_accepted_names)
 
     # list rejected, pending
