@@ -69,20 +69,13 @@
       <% if @event.phase == :execution %>
         <%= link_to t('events.badges.print_button_label'), event_badges_path(@event), :class => 'btn btn-default'%>
       <% end %>
-      <% if not @event.applications_classified? %>
-          <% if can? :send_email, Email %>
-            <%= button_tag t('.sending_acceptances'), type: 'button', class: 'send-emails-button btn btn-default', disabled: true %>
-            <%= button_tag t('.sending_rejections'), type: 'button', class: 'send-emails-button btn btn-default', disabled: true %>
-          <% end %>
-      <% elsif (@event.compute_free_places < 0) %>
-        <% if can? :send_email, Email %>
+      <% if  (can? :send_email, Email) && (@event.phase == :selection) %>
+        <% if (not @event.applications_classified?) || (@event.compute_free_places < 0) %>
           <%= button_tag t('.sending_acceptances'), type: 'button', class: 'send-emails-button btn btn-default', disabled: true %>
           <%= button_tag t('.sending_rejections'), type: 'button', class: 'send-emails-button btn btn-default', disabled: true %>
-        <% end %>
-      <% else %>
-        <% if (can? :send_email, Email) && (@event.phase == :selection) %>
-          <%= link_to t('.sending_acceptances'), event_email_show_path(@event, status: :accepted), class: 'send-emails-button btn btn-default' %>
-          <%= link_to t('.sending_rejections'),  event_email_show_path(@event, status: :rejected), class: 'send-emails-button btn btn-default' %>
+        <% else %>
+            <%= link_to t('.sending_acceptances'), event_email_show_path(@event, status: :accepted), class: 'send-emails-button btn btn-default' %>
+            <%= link_to t('.sending_rejections'),  event_email_show_path(@event, status: :rejected), class: 'send-emails-button btn btn-default' %>
         <% end %>
       <% end %>
     </div>
