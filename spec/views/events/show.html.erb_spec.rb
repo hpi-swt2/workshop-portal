@@ -102,6 +102,14 @@ RSpec.describe "events/show", type: :view do
     expect(rendered).to_not have_link(t(:show_participants, scope: 'events.participants'))
   end
 
+  it "does not display the disabled send email buttons in application phase" do
+    @event = assign(:event, FactoryGirl.create(:event, :with_diverse_open_applications, :in_application_phase))
+    sign_in(FactoryGirl.create(:user, role: :organizer))
+    render
+    expect(rendered).to_not have_button(t(:sending_acceptances, scope: 'events.applicants_overview'), disabled: true)
+    expect(rendered).to_not have_button(t(:sending_rejections, scope: 'events.applicants_overview'), disabled: true)
+  end
+
   it "displays correct buttons in selection phase" do
     @event = assign(:event, FactoryGirl.create(:event, :in_selection_phase))
     sign_in(FactoryGirl.create(:user, role: :organizer))
@@ -114,6 +122,14 @@ RSpec.describe "events/show", type: :view do
     expect(rendered).to_not have_link(t(:show_participants, scope: 'events.participants'))
   end
 
+  it "does display the disabled send email buttons in selection phase" do
+    @event = assign(:event, FactoryGirl.create(:event, :with_diverse_open_applications, :in_selection_phase))
+    sign_in(FactoryGirl.create(:user, role: :organizer))
+    render
+    expect(rendered).to have_button(t(:sending_acceptances, scope: 'events.applicants_overview'), disabled: true)
+    expect(rendered).to have_button(t(:sending_rejections, scope: 'events.applicants_overview'), disabled: true)
+  end
+
   it "displays correct buttons in execution phase" do
     @event = assign(:event, FactoryGirl.create(:event, :in_execution_phase))
     sign_in(FactoryGirl.create(:user, role: :organizer))
@@ -124,5 +140,13 @@ RSpec.describe "events/show", type: :view do
     expect(rendered).to_not have_link(t(:sending_rejections, scope: 'events.applicants_overview'))
     expect(rendered).to have_link(t(:print_button_label, scope: 'events.badges'))
     expect(rendered).to have_link(t(:show_participants, scope: 'events.participants'))
+  end
+
+  it "does not display the disabled send email buttons in execution phase" do
+    @event = assign(:event, FactoryGirl.create(:event, :with_diverse_open_applications, :in_execution_phase))
+    sign_in(FactoryGirl.create(:user, role: :organizer))
+    render
+    expect(rendered).to_not have_button(t(:sending_acceptances, scope: 'events.applicants_overview'), disabled: true)
+    expect(rendered).to_not have_button(t(:sending_rejections, scope: 'events.applicants_overview'), disabled: true)
   end
 end
