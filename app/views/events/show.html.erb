@@ -1,7 +1,4 @@
 <%- model_class = Event -%>
-<div class="page-header">
-  <h1><%=t '.title', :default => model_class.model_name.human.titleize %> (<%= @event.kind.humanize %>)</h1>
-</div>
 
 <% if @event.unreasonably_long %>
   <div class="panel panel-warning">

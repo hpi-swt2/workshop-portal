@@ -3,7 +3,7 @@
 
 jQuery(function() {
     $(document).on('click', "#send-emails-clipboard", function() {
-        var recipients = $('#email_recipients');
+        var recipients = $('#email_recipients')
         if(recipients.val.length > 0) {
             recipients.select();
             try {
