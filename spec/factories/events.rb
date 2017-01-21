@@ -18,7 +18,7 @@ FactoryGirl.define do
     description "Event-Description"
     max_participants 1
     kind :workshop
-    draft false
+    published true
     organizer "Workshop-Organizer"
     knowledge_level "Workshop-Knowledge Level"
     application_deadline Date.tomorrow
@@ -88,20 +88,20 @@ FactoryGirl.define do
 
     trait :in_draft_phase do
       after(:build) do |event|
-        event.draft = true
+        event.published = false
       end
     end
 
     trait :in_application_phase do
       after(:build) do |event|
-        event.draft = false
+        event.published = true
         event.application_deadline = Date.tomorrow
       end
     end
 
     trait :in_selection_phase do
       after(:build) do |event|
-        event.draft = false
+        event.published = true
         event.application_deadline = Date.yesterday
         event.application_status_locked = false
       end
@@ -109,7 +109,7 @@ FactoryGirl.define do
 
     trait :in_execution_phase do
       after(:build) do |event|
-        event.draft = false
+        event.published = true
         event.application_deadline = Date.yesterday
         event.application_status_locked = true
       end
