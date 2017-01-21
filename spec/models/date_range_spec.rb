@@ -17,4 +17,9 @@ describe DateRange do
     negativeDates = FactoryGirl.build(:date_range, :with_negative_range)
     expect(negativeDates).to_not be_valid
   end
+
+  it "should print only one date if it is on a single day" do
+    date_range = FactoryGirl.build :date_range, :on_single_day
+    expect(date_range.to_s).to eq(I18n.l(date_range.start_date))
+  end
 end
