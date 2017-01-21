@@ -54,17 +54,8 @@ RSpec.describe "events/show", type: :view do
     expect(rendered).to have_link(t(:details, scope: 'events.applicants_overview'))
   end
 
-  it "displays print applications button" do
-    render
-    expect(rendered).to have_link(t(:print_all, scope: 'events.applicants_overview'))
-  end
-
-  it "displays print badges button" do
-    render
-    expect(rendered).to have_link(t(:print_button_label, scope: 'events.badges'))
-  end
-
   it "should not display accept-all-button for non-organizers" do
+    @event = assign(:event, FactoryGirl.create(:event, :in_selection_phase))
     @event.max_participants = Float::INFINITY
     [:coach, :student].each do | each |
       sign_in(FactoryGirl.create(:user, role: each))
@@ -74,6 +65,7 @@ RSpec.describe "events/show", type: :view do
   end
 
   it "should display accept-all-button for organizers if there are enough free places" do
+    @event = assign(:event, FactoryGirl.create(:event, :with_diverse_open_applications, :in_selection_phase))
     sign_in(FactoryGirl.create(:user, role: :organizer))
     @event.max_participants = Float::INFINITY
     render
@@ -81,13 +73,9 @@ RSpec.describe "events/show", type: :view do
   end
 
   it "should not display accept-all-button if there are not enough free places" do
+    @event = assign(:event, FactoryGirl.create(:event, :with_diverse_open_applications, :in_selection_phase))
     sign_in(FactoryGirl.create(:user, role: :organizer))
     @event.max_participants = 1
-    2.times do
-      @application_letter = FactoryGirl.create(:application_letter, user: FactoryGirl.create(:user), event: @event)
-      @application_letter.user.profile = FactoryGirl.build(:profile)
-      @event.application_letters.push(@application_letter)
-    end
     render
     expect(rendered).to_not have_link(I18n.t('events.applicants_overview.accept_all'))
   end
@@ -103,7 +91,7 @@ RSpec.describe "events/show", type: :view do
   end
 
   it "displays correct buttons in application phase" do
-    @event = FactoryGirl.build(:event, :in_application_phase)
+    @event = assign(:event, FactoryGirl.create(:event, :in_application_phase))
     sign_in(FactoryGirl.create(:user, role: :organizer))
     render
     expect(rendered).to_not have_link(t(:print_all, scope: 'events.applicants_overview'))
@@ -115,7 +103,7 @@ RSpec.describe "events/show", type: :view do
   end
 
   it "displays correct buttons in selection phase" do
-    @event = FactoryGirl.build(:event, :in_selection_phase)
+    @event = assign(:event, FactoryGirl.create(:event, :in_selection_phase))
     sign_in(FactoryGirl.create(:user, role: :organizer))
     render
     expect(rendered).to have_link(t(:print_all, scope: 'events.applicants_overview'))
@@ -127,7 +115,7 @@ RSpec.describe "events/show", type: :view do
   end
 
   it "displays correct buttons in execution phase" do
-    @event = FactoryGirl.build(:event, :in_execution_phase)
+    @event = assign(:event, FactoryGirl.create(:event, :in_execution_phase))
     sign_in(FactoryGirl.create(:user, role: :organizer))
     render
     expect(rendered).to_not have_link(t(:print_all, scope: 'events.applicants_overview'))

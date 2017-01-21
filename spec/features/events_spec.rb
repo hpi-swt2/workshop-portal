@@ -47,17 +47,16 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
   end
 
   scenario "logged in as Organizer I want to be unable to send emails if there is any unclassified application left" do
+    @event = FactoryGirl.build(:event, :with_diverse_open_applications, :in_selection_phase)
     login(:organizer)
     @event.update!(max_participants: 1)
-    @pupil = FactoryGirl.create(:profile)
-    @pupil.user.role = :pupil
-    @pending_application = FactoryGirl.create(:application_letter, :event => @event, :user => @pupil.user)
     visit event_path(@event)
     expect(page).to have_button(I18n.t('events.applicants_overview.sending_acceptances'), disabled: true)
     expect(page).to have_button(I18n.t('events.applicants_overview.sending_rejections'), disabled: true)
   end
 
   scenario "logged in as Organizer I want to be unable to send emails if there is a negative number of free places left" do
+    @event = FactoryGirl.create(:event, :in_selection_phase)
     login(:organizer)
     @event.update!(max_participants: 1)
     2.times do |n|
@@ -71,6 +70,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
   end
 
   scenario "logged in as Organizer I want to be able to send an email to all accepted applicants" do
+    @event = FactoryGirl.create(:event, :in_selection_phase)
     login(:organizer)
     @event.update!(max_participants: 2)
     2.times do |n|
@@ -87,6 +87,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
   end
 
   scenario "logged in as Organizer I want to be able to send an email to all rejected applicants" do
+    @event = FactoryGirl.create(:event, :in_selection_phase)
     login(:organizer)
     @event.update!(max_participants: 2)
     2.times do |n|
@@ -166,8 +167,8 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
   end
 
   scenario "logged in as Organizer I can push the accept all button to accept all applicants" do
+    @event = FactoryGirl.create(:event, :with_diverse_open_applications, :in_selection_phase, participants_are_unlimited: true)
     login(:organizer)
-    @event = FactoryGirl.create :event, :with_diverse_open_applications, participants_are_unlimited: true
     visit event_path(@event)
     click_link I18n.t "events.applicants_overview.accept_all"
     application_letters = ApplicationLetter.where(event: @event.id)
