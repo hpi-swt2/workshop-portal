@@ -49,13 +49,13 @@ describe User do
   
   it "returns the correct letter of agreement for a given event" do
     event = FactoryGirl.create(:event)
-	  user = FactoryGirl.create(:user)
-	  application_letter = FactoryGirl.create(:application_letter_accepted, event: event, user: user)
-	  agreement_letter = FactoryGirl.create(:agreement_letter, event: event, user: user)
-	  expect(user.agreement_letter_for_event?(event)).to eq true
-	  expect(user.agreement_letter_for_event(event)).to eq agreement_letter
-	  other_event = FactoryGirl.create(:event)
-	  expect(user.agreement_letter_for_event?(other_event)).to eq false
+    user = FactoryGirl.create(:user)
+    application_letter = FactoryGirl.create(:application_letter_accepted, event: event, user: user)
+    agreement_letter = FactoryGirl.create(:agreement_letter, event: event, user: user)
+    expect(user.agreement_letter_for_event?(event)).to eq true
+    expect(user.agreement_letter_for_event(event)).to eq agreement_letter
+    other_event = FactoryGirl.create(:event)
+    expect(user.agreement_letter_for_event?(other_event)).to eq false
   end
 
   it "returns the correct application for a given event" do
