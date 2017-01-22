@@ -15,6 +15,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
   end
 
   scenario "logged in as Pupil I can click the apply button on the show page" do
+    @event.application_deadline = Date.tomorrow
     login(:pupil)
     visit event_path(@event)
 
