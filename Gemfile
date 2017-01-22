@@ -103,7 +103,7 @@ gem 'figaro'
 gem 'active_attr'
 
 #to only display a limited number of items on an index page
-gem 'will_paginate', '~> 3.1.0'
+gem 'will_paginate-bootstrap'
 
 # Markdown renderer
 gem 'redcarpet'
