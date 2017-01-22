@@ -27,7 +27,7 @@
       <%
       @participants.sort_by! {|l| @event.participant_group_for(l).send(params[:sort]) } if params[:sort]
       @participants.reverse! if params[:order] == 'descending'
-      @participants.select {|l| @event.participant_group_for(l) }.each do | participant | %>
+      @participants.each do |participant| %>
       <tr>
 
         <td>
@@ -62,7 +62,7 @@
 
       <% if can? :print_agreement_letters, Event and @has_agreement_letters %>
         <div id="participants_download_submit_button">
-        <%= submit_tag t('events.agreement_letters_download.download_all_as'), name: "download_all" %>
+        <%= submit_tag t('events.agreement_letters_download.download_all_as'), name: "download_all", class: "btn btn-default" %>
         <%= select_tag :download_type, options_for_select([['pdf'], ['zip']]) %>
         </div>
       <% end %>

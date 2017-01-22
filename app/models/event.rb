@@ -99,11 +99,11 @@ class Event < ActiveRecord::Base
   # @param user [User] the user whose participant group we want
   # @return [ParticipantGroup] the user's participant group
   def participant_group_for(user)
-    application_letter = self.application_letters.where(user: user).take
+    application_letter = self.application_letters.find_by(user: user)
     if application_letter.participant_group.nil?
-      application_letter.create_participant_group(group: 0)
+      application_letter.create_participant_group(group: ParticipantGroup::GROUPS.default)
     end
-    self.application_letters.where(user: user).take.participant_group
+    application_letter.participant_group
   end
 
   # Returns the agreement letter a user submitted for this event
