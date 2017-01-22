@@ -26,6 +26,7 @@ class User < ActiveRecord::Base
   has_one :profile
   has_many :agreement_letters
   has_many :application_letters
+  has_many :participant_groups
 
   before_create :set_default_role
 
@@ -62,7 +63,7 @@ class User < ActiveRecord::Base
   def agreement_letter_for_event?(given_event)
     return !self.agreement_letter_for_event(given_event).nil?
   end
-  
+
   # Returns the agreement letter the user has submitted for given_event. Returns Nil if no such letter exists.
   #
   # @param [Event] given_event
@@ -71,7 +72,7 @@ class User < ActiveRecord::Base
     fitting_agreement_letters = self.agreement_letters.select { |letter| letter.event == given_event }
 	return fitting_agreement_letters[0]
   end
-  
+
   # Returns true iff. user is at least 18 years old at the start date of given_event
   #
   # @param [Event] given_event
@@ -79,7 +80,7 @@ class User < ActiveRecord::Base
   def requires_agreement_letter_for_event?(given_event)
     return self.older_than_required_age_at_start_date_of_event?(given_event, 18)
   end
-  
+
   # Returns true iff. the age of user is age or more at the start_date of given_event. Returns false if age of user is unknown.
   #
   # @param given_event [Event], age [Integer]

@@ -54,7 +54,7 @@ RSpec.describe "events/participants", type: :view do
     @profile = FactoryGirl.create(:profile, user: @user)
     @event = FactoryGirl.create(:event)
     @application_letter = FactoryGirl.create(:application_letter_accepted, user: @user, event: @event)
-    @participant_group = FactoryGirl.create(:participant_group, application_letter: @application_letter)
+    @participant_group = FactoryGirl.create(:participant_group, user: @user, event: @event)
     assign(:event, @event)
     assign(:participants, @event.participants)
     render
@@ -66,7 +66,7 @@ RSpec.describe "events/participants", type: :view do
     @profile = FactoryGirl.create(:profile, user: @user)
     @event = FactoryGirl.create(:event)
     @application_letter = FactoryGirl.create(:application_letter_accepted, user: @user, event: @event)
-    @participant_group = FactoryGirl.create(:participant_group, application_letter: @application_letter)
+    @participant_group = FactoryGirl.create(:participant_group, user: @user, event: @event)
     assign(:event, @event)
     assign(:participants, @event.participants)
     render

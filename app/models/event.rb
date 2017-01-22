@@ -19,6 +19,7 @@ class Event < ActiveRecord::Base
 
   has_many :application_letters
   has_many :agreement_letters
+  has_many :participant_groups
   has_many :date_ranges
   accepts_nested_attributes_for :date_ranges
 
@@ -99,11 +100,11 @@ class Event < ActiveRecord::Base
   # @param user [User] the user whose participant group we want
   # @return [ParticipantGroup] the user's participant group
   def participant_group_for(user)
-    application_letter = self.application_letters.find_by(user: user)
-    if application_letter.participant_group.nil?
-      application_letter.create_participant_group(group: ParticipantGroup::GROUPS.default)
+    participant_group = self.participant_groups.find_by(user: user)
+    if participant_group.nil?
+      participant_group = ParticipantGroup.create(event: self, user: user, group: ParticipantGroup::GROUPS.default)
     end
-    application_letter.participant_group
+    participant_group
   end
 
   # Returns the agreement letter a user submitted for this event

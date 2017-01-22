@@ -15,7 +15,6 @@ class ApplicationLetter < ActiveRecord::Base
   belongs_to :event
 
   has_many :application_notes
-  has_one :participant_group
 
   VALID_GRADES = 5..13
 
