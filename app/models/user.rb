@@ -55,6 +55,23 @@ class User < ActiveRecord::Base
     accepted_applications.collect { |a| a.event }
   end
 
+  # Returns true iff. user has submitted an application letter for the given event
+  #
+  # @param [Event] given_event
+  # @return [Boolean]
+  def application_letter_for_event?(given_event)
+    return !self.application_letter_for_event(given_event).nil?
+  end
+
+  # Returns the application letter the user has submitted for given_event. Returns Nil if no such letter exists.
+  #
+  # @param [Event] given_event
+  # @return [ApplicationLetter, Nil]
+  def application_letter_for_event(given_event)
+    return self.application_letters.find{ |letter| letter.event == given_event }
+  end
+
+
   # Returns true iff. user has submitted an agreement_letter for the given event
   #
   # @param [Event] given_event
@@ -68,8 +85,7 @@ class User < ActiveRecord::Base
   # @param [Event] given_event
   # @return [AgreementLetter, Nil]
   def agreement_letter_for_event(given_event)
-    fitting_agreement_letters = self.agreement_letters.select { |letter| letter.event == given_event }
-	return fitting_agreement_letters[0]
+    return self.agreement_letters.find{ |letter| letter.event == given_event }
   end
   
   # Returns true iff. user is at least 18 years old at the start date of given_event

@@ -110,4 +110,13 @@ RSpec.describe "events/show", type: :view do
       expect(rendered).to_not have_link(I18n.t("helpers.links.apply"))
     end
   end
+
+  it "displays a button to view the application if application deadline if over for an event where the pupil has applied" do
+    pupil = FactoryGirl.create(:user, role: :pupil)
+    application_letter = FactoryGirl.create(:application_letter, user: pupil, event: @event)
+    @event.application_deadline = Date.yesterday
+    sign_in pupil
+    render
+    expect(rendered).to have_link(I18n.t("helpers.links.show_application"), href: check_application_letter_path(application_letter))
+  end
 end
