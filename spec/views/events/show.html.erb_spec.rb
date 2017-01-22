@@ -119,4 +119,17 @@ RSpec.describe "events/show", type: :view do
     render
     expect(rendered).to have_link(I18n.t("helpers.links.show_application"), href: check_application_letter_path(application_letter))
   end
+
+  it "should not display radio buttons to change application statuses if the event is in application state" do
+    @event = FactoryGirl.create(:event, :in_application_phase)
+    @application_letter = FactoryGirl.create(:application_letter, user: FactoryGirl.create(:user, role: :pupil), event: @event)
+    @event.application_letters.push(@application_letter)
+    [:pupil, :coach, :organizer].each do |role|
+      sign_in FactoryGirl.create(:user, role: role)
+      render
+      ApplicationLetter.statuses.keys.each do |status|
+        expect(rendered).to_not have_link(I18n.t("application_status.#{status}"))
+      end
+    end
+  end
 end
