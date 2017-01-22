@@ -42,6 +42,12 @@ RSpec.describe ParticipantGroupsController, type: :controller do
           put :update, id: @participant_group.to_param, participant_group: new_group, session: valid_session
           expect(response).to redirect_to(request.env['HTTP_REFERER'])
         end
+
+        it "redirects to root when HTTP_REFERER invalid" do
+          request.env['HTTP_REFERER'] = nil
+          put :update, id: @participant_group.to_param, participant_group: new_group, session: valid_session
+          expect(response).to redirect_to(root_path)
+        end
       end
 
       context "with invalid params" do

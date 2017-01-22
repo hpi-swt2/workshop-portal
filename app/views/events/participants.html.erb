@@ -50,7 +50,7 @@
         </td>
         <% if can? :print_agreement_letters, Event and @has_agreement_letters %>
           <td>
-            <%= check_box_tag('selected_participants[]', participant.id, false, { class: 'participant_selection' }) %>
+            <%= check_box_tag('selected_participants[]', participant.id, false, class: 'participant_selection') %>
           </td>
         <% end %>
       </tr>
