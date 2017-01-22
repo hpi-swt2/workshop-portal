@@ -1,7 +1,7 @@
 <h3><%= t('.templates') %></h3>
 <div class="list-group">
    <% @templates.each do |template| %>
-    <a href="javascript:void(0)" onclick="loadTemplate(this);" class="email-template list-group-item">
+    <a href="" class="email-template list-group-item">
       <p class="template-hide_recipients hidden"><%= template[:hide_recipients] %></p>
       <h4 class="template-subject list-group-item-heading"><%= template[:subject] %></h4>
       <p class="template-content list-group-item-text"><%= template[:content] %></p>
