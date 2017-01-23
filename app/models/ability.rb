@@ -39,7 +39,7 @@ class Ability
       if user.profile.present?
         can [:new, :create], ApplicationLetter
       end
-      can [:index, :show, :edit, :update, :destroy, :check], ApplicationLetter, user: { id: user.id }
+      can [:index, :show, :edit, :update, :check, :destroy], ApplicationLetter, user: { id: user.id }
       # Pupils can upload their letters of agreement
       can [:create], AgreementLetter
       can [:new, :create], Request
@@ -69,6 +69,8 @@ class Ability
     end
     if user.role? :admin
       can :manage, :all
+      can :view_delete_button, ApplicationLetter
+      cannot [:edit, :update], ApplicationLetter
     end
   end
 end
