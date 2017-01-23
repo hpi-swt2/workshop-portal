@@ -82,7 +82,7 @@
     <% end %>
 <% end %>
 
-<% if current_user.role == "admin" %>
+<% if can? :view_delete_button, ApplicationLetter %>
     <%= link_to t('.destroy', :default => t("application_letters.show.delete")),
                 application_letter_path(@application_letter),
                 :method => 'delete',

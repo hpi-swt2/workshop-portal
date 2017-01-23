@@ -69,6 +69,7 @@ class Ability
     end
     if user.role? :admin
       can :manage, :all
+      can :view_delete_button, ApplicationLetter
       cannot [:edit, :update], ApplicationLetter
     end
   end

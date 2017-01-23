@@ -7,8 +7,6 @@ RSpec.describe "application_letters/show", type: :view do
     @application_note = assign(:application_note, FactoryGirl.create(:application_note, application_letter: @application_letter))
     @application_letter.user.profile = FactoryGirl.build(:profile)
 
-    user = FactoryGirl.create(:user, role: :admin)
-    sign_in user
     render
   end
 
