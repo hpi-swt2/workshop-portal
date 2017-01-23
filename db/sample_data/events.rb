@@ -12,8 +12,8 @@ def event_programmierkurs
       knowledge_level: 'Anfänger',
       date_ranges: [date_range_singleday],
       application_deadline: Date.tomorrow,
-      draft: false,
       application_status_locked: false,
+      published: true,
       custom_application_fields: ['Lieblingsapp']
   )
 end
@@ -32,8 +32,8 @@ def event_mintcamp
       knowledge_level: 'Fortgeschrittene',
       date_ranges: [date_range_mint_camp],
       application_deadline: Date.tomorrow,
-      draft: false,
-      application_status_locked: false
+      application_status_locked: false,
+      published: true
   )
 end
 
@@ -50,8 +50,8 @@ def event_bechersaeuberungsevent
       knowledge_level: 'Anfänger',
       date_ranges: [date_range_singleday],
       application_deadline: Date.tomorrow,
-      draft: false,
       application_status_locked: false,
+      published: true,
       custom_application_fields: ['Lieblings-Becherart', 'Kannst du eine eigene Spülmaschine mitbringen?']
   )
 end
@@ -66,10 +66,10 @@ def event_gongakrobatik
       description: 'Schon im alten China erzählte man sich von den sa­gen­um­wo­benen Legenden der Gongakrobatik. Spätestens seit dieser Trend auch seinen Weg nach Japan gefunden hat, stellt sich die Gongakrobatik auch für uns als ernstzunehmende Alternative gegenüber herkömmlichen Stimmbildungübungen und ähnlichem dar. In dieser Einführung möchten wir euch einen groben Überblick über das Thema geben: Wie findet man am besten seinen Weg in die Gongakrobatik, was braucht man dafür. In den letzten Jahren hat sich zudem eine große Community rund um dieses faszinierende Thema gebildet. Höhepunkt der Veranstaltung ist demnach unser Besuch einer echten Gongmanufaktor im Herzen Berlins, durchgeführt von dem Ding Gong-Verein Berlin. Bei Bedarf können wir eine zweite Veranstaltung durchführen, bis dahin gilt first come first serve :)',
       max_participants: 19,
       knowledge_level: 'Ihr braucht kein besonderes Vorwissen, jeder ist Willkommen!',
-      date_ranges: [date_range_long],
+      date_ranges: [date_range_long], 
       application_deadline: Date.tomorrow,
-      draft: false,
-      application_status_locked: false
+      application_status_locked: false,
+      published: true
   )
 end
 
@@ -90,8 +90,8 @@ def event_batterie_akustik
       organizer: 'IAB',
       date_ranges: [date_range_short, date_range_medium],
       application_deadline: Date.tomorrow,
-      draft: false,
       application_status_locked: false,
+      published: false,
       custom_application_fields: ['Spielst du gerne in deiner Freizeit mit Batterien?']
   )
 end
@@ -113,9 +113,9 @@ def event_bachlorpodium
       name: 'Bachelorpodium',
       description: 'Trotz modernem Videostreaming in HD in die anderen Hörsäle bleibt Hörsaal 1 doch der Publikumsliebling bei diesem jährlich mit größter Sorgfalt organisierten spektakulären PR Gag',
       max_participants: 442,
-      date_ranges: [date_range_singleday1, date_range_singleday2, date_range_singleday3],
+      date_ranges: [date_range_singleday1, date_range_singleday2, date_range_singleday3], 
       application_deadline: Date.tomorrow,
-      draft: false,
-      application_status_locked: false
+      application_status_locked: false ,
+      published: true
   )
 end

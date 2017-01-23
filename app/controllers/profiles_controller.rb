@@ -1,7 +1,7 @@
 class ProfilesController < ApplicationController
   load_and_authorize_resource
 
-  before_action :set_profile, only: [:show, :edit, :update]
+  before_action :set_profile, only: [:show, :edit, :update, :destroy]
 
   # GET /profiles/1
   def show
