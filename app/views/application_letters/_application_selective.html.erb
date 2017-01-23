@@ -1,11 +1,16 @@
 <% if can? :edit_applicants, Event and not (application_letter.event.application_status_locked == true) %>
     <%= form_for :application_letter, url: update_application_letter_status_path(application_letter), html: {method: :put} do |f| %>
         <div class="form-group">
-          <div class="btn-group">
+          <div class="btn-group" data-toggle="buttons">
             <% ApplicationLetter.statuses.keys.each do |key| %>
-                <label class="btn btn-default <%= 'active' if application_letter.status == key %>">
-                  <%= f.radio_button :status, key, checked: application_letter.status == key,
-                                     onclick: 'this.form.submit()' %>
+                <label class="btn btn-xs btn-default <%= 'active' if application_letter.status == key %>">
+                    <%= f.radio_button :status,
+                        key,
+                        checked: application_letter.status == key,
+                        onchange:
+                            'ajaxUpdateApplicationStatus(this.form, "' +
+                                I18n.t('events.applicants_overview.failed_to_update') +
+                            '")' %>
                   <%= t("application_status.#{key}") %>
                 </label>
             <% end %>

@@ -1,0 +1,25 @@
+<div class="form-group">
+  <%= form.label :custom_application_fields, :class => 'control-label col-lg-2' %>
+  <div class="col-lg-10" id="custom-application-fields">
+    <% def custom_application_field_template(value = nil)
+      '<div class="input-group m-b-1">' +
+        (text_field_tag :"event[custom_application_fields][]", value, :class => 'form-control', placeholder: I18n.t('.events.form.label_of_custom_field')) +
+        '<span class="input-group-btn">' +
+        '<a class="btn btn-default" onclick="removeCustomApplicationField(event.target)">' +
+          '<span class="glyphicon glyphicon-remove"></span>' +
+        '</a>' +
+        '</span>' +
+      '</div>'
+    end %>
+
+    <%= @event.custom_application_fields
+        .map { |f| custom_application_field_template f }
+        .reduce(:+)
+        .html_safe unless @event.custom_application_fields.blank? %>
+
+    <%= link_to I18n.t('.events.form.add_field'), 'javascript:addCustomApplicationField()', id: 'add-custom-application-fields', class: 'btn btn-default btn-xs' %>
+    <p class="help-block"><%= I18n.t '.events.form.custom_application_fields_cant_be_changed_later' %></p>
+  </div>
+  <script>var CUSTOM_APPLICATION_FIELD_TEMPLATE = '<%= custom_application_field_template.gsub("\n", "").html_safe %>';</script>
+</div>
+
