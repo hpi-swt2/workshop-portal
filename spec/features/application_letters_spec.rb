@@ -210,7 +210,10 @@ RSpec.feature "Application Letter Overview", :type => :feature do
     application_letter = FactoryGirl.create(:application_letter, user: profile.user, event: event)
 
     visit check_application_letter_path(application_letter)
+
     click_link id: 'edit_profile_link'
+
+    fill_in "profile_last_name", with: "Doe"
 
     find('input[name=commit]').click
 
