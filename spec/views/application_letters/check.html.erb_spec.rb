@@ -16,18 +16,6 @@ RSpec.describe "application_letters/check", type: :view do
 
   end
 
-  # it "should hide the upload form for profiles with an age of 18+" do
-  #   profile = FactoryGirl.create(:adult_profile)
-  #   user = FactoryGirl.create(:user, profile: profile)
-  #   event = FactoryGirl.create(:event)
-
-
-  #   @application_letter = FactoryGirl.create(:application_letter_accepted, user: user, event: event)
-
-  #   render
-  #   expect(rendered).to_not have_text("Einverständniserklärung ")
-  # end
-
   before(:context) do
     @application_letter = assign(:application_letter, FactoryGirl.create(:application_letter))
     @application_letter.user.profile = FactoryGirl.build(:profile)
@@ -52,6 +40,11 @@ RSpec.describe "application_letters/check", type: :view do
       expect(rendered).to have_text(@application_letter.emergency_number)
       expect(rendered).to have_text(@application_letter.allergies)
       expect(rendered).to have_text(@application_letter.eating_habits.join(', '))
+      @application_letter.event.custom_application_fields
+        .zip(@application_letter.custom_application_fields)
+        .each do |field_name, field_value|
+          expect(rendered).to have_text("#{field_name}: #{field_value}")
+        end
     end
 
     it "renders applicant's attributes" do
