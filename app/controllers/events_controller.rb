@@ -74,16 +74,15 @@ class EventsController < ApplicationController
     # remove users who are not actual participants
     selected_participants &= @participants
     if selected_participants.empty?
-      flash[:error] = I18n.t('events.badges.no_users_selected')
-      render 'badges'
-      return
+      flash.now[:error] = I18n.t('events.badges.no_users_selected')
+      render 'badges' and return
     end
 
     begin
       pdf = BadgesPDF.generate(@event, selected_participants, name_format, show_color, show_school, logo)
       send_data pdf, filename: "badges.pdf", type: "application/pdf", disposition: "inline"
     rescue Prawn::Errors::UnsupportedImageType
-      flash[:error] = I18n.t('events.badges.wrong_file_format')
+      flash.now[:error] = I18n.t('events.badges.wrong_file_format')
       render 'badges'
     end
   end
