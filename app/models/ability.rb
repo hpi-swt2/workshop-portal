@@ -59,10 +59,9 @@ class Ability
       can [:index, :show], Profile
       can [:index, :show, :view_and_add_notes, :update_status], ApplicationLetter
       cannot :update, ApplicationLetter
-      can [:view_applicants, :edit_applicants, :view_participants, :print_applications, :manage, :view_material, :upload_material, :print_agreement_letters, :download_material, :view_unpublished], Event
+      can [:view_applicants, :edit_applicants, :view_participants, :print_applications, :view_material, :upload_material, :print_agreement_letters, :download_material, :view_unpublished, :new, :edit, :destroy], Event
       can :send_email, Email
       can :manage, Request
-      cannot :apply, Event
     end
     if user.role? :admin
       can :manage, :all
