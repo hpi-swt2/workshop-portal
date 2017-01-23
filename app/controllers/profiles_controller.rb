@@ -44,7 +44,7 @@ class ProfilesController < ApplicationController
   def update
     if @profile.update(profile_params)
       if flash[:application_id]
-        redirect_to check_application_letter_path(:application_id => flash[:application_id]), notice: I18n.t('profiles.successful_update')
+        redirect_to check_application_letter_path(flash[:application_id]), notice: I18n.t('profiles.successful_update')
       else
         redirect_to @profile, notice: I18n.t('profiles.successful_update')
       end
