@@ -11,6 +11,7 @@
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  application_status_locked  :boolean
+#  hidden           :boolean
 #
 
 class Event < ActiveRecord::Base
