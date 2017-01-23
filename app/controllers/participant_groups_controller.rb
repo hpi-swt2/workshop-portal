@@ -5,7 +5,7 @@ class ParticipantGroupsController < ApplicationController
   # PATCH/PUT /participant_group/1/group
   def update
     begin
-      if @participant_group.update_attributes(group_param)
+      if @participant_group.update_attributes(participant_group_params)
         redirect_to :back, notice: I18n.t('participant_groups.update.successful')
       else
         redirect_to :back, alert: I18n.t('participant_groups.update.failed')
@@ -17,7 +17,7 @@ class ParticipantGroupsController < ApplicationController
 
   private
 
-    def group_param
+    def participant_group_params
       params.require(:participant_group).permit(:group)
     end
 end

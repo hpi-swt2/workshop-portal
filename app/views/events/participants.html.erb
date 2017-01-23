@@ -24,9 +24,7 @@
         <% end %>
       </tr>
 
-      <%
-      @participants.sort_by! {|l| @event.participant_group_for(l).send(params[:sort]) } if params[:sort]
-      @participants.reverse! if params[:order] == 'descending'
+      <% sort_participants
       @participants.each do |participant| %>
       <tr>
 
