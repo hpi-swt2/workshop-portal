@@ -9,6 +9,8 @@ Rails.application.routes.draw do
   put 'applications/:id/status' => 'application_letters#update_status', as: :update_application_letter_status
   get 'applications/:id/check' => 'application_letters#check', as: :check_application_letter
 
+  resources :participant_groups, only: [:update]
+
   resources :application_letters, path: 'applications' do
     resources :application_notes,
       only: :create

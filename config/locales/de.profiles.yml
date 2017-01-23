@@ -7,9 +7,9 @@ de:
     validation:
       birthday_in_future: "Das Geburtsdatum darf nicht in der Zukunft liegen."
     genders:
-      male: "Männlich"
-      female: "Weiblich"
-      other: "Andere"
+      male: "männlich"
+      female: "weiblich"
+      other: "andere"
     confirm_deletion: "Willst du dieses Profil wirklich löschen?"
     successful_update: "Profil erfolgreich aktualisiert"
     successful_deletion: "Profil erfolgreich gelöscht"

@@ -188,7 +188,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     end
   end
 
-  scenario "logged in as Organizer when I want to download agreement letters but no participants are selected, it displays error message" do
+  scenario "logged in as Organizer when I want to download agreement letters but no participants are selected, it displays error message", js: true do
     login(:organizer)
     @event = FactoryGirl.create(:event_with_accepted_applications_and_agreement_letters)
     visit event_participants_path(@event)
@@ -196,16 +196,16 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     expect(page).to have_text(I18n.t "events.agreement_letters_download.notices.no_participants_selected")
   end
 
-  scenario "logged in as Organizer when I want to download agreement letters but no participants have agreement letters, it displays error message" do
+  scenario "logged in as Organizer when I want to download agreement letters but no participants have agreement letters, it displays error message", js: true do
     login(:organizer)
     @event = FactoryGirl.create(:event_with_accepted_applications_and_agreement_letters)
     visit event_participants_path(@event)
-    find(:css, "#selected_participants_[value='2']").set(true)
+    find(:css, "#selected_participants_[value='2']").click
     find("option[value='zip']").select_option
     click_button I18n.t "events.agreement_letters_download.download_all_as"
     expect(page).to have_text(I18n.t "events.agreement_letters_download.notices.no_agreement_letters")
     visit event_participants_path(@event)
-    find(:css, "#selected_participants_[value='2']").set(true)
+    find(:css, "#selected_participants_[value='2']").click
     find("option[value='pdf']").select_option
     click_button I18n.t "events.agreement_letters_download.download_all_as"
     expect(page).to have_text(I18n.t "events.agreement_letters_download.notices.no_agreement_letters")
@@ -218,7 +218,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     check 'select_all_participants'
     find("option[value='zip']").select_option
     click_button I18n.t "events.agreement_letters_download.download_all_as"
-    page.response_headers['Content-Type'].should eq "application/zip"
+    expect(page.response_headers['Content-Type']).to eq("application/zip")
   end
 
   scenario "logged in as Organizer when I want to download agreement letters in a pdf file, I can do so", js: true do
@@ -228,7 +228,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     check 'select_all_participants'
     find("option[value='pdf']").select_option
     click_button I18n.t "events.agreement_letters_download.download_all_as"
-    page.response_headers['Content-Type'].should eq "application/pdf"
+    expect(page.response_headers['Content-Type']).to eq("application/pdf")
   end
 
   scenario "logged in as Coach I can see application status" do
@@ -293,9 +293,9 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
 
     sorted_accepted_names = @event.application_letters
       .to_a
-      .sort_by { |letter| letter.applicant_age_when_event_starts }
+      .sort_by { |letter| letter.user.profile.name }
       .select { |letter| letter.status.to_sym == :accepted }
-      .map {|l| l.user.profile.name }
+      .map {|letter| letter.user.profile.name }
     expect(page).to contain_ordered(sorted_accepted_names)
 
     # list rejected, pending
