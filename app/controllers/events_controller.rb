@@ -5,7 +5,7 @@ require 'zip'
 
 class EventsController < ApplicationController
   before_action :set_event, only: [:show, :edit, :update, :destroy, :participants, 
-    :participants_pdf, :print_applications,  :print_applications_eating_habits]
+    :participants_pdf, :print_applications, :print_applications_eating_habits]
 
   # GET /events
   def index
@@ -197,11 +197,11 @@ class EventsController < ApplicationController
     end
 
     data.unshift([
-                     I18n.t('controllers.events.participants_pdf.first_name'),
-                     I18n.t('controllers.events.participants_pdf.last_name'),
-                     I18n.t('controllers.events.participants_pdf.first_name'),
-                     I18n.t('controllers.events.participants_pdf.allergies')
-                 ])
+     I18n.t('controllers.events.participants_pdf.first_name'),
+     I18n.t('controllers.events.participants_pdf.last_name'),
+     I18n.t('controllers.events.participants_pdf.first_name'),
+     I18n.t('controllers.events.participants_pdf.allergies')
+    ])
 
     name = @event.name
     doc = Prawn::Document.new(:page_size => 'A4') do
@@ -235,7 +235,10 @@ class EventsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def event_params
-      params.require(:event).permit(:name, :description, :max_participants, :participants_are_unlimited, :kind, :organizer, :knowledge_level, :application_deadline, :published, :custom_application_fields => [], date_ranges_attributes: [:start_date, :end_date, :id])
+      params.require(:event).permit(:name, :description, :max_participants, 
+        :participants_are_unlimited, :kind, :organizer, :knowledge_level, 
+        :application_deadline, :published, 
+        :custom_application_fields => [], date_ranges_attributes: [:start_date, :end_date, :id])
     end
 
     # Generate all names to print from the query-params
