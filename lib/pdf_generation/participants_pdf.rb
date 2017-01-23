@@ -26,7 +26,11 @@ class ParticipantsPDF
 
     end
   end
-
+  
+  #
+  # param none
+  # return [ApplicationsPDF] self
+  
   def create   
     create_summary
     self
