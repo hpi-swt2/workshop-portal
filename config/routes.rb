@@ -4,6 +4,7 @@ Rails.application.routes.draw do
 
   resources :requests do
     patch 'contact_person' => 'requests#set_contact_person', as: :set_contact_person
+    patch 'notes' => 'requests#set_notes', as: :set_notes
   end
 
   put 'applications/:id/status' => 'application_letters#update_status', as: :update_application_letter_status

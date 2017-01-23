@@ -31,6 +31,16 @@ RSpec.describe "requests/show", type: :view do
     end
   end
 
+  it 'should display the notes field only for organizers' do
+    sign_in(FactoryGirl.create(:user, role: :coach))
+    render
+    expect(rendered).to_not have_text(I18n.t('activerecord.attributes.request.notes'))
+    sign_out(:user)
+    sign_in(FactoryGirl.create(:user, role: :organizer))
+    render
+    expect(rendered).to have_text(I18n.t('activerecord.attributes.request.notes'))
+  end
+
   it "doesn't show the accept button for accepted events" do
     @aRequest = assign(:request, FactoryGirl.create(:request, topic_of_workshop: 'Topics', status: :accepted))
     expect(rendered).not_to have_link(I18n.t('helpers.links.accept'))

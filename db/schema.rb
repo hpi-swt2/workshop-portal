@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170122191752) do
+ActiveRecord::Schema.define(version: 20170123205418) do
 
   create_table "agreement_letters", force: :cascade do |t|
     t.integer  "user_id",    null: false
@@ -132,6 +132,7 @@ ActiveRecord::Schema.define(version: 20170122191752) do
     t.integer  "status",                 default: 0
     t.string   "zip_code_city"
     t.string   "contact_person"
+    t.text     "notes"
   end
 
   create_table "users", force: :cascade do |t|
