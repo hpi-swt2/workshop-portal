@@ -72,14 +72,54 @@ end
 
 RSpec.feature "Role management page", :type => :feature do
 
-  it "can change to role of a user" do
-    pupil = FactoryGirl.create(:user)
-    login(:admin)
-    visit users_path
-    expect(page).to have_select('user_role', selected: I18n.t("users.roles.pupil"))
-    first('#user_role').find(:xpath, 'option[2]').select_option
-    expect(page).to have_select('user_role', selected: I18n.t("users.roles.coach"))
-    first('input[value="%s"]' % I18n.t("users.index.save") ).click
+  %i[pupil coach].each do |role|
+    context "as a #{role}" do
+      it "shouldn't display the role managment page and show an error" do
+        login(role)
+        visit users_path
+        expect(page).not_to have_text(I18n.t("activerecord.models.user.other"))
+        expect(page).to have_text(I18n.t('unauthorized.manage.all'))
+      end
+    end
+  end
+
+  %i[admin organizer].each do |role|
+    context "as an #{role}" do
+      it "should display the role managment page" do
+        login(role)
+        visit users_path
+        expect(page).to have_text(I18n.t("activerecord.models.user.other"))
+      end
+
+      it "can change to role of a user to coach" do
+        pupil = FactoryGirl.create(:user)
+        login(:admin)
+        visit users_path
+        expect(page).to have_select('user_role', selected: I18n.t("users.roles.pupil"))
+        first('#user_role').find(:xpath, 'option[2]').select_option
+        expect(page).to have_select('user_role', selected: I18n.t("users.roles.coach"))
+        first('input[value="%s"]' % I18n.t("users.index.save")).click
+      end
+    end
+  end
+
+  context "as an organizer" do
+    it "should not display admin role in drop down" do
+      login(:organizer)
+      visit users_path
+      role_options = [I18n.t("users.roles.pupil"),I18n.t("users.roles.coach"),I18n.t("users.roles.organizer")]
+      expect(page).to have_select('user_role', options: role_options)
+      expect(page).to_not have_select('user_role', options: [I18n.t("users.roles.admin")])
+    end
+  end
+
+  context "as an admin" do
+    it "should display admin role in drop down" do
+      login(:admin)
+      visit users_path
+      role_options = [I18n.t("users.roles.pupil"),I18n.t("users.roles.coach"),I18n.t("users.roles.organizer"),I18n.t("users.roles.admin")]
+      expect(page).to have_select('user_role', options: role_options)
+    end
   end
 
   it "can search for users" do
@@ -96,7 +136,7 @@ RSpec.feature "Role management page", :type => :feature do
     expect(page).to have_text(user3.profile.last_name)
 
     fill_in :search, with: "Max"
-    click_button I18n.t('users.index.search')
+    find('#search-button').click
 
     expect(page).to have_text(max1.profile.last_name)
     expect(page).to have_text(max2.profile.last_name)

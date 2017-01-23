@@ -2,3 +2,29 @@
   Place all the styles related to the matching controller here.
   They will automatically be included in application.css.
 */
+
+.email-content {
+    width: 100%;
+    max-width: 100%;
+}
+
+.email-submit {
+    float: right;
+}
+
+.email-templates h3 {
+    margin-top: 0px;
+}
+
+.email-templates .list-group {
+    height: 550px;
+}
+
+.email-templates .list-group-item-text {
+    overflow: hidden;
+    position: relative;
+    max-height: 3.9em;
+    text-align: justify;
+    padding-right: 1em;
+}
+

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170114132153) do
+ActiveRecord::Schema.define(version: 20170122191752) do
 
   create_table "agreement_letters", force: :cascade do |t|
     t.integer  "user_id",    null: false
@@ -26,19 +26,20 @@ ActiveRecord::Schema.define(version: 20170114132153) do
 
   create_table "application_letters", force: :cascade do |t|
     t.string   "motivation"
-    t.integer  "user_id",                      null: false
-    t.integer  "event_id",                     null: false
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
-    t.integer  "status",           default: 2, null: false
+    t.integer  "user_id",                               null: false
+    t.integer  "event_id",                              null: false
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
+    t.integer  "status",                    default: 2, null: false
     t.integer  "grade"
     t.string   "experience"
     t.string   "coding_skills"
     t.string   "emergency_number"
-    t.boolean  "vegeterian"
+    t.boolean  "vegetarian"
     t.boolean  "vegan"
     t.boolean  "allergic"
     t.string   "allergies"
+    t.text     "custom_application_fields"
   end
 
   add_index "application_letters", ["event_id"], name: "index_application_letters_on_event_id"
@@ -63,6 +64,13 @@ ActiveRecord::Schema.define(version: 20170114132153) do
 
   add_index "date_ranges", ["event_id"], name: "index_date_ranges_on_event_id"
 
+  create_table "email_templates", force: :cascade do |t|
+    t.integer "status"
+    t.string  "subject"
+    t.text    "content"
+    t.boolean "hide_recipients"
+  end
+
   create_table "events", force: :cascade do |t|
     t.string   "name"
     t.string   "description"
@@ -70,20 +78,23 @@ ActiveRecord::Schema.define(version: 20170114132153) do
     t.datetime "created_at",                                 null: false
     t.datetime "updated_at",                                 null: false
     t.integer  "kind",                       default: 0
-    t.boolean  "draft"
+    t.boolean  "published"
     t.string   "organizer"
     t.string   "knowledge_level"
     t.date     "application_deadline"
     t.boolean  "application_status_locked"
     t.boolean  "participants_are_unlimited", default: false
+    t.text     "custom_application_fields"
   end
 
   create_table "participant_groups", force: :cascade do |t|
-    t.integer "application_letter_id"
-    t.integer "group"
+    t.integer "user_id"
+    t.integer "event_id"
+    t.integer "group",    null: false
   end
 
-  add_index "participant_groups", ["application_letter_id"], name: "index_participant_groups_on_application_letter_id"
+  add_index "participant_groups", ["event_id"], name: "index_participant_groups_on_event_id"
+  add_index "participant_groups", ["user_id"], name: "index_participant_groups_on_user_id"
 
   create_table "profiles", force: :cascade do |t|
     t.integer  "user_id",             null: false
@@ -120,6 +131,7 @@ ActiveRecord::Schema.define(version: 20170114132153) do
     t.text     "annotations"
     t.integer  "status",                 default: 0
     t.string   "zip_code_city"
+    t.string   "contact_person"
   end
 
   create_table "users", force: :cascade do |t|

@@ -1,7 +1,7 @@
 class ProfilesController < ApplicationController
   load_and_authorize_resource
 
-  before_action :set_profile, only: [:show, :edit, :update]
+  before_action :set_profile, only: [:show, :edit, :update, :destroy]
 
   # GET /profiles/1
   def show
@@ -9,6 +9,9 @@ class ProfilesController < ApplicationController
 
   # GET /profiles/new
   def new
+    existing_profile = Profile.find_by(user: current_user.id)
+    return redirect_to existing_profile if existing_profile.present?
+
     @profile = Profile.new
     flash.keep(:event_id)
   end
@@ -21,6 +24,9 @@ class ProfilesController < ApplicationController
   def create
     @profile = Profile.new(profile_params)
     @profile.user_id = current_user.id
+
+    existing_profile = Profile.find_by(user: current_user.id)
+    return redirect_to existing_profile if existing_profile.present?
 
     if @profile.save
       if flash[:event_id]

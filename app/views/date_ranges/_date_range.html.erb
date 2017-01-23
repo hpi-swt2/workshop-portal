@@ -1,0 +1,10 @@
+<p>
+  <% if date_range.start_date == date_range.end_date %>
+      <strong><%= l date_range.start_date %></strong>
+  <% else %>
+      <strong><%= l date_range.start_date %></strong>
+      <%= t 'date_range.pronouns.to' %>
+      <strong><%= l date_range.end_date %></strong>
+  <% end %>
+</p>
+
