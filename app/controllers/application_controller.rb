@@ -18,22 +18,11 @@ class ApplicationController < ActionController::Base
     #       unless we want to write custom SQL joins (which
     #       we should if this becomes a perf problem), there is no
     #       other solution
-    add_missing_permission_flashes
 
     @events = Event.sorted_by_start_date(true)
       .select { |a| a.start_date > Time.now }
       .first(3)
     render 'index', locals: { full_width: true }
-  end
-
-  protected
-  def configure_permitted_parameters
-    devise_parameter_sanitizer.permit(:sign_up) do |user_params|
-      user_params.permit(:email, :name, :password, :password_confirmation, :role)
-    end
-    devise_parameter_sanitizer.permit(:account_update) do |user_params|
-      user_params.permit(:email, :name, :password, :password_confirmation, :role, :current_password)
-    end
   end
 
   def add_missing_permission_flashes
@@ -48,6 +37,16 @@ class ApplicationController < ActionController::Base
                                   #{t('agreement_letters.upload')}
                                 </a>".html_safe if current_user.older_than_required_age_at_start_date_of_event?(event, current_user.profile.age)
       end
+    end
+  end
+
+  protected
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.permit(:sign_up) do |user_params|
+      user_params.permit(:email, :name, :password, :password_confirmation, :role)
+    end
+    devise_parameter_sanitizer.permit(:account_update) do |user_params|
+      user_params.permit(:email, :name, :password, :password_confirmation, :role, :current_password)
     end
   end
 
