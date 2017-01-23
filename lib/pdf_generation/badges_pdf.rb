@@ -146,8 +146,9 @@ class BadgesPDF
     end
 
     def create_color(participant, y)
-      #TODO use participant's group color
-      fill_color "FFCC"
+      color = ParticipantGroup::GROUPS[@event.participant_group_for(participant).group]
+      color = "FFFFFF" if color == "0" # in case the color is "none"
+      fill_color color
         fill_rectangle [0, y], @badge_width, COLOR_HEIGHT
       fill_color "0000"
     end
