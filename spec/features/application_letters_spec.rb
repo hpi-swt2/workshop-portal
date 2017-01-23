@@ -52,6 +52,38 @@ RSpec.feature "Application Letter Overview", :type => :feature do
     expect(page).to have_current_path(edit_application_letter_path(@application_letter))
   end
 
+  scenario "when creating an application, the fields contain the data from my last application" do
+    login(:pupil)
+    second_event = FactoryGirl.create(:event)
+    visit new_application_letter_path(:event_id => second_event.id)
+
+    check_filled_field = lambda do |attr|
+      expect(page).to have_field(ApplicationLetter.human_attribute_name(attr),
+                                 with: @application_letter.send(attr))
+    end
+    check_checked_checkbox = lambda do |attr|
+      expect(page).to have_field(ApplicationLetter.human_attribute_name(attr),
+                                 checked: @application_letter.send(attr))
+    end
+
+    check_filled_field.call(:coding_skills)
+    check_filled_field.call(:emergency_number)
+    check_filled_field.call(:allergies)
+    check_checked_checkbox.call(:vegetarian)
+    check_checked_checkbox.call(:vegan)
+    check_checked_checkbox.call(:allergic)
+    expect(page).to have_select(ApplicationLetter.human_attribute_name(:grade),
+                                selected: @application_letter.grade.to_s)
+  end
+
+  scenario "when creating my first application, all fields should be empty" do
+    login(:pupil)
+    ApplicationLetter.where(user: @profile.user).each { |a| a.destroy }
+    visit new_application_letter_path(:event_id => @event.id)
+    page.all('textarea').each { |input| expect(input.text).to eq "" }
+    page.all('input[type=checkbox]').each { |input| expect(input).not_to be_checked }
+  end
+
   it "should highlight wrong or missing insertions from user" do
     login(:pupil)
     visit new_application_letter_path
