@@ -25,7 +25,15 @@ class ApplicationLettersController < ApplicationController
       flash.keep(:event_id)
       return redirect_to new_profile_path, :alert => message
     end
+
     @application_letter = ApplicationLetter.new
+    last_application_letter = ApplicationLetter.where(user: current_user).order("created_at").last
+    if last_application_letter
+      attrs_to_fill_in = last_application_letter.attributes
+        .slice("grade", "coding_skills", "emergency_number", "vegetarian", "vegan", "allergic", "allergies")
+      @application_letter.attributes = attrs_to_fill_in
+      flash.now[:notice] = I18n.t('application_letters.fields_filled_in')
+    end
     authorize! :new, @application_letter
     if params[:event_id]
       @application_letter.event_id = params[:event_id]
