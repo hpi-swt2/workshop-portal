@@ -88,16 +88,27 @@
       <%=f.error_span(:application_deadline) %>
     </div>
   </div>
-
   <%= (render 'custom_application_fields_input', form: f) if @event.new_record? %>
-
+  <div class="form-group">
+    <%= f.label :published, :class => 'control-label col-lg-2' %>
+    <div class="btn-group col-lg-10" data-toggle="buttons">
+      <label class="btn btn-default <%= 'active' if @event.published %>">
+        <%= f.radio_button :published, true %>
+        <%= I18n.t :"events.form.published.myon" %>
+      </label>
+      <label class="btn btn-default <%= 'active' if not @event.published %>">
+        <%= f.radio_button :published, false %>
+        <%= I18n.t :"events.form.published.myoff" %>
+      </label>
+      <%=f.error_span(:published) %>
+    </div>
+  </div>
   <div class="form-group">
     <div class="col-lg-offset-2 col-lg-10">
-      <% if @event.draft == false %>
-        <%= f.submit t('.update'), :name => 'publish', :class => 'btn btn-primary' %>
+      <% if @event.new_record? %>
+        <%= f.submit t('.create'), :name => 'create', :class => 'btn btn-primary' %>
       <% else %>
-        <%= f.submit t('.publish'), :name => 'publish', :class => 'btn btn-primary' %>
-        <%= f.submit t('.draft'), :name => 'draft', :class => 'btn btn-default' %>
+        <%= f.submit t('.update'), :name => 'update', :class => 'btn btn-primary' %>
       <% end %>
       <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
                 events_path, :class => 'btn btn-default' %>
