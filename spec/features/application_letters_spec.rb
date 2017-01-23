@@ -170,7 +170,7 @@ RSpec.feature "Application Letter Overview", :type => :feature do
 
     find('input[name=commit]').click
 
-    expect(page).to have_css('h3', text: I18n.t('application_letters.check.my_application'))
+    expect(page).to have_text I18n.t('application_letters.check.my_application')
 
   end
 
