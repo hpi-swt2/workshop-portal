@@ -190,15 +190,18 @@ RSpec.describe EventsController, type: :controller do
   end
 
   describe "GET #participants_eating_habits_pdf" do
+    
     let(:valid_attributes) { FactoryGirl.attributes_for(:event_with_accepted_applications) }
 
     it "should return an pdf" do
+      login(:organizer)
       event = Event.create! valid_attributes
       get :print_applications_eating_habits, id: event.to_param, session: valid_session
       expect(response.content_type).to eq('application/pdf')
     end
 
     it "should return an pdf with the eating habits of the user" do
+      login(:organizer)
       event = Event.create! valid_attributes
       profile = FactoryGirl.create(:profile)
       user = FactoryGirl.create(:user, profile: profile)
@@ -440,5 +443,11 @@ RSpec.describe EventsController, type: :controller do
       page_analysis = PDF::Inspector::Page.analyze(response.body)
       expect(page_analysis.pages.size).to be >= 3
     end
+  end
+
+  def login(role)
+    @profile = FactoryGirl.create(:profile)
+    @profile.user.role = role
+    login_as(@profile.user, :scope => :user)
   end
 end
