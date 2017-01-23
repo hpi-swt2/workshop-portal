@@ -138,4 +138,27 @@ RSpec.feature "Profile adaptation", :type => :feature do
 
     expect(page).to have_css(".has-error", count: 3)
   end
+
+  %i[organizer admin].each do |role|
+    scenario "logged in as #{role} I can see the mail address" do
+      login(role)
+      expect(page).to have_link(@profile.user.email, :href => 'mailto://' + @profile.user.email)
+    end
+  end
+
+  %i[coach pupil].each do |role|
+    scenario "logged in as #{role} I cannot see the mail address" do
+      login(role)
+      expect(page).to_not have_link(@profile.user.email, :href => 'mailto://' + @profile.user.email)
+    end
+  end
+
+  def login(role)
+    @profile_own = FactoryGirl.create(:profile)
+    @profile_own.user.role = role
+    login_as(@profile_own.user, :scope => :user)
+
+    @profile = FactoryGirl.create(:profile)
+    visit profile_path(profile)
+  end
 end
