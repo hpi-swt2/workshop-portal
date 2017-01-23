@@ -188,7 +188,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     end
   end
 
-  scenario "logged in as Organizer when I want to download agreement letters but no participants are selected, it displays error message" do
+  scenario "logged in as Organizer when I want to download agreement letters but no participants are selected, it displays error message", js: true do
     login(:organizer)
     @event = FactoryGirl.create(:event_with_accepted_applications_and_agreement_letters)
     visit event_participants_path(@event)
@@ -196,16 +196,16 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     expect(page).to have_text(I18n.t "events.agreement_letters_download.notices.no_participants_selected")
   end
 
-  scenario "logged in as Organizer when I want to download agreement letters but no participants have agreement letters, it displays error message" do
+  scenario "logged in as Organizer when I want to download agreement letters but no participants have agreement letters, it displays error message", js: true do
     login(:organizer)
     @event = FactoryGirl.create(:event_with_accepted_applications_and_agreement_letters)
     visit event_participants_path(@event)
-    find(:css, "#selected_participants_[value='2']").set(true)
+    find(:css, "#selected_participants_[value='2']").click
     find("option[value='zip']").select_option
     click_button I18n.t "events.agreement_letters_download.download_all_as"
     expect(page).to have_text(I18n.t "events.agreement_letters_download.notices.no_agreement_letters")
     visit event_participants_path(@event)
-    find(:css, "#selected_participants_[value='2']").set(true)
+    find(:css, "#selected_participants_[value='2']").click
     find("option[value='pdf']").select_option
     click_button I18n.t "events.agreement_letters_download.download_all_as"
     expect(page).to have_text(I18n.t "events.agreement_letters_download.notices.no_agreement_letters")

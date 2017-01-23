@@ -60,6 +60,8 @@ class Ability
       can [:view_applicants, :edit_applicants, :view_participants, :print_applications, :manage, :view_material, :upload_material, :print_agreement_letters, :download_material, :view_unpublished], Event
       can :send_email, Email
       can :manage, Request
+      can [:update], ParticipantGroup
+
       # Organizers can update user roles of pupil, coach and organizer, but cannot manage admins and cannot update a role to admin
       can :manage, User, role: ["pupil", "coach", "organizer"]
       cannot :update_role, User, role: "admin"
