@@ -11,7 +11,7 @@ RSpec.describe ParticipantGroupsController, type: :controller do
   let(:valid_session) { {} }
 
   before(:each) do
-    request.env['HTTP_REFERER'] = root_url
+    request.env['HTTP_REFERER'] = events_path
   end
 
   context "with an existing participant_group" do

@@ -10,10 +10,10 @@ RSpec.feature "Event participants overview", :type => :feature do
     @user = FactoryGirl.create(:user)
     @profile = FactoryGirl.create(:profile, user: @user)
     @application_letter = FactoryGirl.create(:application_letter_accepted, user: @user, event: @event)
-    @participant_group = FactoryGirl.create(:participant_group, user: @user, event: @event)
-    visit "/events/#{@event.id}/participants"
+    visit event_participants_path(@event)
     select I18n.t("participant_groups.options.#{ParticipantGroup::GROUPS[9]}"), from: "participant_group[group]", match: :first, visible: false
     expect(page).to have_text(I18n.t("participant_groups.update.successful"))
+    expect(page).to have_select('participant_group_group', selected: I18n.t("participant_groups.options.#{ParticipantGroup::GROUPS[9]}"))
   end
 
   scenario "logged in as Organizer I can see a table with the participants and sort them by group" do
@@ -25,7 +25,7 @@ RSpec.feature "Event participants overview", :type => :feature do
       participant_group = FactoryGirl.create(:participant_group, user: user, event: @event, group: i)
     end
 
-    visit "/events/#{@event.id}/participants"
+    visit event_participants_path(@event)
 
     table = page.find('table')
     @event.participants.each do |participant|
@@ -34,7 +34,7 @@ RSpec.feature "Event participants overview", :type => :feature do
 
     link_name = I18n.t("activerecord.attributes.participant_group.group")
     click_link link_name
-    sorted_by_group = @event.participants.sort_by {|p| @event.participant_group_for(p).send("group") }
+    sorted_by_group = @event.participants.sort_by {|p| @event.participant_group_for(p).group }
     names = sorted_by_group.map {|p| p.profile.name }
     expect(page).to contain_ordered(names)
 

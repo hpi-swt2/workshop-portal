@@ -70,7 +70,7 @@ RSpec.describe "events/participants", type: :view do
     assign(:event, @event)
     assign(:participants, @event.participants)
     render
-    expect(rendered).to have_select('participant_group_group', options: ParticipantGroup::GROUPS.map { |m| I18n.t("participant_groups.options.#{m.last}") })
+    expect(rendered).to have_select('participant_group_group', options: ParticipantGroup::GROUPS.map { |key, value| I18n.t("participant_groups.options.#{value}") })
   end
 
   it "contains a modal to print participant lists" do
