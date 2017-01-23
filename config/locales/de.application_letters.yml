@@ -9,6 +9,7 @@ de:
       application_title: "Bewerbung für %{title}"
       age_when_event_starts: "Alter bei Beginn"
       new_note: "Neue Anmerkung:"
+      delete: "Bewerbung löschen"
     form:
       warning: "Die Deadline ist schon vorbei. Du kannst deine Bewerbung nicht mehr ändern."
       help_text_coding_skills: "Wie gut beherrscht du sie deiner Meinung nach (Anfänger,
@@ -33,6 +34,7 @@ de:
       check_application_for: "Bewerbung für %{event_name} prüfen"
       eating_habits: "Essgewohnheiten"
     confirm_deletion: "Willst du diese Bewerbung wirklich löschen?"
+    fields_filled_in: "Wir haben einige Felder bereits für dich ausgefüllt. Falls sich seit deiner letzten Bewerbung etwas geändert hat, kannst du es jetzt anpassen."
 
   activerecord:
     models:
