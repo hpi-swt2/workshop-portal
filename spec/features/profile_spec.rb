@@ -142,14 +142,14 @@ RSpec.feature "Profile adaptation", :type => :feature do
   %i[organizer admin].each do |role|
     scenario "logged in as #{role} I can see the mail address" do
       login(role)
-      expect(page).to have_link(@profile.user.email, :href => 'mailto://' + @profile.user.email)
+      expect(page).to have_link(@profile.user.email, :href => 'mailto:' + @profile.user.email)
     end
   end
 
   %i[coach pupil].each do |role|
     scenario "logged in as #{role} I cannot see the mail address" do
       login(role)
-      expect(page).to_not have_link(@profile.user.email, :href => 'mailto://' + @profile.user.email)
+      expect(page).to_not have_link(@profile.user.email, :href => 'mailto:' + @profile.user.email)
     end
   end
 
