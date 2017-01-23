@@ -23,7 +23,7 @@ class Profile < ActiveRecord::Base
   # @param none
   # @return [Boolean] whether the user is an adult
   def adult?()
-    self.birth_date >= 18.years.ago
+    self.birth_date <= 18.years.ago
   end
 
   # Returns the age of the user based on the current date
