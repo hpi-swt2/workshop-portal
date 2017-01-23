@@ -90,6 +90,18 @@ RSpec.describe "events/show", type: :view do
     expect(rendered).to have_button(t(:download, scope: 'events.material_area'))
   end
 
+  it "displays correct buttons in draft phase" do
+    @event = assign(:event, FactoryGirl.create(:event, :in_draft_phase))
+    sign_in(FactoryGirl.create(:user, role: :organizer))
+    render
+    expect(rendered).to_not have_link(t(:print_all, scope: 'events.applicants_overview'))
+    expect(rendered).to_not have_link(t(:accept_all, scope: 'events.applicants_overview'))
+    expect(rendered).to_not have_link(t(:sending_acceptances, scope: 'events.applicants_overview'))
+    expect(rendered).to_not have_link(t(:sending_rejections, scope: 'events.applicants_overview'))
+    expect(rendered).to_not have_link(t(:print_button_label, scope: 'events.badges'))
+    expect(rendered).to_not have_link(t(:show_participants, scope: 'events.participants'))
+  end
+
   it "displays correct buttons in application phase" do
     @event = assign(:event, FactoryGirl.create(:event, :in_application_phase))
     sign_in(FactoryGirl.create(:user, role: :organizer))
