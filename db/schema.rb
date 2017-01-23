@@ -73,7 +73,7 @@ ActiveRecord::Schema.define(version: 20170122191752) do
 
   create_table "events", force: :cascade do |t|
     t.string   "name"
-    t.string   "description"
+    t.text     "description"
     t.integer  "max_participants"
     t.datetime "created_at",                                 null: false
     t.datetime "updated_at",                                 null: false
