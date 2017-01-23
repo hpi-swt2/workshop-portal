@@ -29,8 +29,10 @@
         <% end %>
       </tr>
 
-      <% @participants.each do |participant| 
-          application_letter = ApplicationLetter.find_by(user_id: participant.id, event_id: @event.id) %>
+      <% sort_participants
+        @participants.each do |participant| 
+          application_letter = ApplicationLetter.find_by(user_id: participant.id, event_id: @event.id) 
+      %>
       <tr>
 
         <td>
