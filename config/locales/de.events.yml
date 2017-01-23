@@ -19,7 +19,7 @@ de:
       occupied_places:
         one: '%{count} Platz belegt'
         other: '%{count} Plätze belegt'
-      print_all: "Alle ausdrucken"
+      print_all: "Alle Bewerbungen drucken"
       accept_all: "Alle annehmen"
       unclassified_applications_left: 'Bewerbung(en) wurden noch nicht klassifiziert'
       maximum_number_of_participants_exeeded: 'Maximale Teilnehmeranzahl wurde überschritten'

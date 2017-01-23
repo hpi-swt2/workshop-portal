@@ -31,6 +31,7 @@ class ApplicationLetter < ActiveRecord::Base
   validates :status, inclusion: { in: statuses.keys }
     
 
+
   # Checks if the deadline is over
   # additionally only return if event and event.application_deadline is present
   #
