@@ -13,7 +13,13 @@
       <%=f.error_span(:kind) %>
     </div>
   </div>
-
+  <div class="form-group">
+    <div class="col-lg-offset-2 col-lg-10">
+      <%= f.check_box :hidden %>
+      <%= f.label :hidden, :class => 'control-label' %>
+      <%= f.error_span(:hidden) %>
+    </div>
+  </div>
   <div class="form-group">
     <%= f.label :name, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
