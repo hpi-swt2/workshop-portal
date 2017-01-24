@@ -11,12 +11,13 @@ class AgreementLettersController < ApplicationController
       @agreement_letter.set_path
     end
     file = params[:letter_upload]
+    application_letter = ApplicationLetter.where(user: current_user, event_id: event_id).first
 
     if @agreement_letter.save && @agreement_letter.save_file(file)
-      redirect_to profile_path(current_user.profile),
+      redirect_to check_application_letter_path(application_letter),
                   notice: t("agreement_letters.upload_success")
     else
-      redirect_to profile_path(current_user.profile),
+      redirect_to check_application_letter_path(application_letter),
                   alert: @agreement_letter.errors.messages
     end
   end
