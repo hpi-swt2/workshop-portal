@@ -125,8 +125,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     @pupil = FactoryGirl.create(:profile)
     @application_letter = FactoryGirl.create(:application_letter, event: @event, user: @pupil.user)
     visit event_path(@event)
-    selectable_statuses = ["pre_accepted","rejected","pending","alternative"]
-    selectable_statuses.each do |new_status|
+    ApplicationLetter.selectable_statuses.each do |new_status|
       choose(I18n.t "application_status.#{new_status}")
       expect(ApplicationLetter.where(id: @application_letter.id)).to exist
     end
