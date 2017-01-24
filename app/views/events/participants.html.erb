@@ -63,7 +63,7 @@
 
         <% if can? :show_eatings_habits, Event %>
           <td>
-           <% if application_letter.vegan || application_letter.vegetarian || application_letter.allergic %>
+           <% if application_letter && ( application_letter.vegan || application_letter.vegetarian || application_letter.allergic ) %>
              <ul id="eating-habit--list">
              <% if application_letter.vegan %>
                <li>
