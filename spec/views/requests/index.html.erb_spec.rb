@@ -19,7 +19,6 @@ RSpec.describe "requests/index", type: :view do
         assert_select 'td', :text => r.time_period
         assert_select 'td', :text => r.number_of_participants.to_s
         assert_select 'td', :text => I18n.t("activerecord.attributes.request.statuses.#{r.status}")
-        #assert_select 'td', :text => r.status
       end
     end
 
