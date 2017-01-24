@@ -13,8 +13,8 @@ def event_programmierkurs
       date_ranges: [date_range_singleday],
       application_deadline: Date.tomorrow,
       application_status_locked: false,
-      published: true,
-      custom_application_fields: ['Lieblingsapp']
+
+   
   )
 end
 
@@ -33,7 +33,7 @@ def event_mintcamp
       date_ranges: [date_range_mint_camp],
       application_deadline: Date.tomorrow,
       application_status_locked: false,
-      published: true
+
   )
 end
 
@@ -51,8 +51,7 @@ def event_bechersaeuberungsevent
       date_ranges: [date_range_singleday],
       application_deadline: Date.tomorrow,
       application_status_locked: false,
-      published: true,
-      custom_application_fields: ['Lieblings-Becherart', 'Kannst du eine eigene Spülmaschine mitbringen?']
+
   )
 end
 
@@ -69,7 +68,7 @@ def event_gongakrobatik
       date_ranges: [date_range_long], 
       application_deadline: Date.tomorrow,
       application_status_locked: false,
-      published: true
+
   )
 end
 
@@ -91,8 +90,7 @@ def event_batterie_akustik
       date_ranges: [date_range_short, date_range_medium],
       application_deadline: Date.tomorrow,
       application_status_locked: false,
-      published: false,
-      custom_application_fields: ['Spielst du gerne in deiner Freizeit mit Batterien?']
+
   )
 end
 
@@ -116,6 +114,6 @@ def event_bachlorpodium
       date_ranges: [date_range_singleday1, date_range_singleday2, date_range_singleday3], 
       application_deadline: Date.tomorrow,
       application_status_locked: false ,
-      published: true
+
   )
 end

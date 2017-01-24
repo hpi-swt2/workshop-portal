@@ -189,19 +189,24 @@ RSpec.describe EventsController, type: :controller do
     end
   end
 
-  describe "GET #participants_eating_habits_pdf" do
+  describe "GET #print_applications_eating_habits" do
     
     let(:valid_attributes) { FactoryGirl.attributes_for(:event_with_accepted_applications) }
 
     it "should return an pdf" do
-      login(:organizer)
+      login(:admin)
       event = Event.create! valid_attributes
+      profile = FactoryGirl.create(:profile)
+      user = FactoryGirl.create(:user, profile: profile)
+      application_letter = FactoryGirl.create(:application_letter, status: ApplicationLetter.statuses[:accepted], event: event, user: user)
       get :print_applications_eating_habits, id: event.to_param, session: valid_session
+      #expect(response).should redirect_to(event_path(event) + "/print_applications_eating_habits")
+      response = get event_path(event) + "/print_applications_eating_habits"
       expect(response.content_type).to eq('application/pdf')
     end
 
     it "should return an pdf with the eating habits of the user" do
-      login(:organizer)
+      login(:admin)
       event = Event.create! valid_attributes
       profile = FactoryGirl.create(:profile)
       user = FactoryGirl.create(:user, profile: profile)

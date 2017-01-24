@@ -116,6 +116,10 @@
         <%= select_tag :download_type, options_for_select([['pdf'], ['zip']]) %>
         </div>
       <% end %>
+      <% if can? :print_applications_eating_habits, Event %>
+      <%= link_to t('events.participants.print_habits'),
+                    event_path(@event) + "/print_applications_eating_habits" , :class => 'btn btn-default btn-sm'  %>
+      <% end %>
     <% end %>
       <br>
   <%= link_to t('.back', :default => t('helpers.links.back')),
