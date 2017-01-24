@@ -11,3 +11,4 @@ de:
     upload_failed: "Fehler beim Hochladen."
     already_uploaded: "Datei hochgeladen am %{timestamp}"
     write_failed: "Datei konnte nicht gespeichert werden."
+    please_upload: "Bitte lade deine Einverständniserklärung für \"%{event}\" hoch."

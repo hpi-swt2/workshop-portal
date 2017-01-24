@@ -203,6 +203,24 @@ RSpec.feature "Application Letter Overview", :type => :feature do
     expect(page).to have_text('Bewerbung erstellen')
   end
 
+  it "redirects you to the application page after profile update" do
+    event = FactoryGirl.create(:event)
+    profile = FactoryGirl.create(:profile)
+    login_as(profile.user, :scope => :user)
+    application_letter = FactoryGirl.create(:application_letter, user: profile.user, event: event)
+
+    visit check_application_letter_path(application_letter)
+
+    click_link id: 'edit_profile_link'
+
+    fill_in "profile_last_name", with: "Doe"
+
+    find('input[name=commit]').click
+
+    expect(page).to have_text I18n.t('application_letters.check.my_application')
+
+  end
+
   %i[coach organizer].each do |role|
     it "logged in as #{role} I cannot see personal details" do
       login(role)

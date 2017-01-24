@@ -17,6 +17,14 @@ describe "Event", type: :feature do
       expect(page).to have_css(".label", text: I18n.t(".activerecord.attributes.event.draft"))
     end
 
+    it "should mark an event as hidden by showing a label" do
+      login_as(FactoryGirl.create(:user, role: :organizer), :scope => :user)
+
+      FactoryGirl.create :event, hidden: true
+      visit events_path
+      expect(page).to have_css(".label", text: I18n.t(".activerecord.attributes.event.hidden"))
+    end
+
     it "should not show drafts to pupils or coaches" do
       %i[coach pupil].each do |role|
         login_as(FactoryGirl.create(:user, role: role), :scope => :user)
@@ -24,6 +32,16 @@ describe "Event", type: :feature do
         FactoryGirl.create :event, published: false
         visit events_path
         expect(page).to_not have_css(".label", text: I18n.t(".activerecord.attributes.event.draft"))
+      end
+    end
+
+    it "should not show hidden events to pupils or coaches" do
+      %i[coach pupil].each do |role|
+        login_as(FactoryGirl.create(:user, role: role), :scope => :user)
+
+        FactoryGirl.create :event, hidden: true, name: "Verstecktes Event"
+        visit events_path
+        expect(page).to_not have_text("Verstecktes Event")
       end
     end
 
