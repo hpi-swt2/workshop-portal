@@ -279,7 +279,7 @@ class Event < ActiveRecord::Base
   # @param only_public Set to true to not include drafts
   # @return List of events
   def self.sorted_by_start_date(only_public)
-    (only_public ? Event.draft_is(false) : Event.all)
+    (only_public ? Event.draft_is(false).where(hidden: false) : Event.all)
       .sort_by(&:start_date)
   end
 

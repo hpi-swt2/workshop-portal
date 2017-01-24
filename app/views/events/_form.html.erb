@@ -3,17 +3,25 @@
   <%= render partial: "shared/error_message", locals: {entity: @event} %>
 
   <div class="form-group">
-    <div class="btn-group col-lg-10 col-lg-offset-2" data-toggle="buttons">
-      <% Event.kinds.keys.each do |key| %>
-        <label class="btn btn-default <%= 'active' if @event.kind == key %>">
-          <%= f.radio_button :kind, key %>
-          <%= I18n.t :"events.kinds.#{key}" %>
-        </label>
-      <% end %>
-      <%=f.error_span(:kind) %>
+    <div class="btn-group col-lg-10 col-lg-offset-2">
+      <div data-toggle="buttons">
+        <% Event.kinds.keys.each do |key| %>
+          <label class="btn btn-default <%= 'active' if @event.kind == key %>">
+            <%= f.radio_button :kind, key %>
+            <%= I18n.t :"events.kinds.#{key}" %>
+          </label>
+        <% end %>
+        <%=f.error_span(:kind) %>
+      </div>
     </div>
   </div>
-
+  <div class="form-group">
+    <div class="col-lg-offset-2 col-lg-10">
+      <%= f.check_box :hidden%>
+      <%= f.label :hidden, :class => 'control-label' %>
+      <%=f.error_span(:hidden) %>
+    </div>
+  </div>
   <div class="form-group">
     <%= f.label :name, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
