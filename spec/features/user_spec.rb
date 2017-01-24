@@ -8,11 +8,11 @@ RSpec.feature "Account creation", :type => :feature do
 
     password = "mybirthdate"
     # http://www.rubydoc.info/github/jnicklas/capybara/Capybara/Node/Actions:fill_in
-    fill_in "user_email", :with => "first.last@example.com"
-    fill_in "user_password", :with => password
-    fill_in "user_password_confirmation", :with => password
+    fill_in "sign_up_email", :with => "first.last@example.com"
+    fill_in "sign_up_password", :with => password
+    fill_in "sign_up_password_confirmation", :with => password
     # http://www.rubydoc.info/github/jnicklas/capybara/Capybara%2FNode%2FFinders%3Afind
-    find('input[name="commit"]').click
+    find('input[id="sign_up_submit"]').click
 
     # Show success alert
     # http://www.rubydoc.info/github/jnicklas/capybara/master/Capybara/RSpecMatchers#have_css-instance_method
@@ -23,12 +23,29 @@ RSpec.feature "Account creation", :type => :feature do
     expect(user.role).to eq('pupil')
   end
 
+  scenario "User makes a form error while signing up" do
+    visit new_user_registration_path
+
+    password = "mybirthdate"
+    fill_in "sign_up_email", :with => "first.last@example.com"
+    fill_in "sign_up_password", :with => password
+    fill_in "sign_up_password_confirmation", :with => 'somethingelse'
+    
+    find('input[id="sign_up_submit"]').click
+
+    # Show error alert
+    expect(page).to have_css(".alert-danger")
+    # Make sure the user does not exist
+    expect(User.where(email: 'first.last@example.com')).not_to exist
+    expect(current_path).to eq new_user_session_path
+  end
+
   scenario "User logs in with valid credentials and is redirected to the index page" do
     user = FactoryGirl.create(:user)
     visit new_user_session_path
-    fill_in "user_email", :with => user.email
-    fill_in "user_password", :with => user.password
-    find('input[name="commit"]').click
+    fill_in "login_email", :with => user.email
+    fill_in "login_password", :with => user.password
+    find('input[id="login_submit"]').click
     # Redirected to index page
     expect(page.current_path).to eq(root_path)
     expect(page).to have_css(".alert-success")

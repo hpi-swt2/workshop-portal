@@ -152,10 +152,9 @@ RSpec.feature "Application Letter Overview", :type => :feature do
     page.assert_current_path user_session_path # Make sure redirect happened
     expect(page).to have_text login_error_message
 
-    fill_in 'user_email', with: user.email
-    fill_in 'user_password', with: user.password
-    find('input[name=commit]').click
-
+    fill_in 'login_email', with: user.email
+    fill_in 'login_password', with: user.password
+    find('input[id="login_submit"]').click
     page.assert_current_path(new_application_path)
     expect(page).to_not have_text login_error_message
   end

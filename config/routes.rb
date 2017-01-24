@@ -30,6 +30,10 @@ Rails.application.routes.draw do
     end
   end
   resources :profiles, except: [:index, :destroy]
+  
+  devise_scope :user do 
+    get "/users/sign_up" => redirect("/users/sign_in")
+  end
   devise_for :users, :controllers => {:registrations => "users/registrations"}
   resources :users, only: [:index] # index page for devise users
   patch 'users/:id/role' => 'users#update_role', as: :update_user_role
