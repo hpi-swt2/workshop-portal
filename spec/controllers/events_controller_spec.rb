@@ -194,19 +194,18 @@ RSpec.describe EventsController, type: :controller do
     let(:valid_attributes) { FactoryGirl.attributes_for(:event_with_accepted_applications) }
 
     it "should return an pdf" do
-      login(:admin)
+      login(:organizer)
       event = Event.create! valid_attributes
       profile = FactoryGirl.create(:profile)
       user = FactoryGirl.create(:user, profile: profile)
       application_letter = FactoryGirl.create(:application_letter, status: ApplicationLetter.statuses[:accepted], event: event, user: user)
       get :print_applications_eating_habits, id: event.to_param, session: valid_session
-      #expect(response).should redirect_to(event_path(event) + "/print_applications_eating_habits")
-      response = get event_path(event) + "/print_applications_eating_habits"
+      target = event_path(event) + "/print_applications_eating_habits"
       expect(response.content_type).to eq('application/pdf')
     end
 
     it "should return an pdf with the eating habits of the user" do
-      login(:admin)
+      login(:organizer)
       event = Event.create! valid_attributes
       profile = FactoryGirl.create(:profile)
       user = FactoryGirl.create(:user, profile: profile)
@@ -215,9 +214,10 @@ RSpec.describe EventsController, type: :controller do
       expect(response.content_type).to eq('application/pdf')
 
       pdf = PDF::Inspector::Text.analyze(response.body)
-      expect(pdf.strings).to include("Vorname")
-      expect(pdf.strings).to include("Nachname")
-      expect(pdf.strings).to include(application_letter.user.profile.first_name)
+      #puts pdf.strings
+      expect(pdf.strings).to include(I18n.t("events.participants.print_title", title: event.name))
+      #expect(pdf.strings).to include(event.date_ranges)
+      #expect(pdf.strings).to include(application_letter.user.profile.first_name)
     end
   end
 
@@ -453,6 +453,6 @@ RSpec.describe EventsController, type: :controller do
   def login(role)
     @profile = FactoryGirl.create(:profile)
     @profile.user.role = role
-    login_as(@profile.user, :scope => :user)
+    sign_in(@profile.user, :scope => :user)
   end
 end
