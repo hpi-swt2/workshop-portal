@@ -59,7 +59,11 @@ class Ability
       can [:index, :show], Profile
       can [:index, :show, :view_and_add_notes, :update_status], ApplicationLetter
       cannot :update, ApplicationLetter
-      can [:view_applicants, :edit_applicants, :view_participants, :print_applications, :view_material, :upload_material, :print_agreement_letters, :download_material, :view_unpublished, :new, :edit, :destroy, :view_custom_application_fields], Event
+      can [:view_applicants, :edit_applicants, :view_participants, :print_applications,
+           :view_material, :upload_material, :print_agreement_letters, :download_material,
+          :view_unpublished, :show_eating_habits, :print_applications_eating_habits, :view_hidden,
+          :new, :edit, :destroy, :view_custom_application_fields, :manage], Event
+      cannot :apply, Event
       can :send_email, Email
       can :manage, Request
       can [:update], ParticipantGroup

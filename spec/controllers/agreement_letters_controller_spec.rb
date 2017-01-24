@@ -4,8 +4,7 @@ RSpec.describe AgreementLettersController, type: :controller do
 
   describe "POST #create" do
     before :each do
-      @user = FactoryGirl.create(:user, role: :pupil)
-      @user.profile ||= FactoryGirl.create(:profile)
+      @user = FactoryGirl.create(:user_with_profile, role: :pupil)
       @event = FactoryGirl.create(:event)
       @application = FactoryGirl.create(:application_letter, user: @user, event: @event)
       filepath = Rails.root.join('spec/testfiles/actual.pdf')
@@ -31,8 +30,7 @@ RSpec.describe AgreementLettersController, type: :controller do
 
   describe "POST #create when file was already created" do
     before :each do
-      @user = FactoryGirl.create(:user, role: :pupil)
-      @user.profile ||= FactoryGirl.create(:profile)
+      @user = FactoryGirl.create(:user_with_profile, role: :pupil)
       @event = FactoryGirl.create(:event)
       filepath = Rails.root.join('spec/testfiles/actual.pdf')
       @file = fixture_file_upload(filepath, 'application/pdf')
