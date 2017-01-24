@@ -26,9 +26,9 @@ RSpec.feature "Account creation", :type => :feature do
   scenario "User logs in with valid credentials and is redirected to the index page" do
     user = FactoryGirl.create(:user)
     visit new_user_session_path
-    fill_in "user_email", :with => user.email
-    fill_in "user_password", :with => user.password
-    find('input[name="commit"]').click
+    fill_in "login_email", :with => user.email
+    fill_in "login_password", :with => user.password
+    find('input[id="login_submit"]').click
     # Redirected to index page
     expect(page.current_path).to eq(root_path)
     expect(page).to have_css(".alert-success")
