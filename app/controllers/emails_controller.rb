@@ -64,14 +64,11 @@ class EmailsController < ApplicationController
   end
 
   def get_corresponding_application_letter_status
-    case params[:status]
-    when "acceptance"
-      return :accepted
-    when "rejection"
-      return :rejected
-    else
-      return :accepted
-    end
+    return case params[:status]
+      when "acceptance" then :accepted
+      when "rejection" then :rejected
+      else :accepted
+      end
   end
 
   # Only allow a trusted parameter "white list" through.
