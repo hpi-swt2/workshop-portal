@@ -20,7 +20,7 @@
         <td><%= request.name %></td>
         <td><%= request.time_period %></td>
         <td><%= request.number_of_participants %></td>
-        <td><%= request.status %></td>
+        <td><%= t("activerecord.attributes.request.statuses.#{request.status}") %></td>
         <td>
           <% if can? :edit, request %>
             <%= link_to t('.edit', :default => t("helpers.links.edit")),
