@@ -47,6 +47,7 @@ class ParticipantsPDF
       if @participants_omnivorous_application_letters.any?
         text t("events.participants.print_summary_omnivorous", number: @participants_omnivorous_application_letters.count), size: 15
         @participants_omnivorous_application_letters.each do |p|
+          move_down 5
           text p.user.name, size: 10
         end
       end
@@ -56,6 +57,7 @@ class ParticipantsPDF
       if @participants_vegan_application_letters.any?
         text t("events.participants.print_summary_vegan", number: @participants_vegan_application_letters.count), size: 15
         @participants_vegan_application_letters.each do |p|
+          move_down 5
           text p.user.name, size: 10
         end
       end
@@ -65,6 +67,7 @@ class ParticipantsPDF
       if @participants_vegetarian_application_letters.any?
         text t("events.participants.print_summary_vegetarian", number: @participants_vegetarian_application_letters.count), size: 15
         @participants_vegetarian_application_letters.each do |p|
+          move_down 5
           text p.user.name, size: 10
         end
       end

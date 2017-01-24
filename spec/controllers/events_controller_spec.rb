@@ -207,17 +207,38 @@ RSpec.describe EventsController, type: :controller do
     it "should return an pdf with the eating habits of the user" do
       login(:organizer)
       event = Event.create! valid_attributes
-      profile = FactoryGirl.create(:profile)
-      user = FactoryGirl.create(:user, profile: profile)
-      application_letter = FactoryGirl.create(:application_letter, status: ApplicationLetter.statuses[:accepted], event: event, user: user)
+      
+      user = FactoryGirl.create(:user)
+      profile = FactoryGirl.create(:profile, user: user, last_name: "Peter")
+      application_letter = FactoryGirl.create(:application_letter_accepted, 
+        user: user, event: event, vegan: true)
+      user = FactoryGirl.create(:user)
+      profile = FactoryGirl.create(:profile, user: user, last_name: "Paul")
+      application_letter = FactoryGirl.create(:application_letter_accepted, 
+        user: user, event: event, vegan: true, allergic: true)
+      user = FactoryGirl.create(:user)
+      profile = FactoryGirl.create(:profile, user: user, last_name: "Mary")
+      application_letter = FactoryGirl.create(:application_letter_accepted, 
+        user: user, event: event, vegetarian: true)
+      user = FactoryGirl.create(:user)
+      profile = FactoryGirl.create(:profile, user: user, last_name: "Otti")
+      application_letter = FactoryGirl.create(:application_letter_accepted, 
+        user: user, event: event, vegetarian: true, allergic: true)
+      user = FactoryGirl.create(:user)
+      profile = FactoryGirl.create(:profile, user: user, last_name: "Benno")
+      application_letter = FactoryGirl.create(:application_letter_accepted, 
+        user: user, event: event)
+
       response = get :print_applications_eating_habits, id: event.to_param, session: valid_session
       expect(response.content_type).to eq('application/pdf')
 
       pdf = PDF::Inspector::Text.analyze(response.body)
-      #puts pdf.strings
+    
       expect(pdf.strings).to include(I18n.t("events.participants.print_title", title: event.name))
-      #expect(pdf.strings).to include(event.date_ranges)
-      #expect(pdf.strings).to include(application_letter.user.profile.first_name)
+      expect(pdf.strings).to include(I18n.t("events.participants.print_summary", number: 5))
+      expect(pdf.strings).to include(I18n.t("events.participants.print_summary_vegan", number: 2))
+      expect(pdf.strings).to include(I18n.t("events.participants.print_summary_vegetarian", number: 2))
+      expect(pdf.strings).to include(I18n.t("events.participants.print_summary_allergic", number: 2))
     end
   end
 
