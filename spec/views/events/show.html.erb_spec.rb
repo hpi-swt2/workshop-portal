@@ -57,7 +57,7 @@ RSpec.describe "events/show", type: :view do
   it "should not display accept-all-button for non-organizers" do
     @event = assign(:event, FactoryGirl.create(:event, :in_selection_phase))
     @event.max_participants = Float::INFINITY
-    [:coach, :student].each do | each |
+    [:coach, :pupil].each do | each |
       sign_in(FactoryGirl.create(:user, role: each))
       render
       expect(rendered).to_not have_link(I18n.t('events.applicants_overview.accept_all'))
@@ -100,6 +100,8 @@ RSpec.describe "events/show", type: :view do
     expect(rendered).to_not have_link(t(:sending_rejections, scope: 'events.applicants_overview'))
     expect(rendered).to_not have_link(t(:print_button_label, scope: 'events.badges'))
     expect(rendered).to_not have_link(t(:show_participants, scope: 'events.participants'))
+    expect(rendered).to_not have_button(t(:sending_acceptances, scope: 'events.applicants_overview'), disabled: true)
+    expect(rendered).to_not have_button(t(:sending_rejections, scope: 'events.applicants_overview'), disabled: true)
   end
 
   it "displays correct buttons in application phase" do
@@ -112,9 +114,11 @@ RSpec.describe "events/show", type: :view do
     expect(rendered).to_not have_link(t(:sending_rejections, scope: 'events.applicants_overview'))
     expect(rendered).to_not have_link(t(:print_button_label, scope: 'events.badges'))
     expect(rendered).to_not have_link(t(:show_participants, scope: 'events.participants'))
+    expect(rendered).to_not have_button(t(:sending_acceptances, scope: 'events.applicants_overview'), disabled: true)
+    expect(rendered).to_not have_button(t(:sending_rejections, scope: 'events.applicants_overview'), disabled: true)
   end
 
-  it "does not display the disabled send email buttons in application phase" do
+  it "does not display the disabled send email buttons in application phase (even when they are unclassified applications)" do
     @event = assign(:event, FactoryGirl.create(:event, :with_diverse_open_applications, :in_application_phase))
     sign_in(FactoryGirl.create(:user, role: :organizer))
     render
@@ -134,8 +138,16 @@ RSpec.describe "events/show", type: :view do
     expect(rendered).to_not have_link(t(:show_participants, scope: 'events.participants'))
   end
 
-  it "does display the disabled send email buttons in selection phase" do
+  it "does display the disabled send email buttons in selection phase (when they are unclassified applications)" do
     @event = assign(:event, FactoryGirl.create(:event, :with_diverse_open_applications, :in_selection_phase))
+    sign_in(FactoryGirl.create(:user, role: :organizer))
+    render
+    expect(rendered).to have_button(t(:sending_acceptances, scope: 'events.applicants_overview'), disabled: true)
+    expect(rendered).to have_button(t(:sending_rejections, scope: 'events.applicants_overview'), disabled: true)
+  end
+
+  it "does display the disabled send email buttons in selection phase (when they are too many accepted applications)" do
+    @event = assign(:event, FactoryGirl.create(:event_with_accepted_applications, :in_selection_phase, max_participants: 1))
     sign_in(FactoryGirl.create(:user, role: :organizer))
     render
     expect(rendered).to have_button(t(:sending_acceptances, scope: 'events.applicants_overview'), disabled: true)
@@ -152,12 +164,6 @@ RSpec.describe "events/show", type: :view do
     expect(rendered).to_not have_link(t(:sending_rejections, scope: 'events.applicants_overview'))
     expect(rendered).to have_link(t(:print_button_label, scope: 'events.badges'))
     expect(rendered).to have_link(t(:show_participants, scope: 'events.participants'))
-  end
-
-  it "does not display the disabled send email buttons in execution phase" do
-    @event = assign(:event, FactoryGirl.create(:event, :with_diverse_open_applications, :in_execution_phase))
-    sign_in(FactoryGirl.create(:user, role: :organizer))
-    render
     expect(rendered).to_not have_button(t(:sending_acceptances, scope: 'events.applicants_overview'), disabled: true)
     expect(rendered).to_not have_button(t(:sending_rejections, scope: 'events.applicants_overview'), disabled: true)
   end
