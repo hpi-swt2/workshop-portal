@@ -135,6 +135,7 @@ de:
             other: "Zeitspannen"
           application_deadline: "Bewerbungsschluss"
           published: "Öffentlich"
+          hidden: "Versteckt"
   helpers:
     submit:
       event:
