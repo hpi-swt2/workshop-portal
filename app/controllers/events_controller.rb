@@ -7,11 +7,16 @@ class EventsController < ApplicationController
 
   # GET /events
   def index
-    @events = Event.sorted_by_start_date(!can?(:view_unpublished, Event))
+    @events = Event.sorted_by_start_date(false)
+    @events = @events.select{|event| event.hidden == false} unless can? :view_hidden, Event
+    @events = @events.select{|event| event.published == true} unless can? :view_unpublished, Event
   end
 
   # GET /events/1
   def show
+    if @event.hidden and !can? :view_hidden, Event
+      redirect_to new_application_letter_path(:event_id => @event.id)
+    end
     @free_places = @event.compute_free_places
     @occupied_places = @event.compute_occupied_places
     @application_letters = filter_application_letters(@event.application_letters)
@@ -227,7 +232,7 @@ class EventsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def event_params
-      params.require(:event).permit(:name, :description, :max_participants, :participants_are_unlimited, :kind, :organizer, :knowledge_level, :application_deadline, :published, :custom_application_fields => [], date_ranges_attributes: [:start_date, :end_date, :id])
+      params.require(:event).permit(:name, :description, :max_participants, :participants_are_unlimited, :kind, :organizer, :knowledge_level, :application_deadline, :published, :hidden, :custom_application_fields => [], date_ranges_attributes: [:start_date, :end_date, :id])
     end
 
     # Generate all names to print from the query-params
