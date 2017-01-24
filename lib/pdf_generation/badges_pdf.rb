@@ -16,13 +16,13 @@ class BadgesPDF
 
   # Generates a PDF file containing the badges for each participant
   #
-  # param event [Event] the event whose badges are created
-  # param participants [Array<User>] the users whose badges are created
-  # param name_format [TODO] the format with which the name is added
-  # param show_color [Boolean, nil] whether to add a rectangle of the user's group color
-  # param show_school [Boolean, nil] whether to add the school of the user's school
-  # param logo [TODO, nil] the logo to add
-  # return [String] the generated PDF
+  # @param event [Event] the event whose badges are created
+  # @param participants [Array<User>] the users whose badges are created
+  # @param name_format [String, nil] the format with which the name is added, "first", "last" or "full"
+  # @param show_color [Boolean, nil] whether to add a rectangle of the user's group color
+  # @param show_school [Boolean, nil] whether to add the school of the user's school
+  # @param logo [ActionDispatch::Http::UploadedFile, nil] the logo to add
+  # @return [String] the generated PDF
   def self.generate(event, participants, name_format, show_color, show_school, logo)
     self.new(event, participants, name_format, show_color, show_school, logo).create.render
   end
@@ -34,6 +34,7 @@ class BadgesPDF
     @show_color = show_color || false
     @show_school = show_school || false
     @logo = logo
+    puts logo.class
 
     @document = Prawn::Document.new(page_size: 'A4')
     calculate_layout
@@ -41,8 +42,8 @@ class BadgesPDF
 
   # Adds all necessary data and formatting to the BadgesPDF
   #
-  # param none
-  # return [BadgesPDF] self
+  # @param none
+  # @return [BadgesPDF] self
   def create
     badges_per_page = COLUMN_NUMBER * ROW_NUMBER
     @participants.each_slice(badges_per_page).each_with_index do | page_participants, page_number |
