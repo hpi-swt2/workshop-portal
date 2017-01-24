@@ -5,9 +5,9 @@ RSpec.feature "Upload letter of agreement", :type => :feature do
     @profile = FactoryGirl.create(:profile)
     @user = FactoryGirl.create(:user, role: :pupil, profile: @profile)
     @event = FactoryGirl.create(:event)
-    @application_letter = FactoryGirl.create(:application_letter_accepted, user: @user, event: @event)
+    @application_letter = FactoryGirl.create(:application_letter, user: @user, event: @event)
     login_as(@user, scope: :user)
-    visit profile_path(@user.profile)
+    visit check_application_letter_path(@application_letter)
   end
 
   def mock_writing_to_filesystem
@@ -22,7 +22,7 @@ RSpec.feature "Upload letter of agreement", :type => :feature do
     mock_writing_to_filesystem do
       attach_file(:letter_upload, './spec/testfiles/actual.pdf')
       click_button "upload_btn_#{@event.id}"
-      expect(page).to have_current_path profile_path(@user.profile)
+      expect(page).to have_current_path check_application_letter_path(@application_letter)
       expect(page).not_to have_css(".alert-danger")
       expect(page).to have_css(".alert-success")
       expect(page).to have_text(I18n.t("agreement_letters.upload_success"))
@@ -35,7 +35,7 @@ RSpec.feature "Upload letter of agreement", :type => :feature do
       click_button "upload_btn_#{@event.id}"
       attach_file(:letter_upload, './spec/testfiles/actual.pdf')
       click_button "upload_btn_#{@event.id}"
-      expect(page).to have_current_path profile_path(@user.profile)
+      expect(page).to have_current_path check_application_letter_path(@application_letter)
       expect(page).not_to have_css(".alert-danger")
       expect(page).to have_css(".alert-success")
       expect(page).to have_text(I18n.t("agreement_letters.upload_success"))
