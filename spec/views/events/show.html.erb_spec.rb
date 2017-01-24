@@ -118,7 +118,7 @@ RSpec.describe "events/show", type: :view do
     expect(rendered).to_not have_button(t(:sending_rejections, scope: 'events.applicants_overview'), disabled: true)
   end
 
-  it "does not display the disabled send email buttons in application phase (even when they are unclassified applications)" do
+  it "does not display the disabled send email buttons in application phase (even when there are unclassified applications)" do
     @event = assign(:event, FactoryGirl.create(:event, :with_diverse_open_applications, :in_application_phase))
     sign_in(FactoryGirl.create(:user, role: :organizer))
     render
@@ -138,7 +138,7 @@ RSpec.describe "events/show", type: :view do
     expect(rendered).to_not have_link(t(:show_participants, scope: 'events.participants'))
   end
 
-  it "does display the disabled send email buttons in selection phase (when they are unclassified applications)" do
+  it "does display the disabled send email buttons in selection phase (when there are unclassified applications)" do
     @event = assign(:event, FactoryGirl.create(:event, :with_diverse_open_applications, :in_selection_phase))
     sign_in(FactoryGirl.create(:user, role: :organizer))
     render
