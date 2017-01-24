@@ -17,7 +17,7 @@
         <% if can? :print_agreement_letters, Event and @has_agreement_letters %>
           <th>
             <label>
-              <input type="checkbox" id="select_all_participants" class="participant_selection" onclick="flipAllCheckboxes(this)">
+              <input type="checkbox" id="select_all_participants" class="participant_selection" onclick="flipAllCheckboxes(this, 'participant_selection')">
               <%= t 'events.agreement_letters_download.select_all' %>
             </label>
           </th>
@@ -27,12 +27,11 @@
       <% sort_participants
       @participants.each do |participant| %>
       <tr>
-
         <td>
-        <%= participant.name %>
+          <%= participant.name %>
         </td>
         <td>
-        <%= participant.email %>
+          <%= participant.email %>
         </td>
         <td>
           <% if participant.requires_agreement_letter_for_event?(@event) %>
@@ -68,6 +67,11 @@
   <br>
   <%= link_to t('.back', :default => t('helpers.links.back')),
               event_path(@event), :class => 'btn btn-default'  %>
+  <%= link_to t('events.badges.print_button_label'),
+              badges_event_path(@event),
+              class: 'btn btn-default',
+              disabled: @participants.empty? %>
+
   <script>
   $('.colorselector').colorselector();
   $('#downloadLettersForm').submit(function() {

@@ -35,6 +35,11 @@ FactoryGirl.define do
       birth_date 20.years.ago
       gender "female"
     end
+
+    trait :long_name do
+      first_name "Daniel-Amadeus Johannes Carl Philipp Maria Amadeus"
+      last_name "von und zu Frankenstein, Junior"
+    end
   end
 
   factory :adult_profile, parent: :profile do

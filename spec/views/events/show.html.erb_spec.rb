@@ -54,6 +54,11 @@ RSpec.describe "events/show", type: :view do
     expect(rendered).to have_link(t(:details, scope: 'events.applicants_overview'))
   end
 
+  it "displays print applications button" do
+    render
+    expect(rendered).to have_link(t(:print_all, scope: 'events.applicants_overview'))
+  end
+
   it "should not display accept-all-button for non-organizers" do
     @event = assign(:event, FactoryGirl.create(:event, :in_selection_phase))
     @event.max_participants = Float::INFINITY
