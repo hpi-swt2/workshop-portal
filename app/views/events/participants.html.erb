@@ -67,10 +67,12 @@
   <br>
   <%= link_to t('.back', :default => t('helpers.links.back')),
               event_path(@event), :class => 'btn btn-default'  %>
-  <%= link_to t('events.badges.print_button_label'),
-              badges_event_path(@event),
-              class: 'btn btn-default',
-              disabled: @participants.empty? %>
+  <% if @event.phase == :execution %>
+    <%= link_to t('events.badges.print_button_label'),
+                badges_event_path(@event),
+                class: 'btn btn-default',
+                disabled: @participants.empty? %>
+  <% end %>
 
   <script>
   $('.colorselector').colorselector();
