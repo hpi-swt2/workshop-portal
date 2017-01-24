@@ -18,6 +18,7 @@ class ProfilesController < ApplicationController
 
   # GET /profiles/1/edit
   def edit
+    flash.keep(:application_id)
   end
 
   # POST /profiles
@@ -42,7 +43,11 @@ class ProfilesController < ApplicationController
   # PATCH/PUT /profiles/1
   def update
     if @profile.update(profile_params)
-      redirect_to @profile, notice: I18n.t('profiles.successful_update')
+      if flash[:application_id]
+        redirect_to check_application_letter_path(flash[:application_id]), notice: I18n.t('profiles.successful_update')
+      else
+        redirect_to @profile, notice: I18n.t('profiles.successful_update')
+      end
     else
       render :edit
     end
