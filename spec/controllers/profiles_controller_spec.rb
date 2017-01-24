@@ -90,7 +90,7 @@ RSpec.describe ProfilesController, type: :controller do
 
         it "redirects to the profile" do
           put :update, id: @profile.to_param, profile: valid_attributes, session: valid_session
-          expect(response).to redirect_to(edit_user_registration_path)
+          expect(response).to redirect_to(@profile)
         end
       end
 
