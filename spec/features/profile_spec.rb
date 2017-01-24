@@ -171,9 +171,3 @@ RSpec.feature "Profile adaptation", :type => :feature do
     expect(page).to have_css(".has-error", count: 3)
   end
 end
-
-
-
-
-
-
