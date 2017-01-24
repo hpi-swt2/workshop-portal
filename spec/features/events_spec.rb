@@ -53,8 +53,8 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     @pupil.user.role = :pupil
     @pending_application = FactoryGirl.create(:application_letter, :event => @event, :user => @pupil.user)
     visit event_path(@event)
-    expect(page).to have_button(I18n.t('events.applicants_overview.sending_acceptances'), disabled: true)
-    expect(page).to have_button(I18n.t('events.applicants_overview.sending_rejections'), disabled: true)
+    expect(page).to have_css('a[disabled]', text: I18n.t('events.applicants_overview.sending_acceptances'))
+    expect(page).to have_css('a[disabled]', text: I18n.t('events.applicants_overview.sending_rejections'))
   end
 
   scenario "logged in as Organizer I want to be unable to send emails if there is a negative number of free places left" do
@@ -66,8 +66,8 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
       FactoryGirl.create(:application_letter_accepted, :event => @event, :user => @pupil.user)
     end
     visit event_path(@event)
-    expect(page).to have_button(I18n.t('events.applicants_overview.sending_acceptances'), disabled: true)
-    expect(page).to have_button(I18n.t('events.applicants_overview.sending_rejections'), disabled: true)
+    expect(page).to have_css('a[disabled]', text: I18n.t('events.applicants_overview.sending_acceptances'))
+    expect(page).to have_css('a[disabled]', text: I18n.t('events.applicants_overview.sending_rejections'))
   end
 
   scenario "logged in as Organizer I want to be able to send an email to all accepted applicants" do
