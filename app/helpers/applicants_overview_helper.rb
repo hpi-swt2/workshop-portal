@@ -19,10 +19,6 @@ module ApplicantsOverviewHelper
     if params[:sort] && params[:sort] == 'applicant_age_when_event_starts' && params[:sort] != 'eating-habits'
       @application_letters.sort_by! {|l| l.send(params[:sort]) } 
     end
-    
-    if params[:sort] && params[:sort] == 'eating-habits'
-      @application_letters.sort! {|a,b| a.get_eating_habit_state <=> b.get_eating_habit_state }
-    end
 
     @application_letters.reverse! if params[:order] == 'descending'
   
