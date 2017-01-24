@@ -250,11 +250,11 @@ describe "Event", type: :feature do
       expect(page).to have_text(event.date_ranges.second)
     end
 
-    it "should show that the application deadline is on midnight of the picked date" do 
+    it "should show that the application deadline is on midnight of the picked date" do
       event = FactoryGirl.create(:event)
       visit event_path(event.id)
       expect(page).to have_text(I18n.l(event.application_deadline) + " Mitternacht")
-    end 
+    end
   end
 
   describe "edit page" do
@@ -286,6 +286,88 @@ describe "Event", type: :feature do
       click_button I18n.t('.events.form.update')
 
       expect(page).to have_text (DateRange.new start_date: date_start, end_date: date_end)
+    end
+  end
+
+  describe "printing badges" do
+    before :each do
+      login_as(FactoryGirl.create(:user, role: :organizer), :scope => :user)
+      @event = FactoryGirl.create(:event)
+      @users = 12.times.collect do
+        user = FactoryGirl.create(:user_with_profile)
+        FactoryGirl.create(:application_letter_accepted, user: user, event: @event)
+        user
+      end
+      visit badges_event_path(@event)
+    end
+
+    it "creates a pdf with the selected names" do
+      @users.each do |u|
+        find(:css, "#selected_ids_[value='#{u.id}']").set(true) if u.id.even?
+      end
+      click_button I18n.t('events.badges.print')
+      strings = PDF::Inspector::Text.analyze(page.body).strings
+      @users.each do |u|
+        if u.id.even?
+          expect(strings).to include(u.profile.first_name)
+        else
+          expect(strings).not_to include(u.profile.first_name)
+        end
+      end
+    end
+
+    it "uses the correct name format" do
+      all(:css, "#selected_ids_").each { |check| check.set(true) }
+      select(I18n.t('events.badges.last_name'))
+      click_button I18n.t('events.badges.print')
+      strings = PDF::Inspector::Text.analyze(page.body).strings
+      @users.each do |u|
+        expect(strings).to include(u.profile.last_name)
+        expect(strings).not_to include(u.profile.first_name)
+      end
+    end
+
+    it "selects all participants when the 'select all' checkbox is checked", js: true do
+      check('select-all-print')
+      all('input[type=checkbox].selected_ids').each { |checkbox| expect(checkbox).to be_checked }
+      uncheck('select-all-print')
+      all('input[type=checkbox].selected_ids').each { |checkbox| expect(checkbox).not_to be_checked }
+    end
+
+    it "creates a pdf with the correct schools" do
+      all(:css, "#selected_ids_").each { |check| check.set(true) }
+      check('show_school')
+      click_button I18n.t('events.badges.print')
+      strings = PDF::Inspector::Text.analyze(page.body).strings
+      @users.each { |u| expect(strings).to include(u.profile.school) }
+    end
+
+    it "does not horribly crash and burn when colors are selected" do
+      #testing if the actual colors are used is kinda hard
+      all(:css, "#selected_ids_").each { |check| check.set(true) }
+      check('show_color')
+      click_button I18n.t('events.badges.print')
+    end
+
+    it "does not throw an error with a logo" do
+      attach_file(:logo_upload, './spec/testfiles/actual.jpg')
+      all(:css, "#selected_ids_").each { |check| check.set(true) }
+      click_button I18n.t('events.badges.print')
+    end
+
+    it "shows an error message if logo is wrong filetype" do
+      attach_file(:logo_upload, './spec/testfiles/fake.jpg')
+      all(:css, "#selected_ids_").each { |check| check.set(true) }
+      click_button I18n.t('events.badges.print')
+      expect(page).to have_current_path(badges_event_path(@event))
+      expect(page).to have_text(I18n.t('events.badges.wrong_file_format'))
+    end
+
+    it "shows an error message if no participant was selected" do
+      all(:css, "#selected_ids_").each { |check| check.set(false) }
+      click_button I18n.t('events.badges.print')
+      expect(page).to have_current_path(badges_event_path(@event))
+      expect(page).to have_text(I18n.t('events.badges.no_users_selected'))
     end
   end
 end
