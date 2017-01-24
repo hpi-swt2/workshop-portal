@@ -23,6 +23,23 @@ RSpec.feature "Account creation", :type => :feature do
     expect(user.role).to eq('pupil')
   end
 
+  scenario "User makes a form error while signing up" do
+    visit new_user_registration_path
+
+    password = "mybirthdate"
+    fill_in "sign_up_email", :with => "first.last@example.com"
+    fill_in "sign_up_password", :with => password
+    fill_in "sign_up_password_confirmation", :with => 'somethingelse'
+    
+    find('input[id="sign_up_submit"]').click
+
+    # Show error alert
+    expect(page).to have_css(".alert-danger")
+    # Make sure the user does not exist
+    expect(User.where(email: 'first.last@example.com')).not_to exist
+    expect(current_path).to eq new_user_session_path
+  end
+
   scenario "User logs in with valid credentials and is redirected to the index page" do
     user = FactoryGirl.create(:user)
     visit new_user_session_path
