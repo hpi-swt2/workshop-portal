@@ -25,6 +25,12 @@ class Event < ActiveRecord::Base
   has_many :participant_groups
   has_many :date_ranges
   accepts_nested_attributes_for :date_ranges
+  validates :max_participants, numericality: { only_integer: true, greater_than: 0 }
+  validate :has_date_ranges
+  validates_presence_of :application_deadline
+  validate :application_deadline_before_start_of_event
+  validates :hidden, inclusion: { in: [true, false] }
+  validates :hidden, exclusion: { in: [nil] }
 
   # Setter for max_participants
   # @param [Int Float] the max number of participants for the event or infinity if it is not limited
@@ -57,10 +63,6 @@ class Event < ActiveRecord::Base
     @participants.sort { |x, y| self.compare_participants_by_agreement(x,y) }
   end
 
-  validates :max_participants, numericality: { only_integer: true, greater_than: 0 }
-  validate :has_date_ranges
-  validates_presence_of :application_deadline
-  validate :application_deadline_before_start_of_event
 
 
   # @return the minimum start_date over all date ranges
