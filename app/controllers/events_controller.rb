@@ -1,10 +1,14 @@
 require 'pdf_generation/badges_pdf'
 require 'pdf_generation/applications_pdf'
+require 'pdf_generation/participants_pdf'
 require 'rubygems'
 require 'zip'
 
 class EventsController < ApplicationController
-  before_action :set_event, only: [:show, :edit, :update, :destroy, :participants, :participants_pdf, :print_applications, :badges, :print_badges]
+
+  before_action :set_event, only: [:show, :edit, :update, :destroy, :participants, 
+    :participants_pdf, :print_applications, :print_applications_eating_habits, :badges, :print_badges]
+
 
   # GET /events
   def index
@@ -103,6 +107,12 @@ class EventsController < ApplicationController
     authorize! :print_applications, @event
     pdf = ApplicationsPDF.generate(@event)
     send_data pdf, filename: "applications_#{@event.name}_#{Date.today}.pdf", type: "application/pdf", disposition: "inline"
+  end
+
+  def print_applications_eating_habits
+    #authorize! :print_applications_eating_habits, @event
+    pdf = ParticipantsPDF.generate(@event)
+    send_data pdf, filename: "applications_eating_habits_#{@event.name}_#{Date.today}.pdf", type: "application/pdf", disposition: "inline"
   end
 
   # GET /events/1/accept-all-applicants
@@ -204,11 +214,11 @@ class EventsController < ApplicationController
     end
 
     data.unshift([
-                     I18n.t('controllers.events.participants_pdf.first_name'),
-                     I18n.t('controllers.events.participants_pdf.last_name'),
-                     I18n.t('controllers.events.participants_pdf.first_name'),
-                     I18n.t('controllers.events.participants_pdf.allergies')
-                 ])
+     I18n.t('controllers.events.participants_pdf.first_name'),
+     I18n.t('controllers.events.participants_pdf.last_name'),
+     I18n.t('controllers.events.participants_pdf.first_name'),
+     I18n.t('controllers.events.participants_pdf.allergies')
+    ])
 
     name = @event.name
     doc = Prawn::Document.new(:page_size => 'A4') do
@@ -241,6 +251,7 @@ class EventsController < ApplicationController
 
     def event_params
       params.require(:event).permit(:name, :description, :max_participants, :participants_are_unlimited, :kind, :organizer, :knowledge_level, :application_deadline, :published, :hidden, :custom_application_fields => [], date_ranges_attributes: [:start_date, :end_date, :id])
+
     end
 
     def filter_application_letters(application_letters)
