@@ -7,7 +7,6 @@
       </div>
     </div>
     <div class="row">
-      <!--<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 text-center subheadline--wrapper">-->
       <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
         <div class=" text-center subheadline--wrapper">
           <p class="lead"><%= t('.sign_in', :default => "Sign in") %></p>
@@ -47,7 +46,6 @@
           <% end %>
         </div>
       </div>
-      <!--<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 text-center subheadline--wrapper">-->
         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
           <div class="text-center subheadline--wrapper">
             <p class="lead "><%= I18n.t('.start_page.register_now', :default => "Sign up") %></p>
@@ -55,7 +53,6 @@
           <div class="row spacer-30"></div>
           <div class="panel panel-default devise-bs panel-body">
             <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), html: { role: "form" }) do |f|  %>
-            <!-- #registration_path(resource_name), html: { role: "form" }) do |f| -->
               <div class="form-group">
                 <%= f.label :email %>
                 <%= f.email_field :email, autofocus: true, class: "form-control", id: "sign_up_email" %>
