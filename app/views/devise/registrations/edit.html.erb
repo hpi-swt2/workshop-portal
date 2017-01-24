@@ -31,16 +31,6 @@
                 <%= builder.error_span(:graduates_school_in) %>
               </div>
             </div>
-
-            <div class="form-group">
-              <%= f.label :current_password, :class => 'control-label col-lg-2' %>
-              <div class="col-lg-10">
-                <%= f.password_field :current_password, class: "form-control" %>
-                <span class="help-block">
-                  <%= t('devise.messages.we_need_your_current_password_to_confirm_your_changes', :default => 'we need your current password to confirm your changes') %>
-                </span>
-              </div>
-            </div>
           <% end %>
 
           <div class="text-right col-lg-12" >

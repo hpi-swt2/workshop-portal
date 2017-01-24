@@ -27,6 +27,8 @@ class User < ActiveRecord::Base
   has_many :agreement_letters
   has_many :application_letters
 
+  accepts_nested_attributes_for :profile
+
   before_create :set_default_role
 
   ROLES = %i[pupil coach organizer admin]
