@@ -1,4 +1,4 @@
-def event_programmierkurs
+def event_programmierkurs2
   date_range_singleday = DateRange.create!(
       start_date: Date.new(2017, 05, 04),
       end_date: Date.new(2017, 05, 05)
@@ -14,6 +14,28 @@ def event_programmierkurs
       application_deadline: Date.tomorrow,
       application_status_locked: false,
       published: true,
+      hidden: false,
+      custom_application_fields: ['Lieblingsapp']
+  )
+end
+
+def event_programmierkurs
+  date_range_singleday = DateRange.create!(
+      start_date: Date.new(2017, 05, 04),
+      end_date: Date.new(2017, 05, 05)
+  )
+
+  Event.new(
+      name: 'Android Programmierkurs (hidden)',
+      description: 'Ihr wolltet schon immer einmal eine eigene App programmieren? In diesem Workshop lernt ihr object-orientierte Programmierung am Beispiel von einer Android App.',
+      max_participants: 25,
+      organizer: 'HPI Schülerklub',
+      knowledge_level: 'Anfänger',
+      date_ranges: [date_range_singleday],
+      application_deadline: Date.tomorrow,
+      application_status_locked: false,
+      published: true,
+      hidden: true,
       custom_application_fields: ['Lieblingsapp']
   )
 end
@@ -33,6 +55,7 @@ def event_mintcamp
       date_ranges: [date_range_mint_camp],
       application_deadline: Date.tomorrow,
       application_status_locked: false,
+      hidden: false,
       published: true
   )
 end
@@ -52,6 +75,7 @@ def event_bechersaeuberungsevent
       application_deadline: Date.tomorrow,
       application_status_locked: false,
       published: true,
+      hidden: false,
       custom_application_fields: ['Lieblings-Becherart', 'Kannst du eine eigene Spülmaschine mitbringen?']
   )
 end
@@ -69,6 +93,7 @@ def event_gongakrobatik
       date_ranges: [date_range_long], 
       application_deadline: Date.tomorrow,
       application_status_locked: false,
+      hidden: false,
       published: true
   )
 end
@@ -92,6 +117,7 @@ def event_batterie_akustik
       application_deadline: Date.tomorrow,
       application_status_locked: false,
       published: false,
+      hidden: false,
       custom_application_fields: ['Spielst du gerne in deiner Freizeit mit Batterien?']
   )
 end
@@ -116,6 +142,7 @@ def event_bachlorpodium
       date_ranges: [date_range_singleday1, date_range_singleday2, date_range_singleday3], 
       application_deadline: Date.tomorrow,
       application_status_locked: false ,
+      hidden: false,
       published: true
   )
 end
