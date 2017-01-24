@@ -23,7 +23,7 @@ class Profile < ActiveRecord::Base
   # @param none
   # @return [Boolean] whether the user is an adult
   def adult?()
-    self.birth_date >= 18.years.ago
+    self.birth_date <= 18.years.ago
   end
 
   # Returns the age of the user based on the current date
@@ -58,6 +58,14 @@ class Profile < ActiveRecord::Base
   # @return [String] of address
   def address
     street_name + ", " + zip_code + " " +  city + ", " + state + ", " + country
+  end
+
+  # Returns a list of allowed parameters.
+  #
+  # @param none
+  # @return [Symbol] List of parameters
+  def self.allowed_params
+    [:first_name, :last_name, :gender, :birth_date, :school, :street_name, :zip_code, :city, :state, :country, :graduates_school_in]
   end
 
   private
