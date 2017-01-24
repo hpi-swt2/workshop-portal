@@ -66,9 +66,6 @@
     </div>
 
     <div class="btn-group pull-right" role="group">
-      <% if @event.phase == :execution %>
-        <%= link_to t('events.badges.print_button_label'), event_badges_path(@event), :class => 'btn btn-default'%>
-      <% end %>
       <% if  (can? :send_email, Email) && (@event.phase == :selection) %>
         <% if not @event.applications_classified? %>
           <div class="btn-group pull-right tooltip-wrapper has-tooltip" role="group" data-toggle="tooltip" title="<%= t '.unclassified_applications_left'%>">

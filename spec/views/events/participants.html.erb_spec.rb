@@ -49,15 +49,40 @@ RSpec.describe "events/participants", type: :view do
     expect(rendered).to have_text(t(:unnecessary, scope:'events.participants'))
   end
 
-  it "displays print badges button" do
+  it "displays print badges button (in event execution phase)" do
+    @event.published = true
+    @event.application_deadline = Date.yesterday
+    @event.application_status_locked = true
     render
     expect(rendered).to have_link(t(:print_button_label, scope: 'events.badges', disabled: false))
   end
 
   it "disables the print badges button when there are no participants" do
+    @event = assign(:event, FactoryGirl.create(:event, :in_execution_phase))
     @participants = []
     render
     expect(rendered).to have_link(t(:print_button_label, scope: 'events.badges', disabled: true))
+  end
+
+  it "does not show the print badges button when the event is in draft phase" do
+    @event = assign(:event, FactoryGirl.create(:event_with_accepted_applications, :in_draft_phase))
+    @participants = assign(:participants, @event.participants)
+    render
+    expect(rendered).to_not have_link(t(:print_button_label, scope: 'events.badges'))
+  end
+
+  it "does not show the print badges button when the event is in application phase" do
+    @event = assign(:event, FactoryGirl.create(:event_with_accepted_applications, :in_application_phase))
+    @participants = assign(:participants, @event.participants)
+    render
+    expect(rendered).to_not have_link(t(:print_button_label, scope: 'events.badges'))
+  end
+
+  it "does not show the print badges button when the event is in selection phase" do
+    @event = assign(:event, FactoryGirl.create(:event_with_accepted_applications, :in_selection_phase))
+    @participants = assign(:participants, @event.participants)
+    render
+    expect(rendered).to_not have_link(t(:print_button_label, scope: 'events.badges'))
   end
 
   it "displays correct groups" do

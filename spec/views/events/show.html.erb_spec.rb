@@ -54,11 +54,6 @@ RSpec.describe "events/show", type: :view do
     expect(rendered).to have_link(t(:details, scope: 'events.applicants_overview'))
   end
 
-  it "displays print applications button" do
-    render
-    expect(rendered).to have_link(t(:print_all, scope: 'events.applicants_overview'))
-  end
-
   it "should not display accept-all-button for non-organizers" do
     @event = assign(:event, FactoryGirl.create(:event, :in_selection_phase))
     @event.max_participants = Float::INFINITY
@@ -103,7 +98,6 @@ RSpec.describe "events/show", type: :view do
     expect(rendered).to_not have_link(t(:accept_all, scope: 'events.applicants_overview'))
     expect(rendered).to_not have_link(t(:sending_acceptances, scope: 'events.applicants_overview'))
     expect(rendered).to_not have_link(t(:sending_rejections, scope: 'events.applicants_overview'))
-    expect(rendered).to_not have_link(t(:print_button_label, scope: 'events.badges'))
     expect(rendered).to_not have_link(t(:show_participants, scope: 'events.participants'))
     expect(rendered).to_not have_button(t(:sending_acceptances, scope: 'events.applicants_overview'), disabled: true)
     expect(rendered).to_not have_button(t(:sending_rejections, scope: 'events.applicants_overview'), disabled: true)
@@ -117,7 +111,6 @@ RSpec.describe "events/show", type: :view do
     expect(rendered).to_not have_link(t(:accept_all, scope: 'events.applicants_overview'))
     expect(rendered).to_not have_link(t(:sending_acceptances, scope: 'events.applicants_overview'))
     expect(rendered).to_not have_link(t(:sending_rejections, scope: 'events.applicants_overview'))
-    expect(rendered).to_not have_link(t(:print_button_label, scope: 'events.badges'))
     expect(rendered).to_not have_link(t(:show_participants, scope: 'events.participants'))
     expect(rendered).to_not have_button(t(:sending_acceptances, scope: 'events.applicants_overview'), disabled: true)
     expect(rendered).to_not have_button(t(:sending_rejections, scope: 'events.applicants_overview'), disabled: true)
@@ -139,7 +132,6 @@ RSpec.describe "events/show", type: :view do
     expect(rendered).to have_link(t(:accept_all, scope: 'events.applicants_overview'))
     expect(rendered).to have_link(t(:sending_acceptances, scope: 'events.applicants_overview'))
     expect(rendered).to have_link(t(:sending_rejections, scope: 'events.applicants_overview'))
-    expect(rendered).to_not have_link(t(:print_button_label, scope: 'events.badges'))
     expect(rendered).to_not have_link(t(:show_participants, scope: 'events.participants'))
   end
 
@@ -167,7 +159,6 @@ RSpec.describe "events/show", type: :view do
     expect(rendered).to_not have_link(t(:accept_all, scope: 'events.applicants_overview'))
     expect(rendered).to_not have_link(t(:sending_acceptances, scope: 'events.applicants_overview'))
     expect(rendered).to_not have_link(t(:sending_rejections, scope: 'events.applicants_overview'))
-    expect(rendered).to have_link(t(:print_button_label, scope: 'events.badges'))
     expect(rendered).to have_link(t(:show_participants, scope: 'events.participants'))
     expect(rendered).to_not have_button(t(:sending_acceptances, scope: 'events.applicants_overview'), disabled: true)
     expect(rendered).to_not have_button(t(:sending_rejections, scope: 'events.applicants_overview'), disabled: true)
