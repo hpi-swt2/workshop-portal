@@ -4,22 +4,22 @@ describe "Sending emails to applicants", type: :feature do
   before :each do
     @accepted_count = 4
     @rejected_count = 2
-    @event = FactoryGirl.create(:event_with_accepted_applications,
-                                accepted_application_letters_count: @accepted_count,
+    @event = FactoryGirl.create(:event_with_pre_accepted_applications,
+                                pre_accepted_application_letters_count: @accepted_count,
                                 rejected_application_letters_count: @rejected_count)
   end
 
   scenario "logged in as Organizer I can send emails to the applicants" do
     login(:organizer)
 
-    visit event_email_show_path(@event, status: :accepted)
+    visit event_email_show_path(@event, status: :acceptance)
     fill_in :email_subject, with: "Subject Accepted"
     fill_in :email_content, with: "Content Accepted"
     click_button I18n.t('.emails.email_form.send')
 
     expect(page).to have_text(I18n.t('.emails.submit.sending_successful'))
 
-    visit event_email_show_path(@event, status: :rejected)
+    visit event_email_show_path(@event, status: :rejection)
     fill_in :email_subject, with: "Subject Rejected"
     fill_in :email_content, with: "Content Rejected"
     click_button I18n.t('.emails.email_form.send')
@@ -32,7 +32,7 @@ describe "Sending emails to applicants", type: :feature do
     @event.application_status_locked = false
     @event.save
 
-    visit event_email_show_path(@event, status: :accepted)
+    visit event_email_show_path(@event, status: :acceptance)
     fill_in :email_subject, with: "Subject"
     fill_in :email_content, with: "Content"
     click_button I18n.t('.emails.email_form.send')
@@ -46,7 +46,7 @@ describe "Sending emails to applicants", type: :feature do
     @template_subject = "Template Subject"
     @template_content = "Template Content"
 
-    visit event_email_show_path(@event, status: :pre_accepted)
+    visit event_email_show_path(@event, status: :acceptance)
     fill_in :email_subject, with: @template_subject
     fill_in :email_content, with: @template_content
     click_button I18n.t('.emails.email_form.save_template')

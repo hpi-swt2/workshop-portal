@@ -152,7 +152,6 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     check_values.call
     @application_letter.reload
     expect(@application_letter.status).to eq("pre_accepted")
-    save_page
     expect(page).to have_css('label.active', text: I18n.t('application_status.pre_accepted'))
   end
 

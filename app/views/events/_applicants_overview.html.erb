@@ -83,8 +83,8 @@
       <div class="btn-group pull-right" role="group">
         <%= link_to t('events.badges.print_button_label'), event_badges_path(@event), :class => 'btn btn-default'%>
         <% if can? :send_email, Email %>
-          <%= link_to t('.sending_acceptances'), event_email_show_path(@event, status: :pre_accepted), class: 'send-emails-button btn btn-default' %>
-          <%= link_to t('.sending_rejections'),  event_email_show_path(@event, status: :rejected), class: 'send-emails-button btn btn-default' %>
+          <%= link_to t('.sending_acceptances'), event_email_show_path(@event, status: :acceptance), class: 'send-emails-button btn btn-default' %>
+          <%= link_to t('.sending_rejections'),  event_email_show_path(@event, status: :rejection), class: 'send-emails-button btn btn-default' %>
         <% end %>
       </div>
     <% end %>
