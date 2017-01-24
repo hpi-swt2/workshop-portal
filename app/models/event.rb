@@ -135,7 +135,7 @@ class Event < ActiveRecord::Base
     application_letters.all? { |application_letter| application_letter.status != 'pending' }
   end
 
-  # Returns the tooltip useed to help explain to the user why he can't send mails yet
+  # Returns the tooltip used to help explain to the user why he can't send mails yet
   #
   # @return [String] the translated tooltip text or nil if mails can be sent
   def send_mails_tooltip
