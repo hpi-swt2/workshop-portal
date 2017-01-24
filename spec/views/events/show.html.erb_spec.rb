@@ -146,7 +146,7 @@ RSpec.describe "events/show", type: :view do
     expect(rendered).to have_button(t(:sending_rejections, scope: 'events.applicants_overview'), disabled: true)
   end
 
-  it "does display the disabled send email buttons in selection phase (when they are too many accepted applications)" do
+  it "does display the disabled send email buttons in selection phase (when there are too many accepted applications)" do
     @event = assign(:event, FactoryGirl.create(:event_with_accepted_applications, :in_selection_phase, max_participants: 1))
     sign_in(FactoryGirl.create(:user, role: :organizer))
     render
