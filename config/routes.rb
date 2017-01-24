@@ -24,6 +24,7 @@ Rails.application.routes.draw do
     member do
       get 'participants_pdf'
       get 'print_applications'
+      get 'print_applications_eating_habits'
       get 'badges'
       post 'badges' => 'events#print_badges', as: :print_badges
     end
