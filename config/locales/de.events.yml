@@ -58,10 +58,18 @@ de:
       unavailable: "nicht vorhanden"
       print_habits: "Essgewohnheiten drucken (PDF)"
       print_title: "Essgewohnheiten der Teilnehmer für %{title}"
-      print_summary: "Insgesamt werden wir bei dieser Veranstaltung %{number} Teilnehmer/-innen haben."
-      print_summary_vegetarian: "%{number} Personen ernähren sich vegetarisch."
-      print_summary_vegan: "%{number} Personen ernähren sich vegan."
-      print_summary_omnivorous: "%{number} Personen ernähren sich omnivor."
+      print_summary: 
+        one: "Insgesamt werden wir bei dieser Veranstaltung %{count} Teilnehmer/-in> haben."
+        other: "Insgesamt werden wir bei dieser Veranstaltung %{count} Teilnehmer/-innen haben."
+      print_summary_vegetarian: 
+        one: "%{count} Person ernährt sich vegetarisch."
+        other: "%{count} Personen ernähren sich vegetarisch."
+      print_summary_vegan: 
+        one: "%{count} Person ernährt sich vegan."
+        other: "%{count} Personen ernähren sich vegan."
+      print_summary_omnivorous: 
+        one: "%{count} Person ernährt sich omnivor."
+        other: "%{count} Personen ernähren sich omnivor."
       print_summary_allergic: "Außerdem haben folgende Teilnehmer Allergien oder Unverträglichkeiten:"
     agreement_letters_download:
       notices:

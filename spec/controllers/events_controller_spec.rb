@@ -245,10 +245,10 @@ RSpec.describe EventsController, type: :controller do
       pdf = PDF::Inspector::Text.analyze(response.body)
     
       expect(pdf.strings).to include(I18n.t("events.participants.print_title", title: event.name))
-      expect(pdf.strings).to include(I18n.t("events.participants.print_summary", number: 5))
-      expect(pdf.strings).to include(I18n.t("events.participants.print_summary_vegan", number: 2))
-      expect(pdf.strings).to include(I18n.t("events.participants.print_summary_vegetarian", number: 2))
-      expect(pdf.strings).to include(I18n.t("events.participants.print_summary_allergic", number: 2))
+      expect(pdf.strings).to include(I18n.t("events.participants.print_summary", count: 5))
+      expect(pdf.strings).to include(I18n.t("events.participants.print_summary_vegan", count: 2))
+      expect(pdf.strings).to include(I18n.t("events.participants.print_summary_vegetarian", count: 2))
+      expect(pdf.strings).to include(I18n.t("events.participants.print_summary_allergic", count: 2))
     end
   end
 

@@ -42,10 +42,10 @@ class ParticipantsPDF
       move_down 20
       text @event.date_ranges[0].to_s, size: 10
       move_down 20
-      text t("events.participants.print_summary", number: @event.participants.count), size: 15
+      text t("events.participants.print_summary", count: @event.participants.count), size: 15
       
       if @participants_omnivorous_application_letters.any?
-        text t("events.participants.print_summary_omnivorous", number: @participants_omnivorous_application_letters.count), size: 15
+        text t("events.participants.print_summary_omnivorous", count: @participants_omnivorous_application_letters.count), size: 15
         @participants_omnivorous_application_letters.each do |p|
           move_down 5
           text p.user.name, size: 10
@@ -55,7 +55,7 @@ class ParticipantsPDF
       move_down 20
       
       if @participants_vegan_application_letters.any?
-        text t("events.participants.print_summary_vegan", number: @participants_vegan_application_letters.count), size: 15
+        text t("events.participants.print_summary_vegan", count: @participants_vegan_application_letters.count), size: 15
         @participants_vegan_application_letters.each do |p|
           move_down 5
           text p.user.name, size: 10
@@ -65,7 +65,7 @@ class ParticipantsPDF
       move_down 20
 
       if @participants_vegetarian_application_letters.any?
-        text t("events.participants.print_summary_vegetarian", number: @participants_vegetarian_application_letters.count), size: 15
+        text t("events.participants.print_summary_vegetarian", count: @participants_vegetarian_application_letters.count), size: 15
         @participants_vegetarian_application_letters.each do |p|
           move_down 5
           text p.user.name, size: 10
