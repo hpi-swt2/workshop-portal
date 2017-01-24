@@ -7,6 +7,7 @@
       <tr>
         <th><%=t '.table_name' %></th>
         <th><%=t '.table_type' %></th>
+        <th><%=t '.table_action' %></th>
       </tr>
       </thead>
       <tbody>
@@ -14,6 +15,14 @@
           <tr>
             <td><%= File.basename(file, File.extname(file))  %></td>
             <td><%= File.extname(file) %></td>
+            <td>
+              <%= form_tag(event_download_material_path(@event)) do %>
+                  <%= hidden_field_tag "file", File.basename(file) %>
+                  <%= submit_tag t('.download'),
+                                 class: 'btn btn-primary',
+                                 id: "material_upload_btn_#{@event.id}_#{File.basename(file)}"%>
+            </td>
+              <% end %>
           </tr>
       <% end %>
       </tbody>

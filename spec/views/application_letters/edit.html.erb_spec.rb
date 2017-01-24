@@ -10,6 +10,10 @@ RSpec.describe "application_letters/edit", type: :view do
 
     assert_select "form[action=?][method=?]", application_letter_path(@application_letter), "post" do
       assert_select "textarea#application_letter_motivation[name=?]", "application_letter[motivation]"
+      assert_select "input#custom_application_fields_", count: @application_letter.event.custom_application_fields.count
+      @application_letter.event.custom_application_fields.each { |field_name|
+        assert_select "label.control-label[for=custom_application_fields_]", field_name
+      }
     end
   end
 

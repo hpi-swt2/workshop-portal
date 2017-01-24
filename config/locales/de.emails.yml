@@ -2,8 +2,8 @@
 
 de:
   emails:
-    send_email:
-      sending_successful: 'Email wurde erfolgreich versendet'
+    templates:
+      templates: 'Vorlagen'
     email_form:
       further_recipients: 'Andere Empfänger'
       show_recipients: 'Sichtbar'
@@ -14,3 +14,9 @@ de:
       subject: 'Betreff'
       content: 'Inhalt'
       send: 'Senden'
+      save_template: 'Als Vorlage speichern'
+    submit:
+      sending_successful: 'Email wurde erfolgreich versendet'
+      sending_failed: 'Email konnte nicht versenden werden'
+      saving_successful: 'Vorlage erfolgreich gespeichert'
+      saving_failed: 'Vorlage konnte nicht gespeichert werden'
