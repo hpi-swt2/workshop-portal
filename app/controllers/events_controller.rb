@@ -7,7 +7,7 @@ class EventsController < ApplicationController
 
   # GET /events
   def index
-    @events = Event.sorted_by_start_date(!can?(:edit, Event)).reverse
+    @events = Event.sorted_by_start_date(!can?(:view_unpublished, Event))
   end
 
   # GET /events/1
@@ -16,7 +16,7 @@ class EventsController < ApplicationController
     @occupied_places = @event.compute_occupied_places
     @application_letters = filter_application_letters(@event.application_letters)
     @material_files = get_material_files(@event)
-    @selectable_statuses = [:pre_accepted,:rejected,:pending,:alternative]
+    @selectable_statuses = ["pre_accepted","rejected","pending","alternative"]
   end
 
   # GET /events/new
@@ -31,9 +31,6 @@ class EventsController < ApplicationController
   # POST /events
   def create
     @event = Event.new(event_params)
-
-    @event.draft = (params[:draft] != nil)
-
     if @event.save
       redirect_to @event, notice: I18n.t('.events.notices.created')
     else
@@ -44,9 +41,6 @@ class EventsController < ApplicationController
   # PATCH/PUT /events/1
   def update
     attrs = event_params
-
-    @event.draft = (params[:commit] == "draft")
-
     if @event.update(attrs)
       redirect_to @event, notice: I18n.t('events.notices.updated')
     else
@@ -234,7 +228,7 @@ class EventsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def event_params
-      params.require(:event).permit(:name, :description, :max_participants, :participants_are_unlimited, :kind, :organizer, :knowledge_level, :application_deadline, :custom_application_fields => [], date_ranges_attributes: [:start_date, :end_date, :id])
+      params.require(:event).permit(:name, :description, :max_participants, :participants_are_unlimited, :kind, :organizer, :knowledge_level, :application_deadline, :published, :custom_application_fields => [], date_ranges_attributes: [:start_date, :end_date, :id])
     end
 
     # Generate all names to print from the query-params

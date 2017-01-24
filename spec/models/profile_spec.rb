@@ -36,6 +36,14 @@ describe Profile do
     expect(profile.age).to eq(@age)
   end
 
+  it "returns correctly whether the profile owner is an adult or not" do
+    profile = FactoryGirl.build(:profile)
+    adult_profile = FactoryGirl.build(:adult_profile)
+
+    expect(profile.adult?).to be false
+    expect(adult_profile.adult?).to be true
+  end
+
   it "returns correct age in leap year edge case" do
     # Mock Date today method to return fixed (non leap year) date
     allow(Time).to receive(:now).and_return(Time.new(2017, 2, 28))

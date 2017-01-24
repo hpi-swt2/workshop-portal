@@ -52,7 +52,7 @@ RSpec.describe ApplicationLettersController, type: :controller do
       end
       it "assigns selectable statuses" do
         get :show, id: @application.to_param
-        expect(assigns(:selectable_statuses)).to eq([:pre_accepted,:rejected,:pending,:alternative])
+        expect(assigns(:selectable_statuses)).to eq(["pre_accepted","rejected","pending","alternative"])
       end
     end
 
@@ -72,6 +72,16 @@ RSpec.describe ApplicationLettersController, type: :controller do
       it "assigns the application deadline status as @application_deadline_exceeded" do
         get :check, id: @application.to_param, session: valid_session
         expect(assigns(:application_deadline_exceeded)).to eq(@application.after_deadline?)
+      end
+
+      it "sets the flashes if agreement_letters are missing" do
+        user = FactoryGirl.create(:user_with_profile)
+        event = FactoryGirl.create(:event)
+        FactoryGirl.create(:application_letter_accepted, user: user, event: event)
+        sign_in(user)
+
+        get :check, id: @application.to_param
+        expect(flash.now["warning"]).to_not be_empty
       end
     end
 

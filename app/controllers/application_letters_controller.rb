@@ -12,7 +12,7 @@ class ApplicationLettersController < ApplicationController
   # GET /applications/1
   def show
     @application_note = ApplicationNote.new
-    @selectable_statuses = [:pre_accepted,:rejected,:pending,:alternative]
+    @selectable_statuses = ["pre_accepted","rejected","pending","alternative"]
   end
 
   # GET /applications/new
@@ -26,7 +26,15 @@ class ApplicationLettersController < ApplicationController
       flash.keep(:event_id)
       return redirect_to new_profile_path, :alert => message
     end
+
     @application_letter = ApplicationLetter.new
+    last_application_letter = ApplicationLetter.where(user: current_user).order("created_at").last
+    if last_application_letter
+      attrs_to_fill_in = last_application_letter.attributes
+        .slice("grade", "coding_skills", "emergency_number", "vegetarian", "vegan", "allergic", "allergies")
+      @application_letter.attributes = attrs_to_fill_in
+      flash.now[:notice] = I18n.t('application_letters.fields_filled_in')
+    end
     authorize! :new, @application_letter
     if params[:event_id]
       @application_letter.event_id = params[:event_id]
@@ -36,6 +44,8 @@ class ApplicationLettersController < ApplicationController
   # GET /applications/1/check
   def check
     @application_deadline_exceeded = @application_letter.after_deadline?
+    flash[:application_id] = params[:id]
+    flash.keep(:application_id)
   end
 
   # GET /applications/1/edit
@@ -70,7 +80,16 @@ class ApplicationLettersController < ApplicationController
   # PATCH/PUT /applications/1/status
   def update_status
     if @application_letter.update_attributes(application_status_param)
-      redirect_to :back, notice: I18n.t('application_letters.successful_update') rescue ActionController::RedirectBackError redirect_to root_path
+      if request.xhr?
+        render json: {
+          free_places: I18n.t('events.applicants_overview.free_places',
+                              count: @application_letter.event.compute_free_places),
+          occupied_places: I18n.t('events.applicants_overview.occupied_places',
+                                  count: @application_letter.event.compute_occupied_places)
+        }
+      else
+        redirect_to :back, notice: I18n.t('application_letters.successful_update') rescue ActionController::RedirectBackError redirect_to root_path
+      end
     else
       render :edit
     end

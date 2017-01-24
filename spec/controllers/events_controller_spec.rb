@@ -74,7 +74,7 @@ RSpec.describe EventsController, type: :controller do
 
       it "assigns selectable statuses" do
         get :show, id: @event.to_param, session: valid_session
-        expect(assigns(:selectable_statuses)).to eq([:pre_accepted,:rejected,:pending,:alternative])
+        expect(assigns(:selectable_statuses)).to eq(["pre_accepted","rejected","pending","alternative"])
       end
     end
 
@@ -393,11 +393,10 @@ RSpec.describe EventsController, type: :controller do
         expect(text).to include(
           a.user.profile.name,
           a.user.profile.age_at_time(@event.start_date).to_s,
-          a.user.profile.gender,
+          I18n.t("profiles.genders.#{a.user.profile.gender}"),
           a.user.accepted_applications_count(@event).to_s,
           a.user.rejected_applications_count(@event).to_s,
           I18n.t("application_status.#{a.status}"),
-          a.user.profile.address,
           a.motivation
         )
         a.application_notes.each do |note|
