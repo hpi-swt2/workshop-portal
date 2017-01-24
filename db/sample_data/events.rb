@@ -16,6 +16,7 @@ def event_programmierkurs
       published: true,
       hidden: true,
       custom_application_fields: ['Lieblingsapp']
+
   )
 end
 
@@ -36,6 +37,7 @@ def event_mintcamp
       application_status_locked: false,
       hidden: false,
       published: true
+
   )
 end
 
@@ -56,6 +58,7 @@ def event_bechersaeuberungsevent
       published: true,
       hidden: false,
       custom_application_fields: ['Lieblings-Becherart', 'Kannst du eine eigene Spülmaschine mitbringen?']
+
   )
 end
 
@@ -74,6 +77,7 @@ def event_gongakrobatik
       application_status_locked: false,
       hidden: false,
       published: true
+
   )
 end
 

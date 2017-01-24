@@ -142,7 +142,7 @@ RSpec.describe ProfilesController, type: :controller do
       it "redirects to the created profile" do
         sign_in FactoryGirl.create(:user)
         post :create, profile: valid_attributes, session: valid_session
-        expect(response).to redirect_to(Profile.last)
+        expect(response).to redirect_to(edit_user_registration_path)
       end
     end
 

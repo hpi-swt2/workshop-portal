@@ -23,7 +23,13 @@ RSpec.describe "events/edit", type: :view do
     expect(rendered).to have_field("event_knowledge_level", :placeholder => "optional")
   end
 
-  it "should have a update button for events that haven't been published" do
+  it "should have a delete button" do
+    @event = assign(:event, FactoryGirl.create(:event))
+    render
+    assert_select 'a[data-method="delete"]'
+  end
+
+  it "should have an update button for events that haven't been published" do
     @event = assign(:event, FactoryGirl.create(:event, published: false))
     render
     assert_select "input[name=update]"

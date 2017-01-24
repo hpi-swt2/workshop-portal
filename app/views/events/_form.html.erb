@@ -135,6 +135,13 @@
       <% else %>
         <%= f.submit t('.update'), :name => 'update', :class => 'btn btn-primary' %>
       <% end %>
+      <% unless @event.new_record? %>
+        <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+            event_path(@event),
+            :method => 'delete',
+            :data => { :confirm => t('.confirm', :default => t("events.confirmation_prompts.confirm_delete", :default => 'Are you sure?')) },
+            :class => 'btn btn-danger' %>
+      <% end %>
     </div>
   </div>
 
