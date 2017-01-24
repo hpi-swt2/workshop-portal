@@ -59,6 +59,11 @@ describe Event do
   expect(@event.participants_by_agreement_letter).to eq([@user2, @user4, @user6, @user1, @user5, @user3])
   end
 
+  it "saves custom application fields serialized to the database" do
+    array = ['Field 1', 'Field 2']
+    event = FactoryGirl.create(:event, custom_application_fields: array)
+    expect(event.custom_application_fields).to eq(array)
+  end
 
   it "checks if there are unclassified applications_letters" do
     event = FactoryGirl.create(:event)
@@ -73,13 +78,14 @@ describe Event do
 
   it "computes the email addresses of the pre_accepted and the rejected applications" do
     event = FactoryGirl.create(:event)
-    accepted_application_letter_1 = FactoryGirl.create(:application_letter_pre_accepted, :event => event, :user => FactoryGirl.create(:user))
-    accepted_application_letter_2 = FactoryGirl.create(:application_letter_pre_accepted, :event => event, :user => FactoryGirl.create(:user))
-    accepted_application_letter_3 = FactoryGirl.create(:application_letter_pre_accepted, :event => event, :user => FactoryGirl.create(:user))
+    pre_accepted_application_letter_1 = FactoryGirl.create(:application_letter_pre_accepted, :event => event, :user => FactoryGirl.create(:user))
+    pre_accepted_application_letter_2 = FactoryGirl.create(:application_letter_pre_accepted, :event => event, :user => FactoryGirl.create(:user))
+    pre_accepted_application_letter_3 = FactoryGirl.create(:application_letter_pre_accepted, :event => event, :user => FactoryGirl.create(:user))
     rejected_application_letter = FactoryGirl.create(:application_letter_rejected, :event => event, :user => FactoryGirl.create(:user))
-    [accepted_application_letter_1, accepted_application_letter_2, accepted_application_letter_3, rejected_application_letter].each { |letter| event.application_letters.push(letter) }
-    expect(event.email_adresses_of_pre_accepted_applicants).to eq([accepted_application_letter_1.user.email, accepted_application_letter_2.user.email, accepted_application_letter_3.user.email].join(','))
-    expect(event.email_adresses_of_rejected_applicants).to eq([rejected_application_letter.user.email].join(','))
+    [pre_accepted_application_letter_1, pre_accepted_application_letter_2, pre_accepted_application_letter_3, rejected_application_letter].each { |letter| event.application_letters.push(letter) }
+
+    expect(event.email_addresses_of_type(:pre_accepted)).to eq([pre_accepted_application_letter_1.user.email, pre_accepted_application_letter_2.user.email, pre_accepted_application_letter_3.user.email].join(','))
+    expect(event.email_addresses_of_type(:rejected)).to eq([rejected_application_letter.user.email].join(','))
   end
 
   it "is either a camp or a workshop" do
@@ -165,16 +171,29 @@ describe Event do
     application_letter = FactoryGirl.create(:application_letter, user: FactoryGirl.create(:user), event: event)
     application_letter_accepted = FactoryGirl.create(:application_letter_accepted, user: FactoryGirl.create(:user), event: event)
     expect(event.compute_occupied_places).to eq(1)
-    application_letter_accepted_2 = FactoryGirl.create(:application_letter_accepted, user: FactoryGirl.create(:user), event: event)
+    application_letter_pre_accepted = FactoryGirl.create(:application_letter_pre_accepted, user: FactoryGirl.create(:user), event: event)
     expect(event.compute_occupied_places).to eq(2)
   end
 
-  it "generates a new email for acceptance" do
-    event = FactoryGirl.create(:event_with_accepted_applications)
-    email = event.generate_acceptances_email
-    expect(email).to have_attributes(hide_recipients: false, recipients: event.email_adresses_of_pre_accepted_applicants, reply_to: 'workshop.portal@hpi.de', subject: '', content: '')
-  end
+  describe "returns applicants email list" do
+    before :each do
+      @event = FactoryGirl.create(:event)
+    end
+    
+    it "returns email address only of the given type" do
+      @accepted_application = FactoryGirl.create(:application_letter_pre_accepted, event: @event, user: FactoryGirl.create(:user))
+      @rejected_application = FactoryGirl.create(:application_letter_rejected, event: @event, user: FactoryGirl.create(:user))
+      expect(@event.email_addresses_of_type(:pre_accepted)).to eq(@accepted_application.user.email)
+      expect(@event.email_addresses_of_type(:rejected)).to eq(@rejected_application.user.email)
+    end
 
+    it "correctly concatinates multiple email addresses" do
+      @application1 = FactoryGirl.create(:application_letter_accepted, event: @event, user: FactoryGirl.create(:user))
+      @application2 = FactoryGirl.create(:application_letter_accepted, event: @event, user: FactoryGirl.create(:user))
+      expect(@event.email_addresses_of_type(:accepted)).to eq(@application1.user.email + "," + @application2.user.email)
+    end
+  end
+  
   it "generates an application letter list ordered by first name" do
     @event = FactoryGirl.create(:event)
     @user1 = FactoryGirl.create(:user, email:'a@b.com')
@@ -203,12 +222,6 @@ describe Event do
     expect(@event.application_letters_ordered('unknown','desc')).to eq([@application2,@application1])
   end
 
-  it "generates a new email for rejections" do
-    event = FactoryGirl.create(:event_with_accepted_applications)
-    email = event.generate_rejections_email
-    expect(email).to have_attributes(hide_recipients: false, recipients: event.email_adresses_of_rejected_applicants, reply_to: 'workshop.portal@hpi.de', subject: '', content: '')
-  end
-
   it "pre accepts all its application letters" do
     event = FactoryGirl.create :event, :with_diverse_open_applications
     event.pre_accept_all_application_letters
@@ -222,6 +235,38 @@ describe Event do
     event.save
     event.lock_application_status
     expect(event.application_status_locked).to eq(true)
+  end
+
+  it "is in draft phase" do
+    event = FactoryGirl.build(:event, :in_draft_phase)
+    expect(event.phase).to eq(:draft)
+  end
+
+  it "is in application phase" do
+    event = FactoryGirl.build(:event, :in_application_phase)
+    expect(event.phase).to eq(:application)
+  end
+
+  it "is in selection phase" do
+    event = FactoryGirl.build(:event, :in_selection_phase)
+    expect(event.phase).to eq(:selection)
+  end
+
+  it "is in execution phase" do
+    event = FactoryGirl.build(:event, :in_execution_phase)
+    expect(event.phase).to eq(:execution)
+  end
+
+  it "is not after application deadline" do
+    event = FactoryGirl.build(:event)
+    event.application_deadline = Date.tomorrow
+    expect(event.after_deadline?).to eq(false)
+  end
+
+  it "is after application deadline" do
+    event = FactoryGirl.build(:event)
+    event.application_deadline = Date.yesterday
+    expect(event.after_deadline?).to eq(true)
   end
 
   it "can have unlimited participants" do

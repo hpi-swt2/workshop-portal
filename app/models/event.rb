@@ -17,6 +17,8 @@ class Event < ActiveRecord::Base
   UNREASONABLY_LONG_DATE_SPAN = 300
   TRUNCATE_DESCRIPTION_TEXT_LENGTH = 250
 
+  serialize :custom_application_fields, Array
+
   has_many :application_letters
   has_many :agreement_letters
   has_many :date_ranges
@@ -130,50 +132,13 @@ class Event < ActiveRecord::Base
     end
   end
 
-  # Returns a string of all email addresses of pre_accepted applications
+  # Returns a string of all email addresses of applications with given type
   #
-  # @param none
-  # @return [String] Concatenation of all email addresses of pre_accepted applications, seperated by ','
-  def email_adresses_of_pre_accepted_applicants
-    accepted_applications = application_letters.where(status: ApplicationLetter.statuses[:pre_accepted])
-    accepted_applications.map{ |application_letter| application_letter.user.email }.join(',')
-  end
-
-  # Returns a string of all email addresses of rejected applications
-  #
-  # @param none
-  # @return [String] Concatenation of all email addresses of rejected applications, seperated by ','
-  def email_adresses_of_rejected_applicants
-    rejected_applications = application_letters.where(status: ApplicationLetter.statuses[:rejected])
-    rejected_applications.map{ |applications_letter| applications_letter.user.email }.join(',')
-  end
-
-  # Returns a new acceptance email
-  #
-  # @param none
-  # @return [Email] new acceptance email
-  def generate_acceptances_email
-    email = Email.new
-    email.hide_recipients = false
-    email.recipients = email_adresses_of_pre_accepted_applicants
-    email.reply_to = 'workshop.portal@hpi.de'
-    email.subject = ''
-    email.content = ''
-    return email
-  end
-
-  # Returns a new rejection email
-  #
-  # @param none
-  # @return [Email] new rejection email
-  def generate_rejections_email
-    email = Email.new
-    email.hide_recipients = false
-    email.recipients = email_adresses_of_rejected_applicants
-    email.reply_to = 'workshop.portal@hpi.de'
-    email.subject = ''
-    email.content = ''
-    return email
+  # @param type [Type] the type of the email addresses that will be returned
+  # @return [String] Concatenation of all email addresses of applications with given type, seperated by ','
+  def email_addresses_of_type(type)
+    applications = application_letters.where(status: ApplicationLetter.statuses[type])
+    applications.map{ |application_letter| application_letter.user.email }.join(',')
   end
 
   # Returns the number of free places of the event, this value may be negative
@@ -200,7 +165,7 @@ class Event < ActiveRecord::Base
     update(application_status_locked: true)
   end
 
-  # Returns the current statse of the event (draft-, application-, selection- and execution-phase)
+  # Returns the current state of the event (draft-, application-, selection- and execution-phase)
   #
   # @param none
   # @return [Symbol] state
