@@ -18,7 +18,6 @@ class ApplicationController < ActionController::Base
     #       unless we want to write custom SQL joins (which
     #       we should if this becomes a perf problem), there is no
     #       other solution
-    add_missing_permission_flashes
 
     @events = Event.sorted_by_start_date(true)
       .select { |a| a.start_date > Time.now }
