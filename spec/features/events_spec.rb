@@ -120,12 +120,14 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     end
   end
 
-  scenario "logged in as Organizer I can change application status with radio buttons" do
+  scenario "logged in as Organizer I can change application status with radio buttons in selection phase" do
     login(:organizer)
-    @event.application_status_locked = false
-    @event.save
     @pupil = FactoryGirl.create(:profile)
     @application_letter = FactoryGirl.create(:application_letter, event: @event, user: @pupil.user)
+    @event.application_status_locked = false
+    @event.published = true
+    @event.application_deadline = Date.yesterday
+    @event.save
     visit event_path(@event)
     ApplicationLetter.statuses.keys.each do |new_status|
       choose(I18n.t "application_status.#{new_status}")
@@ -133,12 +135,15 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     end
   end
 
-  scenario "logged in as Organizer I can change application status with radio buttons without the page reloading", js: true do
+  scenario "logged in as Organizer I can change application status with radio buttons without the page reloading in selection phase", js: true do
     login(:organizer)
-    @event.application_status_locked = false
-    @event.save
     @pupil = FactoryGirl.create(:profile)
     @application_letter = FactoryGirl.create(:application_letter, event: @event, user: @pupil.user)
+    @event.application_status_locked = false
+    @event.published = true
+    @event.application_deadline = Date.yesterday
+    @event.save
+
     visit event_path(@event)
     find('label', text: I18n.t('application_status.accepted')).click
 
