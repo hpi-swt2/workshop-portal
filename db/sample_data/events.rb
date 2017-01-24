@@ -5,7 +5,7 @@ def event_programmierkurs
   )
 
   Event.new(
-      name: 'Android Programmierkurs (hidden)',
+      name: 'Android Programmierkurs',
       description: 'Ihr wolltet schon immer einmal eine eigene App programmieren? In diesem Workshop lernt ihr object-orientierte Programmierung am Beispiel von einer Android App.',
       max_participants: 25,
       organizer: 'HPI Schülerklub',
