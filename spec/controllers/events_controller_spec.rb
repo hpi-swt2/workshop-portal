@@ -168,8 +168,7 @@ RSpec.describe EventsController, type: :controller do
   describe "GET #show for hidden event as pupil"
     it "should redirect to new application letter page" do
       @event = FactoryGirl.create(:event, hidden: true)
-      @user = FactoryGirl.create(:user, role: :pupil)
-      @user.profile ||= FactoryGirl.create(:profile)
+      @user = FactoryGirl.create(:user_with_profile, role: :pupil)
       sign_in @user
 
       get :show, id: @event.to_param, session: valid_session
@@ -270,8 +269,7 @@ RSpec.describe EventsController, type: :controller do
 
   describe "POST #download_material" do
     before :each do
-      @user = FactoryGirl.create(:user, role: :coach)
-      @user.profile ||= FactoryGirl.create(:profile)
+      @user = FactoryGirl.create(:user_with_profile, role: :coach)
       sign_in @user
 
       filepath = Rails.root.join('spec/testfiles/actual.pdf')
