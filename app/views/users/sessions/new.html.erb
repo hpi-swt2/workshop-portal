@@ -54,7 +54,8 @@
           </div>
           <div class="row spacer-30"></div>
           <div class="panel panel-default devise-bs panel-body">
-            <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), html: { role: "form" }) do |f| %>
+            <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), html: { role: "form" }) do |f|  %>
+            <!-- #registration_path(resource_name), html: { role: "form" }) do |f| -->
               <div class="form-group">
                 <%= f.label :email %>
                 <%= f.email_field :email, autofocus: true, class: "form-control", id: "sign_up_email" %>
