@@ -269,6 +269,12 @@ describe User do
     expect(ability).to be_able_to(:destroy, Event)
   end
 
+  it "can view custom application fields as organizer" do
+    user = FactoryGirl.create(:user, role: :organizer)
+    ability = Ability.new(user)
+    expect(ability).to be_able_to(:view_custom_application_fields, Event)
+  end
+
   it "can create requests as pupil" do
     user = FactoryGirl.create(:user, role: :pupil)
     ability = Ability.new(user)
