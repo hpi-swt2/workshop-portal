@@ -10,6 +10,7 @@
 #  published        :boolean
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
+#  hidden           :boolean
 #
 
 FactoryGirl.define do
@@ -24,6 +25,7 @@ FactoryGirl.define do
     application_deadline Date.tomorrow
     custom_application_fields ["Field 1", "Field 2", "Field 3"]
     date_ranges { build_list :date_range, 1 }
+    hidden false
 
     trait :with_two_date_ranges do
       after(:build) do |event|
@@ -120,6 +122,7 @@ FactoryGirl.define do
       description "Event-Description"
       max_participants 20
       date_ranges { build_list :date_range, 1 }
+      hidden false
       transient do
         accepted_application_letters_count 5
         rejected_application_letters_count 5
