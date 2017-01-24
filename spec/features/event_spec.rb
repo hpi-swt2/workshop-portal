@@ -324,11 +324,10 @@ describe "Event", type: :feature do
       @users.each { |u| expect(strings).to include(u.profile.school) }
     end
 
-    it "executes the correct code when colors are selected" do
+    it "does not horribly crash and burn when colors are selected" do
       #testing if the actual colors are used is kinda hard
       all(:css, "#selected_ids_").each { |check| check.set(true) }
       check('show_color')
-      expect_any_instance_of(BadgesPDF).to receive(:create_color).exactly(@users.count).times
       click_button I18n.t('events.badges.print')
     end
 
