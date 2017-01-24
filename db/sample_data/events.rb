@@ -1,24 +1,3 @@
-def event_programmierkurs2
-  date_range_singleday = DateRange.create!(
-      start_date: Date.new(2017, 05, 04),
-      end_date: Date.new(2017, 05, 05)
-  )
-
-  Event.new(
-      name: 'Android Programmierkurs',
-      description: 'Ihr wolltet schon immer einmal eine eigene App programmieren? In diesem Workshop lernt ihr object-orientierte Programmierung am Beispiel von einer Android App.',
-      max_participants: 25,
-      organizer: 'HPI Schülerklub',
-      knowledge_level: 'Anfänger',
-      date_ranges: [date_range_singleday],
-      application_deadline: Date.tomorrow,
-      application_status_locked: false,
-      published: true,
-      hidden: false,
-      custom_application_fields: ['Lieblingsapp']
-  )
-end
-
 def event_programmierkurs
   date_range_singleday = DateRange.create!(
       start_date: Date.new(2017, 05, 04),
@@ -142,7 +121,7 @@ def event_bachlorpodium
       date_ranges: [date_range_singleday1, date_range_singleday2, date_range_singleday3], 
       application_deadline: Date.tomorrow,
       application_status_locked: false ,
-      hidden: false,
+      hidden: true,
       published: true
   )
 end

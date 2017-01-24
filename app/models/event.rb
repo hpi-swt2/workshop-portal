@@ -276,7 +276,7 @@ class Event < ActiveRecord::Base
   # if requested
   #
   # @param limit Maximum number of events to return
-  # @param only_public Set to true to not include drafts
+  # @param only_public Set to true to not include drafts and hidden events
   # @return List of events
   def self.sorted_by_start_date(only_public)
     (only_public ? Event.draft_is(false).where(hidden: false) : Event.all)
