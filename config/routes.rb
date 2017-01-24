@@ -17,16 +17,16 @@ Rails.application.routes.draw do
   end
   resources :events do
     resources :agreement_letters, only: [:create], shallow: true
-    get 'badges'
-    post 'badges' => 'events#print_badges', as: :print_badges
     get 'emails' => 'emails#show', as: :email_show
     post 'emails' => 'emails#submit', as: :email_submit
     post 'upload_material' => 'events#upload_material', as: :upload_material
+    post 'download_material' => 'events#download_material', as: :download_material
     member do
       get 'participants_pdf'
       get 'print_applications'
+      get 'badges'
+      post 'badges' => 'events#print_badges', as: :print_badges
     end
-    post 'download_material' => 'events#download_material', as: :download_material
   end
   resources :profiles, except: [:index, :destroy]
   devise_for :users, :controllers => {:registrations => "users/registrations"}

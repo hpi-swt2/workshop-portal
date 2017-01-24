@@ -18,9 +18,20 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # end
 
   # PUT /resource
-  # def update
-  #   super
-  # end
+  def update
+    unless params.fetch(:user, false) and params[:user].fetch(:profile, false)
+      return super
+    end
+    @user = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
+    @user.profile.update(params.require(:user).require(:profile).permit(Profile.allowed_params))
+
+    if @user.profile.save
+      redirect_to edit_user_registration_path, notice: I18n.t('profiles.successful_update')
+    else
+      render :edit
+    end
+  end
+
 
   # DELETE /resource
   # def destroy
@@ -47,6 +58,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # def configure_account_update_params
   #   devise_parameter_sanitizer.permit(:account_update, keys: [:attribute])
   # end
+
+  def after_update_path_for(resource)
+    edit_user_registration_path(resource)
+  end
 
   # The path used after sign up.
   def after_sign_up_path_for(resource)

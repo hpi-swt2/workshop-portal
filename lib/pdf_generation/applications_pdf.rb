@@ -4,8 +4,8 @@ class ApplicationsPDF
 
   # Generates a PDF file containing the details of every application for an event
   #
-  # param event [Event] the event whose applications are taken
-  # return [String] the generated PDF
+  # @param event [Event] the event whose applications are taken
+  # @return [String] the generated PDF
   def self.generate(event)
     self.new(event).create.render
   end
@@ -18,8 +18,8 @@ class ApplicationsPDF
 
   # Adds all necessary data and formatting to the ApplicationsPDF
   #
-  # param none
-  # return [ApplicationsPDF] self
+  # @param none
+  # @return [ApplicationsPDF] self
   def create
     create_overview
     @event.application_letters.each_with_index do |a,i|
