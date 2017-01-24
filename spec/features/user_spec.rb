@@ -51,6 +51,21 @@ RSpec.feature "Account creation", :type => :feature do
     expect(page).to have_content(new_mail)
   end
 
+  scenario "User changes password on user settings page" do
+    user = FactoryGirl.create(:user)
+    login_as(user)
+    new_password = "Barberini"
+
+    # Go to /users/edit
+    visit edit_user_registration_path
+    fill_in "password_user_password", :with => new_password
+    fill_in "password_user_password_confirmation", :with => new_password
+    fill_in "password_user_current_password", :with => user.password
+    find('#password_edit_user input[name="commit"]').click
+
+    expect(page).to have_css(".alert-success")
+  end
+
   scenario "User visits the 'user settings' page after having already logged off" do
     user = FactoryGirl.create(:user)
     login_as(user)
