@@ -34,7 +34,7 @@ RSpec.describe "events/index", type: :view do
     expect(rendered).to have_link(href: event_path(@event), class: 'btn-danger')
   end
 
-  it "should not display apply button if application deadline if over" do
+  it "should not display apply button if application deadline is over" do
     @event.application_deadline = Date.yesterday
     assign(:events, [@event])
     [:pupil, :coach, :organizer].each do |role|
@@ -44,7 +44,7 @@ RSpec.describe "events/index", type: :view do
     end
   end
 
-  it "should display button to view the application if application deadline if over for an event where the pupil has applied" do
+  it "should display button to view the application if application deadline is over for an event where the pupil has applied" do
     pupil = FactoryGirl.create(:user, role: :pupil)
     application_letter = FactoryGirl.create(:application_letter, user: pupil, event: @event)
     @event.application_deadline = Date.yesterday
