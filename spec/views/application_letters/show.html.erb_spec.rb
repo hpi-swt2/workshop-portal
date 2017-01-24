@@ -1,10 +1,12 @@
 require 'rails_helper'
+require 'request_helper'
 
 RSpec.describe "application_letters/show", type: :view do
   before(:each) do
     @application_letter = assign(:application_letter, FactoryGirl.create(:application_letter))
     @application_note = assign(:application_note, FactoryGirl.create(:application_note, application_letter: @application_letter))
     @application_letter.user.profile = FactoryGirl.build(:profile)
+
     render
   end
 

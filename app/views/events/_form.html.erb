@@ -21,13 +21,32 @@
       <%=f.error_span(:name) %>
     </div>
   </div>
+
   <div class="form-group">
     <%= f.label :description, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
-      <%= f.text_field :description, :class => 'form-control' %>
+      <%= f.text_area :description, :class => 'form-control', :id => 'description',  :placeholder => '', :rows => 20 %>
+      <script>
+        var placeholder = '## Untertitel \nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n \n ## Lernziele\n* a\n* b\n* c\n\n## Hinweise\n* a\n* b\n* c';
+        $("#description").attr('placeholder', placeholder);
+
+        $("#description").focus(function(){
+            if($(this).val() === placeholder){
+                $(this).attr('placeholder', '');
+            }
+        });
+
+        $("#description").blur(function(){
+            if($(this).val() ===''){
+                $(this).attr('placeholder', placeholder);
+            }    
+        });
+      </script>
       <%=f.error_span(:description) %>
+      Dieser Editor unterstüzt <a href="https://daringfireball.net/projects/markdown/syntax">Markdown</a>
     </div>
   </div>
+
   <div class="form-group">
     <%= f.label :max_participants, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
