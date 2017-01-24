@@ -43,6 +43,8 @@ class ApplicationLettersController < ApplicationController
   # GET /applications/1/check
   def check
     @application_deadline_exceeded = @application_letter.after_deadline?
+    flash[:application_id] = params[:id]
+    flash.keep(:application_id)
   end
 
   # GET /applications/1/edit
