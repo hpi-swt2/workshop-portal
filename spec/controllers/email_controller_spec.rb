@@ -16,17 +16,17 @@ RSpec.describe EmailsController, type: :controller do
     context "with valid accepted applications" do
       before :each do
         @application = FactoryGirl.create(:application_letter_accepted, event: @event, user: FactoryGirl.build(:user))
-        @template = FactoryGirl.create(:email_template_accepted)
+        @template = FactoryGirl.create(:email_template_acceptance)
       end
 
       it "sets @email with the email of the accepted application" do
-        get :show, event_id: @event.id, status: :accepted
+        get :show, event_id: @event.id, status: :acceptance
         expect(assigns(:email)).to be_a(Email)
         expect(assigns(:email).recipients).to eq(@application.user.email)
       end
 
       it "sets @template with template for accepted emails" do
-        get :show, event_id: @event.id, status: :accepted
+        get :show, event_id: @event.id, status: :acceptance
         expect(assigns(:templates)).to eq([@template])
       end
     end
@@ -34,17 +34,17 @@ RSpec.describe EmailsController, type: :controller do
     context "with valid rejected applications" do
       before :each do
         @application = FactoryGirl.create(:application_letter_rejected, event: @event, user: FactoryGirl.build(:user))
-        @template = FactoryGirl.create(:email_template_rejected)
+        @template = FactoryGirl.create(:email_template_rejection)
       end
 
       it "sets @email with the email of the rejected application" do
-        get :show, event_id: @event.id, status: :rejected
+        get :show, event_id: @event.id, status: :rejection
         expect(assigns(:email)).to be_a(Email)
         expect(assigns(:email).recipients).to eq(@application.user.email)
       end
 
       it "sets @template with template for rejected emails" do
-        get :show, event_id: @event.id, status: :rejected
+        get :show, event_id: @event.id, status: :rejection
         expect(assigns(:templates)).to eq([@template])
       end
     end
@@ -102,12 +102,12 @@ RSpec.describe EmailsController, type: :controller do
 
       it "saves the current email as template" do
         expect {
-          post :submit, save: I18n.t('.emails.email_form.save_template'), event_id: @event.id, email: @email, status: :accepted
+          post :submit, save: I18n.t('.emails.email_form.save_template'), event_id: @event.id, email: @email, status: :acceptance
         }.to change(EmailTemplate, :count).by(1)
       end
 
       it "shows success message" do
-        post :submit, save: I18n.t('.emails.email_form.save_template'), event_id: @event.id, email: @email, status: :accepted
+        post :submit, save: I18n.t('.emails.email_form.save_template'), event_id: @event.id, email: @email, status: :acceptance
         expect(flash[:success]).to eq(I18n.t('.emails.submit.saving_successful'))
       end
     end
@@ -119,12 +119,12 @@ RSpec.describe EmailsController, type: :controller do
 
       it "does not save the current email as template" do
         expect {
-          post :submit, save: I18n.t('.emails.email_form.save_template'), event_id: @event.id, email: @email, status: :accepted
+          post :submit, save: I18n.t('.emails.email_form.save_template'), event_id: @event.id, email: @email, status: :acceptance
         }.to change(EmailTemplate, :count).by(0)
       end
 
       it "shows error message" do
-        post :submit, save: I18n.t('.emails.email_form.save_template'), event_id: @event.id, email: @email, status: :accepted
+        post :submit, save: I18n.t('.emails.email_form.save_template'), event_id: @event.id, email: @email, status: :acceptance
         expect(flash[:alert]).to eq(I18n.t('.emails.submit.saving_failed'))
       end
     end
