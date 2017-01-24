@@ -23,11 +23,9 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  has_one :profile, autosave: true
+  has_one :profile
   has_many :agreement_letters
   has_many :application_letters
-
-  accepts_nested_attributes_for :profile
 
   before_create :set_default_role
 

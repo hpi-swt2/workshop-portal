@@ -60,13 +60,13 @@
   <div class="panel-body">
     <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :namespace => 'email', :html => { :method => :put, :class => 'form-horizontal' }) do |f| %>
         <div class="form-group">
-          <%= f.label :email, :class => 'control-label col-lg-2' %>
+          <%= f.label :email, :class => 'control-label col-lg-2 required' %>
           <div class="col-lg-10">
             <%= f.email_field :email, autofocus: true, class: "form-control" %>
           </div>
         </div>
         <div class="form-group">
-          <%= f.label :current_password, :class => 'control-label col-lg-2' %>
+          <%= f.label :current_password, :class => 'control-label col-lg-2 required' %>
           <div class="col-lg-10">
             <%= f.password_field :current_password, class: "form-control" %>
             <span class="help-block">
@@ -74,6 +74,12 @@
             </span>
           </div>
         </div>
+
+        <div class="text-right col-lg-12" >
+          <label class="required"> </label>
+          <%= t("errors.messages.required") %>
+        </div>
+
         <div class="form-group">
           <div class="col-lg-10 col-lg-offset-2">
             <%= f.submit t('.update', :default => "Update"), class: "btn btn-primary" %>
@@ -89,7 +95,7 @@
   <div class="panel-body">
     <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :namespace => 'password', :html => { :method => :put, :class => 'form-horizontal' }) do |f| %>
         <div class="form-group">
-          <%= f.label :password, :class => 'control-label col-lg-2' %>
+          <%= f.label :password, :class => 'control-label col-lg-2 required' %>
           <div class="col-lg-10">
             <%= f.password_field :password, :autocomplete => "off", class: "form-control" %>
             <span class="help-block">
@@ -98,7 +104,7 @@
           </div>
         </div>
         <div class="form-group">
-          <%= f.label :password_confirmation, :class => 'control-label col-lg-2' %>
+          <%= f.label :password_confirmation, :class => 'control-label col-lg-2 required' %>
           <div class="col-lg-10">
             <%= f.password_field :password_confirmation, class: "form-control"  %>
             <span class="help-block">
@@ -107,7 +113,7 @@
           </div>
         </div>
         <div class="form-group">
-          <%= f.label :current_password, :class => 'control-label col-lg-2' %>
+          <%= f.label :current_password, :class => 'control-label col-lg-2 required' %>
           <div class="col-lg-10">
             <%= f.password_field :current_password, class: "form-control" %>
             <span class="help-block">
@@ -115,6 +121,12 @@
             </span>
           </div>
         </div>
+
+        <div class="text-right col-lg-12" >
+          <label class="required"> </label>
+          <%= t("errors.messages.required") %>
+        </div>
+
         <div class="form-group">
           <div class="col-lg-10 col-lg-offset-2">
             <%= f.submit t('.update', :default => "Update"), class: "btn btn-primary" %>

@@ -1,6 +1,6 @@
 class Users::RegistrationsController < Devise::RegistrationsController
-  # before_action :configure_sign_up_params, only: [:create]
-  # before_action :configure_account_update_params, only: [:update]
+# before_action :configure_sign_up_params, only: [:create]
+# before_action :configure_account_update_params, only: [:update]
 
   # GET /resource/sign_up
   # def new
@@ -19,11 +19,11 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # PUT /resource
   def update
-    unless params.fetch(:user, false) and params[:user].fetch(:profile_attributes, false)
+    unless params.fetch(:user, false) and params[:user].fetch(:profile, false)
       return super
     end
     @user = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
-    @user.profile.update(params.require(:user).require(:profile_attributes).permit(Profile.allowed_params))
+    @user.profile.update(params.require(:user).require(:profile).permit(Profile.allowed_params))
 
     if @user.profile.save
       redirect_to edit_user_registration_path, notice: I18n.t('profiles.successful_update')
@@ -68,8 +68,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
     new_profile_path
   end
 
-# The path used after sign up for inactive accounts.
-# def after_inactive_sign_up_path_for(resource)
-#   super(resource)
-# end
+  # The path used after sign up for inactive accounts.
+  # def after_inactive_sign_up_path_for(resource)
+  #   super(resource)
+  # end
 end

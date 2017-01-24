@@ -10,7 +10,7 @@
 class Profile < ActiveRecord::Base
   POSSIBLE_GENDERS = ['male', 'female', 'other']
   
-  belongs_to :user, autosave: true
+  belongs_to :user
 
   validates :user, presence: true
   validates_presence_of :first_name, :last_name, :gender, :birth_date, :school, :street_name, :zip_code, :city, :state, :country
@@ -60,6 +60,10 @@ class Profile < ActiveRecord::Base
     street_name + ", " + zip_code + " " +  city + ", " + state + ", " + country
   end
 
+  # Returns a list of allowed parameters.
+  #
+  # @param none
+  # @return [Symbol] List of parameters
   def self.allowed_params
     [:first_name, :last_name, :gender, :birth_date, :school, :street_name, :zip_code, :city, :state, :country, :graduates_school_in]
   end
