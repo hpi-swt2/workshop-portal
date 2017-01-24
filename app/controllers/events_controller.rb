@@ -8,12 +8,8 @@ class EventsController < ApplicationController
   # GET /events
   def index
     @events = Event.sorted_by_start_date(false)
-    if !can? :view_hidden, Event
-      @events = @events.select{|event| event.hidden == false}
-    end
-    if !can? :view_unpublished, Event
-      @events = @events.select{|event| event.published == true}
-    end
+    @events = @events.select{|event| event.hidden == false} unless can? :view_hidden, Event
+    @events = @events.select{|event| event.published == true} unless can? :view_unpublished, Event
   end
 
   # GET /events/1
