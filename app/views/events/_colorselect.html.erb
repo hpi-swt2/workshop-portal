@@ -1,0 +1,15 @@
+<%= form_for participant_group, url: participant_group_path(participant_group.id), method: :patch do |f| %>
+  <%= f.select(
+    :group,
+    options_for_select(
+      ParticipantGroup::GROUPS.map { |key, value|
+        [I18n.t("participant_groups.options.#{value}"),
+        key,
+        {'data-color' => '#' + value}]
+      },
+      selected: participant_group.group
+    ),
+    {},
+    { onchange: 'this.form.submit()', class: 'colorselector', autocomplete: 'off' }
+  ) %>
+<% end %>

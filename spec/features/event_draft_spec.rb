@@ -7,7 +7,7 @@ RSpec.feature "Draft events", :type => :feature do
 
     visit new_event_path
     fill_in "event_name", :with => @event.name
-    fill_in "event_description", :with => @event.description
+    fill_in "description", :with => @event.description
     fill_in "event_max_participants", :with => @event.max_participants
     fill_in "event_application_deadline", :with => @event.application_deadline
     fill_in "event[date_ranges_attributes][][start_date]", with: Date.current.next_day(2)
