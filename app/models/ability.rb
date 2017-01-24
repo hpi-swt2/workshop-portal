@@ -57,7 +57,7 @@ class Ability
       can [:index, :show], Profile
       can [:index, :show, :view_and_add_notes, :update_status], ApplicationLetter
       cannot :update, ApplicationLetter
-      can [:view_applicants, :edit_applicants, :view_participants, :print_applications, :manage, :view_material, :upload_material, :print_agreement_letters, :download_material, :view_unpublished, :view_hidden], Event
+      can [:view_applicants, :edit_applicants, :view_participants, :print_applications, :print_badges, :manage, :view_material, :upload_material, :print_agreement_letters, :download_material, :view_unpublished, :view_hidden], Event
       can :send_email, Email
       can :manage, Request
       can [:update], ParticipantGroup

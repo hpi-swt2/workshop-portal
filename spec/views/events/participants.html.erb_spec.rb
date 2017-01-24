@@ -49,6 +49,17 @@ RSpec.describe "events/participants", type: :view do
     expect(rendered).to have_text(t(:unnecessary, scope:'events.participants'))
   end
 
+  it "displays print badges button" do
+    render
+    expect(rendered).to have_link(t(:print_button_label, scope: 'events.badges', disabled: false))
+  end
+
+  it "disables the print badges button when there are no participants" do
+    @participants = []
+    render
+    expect(rendered).to have_link(t(:print_button_label, scope: 'events.badges', disabled: true))
+  end
+
   it "displays correct groups" do
     @user = FactoryGirl.create(:user)
     @profile = FactoryGirl.create(:profile, user: @user)

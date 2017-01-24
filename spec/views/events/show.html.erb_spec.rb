@@ -59,11 +59,6 @@ RSpec.describe "events/show", type: :view do
     expect(rendered).to have_link(t(:print_all, scope: 'events.applicants_overview'))
   end
 
-  it "displays print badges button" do
-    render
-    expect(rendered).to have_link(t(:print_button_label, scope: 'events.badges'))
-  end
-
   it "should not display accept-all-button for non-organizers" do
     @event.max_participants = Float::INFINITY
     [:coach, :student].each do | each |
