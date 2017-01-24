@@ -26,9 +26,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
     else
       clean_up_passwords resource
       set_minimum_password_length
-      resource.errors.full_messages.each {|x| flash[x] = x} # Rails 4 simple way
-      respond_with resource
-      #respond_with_navigational(resource) { render_with_scope :new }
+      resource.errors.full_messages.each {|x| flash["error"] = x}
+      redirect_to new_user_session_path(resource)
     end
   end
 
