@@ -9,6 +9,20 @@ describe "Event", type: :feature do
       expect(page).to have_current_path(event_path(event))
     end
 
+    it "should have a link to an event archive" do
+      visit events_path
+      expect(page).to have_link(events_archive_path)
+    end
+
+    it "should not list past events" do
+      currentEvent = FactoryGirl.create :event
+      pastEvent = FactoryGirl.create :event, :past
+
+      visit events_path
+      expect(page).to have_text(currentEvent.name)
+      expect(page).to_not have_text(pastEvent.name)
+    end
+
     it "should mark an event as draft by showing a label" do
       login_as(FactoryGirl.create(:user, role: :organizer), :scope => :user)
 
