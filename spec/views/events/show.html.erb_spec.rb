@@ -90,6 +90,37 @@ RSpec.describe "events/show", type: :view do
     expect(rendered).to have_button(t(:download, scope: 'events.material_area'))
   end
 
+  it "does not display apply button when application deadline is over" do
+    @event.application_deadline = Date.yesterday
+    [:pupil, :coach, :organizer].each do |role|
+      sign_in FactoryGirl.create(:user, role: role)
+      render
+      expect(rendered).to_not have_link(I18n.t("helpers.links.apply"))
+    end
+  end
+
+  it "displays a button to view the application if application deadline if over for an event where the pupil has applied" do
+    pupil = FactoryGirl.create(:user, role: :pupil)
+    application_letter = FactoryGirl.create(:application_letter, user: pupil, event: @event)
+    @event.application_deadline = Date.yesterday
+    sign_in pupil
+    render
+    expect(rendered).to have_link(I18n.t("helpers.links.show_application"), href: check_application_letter_path(application_letter))
+  end
+
+  it "should not display radio buttons to change application statuses if the event is in application state" do
+    @event = FactoryGirl.create(:event, :in_application_phase)
+    @application_letter = FactoryGirl.create(:application_letter, user: FactoryGirl.create(:user, role: :pupil), event: @event)
+    @event.application_letters.push(@application_letter)
+    [:pupil, :coach, :organizer].each do |role|
+      sign_in FactoryGirl.create(:user, role: role)
+      render
+      ApplicationLetter.statuses.keys.each do |status|
+        expect(rendered).to_not have_link(I18n.t("application_status.#{status}"))
+      end
+    end
+  end
+  
   it "displays correct buttons in draft phase" do
     @event = assign(:event, FactoryGirl.create(:event, :in_draft_phase))
     sign_in(FactoryGirl.create(:user, role: :organizer))

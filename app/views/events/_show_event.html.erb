@@ -36,6 +36,5 @@
   <% end %>
 </dl>
 <% if can? :apply, Event %>
-  <%= link_to t('.new', :default => t("helpers.links.apply")), new_application_letter_path(:event_id => @event.id),
-                      :class => 'btn btn-info' %>
+    <%= render :partial => 'apply_button', :locals => {event: @event} %>
 <% end %>

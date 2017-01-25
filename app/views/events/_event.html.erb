@@ -29,7 +29,7 @@
 
       <div class="pull-right">
         <% if can? :apply, Event %>
-            <%= link_to t('helpers.links.apply'), new_application_letter_path(:event_id => event.id), class: "btn btn-success btn-sm" %>
+            <%= render :partial => 'events/apply_button', :locals => {event: event} %>
         <% end %>
 
         <%= link_to edit_event_path(event),
