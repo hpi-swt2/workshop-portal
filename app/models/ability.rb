@@ -43,7 +43,7 @@ class Ability
       # Pupils can upload their letters of agreement
       can [:create], AgreementLetter
       can [:new, :create], Request
-      can [:apply], Event
+      can :apply, Event
     end
     if user.role? :coach
       # Coaches can view Applications and participants for and view and upload materials for Event
@@ -52,7 +52,7 @@ class Ability
       can [:print_applications], Event
       can :manage, Request
       cannot [:check], ApplicationLetter
-      cannot [:apply], Event
+      cannot :apply, Event
     end
     if user.role? :organizer
       can [:index, :show], Profile
@@ -61,7 +61,7 @@ class Ability
       # Organizers can view, edit and print Applications, view participants for, view and upload materials for, print agreement letters for and manage Events
       can [:view_applicants, :edit_applicants, :view_participants, :print_applications, :manage, :view_material, :upload_material, :print_agreement_letters], Event
       can :manage, Request
-      cannot [:apply], Event
+      cannot :apply, Event
     end
     if user.role? :admin
       can :manage, :all
