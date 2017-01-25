@@ -8,11 +8,11 @@ RSpec.feature "Account creation", :type => :feature do
 
     password = "mybirthdate"
     # http://www.rubydoc.info/github/jnicklas/capybara/Capybara/Node/Actions:fill_in
-    fill_in "user_email", :with => "first.last@example.com"
-    fill_in "user_password", :with => password
-    fill_in "user_password_confirmation", :with => password
+    fill_in "sign_up_email", :with => "first.last@example.com"
+    fill_in "sign_up_password", :with => password
+    fill_in "sign_up_password_confirmation", :with => password
     # http://www.rubydoc.info/github/jnicklas/capybara/Capybara%2FNode%2FFinders%3Afind
-    find('input[name="commit"]').click
+    find('input[id="sign_up_submit"]').click
 
     # Show success alert
     # http://www.rubydoc.info/github/jnicklas/capybara/master/Capybara/RSpecMatchers#have_css-instance_method
@@ -23,12 +23,29 @@ RSpec.feature "Account creation", :type => :feature do
     expect(user.role).to eq('pupil')
   end
 
+  scenario "User makes a form error while signing up" do
+    visit new_user_registration_path
+
+    password = "mybirthdate"
+    fill_in "sign_up_email", :with => "first.last@example.com"
+    fill_in "sign_up_password", :with => password
+    fill_in "sign_up_password_confirmation", :with => 'somethingelse'
+    
+    find('input[id="sign_up_submit"]').click
+
+    # Show error alert
+    expect(page).to have_css(".alert-danger")
+    # Make sure the user does not exist
+    expect(User.where(email: 'first.last@example.com')).not_to exist
+    expect(current_path).to eq new_user_session_path
+  end
+
   scenario "User logs in with valid credentials and is redirected to the index page" do
     user = FactoryGirl.create(:user)
     visit new_user_session_path
-    fill_in "user_email", :with => user.email
-    fill_in "user_password", :with => user.password
-    find('input[name="commit"]').click
+    fill_in "login_email", :with => user.email
+    fill_in "login_password", :with => user.password
+    find('input[id="login_submit"]').click
     # Redirected to index page
     expect(page.current_path).to eq(root_path)
     expect(page).to have_css(".alert-success")
@@ -41,14 +58,68 @@ RSpec.feature "Account creation", :type => :feature do
 
     # Go to /users/edit
     visit edit_user_registration_path
-    fill_in "user_email", :with => new_mail
-    fill_in "user_current_password", :with => user.password
-    find('input[name="commit"]').click
+    fill_in "email_user_email", :with => new_mail
+    fill_in "email_user_current_password", :with => user.password
+    find('#email_edit_user input[name="commit"]').click
 
     expect(page).to have_css(".alert-success")
 
     visit edit_user_registration_path
     expect(page).to have_content(new_mail)
+  end
+
+  scenario "User changes password on user settings page" do
+    user = FactoryGirl.create(:user)
+    login_as(user)
+    new_password = "Barberini"
+
+    # Go to /users/edit
+    visit edit_user_registration_path
+    fill_in "password_user_password", :with => new_password
+    fill_in "password_user_password_confirmation", :with => new_password
+    fill_in "password_user_current_password", :with => user.password
+    find('#password_edit_user input[name="commit"]').click
+
+    expect(page).to have_css(".alert-success")
+  end
+
+  scenario "User has no profile and visits user settings page" do
+    user = FactoryGirl.create(:user)
+    login_as(user)
+
+    # Go to /users/edit
+    visit edit_user_registration_path
+    expect(page).to_not have_field("profile_user_profile_first_name")
+    find('#create_profile_btn').click
+
+    expect(page).to have_text(I18n.t('helpers.titles.new', :model => Profile.model_name.human.titleize))
+  end
+
+  scenario "User changes profile on user settings page" do
+    user = FactoryGirl.create(:user_with_profile)
+    login_as(user)
+    new_name = "Günther"
+
+    # Go to /users/edit
+    visit edit_user_registration_path
+    fill_in "profile_user_profile_first_name", :with => new_name
+    find('#profile_edit_user input[name="commit"]').click
+
+    expect(page).to have_css(".alert-success")
+    visit edit_user_registration_path
+    expect(page).to have_content(new_name)
+  end
+
+  scenario "User changes profile on user settings page but provides invalid data" do
+    user = FactoryGirl.create(:user_with_profile)
+    login_as(user)
+
+    # Go to /users/edit
+    visit edit_user_registration_path
+    fill_in "profile_user_profile_first_name", :with => ''
+    find('#profile_edit_user input[name="commit"]').click
+
+    expect(page).to have_css(".alert-danger")
   end
 
   scenario "User visits the 'user settings' page after having already logged off" do

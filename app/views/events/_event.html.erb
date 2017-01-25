@@ -10,6 +10,7 @@
         <%= event.name %>
         <small>
           <%= tag_label t('activerecord.attributes.event.draft'), :default if not event.published and can? :view_unpublished, Event %>
+          <%= tag_label t('activerecord.attributes.event.hidden'), :default if event.hidden and can? :view_hidden, Event %>
           <%= tag_label t('events.notices.past_event'), :default if event.is_past %>
         </small>
       </h3>

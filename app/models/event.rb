@@ -11,6 +11,7 @@
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  application_status_locked  :boolean
+#  hidden           :boolean
 #
 
 class Event < ActiveRecord::Base
@@ -21,8 +22,15 @@ class Event < ActiveRecord::Base
 
   has_many :application_letters
   has_many :agreement_letters
+  has_many :participant_groups
   has_many :date_ranges
   accepts_nested_attributes_for :date_ranges
+  validates :max_participants, numericality: { only_integer: true, greater_than: 0 }
+  validate :has_date_ranges
+  validates_presence_of :application_deadline
+  validate :application_deadline_before_start_of_event
+  validates :hidden, inclusion: { in: [true, false] }
+  validates :hidden, exclusion: { in: [nil] }
 
   # Setter for max_participants
   # @param [Int Float] the max number of participants for the event or infinity if it is not limited
@@ -55,10 +63,6 @@ class Event < ActiveRecord::Base
     @participants.sort { |x, y| self.compare_participants_by_agreement(x,y) }
   end
 
-  validates :max_participants, numericality: { only_integer: true, greater_than: 0 }
-  validate :has_date_ranges
-  validates_presence_of :application_deadline
-  validate :application_deadline_before_start_of_event
 
 
   # @return the minimum start_date over all date ranges
@@ -102,6 +106,18 @@ class Event < ActiveRecord::Base
   def participants
     accepted_applications = application_letters.where(status: ApplicationLetter.statuses[:accepted])
     accepted_applications.collect { |a| a.user }
+  end
+
+  # Returns the participant group for this event for a given participant (user). If it doesn't exist, it is created
+  #
+  # @param user [User] the user whose participant group we want
+  # @return [ParticipantGroup] the user's participant group
+  def participant_group_for(user)
+    participant_group = self.participant_groups.find_by(user: user)
+    if participant_group.nil?
+      participant_group = ParticipantGroup.create(event: self, user: user, group: ParticipantGroup::GROUPS.default)
+    end
+    participant_group
   end
 
   # Returns the agreement letter a user submitted for this event
@@ -260,10 +276,10 @@ class Event < ActiveRecord::Base
   # if requested
   #
   # @param limit Maximum number of events to return
-  # @param only_public Set to true to not include drafts
+  # @param only_public Set to true to not include drafts and hidden events
   # @return List of events
   def self.sorted_by_start_date(only_public)
-    (only_public ? Event.draft_is(false) : Event.all)
+    (only_public ? Event.draft_is(false).where(hidden: false) : Event.all)
       .sort_by(&:start_date)
   end
 

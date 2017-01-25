@@ -127,6 +127,16 @@ describe User do
 
       expect(ability).to be_able_to(:download_material, Event)
     end
+
+    it "cannot delete applications as #{role}" do
+      user = FactoryGirl.create(:user, role: role)
+      another_user = FactoryGirl.create(:user)
+      another_application = FactoryGirl.create(:application_letter, user: another_user)
+      ability = Ability.new(user)
+
+
+      expect(ability).to_not be_able_to(:destroy, another_application)
+    end
   end
 
   it "can download an participants agreement letters as organizer" do
@@ -134,6 +144,13 @@ describe User do
     ability = Ability.new(user)
 
     expect(ability).to be_able_to(:print_agreement_letters, Event)
+  end
+
+  it "can print pupils' badges as organizer" do
+    user = FactoryGirl.create(:user, role: :organizer)
+    ability = Ability.new(user)
+
+    expect(ability).to be_able_to(:print_badges, Event)
   end
 
   it "cannot view and add notes to application letters as pupil" do
@@ -218,6 +235,12 @@ describe User do
       ability = Ability.new(user)
 
       expect(ability).to_not be_able_to(:update_status, ApplicationLetter)
+    end
+
+    it "cannot update application letter status as #{role}" do
+      user = FactoryGirl.create(:user, role: role)
+      ability = Ability.new(user)
+      expect(ability).to_not be_able_to(:print_badges, Event)
     end
   end
 
