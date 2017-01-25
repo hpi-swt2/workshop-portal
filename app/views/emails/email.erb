@@ -1,0 +1,11 @@
+<%- model_class = Email -%>
+<div class="page-header">
+</div>
+<div>
+  <div class="email-form col-md-8">
+    <%= render partial: 'emails/email_form', locals: { email: @email } %>
+  </div>
+  <div class="email-templates col-md-4">
+    <%= render partial: 'emails/templates', locals: { template: @templates } %>
+  </div>
+</div>

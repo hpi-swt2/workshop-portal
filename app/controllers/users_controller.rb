@@ -4,14 +4,20 @@ class UsersController < ApplicationController
 
   # GET /users
   def index
-    @users = User.all.paginate(:page => params[:page], :per_page => 5)
+    authorize! :index, User
+    @users = User.with_profiles.paginate(:page => params[:page], :per_page => 20)
     if params[:search]
-      @users = User.search(params[:search]).paginate(:page => params[:page], :per_page => 5)
+      @users = User.search(params[:search]).paginate(:page => params[:page], :per_page => 20)
     end
   end
 
-  # PATCH/PUT /users/1
+  # PATCH/PUT /users/1/role
   def update_role
+    authorize! :update_role, @user
+    if user_params[:role] == "admin"
+      authorize! :update_role_to_admin, @user
+    end
+
     if @user.update(user_params)
       redirect_to :back, notice: I18n.t('users.successful_role_update')
     end

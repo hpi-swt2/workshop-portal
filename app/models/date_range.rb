@@ -35,7 +35,7 @@ class DateRange < ActiveRecord::Base
 
   def to_s
     if start_date == end_date
-      start_date
+      I18n.l(start_date)
     else
       I18n.l(start_date) + ' ' + I18n.t('date_range.pronouns.to') + ' ' + I18n.l(end_date)
     end

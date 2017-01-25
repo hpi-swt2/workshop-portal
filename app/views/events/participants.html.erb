@@ -7,12 +7,13 @@
   <%= render :partial => 'show_event' %>
 
   <h1><%= t '.participants' %></h1>
-  <%= form_tag(event_path(@event) + "/participants/agreement_letters") do %>
+
     <table class="table table-striped">
       <tr>
         <th><%= t 'activerecord.attributes.profile.name' %></th>
         <th><%= t 'activerecord.attributes.profile.email' %></th>
         <th><%= t 'agreement_letters.agreement_letter' %></th>
+        <th><%= sort_caret(ParticipantGroup.human_attribute_name(:group), :group) %></th>
         <% if can? :print_agreement_letters, Event and @has_agreement_letters %>
           <th>
             <label>
@@ -23,7 +24,8 @@
         <% end %>
       </tr>
 
-      <% @participants.each do |participant| %>
+      <% sort_participants
+      @participants.each do |participant| %>
       <tr>
 
         <td>
@@ -41,6 +43,9 @@
             <span class="text-danger"><%= t '.unavailable' %></span>
           <% end %>
         </td>
+        <td>
+          <%= render 'colorselect', participant_group: @event.participant_group_for(participant) %>
+        </td>
         <% if can? :print_agreement_letters, Event and @has_agreement_letters %>
           <td>
             <%= check_box_tag('selected_participants[]', participant.id, false, class: 'participant_selection') %>
@@ -51,14 +56,30 @@
     </table>
 
     <button class="btn btn-default" type="button" data-toggle="modal" data-target="#print_participant_modal" id="open_print_modal">Teilnehmerliste (PDF)</button>
-    <% if can? :print_agreement_letters, Event and @has_agreement_letters %>
-      <div id="participants_download_submit_button">
-      <%= submit_tag t('events.agreement_letters_download.download_all_as'), name: "download_all", class: "btn btn-default" %>
-      <%= select_tag :download_type, options_for_select([['pdf'], ['zip']]) %>
-      </div>
+    <%= form_tag(event_path(@event) + "/participants/agreement_letters", { method: :post, id: 'downloadLettersForm' }) do %>
+
+      <% if can? :print_agreement_letters, Event and @has_agreement_letters %>
+        <div id="participants_download_submit_button">
+        <%= submit_tag t('events.agreement_letters_download.download_all_as'), name: "download_all", class: "btn btn-default" %>
+        <%= select_tag :download_type, options_for_select([['pdf'], ['zip']]) %>
+        </div>
+      <% end %>
     <% end %>
-  <% end %>
   <br>
   <%= link_to t('.back', :default => t('helpers.links.back')),
               event_path(@event), :class => 'btn btn-default'  %>
+  <script>
+  $('.colorselector').colorselector();
+  $('#downloadLettersForm').submit(function() {
+    $('[name="selected_participants[]"]').each(function() {
+      if (this.checked) {
+        var input = document.createElement("input");
+        input.setAttribute("type", "hidden");
+        input.setAttribute("name", this.name);
+        input.setAttribute("value", this.value);
+        document.getElementById("downloadLettersForm").appendChild(input);
+      }
+    });
+  });
+  </script>
 <% end %>

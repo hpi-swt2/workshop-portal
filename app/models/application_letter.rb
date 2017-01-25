@@ -15,20 +15,21 @@ class ApplicationLetter < ActiveRecord::Base
   belongs_to :event
 
   has_many :application_notes
+  serialize :custom_application_fields, Array
 
   VALID_GRADES = 5..13
 
   validates :user, :event, :experience, :motivation, :coding_skills, :emergency_number, presence: true
   validates :grade, presence: true, numericality: { only_integer: true }
   validates_inclusion_of :grade, :in => VALID_GRADES
-  validates :vegeterian, :vegan, :allergic, inclusion: { in: [true, false] }
-  validates :vegeterian, :vegan, :allergic, exclusion: { in: [nil] }
+  validates :vegetarian, :vegan, :allergic, inclusion: { in: [true, false] }
+  validates :vegetarian, :vegan, :allergic, exclusion: { in: [nil] }
   validate :deadline_cannot_be_in_the_past, :if => Proc.new { |letter| !(letter.status_changed?) }
   validate :status_cannot_be_changed, :if => Proc.new { |letter| letter.status_changed?}
 
   enum status: {accepted: 1, rejected: 0, pending: 2, alternative: 3, canceled: 4, pre_accepted: 5}
   validates :status, inclusion: { in: statuses.keys }
-    
+
 
   # Checks if the deadline is over
   # additionally only return if event and event.application_deadline is present
@@ -105,13 +106,13 @@ class ApplicationLetter < ActiveRecord::Base
     user.profile.age_at_time(event.start_date)
   end
 
-  # Returns an array of eating habits (including allergies, vegan and vegeterian)
+  # Returns an array of eating habits (including allergies, vegan and vegetarian)
   #
   # @param none
   # @return [Array <String>] array of eating habits, empty if none
   def eating_habits
     habits = Array.new
-    habits.push(ApplicationLetter.human_attribute_name(:vegeterian)) if vegeterian
+    habits.push(ApplicationLetter.human_attribute_name(:vegetarian)) if vegetarian
     habits.push(ApplicationLetter.human_attribute_name(:vegan)) if vegan
     habits.push(ApplicationLetter.human_attribute_name(:allergic)) if allergic
     habits
