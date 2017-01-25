@@ -32,7 +32,7 @@
       <dd><%= @event.organizer %></dd>
       <dt><strong><%= model_class.human_attribute_name(:application_deadline) %>:</strong></dt>
       <dd> <%= I18n.l(@event.application_deadline) + ' ' + I18n.t('midnight') %></dd>
-      <% if can? :view_custom_application_fields, Event %>
+      <% if can? :manage, Event %>
       <dt><strong><%= model_class.human_attribute_name(:custom_application_fields) %>:</strong></dt>
       <dd>
         <ul>
