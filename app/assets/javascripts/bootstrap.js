@@ -1,5 +1,8 @@
 function enableBootstrapComponents() {
-  $("a[rel~=popover], .has-popover").popover();
+  $("a[rel~=popover], .has-popover:not(.popover-click)").popover({
+      trigger: 'hover'
+  });
+  $(".popover-click").popover();
   $("a[rel~=tooltip], .has-tooltip").tooltip();
 }
 
