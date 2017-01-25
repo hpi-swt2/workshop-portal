@@ -7,7 +7,7 @@ class EmailsController < ApplicationController
     @templates = EmailTemplate.with_status(get_status)
     @addresses = @event.email_addresses_of_type(get_status)
 
-    @email = Email.new(hide_recipients: true, reply_to: 'workshop.portal@hpi.de', recipients: @addresses,
+    @email = Email.new(hide_recipients: true, reply_to: 'workshop.portal@hpi.de', recipients: @addresses.join(','),
                        subject: '', content: '')
     render :email
   end
