@@ -62,7 +62,6 @@ class Ability
       can [:view_applicants, :edit_applicants, :view_participants, :print_applications,
            :manage, :view_material, :upload_material, :print_agreement_letters, :download_material,
            :view_unpublished, :show_eating_habits, :print_applications_eating_habits, :view_hidden], Event
-      cannot :apply, Event
       can :send_email, Email
       can :manage, Request
       cannot :apply, Event
