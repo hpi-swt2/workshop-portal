@@ -79,6 +79,12 @@ FactoryGirl.define do
       date_ranges { [] }
     end
 
+    trait :with_open_application do
+      after(:build) do |event, evaluator|
+        create_list(:application_letter, 1, event: event)
+        event.application_letters[0].user.profile = FactoryGirl.build :profile, user: event.application_letters[0].user
+      end
+    end
 
     trait :with_diverse_open_applications do
       after(:build) do |event, evaluator|

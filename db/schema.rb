@@ -130,8 +130,8 @@ ActiveRecord::Schema.define(version: 20170123161527) do
     t.integer  "number_of_participants"
     t.string   "knowledge_level"
     t.text     "annotations"
-    t.integer  "status",                 default: 0
     t.string   "zip_code_city"
+    t.integer  "status",                 default: 0
     t.string   "contact_person"
   end
 

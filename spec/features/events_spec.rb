@@ -6,18 +6,20 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
   end
 
   scenario "logged in as Pupil I can click the apply button on the index page" do
+    @event.application_deadline = Date.tomorrow
     login(:pupil)
     visit events_path
 
-    click_link 'Bewerben'
+    click_link I18n.t("helpers.links.apply")
     expect(page).to have_current_path(new_application_letter_path(:event_id => @event.id))
   end
 
   scenario "logged in as Pupil I can click the apply button on the show page" do
+    @event.application_deadline = Date.tomorrow
     login(:pupil)
     visit event_path(@event)
 
-    click_link 'Bewerben'
+    click_link I18n.t("helpers.links.apply")
     expect(page).to have_current_path(new_application_letter_path(:event_id => @event.id))
   end
 
@@ -119,28 +121,21 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     end
   end
 
-  scenario "logged in as Organizer I can change application status with radio buttons" do
+  scenario "logged in as Organizer I can change application status with radio buttons in selection phase" do
     login(:organizer)
-    @event.application_status_locked = false
-    @event.save
-    @pupil = FactoryGirl.create(:profile)
-    @application_letter = FactoryGirl.create(:application_letter, event: @event, user: @pupil.user)
+    @event = FactoryGirl.create(:event, :with_open_application, :in_selection_phase)
     visit event_path(@event)
     ApplicationLetter.statuses.keys.each do |new_status|
       choose(I18n.t "application_status.#{new_status}")
-      expect(ApplicationLetter.where(id: @application_letter.id)).to exist
+      expect(ApplicationLetter.where(id: @event.application_letters.first.id)).to exist
     end
   end
 
-  scenario "logged in as Organizer I can change application status with radio buttons without the page reloading", js: true do
+  scenario "logged in as Organizer I can change application status with radio buttons without the page reloading in selection phase", js: true do
     login(:organizer)
-    @event.application_status_locked = false
-    @event.save
-    @pupil = FactoryGirl.create(:profile)
-    @application_letter = FactoryGirl.create(:application_letter, event: @event, user: @pupil.user)
+    @event = FactoryGirl.create(:event, :with_open_application, :in_selection_phase)
     visit event_path(@event)
     find('label', text: I18n.t('application_status.accepted')).click
-
     check_values = lambda {
       expect(page).to have_text(I18n.t "free_places", count: (@event.max_participants).to_i - 1, scope: [:events, :applicants_overview])
       expect(page).to have_text(I18n.t "occupied_places", count: 1, scope: [:events, :applicants_overview])
