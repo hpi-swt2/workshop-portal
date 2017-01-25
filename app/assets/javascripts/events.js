@@ -3,14 +3,28 @@
 
 jQuery(function() {
 
-    $('#send-emails-modal').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget);
-        var header = button.data('title');
-        var list = button.data('list');
-        var modal = $(this);
-        modal.find('.modal-title').text(header);
-        modal.find('#send-emails-mailto').attr('href', 'mailto:' + list);
-        modal.find('#send-emails-list').val(list);
+  $('#send-emails-modal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget);
+    var header = button.data('title');
+    var list = button.data('list');
+    var modal = $(this);
+    modal.find('.modal-title').text(header);
+    modal.find('#send-emails-mailto').attr('href', 'mailto:' + list);
+    modal.find('#send-emails-list').val(list);
+  });
+
+  // work around so that we can have a multiline placeholder
+  $("#description")
+    .val(PLACEHOLDER).css('color', '#bbb')
+    .focus(function(){
+      if($(this).val() === PLACEHOLDER){
+        $(this).val('').css('color', '#000');
+      }
+    })
+    .blur(function(){
+      if($(this).val() ===''){
+        $(this).val(PLACEHOLDER).css('color', '#bbb');
+      }
     });
 });
 
