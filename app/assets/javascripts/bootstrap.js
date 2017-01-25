@@ -1,6 +1,8 @@
 function enableBootstrapComponents() {
-  $("a[rel~=popover], .has-popover").popover();
-  $("a[rel~=tooltip], .has-tooltip").tooltip();
+  jQuery("a[rel~=popover], .has-popover").popover({
+      trigger: 'hover',
+	});
+  jQuery("a[rel~=tooltip], .has-tooltip").tooltip();
 }
 //
 // make sure we activate on first load (in particular tests don't work well

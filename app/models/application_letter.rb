@@ -56,6 +56,18 @@ class ApplicationLetter < ActiveRecord::Base
       errors.add(:event, I18n.t("application_letters.form.warning"))
     end
   end
+  
+  # Since EatingHabits are persited in booleans we need to generate a 
+  # EatingHabitStateCode to allow sorting
+  # US 28_4.5
+   
+   def get_eating_habit_state
+     eating_habit_state = 0
+     eating_habit_state += 4 if vegetarian
+     eating_habit_state += 5 if vegan
+     eating_habit_state += 99 if allergic
+     return eating_habit_state
+   end
 
   # Chooses right status based on status and event deadline
   #

@@ -13,7 +13,13 @@
       <%=f.error_span(:kind) %>
     </div>
   </div>
-
+  <div class="form-group">
+    <div class="col-lg-offset-2 col-lg-10">
+      <%= f.check_box :hidden %>
+      <%= f.label :hidden, :class => 'control-label' %>
+      <%= f.error_span(:hidden) %>
+    </div>
+  </div>
   <div class="form-group">
     <%= f.label :name, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
@@ -116,8 +122,13 @@
       <% else %>
         <%= f.submit t('.update'), :name => 'update', :class => 'btn btn-primary' %>
       <% end %>
-      <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
-                events_path, :class => 'btn btn-default' %>
+      <% unless @event.new_record? %>
+        <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+            event_path(@event),
+            :method => 'delete',
+            :data => { :confirm => t('.confirm', :default => t("events.confirmation_prompts.confirm_delete", :default => 'Are you sure?')) },
+            :class => 'btn btn-danger' %>
+      <% end %>
     </div>
   </div>
 

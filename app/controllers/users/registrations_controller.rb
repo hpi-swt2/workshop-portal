@@ -8,9 +8,24 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # end
 
   # POST /resource
-  # def create
-  #   super
-  # end
+  def create
+    build_resource(sign_up_params)
+
+    resource.save
+    yield resource if block_given?
+    if resource.persisted?
+      if resource.active_for_authentication?
+        set_flash_message! :notice, :signed_up
+        sign_up(resource_name, resource)
+        respond_with resource, location: after_sign_up_path_for(resource)
+      end
+    else
+      clean_up_passwords resource
+      set_minimum_password_length
+      resource.errors.full_messages.each {|x| flash["error"] = x}
+      redirect_to new_user_session_path(resource)
+    end
+  end
 
   # GET /resource/edit
   # def edit
@@ -18,9 +33,20 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # end
 
   # PUT /resource
-  # def update
-  #   super
-  # end
+  def update
+    unless params.fetch(:user, false) and params[:user].fetch(:profile, false)
+      return super
+    end
+    @user = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
+    @user.profile.update(params.require(:user).require(:profile).permit(Profile.allowed_params))
+
+    if @user.profile.save
+      redirect_to edit_user_registration_path, notice: I18n.t('profiles.successful_update')
+    else
+      render :edit
+    end
+  end
+
 
   # DELETE /resource
   # def destroy
@@ -47,6 +73,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # def configure_account_update_params
   #   devise_parameter_sanitizer.permit(:account_update, keys: [:attribute])
   # end
+
+  def after_update_path_for(resource)
+    edit_user_registration_path(resource)
+  end
 
   # The path used after sign up.
   def after_sign_up_path_for(resource)
