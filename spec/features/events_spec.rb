@@ -125,8 +125,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     @pupil = FactoryGirl.create(:profile)
     @application_letter = FactoryGirl.create(:application_letter, event: @event, user: @pupil.user)
     visit event_path(@event)
-    selectable_statuses = [:pre_accepted,:rejected,:pending,:alternative]
-    selectable_statuses.each do |new_status|
+    ApplicationLetter.selectable_statuses.each do |new_status|
       choose(I18n.t "application_status.#{new_status}")
       expect(ApplicationLetter.where(id: @application_letter.id)).to exist
     end
@@ -139,7 +138,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     @pupil = FactoryGirl.create(:profile)
     @application_letter = FactoryGirl.create(:application_letter, event: @event, user: @pupil.user)
     visit event_path(@event)
-    find('label', text: I18n.t('application_status.accepted')).click
+    find('label', text: I18n.t('application_status.pre_accepted')).click
 
     check_values = lambda {
       expect(page).to have_text(I18n.t "free_places", count: (@event.max_participants).to_i - 1, scope: [:events, :applicants_overview])
@@ -150,7 +149,9 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     # verify that the state was actually persisted by reloading the page
     visit event_path(@event)
     check_values.call
-    expect(page).to have_css('label.active', text: I18n.t('application_status.accepted'))
+    @application_letter.reload
+    expect(@application_letter.status).to eq("pre_accepted")
+    expect(page).to have_css('label.active', text: I18n.t('application_status.pre_accepted'))
   end
 
   scenario "logged in as Organizer I can not change application status with radio buttons if the applications are locked" do

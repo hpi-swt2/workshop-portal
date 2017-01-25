@@ -145,7 +145,7 @@ class Event < ActiveRecord::Base
     end
   end
 
-  # Returns a string of all email addresses of given type applications
+  # Returns a string of all email addresses of applications with given type
   #
   # @param type [Type] the type of the email addresses that will be returned
   # @return [String] Concatenation of all email addresses of applications with given type, seperated by ','

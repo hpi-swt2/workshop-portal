@@ -31,6 +31,14 @@ class ApplicationLetter < ActiveRecord::Base
   validates :status, inclusion: { in: statuses.keys }
 
 
+  # Returns an array of selectable statuses
+  #
+  # @param none
+  # @return [Array <String>] array of selectable statuses
+  def self.selectable_statuses
+    return ["pre_accepted","rejected","pending","alternative"]
+  end
+
   # Checks if the deadline is over
   # additionally only return if event and event.application_deadline is present
   #

@@ -171,7 +171,7 @@ describe Event do
     application_letter = FactoryGirl.create(:application_letter, user: FactoryGirl.create(:user), event: event)
     application_letter_accepted = FactoryGirl.create(:application_letter_accepted, user: FactoryGirl.create(:user), event: event)
     expect(event.compute_occupied_places).to eq(1)
-    application_letter_accepted_2 = FactoryGirl.create(:application_letter_accepted, user: FactoryGirl.create(:user), event: event)
+    application_letter_pre_accepted = FactoryGirl.create(:application_letter_pre_accepted, user: FactoryGirl.create(:user), event: event)
     expect(event.compute_occupied_places).to eq(2)
   end
 
@@ -181,9 +181,9 @@ describe Event do
     end
     
     it "returns email address only of the given type" do
-      @accepted_application = FactoryGirl.create(:application_letter_accepted, event: @event, user: FactoryGirl.create(:user))
+      @accepted_application = FactoryGirl.create(:application_letter_pre_accepted, event: @event, user: FactoryGirl.create(:user))
       @rejected_application = FactoryGirl.create(:application_letter_rejected, event: @event, user: FactoryGirl.create(:user))
-      expect(@event.email_addresses_of_type(:accepted)).to eq(@accepted_application.user.email)
+      expect(@event.email_addresses_of_type(:pre_accepted)).to eq(@accepted_application.user.email)
       expect(@event.email_addresses_of_type(:rejected)).to eq(@rejected_application.user.email)
     end
 
@@ -222,7 +222,8 @@ describe Event do
     expect(@event.application_letters_ordered('unknown','desc')).to eq([@application2,@application1])
   end
 
-  it "pre_accepts all its application letters" do
+
+  it "pre accepts all its application letters" do
     event = FactoryGirl.create :event, :with_diverse_open_applications
     event.pre_accept_all_application_letters
     application_letters = ApplicationLetter.where(event: event.id)

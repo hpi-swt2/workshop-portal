@@ -140,6 +140,31 @@ FactoryGirl.define do
       end
     end
 
+    factory :event_with_pre_accepted_applications do
+      name "Event-Name"
+      description "Event-Description"
+      max_participants 20
+      date_ranges { build_list :date_range, 1 }
+      transient do
+        pre_accepted_application_letters_count 5
+        rejected_application_letters_count 5
+      end
+      organizer "Workshop-Organizer"
+      knowledge_level "Workshop-Knowledge Level"
+      application_deadline Date.current
+
+      after(:create) do |event, evaluator|
+        create_list(:application_letter_pre_accepted, evaluator.pre_accepted_application_letters_count, event: event)
+        create_list(:application_letter_rejected, evaluator.rejected_application_letters_count, event: event)
+      end
+
+      factory :event_with_pre_accepted_applications_and_agreement_letters do
+        after(:create) do |event, evaluator|
+          create_list(:pre_accepted_application_with_agreement_letters, evaluator.pre_accepted_application_letters_count, event: event)
+        end
+      end
+    end
+
     factory :event_with_applications_in_various_states do
       name "Event-Name"
       description "Event-Description"

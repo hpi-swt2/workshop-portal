@@ -16,7 +16,6 @@ class EventsController < ApplicationController
     @occupied_places = @event.compute_occupied_places
     @application_letters = filter_application_letters(@event.application_letters)
     @material_files = get_material_files(@event)
-    @selectable_statuses = [:pre_accepted,:rejected,:pending,:alternative]
   end
 
   # GET /events/new

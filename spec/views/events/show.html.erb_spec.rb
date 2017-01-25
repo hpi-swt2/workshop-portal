@@ -7,7 +7,6 @@ RSpec.describe "events/show", type: :view do
     @application_letter.user.profile = FactoryGirl.build(:profile)
     @event.application_letters.push(@application_letter)
     @application_letters = @event.application_letters
-    assign(:selectable_statuses, [:pre_accepted,:rejected,:pending,:alternative])
     @material_files = ["spec/testfiles/actual.pdf"]
     sign_in(@application_letter.user)
   end
