@@ -15,7 +15,7 @@ jQuery(function() {
 
   // work around so that we can have a multiline placeholder
   $("#description")
-    .val(PLACEHOLDER).css('color', '#bbb')
+    .val(function() { return PLACEHOLDER; }).css('color', '#bbb')
     .focus(function(){
       if($(this).val() === PLACEHOLDER){
         $(this).val('').css('color', '#000');
