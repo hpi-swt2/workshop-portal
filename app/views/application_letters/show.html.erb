@@ -38,9 +38,16 @@
 </dl>
 
 <p>
+  <h5><%= ApplicationLetter.human_attribute_name(:motivation) %></h5>
   <%= @application_letter.motivation %>
 </p>
-
+<% unless @application_letter.annotation.nil? %>
+<p>
+  <h5><%= t('.annotation_title') %></h5>
+  <%= @application_letter.annotation %>
+</p>
+<% end %>
+<br>
 <% if can? :view_and_add_notes, ApplicationLetter  %>
   <dl class="dl-horizontal">
     <dt><strong><%= ApplicationNote.model_name.human(count: @application_letter.application_notes.count) %>:</strong></dt>

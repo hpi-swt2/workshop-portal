@@ -23,7 +23,7 @@ FactoryGirl.define do
     allergies "Many"
     user
     event
-    annotation "None"
+    annotation "Some"
     custom_application_fields ["Value 1", "Value 2", "Value 3"]
   end
 
