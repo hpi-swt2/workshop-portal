@@ -66,7 +66,7 @@
     </div>
 
     <div class="btn-group pull-right" role="group">
-      <% if  (can? :send_email, Email) && (@event.phase == :selection) %>
+      <% if  (can? :send_email, Email) && ((@event.phase == :selection)||(@event.phase == :execution)) %>
         <% if not @event.applications_classified? %>
           <div class="btn-group pull-right tooltip-wrapper has-tooltip" role="group" data-toggle="tooltip" title="<%= t '.unclassified_applications_left'%>">
             <%= button_tag t('.sending_acceptances'), type: 'button', class: 'send-emails-button btn btn-default', disabled: true %>
