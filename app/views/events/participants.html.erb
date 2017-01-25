@@ -3,33 +3,42 @@
   <h1><%=t '.title', :default => model_class.model_name.human.titleize %> (<%= @event.kind.humanize %>)</h1>
 </div>
 <% if can? :view_participants, Event %>
+  <%= render :partial => 'participants_modal' %>
   <%= render :partial => 'show_event' %>
-  
+
   <h1><%= t '.participants' %></h1>
-  <%= form_tag(event_path(@event) + "/participants/agreement_letters") do %>
+
     <table class="table table-striped">
       <tr>
         <th><%= t 'activerecord.attributes.profile.name' %></th>
         <th><%= t 'activerecord.attributes.profile.email' %></th>
-    	  <th><%= t 'agreement_letters.agreement_letter' %></th>
+        <th><%= t 'agreement_letters.agreement_letter' %></th>
+        <th><%= sort_caret(ParticipantGroup.human_attribute_name(:group), :group) %></th>
         <% if can? :print_agreement_letters, Event and @has_agreement_letters %>
           <th>
             <label>
-              <input type="checkbox" id="select_all_participants" class="participant_selection" onclick="flipAllCheckboxes(this)">
+              <input type="checkbox" id="select_all_participants" class="participant_selection" onclick="flipAllCheckboxes(this, 'participant_selection')">
               <%= t 'events.agreement_letters_download.select_all' %>
             </label>
           </th>
         <% end %>
-      </tr>  
-    
-      <% @participants.each do |participant| %>
+        <% if can? :show_eatings_habits, Event %>
+          <th>
+            <%= sort_caret(t('activerecord.methods.application_letter.eating_habits'), 'eating-habits') %>
+          </th>
+        <% end %>
+      </tr>
+
+      <% sort_participants
+        @participants.each do |participant| 
+          application_letter = ApplicationLetter.find_by(user_id: participant.id, event_id: @event.id) 
+      %>
       <tr>
-        
         <td>
-        <%= participant.name %>
+          <%= participant.name %>
         </td>
         <td>
-        <%= participant.email %>
+          <%= participant.email %>
         </td>
         <td>
           <% if participant.requires_agreement_letter_for_event?(@event) %>
@@ -40,22 +49,101 @@
             <span class="text-danger"><%= t '.unavailable' %></span>
           <% end %>
         </td>
+        <td>
+          <%= render 'colorselect', participant_group: @event.participant_group_for(participant) %>
+        </td>
         <% if can? :print_agreement_letters, Event and @has_agreement_letters %>
           <td>
             <%= check_box_tag('selected_participants[]', participant.id, false, class: 'participant_selection') %>
           </td>
         <% end %>
+        
+
+
+
+        <% if can? :show_eatings_habits, Event %>
+          <td>
+           <% if application_letter && ( application_letter.vegan || application_letter.vegetarian || application_letter.allergic ) %>
+             <ul id="eating-habit--list">
+             <% if application_letter.vegan %>
+               <li>
+                 <img 
+                   class="img img-responsive eating-habit--icon"
+                   src="<%= image_url('application_letter_vegan.png') %>"
+                 >
+               </li>
+             <% end %>                
+             <% if application_letter.vegetarian %>
+               <li>
+                 <img 
+                   class="img img-responsive eating-habit--icon"
+                   src="<%= image_url('application_letter_vegetarian.png') %>"
+                 >
+               </li>
+             <% end %>
+             <% if application_letter.allergic %>
+               <li>
+                 <%= image_tag('application_letter_allergic.png',
+                                  class: "img img-responsive eating-habit--icon has-popover",
+                                  tabindex: 50,
+                                  data: { 
+                                    toggle: "popover", 
+                                    content: application_letter.allergies, 
+                                    placement: "bottom" 
+                                    }) 
+                  %>
+               </li>
+             <% end %>
+           </ul>
+           <% end %> 
+
+
+
+
+          </td>
+        <% end %>
       </tr>
       <% end %>
     </table>
-    <% if can? :print_agreement_letters, Event and @has_agreement_letters %>
-      <div id="participants_download_submit_button">
-      <%= submit_tag t('events.agreement_letters_download.download_all_as'), name: "download_all" %>
-      <%= select_tag :download_type, options_for_select([['pdf'], ['zip']]) %>
-      </div>
+
+    <button class="btn btn-default" type="button" data-toggle="modal" data-target="#print_participant_modal" id="open_print_modal">Teilnehmerliste (PDF)</button>
+    <%= form_tag(event_path(@event) + "/participants/agreement_letters", { method: :post, id: 'downloadLettersForm' }) do %>
+
+      <% if can? :print_agreement_letters, Event and @has_agreement_letters %>
+        <div id="participants_download_submit_button">
+        <%= submit_tag t('events.agreement_letters_download.download_all_as'), name: "download_all", class: "btn btn-default" %>
+        <%= select_tag :download_type, options_for_select([['pdf'], ['zip']]) %>
+        </div>
+      <% end %>
+      <% if can? :print_applications_eating_habits, Event %>
+      <%= link_to t('events.participants.print_habits'),
+                    event_path(@event) + "/print_applications_eating_habits" , :class => 'btn btn-default btn-sm'  %>
+      <% end %>
     <% end %>
-  <% end %>
-  <br>
+      <br>
   <%= link_to t('.back', :default => t('helpers.links.back')),
               event_path(@event), :class => 'btn btn-default'  %>
+
+  <% if @event.phase == :execution %>
+    <%= link_to t('events.badges.print_button_label'),
+                badges_event_path(@event),
+                class: 'btn btn-default',
+                disabled: @participants.empty? %>
+  <% end %>
+
+  <script>
+  $('.colorselector').colorselector();
+  $('#downloadLettersForm').submit(function() {
+    $('[name="selected_participants[]"]').each(function() {
+      if (this.checked) {
+        var input = document.createElement("input");
+        input.setAttribute("type", "hidden");
+        input.setAttribute("name", this.name);
+        input.setAttribute("value", this.value);
+        document.getElementById("downloadLettersForm").appendChild(input);
+      }
+    });
+  });
+  </script>
+
 <% end %>

@@ -117,6 +117,21 @@ RSpec.describe ProfilesController, type: :controller do
         }.to change(Profile, :count).by(1)
       end
 
+      it "doesn't create two Profiles" do
+        sign_in FactoryGirl.create(:user)
+        expect {
+          post :create, profile: valid_attributes, session: valid_session
+        }.to change(Profile, :count).by(1)
+
+        expect {
+          post :create, profile: valid_attributes, session: valid_session
+        }.to_not change(Profile, :count)
+        expect(response).to redirect_to(Profile.last)
+
+        get :new, profile: valid_attributes, session: valid_session
+        expect(response).to redirect_to(Profile.last)
+      end
+
       it "assigns a newly created profile as @profile" do
         sign_in FactoryGirl.create(:user)
         post :create, profile: valid_attributes, session: valid_session
@@ -127,7 +142,7 @@ RSpec.describe ProfilesController, type: :controller do
       it "redirects to the created profile" do
         sign_in FactoryGirl.create(:user)
         post :create, profile: valid_attributes, session: valid_session
-        expect(response).to redirect_to(Profile.last)
+        expect(response).to redirect_to(edit_user_registration_path)
       end
     end
 

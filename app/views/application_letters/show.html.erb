@@ -3,15 +3,21 @@
   <h1><%=t '.title', :default => model_class.model_name.human.titleize %></h1>
 </div>
 
-<h3><%= @application_letter.user.profile.name %></h3>
+<% if can? :show, @application_letter.user.profile  %>
+    <h3><%= link_to @application_letter.user.profile.name, profile_path(@application_letter.user.profile) %></h3>
+<% else %>
+    <h3><%= @application_letter.user.profile.name %></h3>
+<% end %>
 
 <dl class="dl-horizontal" id="applicant_details">
   <dt><strong><%= Profile.human_attribute_name(:gender) %>:</strong></dt>
   <dd><%= @application_letter.user.profile.gender %></dd>
   <dt><strong><%= t('.age_when_event_starts') %>:</strong></dt>
   <dd><%= @application_letter.user.profile.age_at_time(@application_letter.event.start_date) %></dd>
-  <dt><strong><%= Profile.human_attribute_name(:address) %>:</strong></dt>
-  <dd><%= @application_letter.user.profile.address %></dd>
+  <% if can? :view_personal_details, ApplicationLetter  %>
+    <dt><strong><%= Profile.human_attribute_name(:address) %>:</strong></dt>
+    <dd><%= @application_letter.user.profile.address %></dd>
+  <% end %>
   <dt><strong><%= User.human_attribute_name(:accepted_application_count) %>:</strong></dt>
   <dd><%= @application_letter.user.accepted_applications_count(@application_letter.event) %></dd>
   <dt><strong><%= User.human_attribute_name(:rejected_application_count) %>:</strong></dt>
@@ -20,13 +26,11 @@
 
 <%= link_to t('.back', :default => t("helpers.links.back")),
               application_letters_path, :class => 'btn btn-default'  %>
-<%= link_to t('.edit', :default => t("helpers.links.edit")),
-              edit_application_letter_path(@application_letter), :class => 'btn btn-default' %>
-<%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-              application_letter_path(@application_letter),
-              :method => 'delete',
-              :data => { :confirm => t('.confirm', :default => t("application_letters.confirm_deletion", :default => 'Are you sure?')) },
-              :class => 'btn btn-danger' %>
+
+<% if can? :edit, ApplicationLetter %>
+    <%= link_to t('.edit', :default => t("helpers.links.edit")),
+                  edit_application_letter_path(@application_letter), :class => 'btn btn-default' %>
+<% end %>
 
 <h3><%= t('.application_title', title: @application_letter.event.name) %></h3>
 <dl class="dl-vertical">
@@ -76,4 +80,12 @@
         </div>
       </div>
     <% end %>
+<% end %>
+
+<% if can? :view_delete_button, ApplicationLetter %>
+    <%= link_to t('.destroy', :default => t("application_letters.show.delete")),
+                application_letter_path(@application_letter),
+                :method => 'delete',
+                :data => { :confirm => t('.confirm', :default => t("application_letters.confirm_deletion", :default => 'Are you sure?')) },
+                :class => 'btn btn-danger' %>
 <% end %>

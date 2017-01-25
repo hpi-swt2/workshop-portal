@@ -10,6 +10,25 @@
   <dd><%= @request.last_name %></dd>
   <dt><strong><%= model_class.human_attribute_name(:topic_of_workshop) %>:</strong></dt>
   <dd><%= @request.topic_of_workshop %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:number_of_participants) %>:</strong></dt>
+  <dd><%= @request.number_of_participants %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:status) %>:</strong></dt>
+  <dd><%= t(@request.status, scope: 'activerecord.attributes.request.statuses') %></dd>
+</dl>
+<dl class="dl-horizontal">
+  <dt><strong><%= model_class.human_attribute_name(:contact_person) %>:</strong></td>
+  <dd>
+  <%= form_for @request, url: request_set_contact_person_path(@request), html: { class: 'form-inline' } do |f| %>
+    <div class="m-b-1">
+      <div class="input-group">
+        <%= f.text_field :contact_person, class: 'form-control', placeholder: t('activerecord.attributes.request.contact_person') %>
+        <span class="input-group-btn">
+          <%= f.submit t('requests.form.set_contact_person'), class: 'btn btn-default' %>
+        </span>
+      </div>
+    </div>
+  <% end %>
+  </dd>
 </dl>
 
 <%= link_to t('.back', :default => t("helpers.links.back")),
@@ -17,6 +36,10 @@
 <% if can? :edit, @request %>
   <%= link_to t('.edit', :default => t("helpers.links.edit")),
               edit_request_path(@request), :class => 'btn btn-default' %>
+  <% if @request.open? %>
+    <%= link_to t('requests.form.accept'),
+              accept_request_path(@request.id), :class => 'btn btn-success' %>
+  <% end %>
 <% end %>
 <% if can? :destroy, @request %>
   <%= link_to t('.destroy', :default => t("helpers.links.destroy")),

@@ -1,60 +1,64 @@
-<%= form_for @request, :html => { :class => "form-horizontal request" } do |f| %>
+<%= form_for @request, :html => {:class => "form-horizontal request"} do |f| %>
 
-  <%= render partial: "shared/error_message", locals: {entity: @request} %>
+    <%= render partial: "shared/error_message", locals: {entity: @request} %>
 
-  <div class="form-group">
-    <div class="btn-group col-lg-10 col-lg-offset-2" data-toggle="buttons">
-      <% Request.form_of_addresses.keys.each do |key| %>
-        <label class="btn btn-default <%= 'active' if @request.form_of_address == key %>">
-          <%= f.radio_button :form_of_address, key %>
-          <%= I18n.t :"requests.form_of_addresses.#{key}" %>
-        </label>
-      <% end %>
-      <%=f.error_span(:form_of_address) %>
-    </div>
-  </div>
+    <h3><%=t 'requests.new.workshop_information' %></h3>
 
-  <% [:first_name, :last_name, :phone_number, :address, :email ].each do |attribute_name| %>
     <div class="form-group">
-      <%= f.label attribute_name, :class => 'control-label col-lg-2 required'%>
+      <%= f.label :topic_of_workshop, :class => 'control-label col-lg-2 required' %>
       <div class="col-lg-10">
-        <%= f.text_field attribute_name, :class => 'form-control' %>
-        <%=f.error_span(attribute_name) %>
+        <%= f.text_field :topic_of_workshop, :class => 'form-control', :placeholder => I18n.t('requests.hints.please_enter_two_topics') %>
+        <%= f.error_span(:topic_of_workshop) %>
       </div>
     </div>
-  <% end %>
 
-  <div class="form-group">
-    <%= f.label :topic_of_workshop, :class => 'control-label col-lg-2 required' %>
-    <div class="col-lg-10">
-      <%= f.text_field :topic_of_workshop, :class => 'form-control', :placeholder => I18n.t('requests.hints.please_enter_two_topics')%>
-      <%=f.error_span(:topic_of_workshop) %>
-    </div>
-  </div>
+    <% [:time_period, :number_of_participants, :knowledge_level].each do |attribute_name| %>
+        <div class="form-group">
+          <%= f.label attribute_name, :class => 'control-label col-lg-2 ' %>
+          <div class="col-lg-10">
+            <%= f.text_field attribute_name, :class => 'form-control' %>
+            <%= f.error_span(attribute_name) %>
+          </div>
+        </div>
+    <% end %>
 
-  <% [:time_period, :number_of_participants, :knowledge_level ].each do |attribute_name| %>
     <div class="form-group">
-      <%= f.label attribute_name, :class => 'control-label col-lg-2 '%>
+      <%= f.label :annotations, :class => 'control-label col-lg-2' %>
       <div class="col-lg-10">
-        <%= f.text_field attribute_name, :class => 'form-control' %>
-        <%=f.error_span(attribute_name) %>
+        <%= f.text_area :annotations, :class => 'form-control' %>
+        <%= f.error_span(:annotations) %>
       </div>
     </div>
-  <% end %>
 
-  <div class="form-group">
-    <%= f.label :annotations, :class => 'control-label col-lg-2' %>
-    <div class="col-lg-10">
-      <%= f.text_area :annotations, :class => 'form-control' %>
-      <%= f.error_span(:annotations) %>
-    </div>
-  </div>
+    <h3><%=t 'requests.new.personal_information' %></h3>
 
-  <div class="form-group">
-    <div class="col-lg-offset-2 col-lg-10">
-      <%= f.submit nil, :class => 'btn btn-primary' %>
-      <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
-        requests_path, :class => 'btn btn-default' %>
+    <div class="form-group">
+      <div class="btn-group col-lg-10 col-lg-offset-2" data-toggle="buttons">
+        <% Request.form_of_addresses.keys.each do |key| %>
+            <label class="btn btn-default <%= 'active' if @request.form_of_address == key %>">
+              <%= f.radio_button :form_of_address, key %>
+              <%= I18n.t :"requests.form_of_addresses.#{key}" %>
+            </label>
+        <% end %>
+      </div>
+      <div class="col-lg-offset-2 col-lg-10">
+          <%= f.error_span(:form_of_address) %>
+      </div>
     </div>
-  </div>
+
+    <% [:first_name, :last_name, :phone_number, :street, :zip_code_city, :email].each do |attribute_name| %>
+        <div class="form-group">
+          <%= f.label attribute_name, :class => 'control-label col-lg-2 required' %>
+          <div class="col-lg-10">
+            <%= f.text_field attribute_name, :class => 'form-control' %>
+            <%= f.error_span(attribute_name) %>
+          </div>
+        </div>
+    <% end %>
+
+    <div class="form-group">
+      <div class="col-lg-offset-2 col-lg-10">
+        <%= f.submit nil, :class => 'btn btn-primary' %>
+      </div>
+    </div>
 <% end %>

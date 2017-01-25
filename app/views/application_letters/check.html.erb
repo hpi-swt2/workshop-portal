@@ -1,15 +1,21 @@
 <%- model_class = ApplicationLetter -%>
 
+<p class='alert alert-info' >
+  <% if @application_deadline_exceeded %>
+    <%= t('.deadline_exceeded') %>
+  <% else %>
+    <%= t('.can_change_until', application_deadline: l(@application_letter.event.application_deadline)) %>
+  <% end %>
+</p>
 <div class="page-header">
   <h1><%=t '.check_application_for', event_name: @application_letter.event.name %></h1>
-  <p class='alert alert-info' >
-    <% if @application_deadline_exceeded %>
-      <%= t('.deadline_exceeded') %>
-    <% else %>
-      <%= t('.can_change_until', application_deadline: l(@application_letter.event.application_deadline)) %>
-    <% end %>
-  </p>
 </div>
+
+<%# Be careful: user.requires_agreement_letter_for_event? behaves exactly the way you wouldn't expect it do behave: If the user requires an agreement letter for the event, it returns false... But fuck me if I'm the one to refactor it%>
+<% if not @application_letter.user.requires_agreement_letter_for_event?(@application_letter.event)%>
+  <h3 id="agreement_header"><%= t('agreement_letters.please_upload', event: @application_letter.event.name)%></h3>
+  <%= render('upload_form', event_id: @application_letter.event.id, agreement_letter: @application_letter.event.agreement_letter_for(@application_letter.user)) %>
+<% end %>
 
 <h3><%= t('.my_application') %></h3>
 <div id='application_details'>
@@ -29,6 +35,13 @@
 
   <strong><%= ApplicationLetter.human_attribute_name(:allergies) %>:</strong><br/>
   <%= @application_letter.allergies %><br/>
+  <% @application_letter.event.custom_application_fields
+    .zip(@application_letter.custom_application_fields)
+    .each do |field_name, field_value| %>
+    <strong><%= field_name %>:</strong>
+    <%= field_value %>
+    <br/>
+  <% end %>
 </div>
 <% unless @application_deadline_exceeded %>
   <%= link_to t('.edit', :default => t("helpers.links.edit")), edit_application_letter_path(@application_letter), id: 'edit_application_link', class: 'btn btn-default' %>

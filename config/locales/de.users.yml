@@ -15,6 +15,8 @@ de:
       coach: "Betreuer"
       organizer: "Organisator"
       admin: "Administrator"
+    email:
+      edit: "E-Mail bearbeiten"
 
 
   activerecord:
@@ -31,5 +33,9 @@ de:
         created_at: "Erstellt am"
         current_password: Aktives Passwort
         password: Passwort
-        password_confirmation: Passwort-Wiederholung
-        email: E-Mail-Adresse
+        email: E-Mail-Adresse 
+  sessions:
+    new:
+      website_name: "WorkshopPortal"
+      host_name: "Hasso-Plattner-Institut" 
+

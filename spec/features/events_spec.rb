@@ -47,17 +47,16 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
   end
 
   scenario "logged in as Organizer I want to be unable to send emails if there is any unclassified application left" do
+    @event = FactoryGirl.build(:event, :with_diverse_open_applications, :in_selection_phase)
     login(:organizer)
     @event.update!(max_participants: 1)
-    @pupil = FactoryGirl.create(:profile)
-    @pupil.user.role = :pupil
-    @pending_application = FactoryGirl.create(:application_letter, :event => @event, :user => @pupil.user)
     visit event_path(@event)
     expect(page).to have_button(I18n.t('events.applicants_overview.sending_acceptances'), disabled: true)
     expect(page).to have_button(I18n.t('events.applicants_overview.sending_rejections'), disabled: true)
   end
 
   scenario "logged in as Organizer I want to be unable to send emails if there is a negative number of free places left" do
+    @event = FactoryGirl.create(:event, :in_selection_phase)
     login(:organizer)
     @event.update!(max_participants: 1)
     2.times do |n|
@@ -71,6 +70,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
   end
 
   scenario "logged in as Organizer I want to be able to send an email to all accepted applicants" do
+    @event = FactoryGirl.create(:event, :in_selection_phase)
     login(:organizer)
     @event.update!(max_participants: 2)
     2.times do |n|
@@ -87,6 +87,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
   end
 
   scenario "logged in as Organizer I want to be able to send an email to all rejected applicants" do
+    @event = FactoryGirl.create(:event, :in_selection_phase)
     login(:organizer)
     @event.update!(max_participants: 2)
     2.times do |n|
@@ -131,6 +132,27 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     end
   end
 
+  scenario "logged in as Organizer I can change application status with radio buttons without the page reloading", js: true do
+    login(:organizer)
+    @event.application_status_locked = false
+    @event.save
+    @pupil = FactoryGirl.create(:profile)
+    @application_letter = FactoryGirl.create(:application_letter, event: @event, user: @pupil.user)
+    visit event_path(@event)
+    find('label', text: I18n.t('application_status.accepted')).click
+
+    check_values = lambda {
+      expect(page).to have_text(I18n.t "free_places", count: (@event.max_participants).to_i - 1, scope: [:events, :applicants_overview])
+      expect(page).to have_text(I18n.t "occupied_places", count: 1, scope: [:events, :applicants_overview])
+    }
+
+    check_values.call
+    # verify that the state was actually persisted by reloading the page
+    visit event_path(@event)
+    check_values.call
+    expect(page).to have_css('label.active', text: I18n.t('application_status.accepted'))
+  end
+
   scenario "logged in as Organizer I can not change application status with radio buttons if the applications are locked" do
     login(:organizer)
     @event.lock_application_status
@@ -142,6 +164,15 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
         expect(page).not_to have_text(I18n.t "application_status.#{new_status}")
       end
     end
+  end
+
+  scenario "logged in as Organizer I can push the accept all button to accept all applicants" do
+    @event = FactoryGirl.create(:event, :with_diverse_open_applications, :in_selection_phase, participants_are_unlimited: true)
+    login(:organizer)
+    visit event_path(@event)
+    click_link I18n.t "events.applicants_overview.accept_all"
+    application_letters = ApplicationLetter.where(event: @event.id)
+    expect(application_letters.all? { |application_letter| application_letter.status == 'accepted' }).to eq(true)
   end
 
   scenario "logged in as Organizer and viewing the participants page all checkboxes are checked when pressing the \"check all\" button", js: true do
@@ -158,7 +189,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     end
   end
 
-  scenario "logged in as Organizer when I want to download agreement letters but no participants are selected, it displays error message" do
+  scenario "logged in as Organizer when I want to download agreement letters but no participants are selected, it displays error message", js: true do
     login(:organizer)
     @event = FactoryGirl.create(:event_with_accepted_applications_and_agreement_letters)
     visit event_participants_path(@event)
@@ -166,16 +197,16 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     expect(page).to have_text(I18n.t "events.agreement_letters_download.notices.no_participants_selected")
   end
 
-  scenario "logged in as Organizer when I want to download agreement letters but no participants have agreement letters, it displays error message" do
+  scenario "logged in as Organizer when I want to download agreement letters but no participants have agreement letters, it displays error message", js: true do
     login(:organizer)
     @event = FactoryGirl.create(:event_with_accepted_applications_and_agreement_letters)
     visit event_participants_path(@event)
-    find(:css, "#selected_participants_[value='2']").set(true)
+    find(:css, "#selected_participants_[value='2']").click
     find("option[value='zip']").select_option
     click_button I18n.t "events.agreement_letters_download.download_all_as"
     expect(page).to have_text(I18n.t "events.agreement_letters_download.notices.no_agreement_letters")
     visit event_participants_path(@event)
-    find(:css, "#selected_participants_[value='2']").set(true)
+    find(:css, "#selected_participants_[value='2']").click
     find("option[value='pdf']").select_option
     click_button I18n.t "events.agreement_letters_download.download_all_as"
     expect(page).to have_text(I18n.t "events.agreement_letters_download.notices.no_agreement_letters")
@@ -188,7 +219,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     check 'select_all_participants'
     find("option[value='zip']").select_option
     click_button I18n.t "events.agreement_letters_download.download_all_as"
-    page.response_headers['Content-Type'].should eq "application/zip"
+    expect(page.response_headers['Content-Type']).to eq("application/zip")
   end
 
   scenario "logged in as Organizer when I want to download agreement letters in a pdf file, I can do so", js: true do
@@ -198,20 +229,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     check 'select_all_participants'
     find("option[value='pdf']").select_option
     click_button I18n.t "events.agreement_letters_download.download_all_as"
-    page.response_headers['Content-Type'].should eq "application/pdf"
-  end
-
-  scenario "logged in as Organizer I can lock the event application statuses by pressing one of the email buttons" do
-    login(:organizer)
-    @pupil = FactoryGirl.create(:profile)
-    @application_letter = FactoryGirl.create(:application_letter_accepted, event: @event, user: @pupil.user)
-    ['.events.applicants_overview.sending_acceptances', '.events.applicants_overview.sending_rejections'].each do | email_button |
-      @event.application_status_locked = false
-      @event.save
-      visit event_path(@event)
-      click_link I18n.t email_button
-      expect(Event.find(@event.id).application_status_locked).to be(true)
-    end
+    expect(page.response_headers['Content-Type']).to eq("application/pdf")
   end
 
   scenario "logged in as Coach I can see application status" do
@@ -276,9 +294,9 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
 
     sorted_accepted_names = @event.application_letters
       .to_a
-      .sort_by { |letter| letter.applicant_age_when_event_starts }
+      .sort_by { |letter| letter.user.profile.name }
       .select { |letter| letter.status.to_sym == :accepted }
-      .map {|l| l.user.profile.name }
+      .map {|letter| letter.user.profile.name }
     expect(page).to contain_ordered(sorted_accepted_names)
 
     # list rejected, pending

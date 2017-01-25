@@ -2,14 +2,25 @@
 
 de:
   requests:
+    new:
+      title: "Neue Anfrage stellen"
+      workshop_information: "Informationen über den gewünschten Workshop"
+      personal_information: "Persönliche Daten"
     form_of_addresses:
       mr: "Herr"
       mrs: "Frau"
       prefer_to_omit: "Nicht angeben"
     form:
-      create_request: "Anfrage erstellen" 
+      create_request: "Anfrage erstellen"
+      accept: "Annehmen"
+      set_contact_person: "Ansprechpartner festlegen"
     hints:
       please_enter_two_topics: "Bitte 2 Wünsche angeben"
+    notice:
+      was_created: "Ihre Anfrage wurde erfolgreich abgesendet"
+      was_updated: "Die Anfrage wurde aktualisiert"
+      was_accepted: "Die Anfrage wurde angenommen"
+      was_deleted: "Die Anfrage wurde gelöscht"
   activerecord:
     models:
       request:
@@ -20,14 +31,20 @@ de:
         first_name: "Vorname"
         last_name: "Nachname"
         phone_number: "Telefonnummer"
-        address: "Adresse"
+        street: "Straße und Hausnummer"
+        zip_code_city: "PLZ und Stadt"
         email: "E-Mail-Adresse"
         topic_of_workshop: "Thema des Workshops"
-        time_period: "Zeitrahmen" 
+        time_period: "Zeitrahmen"
         number_of_participants: "Teilnehmeranzahl"
         knowledge_level: "Kenntnisstand"
         annotations: "Anmerkungen"
         id: "Nummer"
         created_at: "Erstellt am"
+        contact_person: "Ansprechpartner"
+        status: "Status"
+        statuses:
+          open: "Noch nicht angenommen"
+          accepted: "Angenommen"
   dialogues:
     confirm_delete: "Bist du sicher, dass du diese Anfrage löschen möchtest? Diese Aktion kann nicht widerrufen werden."
