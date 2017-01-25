@@ -33,7 +33,7 @@ class ProfilesController < ApplicationController
       if flash[:event_id]
         redirect_to new_application_letter_path(:event_id => flash[:event_id]), notice: I18n.t('profiles.successful_creation')
       else
-        redirect_to @profile, notice: I18n.t('profiles.successful_creation')
+        redirect_to edit_user_registration_path, notice: I18n.t('profiles.successful_creation')
       end
     else
       render :new
@@ -61,6 +61,6 @@ class ProfilesController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def profile_params
-      params.require(:profile).permit(:first_name, :last_name, :gender, :birth_date, :school, :street_name, :zip_code, :city, :state, :country, :graduates_school_in)
+      params.require(:profile).permit(Profile.allowed_params)
     end
 end
