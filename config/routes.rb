@@ -15,6 +15,8 @@ Rails.application.routes.draw do
     resources :application_notes,
       only: :create
   end
+
+  get 'events/archive' => 'events#archive', as: :events_archive
   resources :events do
     resources :agreement_letters, only: [:create], shallow: true
     get 'emails' => 'emails#show', as: :email_show

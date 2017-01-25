@@ -11,7 +11,7 @@ describe "Event", type: :feature do
 
     it "should have a link to an event archive" do
       visit events_path
-      expect(page).to have_link(events_archive_path)
+      expect(page).to have_link(href: events_archive_path)
     end
 
     it "should not list past events" do
@@ -95,6 +95,17 @@ describe "Event", type: :feature do
       FactoryGirl.create :event, description: ('a' * Event::TRUNCATE_DESCRIPTION_TEXT_LENGTH) + 'blah'
       visit events_path
       expect(page).to_not have_text('blah')
+    end
+  end
+
+  describe "archive page" do
+    it "should list past events" do
+      currentEvent = FactoryGirl.create :event
+      pastEvent = FactoryGirl.create :event, :past
+
+      visit events_archive_path
+      expect(page).to have_text(pastEvent.name)
+      expect(page).to_not have_text(currentEvent.name)
     end
   end
 
