@@ -11,3 +11,22 @@
 #applicant_details dd {
     margin-left: 220px;
 }
+
+img.eating-habit--icon {
+	width: 20px;
+	height: auto;
+}
+
+img.eating-habit--icon[data-toggle=popover] {
+	cursor: pointer;
+}
+
+ul#eating-habit--list {
+	list-style: none;
+}
+
+ul#eating-habit--list > li {
+	display: inline;
+	float: left;
+	margin-left: 3px;
+}
