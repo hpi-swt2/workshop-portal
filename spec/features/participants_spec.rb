@@ -84,13 +84,13 @@ RSpec.feature "Event participants overview", :type => :feature do
     visit event_participants_path(@event)
     link_name = I18n.t('activerecord.methods.application_letter.eating_habits')
     click_link link_name
-    sleep 1
+    sleep 5
     print page.body
     print "NAMES:"
     print names
     expect(page.body).to contain_ordered(names)
     click_link link_name
-    sleep 1
+    sleep 5
     expect(page.body).to contain_ordered(names.reverse)
 
 
