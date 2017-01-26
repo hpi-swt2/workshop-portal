@@ -31,7 +31,11 @@ class EmailsController < ApplicationController
     if @email.valid?
       @email.send_email
 
-      @event.lock_application_status
+      status = get_email_template_status
+      if(status == :acceptance || status == :rejection)
+        accept_pre_accepted_applicants(@email.recipients) if status == :acceptance
+        @event.lock_application_status
+      end
 
       redirect_to @event, notice: t('.sending_successful')
     else
@@ -73,5 +77,17 @@ class EmailsController < ApplicationController
   # Only allow a trusted parameter "white list" through.
   def email_params
     params.require(:email).permit(:hide_recipients, :recipients, :reply_to, :subject, :content)
+  end
+
+  def accept_pre_accepted_applicants(email_addresses)
+    if email_addresses.is_a? String
+      email_addresses = email_addresses.split(',')
+    end
+    email_addresses.each do |address|
+      user = User.where(email: address)
+      letter = @event.application_letters.find_by(user: user)
+      letter.status = ApplicationLetter.statuses[:accepted]
+      letter.save!
+    end
   end
 end

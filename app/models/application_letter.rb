@@ -53,7 +53,12 @@ class ApplicationLetter < ActiveRecord::Base
   # @param none
   # @return [Boolean] true if no status changes are allowed anymore
   def status_change_allowed?
-    !event.application_status_locked
+    # TODO use event states instead
+    if (event.application_status_locked)
+      status_was == 'accepted' && status == 'canceled' || status_was == 'alternative' && status == 'pre_accepted'
+    else
+      true
+    end
   end
 
   # Validator for after_deadline?
