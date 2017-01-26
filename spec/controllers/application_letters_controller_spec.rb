@@ -69,6 +69,16 @@ RSpec.describe ApplicationLettersController, type: :controller do
         get :check, id: @application.to_param, session: valid_session
         expect(assigns(:application_deadline_exceeded)).to eq(@application.after_deadline?)
       end
+
+      it "sets the flashes if agreement_letters are missing" do
+        user = FactoryGirl.create(:user_with_profile)
+        event = FactoryGirl.create(:event)
+        FactoryGirl.create(:application_letter_accepted, user: user, event: event)
+        sign_in(user)
+
+        get :check, id: @application.to_param
+        expect(flash.now["warning"]).to_not be_empty
+      end
     end
 
     describe "GET #new" do
@@ -87,7 +97,7 @@ RSpec.describe ApplicationLettersController, type: :controller do
               motivation: "None",
               coding_skills: "None",
               emergency_number: "01234567891",
-              vegeterian: true,
+              vegetarian: true,
               vegan: true,
               allergic: true,
               allergys: "Many"

@@ -1,6 +1,10 @@
 <div class="container-fluid" id="applicants_overview">
   <h3><%= t '.title', title: @event.name %></h3>
-  <div id="free_places"><%= t '.free_places', count: @free_places %></div>
+  <% if @free_places == Float::INFINITY %>
+    <%= Event.human_attribute_name(:participants_are_unlimited) %>
+  <% else %>
+    <div id="free_places"><%= t '.free_places', count: @free_places %></div>
+  <% end %>
   <div id="occupied_places"><%= t '.occupied_places', count: @occupied_places %></div>
 
   <table id="applicants" class="table table-striped">
@@ -44,7 +48,7 @@
             <%= render :partial => 'application_letters/application_selective', locals: {application_letter: application_letter} %>
           </td>
           <td>
-            <%= link_to t('.details'), application_letter_path(application_letter), :class => 'btn btn-default' %>
+            <%= link_to t('.details'), application_letter_path(application_letter), :class => 'btn btn-default btn-xs' %>
           </td>
         </tr>
     <% end %>
@@ -53,31 +57,31 @@
 
   <div class="container-fluid no-padding">
     <div class="btn-group" role="group">
-      <%= link_to t('.accept_all'),
-          events_path, :class => 'btn btn-default'%>
-
-      <%= link_to t('.print_all'),
-                  print_applications_event_path(@event.id), :target => "_blank", :class => 'btn btn-default'%>
+      <% if (can? :edit_applicants, Event) && (@event.application_letters.count <= @event.max_participants) && (@event.phase == :selection) %>
+        <%= link_to t('.accept_all'), event_accept_all_applicants_path(@event.to_param), :class => 'btn btn-default' %>
+      <% end %>
+      <% if @event.phase == :selection %>
+        <%= link_to t('.print_all'), print_applications_event_path(@event.to_param), :target => "_blank", :class => 'btn btn-default' %>
+      <% end %>
     </div>
 
-    <% if not @event.applications_classified? %>
-      <div class="btn-group pull-right tooltip-wrapper has-tooltip" role="group" data-toggle="tooltip" title="<%= t '.unclassified_applications_left'%>">
-        <%= link_to t('events.badges.print_button_label'), event_badges_path(@event), :class => 'btn btn-default'%>
-        <%= button_tag t('.sending_acceptances'), type: 'button', class: 'send-emails-button btn btn-default', disabled: true %>
-        <%= button_tag t('.sending_rejections'), type: 'button', class: 'send-emails-button btn btn-default', disabled: true %>
-      </div>
-    <% elsif (@event.compute_free_places < 0) %>
-      <div class="btn-group pull-right tooltip-wrapper has-tooltip" role="group" data-toggle="tooltip" title="<%= t '.maximum_number_of_participants_exeeded'%>">
-        <%= link_to t('events.badges.print_button_label'), event_badges_path(@event), :class => 'btn btn-default'%>
-        <%= button_tag t('.sending_acceptances'), type: 'button', class: 'send-emails-button btn btn-default', disabled: true %>
-        <%= button_tag t('.sending_rejections'), type: 'button', class: 'send-emails-button btn btn-default', disabled: true %>
-      </div>
-    <% else %>
-      <div class="btn-group pull-right" role="group">
-        <%= link_to t('events.badges.print_button_label'), event_badges_path(@event), :class => 'btn btn-default'%>
-        <%= link_to t('.sending_acceptances'), event_send_acceptance_emails_path, class: 'send-emails-button btn btn-default' %>
-        <%= link_to t('.sending_rejections'), event_send_rejection_emails_path, class: 'send-emails-button btn btn-default' %>
-      </div>
-    <% end %>
+    <div class="btn-group pull-right" role="group">
+      <% if  (can? :send_email, Email) && (@event.phase == :selection) %>
+        <% if not @event.applications_classified? %>
+          <div class="btn-group pull-right tooltip-wrapper has-tooltip" role="group" data-toggle="tooltip" title="<%= t '.unclassified_applications_left'%>">
+            <%= button_tag t('.sending_acceptances'), type: 'button', class: 'send-emails-button btn btn-default', disabled: true %>
+            <%= button_tag t('.sending_rejections'), type: 'button', class: 'send-emails-button btn btn-default', disabled: true %>
+          </div>
+        <% elsif @event.compute_free_places < 0 %>
+          <div class="btn-group pull-right tooltip-wrapper has-tooltip" role="group" data-toggle="tooltip" title="<%= t '.maximum_number_of_participants_exeeded'%>">
+            <%= button_tag t('.sending_acceptances'), type: 'button', class: 'send-emails-button btn btn-default', disabled: true %>
+            <%= button_tag t('.sending_rejections'), type: 'button', class: 'send-emails-button btn btn-default', disabled: true %>
+          </div>
+        <% else %>
+            <%= link_to t('.sending_acceptances'), event_email_show_path(@event, status: :accepted), class: 'send-emails-button btn btn-default' %>
+            <%= link_to t('.sending_rejections'),  event_email_show_path(@event, status: :rejected), class: 'send-emails-button btn btn-default' %>
+        <% end %>
+      <% end %>
+    </div>
   </div>
 </div>

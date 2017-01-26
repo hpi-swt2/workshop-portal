@@ -1,5 +1,5 @@
 <%- model_class = Request -%>
 <div class="page-header">
-  <h1><%=t '.title', :default => model_class.model_name.human(count: 2).titleize %></h1>
+  <h1><%=t 'requests.new.title', :default => model_class.model_name.human(count: 1).titleize %></h1>
 </div>
 <%= render :partial => 'form' %>

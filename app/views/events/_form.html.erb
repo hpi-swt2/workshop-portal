@@ -13,7 +13,13 @@
       <%=f.error_span(:kind) %>
     </div>
   </div>
-
+  <div class="form-group">
+    <div class="col-lg-offset-2 col-lg-10">
+      <%= f.check_box :hidden %>
+      <%= f.label :hidden, :class => 'control-label' %>
+      <%= f.error_span(:hidden) %>
+    </div>
+  </div>
   <div class="form-group">
     <%= f.label :name, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
@@ -21,18 +27,39 @@
       <%=f.error_span(:name) %>
     </div>
   </div>
+
   <div class="form-group">
     <%= f.label :description, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
-      <%= f.text_field :description, :class => 'form-control' %>
+      <%= f.text_area :description, :class => 'form-control', :id => 'description',  :placeholder => '', :rows => 20 %>
+      <script>
+        var placeholder = '## Untertitel \nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n \n ## Lernziele\n* a\n* b\n* c\n\n## Hinweise\n* a\n* b\n* c';
+        $("#description").attr('placeholder', placeholder);
+
+        $("#description").focus(function(){
+            if($(this).val() === placeholder){
+                $(this).attr('placeholder', '');
+            }
+        });
+
+        $("#description").blur(function(){
+            if($(this).val() ===''){
+                $(this).attr('placeholder', placeholder);
+            }    
+        });
+      </script>
       <%=f.error_span(:description) %>
+      Dieser Editor unterstüzt <a href="https://daringfireball.net/projects/markdown/syntax">Markdown</a>
     </div>
   </div>
+
   <div class="form-group">
     <%= f.label :max_participants, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
       <%= f.text_field :max_participants, :class => 'form-control' %>
       <%=f.error_span(:max_participants) %>
+      <%= f.label :participants_are_unlimited %>
+      <%= f.check_box :participants_are_unlimited, :class => 'form_control' %>
     </div>
   </div>
   <div class="form-group">
@@ -86,17 +113,35 @@
       <%=f.error_span(:application_deadline) %>
     </div>
   </div>
-
+  <%= (render 'custom_application_fields_input', form: f) if @event.new_record? %>
+  <div class="form-group">
+    <%= f.label :published, :class => 'control-label col-lg-2' %>
+    <div class="btn-group col-lg-10" data-toggle="buttons">
+      <label class="btn btn-default <%= 'active' if @event.published %>">
+        <%= f.radio_button :published, true %>
+        <%= I18n.t :"events.form.published.myon" %>
+      </label>
+      <label class="btn btn-default <%= 'active' if not @event.published %>">
+        <%= f.radio_button :published, false %>
+        <%= I18n.t :"events.form.published.myoff" %>
+      </label>
+      <%=f.error_span(:published) %>
+    </div>
+  </div>
   <div class="form-group">
     <div class="col-lg-offset-2 col-lg-10">
-      <% if @event.draft == false %>
-        <%= f.submit t('.update'), :name => 'publish', :class => 'btn btn-primary' %>
+      <% if @event.new_record? %>
+        <%= f.submit t('.create'), :name => 'create', :class => 'btn btn-primary' %>
       <% else %>
-        <%= f.submit t('.publish'), :name => 'publish', :class => 'btn btn-primary' %>
-        <%= f.submit t('.draft'), :name => 'draft', :class => 'btn btn-default' %>
+        <%= f.submit t('.update'), :name => 'update', :class => 'btn btn-primary' %>
       <% end %>
-      <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
-                events_path, :class => 'btn btn-default' %>
+      <% unless @event.new_record? %>
+        <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+            event_path(@event),
+            :method => 'delete',
+            :data => { :confirm => t('.confirm', :default => t("events.confirmation_prompts.confirm_delete", :default => 'Are you sure?')) },
+            :class => 'btn btn-danger' %>
+      <% end %>
     </div>
   </div>
 

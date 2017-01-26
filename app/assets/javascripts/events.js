@@ -14,6 +14,15 @@ jQuery(function() {
     });
 });
 
+function addCustomApplicationField() {
+  $(CUSTOM_APPLICATION_FIELD_TEMPLATE)
+    .insertBefore('#add-custom-application-fields');
+}
+
+function removeCustomApplicationField(button) {
+  $(button).parents('.input-group').remove();
+}
+
 function addEventDatePicker() {
   var picker = $('#event-add-date-picker');
 
@@ -27,13 +36,13 @@ function removeEventDatePicker(button) {
   $(button).parent('div').remove();
 }
 
-function flipAllCheckboxes(rootCheckbox) {
+function flipAllCheckboxes(rootCheckbox, className) {
   if (rootCheckbox.checked) {
-    jQuery(':checkbox.'.concat(rootCheckbox.className)).each(function() {
+    jQuery(':checkbox.'.concat(className)).each(function() {
       this.checked = true;
     });
   } else {
-    jQuery(':checkbox.'.concat(rootCheckbox.className)).each(function() {
+    jQuery(':checkbox.'.concat(className)).each(function() {
       this.checked = false;
     });
   }

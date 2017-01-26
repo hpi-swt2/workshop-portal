@@ -11,6 +11,7 @@ de:
       filter: "Filtern"
       status: "Status"
       details: "Details"
+      failed_to_update: "Bewerbungs-Status ändern ist fehlgeschlagen!"
       age_when_event_starts: "Alter bei Beginn"
       free_places:
         one: '%{count} Platz frei'
@@ -18,7 +19,7 @@ de:
       occupied_places:
         one: '%{count} Platz belegt'
         other: '%{count} Plätze belegt'
-      print_all: "Alle ausdrucken"
+      print_all: "Alle Bewerbungen drucken"
       accept_all: "Alle annehmen"
       unclassified_applications_left: 'Bewerbung(en) wurden noch nicht klassifiziert'
       maximum_number_of_participants_exeeded: 'Maximale Teilnehmeranzahl wurde überschritten'
@@ -32,30 +33,67 @@ de:
       saving_fails: "Datei konnte nicht gespeichert werden"
       table_name: "Dateiname"
       table_type: "Dateityp"
+      table_action: "Aktion"
+      download: "Herunterladen"
+      download_file_not_found: "Datei wurde nicht gefunden"
     badges:
-        print: "Namensschilder drucken"
-        title: "Namensschilder drucken für das Event "
-        participants: "Teilnehmer"
-        printBoolean: "Drucken?"
-        print_button_label: "Namensschilder drucken"
+      first_name: "Nur Vorname"
+      last_name: "Nur Nachname"
+      full_name: "Vor- und Nachname"
+      print: "Namensschilder drucken"
+      title: "Namensschilder drucken für das Event "
+      logo_upload: "Logo (optional)"
+      show_school: "Schule anzeigen"
+      show_color: "Gruppenfarbe anzeigen"
+      name_format: "Format der Namen"
+      no_users_selected: "Es wurde kein Teilnehmer ausgewählt."
+      wrong_file_format: "Unbekanntes Format. Bitte eine JPG- oder PNG-Datei hochladen."
+      select_participants: "Teilnehmer auswählen"
+      print_button_label: "Namensschilder drucken"
     participants:
       participants: "Teilnehmer"
       show_participants: "Teilnehmerliste"
       unnecessary: "nicht benötigt"
       available: "vorhanden"
       unavailable: "nicht vorhanden"
+      print_habits: "Essgewohnheiten drucken (PDF)"
+      print_title: "Essgewohnheiten der Teilnehmer für %{title}"
+      print_summary: 
+        one: "Insgesamt werden wir bei dieser Veranstaltung %{count} Teilnehmer/-in> haben."
+        other: "Insgesamt werden wir bei dieser Veranstaltung %{count} Teilnehmer/-innen haben."
+      print_summary_vegetarian: 
+        one: "%{count} Person ernährt sich vegetarisch."
+        other: "%{count} Personen ernähren sich vegetarisch."
+      print_summary_vegan: 
+        one: "%{count} Person ernährt sich vegan."
+        other: "%{count} Personen ernähren sich vegan."
+      print_summary_omnivorous: 
+        one: "%{count} Person ernährt sich omnivor."
+        other: "%{count} Personen ernähren sich omnivor."
+      print_summary_allergic: "Außerdem haben folgende Teilnehmer Allergien oder Unverträglichkeiten:"
     agreement_letters_download:
       notices:
         no_participants_selected: "Keine Teilnehmer ausgewählt"
         no_agreement_letters: "Keiner der gewählten Teilnehmer hat eine Einverständniserklärung"
       select_all: "Alle auswählen"
-      download_all_as: "Alle herunterladen als"
+      download_all_as: "Einverständniserklärungen herunterladen als"
     kinds:
-     workshop: "Workshop"
-     camp: "Camp"
+      workshop: "Workshop"
+      camp: "Camp"
     list:
-      more: "Mehr dazu"
       read_on: "Weiterlesen"
+    participants_modal:
+      print_names: 'Teilnehmerliste drucken'
+      order_by: 'Sortieren nach'
+      email: 'E-Mail'
+      date_of_birth: 'Geburtsdatum'
+      first_name: 'Vorname'
+      last_name: 'Nachname'
+      order_direction: 'Sortierung'
+      order_ascending: 'Aufsteigend'
+      order_descending: 'Absteigend'
+      close_modal: 'Schließen'
+      create_pdf: 'Erstellen'
 
     notices:
       created: "Event wurde erstellt."
@@ -72,15 +110,21 @@ de:
         one: "Über einen Tag"
         other: "Über %{count} Tage"
       past_event: "Vergangene Veranstaltung"
+      is_published: "Ist veröffentlicht"
 
     confirmation_prompts:
       confirm_delete: "Sicher, dass das Event gelöscht werden soll?"
 
     form:
-      draft: "Speichern"
-      publish: "Veröffentlichen"
+      create: "Erstellen"
       update: "Aktualisieren"
+      add_field: "Neues Feld hinzufügen"
+      label_of_custom_field: "Name des eigenen Felds"
+      custom_application_fields_cant_be_changed_later: "Die eigenen Felder für die Bewerbung können nach dem ersten Speichern nicht mehr geändert werden."
       add_timespan: "Zeitspanne hinzufügen"
+      published:
+        myon: "An"
+        myoff: "Aus"
     email:
       templates: "Vorlagen"
     applications_pdf:
@@ -100,6 +144,7 @@ de:
           name: "Name"
           description: "Beschreibung"
           max_participants: "Maximale Teilnehmerzahl"
+          participants_are_unlimited: "Unbegrenzte Teilnehmerzahl"
           kind: "Art"
           active: "Aktiv"
           start_date: "Beginn"
@@ -107,11 +152,22 @@ de:
           draft: "Entwurf"
           organizer: "Veranstalter"
           knowledge_level: "Kenntnisstand"
+          custom_application_fields: "Eigene Bewerbungs-Felder"
           date_ranges:
             one: "Zeitspanne"
             other: "Zeitspannen"
           application_deadline: "Bewerbungsschluss"
+          published: "Öffentlich"
+          hidden: "Versteckt"
   helpers:
     submit:
       event:
         create: "Veröffentlichen"
+
+  controllers:
+    events:
+      participants_pdf:
+        first_name: 'Vorname'
+        last_name: 'Nachname'
+        date_of_birth: 'Geburtsdatum'
+        allergies: 'Allergien'

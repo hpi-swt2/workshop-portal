@@ -10,7 +10,7 @@ RSpec.describe "events/edit", type: :view do
 
     assert_select "form[action=?][method=?]", event_path(@event), "post" do
       assert_select "input#event_name[name=?]", "event[name]"
-      assert_select "input#event_description[name=?]", "event[description]"
+      assert_select "textarea#description[name=?]", "event[description]"
       assert_select "input#event_max_participants[name=?]", "event[max_participants]"
       assert_select "input#event_organizer[name=?]", "event[organizer]"
       assert_select "input#event_knowledge_level[name=?]", "event[knowledge_level]"
@@ -23,15 +23,22 @@ RSpec.describe "events/edit", type: :view do
     expect(rendered).to have_field("event_knowledge_level", :placeholder => "optional")
   end
 
-  it "should have a draft button for events that haven't been published" do
-    @event = assign(:event, FactoryGirl.create(:event, draft: true))
+  it "should have a delete button" do
+    @event = assign(:event, FactoryGirl.create(:event))
     render
-    assert_select "input[name=draft]"
+    assert_select 'a[data-method="delete"]'
   end
 
-  it "shouldn't have a draft button for events that have already been published" do
-    @event = assign(:event, FactoryGirl.create(:event, draft: false))
+  it "should have an update button for events that haven't been published" do
+    @event = assign(:event, FactoryGirl.create(:event, published: false))
     render
-    assert_select "input[name=draft]", false
+    assert_select "input[name=update]"
+  end
+
+  it "shouldn't have a create button, but should have a update button for events that have already been published" do
+    @event = assign(:event, FactoryGirl.create(:event, published: true))
+    render
+    assert_select "input[name=create]", false
+    assert_select "input[name=update]"
   end
 end

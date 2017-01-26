@@ -3,11 +3,14 @@
 
 jQuery(function() {
     $(document).on('click', "#send-emails-clipboard", function() {
-        $("#email_recipients").select();
-        try {
-           document.execCommand('copy');
-        } catch (err) {
-            console.log('Unable to copy emails to the clipboard');
+        var recipients = $('#email_recipients')
+        if(recipients.val.length > 0) {
+            recipients.select();
+            try {
+                document.execCommand('copy');
+            } catch (err) {
+                console.log('Unable to copy emails to the clipboard');
+            }
         }
     });
 });
