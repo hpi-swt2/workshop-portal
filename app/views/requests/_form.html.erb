@@ -1,5 +1,17 @@
-<%= form_for @request, :html => {:class => "form-horizontal request"} do |f| %>
+<h3>Beispiel-Anfragen</h3>
+<p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laborum fugiat quasi expedita distinctio, suscipit, eaque deleniti similique eveniet in accusantium voluptas blanditiis id modi voluptatibus culpa illum aliquam. Neque, dolore.</p>
+<div class="owl-carousel">
+  <div> Your Content </div>
+  <div> Your Content </div>
+  <div> Your Content </div>
+  <div> Your Content </div>
+  <div> Your Content </div>
+  <div> Your Content </div>
+  <div> Your Content </div>
+</div>
 
+<%= form_for @request, :html => {:class => "form-horizontal request"} do |f| %>
+    
     <%= render partial: "shared/error_message", locals: {entity: @request} %>
 
     <h3><%=t 'requests.new.workshop_information' %></h3>
