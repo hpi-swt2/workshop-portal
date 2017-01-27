@@ -25,9 +25,10 @@
       </th>
       <th>
         <button
-         class="btn btn-default btn-sm pull-right has-popover"
+         class="btn btn-default btn-sm pull-right has-popover popover-click"
          title="<%= t '.filter_by' %>"
          data-toggle="popover"
+         data-trigger="click"
          data-placement="bottom"
          data-content="<%= (render :partial => 'application_letters/application_filter_popover').gsub('\n', '') %>"
          data-html="true"><%= t '.filter_by' %></button>
@@ -65,23 +66,15 @@
       <% end %>
     </div>
 
-    <div class="btn-group pull-right" role="group">
-      <% if  (can? :send_email, Email) && (@event.phase == :selection) %>
-        <% if not @event.applications_classified? %>
-          <div class="btn-group pull-right tooltip-wrapper has-tooltip" role="group" data-toggle="tooltip" title="<%= t '.unclassified_applications_left'%>">
-            <%= button_tag t('.sending_acceptances'), type: 'button', class: 'send-emails-button btn btn-default', disabled: true %>
-            <%= button_tag t('.sending_rejections'), type: 'button', class: 'send-emails-button btn btn-default', disabled: true %>
-          </div>
-        <% elsif @event.compute_free_places < 0 %>
-          <div class="btn-group pull-right tooltip-wrapper has-tooltip" role="group" data-toggle="tooltip" title="<%= t '.maximum_number_of_participants_exeeded'%>">
-            <%= button_tag t('.sending_acceptances'), type: 'button', class: 'send-emails-button btn btn-default', disabled: true %>
-            <%= button_tag t('.sending_rejections'), type: 'button', class: 'send-emails-button btn btn-default', disabled: true %>
-          </div>
-        <% else %>
-            <%= link_to t('.sending_acceptances'), event_email_show_path(@event, status: :accepted), class: 'send-emails-button btn btn-default' %>
-            <%= link_to t('.sending_rejections'),  event_email_show_path(@event, status: :rejected), class: 'send-emails-button btn btn-default' %>
-        <% end %>
+    <% if (can? :send_email, Email) && (@event.phase == :selection) %>
+    <div class="btn-group send-emails-buttons pull-right tooltip-wrapper has-tooltip" role="group" data-toggle="tooltip" title="<%= @event.send_mails_tooltip %>">
+      <%= form_tag event_email_show_path(@event, status: :accepted), method: :get do %>
+        <%= button_tag t('.sending_acceptances'), class: 'send-emails-button btn btn-default', disabled: @event.send_mails_tooltip.present? %>
+      <% end %>
+      <%= form_tag event_email_show_path(@event, status: :rejected), method: :get do %>
+        <%= button_tag t('.sending_rejections'), class: 'send-emails-button btn btn-default', disabled: @event.send_mails_tooltip.present? %>
       <% end %>
     </div>
+    <% end %>
   </div>
 </div>
