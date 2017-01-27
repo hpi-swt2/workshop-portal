@@ -81,6 +81,9 @@ gem 'rubocop', '~> 0.29.1'
 # See https://github.com/plataformatec/simple_form
 # gem 'simple_form'
 
+# OWl Carousel for nice Slideshows
+# https://github.com/acrogenesis/owlcarousel-rails
+gem 'owlcarousel-rails'
 
 # coveralls.io
 gem 'coveralls', require: false

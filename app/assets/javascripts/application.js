@@ -15,5 +15,6 @@
 //= require twitter/bootstrap
 //= require bootstrap-datepicker/core
 //= require bootstrap-datepicker/locales/bootstrap-datepicker.de.js
+//= require owl.carousel
 //= require_tree .
 //= require turbolinks
