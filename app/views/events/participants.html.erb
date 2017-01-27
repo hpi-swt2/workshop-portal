@@ -106,7 +106,8 @@
       <% end %>
     </table>
 
-    <button class="btn btn-default" type="button" data-toggle="modal" data-target="#print_participant_modal" id="open_print_modal">Teilnehmerliste (PDF)</button>
+    <button class="btn btn-default" type="button" data-toggle="modal" data-target="#print_participant_modal" id="open_print_modal"><%= t("events.participants.print_participants") %>
+    </button>
     <%= form_tag(event_path(@event) + "/participants/agreement_letters", { method: :post, id: 'downloadLettersForm' }) do %>
 
       <% if can? :print_agreement_letters, Event and @has_agreement_letters %>
@@ -117,7 +118,9 @@
       <% end %>
       <% if can? :print_applications_eating_habits, Event %>
       <%= link_to t('events.participants.print_habits'),
-                    event_path(@event) + "/print_applications_eating_habits" , :class => 'btn btn-default btn-sm'  %>
+                    event_path(@event) + "/print_applications_eating_habits",
+                    :class => 'btn btn-default btn-sm',
+                    :target => '_blank'  %>
       <% end %>
     <% end %>
       <br>
@@ -127,8 +130,9 @@
   <% if @event.phase == :execution %>
     <%= link_to t('events.badges.print_button_label'),
                 badges_event_path(@event),
-                class: 'btn btn-default',
-                disabled: @participants.empty? %>
+                :class => 'btn btn-default',
+                :disabled => @participants.empty?,
+                :target => '_blank' %>
   <% end %>
 
   <script>
