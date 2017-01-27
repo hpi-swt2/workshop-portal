@@ -28,7 +28,6 @@
           </th>
         <% end %>
       </tr>
-
       <% sort_participants
         @participants.each do |participant| 
           application_letter = ApplicationLetter.find_by(user_id: participant.id, event_id: @event.id) 
@@ -57,10 +56,6 @@
             <%= check_box_tag('selected_participants[]', participant.id, false, class: 'participant_selection') %>
           </td>
         <% end %>
-        
-
-
-
         <% if can? :show_eatings_habits, Event %>
           <td>
            <% if application_letter && ( application_letter.vegan || application_letter.vegetarian || application_letter.allergic ) %>
@@ -96,10 +91,6 @@
              <% end %>
            </ul>
            <% end %> 
-
-
-
-
           </td>
         <% end %>
       </tr>
@@ -112,7 +103,10 @@
 
       <% if can? :print_agreement_letters, Event and @has_agreement_letters %>
         <div id="participants_download_submit_button">
-        <%= submit_tag t('events.agreement_letters_download.download_all_as'), name: "download_all", class: "btn btn-default" %>
+        <%= submit_tag t('events.agreement_letters_download.download_all_as'), 
+              :name => "download_all", 
+              :class => "btn btn-default",
+              :formtarget => "_blank" %>
         <%= select_tag :download_type, options_for_select([['pdf'], ['zip']]) %>
         </div>
       <% end %>
