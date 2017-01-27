@@ -124,8 +124,8 @@
       <%= link_to t('events.badges.print_button_label'),
                   badges_event_path(@event),
                   :class => 'btn btn-default',
-                  :disabled => @participants.empty?,
-                  :target => '_blank' %>
+                  :disabled => @participants.empty?
+                   %>
     <% end %>
 
   <script>
