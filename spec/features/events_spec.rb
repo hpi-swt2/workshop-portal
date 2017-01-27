@@ -170,16 +170,34 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
   scenario "logged in as Organizer I can send acceptance emails and by that accept the pre_accepted applicants" do
     login(:organizer)
     event = FactoryGirl.create(:event_with_pre_accepted_applications, :in_selection_phase)
-    pre_accepted_applications = event.application_letters.where(status: ApplicationLetter.statuses[:pre_accepted])
+    pre_accepted_applications = event.application_letters.select { | application_letter | application_letter.status == 'pre_accepted' }
     visit event_path(event)
     click_link(I18n.t('events.applicants_overview.sending_acceptances'))
     expect(page).to have_current_path(event_email_show_path(event_id: event.id, status: :acceptance))
     fill_in :email_subject, with: "Subject Accepted"
     fill_in :email_content, with: "Content Accepted"
     click_button I18n.t('.emails.email_form.send')
+    expect(pre_accepted_applications.size).to be > 0
     pre_accepted_applications.each do |letter|
       letter.reload
       expect(letter.status.to_sym).to eq(:accepted)
+    end
+  end
+
+  scenario "logged in as Organizer I can send rejection emails without accepting the pre_accepted applicants" do
+    login(:organizer)
+    event = FactoryGirl.create(:event_with_pre_accepted_applications, :in_selection_phase)
+    pre_accepted_applications = event.application_letters.select { | application_letter | application_letter.status == 'pre_accepted' }
+    visit event_path(event)
+    click_link(I18n.t('events.applicants_overview.sending_rejections'))
+    expect(page).to have_current_path(event_email_show_path(event_id: event.id, status: :rejection))
+    fill_in :email_subject, with: "Subject Accepted"
+    fill_in :email_content, with: "Content Accepted"
+    click_button I18n.t('.emails.email_form.send')
+    expect(pre_accepted_applications.size).to be > 0
+    pre_accepted_applications.each do |letter|
+      letter.reload
+      expect(letter.status.to_sym).to eq(:pre_accepted)
     end
   end
 
