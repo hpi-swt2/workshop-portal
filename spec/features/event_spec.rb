@@ -15,12 +15,12 @@ describe "Event", type: :feature do
     end
 
     it "should not list past events" do
-      currentEvent = FactoryGirl.create :event
-      pastEvent = FactoryGirl.create :event, :past
+      current_event = FactoryGirl.create :event
+      past_event = FactoryGirl.create :event, :in_the_past_valid
 
       visit events_path
-      expect(page).to have_text(currentEvent.name)
-      expect(page).to_not have_text(pastEvent.name)
+      expect(page).to have_text(current_event.name)
+      expect(page).to_not have_text(past_event.name)
     end
 
     it "should mark an event as draft by showing a label" do
@@ -100,12 +100,12 @@ describe "Event", type: :feature do
 
   describe "archive page" do
     it "should list past events" do
-      currentEvent = FactoryGirl.create :event
-      pastEvent = FactoryGirl.create :event, :past
+      current_event = FactoryGirl.create :event
+      past_event = FactoryGirl.create :event, :in_the_past_valid
 
       visit events_archive_path
-      expect(page).to have_text(pastEvent.name)
-      expect(page).to_not have_text(currentEvent.name)
+      expect(page).to have_text(past_event.name)
+      expect(page).to_not have_text(current_event.name)
     end
   end
 
