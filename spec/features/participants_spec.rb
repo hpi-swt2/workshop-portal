@@ -67,36 +67,20 @@ RSpec.feature "Event participants overview", :type => :feature do
       user: user, event: @event)
 
     #Expected Sorting Order
-    #Benno, Mary, Peter, Otti, Paul ASC
-    #Paul, Otti, Peter, Mayr, Benno DESC
+    #Benno, Mary, Otti, Peter, Paul ASC
+    #Paul, Peter, Otti, Mary, Benno DESC
 
-
-
-    sorted_by_eating_habit = @event.participants.sort! do |a,b|
-      a = ApplicationLetter.find_by(user_id: a.id, event_id: @event.id)
-      b = ApplicationLetter.find_by(user_id: b.id, event_id: @event.id)
-      a.get_eating_habit_state <=> b.get_eating_habit_state
-    end
-
-    print sorted_by_eating_habit
-
-    names = sorted_by_eating_habit.map {|p| p.profile.name}
-    names_with_ids = sorted_by_eating_habit.map {|p| p.profile.name + " pID: " + p.id.to_s}
+    expected_order = ["Benno", "Mary", "Otti", "Peter", "Paul"]
 
     login(:organizer)
     visit event_participants_path(@event)
     link_name = I18n.t('activerecord.methods.application_letter.eating_habits')
-    print link_name
     click_link link_name
-    sleep 1
     print page.body
-    print "NAMES:"
-    print names_with_ids
-    expect(page.body).to contain_ordered(names)
+    print expected_order
+    expect(page.body).to contain_ordered(expected_order)
     click_link link_name
-    sleep 1
-    expect(page.body).to contain_ordered(names.reverse)
-
+    expect(page.body).to contain_ordered(expected_order.reverse)
 
   end
 
