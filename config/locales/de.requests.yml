@@ -12,26 +12,31 @@ de:
       panel1:
         title: "Workshop 1"
         duration: "2-3 h"
+        size: "20 Personen"
         target_group: "Informatikeinsteiger (auch ohne Programmiererfahrung), ca. ab Klasse 10"
         content: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita consequuntur voluptate eveniet praesentium vitae. Velit, pariatur et quidem earum, consectetur molestias perspiciatis cupiditate voluptas expedita aliquam, tempore, unde fuga dignissimos."
       panel2:
         title: "Workshop 2"
         duration: "2-3 h"
+        size: "20 Personen"
         target_group: "Informatikeinsteiger (auch ohne Programmiererfahrung), ca. ab Klasse 10"
         content: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita consequuntur voluptate eveniet praesentium vitae. Velit, pariatur et quidem earum, consectetur molestias perspiciatis cupiditate voluptas expedita aliquam, tempore, unde fuga dignissimos."
       panel3:
         title: "Workshop 3"
         duration: "2-3 h"
+        size: "20 Personen"
         target_group: "Informatikeinsteiger (auch ohne Programmiererfahrung), ca. ab Klasse 10"
         content: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita consequuntur voluptate eveniet praesentium vitae. Velit, pariatur et quidem earum, consectetur molestias perspiciatis cupiditate voluptas expedita aliquam, tempore, unde fuga dignissimos."
       panel4:
         title: "Workshop 4"
         duration: "2-3 h"
+        size: "20 Personen"
         target_group: "Informatikeinsteiger (auch ohne Programmiererfahrung), ca. ab Klasse 10"
         content: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita consequuntur voluptate eveniet praesentium vitae. Velit, pariatur et quidem earum, consectetur molestias perspiciatis cupiditate voluptas expedita aliquam, tempore, unde fuga dignissimos."
       panel5:
         title: "Workshop 5"
         duration: "2-3 h"
+        size: "20 Personen"
         target_group: "Informatikeinsteiger (auch ohne Programmiererfahrung), ca. ab Klasse 10"
         content: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita consequuntur voluptate eveniet praesentium vitae. Velit, pariatur et quidem earum, consectetur molestias perspiciatis cupiditate voluptas expedita aliquam, tempore, unde fuga dignissimos." 
     new:
