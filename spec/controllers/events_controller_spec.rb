@@ -486,8 +486,8 @@ RSpec.describe EventsController, type: :controller do
           a.user.accepted_applications_count(@event).to_s,
           a.user.rejected_applications_count(@event).to_s,
           I18n.t("application_status.#{a.status}"),
-          a.motivation #,
-          #a.annotation
+          a.motivation,
+          a.annotation
         )
         a.application_notes.each do |note|
           expect(text).to include(note.note)

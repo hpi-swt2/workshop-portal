@@ -79,18 +79,20 @@ RSpec.feature "Event participants overview", :type => :feature do
     end
 
     names = sorted_by_eating_habit.map {|p| p.profile.name}
+    names_with_ids = sorted_by_eating_habit.map {|p| p.profile.name + " pID: " + p.id.to_s}
 
     login(:organizer)
     visit event_participants_path(@event)
     link_name = I18n.t('activerecord.methods.application_letter.eating_habits')
+    print link_name
     click_link link_name
-    sleep 5
+    sleep 1
     print page.body
     print "NAMES:"
-    print names
+    print names_with_ids
     expect(page.body).to contain_ordered(names)
     click_link link_name
-    sleep 5
+    sleep 1
     expect(page.body).to contain_ordered(names.reverse)
 
 
