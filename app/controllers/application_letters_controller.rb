@@ -84,7 +84,8 @@ class ApplicationLettersController < ApplicationController
           free_places: I18n.t('events.applicants_overview.free_places',
                               count: @application_letter.event.compute_free_places),
           occupied_places: I18n.t('events.applicants_overview.occupied_places',
-                                  count: @application_letter.event.compute_occupied_places)
+                                  count: @application_letter.event.compute_occupied_places),
+          mail_tooltip: @application_letter.event.send_mails_tooltip
         }
       else
         redirect_to :back, notice: I18n.t('application_letters.successful_update') rescue ActionController::RedirectBackError redirect_to root_path
