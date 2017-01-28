@@ -78,6 +78,8 @@ RSpec.feature "Event participants overview", :type => :feature do
       a.get_eating_habit_state <=> b.get_eating_habit_state
     end
 
+    print sorted_by_eating_habit
+
     names = sorted_by_eating_habit.map {|p| p.profile.name}
     names_with_ids = sorted_by_eating_habit.map {|p| p.profile.name + " pID: " + p.id.to_s}
 
