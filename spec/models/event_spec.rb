@@ -91,8 +91,8 @@ describe Event do
     accepted_application_letter_3 = FactoryGirl.create(:application_letter_accepted, :event => event, :user => FactoryGirl.create(:user))
     rejected_application_letter = FactoryGirl.create(:application_letter_rejected, :event => event, :user => FactoryGirl.create(:user))
     [accepted_application_letter_1, accepted_application_letter_2, accepted_application_letter_3, rejected_application_letter].each { |letter| event.application_letters.push(letter) }
-    expect(event.email_addresses_of_type(:accepted)).to eq([accepted_application_letter_1.user.email, accepted_application_letter_2.user.email, accepted_application_letter_3.user.email].join(','))
-    expect(event.email_addresses_of_type(:rejected)).to eq([rejected_application_letter.user.email].join(','))
+    expect(event.email_addresses_of_type(:accepted)).to contain_exactly(accepted_application_letter_1.user.email, accepted_application_letter_2.user.email, accepted_application_letter_3.user.email)
+expect(event.email_addresses_of_type(:rejected)).to contain_exactly(rejected_application_letter.user.email)
   end
 
   it "is either a camp or a workshop" do
@@ -186,21 +186,16 @@ describe Event do
     before :each do
       @event = FactoryGirl.create(:event)
     end
-    
+
     it "returns email address only of the given type" do
       @accepted_application = FactoryGirl.create(:application_letter_accepted, event: @event, user: FactoryGirl.create(:user))
       @rejected_application = FactoryGirl.create(:application_letter_rejected, event: @event, user: FactoryGirl.create(:user))
-      expect(@event.email_addresses_of_type(:accepted)).to eq(@accepted_application.user.email)
-      expect(@event.email_addresses_of_type(:rejected)).to eq(@rejected_application.user.email)
+      expect(@event.email_addresses_of_type(:accepted)).to contain_exactly(@accepted_application.user.email)
+      expect(@event.email_addresses_of_type(:rejected)).to contain_exactly(@rejected_application.user.email)
     end
 
-    it "correctly concatinates multiple email addresses" do
-      @application1 = FactoryGirl.create(:application_letter_accepted, event: @event, user: FactoryGirl.create(:user))
-      @application2 = FactoryGirl.create(:application_letter_accepted, event: @event, user: FactoryGirl.create(:user))
-      expect(@event.email_addresses_of_type(:accepted)).to eq(@application1.user.email + "," + @application2.user.email)
-    end
   end
-  
+
   it "generates an application letter list ordered by first name" do
     @event = FactoryGirl.create(:event)
     @user1 = FactoryGirl.create(:user, email:'a@b.com')

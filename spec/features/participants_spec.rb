@@ -47,48 +47,40 @@ RSpec.feature "Event participants overview", :type => :feature do
   scenario "logged in as an Organizer I want to be able to sort the participants table by their eating habits" do
     user = FactoryGirl.create(:user)
     profile = FactoryGirl.create(:profile, user: user, last_name: "Peter")
-    application_letter = FactoryGirl.create(:application_letter_accepted, 
+    application_letter = FactoryGirl.create(:application_letter_accepted,
       user: user, event: @event, vegan: true)
     user = FactoryGirl.create(:user)
     profile = FactoryGirl.create(:profile, user: user, last_name: "Paul")
-    application_letter = FactoryGirl.create(:application_letter_accepted, 
+    application_letter = FactoryGirl.create(:application_letter_accepted,
       user: user, event: @event, vegan: true, allergic: true)
     user = FactoryGirl.create(:user)
     profile = FactoryGirl.create(:profile, user: user, last_name: "Mary")
-    application_letter = FactoryGirl.create(:application_letter_accepted, 
+    application_letter = FactoryGirl.create(:application_letter_accepted,
       user: user, event: @event, vegetarian: true)
     user = FactoryGirl.create(:user)
     profile = FactoryGirl.create(:profile, user: user, last_name: "Otti")
-    application_letter = FactoryGirl.create(:application_letter_accepted, 
+    application_letter = FactoryGirl.create(:application_letter_accepted,
       user: user, event: @event, vegetarian: true, allergic: true)
     user = FactoryGirl.create(:user)
     profile = FactoryGirl.create(:profile, user: user, last_name: "Benno")
-    application_letter = FactoryGirl.create(:application_letter_accepted, 
+    application_letter = FactoryGirl.create(:application_letter_accepted,
       user: user, event: @event)
 
     #Expected Sorting Order
-    #Benno, Mary, Peter, Otti, Paul ASC
-    #Paul, Otti, Peter, Mayr, Benno DESC
-    
-    
+    #Benno, Mary, Otti, Peter, Paul ASC
+    #Paul, Peter, Otti, Mary, Benno DESC
 
-    sorted_by_eating_habit = @event.participants.sort! do |a,b| 
-      a = ApplicationLetter.find_by(user_id: a.id, event_id: @event.id)
-      b = ApplicationLetter.find_by(user_id: b.id, event_id: @event.id)
-      a.get_eating_habit_state <=> b.get_eating_habit_state     
-    end
-
-    names = sorted_by_eating_habit.map {|p| p.profile.name}
+    expected_order = ["Benno", "Mary", "Otti", "Peter", "Paul"]
 
     login(:organizer)
     visit event_participants_path(@event)
     link_name = I18n.t('activerecord.methods.application_letter.eating_habits')
-    click_link link_name
 
-    expect(page).to contain_ordered(names)
     click_link link_name
-    expect(page).to contain_ordered(names.reverse)
+    expect(page.body).to contain_ordered(expected_order)
 
+    click_link link_name
+    expect(page.body).to contain_ordered(expected_order.reverse)
 
   end
 
