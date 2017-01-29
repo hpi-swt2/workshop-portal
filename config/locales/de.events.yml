@@ -56,6 +56,7 @@ de:
       unnecessary: "nicht benötigt"
       available: "vorhanden"
       unavailable: "nicht vorhanden"
+      print_participants: "Teilnehmerliste (PDF)"
       print_habits: "Essgewohnheiten drucken (PDF)"
       print_title: "Essgewohnheiten der Teilnehmer für %{title}"
       print_summary: 

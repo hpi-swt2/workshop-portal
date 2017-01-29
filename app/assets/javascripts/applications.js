@@ -15,6 +15,10 @@ function ajaxUpdateApplicationStatus(form, errorMessage) {
     var data = JSON.parse(xhr.responseText);
     $('#free_places').text(data.free_places);
     $('#occupied_places').text(data.occupied_places);
+    $('.send-emails-button').attr('disabled', !!data.mail_tooltip);
+    $('.send-emails-buttons')
+      .attr('title', data.mail_tooltip || '')
+      .tooltip(data.mail_tooltip ? 'fixTitle' : 'destroy');
   };
   xhr.onerror = function() {
       alert(errorMessage);
