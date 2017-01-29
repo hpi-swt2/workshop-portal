@@ -27,11 +27,9 @@ class EmailsController < ApplicationController
   def send_email
     @email = Email.new(email_params)
     @event = Event.find(params[:event_id])
-
+    status = get_email_template_status
     if @email.valid?
-      @email.send_email
-
-      status = get_email_template_status
+      @email.send_email      
       if(status == :acceptance || status == :rejection)
         accept_pre_accepted_applicants(@email.recipients) if status == :acceptance
         @event.lock_application_status
@@ -39,7 +37,7 @@ class EmailsController < ApplicationController
 
       redirect_to @event, notice: t('.sending_successful')
     else
-      @templates = EmailTemplate.with_status(get_email_template_status)
+      @templates = EmailTemplate.with_status(status)
 
       flash.now[:alert] = t('.sending_failed')
       render :email

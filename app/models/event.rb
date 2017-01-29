@@ -11,6 +11,7 @@
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  application_status_locked  :boolean
+#  hidden           :boolean
 #
 
 class Event < ActiveRecord::Base
@@ -24,6 +25,12 @@ class Event < ActiveRecord::Base
   has_many :participant_groups
   has_many :date_ranges
   accepts_nested_attributes_for :date_ranges
+  validates :max_participants, numericality: { only_integer: true, greater_than: 0 }
+  validate :has_date_ranges
+  validates_presence_of :application_deadline
+  validate :application_deadline_before_start_of_event
+  validates :hidden, inclusion: { in: [true, false] }
+  validates :hidden, exclusion: { in: [nil] }
 
   # Setter for max_participants
   # @param [Int Float] the max number of participants for the event or infinity if it is not limited
@@ -56,10 +63,6 @@ class Event < ActiveRecord::Base
     @participants.sort { |x, y| self.compare_participants_by_agreement(x,y) }
   end
 
-  validates :max_participants, numericality: { only_integer: true, greater_than: 0 }
-  validate :has_date_ranges
-  validates_presence_of :application_deadline
-  validate :application_deadline_before_start_of_event
 
 
   # @return the minimum start_date over all date ranges
@@ -133,6 +136,19 @@ class Event < ActiveRecord::Base
   # @return [Boolean] if status of all application_letters is not pending
   def applications_classified?
     application_letters.all? { |application_letter| application_letter.status != 'pending' }
+  end
+
+  # Returns the tooltip used to help explain to the user why he can't send mails yet
+  #
+  # @return [String] the translated tooltip text or nil if mails can be sent
+  def send_mails_tooltip
+    if not applications_classified?
+      I18n.t 'events.applicants_overview.unclassified_applications_left'
+    elsif compute_free_places < 0
+      I18n.t 'events.applicants_overview.maximum_number_of_participants_exeeded'
+    else
+      nil
+    end
   end
 
   # Sets the status of all the event's application letters to pre_accepted
@@ -273,10 +289,10 @@ class Event < ActiveRecord::Base
   # if requested
   #
   # @param limit Maximum number of events to return
-  # @param only_public Set to true to not include drafts
+  # @param only_public Set to true to not include drafts and hidden events
   # @return List of events
   def self.sorted_by_start_date(only_public)
-    (only_public ? Event.draft_is(false) : Event.all)
+    (only_public ? Event.draft_is(false).where(hidden: false) : Event.all)
       .sort_by(&:start_date)
   end
 

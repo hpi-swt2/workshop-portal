@@ -17,6 +17,14 @@ describe Event do
 
   let(:event) { FactoryGirl.create :event, :with_two_date_ranges }
 
+
+  it "can't be created without mandatory fields" do
+    [:hidden, :application_deadline].each do |attr|
+      event = FactoryGirl.build(:event, attr => nil)
+      expect(event).to_not be_valid
+    end
+  end
+
   it "is created by event factory" do
     expect(event).to be_valid
   end

@@ -54,8 +54,8 @@ class ApplicationLetter < ActiveRecord::Base
   # @return [Boolean] true if no status changes are allowed anymore
   def status_change_allowed?
     # TODO use event states instead
-    if (event.application_status_locked)
-      status_was == 'accepted' && status == 'canceled' || status_was == 'alternative' && status == 'pre_accepted'
+    if event.phase == :execution
+      (status_was == 'accepted' && status == 'canceled') || (status_was == 'alternative' && status == 'pre_accepted') || (status_was == 'pre_accepted' && status == 'accepted')
     else
       true
     end
@@ -68,6 +68,18 @@ class ApplicationLetter < ActiveRecord::Base
       errors.add(:event, I18n.t("application_letters.form.warning"))
     end
   end
+  
+  # Since EatingHabits are persited in booleans we need to generate a 
+  # EatingHabitStateCode to allow sorting
+  # US 28_4.5
+   
+   def get_eating_habit_state
+     eating_habit_state = 0
+     eating_habit_state += 4 if vegetarian
+     eating_habit_state += 5 if vegan
+     eating_habit_state += 99 if allergic
+     return eating_habit_state
+   end
 
   # Chooses right status based on status and event deadline
   #
