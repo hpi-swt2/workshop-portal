@@ -35,6 +35,4 @@
   </dd>
   <% end %>
 </dl>
-<% if can? :apply, Event %>
-    <%= render :partial => 'apply_button', :locals => {event: @event} %>
-<% end %>
+<%= render :partial => 'apply_button', :locals => {event: @event} %>
