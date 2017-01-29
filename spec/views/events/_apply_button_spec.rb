@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "events/_apply_button", type: :view do
   before(:each) do
-    @event = assign(:in_application_phase, FactoryGirl.create(:event))
+    @event = FactoryGirl.create(:event, :in_application_phase)
   end
 
   %i[pupil admin].each do |role|
