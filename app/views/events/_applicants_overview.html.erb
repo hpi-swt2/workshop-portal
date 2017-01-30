@@ -68,10 +68,12 @@
 
     <% if (can? :send_email, Email) && (@event.phase == :selection) %>
     <div class="btn-group send-emails-buttons pull-right tooltip-wrapper has-tooltip" role="group" data-toggle="tooltip" title="<%= @event.send_mails_tooltip %>">
-      <%= form_tag event_email_show_path(@event, status: :accepted), method: :get do %>
+      <%= form_tag event_email_show_path(@event), method: :get do %>
+        <%= hidden_field_tag "status", "acceptance" %>          
         <%= button_tag t('.sending_acceptances'), class: 'send-emails-button btn btn-default', disabled: @event.send_mails_tooltip.present? %>
       <% end %>
-      <%= form_tag event_email_show_path(@event, status: :rejected), method: :get do %>
+      <%= form_tag event_email_show_path(@event), method: :get do %>
+        <%= hidden_field_tag "status", "rejection" %>
         <%= button_tag t('.sending_rejections'), class: 'send-emails-button btn btn-default', disabled: @event.send_mails_tooltip.present? %>
       <% end %>
     </div>
