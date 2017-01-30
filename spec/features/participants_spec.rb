@@ -1,4 +1,5 @@
 require "rails_helper"
+require "object_creation_helper"
 
 RSpec.feature "Event participants overview", :type => :feature do
   before :each do
@@ -45,32 +46,26 @@ RSpec.feature "Event participants overview", :type => :feature do
   end
 
   scenario "logged in as an Organizer I want to be able to sort the participants table by their eating habits" do
-    user = FactoryGirl.create(:user)
-    profile = FactoryGirl.create(:profile, user: user, last_name: "Peter")
-    application_letter = FactoryGirl.create(:application_letter_accepted,
-      user: user, event: @event, vegan: true)
-    user = FactoryGirl.create(:user)
-    profile = FactoryGirl.create(:profile, user: user, last_name: "Paul")
-    application_letter = FactoryGirl.create(:application_letter_accepted,
-      user: user, event: @event, vegan: true, allergic: true)
-    user = FactoryGirl.create(:user)
-    profile = FactoryGirl.create(:profile, user: user, last_name: "Mary")
-    application_letter = FactoryGirl.create(:application_letter_accepted,
-      user: user, event: @event, vegetarian: true)
-    user = FactoryGirl.create(:user)
-    profile = FactoryGirl.create(:profile, user: user, last_name: "Otti")
-    application_letter = FactoryGirl.create(:application_letter_accepted,
-      user: user, event: @event, vegetarian: true, allergic: true)
-    user = FactoryGirl.create(:user)
-    profile = FactoryGirl.create(:profile, user: user, last_name: "Benno")
-    application_letter = FactoryGirl.create(:application_letter_accepted,
-      user: user, event: @event)
+    # Peter, vegan
+    create_accepted_application_with(@event, "Peter", false, true, false)
+
+    # Paul, vegan, allergic
+    create_accepted_application_with(@event, "Paul", true, true, false)
+
+    # Mary, vegetarian
+    create_accepted_application_with(@event, "Mary", false, false, true)
+
+    # Otti, vegetarian, allergic
+    create_accepted_application_with(@event, "Otti", true, false, true)
+
+    # Benno, none
+    create_accepted_application_with(@event, "Benno", false, false, false)
 
     #Expected Sorting Order
-    #Benno, Mary, Otti, Peter, Paul ASC
-    #Paul, Peter, Otti, Mary, Benno DESC
+    #Benno, Mary, Peter, Otti, Paul ASC
+    #Paul, Otti, Peter, Mary, Benno DESC
 
-    expected_order = ["Benno", "Mary", "Otti", "Peter", "Paul"]
+    expected_order = ["Benno", "Mary", "Peter", "Otti", "Paul"]
 
     login(:organizer)
     visit event_participants_path(@event)
