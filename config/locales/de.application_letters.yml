@@ -7,6 +7,7 @@ de:
     confirmApplicationDelete: "Bist du dir sicher, dass du diese Bewerbung löschen möchtest? Dieser Schritt kann nicht widerrufen werden."
     show:
       application_title: "Bewerbung für %{title}"
+      annotation_title: "Fragen oder Anmerkungen"
       age_when_event_starts: "Alter bei Beginn"
       new_note: "Neue Anmerkung:"
       delete: "Bewerbung löschen"
@@ -34,7 +35,10 @@ de:
       check_application_for: "Bewerbung für %{event_name} prüfen"
       eating_habits: "Essgewohnheiten"
     confirm_deletion: "Willst du diese Bewerbung wirklich löschen?"
+    print_accepted_with_eatings_habits: "Drucke Teilnehmer mit Essgewohnheiten"
+
     fields_filled_in: "Wir haben einige Felder bereits für dich ausgefüllt. Falls sich seit deiner letzten Bewerbung etwas geändert hat, kannst du es jetzt anpassen."
+
 
   activerecord:
     models:
@@ -55,6 +59,11 @@ de:
           vegan: "Vegan"
           allergic: "Allergien vorhanden"
           allergies: "Falls Allergien vorhanden, welche?"
+          annotation: "Hast du weitere Anmerkungen oder Fragen?"
+          omnivorous: "Omnivor"
+    methods:
+      application_letter:
+        eating_habits: "Essgewohnheiten"
 
   application_status:
     accepted: "Angenommen"

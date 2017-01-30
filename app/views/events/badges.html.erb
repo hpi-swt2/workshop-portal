@@ -1,25 +1,49 @@
 <h1><%= t('events.badges.title') + "'" + @event.name + "'" %></h1>
-<h3><%= t('events.badges.participants') %></h3>
 
-<%= form_for event_badges_path(@event), :html => { :class => "form-horizontal event" } do |f| %>
-<table>
-  <tr>
-    <th><%= Profile.human_attribute_name(:name) %></th>
-    <th><%= t('events.badges.printBoolean') %></th>
-  </tr>
-
-  <% @participants.each do |participant| %>
+<%= form_tag badges_event_path(@event),  multipart: true do %>
+  <div class="form-group">
+    <%= label_tag "logo_upload", t('events.badges.logo_upload') %>
+    <%= file_field_tag "logo_upload",
+      class: "btn btn-default btn-file",
+      accept: "image/png,image/jpeg" %>
+  </div>
+  <div class="form-group">
+    <%= label_tag "name_format", t('events.badges.name_format') %>
+    <%= select_tag "name_format",
+      options_for_select([
+        [t("events.badges.first_name"), :first],
+        [t("events.badges.last_name"), :last],
+        [t("events.badges.full_name"), :full]]),
+      class: "form-control" %>
+  </div>
+  <div class="form-group">
+    <%= check_box_tag "show_school" %>
+    <%= label_tag "show_school", t('events.badges.show_school') %>
+  </div>
+  <div class="form-group">
+    <%= check_box_tag "show_color" %>
+    <%= label_tag "show_color", t('events.badges.show_color') %>
+  </div>
+  <div class="form-group">
+    <%= label_tag "select_participants", t('events.badges.select_participants') %>
+    <table class="table table-striped table-bordered table-hover" id="select_participants">
       <tr>
-        <td>
-          <%= participant.name %>
-        </td>
-        <td>
-          <%= f.check_box_tag "#{participant.id}_print", participant.name%>
-        </td>
+        <th><%= check_box_tag "select-all-print", true, false, onclick: "flipAllCheckboxes(this, 'selected_ids')" %></th>
+        <th><%= Profile.human_attribute_name(:name) %></th>
       </tr>
-  <% end %>
-</table>
 
+      <% @participants.each do |participant| %>
+        <tr>
+          <td>
+            <%= check_box_tag "selected_ids[]", participant.id, false, class:"selected_ids" %>
+          </td>
+          <td>
+            <%= participant.name %>
+          </td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
 
-<%= f.submit t('events.badges.print'), :class => 'btn btn-primary' %>
+  <%= submit_tag t('events.badges.print'), :class => 'btn btn-primary' %>
 <% end %>
