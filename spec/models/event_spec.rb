@@ -92,7 +92,7 @@ describe Event do
     rejected_application_letter = FactoryGirl.create(:application_letter_rejected, :event => event, :user => FactoryGirl.create(:user))
     [accepted_application_letter_1, accepted_application_letter_2, accepted_application_letter_3, rejected_application_letter].each { |letter| event.application_letters.push(letter) }
     expect(event.email_addresses_of_type(:accepted)).to contain_exactly(accepted_application_letter_1.user.email, accepted_application_letter_2.user.email, accepted_application_letter_3.user.email)
-expect(event.email_addresses_of_type(:rejected)).to contain_exactly(rejected_application_letter.user.email)
+    expect(event.email_addresses_of_type(:rejected)).to contain_exactly(rejected_application_letter.user.email)
   end
 
   it "is either a camp or a workshop" do

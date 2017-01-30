@@ -100,6 +100,10 @@ class ApplicationsPDF
         column(0).font_style = :bold
         column(0).align = :right
       end
+      unless application_letter.annotation.nil?
+        pad_top(20) { text "<u>#{t("application_letters.show.annotation_title")}</u>", inline_format: true}
+        pad_top(5) { text application_letter.annotation }
+      end
       pad_top(20) { text "<u>#{ApplicationLetter.human_attribute_name(:motivation)}</u>", inline_format: true}
       pad_top(5) { text application_letter.motivation }
       unless application_letter.application_notes.count == 0

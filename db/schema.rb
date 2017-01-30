@@ -40,6 +40,7 @@ ActiveRecord::Schema.define(version: 20170128122851) do
     t.boolean  "allergic"
     t.string   "allergies"
     t.text     "custom_application_fields"
+    t.text     "annotation"
   end
 
   add_index "application_letters", ["event_id"], name: "index_application_letters_on_event_id"
