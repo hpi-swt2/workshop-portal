@@ -78,11 +78,11 @@
       <% end %>
 
     </div>
-    <% else %>
-      <% if (can? :view_participants, Event) && (@event.phase == :execution) %>
-        <%= link_to t('events.participants.show_participants'),
-                    event_path(@event) + "/participants" , :class => 'btn btn-primary btn-sm pull-right'  %>
-      <% end %>
     <% end %>
+    <% if (can? :view_participants, Event) && (@event.phase == :execution) %>
+      <%= link_to t('events.participants.show_participants'),
+                  event_path(@event) + "/participants" , :class => 'btn btn-primary btn-sm pull-right'  %>
+    <% end %>
+
   </div>
 </div>
