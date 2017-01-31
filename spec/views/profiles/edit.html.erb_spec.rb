@@ -20,6 +20,7 @@ RSpec.describe "profiles/edit", type: :view do
       assert_select "input#profile_state[name=?]", "profile[state]"
       assert_select "input#profile_country[name=?]", "profile[country]"
       assert_select "select#profile_graduates_school_in[name=?]", "profile[graduates_school_in]"
+      assert_select "input#profile_discovery_of_site[name=?]", "profile[discovery_of_site]"
     end
   end
 

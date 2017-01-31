@@ -21,6 +21,7 @@ FactoryGirl.define do
     state  "Babelsberg"
     country  "Deutschland"
     graduates_school_in "Bereits Abitur"
+    discovery_of_site "Google"
     user
     trait :low_values do
       first_name "Andreas"
