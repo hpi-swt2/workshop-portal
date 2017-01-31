@@ -5,11 +5,7 @@
   <dt><strong><%= model_class.human_attribute_name(:description) %>:</strong></dt>
   <dd><%= markdown @event.description %></dd>
   <dt><strong><%= model_class.human_attribute_name(:max_participants) %>:</strong></dt>
-  <%if @free_places == Float::INFINITY %>
-    <dd><%= model_class.human_attribute_name(:participants_are_unlimited) %></dd>
-  <%else%>
-    <dd><%= @event.max_participants %></dd>
-  <% end %>
+  <dd><%= @event.max_participants %></dd>
   <dt><strong><%= model_class.human_attribute_name(:date_ranges, count: @event.date_ranges.count) %>:</strong></dt>
   <dd>
     <ul>
