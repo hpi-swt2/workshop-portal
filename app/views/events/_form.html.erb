@@ -33,7 +33,7 @@
     <div class="col-lg-10">
       <%= f.text_area :description, :class => 'form-control', :id => 'description',  :placeholder => '', :rows => 20, :spellcheck => "false" %>
       <script>
-        var PLACEHOLDER = '<%= I18n.t "events.description_placeholder" %>';
+        var EVENT_DESCRIPTION_PLACEHOLDER = '<%= I18n.t "events.description_placeholder" %>';
       </script>
       <%=f.error_span(:description) %>
       Dieser Editor unterstüzt <a href="https://daringfireball.net/projects/markdown/syntax">Markdown</a>
