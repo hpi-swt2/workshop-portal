@@ -152,7 +152,8 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
 
   scenario "logged in as Organizer I can not change application status with radio buttons if the applications are locked" do
     login(:organizer)
-    @event.lock_application_status
+    @event.acceptances_have_been_sent = true
+    @event.rejections_have_been_sent = true
     @pupil = FactoryGirl.create(:profile)
     @application_letter = FactoryGirl.create(:application_letter, event: @event, user: @pupil.user)
     visit event_path(@event)

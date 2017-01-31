@@ -52,7 +52,8 @@ RSpec.describe "events/participants", type: :view do
   it "displays print badges button (in event execution phase)" do
     @event.published = true
     @event.application_deadline = Date.yesterday
-    @event.application_status_locked = true
+    @event.acceptances_have_been_sent = true
+    @event.rejections_have_been_sent = true
     render
     expect(rendered).to have_link(t(:print_button_label, scope: 'events.badges', disabled: false))
   end

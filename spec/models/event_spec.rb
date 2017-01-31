@@ -231,14 +231,6 @@ describe Event do
     expect(application_letters.all? { |application_letter| application_letter.status == 'accepted' }).to eq(true)
   end
 
-  it "locks the application status changing of the event" do
-    event = FactoryGirl.create(:event)
-    event.application_status_locked = false
-    event.save
-    event.lock_application_status
-    expect(event.application_status_locked).to eq(true)
-  end
-
   it "is in draft phase" do
     event = FactoryGirl.build(:event, :in_draft_phase)
     expect(event.phase).to eq(:draft)

@@ -29,7 +29,6 @@ class ApplicationLetter < ActiveRecord::Base
 
   enum status: {accepted: 1, rejected: 0, pending: 2, alternative: 3}
   validates :status, inclusion: { in: statuses.keys }
-    
 
 
   # Checks if the deadline is over
@@ -46,7 +45,7 @@ class ApplicationLetter < ActiveRecord::Base
   # @param none
   # @return [Boolean] true if no status changes are allowed anymore
   def status_change_allowed?
-    !event.application_status_locked
+    !event.participant_selection_locked
   end
 
   # Validator for after_deadline?

@@ -111,7 +111,8 @@ FactoryGirl.define do
       after(:build) do |event|
         event.published = true
         event.application_deadline = Date.yesterday
-        event.application_status_locked = false
+        event.acceptances_have_been_sent = false
+        event.rejections_have_been_sent = false
       end
     end
 
@@ -119,7 +120,8 @@ FactoryGirl.define do
       after(:build) do |event|
         event.published = true
         event.application_deadline = Date.yesterday
-        event.application_status_locked = true
+        event.acceptances_have_been_sent = true
+        event.rejections_have_been_sent = true
       end
     end
 
