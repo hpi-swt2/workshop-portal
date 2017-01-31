@@ -1,10 +1,6 @@
 <%- model_class = Event -%>
 <div>
   <div class="pull-right">
-    <% if (can? :view_participants, Event) && (@event.phase == :execution) %>
-        <%= link_to t('events.participants.show_participants'),
-                    event_path(@event) + "/participants" , :class => 'btn btn-default btn-sm'  %>
-    <% end %>
     <%= render :partial => 'apply_button', :locals => {event: @event} %>
     <%= link_to t('.edit', :default => t('helpers.links.edit')), edit_event_path(@event),
                 :class => 'btn btn-default btn-sm' if can? :edit, @event %>

@@ -34,7 +34,6 @@ class BadgesPDF
     @show_color = show_color || false
     @show_school = show_school || false
     @logo = logo
-    puts logo.class
 
     @document = Prawn::Document.new(page_size: 'A4')
     calculate_layout
