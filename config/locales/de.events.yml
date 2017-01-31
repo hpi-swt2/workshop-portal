@@ -47,7 +47,7 @@ de:
       unnecessary: "nicht benötigt"
       available: "vorhanden"
       unavailable: "nicht vorhanden"
-      send_email: "Email an Teilnehmer versenden"
+      send_email: "E-Mail an Teilnehmer versenden"
     agreement_letters_download:
       notices:
         no_participants_selected: "Keine Teilnehmer ausgewählt"
@@ -59,7 +59,7 @@ de:
       select_users: "Nutzer auswählen"
       select_groups: "Gruppen auswählen"
       select_all: "Alle"
-      sender: "Absenderaddresse"
+      sender: "Absenderadresse"
       send_email_label: "Absenden"
       close_modal: "Schließen"
     kinds:

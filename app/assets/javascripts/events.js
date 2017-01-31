@@ -13,17 +13,17 @@ jQuery(function() {
         modal.find('#send-emails-list').val(list);
     });
 
-    var users = $('#users');
-    var groups = $('#groups');
+    var users = jQuery('#users');
+    var groups = jQuery('#groups');
 
-    $('#all').change(function(event) {
+    jQuery('#all').change(function(event) {
         var method = event.target.checked ? 'select_all' : 'deselect_all';
         users.multiSelect(method);
         groups.multiSelect(method);
     });
 
     var unable_all_on_deselect = function() {
-        $('#all').attr('checked', false);
+        jQuery('#all').attr('checked', false);
     };
 
     users.multiSelect({
@@ -35,25 +35,25 @@ jQuery(function() {
 });
 
 function addCustomApplicationField() {
-  $(CUSTOM_APPLICATION_FIELD_TEMPLATE)
+  jQuery(CUSTOM_APPLICATION_FIELD_TEMPLATE)
     .insertBefore('#add-custom-application-fields');
 }
 
 function removeCustomApplicationField(button) {
-  $(button).parents('.input-group').remove();
+  jQuery(button).parents('.input-group').remove();
 }
 
 function addEventDatePicker() {
-  var picker = $('#event-add-date-picker');
+  var picker = jQuery('#event-add-date-picker');
 
-  $(EVENT_DATE_PICKER_TEMPLATE)
+  jQuery(EVENT_DATE_PICKER_TEMPLATE)
     .insertBefore(picker);
 
   enableDatepickers();
 }
 
 function removeEventDatePicker(button) {
-  $(button).parent('div').remove();
+  jQuery(button).parent('div').remove();
 }
 
 function flipAllCheckboxes(rootCheckbox) {
