@@ -28,7 +28,6 @@
           </th>
         <% end %>
       </tr>
-
       <% sort_participants
         @participants.each do |participant| 
           application_letter = ApplicationLetter.find_by(user_id: participant.id, event_id: @event.id) 
@@ -57,10 +56,6 @@
             <%= check_box_tag('selected_participants[]', participant.id, false, class: 'participant_selection') %>
           </td>
         <% end %>
-        
-
-
-
         <% if can? :show_eatings_habits, Event %>
           <td>
            <% if application_letter && ( application_letter.vegan || application_letter.vegetarian || application_letter.allergic ) %>
@@ -96,40 +91,42 @@
              <% end %>
            </ul>
            <% end %> 
-
-
-
-
           </td>
         <% end %>
       </tr>
       <% end %>
     </table>
 
-    <button class="btn btn-default" type="button" data-toggle="modal" data-target="#print_participant_modal" id="open_print_modal">Teilnehmerliste (PDF)</button>
+    <button class="btn btn-default" type="button" data-toggle="modal" data-target="#print_participant_modal" id="open_print_modal"><%= t("events.participants.print_participants") %>
+    </button>
     <%= form_tag(event_path(@event) + "/participants/agreement_letters", { method: :post, id: 'downloadLettersForm' }) do %>
 
       <% if can? :print_agreement_letters, Event and @has_agreement_letters %>
         <div id="participants_download_submit_button">
-        <%= submit_tag t('events.agreement_letters_download.download_all_as'), name: "download_all", class: "btn btn-default" %>
+        <%= submit_tag t('events.agreement_letters_download.download_all_as'), 
+              :name => "download_all", 
+              :class => "btn btn-default" %>
         <%= select_tag :download_type, options_for_select([['pdf'], ['zip']]) %>
         </div>
       <% end %>
       <% if can? :print_applications_eating_habits, Event %>
       <%= link_to t('events.participants.print_habits'),
-                    event_path(@event) + "/print_applications_eating_habits" , :class => 'btn btn-default btn-sm'  %>
+                    event_path(@event) + "/print_applications_eating_habits",
+                    :class => 'btn btn-default btn-sm',
+                    :target => '_blank'  %>
       <% end %>
     <% end %>
-      <br>
-  <%= link_to t('.back', :default => t('helpers.links.back')),
-              event_path(@event), :class => 'btn btn-default'  %>
+    <br>
+    <%= link_to t('.back', :default => t('helpers.links.back')),
+                event_path(@event), :class => 'btn btn-default'  %>
 
-  <% if @event.phase == :execution %>
-    <%= link_to t('events.badges.print_button_label'),
-                badges_event_path(@event),
-                class: 'btn btn-default',
-                disabled: @participants.empty? %>
-  <% end %>
+    <% if @event.phase == :execution %>
+      <%= link_to t('events.badges.print_button_label'),
+                  badges_event_path(@event),
+                  :class => 'btn btn-default',
+                  :disabled => @participants.empty?
+                   %>
+    <% end %>
 
   <script>
   $('.colorselector').colorselector();

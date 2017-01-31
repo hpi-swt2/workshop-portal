@@ -9,6 +9,7 @@ def application_letter_applicant_gongakrobatik(user, event)
     vegan: false,
     allergic: false,
     allergies: "",
+    annotation: "Euer Angebot find ich echt super.",
     user: user,
     event: event
   )
@@ -25,6 +26,7 @@ def application_letter_applicant_gongakrobatik_rejected(user, event)
       vegan: false,
       allergic: false,
       allergies: "",
+      annotation: "",
       user: user,
       event: event,
       status: ApplicationLetter.statuses[:rejected]
@@ -42,6 +44,7 @@ def application_letter_applicant_gongakrobatik_accepted(user, event)
       vegan: false,
       allergic: true,
       allergies: "Tomaten",
+      annotation: "Euer Angebot find ich echt super.",
       user: user,
       event: event,
       status: ApplicationLetter.statuses[:accepted]
@@ -59,6 +62,7 @@ def application_letter_applicant_programmierkurs_1(user, event)
     vegan: false,
     allergic: true,
     allergies: "Tomaten",
+    annotation: "Euer Angebot find ich echt super.",
     user: user,
     event: event
   )
@@ -75,6 +79,7 @@ def application_letter_applicant_programmierkurs_2(user, event)
     vegan: false,
     allergic: false,
     allergies: "",
+    annotation: "Euer Angebot find ich echt super.",
     user: user,
     event: event
   )
@@ -91,6 +96,7 @@ def application_letter_applicant_programmierkurs_3(user, event)
       vegan: false,
       allergic: false,
       allergies: "",
+      annotation: "Euer Angebot find ich echt super.",
       user: user,
       event: event
   )

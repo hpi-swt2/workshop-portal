@@ -4,7 +4,7 @@
 </div>
 
 <dl class="dl-horizontal">
-  <% [:first_name, :last_name, :gender, :birth_date, :school, :street_name, :zip_code, :city, :state, :country, :graduates_school_in].each do |attr_name| %>
+  <% [:first_name, :last_name, :gender, :birth_date, :school, :street_name, :zip_code, :city, :state, :country, :graduates_school_in, :discovery_of_site].each do |attr_name| %>
     <dt><strong><%= model_class.human_attribute_name(attr_name) %>:</strong></dt>
     <% if attr_name == :gender %>
       <dd><%= t("profiles.genders.#{@profile.public_send(attr_name)}") %></dd>

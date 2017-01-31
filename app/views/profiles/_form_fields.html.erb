@@ -24,6 +24,14 @@
   </div>
 </div>
 
+<div class="form-group">
+  <%= f.label :discovery_of_site, :class => 'control-label col-lg-2' %>
+  <div class="col-lg-10">
+    <%= f.text_field :discovery_of_site, :class => 'form-control' %>
+    <%= f.error_span(:discovery_of_site) %>
+  </div>
+</div>
+
 <div class="text-right col-lg-12" >
   <label class="required"> </label>
   <%= t("errors.messages.required") %>

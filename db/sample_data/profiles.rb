@@ -28,7 +28,8 @@ def profile_pupil_max(user)
     city: "Potsdam",
     state: "Brandenburg",
     country: "Deutschland",
-    graduates_school_in: "2018"
+    graduates_school_in: "2018",
+    discovery_of_site: "Mein Lehrer hat mir davon erzählt"
   )
 end
 
@@ -45,7 +46,8 @@ def profile_teacher(user)
     city: "Potsdam",
     state: "Brandenburg",
     country: "Deutschland",
-    graduates_school_in: "Bereits Abitur"
+    graduates_school_in: "Bereits Abitur",
+    discovery_of_site: "Werbung im Internet"
   )
 end
 
@@ -62,7 +64,8 @@ def profile_applicant(user)
     city: "Potsdam",
     state: "Brandenburg",
     country: "Deutschland",
-    graduates_school_in: "2017"
+    graduates_school_in: "2017",
+    discovery_of_site: "Von meinem Bruder"
   )
 end
 

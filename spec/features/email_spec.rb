@@ -12,14 +12,14 @@ describe "Sending emails to applicants", type: :feature do
   scenario "logged in as Organizer I can send emails to the applicants" do
     login(:organizer)
 
-    visit event_email_show_path(@event, status: :accepted)
+    visit event_email_show_path(@event, status: :acceptance)
     fill_in :email_subject, with: "Subject Accepted"
     fill_in :email_content, with: "Content Accepted"
     click_button I18n.t('.emails.email_form.send')
 
     expect(page).to have_text(I18n.t('.emails.submit.sending_successful'))
 
-    visit event_email_show_path(@event, status: :rejected)
+    visit event_email_show_path(@event, status: :rejection)
     fill_in :email_subject, with: "Subject Rejected"
     fill_in :email_content, with: "Content Rejected"
     click_button I18n.t('.emails.email_form.send')
@@ -32,7 +32,7 @@ describe "Sending emails to applicants", type: :feature do
     @event.application_status_locked = false
     @event.save
 
-    visit event_email_show_path(@event, status: :accepted)
+    visit event_email_show_path(@event, status: :acceptance)
     fill_in :email_subject, with: "Subject"
     fill_in :email_content, with: "Content"
     click_button I18n.t('.emails.email_form.send')
@@ -46,7 +46,7 @@ describe "Sending emails to applicants", type: :feature do
     @template_subject = "Template Subject"
     @template_content = "Template Content"
 
-    visit event_email_show_path(@event, status: :accepted)
+    visit event_email_show_path(@event, status: :acceptance)
     fill_in :email_subject, with: @template_subject
     fill_in :email_content, with: @template_content
     click_button I18n.t('.emails.email_form.save_template')
