@@ -11,7 +11,7 @@
   </div>
   <h1><%= @event.name %></h1>
 </div>
-<%= image_tag "event-detail.png", class: "img-rounded img-responsive center-block m-t-1 m-b-1" %>
+<%= image_tag @event.image_url(:detail_view), class: "img-rounded img-responsive center-block m-t-1 m-b-1" if @event.image_url %>
 <div class="row">
   <div class="col-md-1 col-md-offset-1 text-center col-sm-2">
     <%= render "event_date_large", event: @event %>

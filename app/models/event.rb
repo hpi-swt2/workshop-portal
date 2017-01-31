@@ -20,6 +20,8 @@ class Event < ActiveRecord::Base
 
   serialize :custom_application_fields, Array
 
+  mount_uploader :image, EventImageUploader
+
   has_many :application_letters
   has_many :agreement_letters
   has_many :participant_groups
@@ -31,6 +33,14 @@ class Event < ActiveRecord::Base
   validate :application_deadline_before_start_of_event
   validates :hidden, inclusion: { in: [true, false] }
   validates :hidden, exclusion: { in: [nil] }
+  validate :check_image_dimensions, :on => :create
+
+  #
+  #
+  #
+  def check_image_dimensions
+      errors.add( :image, I18n.t("events.errors.image_too_small")) if image.upload_width.present? && image.upload_height.present? && (image.upload_width < 200 || image.upload_height < 155)
+  end
 
   # Setter for max_participants
   # @param [Int Float] the max number of participants for the event or infinity if it is not limited
