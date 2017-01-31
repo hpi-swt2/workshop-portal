@@ -33,6 +33,11 @@ function enableMultilinePlaceholder(){
       if($(this).val() ===''){
         $(this).val(EVENT_DESCRIPTION_PLACEHOLDER).css('color', '#bbb');
       }
+    })
+    .parents("form").on("submit", function() {
+      $("#description").val(function(index, oldVal) {
+        return oldVal == EVENT_DESCRIPTION_PLACEHOLDER ? '' : oldVal;
+      });
     });
 }
 // make sure multiline placeholders also work if the page is called via turbolink
