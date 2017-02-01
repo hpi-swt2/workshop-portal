@@ -25,6 +25,9 @@ class ApplicationController < ActionController::Base
     render 'index', locals: { full_width: true }
   end
 
+  def imprint
+  end
+
   def add_missing_permission_flashes
 
     if current_user
