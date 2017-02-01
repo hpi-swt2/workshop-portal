@@ -1,7 +1,4 @@
 <%- model_class = Event -%>
-<div class="page-header">
-  <h1><%=t '.title', :default => model_class.model_name.human.titleize %> (<%= @event.kind.humanize %>)</h1>
-</div>
 
 <% if @event.unreasonably_long %>
   <div class="panel panel-warning">
@@ -18,11 +15,3 @@
 <% end %>
 
 <%= render :partial => 'material_area' %>
-
-
-<%= link_to t('.back', :default => t('helpers.links.back')),
-              events_path, :class => 'btn btn-default'  %>
-<% if can? :view_participants, Event %>
-  <%= link_to t('events.participants.show_participants'),
-              event_path(@event) + "/participants" , :class => 'btn btn-default'  %>
-<% end %>

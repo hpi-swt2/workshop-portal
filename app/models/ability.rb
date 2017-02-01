@@ -39,10 +39,11 @@ class Ability
       if user.profile.present?
         can [:new, :create], ApplicationLetter
       end
-      can [:index, :show, :edit, :update, :destroy, :check], ApplicationLetter, user: { id: user.id }
+      can [:index, :show, :edit, :update, :check, :destroy], ApplicationLetter, user: { id: user.id }
       # Pupils can upload their letters of agreement
       can [:create], AgreementLetter
       can [:new, :create], Request
+      can :apply, Event
       cannot :view_personal_details, ApplicationLetter, user: { id: !user.id }
     end
     if user.role? :coach
@@ -51,18 +52,30 @@ class Ability
       can [:view_and_add_notes, :show], ApplicationLetter
       can [:print_applications], Event
       can :manage, Request
+      cannot :apply, Event
       cannot :check, ApplicationLetter
     end
     if user.role? :organizer
       can [:index, :show], Profile
       can [:index, :show, :view_and_add_notes, :update_status], ApplicationLetter
       cannot :update, ApplicationLetter
-      # Organizers can view, edit and print Applications, view participants for, view, upload and download materials for, print agreement letters for and manage Events
-      can [:view_applicants, :edit_applicants, :view_participants, :print_applications, :manage, :view_material, :upload_material, :print_agreement_letters, :download_material], Event
+      can [:view_applicants, :edit_applicants, :view_participants, :print_applications,
+           :manage, :view_material, :upload_material, :print_agreement_letters, :download_material,
+           :view_unpublished, :show_eating_habits, :print_applications_eating_habits, :view_hidden], Event
+      can :send_email, Email
       can :manage, Request
+      cannot :apply, Event
+      can [:update], ParticipantGroup
+
+      # Organizers can update user roles of pupil, coach and organizer, but cannot manage admins and cannot update a role to admin
+      can :manage, User, role: ["pupil", "coach", "organizer"]
+      cannot :update_role, User, role: "admin"
+      cannot :update_role_to_admin, User
     end
     if user.role? :admin
       can :manage, :all
+      can :view_delete_button, ApplicationLetter
+      cannot [:edit, :update], ApplicationLetter
     end
   end
 end

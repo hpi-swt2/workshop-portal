@@ -1,15 +1,18 @@
 require 'rails_helper'
+require 'request_helper'
 
 RSpec.describe "application_letters/show", type: :view do
   before(:each) do
     @application_letter = assign(:application_letter, FactoryGirl.create(:application_letter))
     @application_note = assign(:application_note, FactoryGirl.create(:application_note, application_letter: @application_letter))
+
     render
   end
 
   it "renders application's attributes" do
     expect(rendered).to have_text(@application_letter.event.name)
     expect(rendered).to have_text(@application_letter.motivation)
+    expect(rendered).to have_text(@application_letter.annotation)
   end
 
   it "renders applicant's attributes" do

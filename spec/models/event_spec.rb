@@ -17,6 +17,14 @@ describe Event do
 
   let(:event) { FactoryGirl.create :event, :with_two_date_ranges }
 
+
+  it "can't be created without mandatory fields" do
+    [:hidden, :application_deadline].each do |attr|
+      event = FactoryGirl.build(:event, attr => nil)
+      expect(event).to_not be_valid
+    end
+  end
+
   it "is created by event factory" do
     expect(event).to be_valid
   end
@@ -83,8 +91,8 @@ describe Event do
     accepted_application_letter_3 = FactoryGirl.create(:application_letter_accepted, :event => event, :user => FactoryGirl.create(:user))
     rejected_application_letter = FactoryGirl.create(:application_letter_rejected, :event => event, :user => FactoryGirl.create(:user))
     [accepted_application_letter_1, accepted_application_letter_2, accepted_application_letter_3, rejected_application_letter].each { |letter| event.application_letters.push(letter) }
-    expect(event.email_addresses_of_accepted_applicants).to eq([accepted_application_letter_1.user.email, accepted_application_letter_2.user.email, accepted_application_letter_3.user.email].join(','))
-    expect(event.email_addresses_of_rejected_applicants).to eq([rejected_application_letter.user.email].join(','))
+    expect(event.email_addresses_of_type(:accepted)).to contain_exactly(accepted_application_letter_1.user.email, accepted_application_letter_2.user.email, accepted_application_letter_3.user.email)
+    expect(event.email_addresses_of_type(:rejected)).to contain_exactly(rejected_application_letter.user.email)
   end
 
   it "is either a camp or a workshop" do
@@ -174,6 +182,19 @@ describe Event do
     expect(event.compute_occupied_places).to eq(2)
   end
 
+  describe "returns applicants email list" do
+    before :each do
+      @event = FactoryGirl.create(:event)
+    end
+
+    it "returns email address only of the given type" do
+      @accepted_application = FactoryGirl.create(:application_letter_accepted, event: @event, user: FactoryGirl.create(:user))
+      @rejected_application = FactoryGirl.create(:application_letter_rejected, event: @event, user: FactoryGirl.create(:user))
+      expect(@event.email_addresses_of_type(:accepted)).to contain_exactly(@accepted_application.user.email)
+      expect(@event.email_addresses_of_type(:rejected)).to contain_exactly(@rejected_application.user.email)
+    end
+  end
+
   it "generates a new email for acceptance" do
     event = FactoryGirl.create(:event_with_accepted_applications)
     email = event.generate_acceptances_email
@@ -227,6 +248,38 @@ describe Event do
     event.save
     event.lock_application_status
     expect(event.application_status_locked).to eq(true)
+  end
+
+  it "is in draft phase" do
+    event = FactoryGirl.build(:event, :in_draft_phase)
+    expect(event.phase).to eq(:draft)
+  end
+
+  it "is in application phase" do
+    event = FactoryGirl.build(:event, :in_application_phase)
+    expect(event.phase).to eq(:application)
+  end
+
+  it "is in selection phase" do
+    event = FactoryGirl.build(:event, :in_selection_phase)
+    expect(event.phase).to eq(:selection)
+  end
+
+  it "is in execution phase" do
+    event = FactoryGirl.build(:event, :in_execution_phase)
+    expect(event.phase).to eq(:execution)
+  end
+
+  it "is not after application deadline" do
+    event = FactoryGirl.build(:event)
+    event.application_deadline = Date.tomorrow
+    expect(event.after_deadline?).to eq(false)
+  end
+
+  it "is after application deadline" do
+    event = FactoryGirl.build(:event)
+    event.application_deadline = Date.yesterday
+    expect(event.after_deadline?).to eq(true)
   end
 
   it "can have unlimited participants" do

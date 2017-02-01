@@ -21,6 +21,7 @@ FactoryGirl.define do
     state  "Babelsberg"
     country  "Deutschland"
     graduates_school_in "Bereits Abitur"
+    discovery_of_site "Google"
     user
     trait :low_values do
       first_name "Andreas"
@@ -34,6 +35,11 @@ FactoryGirl.define do
       last_name "Z"
       birth_date 20.years.ago
       gender "female"
+    end
+
+    trait :long_name do
+      first_name "Daniel-Amadeus Johannes Carl Philipp Maria Amadeus"
+      last_name "von und zu Frankenstein, Junior"
     end
   end
 

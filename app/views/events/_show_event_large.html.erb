@@ -1,7 +1,7 @@
 <%- model_class = Event -%>
 <div>
   <div class="pull-right">
-    <%= link_to t("helpers.links.apply"), new_application_letter_path(:event_id => @event.id), class: "btn btn-success btn-sm" %>
+    <%= render :partial => 'apply_button', :locals => {event: @event} %>
     <%= link_to t('.edit', :default => t('helpers.links.edit')), edit_event_path(@event),
                 :class => 'btn btn-default btn-sm' if can? :edit, @event %>
   </div>
@@ -18,7 +18,7 @@
   <div class="col-md-7 col-sm-10">
     <%= markdown @event.description %>
   </div>
-  <div class="col-md-2 col-sm-offset-2">
+  <div class="col-md-2 col-sm-offset-2 col-md-offset-0">
     <dl>
       <dt><strong><%= model_class.human_attribute_name(:knowledge_level) %>:</strong></dt>
       <dd><%= @event.knowledge_level %></dd>

@@ -1,0 +1,9 @@
+<% if can? :apply, Event %>
+  <% if current_user.present? && current_user.application_letter_for_event?(event) %>
+      <%= link_to t("helpers.links.show_application"), check_application_letter_path(current_user.application_letter_for_event(event)),
+                  :class => 'btn btn-default btn-sm' %>
+  <% elsif not event.after_deadline? %>
+      <%= link_to t('.new', :default => t("helpers.links.apply")), new_application_letter_path(:event_id => event.id),
+                  :class => 'btn btn-success btn-sm' %>
+  <% end %>
+<% end %>

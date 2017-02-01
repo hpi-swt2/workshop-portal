@@ -56,13 +56,13 @@ function removeEventDatePicker(button) {
   jQuery(button).parent('div').remove();
 }
 
-function flipAllCheckboxes(rootCheckbox) {
+function flipAllCheckboxes(rootCheckbox, className) {
   if (rootCheckbox.checked) {
-    jQuery(':checkbox.'.concat(rootCheckbox.className)).each(function() {
+    jQuery(':checkbox.'.concat(className)).each(function() {
       this.checked = true;
     });
   } else {
-    jQuery(':checkbox.'.concat(rootCheckbox.className)).each(function() {
+    jQuery(':checkbox.'.concat(className)).each(function() {
       this.checked = false;
     });
   }

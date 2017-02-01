@@ -127,6 +127,16 @@ describe User do
 
       expect(ability).to be_able_to(:download_material, Event)
     end
+
+    it "cannot delete applications as #{role}" do
+      user = FactoryGirl.create(:user, role: role)
+      another_user = FactoryGirl.create(:user)
+      another_application = FactoryGirl.create(:application_letter, user: another_user)
+      ability = Ability.new(user)
+
+
+      expect(ability).to_not be_able_to(:destroy, another_application)
+    end
   end
 
   it "can download an participants agreement letters as organizer" do
@@ -134,6 +144,13 @@ describe User do
     ability = Ability.new(user)
 
     expect(ability).to be_able_to(:print_agreement_letters, Event)
+  end
+
+  it "can print pupils' badges as organizer" do
+    user = FactoryGirl.create(:user, role: :organizer)
+    ability = Ability.new(user)
+
+    expect(ability).to be_able_to(:print_badges, Event)
   end
 
   it "cannot view and add notes to application letters as pupil" do
@@ -219,6 +236,12 @@ describe User do
 
       expect(ability).to_not be_able_to(:update_status, ApplicationLetter)
     end
+
+    it "cannot update application letter status as #{role}" do
+      user = FactoryGirl.create(:user, role: role)
+      ability = Ability.new(user)
+      expect(ability).to_not be_able_to(:print_badges, Event)
+    end
   end
 
   it "can check its own application as pupil" do
@@ -278,5 +301,41 @@ describe User do
     user = FactoryGirl.create(:user, role: :organizer)
     ability = Ability.new(user)
     expect(ability).to be_able_to(:manage, Request)
+  end
+
+  it "can apply for events as pupil" do
+    user = FactoryGirl.create(:user, role: :pupil)
+    ability = Ability.new(user)
+    expect(ability).to be_able_to(:apply, Event)
+  end
+
+  %i[coach organizer].each do |role|
+    it "cannot apply for events as #{role}" do
+      user = FactoryGirl.create(:user, role: role)
+      ability = Ability.new(user)
+      expect(ability).to_not be_able_to(:apply, Event)
+    end
+  end
+
+  it "can view unpublished events as organizer" do
+    user = FactoryGirl.create(:user, role: :organizer)
+    ability = Ability.new(user)
+    expect(ability).to be_able_to(:view_unpublished, Event)
+  end
+
+  %i[pupil coach].each do |role|
+    it "cannot send emails to applicants as #{role}" do
+      user = FactoryGirl.create(:user, role: role)
+      ability = Ability.new(user)
+
+      expect(ability).to_not be_able_to(:send_email, Email)
+    end
+  end
+
+  it "can send emails to applicants as organizer" do
+    user = FactoryGirl.create(:user, role: :organizer)
+    ability = Ability.new(user)
+
+    expect(ability).to be_able_to(:send_email, Email)
   end
 end

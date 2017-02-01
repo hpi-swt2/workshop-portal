@@ -4,7 +4,7 @@
 </div>
 
 <dl class="dl-horizontal">
-  <% [:first_name, :last_name, :gender, :birth_date, :school, :street_name, :zip_code, :city, :state, :country, :graduates_school_in].each do |attr_name| %>
+  <% [:first_name, :last_name, :gender, :birth_date, :school, :street_name, :zip_code, :city, :state, :country, :graduates_school_in, :discovery_of_site].each do |attr_name| %>
     <dt><strong><%= model_class.human_attribute_name(attr_name) %>:</strong></dt>
     <% if attr_name == :gender %>
       <dd><%= t("profiles.genders.#{@profile.public_send(attr_name)}") %></dd>
@@ -16,27 +16,3 @@
 
 <%= link_to t('.edit', :default => t("helpers.links.edit")),
               edit_profile_path(@profile), :class => 'btn btn-default' %>
-
-<h3>Events</h3>
-<table id='events_table', class='table table-bordered table-hover'>
-  <thead>
-    <tr>
-      <th>id</th>
-      <th><%= t('agreement_letters.agreement_letter') %></th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @profile.user.events.each do |event| %>
-      <tr>
-        <td><%= event.id %></td>
-        <td>
-          <% if @profile.adult? %>
-            <%= render('upload_form',
-              event_id: event.id,
-              agreement_letter: event.agreement_letter_for(@profile.user)) %>
-          <% end %>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
