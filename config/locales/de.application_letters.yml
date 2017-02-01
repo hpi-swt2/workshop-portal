@@ -51,7 +51,6 @@ de:
     attributes:
       application_letter:
           grade: "Klassenstufe"
-          experience: "Wie hast du von uns erfahren?"
           motivation: "Motivationsschreiben"
           coding_skills: "Mit welchen Programmiersprachen hast du bereits Erfahrungen gesammelt?"
           emergency_number: "Telefonnummer für Notfälle"

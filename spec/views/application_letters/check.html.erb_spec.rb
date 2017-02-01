@@ -34,7 +34,6 @@ RSpec.describe "application_letters/check", type: :view do
     it "renders application's attributes" do
       expect(rendered).to have_css('h3', text: I18n.t('application_letters.check.my_application'))
       expect(rendered).to have_text(@application_letter.grade)
-      expect(rendered).to have_text(@application_letter.experience)
       expect(rendered).to have_text(@application_letter.motivation)
       expect(rendered).to have_text(@application_letter.coding_skills)
       expect(rendered).to have_text(@application_letter.emergency_number)
