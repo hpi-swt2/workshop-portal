@@ -77,7 +77,7 @@ class EventsController < ApplicationController
     @participants = @event.participants
     name_format = params[:name_format]
     show_color = params[:show_color]
-    show_school = params[:show_school]
+    show_organisation = params[:show_organisation]
     logo = params[:logo_upload]
 
     selected_ids = params[:selected_ids]
@@ -90,7 +90,7 @@ class EventsController < ApplicationController
     end
 
     begin
-      pdf = BadgesPDF.generate(@event, selected_participants, name_format, show_color, show_school, logo)
+      pdf = BadgesPDF.generate(@event, selected_participants, name_format, show_color, show_organisation, logo)
       send_data pdf, filename: "badges.pdf", type: "application/pdf", disposition: "inline"
     rescue Prawn::Errors::UnsupportedImageType
       flash.now[:error] = I18n.t('events.badges.wrong_file_format')

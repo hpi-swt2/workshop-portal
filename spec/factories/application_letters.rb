@@ -17,6 +17,7 @@ FactoryGirl.define do
     motivation "None"
     coding_skills "None"
     emergency_number "01234567891"
+    organisation "Schule am Griebnitzsee"
     vegetarian false
     vegan false
     allergic true
