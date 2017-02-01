@@ -31,7 +31,7 @@ de:
     events: "Veranstaltungen"
     profiles: "Nutzer"
     application_letters: "Bewerbungen"
-    my_application_letters: "Meine Bewerbungen"
+    my_events: "Meine Veranstaltungen"
     user_management: "Benutzerverwaltung"
     requests: "Anfragen"
     new_request: "Workshop anfragen"
