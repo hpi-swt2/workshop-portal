@@ -225,7 +225,7 @@ RSpec.describe EventsController, type: :controller do
       user = FactoryGirl.create(:user)
       profile = FactoryGirl.create(:profile, user: user, last_name: "Paul")
       application_letter = FactoryGirl.create(:application_letter_accepted,
-        user: user, event: event, vegan: true, allergic: true)
+        user: user, event: event, vegan: true, allergies: "many")
       user = FactoryGirl.create(:user)
       profile = FactoryGirl.create(:profile, user: user, last_name: "Mary")
       application_letter = FactoryGirl.create(:application_letter_accepted,
@@ -233,7 +233,7 @@ RSpec.describe EventsController, type: :controller do
       user = FactoryGirl.create(:user)
       profile = FactoryGirl.create(:profile, user: user, last_name: "Otti")
       application_letter = FactoryGirl.create(:application_letter_accepted,
-        user: user, event: event, vegetarian: true, allergic: true)
+        user: user, event: event, vegetarian: true, allergies: "many")
       user = FactoryGirl.create(:user)
       profile = FactoryGirl.create(:profile, user: user, last_name: "Benno")
       application_letter = FactoryGirl.create(:application_letter_accepted,

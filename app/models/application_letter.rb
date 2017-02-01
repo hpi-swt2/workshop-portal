@@ -22,8 +22,8 @@ class ApplicationLetter < ActiveRecord::Base
   validates :user, :event, :experience, :motivation, :coding_skills, :emergency_number,:organisation, presence: true
   validates :grade, presence: true, numericality: { only_integer: true }
   validates_inclusion_of :grade, :in => VALID_GRADES
-  validates :vegetarian, :vegan, :allergic, inclusion: { in: [true, false] }
-  validates :vegetarian, :vegan, :allergic, exclusion: { in: [nil] }
+  validates :vegetarian, :vegan, inclusion: { in: [true, false] }
+  validates :vegetarian, :vegan, exclusion: { in: [nil] }
   validate :deadline_cannot_be_in_the_past, :if => Proc.new { |letter| !(letter.status_changed?) }
   validate :status_cannot_be_changed, :if => Proc.new { |letter| letter.status_changed?}
 
@@ -114,7 +114,11 @@ class ApplicationLetter < ActiveRecord::Base
     habits = Array.new
     habits.push(ApplicationLetter.human_attribute_name(:vegetarian)) if vegetarian
     habits.push(ApplicationLetter.human_attribute_name(:vegan)) if vegan
-    habits.push(ApplicationLetter.human_attribute_name(:allergic)) if allergic
+    habits.push(ApplicationLetter.human_attribute_name(:allergies)) if allergic
     habits
+  end
+
+  def allergic
+    not allergies.empty?
   end
 end

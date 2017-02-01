@@ -60,13 +60,6 @@
     </div>
   </div>
   <div class="form-group">
-    <div class="col-sm-offset-2 col-sm-10">
-      <%= f.check_box :allergic%>
-      <%= f.label :allergic, :class => 'control-label' %>
-      <%=f.error_span(:allergic) %>
-    </div>
-  </div>
-  <div class="form-group">
     <%= f.label :allergies, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
       <%= f.text_area :allergies, :rows => 3, :class => 'form-control' %>
