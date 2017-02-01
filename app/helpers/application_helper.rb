@@ -63,7 +63,7 @@ module ApplicationHelper
     end
     # pupils get their applications
     if current_user.role == "pupil"
-      o << (menu_item t(:my_application_letters, scope: 'navbar'), application_letters_path)
+      o << (menu_item t(:my_events, scope: 'navbar'), application_letters_path)
     end
     # admins get user management
     if current_user.role == "admin" || current_user.role == "organizer"

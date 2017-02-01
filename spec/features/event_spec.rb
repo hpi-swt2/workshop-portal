@@ -110,13 +110,13 @@ describe "Event", type: :feature do
   end
 
   describe "create page" do
-    ['Camp', 'Workshop'].each do |kind|
-      it "should allow picking the #{kind} kind camp" do
+    I18n.t(".events.type").each do |type|
+      it "should allow picking the #{type[1]} type" do
         visit new_event_path
         fill_in "Maximale Teilnehmerzahl", :with => 25
-        choose(kind)
+        choose(type[1])
         click_button I18n.t('.events.form.create')
-        expect(page).to have_text(kind)
+        expect(page).to have_text(type[1])
       end
     end
 
@@ -283,10 +283,10 @@ describe "Event", type: :feature do
   end
 
   describe "edit page" do
-    it "should preselect the event kind" do
-      event = FactoryGirl.create(:event, kind: :camp)
+    it "should preselect the event type" do
+      event = FactoryGirl.create(:event, hidden: false)
       visit edit_event_path(event)
-      expect(find_field('Camp')[:checked]).to_not be_nil
+      expect(find_field(I18n.t("events.type.public"))[:checked]).to_not be_nil
     end
 
     it "should display all existing date ranges" do
@@ -330,13 +330,14 @@ describe "Event", type: :feature do
       @users.each do |u|
         find(:css, "#selected_ids_[value='#{u.id}']").set(true) if u.id.even?
       end
+      select(I18n.t('events.badges.full_name'))
       click_button I18n.t('events.badges.print')
       strings = PDF::Inspector::Text.analyze(page.body).strings
       @users.each do |u|
         if u.id.even?
-          expect(strings).to include(u.profile.first_name)
+          expect(strings).to include(u.profile.name)
         else
-          expect(strings).not_to include(u.profile.first_name)
+          expect(strings).not_to include(u.profile.name)
         end
       end
     end
