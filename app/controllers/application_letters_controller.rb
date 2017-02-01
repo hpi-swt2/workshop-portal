@@ -110,7 +110,7 @@ class ApplicationLettersController < ApplicationController
     # Only allow a trusted parameter "white list" through.
     # Don't allow user_id as you shouldn't be able to set the user from outside of create/update.
     def application_params
-      params.require(:application_letter).permit(:grade, :experience, :motivation, :coding_skills, :emergency_number,
+      params.require(:application_letter).permit(:grade, :experience, :motivation, :coding_skills, :emergency_number, :organisation,
                                                  :vegetarian, :vegan, :allergic, :allergies, :annotation, :user_id, :event_id)
       .merge({:custom_application_fields => params[:custom_application_fields]})
     end
