@@ -58,7 +58,7 @@ class ApplicationLettersController < ApplicationController
     seminar_name = ''
     if params[:event_id]
       @application_letter.event_id = params[:event_id]
-      seminar_name = Event.find(:event_id).name
+      seminar_name = Event.find(params[:event_id]).name
     end
     @application_letter.user_id = current_user.id
 

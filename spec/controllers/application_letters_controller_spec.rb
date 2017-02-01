@@ -198,6 +198,12 @@ RSpec.describe ApplicationLettersController, type: :controller do
         }.to change(ApplicationLetter, :count).by(1)
       end
 
+      it "sends an Email" do
+        expect {
+          post :create, application_letter: valid_attributes, session: valid_session
+        }.to change{ActionMailer::Base.deliveries.count}.by(1)
+      end
+
       it "assigns a newly created application as @application" do
         post :create, application_letter: valid_attributes, session: valid_session
         expect(assigns(:application_letter)).to be_a(ApplicationLetter)
