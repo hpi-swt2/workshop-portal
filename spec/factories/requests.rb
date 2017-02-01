@@ -20,5 +20,6 @@ FactoryGirl.define do
     number_of_participants 12
     status :open
     annotations "Notes about this workshop"
+    time_period "Zwischen Ende Januar und Mitte März"
   end
 end
