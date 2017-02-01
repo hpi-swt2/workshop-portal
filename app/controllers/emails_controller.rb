@@ -5,10 +5,12 @@ class EmailsController < ApplicationController
     @event = Event.find(params[:event_id])
 
     @templates = EmailTemplate.with_status(get_email_template_status)
-    @addresses = @event.email_addresses_of_type(get_corresponding_application_letter_status)
+    application_letter_status = get_corresponding_application_letter_status
+    @addresses = @event.email_addresses_of_type(application_letter_status)
 
     @email = Email.new(hide_recipients: true, reply_to: 'workshop.portal@hpi.de', recipients: @addresses.join(','),
                        subject: '', content: '')
+
     render :email
   end
 
@@ -29,7 +31,11 @@ class EmailsController < ApplicationController
     @event = Event.find(params[:event_id])
 
     if @email.valid?
-      @email.send_email
+      if get_corresponding_application_letter_status == :accepted
+        @email.send_email_with_ical @event
+      else
+        @email.send_email
+      end
 
       @event.lock_application_status
 
