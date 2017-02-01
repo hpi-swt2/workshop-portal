@@ -1,19 +1,20 @@
 <%- model_class = Request -%>
 <div class="page-header">
-  <h1><%=t '.title', :default => model_class.model_name.human(count: 2).titleize %></h1>
+  <h1><%=t '.title', :default => model_class.model_name.human.titleize %></h1>
 </div>
 
+<h3><%=t 'requests.workshop_information' %></h3>
 <dl class="dl-horizontal">
-  <dt><strong><%= model_class.human_attribute_name(:first_name) %>:</strong></dt>
-  <dd><%= @request.first_name %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:last_name) %>:</strong></dt>
-  <dd><%= @request.last_name %></dd>
   <dt><strong><%= model_class.human_attribute_name(:topic_of_workshop) %>:</strong></dt>
   <dd><%= @request.topic_of_workshop %></dd>
   <dt><strong><%= model_class.human_attribute_name(:number_of_participants) %>:</strong></dt>
   <dd><%= @request.number_of_participants %></dd>
   <dt><strong><%= model_class.human_attribute_name(:status) %>:</strong></dt>
   <dd><%= t(@request.status, scope: 'activerecord.attributes.request.statuses') %></dd>
+  <% if can? :view_annotations, @request %>
+    <dt><strong><%= model_class.human_attribute_name(:annotations) %>:</strong></dt>
+    <dd><%= @request.annotations %></dd>
+  <% end %>
 </dl>
 <dl class="dl-horizontal">
   <dt><strong><%= model_class.human_attribute_name(:contact_person) %>:</strong></td>
@@ -29,6 +30,23 @@
     </div>
   <% end %>
   </dd>
+</dl>
+
+<h3><%= t('requests.personal_information') %></h3>
+<dl class="dl-horizontal">
+  <dt><strong><%= model_class.human_attribute_name(:first_name) %>:</strong></dt>
+  <dd><%= @request.first_name %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:last_name) %>:</strong></dt>
+  <dd><%= @request.last_name %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:email) %>:</strong></dt>
+  <dd><a href="<%= "mailto:#{@request.email}"%>"><%= @request.email %></a></dd>
+  <dt><strong><%= model_class.human_attribute_name(:phone_number) %>:</strong></dt>
+  <dd><%= @request.phone_number %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:street) %>:</strong></dt>
+  <dd><%= @request.street %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:zip_code_city) %>:</strong></dt>
+  <dd><%= @request.zip_code_city %></dd>
+
 </dl>
 
 <%= link_to t('.back', :default => t("helpers.links.back")),
