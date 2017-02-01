@@ -226,7 +226,7 @@ describe Event do
   end
 
   it "pre accepts all its application letters" do
-    event = FactoryGirl.create :event, :with_diverse_open_applications
+    event = FactoryGirl.create :event, :with_diverse_open_applications, :in_selection_phase
     event.pre_accept_all_application_letters
     application_letters = ApplicationLetter.where(event: event.id)
     expect(application_letters.all? { |application_letter| application_letter.status == 'pre_accepted' }).to eq(true)
@@ -238,6 +238,17 @@ describe Event do
     event.save
     event.lock_application_status
     expect(event.application_status_locked).to eq(true)
+  end
+
+  it "accepts all its pre_accepted application letters" do
+    event = FactoryGirl.create :event_with_pre_accepted_applications, :in_selection_phase
+    pre_accepted_application_letters = event.application_letters.select{ |application_letter| application_letter.status == 'pre_accepted' }
+    event.accept_all_pre_accepted_applications
+    expect(pre_accepted_application_letters.count).to be > 0
+    pre_accepted_application_letters.each do |application|
+      application.reload
+      expect(application.status).to eq 'accepted'
+    end
   end
 
   it "is in draft phase" do

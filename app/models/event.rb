@@ -161,6 +161,16 @@ class Event < ActiveRecord::Base
     end
   end
 
+  # Sets the status of all the event's application letters with status pre_accepted to status accepted
+  #
+  # @param none
+  # @return none
+  def accept_all_pre_accepted_applications
+    application_letters.where(status: ApplicationLetter.statuses[:pre_accepted]).each do |application_letter|
+      application_letter.update(status: :accepted)
+    end
+  end
+
   # Returns an array of strings of all email addresses of applications with a given status type
   #
   # @param type [Type] the status type of the email addresses that will be returned
