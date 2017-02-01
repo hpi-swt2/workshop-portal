@@ -130,8 +130,6 @@ class Event < ActiveRecord::Base
     self.agreement_letters.where(user: user).take
   end
 
-  enum kind: [ :workshop, :camp ]
-
   # Returns whether all application_letters are classified or not
   #
   # @param none
