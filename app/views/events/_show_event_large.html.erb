@@ -7,7 +7,10 @@
   </div>
   <h1><%= @event.name %></h1>
 </div>
-<%= image_tag "event-detail.png", class: "img-rounded img-responsive center-block m-t-1 m-b-1" %>
+<div id="wsp-event-show-banner"></div>
+<script>
+  $('#wsp-event-show-banner').geopattern('<%= j @event.name %>');
+</script>
 <div class="row">
   <div class="col-md-1 col-md-offset-1 text-center col-sm-2">
     <%= render "event_date_large", event: @event %>
