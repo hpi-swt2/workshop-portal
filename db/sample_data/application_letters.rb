@@ -5,10 +5,12 @@ def application_letter_applicant_gongakrobatik(user, event)
     experience: "Über einen Facebookpost ihrer Seite bin ich auf das Angebot aufmerksam geworden",
     coding_skills: "HTML",
     emergency_number: "01234567891",
+    organisation: "Schule am Griebnitzsee",
     vegetarian: false,
     vegan: false,
     allergic: false,
     allergies: "",
+    annotation: "Euer Angebot find ich echt super.",
     user: user,
     event: event
   )
@@ -21,10 +23,12 @@ def application_letter_applicant_gongakrobatik_rejected(user, event)
       experience: "Über einen Facebookpost ihrer Seite bin ich auf das Angebot aufmerksam geworden",
       coding_skills: "HTML",
       emergency_number: "01234567891",
+      organisation: "Schule am Griebnitzsee",
       vegetarian: false,
       vegan: false,
       allergic: false,
       allergies: "",
+      annotation: "",
       user: user,
       event: event,
       status: ApplicationLetter.statuses[:rejected]
@@ -38,10 +42,12 @@ def application_letter_applicant_gongakrobatik_accepted(user, event)
       experience: "Über einen Zeitungsartikel",
       coding_skills: "For, While und If-Schleifen in Java",
       emergency_number: "01234567891",
+      organisation: "Schule am Griebnitzsee",
       vegetarian: false,
       vegan: false,
       allergic: true,
       allergies: "Tomaten",
+      annotation: "Euer Angebot find ich echt super.",
       user: user,
       event: event,
       status: ApplicationLetter.statuses[:accepted]
@@ -55,10 +61,12 @@ def application_letter_applicant_programmierkurs_1(user, event)
     experience: "Über einen Zeitungsartikel",
     coding_skills: "For, While und If-Schleifen in Java",
     emergency_number: "01234567891",
+    organisation: "Schule am Griebnitzsee",
     vegetarian: false,
     vegan: false,
     allergic: true,
     allergies: "Tomaten",
+    annotation: "Euer Angebot find ich echt super.",
     user: user,
     event: event
   )
@@ -71,10 +79,12 @@ def application_letter_applicant_programmierkurs_2(user, event)
     experience: "Suche im Internet",
     coding_skills: "keine",
     emergency_number: "01234567891",
+    organisation: "Schule am Griebnitzsee",
     vegetarian: true,
     vegan: false,
     allergic: false,
     allergies: "",
+    annotation: "Euer Angebot find ich echt super.",
     user: user,
     event: event
   )
@@ -87,10 +97,12 @@ def application_letter_applicant_programmierkurs_3(user, event)
       experience: "Suche im Internetz",
       coding_skills: "absolut keine",
       emergency_number: "01234567819",
+      organisation: "Schule am Griebnitzsee",
       vegetarian: true,
       vegan: false,
       allergic: false,
       allergies: "",
+      annotation: "Euer Angebot find ich echt super.",
       user: user,
       event: event
   )

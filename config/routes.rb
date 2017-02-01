@@ -4,6 +4,7 @@ Rails.application.routes.draw do
 
   resources :requests do
     patch 'contact_person' => 'requests#set_contact_person', as: :set_contact_person
+    patch 'notes' => 'requests#set_notes', as: :set_notes
   end
 
   put 'applications/:id/status' => 'application_letters#update_status', as: :update_application_letter_status
@@ -15,6 +16,8 @@ Rails.application.routes.draw do
     resources :application_notes,
       only: :create
   end
+
+  get 'events/archive' => 'events#archive', as: :events_archive
   resources :events do
     resources :agreement_letters, only: [:create], shallow: true
     get 'emails' => 'emails#show', as: :email_show
@@ -30,6 +33,10 @@ Rails.application.routes.draw do
     end
   end
   resources :profiles, except: [:index, :destroy]
+  
+  devise_scope :user do 
+    get "/users/sign_up" => redirect("/users/sign_in")
+  end
   devise_for :users, :controllers => {:registrations => "users/registrations"}
   resources :users, only: [:index] # index page for devise users
   patch 'users/:id/role' => 'users#update_role', as: :update_user_role
@@ -38,6 +45,8 @@ Rails.application.routes.draw do
 
   # You can have the root of your site routed with "root"
   root 'application#index'
+
+  get 'imprint' => 'application#imprint', as: :imprint
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

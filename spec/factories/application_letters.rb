@@ -17,12 +17,14 @@ FactoryGirl.define do
     motivation "None"
     coding_skills "None"
     emergency_number "01234567891"
+    organisation "Schule am Griebnitzsee"
     vegetarian false
     vegan false
     allergic true
     allergies "Many"
     user
     event
+    annotation "Some"
     custom_application_fields ["Value 1", "Value 2", "Value 3"]
   end
 

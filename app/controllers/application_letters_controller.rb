@@ -84,7 +84,8 @@ class ApplicationLettersController < ApplicationController
           free_places: I18n.t('events.applicants_overview.free_places',
                               count: @application_letter.event.compute_free_places),
           occupied_places: I18n.t('events.applicants_overview.occupied_places',
-                                  count: @application_letter.event.compute_occupied_places)
+                                  count: @application_letter.event.compute_occupied_places),
+          mail_tooltip: @application_letter.event.send_mails_tooltip
         }
       else
         redirect_to :back, notice: I18n.t('application_letters.successful_update') rescue ActionController::RedirectBackError redirect_to root_path
@@ -109,8 +110,8 @@ class ApplicationLettersController < ApplicationController
     # Only allow a trusted parameter "white list" through.
     # Don't allow user_id as you shouldn't be able to set the user from outside of create/update.
     def application_params
-      params.require(:application_letter).permit(:grade, :experience, :motivation, :coding_skills, :emergency_number,
-                                                 :vegetarian, :vegan, :allergic, :allergies, :user_id, :event_id)
+      params.require(:application_letter).permit(:grade, :experience, :motivation, :coding_skills, :emergency_number, :organisation,
+                                                 :vegetarian, :vegan, :allergic, :allergies, :annotation, :user_id, :event_id)
       .merge({:custom_application_fields => params[:custom_application_fields]})
     end
 

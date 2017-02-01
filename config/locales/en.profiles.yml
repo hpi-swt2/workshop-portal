@@ -10,3 +10,8 @@ en:
       male: "Male"
       female: "Female"
       other: "Other"
+
+  activerecord:
+    attributes:
+      profile:
+        discovery_of_site: "How did you find out about us?"

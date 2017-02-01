@@ -9,6 +9,20 @@ describe "Event", type: :feature do
       expect(page).to have_current_path(event_path(event))
     end
 
+    it "should have a link to an event archive" do
+      visit events_path
+      expect(page).to have_link(href: events_archive_path)
+    end
+
+    it "should not list past events" do
+      current_event = FactoryGirl.create :event
+      past_event = FactoryGirl.create :event, :in_the_past_valid
+
+      visit events_path
+      expect(page).to have_text(current_event.name)
+      expect(page).to_not have_text(past_event.name)
+    end
+
     it "should mark an event as draft by showing a label" do
       login_as(FactoryGirl.create(:user, role: :organizer), :scope => :user)
 
@@ -81,6 +95,17 @@ describe "Event", type: :feature do
       FactoryGirl.create :event, description: ('a' * Event::TRUNCATE_DESCRIPTION_TEXT_LENGTH) + 'blah'
       visit events_path
       expect(page).to_not have_text('blah')
+    end
+  end
+
+  describe "archive page" do
+    it "should list past events" do
+      current_event = FactoryGirl.create :event
+      past_event = FactoryGirl.create :event, :in_the_past_valid
+
+      visit events_archive_path
+      expect(page).to have_text(past_event.name)
+      expect(page).to_not have_text(current_event.name)
     end
   end
 
@@ -336,10 +361,10 @@ describe "Event", type: :feature do
 
     it "creates a pdf with the correct schools" do
       all(:css, "#selected_ids_").each { |check| check.set(true) }
-      check('show_school')
+      check('show_organisation')
       click_button I18n.t('events.badges.print')
       strings = PDF::Inspector::Text.analyze(page.body).strings
-      @users.each { |u| expect(strings).to include(u.profile.school) }
+      @users.each { |u| expect(strings).to include(ApplicationLetter.where(event: @event, user: u).first.organisation) }
     end
 
     it "does not horribly crash and burn when colors are selected" do

@@ -27,6 +27,14 @@ FactoryGirl.define do
     date_ranges { build_list :date_range, 1 }
     hidden false
 
+    trait :in_the_past_valid do
+      after(:build) do |event|
+        event.date_ranges = [FactoryGirl.create(:date_range, :in_the_past_valid)]
+      end
+      name "Past Event"
+      to_create {|instance| instance.save(validate: false) }
+    end
+
     trait :with_two_date_ranges do
       after(:build) do |event|
         event.date_ranges = []
@@ -79,6 +87,12 @@ FactoryGirl.define do
       date_ranges { [] }
     end
 
+    trait :with_open_application do
+      after(:build) do |event, evaluator|
+        create_list(:application_letter, 1, event: event)
+        event.application_letters[0].user.profile = FactoryGirl.build :profile, user: event.application_letters[0].user
+      end
+    end
 
     trait :with_diverse_open_applications do
       after(:build) do |event, evaluator|
