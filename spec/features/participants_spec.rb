@@ -36,37 +36,37 @@ RSpec.feature "Event participants overview", :type => :feature do
     link_name = I18n.t("activerecord.attributes.participant_group.group")
     click_link link_name
     sorted_by_group = @event.participants.sort_by {|p| @event.participant_group_for(p).group }
-    names = sorted_by_group.map {|p| p.profile.name }
+    names = sorted_by_group.map {|p| (p.email)}
     expect(page).to contain_ordered(names)
 
     expect(page).to have_link(link_name)
-    click_  link link_name # again
+    click_link link_name # again
     expect(page).to contain_ordered(names.reverse)
 
 
   end
 
-  scenario "logged in as an Organizer I want to be able to sort the participants table by their eating habits" do
+  scenario "logged in as anOrganizer I want to be able to sort the participants table by their eating habits" do
     # Peter, vegan
-    create_accepted_application_with(@event, "Peter", false, true, false)
+    pe = create_accepted_application_with(@event, "Peter", false, true, false)
 
     # Paul, vegan, allergic
-    create_accepted_application_with(@event, "Paul", true, true, false)
+    pa = create_accepted_application_with(@event, "Paul", true, true, false)
 
     # Mary, vegetarian
-    create_accepted_application_with(@event, "Mary", false, false, true)
+    ma = create_accepted_application_with(@event, "Mary", false, false, true)
 
     # Otti, vegetarian, allergic
-    create_accepted_application_with(@event, "Otti", true, false, true)
+    ot = create_accepted_application_with(@event, "Otti", true, false, true)
 
     # Benno, none
-    create_accepted_application_with(@event, "Benno", false, false, false)
+    be = create_accepted_application_with(@event, "Benno", false, false, false)
 
     #Expected Sorting Order
     #Benno, Mary, Peter, Otti, Paul ASC
     #Paul, Otti, Peter, Mary, Benno DESC
 
-    expected_order = ["Benno", "Mary", "Peter", "Otti", "Paul"]
+    expected_order = [be.user.email, ma.user.email, pe.user.email, ot.user.email, pa.user.email]
 
     login(:organizer)
     visit event_participants_path(@event)
