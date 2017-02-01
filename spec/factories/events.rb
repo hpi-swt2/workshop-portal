@@ -123,12 +123,6 @@ FactoryGirl.define do
       end
     end
 
-    trait :with_enough_free_places do
-      after(:build) do |event|
-        event.max_participants = event.application_letters.size + 1
-      end
-    end
-
     factory :event_with_accepted_applications do
       name "Event-Name"
       description "Event-Description"
