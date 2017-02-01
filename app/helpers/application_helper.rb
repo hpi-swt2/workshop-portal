@@ -75,6 +75,10 @@ module ApplicationHelper
     o.html_safe
   end
 
+  def footer_items
+    (menu_item t(:imprint, scope: 'footer'), imprint_path)
+  end
+
   def resource_name
     :user
   end

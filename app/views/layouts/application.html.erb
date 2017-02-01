@@ -47,7 +47,10 @@
 
   <footer class="front-section">
     <div class="container">
-      <%= t "footer" %>
+      <%= t "footer.copyright" %>
+      <%= menu_group pull: :right do %>
+          <%= footer_items %>
+      <% end %>
     </div>
   </footer>
 </main>

@@ -38,6 +38,16 @@ en:
       new:
         sign_in: "Sign In"
         remember_me: "Remember me"
+  footer:
+      copyright: "Companion Cube <3"
+      imprint: "Impressum"
+  imprint:
+    managing_directors: "Authorized Representative Managing Directors:"
+    editor: "Editor:"
+    web_design: "Web Design:"
+    texts: "Texts:"
+    legal_information: "Legal information:"
+    legal_information_text: "Hasso Plattner Institute (HPI) constantly checks and updates the information on its web pages. Despite the utmost care taken, we cannot rule out that some of the data may since have become outdated. Therefore, we cannot accept liability for the currency, accuracy and completeness of the information displayed. The same applies to all other web pages that can be reached via hyperlink. HPI is not responsible for the content of websites which can be reached via such links. Furthermore, HPI reserves the right to make changes or additions to the information displayed. Content and structure of the HPI website is protected by copyright. The reproduction of information or data, in particular the use of texts, text excerpts or illustrative material, requires our prior approval."
   helpers:
     label:
       profile:
