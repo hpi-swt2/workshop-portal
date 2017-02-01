@@ -52,6 +52,16 @@ class RequestsController < ApplicationController
     end
   end
 
+  def set_notes
+    @request = Request.find(params[:request_id])
+    update_params = notes_params
+    if !update_params[:notes].nil? and @request.update(update_params)
+      redirect_to @request, notice: I18n.t('requests.notice.was_updated')
+    else
+      render :show
+    end
+  end
+
   # DELETE /requests/1
   def destroy
     @request.destroy
@@ -78,5 +88,9 @@ class RequestsController < ApplicationController
 
     def contact_person_params
       params.require(:request).permit(:contact_person)
+    end
+
+    def notes_params
+      params.require(:request).permit(:notes)
     end
 end

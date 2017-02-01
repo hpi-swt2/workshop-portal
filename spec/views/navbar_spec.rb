@@ -24,7 +24,7 @@ RSpec.describe 'navbar', type: :view do
     it "shows Einstellungen, Mein Profil anlegen, Meine Bewerbungen, Ausloggen in the dropdown" do
       expect(rendered).to have_css(".nav .dropdown-menu a", text: I18n.t('navbar.settings'))
       expect(rendered).to have_css(".nav .dropdown-menu a", text: I18n.t('navbar.create_profile'))
-      expect(rendered).to have_css(".nav .dropdown-menu a", text: I18n.t('navbar.my_application_letters'))
+      expect(rendered).to have_css(".nav .dropdown-menu a", text: I18n.t('navbar.my_events'))
       expect(rendered).to have_css(".nav .dropdown-menu a", text: I18n.t('navbar.logout'))
       expect(rendered).to have_css(".nav .dropdown-menu a", count: 4)
     end
