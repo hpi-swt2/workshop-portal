@@ -135,6 +135,7 @@ ActiveRecord::Schema.define(version: 20170128122851) do
     t.integer  "status",                 default: 0
     t.string   "zip_code_city"
     t.string   "contact_person"
+    t.text     "notes"
   end
 
   create_table "users", force: :cascade do |t|
