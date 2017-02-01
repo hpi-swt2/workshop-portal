@@ -45,6 +45,7 @@ class Ability
       can [:new, :create], Request
       can :apply, Event
       cannot :view_personal_details, ApplicationLetter, user: { id: !user.id }
+      cannot [:edit, :update], Event
     end
     if user.role? :coach
       # Coaches can view Applications and participants for and view, upload and download materials for Event
@@ -52,7 +53,7 @@ class Ability
       can [:view_and_add_notes, :show], ApplicationLetter
       can [:print_applications], Event
       can [:show, :index], Request
-      cannot :apply, Event
+      cannot [:apply, :edit, :update], Event
       cannot :check, ApplicationLetter
     end
     if user.role? :organizer

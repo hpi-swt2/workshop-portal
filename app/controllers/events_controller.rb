@@ -37,6 +37,9 @@ class EventsController < ApplicationController
 
   # GET /events/1/edit
   def edit
+    @event = Event.find(params[:id])
+    authorize! :edit, @event
+    
   end
 
   # POST /events
@@ -52,6 +55,7 @@ class EventsController < ApplicationController
   # PATCH/PUT /events/1
   def update
     attrs = event_params
+    authorize! :update, @event
     if @event.update(attrs)
       redirect_to @event, notice: I18n.t('events.notices.updated')
     else
