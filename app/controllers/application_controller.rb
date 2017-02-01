@@ -36,7 +36,7 @@ class ApplicationController < ActionController::Base
       current_user.events_with_missing_agreement_letters.each do |event|
         application_letter = ApplicationLetter.where(user: current_user, event: event).first
         path = check_application_letter_path(application_letter)
-        flash.now[:warning] << "#{t('agreement_letters.please_upload', event: event.name)} <a class='btn btn-default' href='#{path}'>
+        flash.now[:warning] << "#{t('agreement_letters.please_upload', event: event.name)} <a class='btn btn-default btn-xs' href='#{path}'>
                                   #{t('agreement_letters.upload')}
                                 </a>".html_safe if current_user.older_than_required_age_at_start_date_of_event?(event, current_user.profile.age)
       end
