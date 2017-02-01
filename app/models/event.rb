@@ -31,6 +31,8 @@ class Event < ActiveRecord::Base
   validate :application_deadline_before_start_of_event
   validates :hidden, inclusion: { in: [true, false] }
   validates :hidden, exclusion: { in: [nil] }
+  validates :published, inclusion: { in: [true, false] }
+  validates :published, exclusion: { in: [nil] }
 
   # Setter for max_participants
   # @param [Int Float] the max number of participants for the event or infinity if it is not limited
@@ -127,8 +129,6 @@ class Event < ActiveRecord::Base
   def agreement_letter_for(user)
     self.agreement_letters.where(user: user).take
   end
-
-  enum kind: [ :workshop, :camp ]
 
   # Returns whether all application_letters are classified or not
   #
