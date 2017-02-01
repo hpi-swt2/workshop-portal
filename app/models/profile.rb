@@ -65,7 +65,7 @@ class Profile < ActiveRecord::Base
   # @param none
   # @return [Symbol] List of parameters
   def self.allowed_params
-    [:first_name, :last_name, :gender, :birth_date, :school, :street_name, :zip_code, :city, :state, :country, :graduates_school_in]
+    [:first_name, :last_name, :gender, :birth_date, :school, :street_name, :zip_code, :city, :state, :country, :graduates_school_in, :discovery_of_site]
   end
 
   private

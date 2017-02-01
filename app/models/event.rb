@@ -138,6 +138,19 @@ class Event < ActiveRecord::Base
     application_letters.all? { |application_letter| application_letter.status != 'pending' }
   end
 
+  # Returns the tooltip used to help explain to the user why he can't send mails yet
+  #
+  # @return [String] the translated tooltip text or nil if mails can be sent
+  def send_mails_tooltip
+    if not applications_classified?
+      I18n.t 'events.applicants_overview.unclassified_applications_left'
+    elsif compute_free_places < 0
+      I18n.t 'events.applicants_overview.maximum_number_of_participants_exeeded'
+    else
+      nil
+    end
+  end
+
   # Sets the status of all the event's application letters to accepted
   #
   # @param none
@@ -148,13 +161,13 @@ class Event < ActiveRecord::Base
     end
   end
 
-  # Returns a string of all email addresses of accepted applications
+  # Returns an array of strings of all email addresses of applications with a given status type
   #
-  # @param type [Type] the type of the email addresses that will be returned
-  # @return [String] Concatenation of all email addresses of applications with given type, seperated by ','
+  # @param type [Type] the status type of the email addresses that will be returned
+  # @return [Array<String>] Array of all email addresses of applications with given type
   def email_addresses_of_type(type)
     applications = application_letters.where(status: ApplicationLetter.statuses[type])
-    applications.map{ |application_letter| application_letter.user.email }.join(',')
+    applications.collect { |a| a.user.email }
   end
 
   # Returns the number of free places of the event, this value may be negative
