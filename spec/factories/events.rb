@@ -125,7 +125,7 @@ FactoryGirl.define do
 
     trait :with_enough_free_places do
       after(:build) do |event|
-        event.max_participants = event.application_letters.size + 1
+        event.max_participants = event.application_letters.size
       end
     end
 
