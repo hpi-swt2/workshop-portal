@@ -14,6 +14,7 @@ de:
       create_request: "Anfrage erstellen"
       accept: "Annehmen"
       set_contact_person: "Ansprechpartner festlegen"
+      set_notes: "Notizen speichern"
     hints:
       please_enter_two_topics: "Bitte 2 Wünsche angeben"
     notice:
@@ -42,6 +43,7 @@ de:
         id: "Nummer"
         created_at: "Erstellt am"
         contact_person: "Ansprechpartner"
+        notes: "Notizen"
         status: "Status"
         statuses:
           open: "Offen"
