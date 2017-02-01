@@ -96,8 +96,6 @@ describe Event do
   end
 
   it "is either a public or private" do
-    expect { FactoryGirl.build(:event, hidden: nil) }.to raise_error(ArgumentError)
-
     event = FactoryGirl.build(:event, hidden: false)
     expect(event).to be_valid
 
