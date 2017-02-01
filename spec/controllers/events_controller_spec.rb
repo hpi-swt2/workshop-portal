@@ -165,7 +165,7 @@ RSpec.describe EventsController, type: :controller do
     end
   end
 
-  describe "GET #show for hidden event as pupil"
+  describe "GET #show for private event as pupil"
     it "should redirect to new application letter page" do
       @event = FactoryGirl.create(:event, hidden: true)
       @user = FactoryGirl.create(:user_with_profile, role: :pupil)

@@ -79,9 +79,9 @@ de:
         no_agreement_letters: "Keiner der gewählten Teilnehmer hat eine Einverständniserklärung"
       select_all: "Alle auswählen"
       download_all_as: "Einverständniserklärungen herunterladen als"
-    kinds:
-      workshop: "Workshop"
-      camp: "Camp"
+    type:
+      private: "Privat"
+      public: "Öffentlich"
     list:
       read_on: "Weiterlesen"
     participants_modal:
@@ -124,9 +124,9 @@ de:
       label_of_custom_field: "Name des eigenen Felds"
       custom_application_fields_cant_be_changed_later: "Die eigenen Felder für die Bewerbung können nach dem ersten Speichern nicht mehr geändert werden."
       add_timespan: "Zeitspanne hinzufügen"
-      published:
-        myon: "An"
-        myoff: "Aus"
+      draft:
+        save: "Speichern"
+        publish: "Veröffentlichen"
     email:
       templates: "Vorlagen"
     applications_pdf:
@@ -147,7 +147,6 @@ de:
           description: "Beschreibung"
           max_participants: "Maximale Teilnehmerzahl"
           participants_are_unlimited: "Unbegrenzte Teilnehmerzahl"
-          kind: "Art"
           active: "Aktiv"
           start_date: "Beginn"
           end_date: "Ende"
@@ -159,8 +158,9 @@ de:
             one: "Zeitspanne"
             other: "Zeitspannen"
           application_deadline: "Bewerbungsschluss"
-          published: "Öffentlich"
+          published: "Entwurf"
           hidden: "Versteckt"
+          type: "Veranstaltungstyp"
   helpers:
     submit:
       event:
