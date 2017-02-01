@@ -200,7 +200,7 @@ RSpec.describe EventsController, type: :controller do
   end
 
   describe "GET #print_applications_eating_habits" do
-    
+
     let(:valid_attributes) { FactoryGirl.attributes_for(:event_with_accepted_applications) }
 
     it "should return an pdf" do
@@ -217,33 +217,33 @@ RSpec.describe EventsController, type: :controller do
     it "should return an pdf with the eating habits of the user" do
       login(:organizer)
       event = Event.create! valid_attributes
-      
+
       user = FactoryGirl.create(:user)
       profile = FactoryGirl.create(:profile, user: user, last_name: "Peter")
-      application_letter = FactoryGirl.create(:application_letter_accepted, 
+      application_letter = FactoryGirl.create(:application_letter_accepted,
         user: user, event: event, vegan: true)
       user = FactoryGirl.create(:user)
       profile = FactoryGirl.create(:profile, user: user, last_name: "Paul")
-      application_letter = FactoryGirl.create(:application_letter_accepted, 
+      application_letter = FactoryGirl.create(:application_letter_accepted,
         user: user, event: event, vegan: true, allergic: true)
       user = FactoryGirl.create(:user)
       profile = FactoryGirl.create(:profile, user: user, last_name: "Mary")
-      application_letter = FactoryGirl.create(:application_letter_accepted, 
+      application_letter = FactoryGirl.create(:application_letter_accepted,
         user: user, event: event, vegetarian: true)
       user = FactoryGirl.create(:user)
       profile = FactoryGirl.create(:profile, user: user, last_name: "Otti")
-      application_letter = FactoryGirl.create(:application_letter_accepted, 
+      application_letter = FactoryGirl.create(:application_letter_accepted,
         user: user, event: event, vegetarian: true, allergic: true)
       user = FactoryGirl.create(:user)
       profile = FactoryGirl.create(:profile, user: user, last_name: "Benno")
-      application_letter = FactoryGirl.create(:application_letter_accepted, 
+      application_letter = FactoryGirl.create(:application_letter_accepted,
         user: user, event: event)
 
       response = get :print_applications_eating_habits, id: event.to_param, session: valid_session
       expect(response.content_type).to eq('application/pdf')
 
       pdf = PDF::Inspector::Text.analyze(response.body)
-    
+
       expect(pdf.strings).to include(I18n.t("events.participants.print_title", title: event.name))
       expect(pdf.strings).to include(I18n.t("events.participants.print_summary", count: 5))
       expect(pdf.strings).to include(I18n.t("events.participants.print_summary_vegan", count: 2))
@@ -486,7 +486,8 @@ RSpec.describe EventsController, type: :controller do
           a.user.accepted_applications_count(@event).to_s,
           a.user.rejected_applications_count(@event).to_s,
           I18n.t("application_status.#{a.status}"),
-          a.motivation
+          a.motivation,
+          a.annotation
         )
         a.application_notes.each do |note|
           expect(text).to include(note.note)
