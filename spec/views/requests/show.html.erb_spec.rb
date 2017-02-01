@@ -35,7 +35,9 @@ RSpec.describe "requests/show", type: :view do
     sign_in(FactoryGirl.create(:user, role: :coach))
     render
     expect(rendered).to_not have_text(I18n.t('activerecord.attributes.request.notes'))
-    sign_out(:user)
+  end
+
+  it 'should display the note field for organizers' do
     sign_in(FactoryGirl.create(:user, role: :organizer))
     render
     expect(rendered).to have_text(I18n.t('activerecord.attributes.request.notes'))

@@ -50,7 +50,7 @@ class Ability
       can [:view_applicants, :view_participants, :view_material, :upload_material, :print_applications, :download_material], Event
       can [:view_and_add_notes, :show], ApplicationLetter
       can [:print_applications], Event
-      can :manage, Request
+      can [:show, :index], Request
       cannot :check, ApplicationLetter
     end
     if user.role? :organizer
@@ -63,7 +63,7 @@ class Ability
         :view_unpublished, :show_eating_habits, :print_applications_eating_habits, :view_hidden], Event
 
       can :send_email, Email
-      can :manage, Request
+      can [:manage, :set_contact_person, :set_notes], Request
       can [:update], ParticipantGroup
 
       # Organizers can update user roles of pupil, coach and organizer, but cannot manage admins and cannot update a role to admin

@@ -15,6 +15,8 @@
   <dt><strong><%= model_class.human_attribute_name(:status) %>:</strong></dt>
   <dd><%= t(@request.status, scope: 'activerecord.attributes.request.statuses') %></dd>
 </dl>
+
+<% if can? :set_contact_person, Request %>
 <dl class="dl-horizontal">
   <dt><strong><%= model_class.human_attribute_name(:contact_person) %>:</strong></dt>
   <dd>
@@ -30,21 +32,21 @@
     <% end %>
   </dd>
 </dl>
+<% end %>
+
+<% if can? :set_notes, Request %>
 <dl class="dl-horizontal">
   <dt><strong><%= model_class.human_attribute_name(:notes) %>:</strong></dt>
   <dd>
-    <%= form_for @request, url: request_set_notes_path(@request), html: { class: 'form-inline' } do |f| %>
-        <div class="m-b-1">
-          <div class="input-group">
-            <%= f.text_field :notes, class: 'form-control', placeholder: t('activerecord.attributes.request.notes') %>
-            <span class="input-group-btn">
-          <%= f.submit t('requests.form.set_notes'), class: 'btn btn-default' %>
-        </span>
-          </div>
-        </div>
+    <%= form_for @request, url: request_set_notes_path(@request) do |f| %>
+      <div class="form-group">
+        <%= f.text_area :notes, class: 'form-control', placeholder: t('activerecord.attributes.request.notes') %>
+      </div>
+      <%= f.submit t('requests.form.set_notes'), class: 'btn btn-default' %>
     <% end %>
   </dd>
 </dl>
+<% end %>
 
 <%= link_to t('.back', :default => t("helpers.links.back")),
               requests_path, :class => 'btn btn-default'  %>
