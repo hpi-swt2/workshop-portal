@@ -16,21 +16,38 @@
     <dd><%= @request.annotations %></dd>
   <% end %>
 </dl>
+
+<% if can? :set_contact_person, Request %>
 <dl class="dl-horizontal">
-  <dt><strong><%= model_class.human_attribute_name(:contact_person) %>:</strong></td>
+  <dt><strong><%= model_class.human_attribute_name(:contact_person) %>:</strong></dt>
   <dd>
-  <%= form_for @request, url: request_set_contact_person_path(@request), html: { class: 'form-inline' } do |f| %>
-    <div class="m-b-1">
-      <div class="input-group">
-        <%= f.text_field :contact_person, class: 'form-control', placeholder: t('activerecord.attributes.request.contact_person') %>
-        <span class="input-group-btn">
+    <%= form_for @request, url: request_set_contact_person_path(@request), html: { class: 'form-inline' } do |f| %>
+        <div class="m-b-1">
+          <div class="input-group">
+            <%= f.text_field :contact_person, class: 'form-control', placeholder: t('activerecord.attributes.request.contact_person') %>
+            <span class="input-group-btn">
           <%= f.submit t('requests.form.set_contact_person'), class: 'btn btn-default' %>
         </span>
-      </div>
-    </div>
-  <% end %>
+          </div>
+        </div>
+    <% end %>
   </dd>
 </dl>
+<% end %>
+
+<% if can? :set_notes, Request %>
+<dl class="dl-horizontal">
+  <dt><strong><%= model_class.human_attribute_name(:notes) %>:</strong></dt>
+  <dd>
+    <%= form_for @request, url: request_set_notes_path(@request) do |f| %>
+      <div class="form-group">
+        <%= f.text_area :notes, class: 'form-control', placeholder: t('activerecord.attributes.request.notes') %>
+      </div>
+      <%= f.submit t('requests.form.set_notes'), class: 'btn btn-default' %>
+    <% end %>
+  </dd>
+</dl>
+<% end %>
 
 <h3><%= t('requests.personal_information') %></h3>
 <dl class="dl-horizontal">
