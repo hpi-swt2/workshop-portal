@@ -4,8 +4,8 @@ class ApplicationsPDF
 
   # Generates a PDF file containing the details of every application for an event
   #
-  # param event [Event] the event whose applications are taken
-  # return [String] the generated PDF
+  # @param event [Event] the event whose applications are taken
+  # @return [String] the generated PDF
   def self.generate(event)
     self.new(event).create.render
   end
@@ -18,8 +18,8 @@ class ApplicationsPDF
 
   # Adds all necessary data and formatting to the ApplicationsPDF
   #
-  # param none
-  # return [ApplicationsPDF] self
+  # @param none
+  # @return [ApplicationsPDF] self
   def create
     create_overview
     @event.application_letters.each_with_index do |a,i|
@@ -71,7 +71,7 @@ class ApplicationsPDF
                 ApplicationLetter.human_attribute_name(:status)]]
       data += @event.application_letters.map do |a|
         [a.user.profile.name,
-         a.user.profile.gender,
+         t("profiles.genders.#{a.user.profile.gender}"),
          a.applicant_age_when_event_starts,
          "#{a.user.accepted_applications_count(@event)} / #{a.user.rejected_applications_count(@event)}",
          t("application_status.#{a.status}")]
@@ -100,6 +100,10 @@ class ApplicationsPDF
         column(0).font_style = :bold
         column(0).align = :right
       end
+      unless application_letter.annotation.nil?
+        pad_top(20) { text "<u>#{t("application_letters.show.annotation_title")}</u>", inline_format: true}
+        pad_top(5) { text application_letter.annotation }
+      end
       pad_top(20) { text "<u>#{ApplicationLetter.human_attribute_name(:motivation)}</u>", inline_format: true}
       pad_top(5) { text application_letter.motivation }
       unless application_letter.application_notes.count == 0
@@ -113,9 +117,8 @@ class ApplicationsPDF
     end
 
     def applicants_detail_data(application_letter)
-      [[Profile.human_attribute_name(:gender)+":", application_letter.user.profile.gender],
+      [[Profile.human_attribute_name(:gender)+":", t("profiles.genders.#{application_letter.user.profile.gender}")],
        [t('application_letters.show.age_when_event_starts')+":", application_letter.applicant_age_when_event_starts],
-       [Profile.human_attribute_name(:address)+":", application_letter.user.profile.address],
        [User.human_attribute_name(:accepted_application_count)+":", application_letter.user.accepted_applications_count(@event)],
        [User.human_attribute_name(:rejected_application_count)+":", application_letter.user.rejected_applications_count(@event)],
        [Profile.human_attribute_name(:status)+":", t("application_status.#{application_letter.status}")]]

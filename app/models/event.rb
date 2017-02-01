@@ -11,6 +11,7 @@
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  application_status_locked  :boolean
+#  hidden           :boolean
 #
 
 class Event < ActiveRecord::Base
@@ -21,27 +22,18 @@ class Event < ActiveRecord::Base
 
   has_many :application_letters
   has_many :agreement_letters
+  has_many :participant_groups
   has_many :date_ranges
   accepts_nested_attributes_for :date_ranges
+  validates :max_participants, numericality: { only_integer: true, greater_than: 0 }
+  validate :has_date_ranges
+  validates_presence_of :application_deadline
+  validate :application_deadline_before_start_of_event
+  validates :hidden, inclusion: { in: [true, false] }
+  validates :hidden, exclusion: { in: [nil] }
+  validates :published, inclusion: { in: [true, false] }
+  validates :published, exclusion: { in: [nil] }
 
-  # Setter for max_participants
-  # @param [Int Float] the max number of participants for the event or infinity if it is not limited
-  # @return none
-  def max_participants=(value)
-    if value == Float::INFINITY
-      self[:participants_are_unlimited] = true
-    else
-      self[:participants_are_unlimited] = false
-      self[:max_participants] = value
-    end
-  end
-
-  # Getter for max_participants
-  # @param none
-  # @return [Int Float] the max number of participants for the event or infinity if it is not limited
-  def max_participants
-    participants_are_unlimited ? Float::INFINITY : self[:max_participants]
-  end
 
   # Returns all participants for this event in following order:
   # 1. All participants that have to submit an letter of agreement but did not yet do so, ordered by name.
@@ -55,10 +47,6 @@ class Event < ActiveRecord::Base
     @participants.sort { |x, y| self.compare_participants_by_agreement(x,y) }
   end
 
-  validates :max_participants, numericality: { only_integer: true, greater_than: 0 }
-  validate :has_date_ranges
-  validates_presence_of :application_deadline
-  validate :application_deadline_before_start_of_event
 
 
   # @return the minimum start_date over all date ranges
@@ -104,6 +92,18 @@ class Event < ActiveRecord::Base
     accepted_applications.collect { |a| a.user }
   end
 
+  # Returns the participant group for this event for a given participant (user). If it doesn't exist, it is created
+  #
+  # @param user [User] the user whose participant group we want
+  # @return [ParticipantGroup] the user's participant group
+  def participant_group_for(user)
+    participant_group = self.participant_groups.find_by(user: user)
+    if participant_group.nil?
+      participant_group = ParticipantGroup.create(event: self, user: user, group: ParticipantGroup::GROUPS.default)
+    end
+    participant_group
+  end
+
   # Returns the agreement letter a user submitted for this event
   #
   # @param user [User] the user whose agreement letter we want
@@ -112,14 +112,25 @@ class Event < ActiveRecord::Base
     self.agreement_letters.where(user: user).take
   end
 
-  enum kind: [ :workshop, :camp ]
-
   # Returns whether all application_letters are classified or not
   #
   # @param none
   # @return [Boolean] if status of all application_letters is not pending
   def applications_classified?
     application_letters.all? { |application_letter| application_letter.status != 'pending' }
+  end
+
+  # Returns the tooltip used to help explain to the user why he can't send mails yet
+  #
+  # @return [String] the translated tooltip text or nil if mails can be sent
+  def send_mails_tooltip
+    if not applications_classified?
+      I18n.t 'events.applicants_overview.unclassified_applications_left'
+    elsif compute_free_places < 0
+      I18n.t 'events.applicants_overview.maximum_number_of_participants_exeeded'
+    else
+      nil
+    end
   end
 
   # Sets the status of all the event's application letters to accepted
@@ -132,13 +143,13 @@ class Event < ActiveRecord::Base
     end
   end
 
-  # Returns a string of all email addresses of accepted applications
+  # Returns an array of strings of all email addresses of applications with a given status type
   #
-  # @param type [Type] the type of the email addresses that will be returned
-  # @return [String] Concatenation of all email addresses of applications with given type, seperated by ','
+  # @param type [Type] the status type of the email addresses that will be returned
+  # @return [Array<String>] Array of all email addresses of applications with given type
   def email_addresses_of_type(type)
     applications = application_letters.where(status: ApplicationLetter.statuses[type])
-    applications.map{ |application_letter| application_letter.user.email }.join(',')
+    applications.collect { |a| a.user.email }
   end
 
   # Returns the number of free places of the event, this value may be negative
@@ -255,15 +266,19 @@ class Event < ActiveRecord::Base
   end
 
   scope :draft_is, ->(status) { where("not published = ?", status) }
+  scope :hidden_is, ->(status) { where("hidden = ?", status) }
+  scope :with_date_ranges, -> { joins(:date_ranges).group('events.id').order('MIN(start_date)') }
+  scope :future, -> { with_date_ranges.having('date(MAX(end_date)) > ?', Time.zone.now.end_of_day) }
+  scope :past, -> { with_date_ranges.having('date(MAX(end_date)) < ?', Time.zone.now.end_of_day) }
 
   # Returns events sorted by start date, returning only public ones
   # if requested
   #
   # @param limit Maximum number of events to return
-  # @param only_public Set to true to not include drafts
+  # @param only_public Set to true to not include drafts and hidden events
   # @return List of events
   def self.sorted_by_start_date(only_public)
-    (only_public ? Event.draft_is(false) : Event.all)
+    (only_public ? Event.draft_is(false).where(hidden: false) : Event.all)
       .sort_by(&:start_date)
   end
 

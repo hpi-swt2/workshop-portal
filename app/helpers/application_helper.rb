@@ -58,14 +58,12 @@ module ApplicationHelper
     # everyone gets settings
     o << (menu_item t(:settings, scope: 'navbar'), edit_user_registration_path)
     # everyone gets their profile, if it exists
-    if current_user.profile.present?
-      o << (menu_item t(:profile, scope: 'navbar'), profile_path(current_user.profile))
-    else
+    unless current_user.profile.present?
       o << (menu_item t(:create_profile, scope: 'navbar'), new_profile_path)
     end
     # pupils get their applications
     if current_user.role == "pupil"
-      o << (menu_item t(:my_application_letters, scope: 'navbar'), application_letters_path)
+      o << (menu_item t(:my_events, scope: 'navbar'), application_letters_path)
     end
     # admins get user management
     if current_user.role == "admin" || current_user.role == "organizer"
@@ -76,4 +74,17 @@ module ApplicationHelper
 
     o.html_safe
   end
+
+  def resource_name
+    :user
+  end
+
+  def resource
+    @user ||= User.new
+  end
+
+  def devise_mapping
+    @devise_mapping ||= Devise.mappings[:user]
+  end
+
 end

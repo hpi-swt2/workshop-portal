@@ -19,17 +19,18 @@ class ApplicationLetter < ActiveRecord::Base
 
   VALID_GRADES = 5..13
 
-  validates :user, :event, :experience, :motivation, :coding_skills, :emergency_number, presence: true
+  validates :user, :event, :motivation, :coding_skills, :emergency_number,:organisation, presence: true
   validates :grade, presence: true, numericality: { only_integer: true }
   validates_inclusion_of :grade, :in => VALID_GRADES
-  validates :vegetarian, :vegan, :allergic, inclusion: { in: [true, false] }
-  validates :vegetarian, :vegan, :allergic, exclusion: { in: [nil] }
+  validates :vegetarian, :vegan, inclusion: { in: [true, false] }
+  validates :vegetarian, :vegan, exclusion: { in: [nil] }
   validate :deadline_cannot_be_in_the_past, :if => Proc.new { |letter| !(letter.status_changed?) }
   validate :status_cannot_be_changed, :if => Proc.new { |letter| letter.status_changed?}
 
   enum status: {accepted: 1, rejected: 0, pending: 2, alternative: 3}
   validates :status, inclusion: { in: statuses.keys }
     
+
 
   # Checks if the deadline is over
   # additionally only return if event and event.application_deadline is present
@@ -55,6 +56,18 @@ class ApplicationLetter < ActiveRecord::Base
       errors.add(:event, I18n.t("application_letters.form.warning"))
     end
   end
+  
+  # Since EatingHabits are persited in booleans we need to generate a 
+  # EatingHabitStateCode to allow sorting
+  # US 28_4.5
+   
+   def get_eating_habit_state
+     eating_habit_state = 0
+     eating_habit_state += 4 if vegetarian
+     eating_habit_state += 5 if vegan
+     eating_habit_state += 99 if allergic
+     return eating_habit_state
+   end
 
   # Chooses right status based on status and event deadline
   #
@@ -101,7 +114,11 @@ class ApplicationLetter < ActiveRecord::Base
     habits = Array.new
     habits.push(ApplicationLetter.human_attribute_name(:vegetarian)) if vegetarian
     habits.push(ApplicationLetter.human_attribute_name(:vegan)) if vegan
-    habits.push(ApplicationLetter.human_attribute_name(:allergic)) if allergic
+    habits.push(ApplicationLetter.human_attribute_name(:allergies)) if allergic
     habits
+  end
+
+  def allergic
+    not allergies.empty?
   end
 end

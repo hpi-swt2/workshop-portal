@@ -9,6 +9,7 @@
       <th><%= model_class.human_attribute_name(:name) %></th>
       <th><%= model_class.human_attribute_name(:time_period) %></th>
       <th><%= model_class.human_attribute_name(:number_of_participants) %></th>
+      <th><%= model_class.human_attribute_name(:status) %></th>
       <th><%=t '.actions', :default => t("helpers.actions") %></th>
     </tr>
   </thead>
@@ -19,6 +20,7 @@
         <td><%= request.name %></td>
         <td><%= request.time_period %></td>
         <td><%= request.number_of_participants %></td>
+        <td><%= t("activerecord.attributes.request.statuses.#{request.status}") %></td>
         <td>
           <% if can? :edit, request %>
             <%= link_to t('.edit', :default => t("helpers.links.edit")),
