@@ -3,7 +3,7 @@
   <%= render partial: "shared/error_message", locals: {entity: @event} %>
 
     <div class="form-group">
-      <%= f.label :hidden, :class => 'control-label col-lg-2' %>
+      <%= f.label :type, :class => 'control-label col-lg-2' %>
       <div class="btn-group col-lg-10" data-toggle="buttons">
         <label class="btn btn-default <%= 'active' if not @event.hidden %>">
           <%= f.radio_button :hidden, false %>

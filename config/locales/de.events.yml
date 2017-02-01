@@ -147,7 +147,6 @@ de:
           description: "Beschreibung"
           max_participants: "Maximale Teilnehmerzahl"
           participants_are_unlimited: "Unbegrenzte Teilnehmerzahl"
-          kind: "Art"
           active: "Aktiv"
           start_date: "Beginn"
           end_date: "Ende"
