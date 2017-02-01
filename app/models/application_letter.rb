@@ -21,7 +21,8 @@ class ApplicationLetter < ActiveRecord::Base
 
   validates :user, :event, :experience, :motivation, :coding_skills, :emergency_number,:organisation, presence: true
   validates :grade, presence: true, numericality: { only_integer: true }
-  validates_inclusion_of :grade, :in => VALID_GRADES
+  #Use 0 as default for hidden event applications
+  validates_inclusion_of :grade, in: (VALID_GRADES.to_a.push(0))
   validates :vegetarian, :vegan, :allergic, inclusion: { in: [true, false] }
   validates :vegetarian, :vegan, :allergic, exclusion: { in: [nil] }
   validate :deadline_cannot_be_in_the_past, :if => Proc.new { |letter| !(letter.status_changed?) }

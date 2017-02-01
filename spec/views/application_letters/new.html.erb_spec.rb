@@ -4,6 +4,7 @@ RSpec.describe "application_letters/new", type: :view do
   before(:each) do
     @application_letter = FactoryGirl.build(:application_letter)
     assign(:application_letter, @application_letter)
+    @event = assign(:event, FactoryGirl.create(:event))
   end
 
   it "renders new application form" do
@@ -27,4 +28,11 @@ RSpec.describe "application_letters/new", type: :view do
     end
   end
 
+  it "should only render neccessary fields for hidden events" do
+    @event = assign(:event, FactoryGirl.create(:event, hidden: true))
+    render
+    ['grade', 'motivation', 'emergency_number', 'experience'].each do |attr|
+      expect(rendered).to_not have_text(I18n.t('activerecord.attributes.application_letter.'+ attr))
+    end
+  end
 end

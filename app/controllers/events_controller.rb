@@ -22,7 +22,7 @@ class EventsController < ApplicationController
   # GET /events/1
   def show
     if @event.hidden and !can? :view_hidden, Event
-      redirect_to new_application_letter_path(:event_id => @event.id)
+      redirect_to new_application_letter_path(:event_id => @event.id, :hidden => true)
     end
     @free_places = @event.compute_free_places
     @occupied_places = @event.compute_occupied_places

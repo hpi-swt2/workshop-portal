@@ -36,6 +36,10 @@ de:
       eating_habits: "Essgewohnheiten"
     confirm_deletion: "Willst du diese Bewerbung wirklich löschen?"
     print_accepted_with_eatings_habits: "Drucke Teilnehmer mit Essgewohnheiten"
+    helpers:
+      submit:
+        create: "Anmelden"
+        update: "Anmeldung aktualisieren"
 
     fields_filled_in: "Wir haben einige Felder bereits für dich ausgefüllt. Falls sich seit deiner letzten Bewerbung etwas geändert hat, kannst du es jetzt anpassen."
 
