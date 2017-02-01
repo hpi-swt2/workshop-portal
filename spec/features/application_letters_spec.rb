@@ -71,7 +71,6 @@ RSpec.feature "Application Letter Overview", :type => :feature do
     check_filled_field.call(:allergies)
     check_checked_checkbox.call(:vegetarian)
     check_checked_checkbox.call(:vegan)
-    check_checked_checkbox.call(:allergic)
     expect(page).to have_select(ApplicationLetter.human_attribute_name(:grade),
                                 selected: @application_letter.grade.to_s)
   end
@@ -86,14 +85,15 @@ RSpec.feature "Application Letter Overview", :type => :feature do
 
   it "should highlight wrong or missing insertions from user" do
     login(:pupil)
-    visit new_application_letter_path
+    visit new_application_letter_path(:event_id => @event.id)
     fill_in "application_letter_motivation", with:   ""
     fill_in "application_letter_coding_skills", with:   ""
     fill_in "application_letter_emergency_number", with:   ""
+    fill_in "application_letter_organisation", with:   ""
 
     find('input[name=commit]').click
 
-    expect(page).to have_css(".has-error", count: 9)
+    expect(page).to have_css(".has-error", count: 12)
   end
 
   describe "Application creation" do
@@ -189,7 +189,6 @@ RSpec.feature "Application Letter Overview", :type => :feature do
     fill_in "profile_first_name", with:   "John"
     fill_in "profile_last_name", with:   "Doe"
     fill_in "profile_birth_date", with: "19.03.2016"
-    fill_in "profile_school", with: "Griebnitzsee Schule"
     fill_in "profile_street_name", with:   "Rudolf-Breitscheid-Str. 52"
     fill_in "profile_zip_code", with:   "14482"
     fill_in "profile_city" , with:  "Potsdam"
@@ -223,7 +222,7 @@ RSpec.feature "Application Letter Overview", :type => :feature do
     it "logged in as #{role} I cannot see personal details" do
       login(role)
       expect(page).to_not have_text(@application_letter.user.profile.address)
-      expect(page).to_not have_text(@application_letter.user.profile.school)
+      expect(page).to_not have_text(@application_letter.organisation)
     end
   end
 
@@ -232,9 +231,9 @@ RSpec.feature "Application Letter Overview", :type => :feature do
     expect(page).to have_text(@application_letter.user.profile.address)
   end
 
-  it "logged in as admin I cannot see the school of an applicant" do
+  it "logged in as admin I cannot see the organiation of an applicant" do
     login(:admin)
-    expect(page).to_not have_text(@application_letter.user.profile.school)
+    expect(page).to_not have_text(@application_letter.organisation)
   end
 
   %i[organizer admin].each do |role|
@@ -261,7 +260,7 @@ RSpec.feature "Application Letter Overview", :type => :feature do
     fill_in "application_letter_motivation", with:   "None"
     fill_in "application_letter_coding_skills", with:   "None"
     fill_in "application_letter_emergency_number", with:   "0123456789"
-    check "application_letter_allergic"
+    fill_in "application_letter_organisation", with: "Schule am Griebnitzsee"
     fill_in "application_letter_allergies", with:   "Many"
     fill_in "application_letter_annotation", with:   "Some"
   end

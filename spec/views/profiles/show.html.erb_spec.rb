@@ -7,7 +7,7 @@ RSpec.describe "profiles/show", type: :view do
 
   it "renders attributes" do
     render
-    [:first_name, :last_name, :birth_date, :school, :street_name, :zip_code, :city, :state, :country, :graduates_school_in, :discovery_of_site].each do |attr_name|
+    [:first_name, :last_name, :birth_date, :street_name, :zip_code, :city, :state, :country, :discovery_of_site].each do |attr_name|
       expect(rendered).to have_text(@profile.public_send(attr_name))
     end
   end
