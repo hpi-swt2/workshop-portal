@@ -20,7 +20,6 @@ FactoryGirl.define do
     organisation "Schule am Griebnitzsee"
     vegetarian false
     vegan false
-    allergic true
     allergies "Many"
     user
     event

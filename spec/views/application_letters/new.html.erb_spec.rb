@@ -16,7 +16,6 @@ RSpec.describe "application_letters/new", type: :view do
       assert_select "input#application_letter_emergency_number[name=?]", "application_letter[emergency_number]"
       assert_select "input#application_letter_vegetarian[name=?]", "application_letter[vegetarian]"
       assert_select "input#application_letter_vegan[name=?]", "application_letter[vegan]"
-      assert_select "input#application_letter_allergic[name=?]", "application_letter[allergic]"
       assert_select "textarea#application_letter_allergies[name=?]", "application_letter[allergies]"
       assert_select "textarea#application_letter_annotation[name=?]", "application_letter[annotation]"
       assert_select "select#application_letter_grade[name=?]", "application_letter[grade]"

@@ -53,21 +53,10 @@
     <div class="col-sm-offset-2 col-sm-10">
       <%= f.check_box :vegetarian%>
       <%= f.label :vegetarian, :class => 'control-label' %>
-      <%=f.error_span(:vegetarian) %>
-    </div>
-  </div>
-  <div class="form-group">
-    <div class="col-sm-offset-2 col-sm-10">
       <%= f.check_box :vegan%>
       <%= f.label :vegan, :class => 'control-label' %>
+      <%=f.error_span(:vegetarian) %>
       <%=f.error_span(:vegan) %>
-    </div>
-  </div>
-  <div class="form-group">
-    <div class="col-sm-offset-2 col-sm-10">
-      <%= f.check_box :allergic%>
-      <%= f.label :allergic, :class => 'control-label' %>
-      <%=f.error_span(:allergic) %>
     </div>
   </div>
   <div class="form-group">

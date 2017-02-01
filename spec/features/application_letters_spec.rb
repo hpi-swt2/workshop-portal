@@ -71,7 +71,6 @@ RSpec.feature "Application Letter Overview", :type => :feature do
     check_filled_field.call(:allergies)
     check_checked_checkbox.call(:vegetarian)
     check_checked_checkbox.call(:vegan)
-    check_checked_checkbox.call(:allergic)
     expect(page).to have_select(ApplicationLetter.human_attribute_name(:grade),
                                 selected: @application_letter.grade.to_s)
   end
@@ -264,7 +263,6 @@ RSpec.feature "Application Letter Overview", :type => :feature do
     fill_in "application_letter_coding_skills", with:   "None"
     fill_in "application_letter_emergency_number", with:   "0123456789"
     fill_in "application_letter_organisation", with: "Schule am Griebnitzsee"
-    check "application_letter_allergic"
     fill_in "application_letter_allergies", with:   "Many"
     fill_in "application_letter_annotation", with:   "Some"
   end
