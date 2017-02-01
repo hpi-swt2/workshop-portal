@@ -106,7 +106,7 @@ de:
         one: "Bewerbungsfrist in einem Tag"
         other: "Bewerbungsfrist in %{count} Tagen"
       time_span_non_consecutive:
-        one: "Über einen Tag mit Unterbrechung"
+        one: "Umfang: Ein Tag mit Unterbrechung"
         other: "Umfang: %{count} Tage mit Unterbrechung"
       time_span_consecutive:
         one: "Umfang: Ein Tag"
