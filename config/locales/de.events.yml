@@ -2,7 +2,8 @@
 
 de:
   events:
-    intro_text: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+    archive: "Veranstaltungs-Archiv"
+    all_events: "Alle Events"
     applicants_overview:
       title: "Bewerber für %{title}"
       participations: "Anzahl der Bewerbungen"
@@ -37,17 +38,41 @@ de:
       download: "Herunterladen"
       download_file_not_found: "Datei wurde nicht gefunden"
     badges:
-        print: "Namensschilder drucken"
-        title: "Namensschilder drucken für das Event "
-        participants: "Teilnehmer"
-        printBoolean: "Drucken?"
-        print_button_label: "Namensschilder drucken"
+      first_name: "Nur Vorname"
+      last_name: "Nur Nachname"
+      full_name: "Vor- und Nachname"
+      print: "Namensschilder drucken"
+      title: "Namensschilder drucken für das Event "
+      logo_upload: "Logo (optional)"
+      show_school: "Schule anzeigen"
+      show_color: "Gruppenfarbe anzeigen"
+      name_format: "Format der Namen"
+      no_users_selected: "Es wurde kein Teilnehmer ausgewählt."
+      wrong_file_format: "Unbekanntes Format. Bitte eine JPG- oder PNG-Datei hochladen."
+      select_participants: "Teilnehmer auswählen"
+      print_button_label: "Namensschilder drucken"
     participants:
       participants: "Teilnehmer"
       show_participants: "Teilnehmerliste"
       unnecessary: "nicht benötigt"
       available: "vorhanden"
       unavailable: "nicht vorhanden"
+      print_participants: "Teilnehmerliste (PDF)"
+      print_habits: "Essgewohnheiten drucken (PDF)"
+      print_title: "Essgewohnheiten der Teilnehmer für %{title}"
+      print_summary: 
+        one: "Insgesamt werden wir bei dieser Veranstaltung %{count} Teilnehmer/-in> haben."
+        other: "Insgesamt werden wir bei dieser Veranstaltung %{count} Teilnehmer/-innen haben."
+      print_summary_vegetarian: 
+        one: "%{count} Person ernährt sich vegetarisch."
+        other: "%{count} Personen ernähren sich vegetarisch."
+      print_summary_vegan: 
+        one: "%{count} Person ernährt sich vegan."
+        other: "%{count} Personen ernähren sich vegan."
+      print_summary_omnivorous: 
+        one: "%{count} Person ernährt sich omnivor."
+        other: "%{count} Personen ernähren sich omnivor."
+      print_summary_allergic: "Außerdem haben folgende Teilnehmer Allergien oder Unverträglichkeiten:"
     agreement_letters_download:
       notices:
         no_participants_selected: "Keine Teilnehmer ausgewählt"
@@ -135,6 +160,7 @@ de:
             other: "Zeitspannen"
           application_deadline: "Bewerbungsschluss"
           published: "Öffentlich"
+          hidden: "Versteckt"
   helpers:
     submit:
       event:

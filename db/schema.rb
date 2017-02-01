@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170122191752) do
+ActiveRecord::Schema.define(version: 20170128122851) do
 
   create_table "agreement_letters", force: :cascade do |t|
     t.integer  "user_id",    null: false
@@ -40,6 +40,7 @@ ActiveRecord::Schema.define(version: 20170122191752) do
     t.boolean  "allergic"
     t.string   "allergies"
     t.text     "custom_application_fields"
+    t.text     "annotation"
   end
 
   add_index "application_letters", ["event_id"], name: "index_application_letters_on_event_id"
@@ -77,14 +78,15 @@ ActiveRecord::Schema.define(version: 20170122191752) do
     t.integer  "max_participants"
     t.datetime "created_at",                                 null: false
     t.datetime "updated_at",                                 null: false
-    t.string   "organizer"
-    t.string   "knowledge_level"
     t.integer  "kind",                       default: 0
     t.boolean  "published"
+    t.string   "organizer"
+    t.string   "knowledge_level"
     t.date     "application_deadline"
     t.boolean  "application_status_locked"
     t.boolean  "participants_are_unlimited", default: false
     t.text     "custom_application_fields"
+    t.boolean  "hidden"
   end
 
   create_table "participant_groups", force: :cascade do |t|
@@ -111,6 +113,7 @@ ActiveRecord::Schema.define(version: 20170122191752) do
     t.string   "state"
     t.string   "country"
     t.string   "graduates_school_in"
+    t.text     "discovery_of_site"
   end
 
   add_index "profiles", ["user_id"], name: "index_profiles_on_user_id"
@@ -132,6 +135,7 @@ ActiveRecord::Schema.define(version: 20170122191752) do
     t.integer  "status",                 default: 0
     t.string   "zip_code_city"
     t.string   "contact_person"
+    t.text     "notes"
   end
 
   create_table "users", force: :cascade do |t|

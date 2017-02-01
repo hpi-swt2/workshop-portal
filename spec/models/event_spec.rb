@@ -17,6 +17,14 @@ describe Event do
 
   let(:event) { FactoryGirl.create :event, :with_two_date_ranges }
 
+
+  it "can't be created without mandatory fields" do
+    [:hidden, :application_deadline].each do |attr|
+      event = FactoryGirl.build(:event, attr => nil)
+      expect(event).to_not be_valid
+    end
+  end
+
   it "is created by event factory" do
     expect(event).to be_valid
   end
@@ -82,10 +90,11 @@ describe Event do
     pre_accepted_application_letter_2 = FactoryGirl.create(:application_letter_pre_accepted, :event => event, :user => FactoryGirl.create(:user))
     pre_accepted_application_letter_3 = FactoryGirl.create(:application_letter_pre_accepted, :event => event, :user => FactoryGirl.create(:user))
     rejected_application_letter = FactoryGirl.create(:application_letter_rejected, :event => event, :user => FactoryGirl.create(:user))
+
     [pre_accepted_application_letter_1, pre_accepted_application_letter_2, pre_accepted_application_letter_3, rejected_application_letter].each { |letter| event.application_letters.push(letter) }
 
-    expect(event.email_addresses_of_type(:pre_accepted)).to eq([pre_accepted_application_letter_1.user.email, pre_accepted_application_letter_2.user.email, pre_accepted_application_letter_3.user.email].join(','))
-    expect(event.email_addresses_of_type(:rejected)).to eq([rejected_application_letter.user.email].join(','))
+    expect(event.email_addresses_of_type(:pre_accepted)).to contain_exactly(pre_accepted_application_letter_1.user.email, pre_accepted_application_letter_2.user.email, pre_accepted_application_letter_3.user.email)
+    expect(event.email_addresses_of_type(:rejected)).to contain_exactly(rejected_application_letter.user.email)
   end
 
   it "is either a camp or a workshop" do
@@ -179,21 +188,15 @@ describe Event do
     before :each do
       @event = FactoryGirl.create(:event)
     end
-    
-    it "returns email address only of the given type" do
-      @accepted_application = FactoryGirl.create(:application_letter_pre_accepted, event: @event, user: FactoryGirl.create(:user))
-      @rejected_application = FactoryGirl.create(:application_letter_rejected, event: @event, user: FactoryGirl.create(:user))
-      expect(@event.email_addresses_of_type(:pre_accepted)).to eq(@accepted_application.user.email)
-      expect(@event.email_addresses_of_type(:rejected)).to eq(@rejected_application.user.email)
-    end
 
-    it "correctly concatinates multiple email addresses" do
-      @application1 = FactoryGirl.create(:application_letter_accepted, event: @event, user: FactoryGirl.create(:user))
-      @application2 = FactoryGirl.create(:application_letter_accepted, event: @event, user: FactoryGirl.create(:user))
-      expect(@event.email_addresses_of_type(:accepted)).to eq(@application1.user.email + "," + @application2.user.email)
+    it "returns email address only of the given type" do
+      @pre_accepted_application = FactoryGirl.create(:application_letter_pre_accepted, event: @event, user: FactoryGirl.create(:user))
+      @rejected_application = FactoryGirl.create(:application_letter_rejected, event: @event, user: FactoryGirl.create(:user))
+      expect(@event.email_addresses_of_type(:pre_accepted)).to contain_exactly(@pre_accepted_application.user.email)
+      expect(@event.email_addresses_of_type(:rejected)).to contain_exactly(@rejected_application.user.email)
     end
   end
-  
+
   it "generates an application letter list ordered by first name" do
     @event = FactoryGirl.create(:event)
     @user1 = FactoryGirl.create(:user, email:'a@b.com')
@@ -224,7 +227,7 @@ describe Event do
 
 
   it "pre accepts all its application letters" do
-    event = FactoryGirl.create :event, :with_diverse_open_applications
+    event = FactoryGirl.create :event, :with_diverse_open_applications, :in_selection_phase
     event.pre_accept_all_application_letters
     application_letters = ApplicationLetter.where(event: event.id)
     expect(application_letters.all? { |application_letter| application_letter.status == 'pre_accepted' }).to eq(true)
@@ -236,6 +239,17 @@ describe Event do
     event.save
     event.lock_application_status
     expect(event.application_status_locked).to eq(true)
+  end
+
+  it "accepts all its pre_accepted application letters" do
+    event = FactoryGirl.create :event_with_pre_accepted_applications, :in_selection_phase
+    pre_accepted_application_letters = event.application_letters.select{ |application_letter| application_letter.status == 'pre_accepted' }
+    event.accept_all_pre_accepted_applications
+    expect(pre_accepted_application_letters.count).to be > 0
+    pre_accepted_application_letters.each do |application|
+      application.reload
+      expect(application.status).to eq 'accepted'
+    end
   end
 
   it "is in draft phase" do

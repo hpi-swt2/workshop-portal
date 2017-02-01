@@ -10,6 +10,7 @@
 #  published        :boolean
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
+#  hidden           :boolean
 #
 
 FactoryGirl.define do
@@ -24,6 +25,15 @@ FactoryGirl.define do
     application_deadline Date.tomorrow
     custom_application_fields ["Field 1", "Field 2", "Field 3"]
     date_ranges { build_list :date_range, 1 }
+    hidden false
+
+    trait :in_the_past_valid do
+      after(:build) do |event|
+        event.date_ranges = [FactoryGirl.create(:date_range, :in_the_past_valid)]
+      end
+      name "Past Event"
+      to_create {|instance| instance.save(validate: false) }
+    end
 
     trait :with_two_date_ranges do
       after(:build) do |event|
@@ -77,6 +87,12 @@ FactoryGirl.define do
       date_ranges { [] }
     end
 
+    trait :with_open_application do
+      after(:build) do |event, evaluator|
+        create_list(:application_letter, 1, event: event)
+        event.application_letters[0].user.profile = FactoryGirl.build :profile, user: event.application_letters[0].user
+      end
+    end
 
     trait :with_diverse_open_applications do
       after(:build) do |event, evaluator|
@@ -120,6 +136,7 @@ FactoryGirl.define do
       description "Event-Description"
       max_participants 20
       date_ranges { build_list :date_range, 1 }
+      hidden false
       transient do
         accepted_application_letters_count 5
         rejected_application_letters_count 5

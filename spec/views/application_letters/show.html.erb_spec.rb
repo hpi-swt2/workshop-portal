@@ -8,10 +8,11 @@ RSpec.describe "application_letters/show", type: :view do
     @application_letter.user.profile = FactoryGirl.build(:profile)
     profile = FactoryGirl.create(:profile, user: (FactoryGirl.create :user, role: :organizer))
     sign_in profile.user
-    render
   end
 
-  it "renders radio buttons for pre_accept reject pending and alternative" do
+  it "renders radio buttons for pre_accept reject pending and alternative in selection phase" do
+    @application_letter.event = FactoryGirl.create(:event, :in_selection_phase)
+    render
     expect(rendered).to have_css("label", text: I18n.t('application_status.pre_accepted'))
     expect(rendered).to have_css("label", text: I18n.t('application_status.rejected'))
     expect(rendered).to have_css("label", text: I18n.t('application_status.pending'))
@@ -21,11 +22,14 @@ RSpec.describe "application_letters/show", type: :view do
   end
 
   it "renders application's attributes" do
+    render
     expect(rendered).to have_text(@application_letter.event.name)
     expect(rendered).to have_text(@application_letter.motivation)
+    expect(rendered).to have_text(@application_letter.annotation)
   end
 
   it "renders applicant's attributes" do
+    render
     expect(rendered).to have_text(@application_letter.user.profile.name)
     expect(rendered).to have_text(@application_letter.user.profile.gender)
     expect(rendered).to have_text(@application_letter.user.profile.age_at_time(@application_letter.event.start_date))

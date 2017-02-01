@@ -103,7 +103,8 @@ RSpec.describe ApplicationLettersController, type: :controller do
               vegetarian: true,
               vegan: true,
               allergic: true,
-              allergys: "Many"
+              allergys: "Many",
+              annotation: "This site is so cool."
           }
         }
 
@@ -111,6 +112,7 @@ RSpec.describe ApplicationLettersController, type: :controller do
           put :update, id: @application.to_param, application_letter: new_attributes, session: valid_session
           @application.reload
           expect(@application.motivation).to eq(new_attributes[:motivation])
+          expect(@application.annotation).to eq(new_attributes[:annotation])
         end
 
         it "assigns the requested application as @application" do

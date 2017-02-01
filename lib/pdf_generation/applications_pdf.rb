@@ -4,8 +4,8 @@ class ApplicationsPDF
 
   # Generates a PDF file containing the details of every application for an event
   #
-  # param event [Event] the event whose applications are taken
-  # return [String] the generated PDF
+  # @param event [Event] the event whose applications are taken
+  # @return [String] the generated PDF
   def self.generate(event)
     self.new(event).create.render
   end
@@ -18,8 +18,8 @@ class ApplicationsPDF
 
   # Adds all necessary data and formatting to the ApplicationsPDF
   #
-  # param none
-  # return [ApplicationsPDF] self
+  # @param none
+  # @return [ApplicationsPDF] self
   def create
     create_overview
     @event.application_letters.each_with_index do |a,i|
@@ -99,6 +99,10 @@ class ApplicationsPDF
         cells.padding = 3
         column(0).font_style = :bold
         column(0).align = :right
+      end
+      unless application_letter.annotation.nil?
+        pad_top(20) { text "<u>#{t("application_letters.show.annotation_title")}</u>", inline_format: true}
+        pad_top(5) { text application_letter.annotation }
       end
       pad_top(20) { text "<u>#{ApplicationLetter.human_attribute_name(:motivation)}</u>", inline_format: true}
       pad_top(5) { text application_letter.motivation }

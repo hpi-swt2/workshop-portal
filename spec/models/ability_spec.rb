@@ -146,6 +146,13 @@ describe User do
     expect(ability).to be_able_to(:print_agreement_letters, Event)
   end
 
+  it "can print pupils' badges as organizer" do
+    user = FactoryGirl.create(:user, role: :organizer)
+    ability = Ability.new(user)
+
+    expect(ability).to be_able_to(:print_badges, Event)
+  end
+
   it "cannot view and add notes to application letters as pupil" do
     user = FactoryGirl.create(:user, role: :pupil)
     ability = Ability.new(user)
@@ -229,6 +236,12 @@ describe User do
 
       expect(ability).to_not be_able_to(:update_status, ApplicationLetter)
     end
+
+    it "cannot update application letter status as #{role}" do
+      user = FactoryGirl.create(:user, role: role)
+      ability = Ability.new(user)
+      expect(ability).to_not be_able_to(:print_badges, Event)
+    end
   end
 
   it "can check its own application as pupil" do
@@ -290,6 +303,20 @@ describe User do
     expect(ability).to be_able_to(:manage, Request)
   end
 
+  it "can apply for events as pupil" do
+    user = FactoryGirl.create(:user, role: :pupil)
+    ability = Ability.new(user)
+    expect(ability).to be_able_to(:apply, Event)
+  end
+
+  %i[coach organizer].each do |role|
+    it "cannot apply for events as #{role}" do
+      user = FactoryGirl.create(:user, role: role)
+      ability = Ability.new(user)
+      expect(ability).to_not be_able_to(:apply, Event)
+    end
+  end
+
   it "can view unpublished events as organizer" do
     user = FactoryGirl.create(:user, role: :organizer)
     ability = Ability.new(user)
@@ -311,5 +338,4 @@ describe User do
 
     expect(ability).to be_able_to(:send_email, Email)
   end
-
 end

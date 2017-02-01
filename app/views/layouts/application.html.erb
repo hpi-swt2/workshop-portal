@@ -45,9 +45,14 @@
     <%= yield %>
   <% end %>
 
-  <footer class="front-section">
+  <footer>
     <div class="container">
-      <%= t "footer" %>
+      <div>
+        <%= link_to t('footer.imprint'), '' %> |
+        <%= t 'footer.hoster_link_html' %>
+      </div>
+      <div><%= t 'footer.copyright' %></div>
+      <span class="ignore"><%= t "footer.ignore" %></span>
     </div>
   </footer>
 </main>

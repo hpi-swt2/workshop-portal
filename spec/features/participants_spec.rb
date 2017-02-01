@@ -1,4 +1,5 @@
 require "rails_helper"
+require "object_creation_helper"
 
 RSpec.feature "Event participants overview", :type => :feature do
   before :each do
@@ -40,6 +41,42 @@ RSpec.feature "Event participants overview", :type => :feature do
 
     click_link link_name # again
     expect(page).to contain_ordered(names.reverse)
+
+
+  end
+
+  scenario "logged in as an Organizer I want to be able to sort the participants table by their eating habits" do
+    # Peter, vegan
+    create_accepted_application_with(@event, "Peter", false, true, false)
+
+    # Paul, vegan, allergic
+    create_accepted_application_with(@event, "Paul", true, true, false)
+
+    # Mary, vegetarian
+    create_accepted_application_with(@event, "Mary", false, false, true)
+
+    # Otti, vegetarian, allergic
+    create_accepted_application_with(@event, "Otti", true, false, true)
+
+    # Benno, none
+    create_accepted_application_with(@event, "Benno", false, false, false)
+
+    #Expected Sorting Order
+    #Benno, Mary, Peter, Otti, Paul ASC
+    #Paul, Otti, Peter, Mary, Benno DESC
+
+    expected_order = ["Benno", "Mary", "Peter", "Otti", "Paul"]
+
+    login(:organizer)
+    visit event_participants_path(@event)
+    link_name = I18n.t('activerecord.methods.application_letter.eating_habits')
+
+    click_link link_name
+    expect(page.body).to contain_ordered(expected_order)
+
+    click_link link_name
+    expect(page.body).to contain_ordered(expected_order.reverse)
+
   end
 
 
