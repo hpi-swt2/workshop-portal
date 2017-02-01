@@ -5,7 +5,7 @@ describe "Start page", type: :feature do
     %i[coach admin organizer pupil].each do |role|
       login_as(FactoryGirl.create(:user, role: role), :scope => :user)
 
-      FactoryGirl.create :event, draft: true
+      FactoryGirl.create :event, published: false
       visit root_path
       expect(page).to_not have_css(".label", text: I18n.t(".activerecord.attributes.event.draft"))
     end

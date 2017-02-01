@@ -16,10 +16,10 @@
   </script>
   <%= csrf_meta_tags %>
 </head>
-<body>
+<body <%= 'class="wsp-home"'.html_safe if current_page?('/') %>>
 <%# https://github.com/seyhunak/twitter-bootstrap-rails#using-helpers %>
-<%= nav_bar brand: t(:app_name), responsive: true, static: :top do %>
-  <%= menu_group do %>
+<%= nav_bar :brand => image_tag("hpi-workshop-200.png"), responsive: true, fixed: :top do %>
+   <%= menu_group pull: :right do %>
     <%= menu_items %>
     <% if user_signed_in? %>
       <%= drop_down current_user.name do %>
@@ -28,12 +28,13 @@
     <% else %>
       <%= menu_item t(:login, scope: 'navbar'), new_user_session_path %>
     <% end %>
-
   <% end %>
 <% end %>
 
 <%# https://github.com/seyhunak/twitter-bootstrap-rails#flash-helper %>
-<%= bootstrap_flash %>
+<div class="container">
+  <%= bootstrap_flash %>
+</div>
 
 <main>
   <% if not local_assigns[:full_width] %>
@@ -44,9 +45,12 @@
     <%= yield %>
   <% end %>
 
-  <footer class="front-section">
+  <footer>
     <div class="container">
-      <%= t "footer" %>
+        <%= link_to t('footer.imprint'), imprint_path %> |
+        <%= t 'footer.hoster_link_html' %>
+      <div><%= t 'footer.copyright' %></div>
+      <span class="ignore"><%= t "footer.ignore" %></span>
     </div>
   </footer>
 </main>

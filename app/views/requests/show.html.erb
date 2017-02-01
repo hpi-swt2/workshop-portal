@@ -1,19 +1,69 @@
 <%- model_class = Request -%>
 <div class="page-header">
-  <h1><%=t '.title', :default => model_class.model_name.human(count: 2).titleize %></h1>
+  <h1><%=t '.title', :default => model_class.model_name.human.titleize %></h1>
 </div>
 
+<h3><%=t 'requests.workshop_information' %></h3>
 <dl class="dl-horizontal">
-  <dt><strong><%= model_class.human_attribute_name(:first_name) %>:</strong></dt>
-  <dd><%= @request.first_name %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:last_name) %>:</strong></dt>
-  <dd><%= @request.last_name %></dd>
   <dt><strong><%= model_class.human_attribute_name(:topic_of_workshop) %>:</strong></dt>
   <dd><%= @request.topic_of_workshop %></dd>
   <dt><strong><%= model_class.human_attribute_name(:number_of_participants) %>:</strong></dt>
   <dd><%= @request.number_of_participants %></dd>
   <dt><strong><%= model_class.human_attribute_name(:status) %>:</strong></dt>
   <dd><%= t(@request.status, scope: 'activerecord.attributes.request.statuses') %></dd>
+  <% if can? :view_annotations, @request %>
+    <dt><strong><%= model_class.human_attribute_name(:annotations) %>:</strong></dt>
+    <dd><%= @request.annotations %></dd>
+  <% end %>
+</dl>
+
+<% if can? :set_contact_person, Request %>
+<dl class="dl-horizontal">
+  <dt><strong><%= model_class.human_attribute_name(:contact_person) %>:</strong></dt>
+  <dd>
+    <%= form_for @request, url: request_set_contact_person_path(@request), html: { class: 'form-inline' } do |f| %>
+        <div class="m-b-1">
+          <div class="input-group">
+            <%= f.text_field :contact_person, class: 'form-control', placeholder: t('activerecord.attributes.request.contact_person') %>
+            <span class="input-group-btn">
+          <%= f.submit t('requests.form.set_contact_person'), class: 'btn btn-default' %>
+        </span>
+          </div>
+        </div>
+    <% end %>
+  </dd>
+</dl>
+<% end %>
+
+<% if can? :set_notes, Request %>
+<dl class="dl-horizontal">
+  <dt><strong><%= model_class.human_attribute_name(:notes) %>:</strong></dt>
+  <dd>
+    <%= form_for @request, url: request_set_notes_path(@request) do |f| %>
+      <div class="form-group">
+        <%= f.text_area :notes, class: 'form-control', placeholder: t('activerecord.attributes.request.notes') %>
+      </div>
+      <%= f.submit t('requests.form.set_notes'), class: 'btn btn-default' %>
+    <% end %>
+  </dd>
+</dl>
+<% end %>
+
+<h3><%= t('requests.personal_information') %></h3>
+<dl class="dl-horizontal">
+  <dt><strong><%= model_class.human_attribute_name(:first_name) %>:</strong></dt>
+  <dd><%= @request.first_name %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:last_name) %>:</strong></dt>
+  <dd><%= @request.last_name %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:email) %>:</strong></dt>
+  <dd><a href="<%= "mailto:#{@request.email}"%>"><%= @request.email %></a></dd>
+  <dt><strong><%= model_class.human_attribute_name(:phone_number) %>:</strong></dt>
+  <dd><%= @request.phone_number %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:street) %>:</strong></dt>
+  <dd><%= @request.street %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:zip_code_city) %>:</strong></dt>
+  <dd><%= @request.zip_code_city %></dd>
+
 </dl>
 
 <%= link_to t('.back', :default => t("helpers.links.back")),

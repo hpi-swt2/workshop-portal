@@ -10,11 +10,11 @@ def user_pupil
   )
 end
 
-def user_teacher 
+def user_teacher
   User.new(
     email: "lehrer@example.com",
     password: user_password,
-    role: :teacher
+    role: :pupil
   )
 end
 

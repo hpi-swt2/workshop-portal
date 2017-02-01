@@ -23,5 +23,16 @@ FactoryGirl.define do
             start_date Date.current.prev_day(3)
             end_date Date.yesterday
         end
+
+        trait :on_single_day do
+            start_date Date.tomorrow
+            end_date Date.tomorrow
+        end
+
+        trait :in_the_past_valid do
+            start_date Date.current.prev_day(3)
+            end_date Date.yesterday
+            to_create {|instance| instance.save(validate: false) }
+        end
     end 
 end

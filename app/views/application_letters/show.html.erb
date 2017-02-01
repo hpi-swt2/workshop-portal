@@ -26,13 +26,11 @@
 
 <%= link_to t('.back', :default => t("helpers.links.back")),
               application_letters_path, :class => 'btn btn-default'  %>
-<%= link_to t('.edit', :default => t("helpers.links.edit")),
-              edit_application_letter_path(@application_letter), :class => 'btn btn-default' %>
-<%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-              application_letter_path(@application_letter),
-              :method => 'delete',
-              :data => { :confirm => t('.confirm', :default => t("application_letters.confirm_deletion", :default => 'Are you sure?')) },
-              :class => 'btn btn-danger' %>
+
+<% if can? :edit, ApplicationLetter %>
+    <%= link_to t('.edit', :default => t("helpers.links.edit")),
+                  edit_application_letter_path(@application_letter), :class => 'btn btn-default' %>
+<% end %>
 
 <h3><%= t('.application_title', title: @application_letter.event.name) %></h3>
 <dl class="dl-vertical">
@@ -40,9 +38,16 @@
 </dl>
 
 <p>
+  <h5><%= ApplicationLetter.human_attribute_name(:motivation) %></h5>
   <%= @application_letter.motivation %>
 </p>
-
+<% unless @application_letter.annotation.nil? %>
+<p>
+  <h5><%= t('.annotation_title') %></h5>
+  <%= @application_letter.annotation %>
+</p>
+<% end %>
+<br>
 <% if can? :view_and_add_notes, ApplicationLetter  %>
   <dl class="dl-horizontal">
     <dt><strong><%= ApplicationNote.model_name.human(count: @application_letter.application_notes.count) %>:</strong></dt>
@@ -82,4 +87,12 @@
         </div>
       </div>
     <% end %>
+<% end %>
+
+<% if can? :view_delete_button, ApplicationLetter %>
+    <%= link_to t('.destroy', :default => t("application_letters.show.delete")),
+                application_letter_path(@application_letter),
+                :method => 'delete',
+                :data => { :confirm => t('.confirm', :default => t("application_letters.confirm_deletion", :default => 'Are you sure?')) },
+                :class => 'btn btn-danger' %>
 <% end %>

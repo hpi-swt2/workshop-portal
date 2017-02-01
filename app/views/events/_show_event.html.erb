@@ -1,5 +1,5 @@
 <%- model_class = Event -%>
-<dl class="dl-horizontal">
+<dl class="dl-horizontal" id="event_overview">
   <dt><strong><%= model_class.human_attribute_name(:name) %>:</strong></dt>
   <dd><%= @event.name %></dd>
   <dt><strong><%= model_class.human_attribute_name(:description) %>:</strong></dt>
@@ -24,6 +24,15 @@
   <dd><%= @event.knowledge_level %></dd>
   <dt><strong><%= model_class.human_attribute_name(:application_deadline) %>:</strong></dt>
   <dd> <%= I18n.l(@event.application_deadline) + ' ' + I18n.t('midnight') %></dd>
+  <% if can? :manage, Event %>
+  <dt><strong><%= model_class.human_attribute_name(:custom_application_fields) %>:</strong></dt>
+  <dd>
+    <ul>
+      <% @event.custom_application_fields.each do |field| %>
+        <li><%= field %></li>
+      <% end %>
+    </ul>
+  </dd>
+  <% end %>
 </dl>
-<%= link_to t('.new', :default => t("helpers.links.apply")), new_application_letter_path(:event_id => @event.id),
-                      :class => 'btn btn-info' %>
+<%= render :partial => 'apply_button', :locals => {event: @event} %>

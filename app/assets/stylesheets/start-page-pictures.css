@@ -1,0 +1,39 @@
+
+.start-page-pictures {
+    position: relative;
+}
+
+.start-page-picture {
+    padding: 6px;
+    position: absolute;
+    background: #fff;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+.start-page-picture img {
+    width: 350px;
+}
+.start-page-pictures .picture-1 {
+    transform: rotate(10deg);
+    -webkit-transform: rotate(10deg);
+    -moz-transform: rotate(10deg);
+    -ms-transform: rotate(10deg);
+    top: 40px;
+    left: 30px;
+}
+.start-page-pictures .picture-2 {
+    transform: rotate(5deg);
+    -webkit-transform: rotate(5deg);
+    -moz-transform: rotate(5deg);
+    -ms-transform: rotate(5deg);
+    top: 160px;
+    left: 200px;
+    z-index: 2;
+}
+.start-page-pictures .picture-3 {
+    transform: rotate(-5deg);
+    -webkit-transform: rotate(-5deg);
+    -moz-transform: rotate(-5deg);
+    -ms-transform: rotate(-5deg);
+    top: 240px;
+    left: 30px;
+}

@@ -16,6 +16,7 @@ de:
       new: "Neu"
       edit: "Bearbeiten"
       apply: "Bewerben"
+      show_application: "Bewerbung anzeigen"
     titles:
       edit: "%{model} bearbeiten"
       save: "%{model} speichern"
