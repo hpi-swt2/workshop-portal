@@ -86,7 +86,7 @@ RSpec.feature "Application Letter Overview", :type => :feature do
 
   it "should highlight wrong or missing insertions from user" do
     login(:pupil)
-    visit new_application_letter_path
+    visit new_application_letter_path(:event_id => @event.id)
     fill_in "application_letter_experience", with:   ""
     fill_in "application_letter_motivation", with:   ""
     fill_in "application_letter_coding_skills", with:   ""

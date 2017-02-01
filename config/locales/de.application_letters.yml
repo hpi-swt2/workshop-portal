@@ -73,3 +73,11 @@ de:
     pending_before_deadline: "Beworben"
     pending_after_deadline: "In Bearbeitung"
     alternative: "Nachrücker"
+
+
+  controllers:
+    application_letters:
+      confirmation_mail:
+        sender: "workshop@hpi.de"
+        subject: "Bewerbung erhalten"
+        content: "Hallo, \n\rDu hast dich erfolgreich für  {{semimar_name}} beworben. Deine Bewerbung wird jetzt bearbeitet. Für weitere Information besuche das Workshop Portal. Viele Grüße, das HPI Workshop Team"
