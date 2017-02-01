@@ -80,4 +80,4 @@ de:
       confirmation_mail:
         sender: "workshop@hpi.de"
         subject: "Bewerbung erhalten"
-        content: "Hallo, \n\rDu hast dich erfolgreich fuer  {{semimar_name}} beworben. Deine Bewerbung wird jetzt bearbeitet. Fuer weitere Information besuche das Workshop Portal. Viele Grueße, das HPI Workshop Team"
+        content: "Hallo, \n\rDu hast dich erfolgreich für  {{semimar_name}} beworben. Deine Bewerbung wird jetzt bearbeitet. Für weitere Information besuche das Workshop Portal. Viele Grüße, das HPI Workshop Team"
