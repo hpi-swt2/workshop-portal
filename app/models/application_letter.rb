@@ -19,7 +19,7 @@ class ApplicationLetter < ActiveRecord::Base
 
   VALID_GRADES = 5..13
 
-  validates :user, :event, :experience, :motivation, :coding_skills, :emergency_number, presence: true
+  validates :user, :event, :experience, :motivation, :coding_skills, :emergency_number,:organisation, presence: true
   validates :grade, presence: true, numericality: { only_integer: true }
   validates_inclusion_of :grade, :in => VALID_GRADES
   validates :vegetarian, :vegan, :allergic, inclusion: { in: [true, false] }

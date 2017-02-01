@@ -14,13 +14,11 @@ FactoryGirl.define do
     sequence(:last_name) { |n| "Doe#{n}" }
     gender  "male"
     birth_date  15.years.ago
-    school  "Schule am Griebnitzsee"
     street_name  "Rudolf-Breitscheid-Str. 52"
     zip_code  "14482"
     city  "Potsdam"
     state  "Babelsberg"
     country  "Deutschland"
-    graduates_school_in "Bereits Abitur"
     discovery_of_site "Google"
     user
     trait :low_values do
