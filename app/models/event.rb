@@ -31,6 +31,8 @@ class Event < ActiveRecord::Base
   validate :application_deadline_before_start_of_event
   validates :hidden, inclusion: { in: [true, false] }
   validates :hidden, exclusion: { in: [nil] }
+  validates :published, inclusion: { in: [true, false] }
+  validates :published, exclusion: { in: [nil] }
 
 
   # Returns all participants for this event in following order:
@@ -109,8 +111,6 @@ class Event < ActiveRecord::Base
   def agreement_letter_for(user)
     self.agreement_letters.where(user: user).take
   end
-
-  enum kind: [ :workshop, :camp ]
 
   # Returns whether all application_letters are classified or not
   #
@@ -266,6 +266,10 @@ class Event < ActiveRecord::Base
   end
 
   scope :draft_is, ->(status) { where("not published = ?", status) }
+  scope :hidden_is, ->(status) { where("hidden = ?", status) }
+  scope :with_date_ranges, -> { joins(:date_ranges).group('events.id').order('MIN(start_date)') }
+  scope :future, -> { with_date_ranges.having('date(MAX(end_date)) > ?', Time.zone.now.end_of_day) }
+  scope :past, -> { with_date_ranges.having('date(MAX(end_date)) < ?', Time.zone.now.end_of_day) }
 
   # Returns events sorted by start date, returning only public ones
   # if requested

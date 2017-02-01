@@ -2,7 +2,8 @@
 
 de:
   events:
-    intro_text: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+    archive: "Veranstaltungs-Archiv"
+    all_events: "Alle Events"
     applicants_overview:
       title: "Bewerber für %{title}"
       participations: "Anzahl der Bewerbungen"
@@ -43,7 +44,7 @@ de:
       print: "Namensschilder drucken"
       title: "Namensschilder drucken für das Event "
       logo_upload: "Logo (optional)"
-      show_school: "Schule anzeigen"
+      show_organisation: "Schule/Organisation anzeigen"
       show_color: "Gruppenfarbe anzeigen"
       name_format: "Format der Namen"
       no_users_selected: "Es wurde kein Teilnehmer ausgewählt."
@@ -78,9 +79,9 @@ de:
         no_agreement_letters: "Keiner der gewählten Teilnehmer hat eine Einverständniserklärung"
       select_all: "Alle auswählen"
       download_all_as: "Einverständniserklärungen herunterladen als"
-    kinds:
-      workshop: "Workshop"
-      camp: "Camp"
+    type:
+      private: "Privat"
+      public: "Öffentlich"
     list:
       read_on: "Weiterlesen"
     participants_modal:
@@ -123,9 +124,9 @@ de:
       label_of_custom_field: "Name des eigenen Felds"
       custom_application_fields_cant_be_changed_later: "Die eigenen Felder für die Bewerbung können nach dem ersten Speichern nicht mehr geändert werden."
       add_timespan: "Zeitspanne hinzufügen"
-      published:
-        myon: "An"
-        myoff: "Aus"
+      draft:
+        save: "Speichern"
+        publish: "Veröffentlichen"
     email:
       templates: "Vorlagen"
     applications_pdf:
@@ -157,8 +158,9 @@ de:
             one: "Zeitspanne"
             other: "Zeitspannen"
           application_deadline: "Bewerbungsschluss"
-          published: "Öffentlich"
+          published: "Entwurf"
           hidden: "Versteckt"
+          type: "Veranstaltungstyp"
   helpers:
     submit:
       event:
