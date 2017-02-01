@@ -80,6 +80,8 @@ ActiveRecord::Schema.define(version: 20170201154540) do
     t.datetime "updated_at",                                 null: false
     t.integer  "kind",                       default: 0
     t.boolean  "published",                  default: false
+    t.string   "organizer"
+    t.string   "knowledge_level"
     t.date     "application_deadline"
     t.boolean  "application_status_locked"
     t.boolean  "participants_are_unlimited", default: false
