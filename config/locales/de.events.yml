@@ -107,10 +107,10 @@ de:
         other: "Bewerbungsfrist in %{count} Tagen"
       time_span_non_consecutive:
         one: "Über einen Tag mit Unterbrechung"
-        other: "Über %{count} Tage mit Unterbrechung"
+        other: "Umfang: %{count} Tage mit Unterbrechung"
       time_span_consecutive:
-        one: "Über einen Tag"
-        other: "Über %{count} Tage"
+        one: "Umfang: Ein Tag"
+        other: "Umfang: %{count} Tage"
       past_event: "Vergangene Veranstaltung"
       is_published: "Ist veröffentlicht"
 
