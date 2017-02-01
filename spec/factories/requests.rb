@@ -19,5 +19,6 @@ FactoryGirl.define do
     topic_of_workshop "Hardware-Entwicklung mit einem CAD-System"
     number_of_participants 12
     status :open
+    annotations "Notes about this workshop"
   end
 end

@@ -29,7 +29,6 @@
 
       <div class="pull-right">
         <%= render :partial => 'events/apply_button', :locals => {event: event} %>
-
         <%= link_to edit_event_path(event),
           :class => 'btn btn-default btn-sm' do glyph 'edit' end if can? :edit, event %>
 

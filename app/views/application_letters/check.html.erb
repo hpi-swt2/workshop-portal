@@ -23,12 +23,12 @@
   <%= @application_letter.grade %><br/>
   <strong><%= ApplicationLetter.human_attribute_name(:motivation) %>:</strong><br/>
   <%= @application_letter.motivation %><br/>
-  <strong><%= ApplicationLetter.human_attribute_name(:experience) %>:</strong><br/>
-  <%= @application_letter.experience %><br/>
   <strong><%= ApplicationLetter.human_attribute_name(:coding_skills) %>:</strong><br/>
   <%= @application_letter.coding_skills %><br/>
   <strong><%= ApplicationLetter.human_attribute_name(:emergency_number) %>:</strong>
   <%= @application_letter.emergency_number %><br/>
+  <strong><%= ApplicationLetter.human_attribute_name(:organisation) %>:</strong>
+  <%= @application_letter.organisation %><br/>
 
   <strong><%=t('.eating_habits') %>:</strong>
   <%= @application_letter.eating_habits.join(', ') %><br/>
@@ -59,10 +59,6 @@
   <%= l(@application_letter.user.profile.birth_date) %><br/>
   <strong><%= Profile.human_attribute_name(:address) %>:</strong>
   <%= @application_letter.user.profile.address %><br/>
-  <strong><%= Profile.human_attribute_name(:school) %>:</strong>
-  <%= @application_letter.user.profile.school %><br/>
-  <strong><%= Profile.human_attribute_name(:graduates_school_in) %>:</strong>
-  <%= @application_letter.user.profile.graduates_school_in %>
 </div>
 <%= link_to t('.edit', :default => t("helpers.links.edit")),
               edit_profile_path(@application_letter.user.profile), id: 'edit_profile_link', class: 'btn btn-default' %>
