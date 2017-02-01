@@ -12,6 +12,8 @@
       <dd><%= @profile.public_send(attr_name) %></dd>
     <% end %>
   <% end %>
+  <dt><strong><%= model_class.human_attribute_name('email') %>:</strong></dt>
+  <dd><%= mail_to @profile.user.email %></dd>
 </dl>
 
 <%= link_to t('.edit', :default => t("helpers.links.edit")),

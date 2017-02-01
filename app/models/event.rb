@@ -34,24 +34,6 @@ class Event < ActiveRecord::Base
   validates :published, inclusion: { in: [true, false] }
   validates :published, exclusion: { in: [nil] }
 
-  # Setter for max_participants
-  # @param [Int Float] the max number of participants for the event or infinity if it is not limited
-  # @return none
-  def max_participants=(value)
-    if value == Float::INFINITY
-      self[:participants_are_unlimited] = true
-    else
-      self[:participants_are_unlimited] = false
-      self[:max_participants] = value
-    end
-  end
-
-  # Getter for max_participants
-  # @param none
-  # @return [Int Float] the max number of participants for the event or infinity if it is not limited
-  def max_participants
-    participants_are_unlimited ? Float::INFINITY : self[:max_participants]
-  end
 
   # Returns all participants for this event in following order:
   # 1. All participants that have to submit an letter of agreement but did not yet do so, ordered by name.

@@ -99,7 +99,6 @@ RSpec.describe ApplicationLettersController, type: :controller do
               emergency_number: "01234567891",
               vegetarian: true,
               vegan: true,
-              allergic: true,
               allergys: "Many",
               annotation: "This site is so cool."
           }
