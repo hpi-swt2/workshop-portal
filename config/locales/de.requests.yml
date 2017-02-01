@@ -2,6 +2,7 @@
 
 de:
   requests:
+    intro_text: "Wenn Sie einen Workshop am HPI durchführen wollen, füllen Sie bitte das folgende Formular aus. Die weitere Planung und Kommunikation wird über E-Mail erfolgen."
     new:
       title: "Neue Anfrage stellen"
     workshop_information: "Informationen über den gewünschten Workshop"
