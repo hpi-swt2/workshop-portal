@@ -12,9 +12,11 @@ class EventsController < ApplicationController
 
   # GET /events
   def index
-    @events = Event.sorted_by_start_date(false)
-    @events = @events.select{|event| event.hidden == false} unless can? :view_hidden, Event
-    @events = @events.select{|event| event.published == true} unless can? :view_unpublished, Event
+    @events = add_event_query_conditions(Event.future)
+  end
+
+  def archive
+    @events = add_event_query_conditions(Event.past)
   end
 
   # GET /events/1
@@ -252,6 +254,13 @@ class EventsController < ApplicationController
     def event_params
       params.require(:event).permit(:name, :description, :max_participants, :participants_are_unlimited, :kind, :organizer, :knowledge_level, :application_deadline, :published, :hidden, :custom_application_fields => [], date_ranges_attributes: [:start_date, :end_date, :id])
 
+    end
+
+    def add_event_query_conditions(query)
+      conditions = {}
+      conditions[:hidden] = false unless can? :view_hidden, Event
+      conditions[:published] = true unless can? :view_unpublished, Event
+      query.where(conditions)
     end
 
     def filter_application_letters(application_letters)
