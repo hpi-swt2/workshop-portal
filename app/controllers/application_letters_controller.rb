@@ -111,7 +111,7 @@ class ApplicationLettersController < ApplicationController
     # Don't allow user_id as you shouldn't be able to set the user from outside of create/update.
     def application_params
       params.require(:application_letter).permit(:grade, :experience, :motivation, :coding_skills, :emergency_number,
-                                                 :vegetarian, :vegan, :allergic, :allergies, :user_id, :event_id)
+                                                 :vegetarian, :vegan, :allergic, :allergies, :annotation, :user_id, :event_id)
       .merge({:custom_application_fields => params[:custom_application_fields]})
     end
 

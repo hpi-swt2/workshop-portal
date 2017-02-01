@@ -7,6 +7,7 @@ de:
     confirmApplicationDelete: "Bist du dir sicher, dass du diese Bewerbung löschen möchtest? Dieser Schritt kann nicht widerrufen werden."
     show:
       application_title: "Bewerbung für %{title}"
+      annotation_title: "Fragen oder Anmerkungen"
       age_when_event_starts: "Alter bei Beginn"
       new_note: "Neue Anmerkung:"
       delete: "Bewerbung löschen"
@@ -58,6 +59,7 @@ de:
           vegan: "Vegan"
           allergic: "Allergien vorhanden"
           allergies: "Falls Allergien vorhanden, welche?"
+          annotation: "Hast du weitere Anmerkungen oder Fragen?"
           omnivorous: "Omnivor"
     methods:
       application_letter:

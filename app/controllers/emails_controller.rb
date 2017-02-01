@@ -7,7 +7,7 @@ class EmailsController < ApplicationController
     @templates = EmailTemplate.with_status(get_email_template_status)
     @addresses = @event.email_addresses_of_type(get_corresponding_application_letter_status)
 
-    @email = Email.new(hide_recipients: true, reply_to: 'workshop.portal@hpi.de', recipients: @addresses,
+    @email = Email.new(hide_recipients: true, reply_to: 'workshop.portal@hpi.de', recipients: @addresses.join(','),
                        subject: '', content: '')
     render :email
   end
@@ -66,10 +66,11 @@ class EmailsController < ApplicationController
   end
 
   def get_corresponding_application_letter_status
-    return :pre_accepted if params[:status] == "acceptance"
-    return :rejected if params[:status] == "rejection"
-    # default value
-    return :accepted
+    return case params[:status]
+      when "acceptance" then :pre_accepted
+      when "rejection" then :rejected
+      else :accepted
+      end
   end
 
   # Only allow a trusted parameter "white list" through.

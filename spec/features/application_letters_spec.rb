@@ -265,5 +265,6 @@ RSpec.feature "Application Letter Overview", :type => :feature do
     fill_in "application_letter_emergency_number", with:   "0123456789"
     check "application_letter_allergic"
     fill_in "application_letter_allergies", with:   "Many"
+    fill_in "application_letter_annotation", with:   "Some"
   end
 end

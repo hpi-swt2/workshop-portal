@@ -25,6 +25,7 @@ RSpec.describe "application_letters/show", type: :view do
     render
     expect(rendered).to have_text(@application_letter.event.name)
     expect(rendered).to have_text(@application_letter.motivation)
+    expect(rendered).to have_text(@application_letter.annotation)
   end
 
   it "renders applicant's attributes" do

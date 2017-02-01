@@ -13,19 +13,19 @@ RSpec.describe EmailsController, type: :controller do
       expect(subject).to render_template(:email)
     end
 
-    context "with valid accepted applications" do
+    context "with valid pre_accepted applications" do
       before :each do
         @application = FactoryGirl.create(:application_letter_pre_accepted, event: @event, user: FactoryGirl.build(:user))
         @template = FactoryGirl.create(:email_template_acceptance)
       end
 
-      it "sets @email with the email of the accepted application" do
+      it "sets @email with the email of the pre_accepted application" do
         get :show, event_id: @event.id, status: :acceptance
         expect(assigns(:email)).to be_a(Email)
         expect(assigns(:email).recipients).to eq(@application.user.email)
       end
 
-      it "sets @template with template for accepted emails" do
+      it "sets @template with template for acceptance emails" do
         get :show, event_id: @event.id, status: :acceptance
         expect(assigns(:templates)).to eq([@template])
       end
@@ -43,7 +43,7 @@ RSpec.describe EmailsController, type: :controller do
         expect(assigns(:email).recipients).to eq(@application.user.email)
       end
 
-      it "sets @template with template for rejected emails" do
+      it "sets @template with template for rejection emails" do
         get :show, event_id: @event.id, status: :rejection
         expect(assigns(:templates)).to eq([@template])
       end

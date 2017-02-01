@@ -71,6 +71,13 @@
     </div>
     <%=f.error_span(:allergies) %>
   </div>
+  <div class="form-group">
+    <%= f.label :annotation, :class => 'control-label col-lg-2' %>
+    <div class="col-lg-10">
+      <%= f.text_area :annotation, :rows => 3, :class => 'form-control' %>
+    </div>
+    <%=f.error_span(:annotation) %>
+  </div>
 
   <% if @application_letter.event
       @application_letter.event.custom_application_fields.each do |field_name| %>
