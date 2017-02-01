@@ -39,8 +39,7 @@ en:
         sign_in: "Sign In"
         remember_me: "Remember me"
   footer:
-      copyright: "Companion Cube <3"
-      imprint: "Impressum"
+      imprint: "Imprint"
   imprint:
     managing_directors: "Authorized Representative Managing Directors:"
     editor: "Editor:"
