@@ -44,7 +44,7 @@ de:
       print: "Namensschilder drucken"
       title: "Namensschilder drucken für das Event "
       logo_upload: "Logo (optional)"
-      show_school: "Schule anzeigen"
+      show_organisation: "Schule/Organisation anzeigen"
       show_color: "Gruppenfarbe anzeigen"
       name_format: "Format der Namen"
       no_users_selected: "Es wurde kein Teilnehmer ausgewählt."

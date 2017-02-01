@@ -361,10 +361,10 @@ describe "Event", type: :feature do
 
     it "creates a pdf with the correct schools" do
       all(:css, "#selected_ids_").each { |check| check.set(true) }
-      check('show_school')
+      check('show_organisation')
       click_button I18n.t('events.badges.print')
       strings = PDF::Inspector::Text.analyze(page.body).strings
-      @users.each { |u| expect(strings).to include(u.profile.school) }
+      @users.each { |u| expect(strings).to include(ApplicationLetter.where(event: @event, user: u).first.organisation) }
     end
 
     it "does not horribly crash and burn when colors are selected" do

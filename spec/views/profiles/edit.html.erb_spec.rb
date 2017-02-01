@@ -13,13 +13,11 @@ RSpec.describe "profiles/edit", type: :view do
       assert_select "input#profile_last_name[name=?]", "profile[last_name]"
       assert_select "select#profile_gender[name=?]", "profile[gender]"
       assert_select "input#profile_birth_date[name=?]", "profile[birth_date]"
-      assert_select "input#profile_school[name=?]", "profile[school]"
       assert_select "input#profile_street_name[name=?]", "profile[street_name]"
       assert_select "input#profile_zip_code[name=?]", "profile[zip_code]"
       assert_select "input#profile_city[name=?]", "profile[city]"
       assert_select "input#profile_state[name=?]", "profile[state]"
       assert_select "input#profile_country[name=?]", "profile[country]"
-      assert_select "select#profile_graduates_school_in[name=?]", "profile[graduates_school_in]"
       assert_select "input#profile_discovery_of_site[name=?]", "profile[discovery_of_site]"
     end
   end

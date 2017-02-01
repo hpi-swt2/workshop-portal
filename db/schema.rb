@@ -41,6 +41,7 @@ ActiveRecord::Schema.define(version: 20170201141415) do
     t.string   "allergies"
     t.text     "custom_application_fields"
     t.text     "annotation"
+    t.string   "organisation"
   end
 
   add_index "application_letters", ["event_id"], name: "index_application_letters_on_event_id"
@@ -78,9 +79,10 @@ ActiveRecord::Schema.define(version: 20170201141415) do
     t.integer  "max_participants"
     t.datetime "created_at",                                 null: false
     t.datetime "updated_at",                                 null: false
-    t.boolean  "published",                  default: false
     t.string   "organizer"
     t.string   "knowledge_level"
+    t.integer  "kind",                       default: 0
+    t.boolean  "published"                  default: false
     t.date     "application_deadline"
     t.boolean  "application_status_locked"
     t.boolean  "participants_are_unlimited", default: false
@@ -98,20 +100,18 @@ ActiveRecord::Schema.define(version: 20170201141415) do
   add_index "participant_groups", ["user_id"], name: "index_participant_groups_on_user_id"
 
   create_table "profiles", force: :cascade do |t|
-    t.integer  "user_id",             null: false
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
+    t.integer  "user_id",           null: false
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
     t.string   "first_name"
     t.string   "last_name"
     t.string   "gender"
     t.date     "birth_date"
-    t.string   "school"
     t.string   "street_name"
     t.string   "zip_code"
     t.string   "city"
     t.string   "state"
     t.string   "country"
-    t.string   "graduates_school_in"
     t.text     "discovery_of_site"
   end
 
