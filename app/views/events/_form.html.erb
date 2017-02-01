@@ -2,24 +2,34 @@
 
   <%= render partial: "shared/error_message", locals: {entity: @event} %>
 
-  <div class="form-group">
-    <div class="btn-group col-lg-10 col-lg-offset-2" data-toggle="buttons">
-      <% Event.kinds.keys.each do |key| %>
-        <label class="btn btn-default <%= 'active' if @event.kind == key %>">
-          <%= f.radio_button :kind, key %>
-          <%= I18n.t :"events.kinds.#{key}" %>
+    <div class="form-group">
+      <%= f.label :type, :class => 'control-label col-lg-2' %>
+      <div class="btn-group col-lg-10" data-toggle="buttons">
+        <label class="btn btn-default <%= 'active' if not @event.hidden %>">
+          <%= f.radio_button :hidden, false %>
+          <%= I18n.t :"events.type.public" %>
         </label>
-      <% end %>
-      <%=f.error_span(:kind) %>
+        <label class="btn btn-default <%= 'active' if @event.hidden %>">
+          <%= f.radio_button :hidden, true %>
+          <%= I18n.t :"events.type.private" %>
+        </label>
+        <%= f.error_span(:hidden) %>
+      </div>
     </div>
-  </div>
-  <div class="form-group">
-    <div class="col-lg-offset-2 col-lg-10">
-      <%= f.check_box :hidden %>
-      <%= f.label :hidden, :class => 'control-label' %>
-      <%= f.error_span(:hidden) %>
+    <div class="form-group">
+      <%= f.label :published, :class => 'control-label col-lg-2' %>
+      <div class="btn-group col-lg-10" data-toggle="buttons">
+        <label class="btn btn-default <%= 'active' if not @event.published %>">
+          <%= f.radio_button :published, false %>
+          <%= I18n.t :"events.form.draft.save" %>
+        </label>
+        <label class="btn btn-default <%= 'active' if @event.published %>">
+          <%= f.radio_button :published, true %>
+          <%= I18n.t :"events.form.draft.publish" %>
+        </label>
+        <%= f.error_span(:published) %>
+      </div>
     </div>
-  </div>
   <div class="form-group">
     <%= f.label :name, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
@@ -45,7 +55,7 @@
         $("#description").blur(function(){
             if($(this).val() ===''){
                 $(this).attr('placeholder', placeholder);
-            }    
+            }
         });
       </script>
       <%=f.error_span(:description) %>
@@ -58,8 +68,6 @@
     <div class="col-lg-10">
       <%= f.text_field :max_participants, :class => 'form-control' %>
       <%=f.error_span(:max_participants) %>
-      <%= f.label :participants_are_unlimited %>
-      <%= f.check_box :participants_are_unlimited, :class => 'form_control' %>
     </div>
   </div>
   <div class="form-group">
@@ -114,20 +122,6 @@
     </div>
   </div>
   <%= (render 'custom_application_fields_input', form: f) if @event.new_record? %>
-  <div class="form-group">
-    <%= f.label :published, :class => 'control-label col-lg-2' %>
-    <div class="btn-group col-lg-10" data-toggle="buttons">
-      <label class="btn btn-default <%= 'active' if @event.published %>">
-        <%= f.radio_button :published, true %>
-        <%= I18n.t :"events.form.published.myon" %>
-      </label>
-      <label class="btn btn-default <%= 'active' if not @event.published %>">
-        <%= f.radio_button :published, false %>
-        <%= I18n.t :"events.form.published.myoff" %>
-      </label>
-      <%=f.error_span(:published) %>
-    </div>
-  </div>
   <div class="form-group">
     <div class="col-lg-offset-2 col-lg-10">
       <% if @event.new_record? %>
