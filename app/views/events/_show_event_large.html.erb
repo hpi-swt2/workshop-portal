@@ -29,13 +29,13 @@
   </div>
   <div class="col-md-2 col-sm-offset-2 col-md-offset-0">
     <dl>
-      <% if not @event.knowledge_level.empty? or can? :manage, Event %>
+      <% if not @event.knowledge_level.blank? or can? :manage, Event %>
         <dt><strong><%= model_class.human_attribute_name(:knowledge_level) %>:</strong></dt>
         <dd><%= @event.knowledge_level %></dd>
       <% end %>
       <dt><strong><%= model_class.human_attribute_name(:max_participants) %>:</strong></dt>
       <dd><%= @event.max_participants %></dd>
-      <% if not @event.organizer.empty? or can? :manage, Event %>
+      <% if not @event.organizer.blank? or can? :manage, Event %>
         <dt><strong><%= model_class.human_attribute_name(:organizer) %>:</strong></dt>
         <dd><%= @event.organizer %></dd>
       <% end %>
