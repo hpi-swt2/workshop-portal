@@ -10,7 +10,7 @@
 
 FactoryGirl.define do
   factory :profile do
-    sequence(:first_name) { |n| "Karl#{n}" }
+    sequence(:first_name) { "Karl#{rand(1..100)}" }
     sequence(:last_name) { |n| "Doe#{n}" }
     gender  "male"
     birth_date  15.years.ago

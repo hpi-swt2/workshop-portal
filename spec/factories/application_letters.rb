@@ -13,7 +13,6 @@
 FactoryGirl.define do
   factory :application_letter do
     grade 10
-    experience "None"
     motivation "None"
     coding_skills "None"
     emergency_number "01234567891"
@@ -29,7 +28,6 @@ FactoryGirl.define do
 
   factory :application_letter2, parent: :application_letter do
     grade 11
-    experience "A lot"
     motivation "Ich bin sehr motiviert, glaubt mir."
     emergency_number "110"
     vegetarian true

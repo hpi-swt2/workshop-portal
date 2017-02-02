@@ -11,7 +11,6 @@ RSpec.describe "application_letters/new", type: :view do
 
     assert_select "form[action=?][method=?]", application_letters_path, "post" do
       assert_select "textarea#application_letter_motivation[name=?]", "application_letter[motivation]"
-      assert_select "textarea#application_letter_experience[name=?]", "application_letter[experience]"
       assert_select "textarea#application_letter_coding_skills[name=?]", "application_letter[coding_skills]"
       assert_select "input#application_letter_emergency_number[name=?]", "application_letter[emergency_number]"
       assert_select "input#application_letter_vegetarian[name=?]", "application_letter[vegetarian]"

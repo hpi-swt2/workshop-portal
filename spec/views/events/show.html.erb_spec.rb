@@ -90,7 +90,8 @@ RSpec.describe "events/show", type: :view do
 
   it "should not display accept-all-button for non-organizers" do
     @event = assign(:event, FactoryGirl.create(:event, :in_selection_phase))
-    @event.max_participants = Float::INFINITY
+    @event.max_participants = @event.application_letters.size + 1
+    @event.save
     [:coach, :pupil].each do | each |
       sign_in(FactoryGirl.create(:user, role: each))
       render
@@ -100,8 +101,9 @@ RSpec.describe "events/show", type: :view do
 
   it "should display accept-all-button for organizers if there are enough free places" do
     @event = assign(:event, FactoryGirl.create(:event, :with_diverse_open_applications, :in_selection_phase))
+    @event.max_participants = @event.application_letters.size + 1
+    @event.save
     sign_in(FactoryGirl.create(:user, role: :organizer))
-    @event.max_participants = Float::INFINITY
     render
     expect(rendered).to have_link(I18n.t('events.applicants_overview.accept_all'))
   end
