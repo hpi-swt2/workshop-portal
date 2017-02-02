@@ -106,11 +106,11 @@ de:
         one: "Bewerbungsfrist in einem Tag"
         other: "Bewerbungsfrist in %{count} Tagen"
       time_span_non_consecutive:
-        one: "Über einen Tag mit Unterbrechung"
-        other: "Über %{count} Tage mit Unterbrechung"
+        one: "Umfang: Ein Tag mit Unterbrechung"
+        other: "Umfang: %{count} Tage mit Unterbrechung"
       time_span_consecutive:
-        one: "Über einen Tag"
-        other: "Über %{count} Tage"
+        one: "Umfang: Ein Tag"
+        other: "Umfang: %{count} Tage"
       past_event: "Vergangene Veranstaltung"
       is_published: "Ist veröffentlicht"
 
@@ -146,7 +146,7 @@ de:
           name: "Name"
           description: "Beschreibung"
           max_participants: "Maximale Teilnehmerzahl"
-          participants_are_unlimited: "Unbegrenzte Teilnehmerzahl"
+          kind: "Art"
           active: "Aktiv"
           start_date: "Beginn"
           end_date: "Ende"

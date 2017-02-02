@@ -330,13 +330,14 @@ describe "Event", type: :feature do
       @users.each do |u|
         find(:css, "#selected_ids_[value='#{u.id}']").set(true) if u.id.even?
       end
+      select(I18n.t('events.badges.full_name'))
       click_button I18n.t('events.badges.print')
       strings = PDF::Inspector::Text.analyze(page.body).strings
       @users.each do |u|
         if u.id.even?
-          expect(strings).to include(u.profile.first_name)
+          expect(strings).to include(u.profile.name)
         else
-          expect(strings).not_to include(u.profile.first_name)
+          expect(strings).not_to include(u.profile.name)
         end
       end
     end
