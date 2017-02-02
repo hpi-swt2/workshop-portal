@@ -32,7 +32,7 @@ class ApplicationLettersController < ApplicationController
     last_application_letter = ApplicationLetter.where(user: current_user).order("created_at").last
     if last_application_letter
       attrs_to_fill_in = last_application_letter.attributes
-        .slice("grade", "coding_skills", "emergency_number", "vegetarian", "vegan", "allergic", "allergies")
+        .slice("grade", "coding_skills", "emergency_number", "vegetarian", "vegan", "allergies")
       @application_letter.attributes = attrs_to_fill_in
       flash.now[:notice] = I18n.t('application_letters.fields_filled_in')
     end
@@ -125,8 +125,8 @@ class ApplicationLettersController < ApplicationController
     # Only allow a trusted parameter "white list" through.
     # Don't allow user_id as you shouldn't be able to set the user from outside of create/update.
     def application_params
-      params.require(:application_letter).permit(:grade, :experience, :motivation, :coding_skills, :emergency_number, :organisation,
-                                                 :vegetarian, :vegan, :allergic, :allergies, :annotation, :user_id, :event_id)
+      params.require(:application_letter).permit(:grade, :motivation, :coding_skills, :emergency_number, :organisation,
+                                                 :vegetarian, :vegan, :allergies, :annotation, :user_id, :event_id)
       .merge({:custom_application_fields => params[:custom_application_fields]})
     end
 

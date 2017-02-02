@@ -95,13 +95,11 @@ describe Event do
     expect(event.email_addresses_of_type(:rejected)).to contain_exactly(rejected_application_letter.user.email)
   end
 
-  it "is either a camp or a workshop" do
-    expect { FactoryGirl.build(:event, kind: :smth_invalid) }.to raise_error(ArgumentError)
-
-    event = FactoryGirl.build(:event, kind: :camp)
+  it "is either a public or private" do
+    event = FactoryGirl.build(:event, hidden: false)
     expect(event).to be_valid
 
-    event = FactoryGirl.build(:event, kind: :workshop)
+    event = FactoryGirl.build(:event, hidden: true)
     expect(event).to be_valid
   end
 
@@ -269,17 +267,5 @@ describe Event do
     event = FactoryGirl.build(:event)
     event.application_deadline = Date.yesterday
     expect(event.after_deadline?).to eq(true)
-  end
-
-  it "can have unlimited participants" do
-    event = FactoryGirl.create(:event)
-    event.max_participants = Float::INFINITY
-    expect(event.participants_are_unlimited).to be(true)
-  end
-
-  it "has infinite max participants if max participants is unlimited" do
-    event = FactoryGirl.create(:event)
-    event.participants_are_unlimited = true
-    expect(event.max_participants).to be(Float::INFINITY)
   end
 end
