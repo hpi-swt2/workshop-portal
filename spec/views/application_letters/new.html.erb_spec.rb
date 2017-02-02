@@ -27,12 +27,4 @@ RSpec.describe "application_letters/new", type: :view do
       assert_select "input#custom_application_fields_", count: @application_letter.event.custom_application_fields.count
     end
   end
-
-  it "should only render neccessary fields for hidden events" do
-    @event = assign(:event, FactoryGirl.create(:event, hidden: true))
-    render
-    ['grade', 'motivation', 'emergency_number', 'experience'].each do |attr|
-      expect(rendered).to_not have_text(I18n.t('activerecord.attributes.application_letter.'+ attr))
-    end
-  end
 end

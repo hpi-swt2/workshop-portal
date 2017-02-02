@@ -172,7 +172,7 @@ RSpec.describe EventsController, type: :controller do
       sign_in @user
 
       get :show, id: @event.to_param, session: valid_session
-      expect(response).to redirect_to(new_application_letter_path(:event_id => @event.id))
+      expect(response).to redirect_to(new_application_letter_path(:event_id => @event.id, :hidden => true))
     end
 
   describe "GET #participants_pdf" do

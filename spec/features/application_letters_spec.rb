@@ -245,6 +245,14 @@ RSpec.feature "Application Letter Overview", :type => :feature do
     end
   end
 
+  it "should only show neccessary fields for hidden events application page" do
+    login(:pupil)
+    visit new_application_letter_path(@application_letter, :hidden => true)
+    ['grade', 'motivation', 'emergency_number', 'experience'].each do |attr|
+      expect(page).to_not have_text(I18n.t('activerecord.attributes.application_letter.'+ attr))
+    end
+  end
+
   def login(role)
     @event = FactoryGirl.create(:event)
     @profile = FactoryGirl.create(:profile)
