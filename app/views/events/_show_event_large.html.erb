@@ -9,8 +9,11 @@
 </div>
 <div id="wsp-event-show-banner"></div>
 <script>
+  // Generate a colorful random banner image.
+  // The size can be adjusted by changing the width and height of the 
+  // #wsp-event-show-banner <div> in CSS.
   if (Object.assign) {
-    // Only run in modern browsers
+    // Only run in modern browsers which support Object.assign.
     $('#wsp-event-show-banner').geopattern('<%= j @event.name %>');
   }
 </script>
