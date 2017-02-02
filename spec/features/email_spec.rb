@@ -58,7 +58,7 @@ describe "Sending emails to applicants", type: :feature do
 
   scenario "logged in as Organizer I can load an email template", js: true do
     login(:organizer)
-    @template = FactoryGirl.create(:email_template, :accepted)
+    @template = FactoryGirl.create(:email_template, :acceptance)
 
     visit event_email_show_path(@event, status: :acceptance)
     first('.email-template').click

@@ -19,11 +19,11 @@ FactoryGirl.define do
       status :default
     end
 
-    trait :accepted do
+    trait :acceptance do
       status :acceptance
     end
 
-    trait :rejected do
+    trait :rejection do
       status :rejection
     end
   end
