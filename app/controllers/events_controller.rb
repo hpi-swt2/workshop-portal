@@ -6,7 +6,7 @@ require 'zip'
 
 class EventsController < ApplicationController
 
-  before_action :set_event, only: [:show, :edit, :update, :destroy, :participants, 
+  before_action :set_event, only: [:show, :edit, :update, :destroy, :participants,
     :participants_pdf, :print_applications, :print_applications_eating_habits, :badges, :print_badges]
 
 
@@ -39,7 +39,7 @@ class EventsController < ApplicationController
   def edit
     @event = Event.find(params[:id])
     authorize! :edit, @event
-    
+
   end
 
   # POST /events

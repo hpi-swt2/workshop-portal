@@ -96,6 +96,7 @@ RSpec.describe EventsController, type: :controller do
         }
 
         it "updates the requested event" do
+          sign_in FactoryGirl.create(:user, role: :organizer)
           put :update, id: @event.to_param, event: new_attributes, session: valid_session
           @event.reload
           expect(@event.name).to eq(new_attributes[:name])
@@ -107,6 +108,7 @@ RSpec.describe EventsController, type: :controller do
         end
 
         it "redirects to the event" do
+          sign_in FactoryGirl.create(:user, role: :organizer)
           put :update, id: @event.to_param, event: valid_attributes, session: valid_session
           expect(response).to redirect_to(@event)
         end
@@ -115,6 +117,13 @@ RSpec.describe EventsController, type: :controller do
           expect {
             put :update, id: @event.to_param, event: valid_attributes_post[:event], session: valid_session
           }.to change((Event.find_by! id: @event.to_param).date_ranges, :count).by(0)
+        end
+
+        it "won't update the requested event as user" do
+          sign_in FactoryGirl.create(:user, role: :pupil)
+          put :update, id: @event.to_param, event: new_attributes, session: valid_session
+          @event.reload
+          expect(@event.name).to_not eq(new_attributes[:name])
         end
       end
 
@@ -125,6 +134,7 @@ RSpec.describe EventsController, type: :controller do
         end
 
         it "re-renders the 'edit' template" do
+          sign_in FactoryGirl.create(:user, role: :organizer)
           put :update, id: @event.to_param, event: invalid_attributes, session: valid_session
           expect(response).to render_template("edit")
         end
@@ -516,6 +526,6 @@ RSpec.describe EventsController, type: :controller do
   def login(role)
     @profile = FactoryGirl.create(:profile)
     @profile.user.role = role
-    sign_in(@profile.user, :scope => :user)
+    login_as(@profile.user, :scope => :user)
   end
 end
