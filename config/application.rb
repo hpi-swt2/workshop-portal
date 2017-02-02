@@ -30,5 +30,6 @@ module WorkshopPortal
     config.unreasonably_long_event_time_span = 300
 
     config.from_address = ENV['SMTP_ADDRESS'] ? ENV['SMTP_ADDRESS'] : 'noreply@localhost'
+    config.reply_to_address = config.from_address
   end
 end
