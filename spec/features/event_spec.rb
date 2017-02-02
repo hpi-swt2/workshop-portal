@@ -275,7 +275,7 @@ describe "Event", type: :feature do
   describe "edit page" do
     it "should not be possible to visit as pupil" do
         login_as(FactoryGirl.create(:user, role: :pupil), :scope => :user)
-        event = FactoryGirl.create(:event, kind: :camp)
+        event = FactoryGirl.create(:event, hidden: false)
         visit edit_event_path(event)
         expect(page).to have_text("Du bist nicht authorisiert diese Aktion auszuführen.")
     end
