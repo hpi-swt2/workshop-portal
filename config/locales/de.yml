@@ -48,7 +48,7 @@ de:
   midnight: "Mitternacht"
   start_page:
     welcome_to: "Herzlich willkommen im"
-    workshop_portal_hpi_html: "Workshop<br>portal des HPI."
+    workshop_portal_hpi_html: "Workshop<div class='row spacer-15'></div>Portal des HPI."
     register_now: "Registrieren"
     welcome: "Herzlich Willkommen"
     place_request: "Anfrage stellen"
