@@ -1,13 +1,4 @@
-#wsp-login-register-container {
-    display: flex;
-    flex-wrap: wrap;
-}
-
-#wsp-login-register-container > div[class*='col-'] {
-    display: flex;
-    flex-direction: column;
-}
-
-#wsp-login-panel {
-    height: 100%;
+#wsp-login-remember-me {
+    margin-bottom: 25px;
+    margin-top: 53px;
 }
