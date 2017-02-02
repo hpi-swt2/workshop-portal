@@ -167,7 +167,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
   end
 
   scenario "logged in as Organizer I can push the accept all button to accept all applicants" do
-    @event = FactoryGirl.create(:event, :with_diverse_open_applications, :in_selection_phase, acceptances_have_been_sent: false)
+    @event = FactoryGirl.create(:event, :with_diverse_open_applications, :in_selection_phase)
     @event.max_participants = @event.application_letters.size + 1
     @event.save
     login(:organizer)
