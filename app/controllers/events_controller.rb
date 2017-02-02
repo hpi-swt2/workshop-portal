@@ -81,7 +81,7 @@ class EventsController < ApplicationController
     @participants = @event.participants
     name_format = params[:name_format]
     show_color = params[:show_color]
-    show_school = params[:show_school]
+    show_organisation = params[:show_organisation]
     logo = params[:logo_upload]
 
     selected_ids = params[:selected_ids]
@@ -94,7 +94,7 @@ class EventsController < ApplicationController
     end
 
     begin
-      pdf = BadgesPDF.generate(@event, selected_participants, name_format, show_color, show_school, logo)
+      pdf = BadgesPDF.generate(@event, selected_participants, name_format, show_color, show_organisation, logo)
       send_data pdf, filename: "badges.pdf", type: "application/pdf", disposition: "inline"
     rescue Prawn::Errors::UnsupportedImageType
       flash.now[:error] = I18n.t('events.badges.wrong_file_format')
@@ -256,8 +256,7 @@ class EventsController < ApplicationController
     end
 
     def event_params
-      params.require(:event).permit(:name, :description, :max_participants, :participants_are_unlimited, :kind, :organizer, :knowledge_level, :application_deadline, :published, :hidden, :custom_application_fields => [], date_ranges_attributes: [:start_date, :end_date, :id])
-
+      params.require(:event).permit(:name, :description, :max_participants, :organizer, :knowledge_level, :application_deadline, :published, :hidden, :custom_application_fields => [], date_ranges_attributes: [:start_date, :end_date, :id])
     end
 
     def add_event_query_conditions(query)

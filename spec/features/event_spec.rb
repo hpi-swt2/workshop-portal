@@ -110,13 +110,13 @@ describe "Event", type: :feature do
   end
 
   describe "create page" do
-    ['Camp', 'Workshop'].each do |kind|
-      it "should allow picking the #{kind} kind camp" do
+    I18n.t(".events.type").each do |type|
+      it "should allow picking the #{type[1]} type" do
         visit new_event_path
         fill_in "Maximale Teilnehmerzahl", :with => 25
-        choose(kind)
+        choose(type[1])
         click_button I18n.t('.events.form.create')
-        expect(page).to have_text(kind)
+        expect(page).to have_text(type[1])
       end
     end
 
@@ -126,16 +126,6 @@ describe "Event", type: :feature do
       fill_in "event[date_ranges_attributes][][end_date]", with: Date.yesterday
       click_button I18n.t('.events.form.create')
       expect(page).to have_text('Anfangs-Datum darf nicht in der Vergangenheit liegen')
-    end
-
-    it "should warn about unreasonably long time spans" do
-      visit new_event_path
-      fill_in 'Maximale Teilnehmerzahl', :with => 25
-      fill_in "event_application_deadline", :with => Date.current
-      fill_in "event[date_ranges_attributes][][start_date]", with: Date.current
-      fill_in "event[date_ranges_attributes][][end_date]", with: Date.current.next_year(3)
-      click_button I18n.t('.events.form.create')
-      expect(page).to have_text('End-Datum liegt ungewöhnlich weit vom Start-Datum entfernt.')
     end
 
     it "should not allow an end date before a start date" do
@@ -292,9 +282,9 @@ describe "Event", type: :feature do
 
     it "should preselect the event kind" do
       login_as(FactoryGirl.create(:user, role: :organizer), :scope => :user)
-      event = FactoryGirl.create(:event, kind: :camp)
+      event = FactoryGirl.create(:event, hidden: false)
       visit edit_event_path(event)
-      expect(find_field('Camp')[:checked]).to_not be_nil
+      expect(find_field(I18n.t("events.type.public"))[:checked]).to_not be_nil
     end
 
     it "should display all existing date ranges" do
@@ -340,13 +330,14 @@ describe "Event", type: :feature do
       @users.each do |u|
         find(:css, "#selected_ids_[value='#{u.id}']").set(true) if u.id.even?
       end
+      select(I18n.t('events.badges.full_name'))
       click_button I18n.t('events.badges.print')
       strings = PDF::Inspector::Text.analyze(page.body).strings
       @users.each do |u|
         if u.id.even?
-          expect(strings).to include(u.profile.first_name)
+          expect(strings).to include(u.profile.name)
         else
-          expect(strings).not_to include(u.profile.first_name)
+          expect(strings).not_to include(u.profile.name)
         end
       end
     end
@@ -371,10 +362,10 @@ describe "Event", type: :feature do
 
     it "creates a pdf with the correct schools" do
       all(:css, "#selected_ids_").each { |check| check.set(true) }
-      check('show_school')
+      check('show_organisation')
       click_button I18n.t('events.badges.print')
       strings = PDF::Inspector::Text.analyze(page.body).strings
-      @users.each { |u| expect(strings).to include(u.profile.school) }
+      @users.each { |u| expect(strings).to include(ApplicationLetter.where(event: @event, user: u).first.organisation) }
     end
 
     it "does not horribly crash and burn when colors are selected" do

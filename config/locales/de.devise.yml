@@ -62,3 +62,7 @@ de:
       not_saved:
         one: "%{resource} konnte nicht gespeichert werden: ein Fehler. Bitte korrigiere deine Eingabe, um fortzufahren."
         other: "%{resource} konnte nicht gespeichert werden: %{count} Fehler. Bitte korrigiere deine Eingaben, um fortzufahren."
+  users:
+    sessions:
+      new:
+        sign_up: "Registrieren"

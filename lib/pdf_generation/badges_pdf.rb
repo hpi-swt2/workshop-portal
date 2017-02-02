@@ -7,9 +7,9 @@ class BadgesPDF
   Y_PADDING = 20 # top and bottom padding (if show_color, no bottom padding is used)
   LOGO_HEIGHT = 50 # height of the logo (only if logo)
   COLOR_HEIGHT = 20 # height of the colored rectangle (only if show_color)
-  SCHOOL_HEIGHT_RATIO = 1.0/3 # fraction of the space for text that is occupied by the school (only if show_school). The remaining space is occupied by the name.
+  ORGANISATION_HEIGHT_RATIO = 1.0/3 # fraction of the space for text that is occupied by the organisation (only if show_organisation). The remaining space is occupied by the name.
   MAX_NAME_FONT_SIZE = 28 # font size for the name, is automatically lowered if the text does not fit
-  MAX_SCHOOL_FONT_SIZE = 16 # font size for the school, is automatically lowered if the text does not fit
+  MAX_ORGANISATION_FONT_SIZE = 16 # font size for the organisation, is automatically lowered if the text does not fit
   LINE_SPACING = 5 # empty space above text
   ROW_NUMBER = 5 # number of rows of badges
   COLUMN_NUMBER = 2 # number of columns of badges
@@ -20,19 +20,19 @@ class BadgesPDF
   # @param participants [Array<User>] the users whose badges are created
   # @param name_format [String, nil] the format with which the name is added, "first", "last" or "full"
   # @param show_color [Boolean, nil] whether to add a rectangle of the user's group color
-  # @param show_school [Boolean, nil] whether to add the school of the user's school
+  # @param show_organisation [Boolean, nil] whether to add the organisation of the user's organisation
   # @param logo [ActionDispatch::Http::UploadedFile, nil] the logo to add
   # @return [String] the generated PDF
-  def self.generate(event, participants, name_format, show_color, show_school, logo)
-    self.new(event, participants, name_format, show_color, show_school, logo).create.render
+  def self.generate(event, participants, name_format, show_color, show_organisation, logo)
+    self.new(event, participants, name_format, show_color, show_organisation, logo).create.render
   end
 
-  def initialize(event, participants, name_format, show_color, show_school, logo)
+  def initialize(event, participants, name_format, show_color, show_organisation, logo)
     @event = event
     @participants = participants
     @name_format = name_format || "full"
     @show_color = show_color || false
-    @show_school = show_school || false
+    @show_organisation = show_organisation || false
     @logo = logo
 
     @document = Prawn::Document.new(page_size: 'A4')
@@ -64,9 +64,9 @@ class BadgesPDF
       end
       v_space_left -= @show_color ? COLOR_HEIGHT : Y_PADDING
 
-      if @show_school
-        @school_height = v_space_left * SCHOOL_HEIGHT_RATIO
-        v_space_left -= @school_height
+      if @show_organisation
+        @organisation_height = v_space_left * ORGANISATION_HEIGHT_RATIO
+        v_space_left -= @organisation_height
         v_space_left -= LINE_SPACING
       end
       @name_height = v_space_left
@@ -97,10 +97,10 @@ class BadgesPDF
         create_name(participant, cursor)
         cursor -= @name_height
 
-        if @show_school
+        if @show_organisation
           cursor -= LINE_SPACING
-          create_school(participant, cursor)
-          cursor -= @school_height
+          create_organisation(participant, cursor)
+          cursor -= @organisation_height
         end
 
         create_color(participant, cursor) if @show_color
@@ -135,13 +135,14 @@ class BadgesPDF
         overflow: :shrink_to_fit
     end
 
-    def create_school(participant, y)
-      text_box participant.profile.school,
+    def create_organisation(participant, y)
+      organisation = ApplicationLetter.where(event: @event, user: participant).first.organisation
+      text_box organisation,
         at: [X_PADDING, y],
         width: @badge_width - (X_PADDING * 2),
         align: :center,
-        size: MAX_SCHOOL_FONT_SIZE,
-        height: @school_height,
+        size: MAX_ORGANISATION_FONT_SIZE,
+        height: @organisation_height,
         overflow: :shrink_to_fit
     end
 

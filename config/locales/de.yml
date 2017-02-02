@@ -31,7 +31,7 @@ de:
     events: "Veranstaltungen"
     profiles: "Nutzer"
     application_letters: "Bewerbungen"
-    my_application_letters: "Meine Bewerbungen"
+    my_events: "Meine Veranstaltungen"
     user_management: "Benutzerverwaltung"
     requests: "Anfragen"
     new_request: "Workshop anfragen"
@@ -61,7 +61,18 @@ de:
     about_hpi:
       title: "Über das HPI"
       lead_html: "Das <a href='https://hpi.de/' target='_blank'>Hasso-Plattner-Institut für Softwaresystemtechnik GmbH</a> an der Universität Potsdam ist Deutschlands universitäres Exzellenz-Zentrum für IT-Systems Engineering. Als einziges Universitäts-Institut in Deutschland bietet es den Bachelor- und Master-Studiengang \"IT-Systems Engineering\" an – ein besonders praxisnahes und ingenieurwissenschaftliches Informatik-Studium, das von derzeit 480 Studenten genutzt wird. Die HPI School of Design Thinking, Europas erste Innovationsschule für Studenten nach dem Vorbild der Stanforder d.school, bietet 240 Plätze für ein Zusatzstudium an."
-  footer: "Companion Cube <3"
+  footer:
+    copyright: "© 2017 Hasso-Plattner-Institut"
+    ignore: "Companion Cube <3"
+    imprint: "Impressum"
+    hoster_link_html: "<a href='https://hpi.de/'>Hasso-Plattner-Institut</a>"
+  imprint:
+    managing_directors: "Vertretungsberechtigte Geschäftsführer:"
+    editor: "Redaktion:"
+    web_design: "Webdesign:"
+    texts: "Texte:"
+    legal_information: "Rechtliche Hinweise:"
+    legal_information_text: "Das Hasso-Plattner-Institut (HPI) überprüft und aktualisiert regelmäßig die Inhalte seiner Websites. Trotz größtmöglicher Sorgfalt können wir nicht ausschließen, dass einzelne Informationen auf unseren Seiten veraltet oder nicht zutreffend sind. Daher können wir keine Haftung für Aktualität, Genauigkeit und Vollständigkeit der publizierten Informationen übernehmen. Das gleiche gilt für alle Websites, die von den HPI-Seiten über Hyperlinks erreichbar sind. Für alle diese Links gilt: Wir erklären ausdrücklich, dass wir keinen Einfluss auf die Gestaltung und die Inhalte der verlinkten Seite haben. Deshalb distanzieren wir uns hiermit ausdrücklich von allen Inhalten aller verlinkten Seiten und machen uns ihre Inhalte nicht zu Eigen. Diese Erklärung gilt für alle auf unserer Seite angebrachten Links zu fremden Seiten. Für den Inhalt dieser verlinkten Seiten ist das HPI nicht verantwortlich. Weiterhin behält sich das HPI jederzeit Änderungen und Ergänzungen der angezeigten Informationen vor. Inhalt und Struktur der HPI-Website sind durch das Copyright geschützt. Die Weiterverwendung von Informationen und Daten, vor allem die Verwendung von Texten und Illustrationen ist nur nach unserer Zustimmung zulässig."
   navigational:
     back: Zurück
     forward: Weiter
