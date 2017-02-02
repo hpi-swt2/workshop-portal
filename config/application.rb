@@ -28,5 +28,7 @@ module WorkshopPortal
 
     # see Event::unreasonably_long, unit in days
     config.unreasonably_long_event_time_span = 300
+
+    config.from_address = ENV['SMTP_ADDRESS'] ? ENV['SMTP_ADDRESS'] : 'noreply@localhost'
   end
 end
