@@ -80,6 +80,15 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # The path used after sign up.
   def after_sign_up_path_for(resource)
+    stored_location = stored_location_for(resource)
+    if stored_location
+      referrer = Rails.application.routes.recognize_path(stored_location)
+      if referrer[:controller] == "application_letters" and referrer[:action] == "new"
+        # This comes from a application letter creation page -> redirect user there.
+        return stored_location
+      end
+    end
+
     new_profile_path
   end
 
