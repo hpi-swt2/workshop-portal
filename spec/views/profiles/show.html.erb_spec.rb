@@ -11,4 +11,12 @@ RSpec.describe "profiles/show", type: :view do
       expect(rendered).to have_text(@profile.public_send(attr_name))
     end
   end
+
+  %i[organizer admin].each do |each|
+    it "logged in as #{each} I can see the mail address" do
+      sign_in(FactoryGirl.create(:user, role: each))
+      render
+      expect(rendered).to have_link(@profile.user.email, :href => 'mailto:' + @profile.user.email)
+    end
+  end
 end

@@ -9,6 +9,8 @@
   <dd><%= @request.topic_of_workshop %></dd>
   <dt><strong><%= model_class.human_attribute_name(:number_of_participants) %>:</strong></dt>
   <dd><%= @request.number_of_participants %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:time_period) %>:</strong></dt>
+  <dd><%= @request.time_period %></dd>
   <dt><strong><%= model_class.human_attribute_name(:status) %>:</strong></dt>
   <dd><%= t(@request.status, scope: 'activerecord.attributes.request.statuses') %></dd>
   <% if can? :view_annotations, @request %>

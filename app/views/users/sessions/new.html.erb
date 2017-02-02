@@ -27,7 +27,7 @@
                   <%= f.password_field :password, autocomplete: "off", class: "form-control", id: "login_password" %>
                 </div>
                 <% if devise_mapping.rememberable? %>
-                  <div class="checkbox">
+                  <div class="checkbox" id="wsp-login-remember-me">
                     <%= f.label :remember_me do %>
                       <%= f.check_box :remember_me %> <%= t('.remember_me', :default => "Remember me") %>
                     <% end %>
