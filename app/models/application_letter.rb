@@ -43,7 +43,7 @@ class ApplicationLetter < ActiveRecord::Base
   # Checks if it is allowed to change the status of the application
   #
   # @param none
-  # @return [Boolean] true if no status changes are allowed anymore
+  # @return [Boolean] true if status changes are allowed
   def status_change_allowed?
     !event.participant_selection_locked
   end
