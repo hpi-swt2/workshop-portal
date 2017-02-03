@@ -14,17 +14,17 @@ FactoryGirl.define do
     hide_recipients false
     subject "EmailTemplate-Subject"
     content "EmailTemplate-Content"
-  end
 
-  factory :email_template_acceptance, parent: :email_template do
-    status :acceptance
-  end
+    trait :default do
+      status :default
+    end
 
-  factory :email_template_rejection, parent: :email_template do
-    status :rejection
-  end
+    trait :acceptance do
+      status :acceptance
+    end
 
-  factory :email_template_default, parent: :email_template do
-    status :default
+    trait :rejection do
+      status :rejection
+    end
   end
 end

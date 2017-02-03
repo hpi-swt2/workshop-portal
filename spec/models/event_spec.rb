@@ -180,6 +180,16 @@ describe Event do
     expect(event.compute_occupied_places).to eq(2)
   end
 
+  it "returns all Events running now and in the future" do
+    event_today = FactoryGirl.create(:event)
+    event_today.date_ranges = [FactoryGirl.create(:date_range, start_date: Date.today, end_date: Date.tomorrow)]
+
+    event_future = FactoryGirl.create(:event, :single_day)
+
+    expect(Event.future).to include(event_today)
+    expect(Event.future).to include(event_future)
+  end
+
   describe "returns applicants email list" do
     before :each do
       @event = FactoryGirl.create(:event)
