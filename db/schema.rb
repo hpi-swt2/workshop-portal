@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170201201932) do
+ActiveRecord::Schema.define(version: 20170203150152) do
 
   create_table "agreement_letters", force: :cascade do |t|
     t.integer  "user_id",    null: false
@@ -31,8 +31,6 @@ ActiveRecord::Schema.define(version: 20170201201932) do
     t.datetime "created_at",                            null: false
     t.datetime "updated_at",                            null: false
     t.integer  "status",                    default: 2, null: false
-    t.integer  "grade"
-    t.string   "coding_skills"
     t.string   "emergency_number"
     t.boolean  "vegetarian"
     t.boolean  "vegan"
@@ -83,6 +81,7 @@ ActiveRecord::Schema.define(version: 20170201201932) do
     t.date     "application_deadline"
     t.text     "custom_application_fields"
     t.boolean  "hidden",                     default: false
+    t.string   "image"
     t.boolean  "rejections_have_been_sent",  default: false
     t.boolean  "acceptances_have_been_sent", default: false
   end

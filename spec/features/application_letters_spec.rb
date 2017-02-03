@@ -66,13 +66,10 @@ RSpec.feature "Application Letter Overview", :type => :feature do
                                  checked: @application_letter.send(attr))
     end
 
-    check_filled_field.call(:coding_skills)
     check_filled_field.call(:emergency_number)
     check_filled_field.call(:allergies)
     check_checked_checkbox.call(:vegetarian)
     check_checked_checkbox.call(:vegan)
-    expect(page).to have_select(ApplicationLetter.human_attribute_name(:grade),
-                                selected: @application_letter.grade.to_s)
   end
 
   scenario "when creating my first application, all fields should be empty" do
@@ -87,7 +84,6 @@ RSpec.feature "Application Letter Overview", :type => :feature do
     login(:pupil)
     visit new_application_letter_path(:event_id => @event.id)
     fill_in "application_letter_motivation", with:   ""
-    fill_in "application_letter_coding_skills", with:   ""
     fill_in "application_letter_emergency_number", with:   ""
     fill_in "application_letter_organisation", with:   ""
 
@@ -119,18 +115,10 @@ RSpec.feature "Application Letter Overview", :type => :feature do
         expect(page).to have_text("#{field_name}: value #{index}")
       end
     end
-
-    it "displays help text for motivation textarea" do
-      login(:pupil)
-      visit new_application_letter_path(:event_id => @event.id, :locale => :de)
-
-      expect(page).to have_text(I18n.t 'application_letters.form.help_text_coding_skills')
-    end
   end
 
   %i[pupil coach].each do |role|
     it "shows an error if the site of another application letter is accessed by url" do
-      user = FactoryGirl.create(:user, role: role)
       another_user = FactoryGirl.create(:user)
       another_application = FactoryGirl.create(:application_letter, user: another_user)
 
@@ -246,7 +234,7 @@ RSpec.feature "Application Letter Overview", :type => :feature do
   it "should only show neccessary fields for hidden events application page" do
     login(:pupil)
     visit new_application_letter_path(@application_letter, :hidden => true)
-    ['grade', 'motivation', 'emergency_number', 'experience'].each do |attr|
+    ['motivation', 'emergency_number', 'experience'].each do |attr|
       expect(page).to_not have_text(I18n.t('activerecord.attributes.application_letter.'+ attr))
     end
   end
@@ -265,9 +253,7 @@ RSpec.feature "Application Letter Overview", :type => :feature do
   end
 
   def fill_in_application
-    select "11", from: "application_letter_grade"
     fill_in "application_letter_motivation", with:   "None"
-    fill_in "application_letter_coding_skills", with:   "None"
     fill_in "application_letter_emergency_number", with:   "0123456789"
     fill_in "application_letter_organisation", with: "Schule am Griebnitzsee"
     fill_in "application_letter_allergies", with:   "Many"

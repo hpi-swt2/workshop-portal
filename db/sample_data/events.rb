@@ -14,7 +14,7 @@ def event_programmierkurs
       application_deadline: Date.tomorrow,
       published: true,
       hidden: true,
-      custom_application_fields: ['Lieblingsapp']
+      custom_application_fields: ['Lieblingsapp', 'Klassenstufe', 'Mit welchen Programmiersprachen hast du bereits Erfahrungen gesammelt']
 
   )
 end
@@ -34,7 +34,8 @@ def event_mintcamp
       date_ranges: [date_range_mint_camp],
       application_deadline: Date.tomorrow,
       hidden: false,
-      published: true
+      published: true,
+      custom_application_fields: ['Klassenstufe', 'Mit welchen Programmiersprachen hast du bereits Erfahrungen gesammelt']
 
   )
 end

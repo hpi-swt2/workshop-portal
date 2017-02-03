@@ -20,24 +20,10 @@ describe ApplicationLetter do
   end
 
   it "can't be created without mandatory fields" do
-    [:grade, :motivation, :coding_skills, :emergency_number, :vegetarian, :vegan, :organisation].each do |attr|
+    [:motivation, :emergency_number, :vegetarian, :vegan, :organisation].each do |attr|
       application = FactoryGirl.build(:application_letter, attr => nil)
       expect(application).to_not be_valid
     end
-  end
-
-  it "does only accept valid grades" do
-    application = FactoryGirl.build(:application_letter, :grade => 8)
-    expect(application).to be_valid
-
-    application = FactoryGirl.build(:application_letter, :grade => "erste")
-    expect(application).to_not be_valid
-
-    application = FactoryGirl.build(:application_letter, :grade => 4)
-    expect(application).to_not be_valid
-
-    application = FactoryGirl.build(:application_letter, :grade => 14)
-    expect(application).to_not be_valid
   end
 
   it "has application_notes" do
@@ -100,7 +86,6 @@ describe ApplicationLetter do
 
   it "calculates the correct age of applicant when event starts" do
     user = FactoryGirl.build(:user)
-    profile = FactoryGirl.build(:profile, user: user)
     application = FactoryGirl.build(:application_letter, user: user)
     application.user.profile.birth_date = application.event.start_date - 18.years
     expect(application.user.profile.age_at_time(application.event.start_date)).to eq(18)
