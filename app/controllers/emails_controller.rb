@@ -8,7 +8,7 @@ class EmailsController < ApplicationController
     application_letter_status = get_corresponding_application_letter_status
     @addresses = @event.email_addresses_of_type(application_letter_status)
 
-    @email = Email.new(hide_recipients: true, reply_to: 'workshop.portal@hpi.de', recipients: @addresses.join(','),
+    @email = Email.new(hide_recipients: true, reply_to: Rails.configuration.reply_to_address, recipients: @addresses.join(','),
                        subject: '', content: '')
 
     render :email

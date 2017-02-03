@@ -29,6 +29,15 @@ RSpec.describe "events/show", type: :view do
     expect(rendered).to_not have_text(Event.human_attribute_name(:organizer))
   end
 
+  it "does not render knowledge level or organizer if nil and the user isn't organizer" do
+    @event = assign(:event, FactoryGirl.create(:event, knowledge_level: nil, organizer: nil))
+    sign_in(FactoryGirl.create(:user, role: :pupil))
+
+    render
+    expect(rendered).to_not have_text(Event.human_attribute_name(:knowledge_level))
+    expect(rendered).to_not have_text(Event.human_attribute_name(:organizer))
+  end
+
   it "does render knowledge level or organizer if empty and the user is organizer" do
     @event = assign(:event, FactoryGirl.create(:event, knowledge_level: '', organizer: ''))
     sign_in(FactoryGirl.create(:user, role: :organizer))
