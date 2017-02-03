@@ -26,7 +26,7 @@ class RequestsController < ApplicationController
   def create
     @request = Request.new(request_params)
     if @request.save
-      Mailer.send_generic_email(false, @request.email, Rails.configuration.default_reply_to_email, I18n.t('requests.email.topic'),
+      Mailer.send_generic_email(false, @request.email, Rails.configuration.reply_to_address, I18n.t('requests.email.topic'),
                                 I18n.t('requests.email.content'))
       redirect_to root_path, notice: I18n.t('requests.notice.was_created')
     else
