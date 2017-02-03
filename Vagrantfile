@@ -26,6 +26,6 @@ Vagrant.configure("2") do |config|
   config.vm.provision "shell", inline: <<-SHELL
     apt-get update
     apt-get install -y phantomjs
-    apt-get install imagemagick
+    apt-get install -y imagemagick
   SHELL
 end
