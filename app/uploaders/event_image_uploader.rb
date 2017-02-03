@@ -1,29 +1,26 @@
 class EventImageUploader < CarrierWave::Uploader::Base
+  attr_reader :upload_width, :upload_height
 
   # image processing
   include CarrierWave::MiniMagick
 
   storage :file
 
-  # Override the directory where uploaded files will be stored.
-  # This is a sensible default for uploaders that are meant to be mounted:
+  # Return the directory that images will be uploaded to
+  # @return [String] the path relative to the `public` folder
   def store_dir
     "uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
   end
 
-  # Provide a default URL as a default if there hasn't been a file uploaded:
-  # def default_url
-  #   # For Rails 3.1+ asset pipeline compatibility:
-  #   # ActionController::Base.helpers.asset_path("fallback/" + [version_name, "default.png"].compact.join('_'))
-  #
-  #   "/images/fallback/" + [version_name, "default.png"].compact.join('_')
-  # end
-
-  attr_reader :upload_width, :upload_height
   before :cache, :capture_size_before_cache
+
+  # Fill in the upload sizes once the image has been uploaded, so that
+  # our model can use them for validation
   def capture_size_before_cache(new_file) 
-    if version_name.blank? # Only do this once, to the original version
-      if new_file.path.nil? # file sometimes is in memory
+    # Only do this once, to the original version
+    if version_name.blank?
+      # file sometimes is in memory
+      if new_file.path.nil?
         img = ::MiniMagick::Image::read(new_file.file)
         @upload_width = img[:width]
         @upload_height = img[:height]
@@ -33,8 +30,9 @@ class EventImageUploader < CarrierWave::Uploader::Base
     end
   end
 
-  # Process files as they are uploaded:
-  process resize_to_fill: [200, 155]
+  version :list_view do
+    process resize_to_fill: [200, 155]
+  end
 
   version :detail_view do
     process resize_to_fill: [1140, 200]
@@ -48,11 +46,5 @@ class EventImageUploader < CarrierWave::Uploader::Base
   def extension_whitelist
     %w(jpg jpeg gif png)
   end
-
-  # Override the filename of the uploaded files:
-  # Avoid using model.id or version_name here, see uploader/store.rb for details.
-  # def filename
-  #   "something.jpg" if original_filename
-  # end
 
 end

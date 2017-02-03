@@ -33,13 +33,12 @@ class Event < ActiveRecord::Base
   validate :application_deadline_before_start_of_event
   validates :hidden, inclusion: { in: [true, false] }
   validates :hidden, exclusion: { in: [nil] }
-  validate :check_image_dimensions, :on => :create
+  validate :check_image_dimensions
 
-  #
-  #
-  #
+  # Use the image dimensions as returned from our uploader
+  # to verify that the image has sufficient size
   def check_image_dimensions
-      errors.add( :image, I18n.t("events.errors.image_too_small")) if image.upload_width.present? && image.upload_height.present? && (image.upload_width < 200 || image.upload_height < 155)
+    errors.add(:image, I18n.t("events.errors.image_too_small")) if image.upload_width.present? && image.upload_height.present? && (image.upload_width < 200 || image.upload_height < 155)
   end
 
   # Setter for max_participants
