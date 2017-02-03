@@ -10,7 +10,7 @@ class Mailer
   def self.send_generic_email(hide_recipients, recipients, reply_to, subject, content, attachments = [])
     if hide_recipients
       if recipients.is_a? String
-        recipients = recipients.lines(',')
+        recipients = recipients.split(',')
       end
       recipients.each do |recipient|
         PortalMailer.generic_email(recipient, reply_to, subject, content, attachments).deliver_now
