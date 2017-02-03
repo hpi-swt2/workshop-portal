@@ -4,6 +4,7 @@ RSpec.describe "application_letters/new", type: :view do
   before(:each) do
     @application_letter = FactoryGirl.build(:application_letter)
     assign(:application_letter, @application_letter)
+    @event = assign(:event, FactoryGirl.create(:event))
   end
 
   it "renders new application form" do
@@ -24,5 +25,4 @@ RSpec.describe "application_letters/new", type: :view do
       assert_select "input#custom_application_fields_", count: @application_letter.event.custom_application_fields.count
     end
   end
-
 end

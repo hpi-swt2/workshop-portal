@@ -37,7 +37,12 @@ class EmailsController < ApplicationController
         @email.send_email
       end
 
-      @event.lock_application_status
+      if get_email_template_status == :acceptance
+        @event.acceptances_have_been_sent = true
+      elsif get_email_template_status == :rejection
+        @event.rejections_have_been_sent = true
+      end
+      @event.save
 
       redirect_to @event, notice: t('.sending_successful')
     else
