@@ -39,6 +39,10 @@ class ApplicationLettersController < ApplicationController
     authorize! :new, @application_letter
     if params[:event_id]
       @application_letter.event_id = params[:event_id]
+      @event = Event.find(params[:event_id])
+      if @event.hidden
+        @submit_button_text = t('application_letters.helpers.submit.create')
+      end
     end
   end
 
@@ -51,6 +55,11 @@ class ApplicationLettersController < ApplicationController
 
   # GET /applications/1/edit
   def edit
+    @application_letter = ApplicationLetter.find(params[:id])
+    @event = Event.find(@application_letter.event_id)
+    if @event.hidden
+      @submit_button_text = t('application_letters.helpers.submit.update')
+    end
   end
 
   # POST /applications
@@ -63,6 +72,10 @@ class ApplicationLettersController < ApplicationController
       seminar_name = Event.find(params[:event_id]).name
     end
     @application_letter.user_id = current_user.id
+    @event = Event.find(@application_letter.event_id)
+    if @event.hidden
+      @submit_button_text = t('application_letters.helpers.submit.create')
+    end
 
     # Send Confirmation E-Mail
     email_params = {
