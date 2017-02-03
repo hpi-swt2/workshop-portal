@@ -19,22 +19,20 @@
 
 <h3><%= t('.my_application') %></h3>
 <div id='application_details'>
-  <strong><%= ApplicationLetter.human_attribute_name(:grade) %>:</strong>
-  <%= @application_letter.grade %><br/>
   <strong><%= ApplicationLetter.human_attribute_name(:motivation) %>:</strong><br/>
   <%= @application_letter.motivation %><br/>
-  <strong><%= ApplicationLetter.human_attribute_name(:coding_skills) %>:</strong><br/>
-  <%= @application_letter.coding_skills %><br/>
-  <strong><%= ApplicationLetter.human_attribute_name(:emergency_number) %>:</strong>
-  <%= @application_letter.emergency_number %><br/>
   <strong><%= ApplicationLetter.human_attribute_name(:organisation) %>:</strong>
   <%= @application_letter.organisation %><br/>
-
+  <strong><%= ApplicationLetter.human_attribute_name(:grade) %>:</strong>
+  <%= @application_letter.grade %><br/>
+  <strong><%= ApplicationLetter.human_attribute_name(:coding_skills) %>:</strong><br/>
+  <%= @application_letter.coding_skills %><br/>
   <strong><%=t('.eating_habits') %>:</strong>
   <%= @application_letter.eating_habits.join(', ') %><br/>
-
   <strong><%= ApplicationLetter.human_attribute_name(:allergies) %>:</strong><br/>
   <%= @application_letter.allergies %><br/>
+  <strong><%= ApplicationLetter.human_attribute_name(:emergency_number) %>:</strong>
+  <%= @application_letter.emergency_number %><br/>
   <strong><%= ApplicationLetter.human_attribute_name(:annotation) %>:</strong><br/>
   <%= @application_letter.annotation %><br/>
   <% @application_letter.event.custom_application_fields
