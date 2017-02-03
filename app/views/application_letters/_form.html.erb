@@ -8,8 +8,8 @@
     </div>
   <% end %>
 
-  <% if params['hidden'] %>
-    <%= hidden_field_tag 'application_letter[grade]', 0 %>
+  <% if @event and @event.hidden %>
+    <%= hidden_field_tag 'application_letter[grade]', 10 %>
     <%= hidden_field_tag 'application_letter[experience]', 'None' %>
     <%= hidden_field_tag 'application_letter[motivation]', 'None' %>
     <%= hidden_field_tag 'application_letter[emergency_number]', 'None' %>
@@ -17,7 +17,7 @@
   <% end %>
 
 
-  <% if not params['hidden'] %>
+  <% if @event and not @event.hidden %>
     <div class="form-group">
        <%= f.label :grade, :class => 'control-label col-lg-2 required' %>
       <div class="col-lg-10">
@@ -47,7 +47,7 @@
       <p ></p>
     </div>
   </div>
-  <% if not params['hidden'] %>
+  <% if @event and not @event.hidden %>
     <div class="form-group">
       <%= f.label :emergency_number, :class => 'control-label col-lg-2 required' %>
       <div class="col-lg-10">

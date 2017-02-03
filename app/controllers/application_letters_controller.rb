@@ -22,8 +22,6 @@ class ApplicationLettersController < ApplicationController
     elsif not current_user.profile.present?
       message = I18n.t('application_letters.fill_in_profile_before_creation')
       flash[:event_id] = params[:event_id]
-      flash[:hidden] = params[:hidden]
-      flash.keep(:hidden)
       flash.keep(:event_id)
       return redirect_to new_profile_path, :alert => message
     end
@@ -70,6 +68,10 @@ class ApplicationLettersController < ApplicationController
       @application_letter.event_id = params[:event_id]
     end
     @application_letter.user_id = current_user.id
+    @event = Event.find(@application_letter.event_id)
+    if @event.hidden
+      @submit_button_text = t('application_letters.helpers.submit.create')
+    end
 
     if @application_letter.save
       redirect_to check_application_letter_path(@application_letter), notice: I18n.t('application_letters.successful_creation')
