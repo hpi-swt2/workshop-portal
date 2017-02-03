@@ -165,7 +165,7 @@ RSpec.describe "events/show", type: :view do
       end
     end
   end
-  
+
   it "displays correct buttons in draft phase" do
     @event = assign(:event, FactoryGirl.create(:event, :in_draft_phase))
     sign_in(FactoryGirl.create(:user, role: :organizer))
@@ -209,6 +209,24 @@ RSpec.describe "events/show", type: :view do
     expect(rendered).to have_button(t(:sending_acceptances, scope: 'events.applicants_overview'))
     expect(rendered).to have_button(t(:sending_rejections, scope: 'events.applicants_overview'))
     expect(rendered).to_not have_link(t(:show_participants, scope: 'events.participants'))
+  end
+
+  it "does not display send acceptances button after acceptances have been sent in selection phase" do
+    @event = assign(:event, FactoryGirl.create(:event, :in_selection_phase))
+    @event.acceptances_have_been_sent = true
+    @event.save
+    sign_in(FactoryGirl.create(:user, role: :organizer))
+    render
+    expect(rendered).to_not have_button(t(:sending_acceptances, scope: 'events.applicants_overview'))
+  end
+
+  it "does not display send acceptances button after acceptances have been sent in selection phase" do
+    @event = assign(:event, FactoryGirl.create(:event, :in_selection_phase))
+    @event.rejections_have_been_sent = true
+    @event.save
+    sign_in(FactoryGirl.create(:user, role: :organizer))
+    render
+    expect(rendered).to_not have_button(t(:sending_rejections, scope: 'events.applicants_overview'))
   end
 
   it "displays the disabled send email buttons in selection phase (when there are unclassified applications)" do
