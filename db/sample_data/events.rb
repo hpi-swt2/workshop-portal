@@ -130,7 +130,7 @@ def event_bachlorpodium
   )
 end
 
-def event_mintcamp
+def event_summer_camp
   date_range_summer_camp = DateRange.create!(
       start_date: Date.new(2017, 06, 30),
       end_date: Date.new(2017, 07, 04)
