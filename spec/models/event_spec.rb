@@ -239,14 +239,6 @@ describe Event do
     expect(application_letters.all? { |application_letter| application_letter.status == 'accepted' }).to eq(true)
   end
 
-  it "locks the application status changing of the event" do
-    event = FactoryGirl.create(:event)
-    event.application_status_locked = false
-    event.save
-    event.lock_application_status
-    expect(event.application_status_locked).to eq(true)
-  end
-
   it "is in draft phase" do
     event = FactoryGirl.build(:event, :in_draft_phase)
     expect(event.phase).to eq(:draft)
@@ -277,5 +269,14 @@ describe Event do
     event = FactoryGirl.build(:event)
     event.application_deadline = Date.yesterday
     expect(event.after_deadline?).to eq(true)
+  end
+
+  it "locks participant selection iff acceptances or rejections have been sent" do
+    [true, false].repeated_permutation(2).each do |acceptances_sent, rejections_sent|
+      event = FactoryGirl.build(:event)
+      event.acceptances_have_been_sent = acceptances_sent
+      event.rejections_have_been_sent = rejections_sent
+      expect(event.participant_selection_locked).to eq(acceptances_sent || rejections_sent)
+    end
   end
 end
