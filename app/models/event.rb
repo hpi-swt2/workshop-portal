@@ -48,6 +48,10 @@ class Event < ActiveRecord::Base
     @participants.sort { |x, y| self.compare_participants_by_agreement(x,y) }
   end
 
+  # Checks if the participant selection is locked
+  #
+  # @param none
+  # @return true if participant selection is locked
   def participant_selection_locked
     acceptances_have_been_sent || rejections_have_been_sent
   end
