@@ -67,7 +67,7 @@ class ApplicationLettersController < ApplicationController
     # Send Confirmation E-Mail
     email_params = {
         :hide_recipients => true,
-        :recipients => [current_user.email],
+        :recipients => current_user.email,
         :reply_to => Rails.configuration.reply_to_address,
         :subject => I18n.t('controllers.application_letters.confirmation_mail.subject'),
         :content => I18n.t('controllers.application_letters.confirmation_mail.content', :seminar_name => seminar_name)
