@@ -72,7 +72,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
   end
 
   scenario "logged in as Organizer I want to be able to send an email to all accepted applicants" do
-    @event = FactoryGirl.create(:event, :in_selection_phase, acceptances_have_been_sent: false)
+    @event = FactoryGirl.create(:event, :in_selection_phase)
     login(:organizer)
     @event.update!(max_participants: 2)
     2.times do |n|
@@ -90,7 +90,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
   end
 
   scenario "logged in as Organizer I want to be able to send an email to all rejected applicants" do
-    @event = FactoryGirl.create(:event, :in_selection_phase, rejections_have_been_sent: false)
+    @event = FactoryGirl.create(:event, :in_selection_phase)
     login(:organizer)
     @event.update!(max_participants: 2)
     2.times do |n|
@@ -160,7 +160,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
       visit event_path(@event)
       ApplicationLetter.statuses.keys.each do |new_status|
         if new_status != @application_letter.status
-          expect(page).not_to have_text(I18n.t "application_status.#{new_status}")
+          expect(page).not_to have_css('label', text: I18n.t "application_status.#{new_status}")
         end
       end
     end
