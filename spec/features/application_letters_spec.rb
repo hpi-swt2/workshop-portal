@@ -97,9 +97,10 @@ RSpec.feature "Application Letter Overview", :type => :feature do
       login(:pupil)
       visit new_application_letter_path(:event_id => @event.id)
       fill_in_application
-      expect(ApplicationLetter.where(grade:"11")).to_not exist
+      fill_in "application_letter_motivation", with:   "I am so motivated"
+      expect(ApplicationLetter.where(motivation:"I am so motivated")).to_not exist
       find('input[name=commit]').click
-      expect(ApplicationLetter.where(grade:"11")).to exist
+      expect(ApplicationLetter.where(motivation:"I am so motivated")).to exist
     end
 
     it "saves and displays custom fields in the application" do

@@ -25,7 +25,6 @@ FactoryGirl.define do
   end
 
   factory :application_letter2, parent: :application_letter do
-    #grade 11
     motivation "Ich bin sehr motiviert, glaubt mir."
     emergency_number "110"
     vegetarian true
