@@ -31,7 +31,7 @@ class ProfilesController < ApplicationController
 
     if @profile.save
       if flash[:event_id]
-        redirect_to new_application_letter_path(:event_id => flash[:event_id],:hidden => flash[:hidden]), notice: I18n.t('profiles.successful_creation')
+        redirect_to new_application_letter_path(:event_id => flash[:event_id]), notice: I18n.t('profiles.successful_creation')
       else
         redirect_to edit_user_registration_path, notice: I18n.t('profiles.successful_creation')
       end
