@@ -56,6 +56,21 @@ describe "Sending emails to applicants", type: :feature do
     expect(page).to have_text(@template_content)
   end
 
+  scenario "logged in as Organizer I can load an email template", js: true do
+    login(:organizer)
+    @template = FactoryGirl.create(:email_template, :acceptance)
+
+    visit event_email_show_path(@event, status: :acceptance)
+    first('.email-template').click
+
+
+    expect(find('#email_hide_recipients_true', visible: false).checked?).to eq(@template.hide_recipients)
+    expect(find('#email_hide_recipients_false', visible: false).checked?).to eq(!@template.hide_recipients)
+    expect(page.find('#email_subject').value).to eq(@template.subject)
+    expect(page.find('#email_content').value).to eq(@template.content)
+  end
+
+
   def login(role)
     @profile = FactoryGirl.create(:profile)
     @profile.user.role = role
