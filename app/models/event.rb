@@ -268,7 +268,7 @@ class Event < ActiveRecord::Base
   scope :draft_is, ->(status) { where("not published = ?", status) }
   scope :hidden_is, ->(status) { where("hidden = ?", status) }
   scope :with_date_ranges, -> { joins(:date_ranges).group('events.id').order('MIN(start_date)') }
-  scope :future, -> { with_date_ranges.having('date(MAX(end_date)) > ?', Time.zone.now.end_of_day) }
+  scope :future, -> { with_date_ranges.having('date(MAX(end_date)) > ?', Time.zone.yesterday.end_of_day) }
   scope :past, -> { with_date_ranges.having('date(MAX(end_date)) < ?', Time.zone.now.end_of_day) }
 
   # Returns events sorted by start date, returning only public ones
