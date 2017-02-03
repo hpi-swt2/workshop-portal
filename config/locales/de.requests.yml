@@ -26,7 +26,7 @@ de:
     email:
       topic: "Ihre Anfrage auf dem HPI Workshop-Portal"
       content: "Hallo!
-                Ihre Anfrage ist bei uns eingegangen und wir melden uns schnellstmöglich bei Ihnen um weitere Details abzustimmen."
+                Ihre Anfrage ist bei uns eingegangen und wir melden uns schnellstmöglich bei Ihnen, um weitere Details abzustimmen."
   activerecord:
     models:
       request:

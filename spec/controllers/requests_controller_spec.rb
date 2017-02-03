@@ -204,6 +204,10 @@ RSpec.describe RequestsController, type: :controller do
         expect(assigns(:request)).to be_a_new(Request)
       end
 
+      it "does not send an email" do
+        expect{ post :create, request: invalid_attributes, session: valid_session }.not_to change{ ActionMailer::Base.deliveries.count }
+      end
+
       it "re-renders the 'new' template" do
         post :create, request: invalid_attributes, session: valid_session
         expect(response).to render_template("new")
