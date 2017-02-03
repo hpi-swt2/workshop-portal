@@ -82,7 +82,7 @@ ActiveRecord::Schema.define(version: 20170201201932) do
     t.string   "knowledge_level"
     t.date     "application_deadline"
     t.text     "custom_application_fields"
-    t.boolean  "hidden",                    default: false
+    t.boolean  "hidden",                     default: false
     t.string   "image"
     t.boolean  "rejections_have_been_sent",  default: false
     t.boolean  "acceptances_have_been_sent", default: false
