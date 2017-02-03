@@ -14,7 +14,7 @@ def add_sample_data
   events[:gongakrobatik] = event_gongakrobatik
   events[:batterie_akustik] = event_batterie_akustik
   events[:bachlorpodium] = event_bachlorpodium
-  events[:past_deadline_event] = event_gongakrobatik
+  events[:past_deadline_event] = event_summer_camp
 
   users = Hash.new
   users[:pupil] = user_pupil
@@ -36,8 +36,8 @@ def add_sample_data
   profiles[:tobi] = profile_tobi(users[:tobi])
   profiles[:lisa] = profile_lisa(users[:lisa])
   profiles[:max]  = profile_pupil_max(users[:max])
-  profiles[:organizer] = profile_pupil_max(users[:organizer])
-  profiles[:coach]  = profile_pupil_max(users[:coach])
+  profiles[:organizer] = profile_organizer(users[:organizer])
+  profiles[:coach]  = profile_coach(users[:coach])
 
   application_letters = Hash.new
   application_letters[:applicant_gongakrobatik] = application_letter_applicant_gongakrobatik(users[:applicant], events[:gongakrobatik])
@@ -64,10 +64,6 @@ def add_sample_data
   [events, users, profiles, application_letters, requests, agreement_letters].each do |models|
     save_models(models)
   end
-
-  # set deadline to past to work around validation of application letters
-  events[:past_deadline_event].application_deadline = Date.yesterday
-  events[:past_deadline_event].save!
 end
 
 private
