@@ -91,17 +91,15 @@ describe Event do
     accepted_application_letter_3 = FactoryGirl.create(:application_letter_accepted, :event => event, :user => FactoryGirl.create(:user))
     rejected_application_letter = FactoryGirl.create(:application_letter_rejected, :event => event, :user => FactoryGirl.create(:user))
     [accepted_application_letter_1, accepted_application_letter_2, accepted_application_letter_3, rejected_application_letter].each { |letter| event.application_letters.push(letter) }
-    expect(event.email_addresses_of_type(:accepted)).to eq([accepted_application_letter_1.user.email, accepted_application_letter_2.user.email, accepted_application_letter_3.user.email].join(','))
-    expect(event.email_addresses_of_type(:rejected)).to eq([rejected_application_letter.user.email].join(','))
+    expect(event.email_addresses_of_type(:accepted)).to contain_exactly(accepted_application_letter_1.user.email, accepted_application_letter_2.user.email, accepted_application_letter_3.user.email)
+    expect(event.email_addresses_of_type(:rejected)).to contain_exactly(rejected_application_letter.user.email)
   end
 
-  it "is either a camp or a workshop" do
-    expect { FactoryGirl.build(:event, kind: :smth_invalid) }.to raise_error(ArgumentError)
-
-    event = FactoryGirl.build(:event, kind: :camp)
+  it "is either a public or private" do
+    event = FactoryGirl.build(:event, hidden: false)
     expect(event).to be_valid
 
-    event = FactoryGirl.build(:event, kind: :workshop)
+    event = FactoryGirl.build(:event, hidden: true)
     expect(event).to be_valid
   end
 
@@ -182,25 +180,30 @@ describe Event do
     expect(event.compute_occupied_places).to eq(2)
   end
 
+  it "returns all Events running now and in the future" do
+    event_today = FactoryGirl.create(:event)
+    event_today.date_ranges = [FactoryGirl.create(:date_range, start_date: Date.today, end_date: Date.tomorrow)]
+
+    event_future = FactoryGirl.create(:event, :single_day)
+
+    expect(Event.future).to include(event_today)
+    expect(Event.future).to include(event_future)
+  end
+
   describe "returns applicants email list" do
     before :each do
       @event = FactoryGirl.create(:event)
     end
-    
+
     it "returns email address only of the given type" do
       @accepted_application = FactoryGirl.create(:application_letter_accepted, event: @event, user: FactoryGirl.create(:user))
       @rejected_application = FactoryGirl.create(:application_letter_rejected, event: @event, user: FactoryGirl.create(:user))
-      expect(@event.email_addresses_of_type(:accepted)).to eq(@accepted_application.user.email)
-      expect(@event.email_addresses_of_type(:rejected)).to eq(@rejected_application.user.email)
+      expect(@event.email_addresses_of_type(:accepted)).to contain_exactly(@accepted_application.user.email)
+      expect(@event.email_addresses_of_type(:rejected)).to contain_exactly(@rejected_application.user.email)
     end
 
-    it "correctly concatinates multiple email addresses" do
-      @application1 = FactoryGirl.create(:application_letter_accepted, event: @event, user: FactoryGirl.create(:user))
-      @application2 = FactoryGirl.create(:application_letter_accepted, event: @event, user: FactoryGirl.create(:user))
-      expect(@event.email_addresses_of_type(:accepted)).to eq(@application1.user.email + "," + @application2.user.email)
-    end
   end
-  
+
   it "generates an application letter list ordered by first name" do
     @event = FactoryGirl.create(:event)
     @user1 = FactoryGirl.create(:user, email:'a@b.com')
@@ -274,17 +277,5 @@ describe Event do
     event = FactoryGirl.build(:event)
     event.application_deadline = Date.yesterday
     expect(event.after_deadline?).to eq(true)
-  end
-
-  it "can have unlimited participants" do
-    event = FactoryGirl.create(:event)
-    event.max_participants = Float::INFINITY
-    expect(event.participants_are_unlimited).to be(true)
-  end
-
-  it "has infinite max participants if max participants is unlimited" do
-    event = FactoryGirl.create(:event)
-    event.participants_are_unlimited = true
-    expect(event.max_participants).to be(Float::INFINITY)
   end
 end

@@ -12,14 +12,14 @@ describe "Sending emails to applicants", type: :feature do
   scenario "logged in as Organizer I can send emails to the applicants" do
     login(:organizer)
 
-    visit event_email_show_path(@event, status: :accepted)
+    visit event_email_show_path(@event, status: :acceptance)
     fill_in :email_subject, with: "Subject Accepted"
     fill_in :email_content, with: "Content Accepted"
     click_button I18n.t('.emails.email_form.send')
 
     expect(page).to have_text(I18n.t('.emails.submit.sending_successful'))
 
-    visit event_email_show_path(@event, status: :rejected)
+    visit event_email_show_path(@event, status: :rejection)
     fill_in :email_subject, with: "Subject Rejected"
     fill_in :email_content, with: "Content Rejected"
     click_button I18n.t('.emails.email_form.send')
@@ -32,7 +32,7 @@ describe "Sending emails to applicants", type: :feature do
     @event.application_status_locked = false
     @event.save
 
-    visit event_email_show_path(@event, status: :accepted)
+    visit event_email_show_path(@event, status: :acceptance)
     fill_in :email_subject, with: "Subject"
     fill_in :email_content, with: "Content"
     click_button I18n.t('.emails.email_form.send')
@@ -46,7 +46,7 @@ describe "Sending emails to applicants", type: :feature do
     @template_subject = "Template Subject"
     @template_content = "Template Content"
 
-    visit event_email_show_path(@event, status: :accepted)
+    visit event_email_show_path(@event, status: :acceptance)
     fill_in :email_subject, with: @template_subject
     fill_in :email_content, with: @template_content
     click_button I18n.t('.emails.email_form.save_template')
@@ -55,6 +55,21 @@ describe "Sending emails to applicants", type: :feature do
     expect(page).to have_text(@template_subject)
     expect(page).to have_text(@template_content)
   end
+
+  scenario "logged in as Organizer I can load an email template", js: true do
+    login(:organizer)
+    @template = FactoryGirl.create(:email_template, :acceptance)
+
+    visit event_email_show_path(@event, status: :acceptance)
+    first('.email-template').click
+
+
+    expect(find('#email_hide_recipients_true', visible: false).checked?).to eq(@template.hide_recipients)
+    expect(find('#email_hide_recipients_false', visible: false).checked?).to eq(!@template.hide_recipients)
+    expect(page.find('#email_subject').value).to eq(@template.subject)
+    expect(page.find('#email_content').value).to eq(@template.content)
+  end
+
 
   def login(role)
     @profile = FactoryGirl.create(:profile)
