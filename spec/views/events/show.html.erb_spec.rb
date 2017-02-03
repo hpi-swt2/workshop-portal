@@ -49,18 +49,16 @@ RSpec.describe "events/show", type: :view do
     expect(rendered).to have_css("td", :text => @application_letter.user.profile.age_at_time(@event.start_date))
   end
 
-  it "logged in as organizer it renders radio buttons for pre_accept reject pending and alternative in selection phase" do
+  it "logged in as organizer it renders radio buttons for accept reject pending and alternative, but not canceled in selection phase" do
     sign_in(FactoryGirl.create(:user, role: :organizer))
     @event = assign(:event, FactoryGirl.create(:event, :with_diverse_open_applications, :in_selection_phase))
     @application_letters = @event.application_letters #TODO I couldnt find a assign(:application_letters), still this gives the view access to it.
-    expect(@event.phase).to eq(:selection)
     render
-    expect(rendered).to have_css("label", text: I18n.t('application_status.pre_accepted'))
+    expect(rendered).to have_css("label", text: I18n.t('application_status.accepted'))
     expect(rendered).to have_css("label", text: I18n.t('application_status.rejected'))
     expect(rendered).to have_css("label", text: I18n.t('application_status.pending'))
     expect(rendered).to have_css("label", text: I18n.t('application_status.alternative'))
     expect(rendered).to_not have_css("label", text: I18n.t('application_status.canceled'))
-    expect(rendered).to_not have_css("label", text: I18n.t('application_status.accepted'))
   end
 
   it "displays application details button" do

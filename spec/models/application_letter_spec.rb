@@ -77,7 +77,7 @@ describe ApplicationLetter do
     end
   end
 
-  %i[accepted pre_accepted canceled alternative pending].each do | new_status |
+  %i[accepted canceled alternative pending].each do | new_status |
     it "cannot update the status in execution phase from rejected into #{new_status}" do
       application = FactoryGirl.create(:application_letter_rejected)
       application.event = FactoryGirl.create(:event, :in_execution_phase)
@@ -89,7 +89,7 @@ describe ApplicationLetter do
   it "can be canceled (only) if it was accepted before in execution phase" do
     application = FactoryGirl.create(:application_letter_accepted)
     application.event = FactoryGirl.create(:event, :in_execution_phase)
-    %i[pre_accepted accepted alternative pending rejected].each do | new_status |
+    %i[accepted alternative pending rejected].each do | new_status |
       application.status = new_status
       expect(application).to_not be_valid
     end
@@ -97,21 +97,21 @@ describe ApplicationLetter do
     expect(application).to be_valid
   end
 
-  it "can be promoted to pre_accepted (only) if it was alternative before in execution phase" do
+  it "can be promoted to accepted (only) if it was alternative before in execution phase" do
     application = FactoryGirl.create(:application_letter_alternative)
     application.event = FactoryGirl.create(:event, :in_execution_phase)
     %i[accepted accepted canceled pending rejected].each do | new_status |
       application.status = new_status
       expect(application).to_not be_valid
     end
-    application.status = :pre_accepted
+    application.status = :accepted
     expect(application).to be_valid
   end
 
-  it "can be actually accept pre_accepted applications (from alternatives) in execution phase" do
-    application = FactoryGirl.create(:application_letter_pre_accepted)
+  it "can be actually accept accepted applications (from alternatives) in execution phase" do
+    application = FactoryGirl.create(:application_letter)
     application.event = FactoryGirl.create(:event, :in_execution_phase)
-    %i[pre_accepted alternative canceled pending rejected].each do | new_status |
+    %i[alternative canceled pending rejected].each do | new_status |
       application.status = new_status
       expect(application).to_not be_valid
     end

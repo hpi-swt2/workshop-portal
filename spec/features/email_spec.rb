@@ -4,8 +4,8 @@ describe "Sending emails to applicants", type: :feature do
   before :each do
     @accepted_count = 4
     @rejected_count = 2
-    @event = FactoryGirl.create(:event_with_pre_accepted_applications,
-                                pre_accepted_application_letters_count: @accepted_count,
+    @event = FactoryGirl.create(:event_with_accepted_applications,
+                                accepted_application_letters_count: @accepted_count,
                                 rejected_application_letters_count: @rejected_count)
   end
 

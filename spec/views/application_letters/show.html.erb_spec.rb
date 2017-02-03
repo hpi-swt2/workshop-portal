@@ -10,15 +10,14 @@ RSpec.describe "application_letters/show", type: :view do
     sign_in profile.user
   end
 
-  it "renders radio buttons for pre_accept reject pending and alternative in selection phase" do
+  it "renders radio buttons for accept reject pending and alternative, but not canceled in selection phase" do
     @application_letter.event = FactoryGirl.create(:event, :in_selection_phase)
     render
-    expect(rendered).to have_css("label", text: I18n.t('application_status.pre_accepted'))
+    expect(rendered).to have_css("label", text: I18n.t('application_status.accepted'))
     expect(rendered).to have_css("label", text: I18n.t('application_status.rejected'))
     expect(rendered).to have_css("label", text: I18n.t('application_status.pending'))
     expect(rendered).to have_css("label", text: I18n.t('application_status.alternative'))
     expect(rendered).to_not have_css("label", text: I18n.t('application_status.canceled'))
-    expect(rendered).to_not have_css("label", text: I18n.t('application_status.accepted'))
   end
 
   it "renders application's attributes" do

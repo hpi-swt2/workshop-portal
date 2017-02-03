@@ -114,12 +114,12 @@ class User < ActiveRecord::Base
 	  return age_at_event_start >= age
   end
 
-  # Returns the number of (pre) accepted applications from the user without counting status of current event application
+  # Returns the number of accepted applications from the user without counting status of current event application
   #
   # @param [Event] current event (which application status will be excluded)
   # @return [Int] of number of currently accepted applications
   def accepted_applications_count(event)
-    ApplicationLetter.where(user_id: id, status: [ApplicationLetter.statuses[:accepted], ApplicationLetter.statuses[:pre_accepted]])
+    ApplicationLetter.where(user_id: id, status: ApplicationLetter.statuses[:accepted])
         .where.not(event: event).count()
   end
 

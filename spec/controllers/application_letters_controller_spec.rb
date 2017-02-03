@@ -50,9 +50,6 @@ RSpec.describe ApplicationLettersController, type: :controller do
         get :show, id: @application.to_param
         expect(assigns(:application_letter)).to eq(@application)
       end
-      it "assigns selectable statuses" do
-        get :show, id: @application.to_param
-      end
     end
 
     describe "GET #edit" do
@@ -144,7 +141,7 @@ RSpec.describe ApplicationLettersController, type: :controller do
         sign_in FactoryGirl.create(:user, role: :admin)
       end
       context "with valid params" do
-        let(:new_status) { {status: 'pre_accepted'} }
+        let(:new_status) { {status: 'accepted'} }
 
         it "assigns the requested application as @application" do
           put :update_status, id: @application.to_param, application_letter: new_status, session: valid_session

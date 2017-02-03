@@ -67,7 +67,7 @@ class EmailsController < ApplicationController
 
   def get_corresponding_application_letter_status
     return case params[:status]
-      when "acceptance" then :pre_accepted
+      when "acceptance" then :accepted
       when "rejection" then :rejected
       else :accepted
       end

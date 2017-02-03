@@ -84,16 +84,16 @@ describe Event do
     expect(event.applications_classified?).to eq(false)
   end
 
-  it "computes the email addresses of the pre_accepted and the rejected applications" do
+  it "computes the email addresses of the accepted and the rejected applications" do
     event = FactoryGirl.create(:event)
-    pre_accepted_application_letter_1 = FactoryGirl.create(:application_letter_pre_accepted, :event => event, :user => FactoryGirl.create(:user))
-    pre_accepted_application_letter_2 = FactoryGirl.create(:application_letter_pre_accepted, :event => event, :user => FactoryGirl.create(:user))
-    pre_accepted_application_letter_3 = FactoryGirl.create(:application_letter_pre_accepted, :event => event, :user => FactoryGirl.create(:user))
+    accepted_application_letter_1 = FactoryGirl.create(:application_letter_accepted, :event => event, :user => FactoryGirl.create(:user))
+    accepted_application_letter_2 = FactoryGirl.create(:application_letter_accepted, :event => event, :user => FactoryGirl.create(:user))
+    accepted_application_letter_3 = FactoryGirl.create(:application_letter_accepted, :event => event, :user => FactoryGirl.create(:user))
     rejected_application_letter = FactoryGirl.create(:application_letter_rejected, :event => event, :user => FactoryGirl.create(:user))
 
-    [pre_accepted_application_letter_1, pre_accepted_application_letter_2, pre_accepted_application_letter_3, rejected_application_letter].each { |letter| event.application_letters.push(letter) }
+    [accepted_application_letter_1, accepted_application_letter_2, accepted_application_letter_3, rejected_application_letter].each { |letter| event.application_letters.push(letter) }
 
-    expect(event.email_addresses_of_type(:pre_accepted)).to contain_exactly(pre_accepted_application_letter_1.user.email, pre_accepted_application_letter_2.user.email, pre_accepted_application_letter_3.user.email)
+    expect(event.email_addresses_of_type(:accepted)).to contain_exactly(accepted_application_letter_1.user.email, accepted_application_letter_2.user.email, accepted_application_letter_3.user.email)
     expect(event.email_addresses_of_type(:rejected)).to contain_exactly(rejected_application_letter.user.email)
   end
 
@@ -178,9 +178,9 @@ describe Event do
   it "computes the number of occupied places" do
     event = FactoryGirl.create(:event)
     application_letter = FactoryGirl.create(:application_letter, user: FactoryGirl.create(:user), event: event)
-    application_letter_accepted = FactoryGirl.create(:application_letter_accepted, user: FactoryGirl.create(:user), event: event)
+    FactoryGirl.create(:application_letter_accepted, user: FactoryGirl.create(:user), event: event)
     expect(event.compute_occupied_places).to eq(1)
-    application_letter_pre_accepted = FactoryGirl.create(:application_letter_pre_accepted, user: FactoryGirl.create(:user), event: event)
+    FactoryGirl.create(:application_letter_accepted, user: FactoryGirl.create(:user), event: event)
     expect(event.compute_occupied_places).to eq(2)
   end
 
@@ -190,10 +190,10 @@ describe Event do
     end
 
     it "returns email address only of the given type" do
-      @pre_accepted_application = FactoryGirl.create(:application_letter_pre_accepted, event: @event, user: FactoryGirl.create(:user))
-      @rejected_application = FactoryGirl.create(:application_letter_rejected, event: @event, user: FactoryGirl.create(:user))
-      expect(@event.email_addresses_of_type(:pre_accepted)).to contain_exactly(@pre_accepted_application.user.email)
-      expect(@event.email_addresses_of_type(:rejected)).to contain_exactly(@rejected_application.user.email)
+      accepted_application = FactoryGirl.create(:application_letter_accepted, event: @event, user: FactoryGirl.create(:user))
+      rejected_application = FactoryGirl.create(:application_letter_rejected, event: @event, user: FactoryGirl.create(:user))
+      expect(@event.email_addresses_of_type(:accepted)).to contain_exactly(accepted_application.user.email) #TODO
+      expect(@event.email_addresses_of_type(:rejected)).to contain_exactly(rejected_application.user.email)
     end
   end
 
@@ -225,11 +225,11 @@ describe Event do
     expect(@event.application_letters_ordered('unknown','desc')).to eq([@application2,@application1])
   end
 
-  it "pre accepts all its application letters" do
+  it "accepts all its application letters" do
     event = FactoryGirl.create :event, :with_diverse_open_applications, :in_selection_phase
-    event.pre_accept_all_application_letters
+    event.accept_all_application_letters
     application_letters = ApplicationLetter.where(event: event.id)
-    expect(application_letters.all? { |application_letter| application_letter.status == 'pre_accepted' }).to eq(true)
+    expect(application_letters.all? { |application_letter| application_letter.status == 'accepted' }).to eq(true)
   end
 
   it "locks the application status changing of the event" do
@@ -240,12 +240,12 @@ describe Event do
     expect(event.application_status_locked).to eq(true)
   end
 
-  it "accepts all its pre_accepted application letters" do
-    event = FactoryGirl.create :event_with_pre_accepted_applications, :in_selection_phase
-    pre_accepted_application_letters = event.application_letters.select{ |application_letter| application_letter.status == 'pre_accepted' }
-    event.accept_all_pre_accepted_applications
-    expect(pre_accepted_application_letters.count).to be > 0
-    pre_accepted_application_letters.each do |application|
+  it "accepts all its accepted application letters" do
+    event = FactoryGirl.create :event_with_accepted_applications, :in_selection_phase
+    accepted_application_letters = event.application_letters.select{ |application_letter| application_letter.status == 'accepted' }
+    event.accept_all_accepted_applications #TODO
+    expect(accepted_application_letters.count).to be > 0
+    accepted_application_letters.each do |application|
       application.reload
       expect(application.status).to eq 'accepted'
     end

@@ -151,17 +151,18 @@ class Event < ActiveRecord::Base
     end
   end
 
-  # Sets the status of all the event's application letters to pre_accepted
+  # Sets the status of all the event's application letters to accepted
   #
   # @param none
   # @return none
-  def pre_accept_all_application_letters
+  def accept_all_application_letters
     application_letters.each do |application_letter|
-      application_letter.update(status: :pre_accepted)
+      application_letter.update(status: :accepted)
     end
   end
 
-  # Sets the status of all the event's application letters with status pre_accepted to status accepted
+  #TODO
+  # Sets the status of all the event's application letters with status accepted to status accepted
   #
   # @param none
   # @return none
@@ -193,7 +194,7 @@ class Event < ActiveRecord::Base
   # @param none
   # @return [Int] for number of occupied places
   def compute_occupied_places
-    application_letters.where(status: [ApplicationLetter.statuses[:accepted], ApplicationLetter.statuses[:pre_accepted]]).count
+    application_letters.where(status: ApplicationLetter.statuses[:accepted]).count
   end
 
   # Locks the ability to change application statuses
