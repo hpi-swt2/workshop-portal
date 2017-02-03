@@ -270,17 +270,6 @@ class Event < ActiveRecord::Base
   scope :future, -> { with_date_ranges.having('date(MAX(end_date)) > ?', Time.zone.yesterday.end_of_day) }
   scope :past, -> { with_date_ranges.having('date(MAX(end_date)) < ?', Time.zone.now.end_of_day) }
 
-  # Returns events sorted by start date, returning only public ones
-  # if requested
-  #
-  # @param limit Maximum number of events to return
-  # @param only_public Set to true to not include drafts and hidden events
-  # @return List of events
-  def self.sorted_by_start_date(only_public)
-    (only_public ? Event.draft_is(false).where(hidden: false) : Event.all)
-      .sort_by(&:start_date)
-  end
-
   protected
   # Compares two participants to achieve following order:
   # 1. All participants that have to submit an letter of agreement but did not yet do so, ordered by email.
