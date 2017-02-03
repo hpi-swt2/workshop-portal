@@ -80,7 +80,7 @@ def profile_coach(user)
   Profile.new(
     user: user,
     first_name: "Tom",
-    last_name: "Coach",
+    last_name: "Betreuer",
     gender: "male",
     birth_date: Date.parse('1995.08.31'),
     street_name: "Stahnsdorfer Str.",
@@ -95,7 +95,7 @@ def profile_organizer(user)
   Profile.new(
       user: user,
       first_name: "Lisa",
-      last_name: "Organizer",
+      last_name: "Organisatorin",
       gender: "female",
       birth_date: Date.parse('1996.09.21'),
       street_name: "Stahnsdorfer Str.",
