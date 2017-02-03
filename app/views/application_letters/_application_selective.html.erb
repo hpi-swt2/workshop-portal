@@ -1,4 +1,4 @@
-<% if (can? :edit_applicants, Event) && (application_letter.event.phase == :selection) %>
+<% if (can? :edit_applicants, Event) && (application_letter.event.phase == :selection) && (!application_letter.event.participant_selection_locked) %>
     <%= form_for :application_letter, url: update_application_letter_status_path(application_letter), html: {method: :put} do |f| %>
         <div class="form-group">
           <div class="btn-group" data-toggle="buttons">
