@@ -160,7 +160,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
       visit event_path(@event)
       ApplicationLetter.statuses.keys.each do |new_status|
         if new_status != @application_letter.status
-          expect(page).not_to have_css('label', text: I18n.t "application_status.#{new_status}")
+          expect(page).not_to have_css('label', text: I18n.t("application_status.#{new_status}"))
         end
       end
     end
