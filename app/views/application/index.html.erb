@@ -23,11 +23,13 @@
 										<%= glyph 'calendar' %>  <%= t "start_page.all_events" %>
 								</a>
 							</li>
-							<li>
-								<a class="btn btn-default" href="<%= new_user_registration_path %>">
-									<%= glyph 'user' %> <%= t 'start_page.register_now' %>
-								</a>
-							</li>
+              <% unless user_signed_in? %>
+                <li>
+                  <a class="btn btn-default" href="<%= new_user_registration_path %>">
+                    <%= glyph 'user' %> <%= t 'start_page.register_now' %>
+                  </a>
+                </li>
+              <% end %>
 						</ul>
 					</div>
 				</div>

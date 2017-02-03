@@ -107,7 +107,6 @@ RSpec.describe ApplicationLettersController, type: :controller do
               emergency_number: "01234567891",
               vegetarian: true,
               vegan: true,
-              allergic: true,
               allergys: "Many",
               annotation: "This site is so cool."
           }
@@ -213,6 +212,12 @@ RSpec.describe ApplicationLettersController, type: :controller do
         expect {
           post :create, application_letter: valid_attributes, session: valid_session
         }.to change(ApplicationLetter, :count).by(1)
+      end
+
+      it "sends an Email" do
+        expect {
+          post :create, application_letter: valid_attributes, session: valid_session
+        }.to change{ActionMailer::Base.deliveries.count}.by(1)
       end
 
       it "assigns a newly created application as @application" do
