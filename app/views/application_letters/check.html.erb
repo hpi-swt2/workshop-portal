@@ -25,7 +25,7 @@
   <tr>
     <th><%= ApplicationLetter.human_attribute_name(:motivation) %>:</th>
     <td id="application-motivation" data-orig-text="<%= @application_letter.motivation %>">
-      <%= truncate @application_letter.motivation, length: 300 do link_to 'Weiterlesen', 'javascript:jQuery("#application-motivation").text(jQuery("#application-motivation").attr("data-orig-text"))' end %>
+      <%= truncate @application_letter.motivation, length: 300 do link_to I18n.t('events.list.read_on'), 'javascript:jQuery("#application-motivation").text(jQuery("#application-motivation").attr("data-orig-text"))' end %>
       </td>
   </tr>
 </table>
