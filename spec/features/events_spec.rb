@@ -167,37 +167,39 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     end
   end
 
-  scenario "logged in as Organizer I can send acceptance emails and by that change the status notification flag" do
+  scenario "logged in as Organizer I can send acceptance and then rejection emails and by that change the status notification flag" do
     login(:organizer)
     event = FactoryGirl.create(:event_with_accepted_applications, :in_selection_phase)
-    accepted_applications = event.application_letters.select { | application_letter | application_letter.status == 'accepted' }
+
+    event.application_letters.each do |application|
+      application.status_notification_sent = false
+      application.save! if application.changed?
+    end
+  
+    applications = event.application_letters.select { | application_letter | application_letter.status == 'accepted' }
     visit event_path(event)
     click_button(I18n.t('events.applicants_overview.sending_acceptances'))
     expect(page).to have_current_path(event_email_show_path(event_id: event.id), only_path: true)
     fill_in :email_subject, with: "Subject Accepted"
     fill_in :email_content, with: "Content Accepted"
     click_button I18n.t('.emails.email_form.send')
-    expect(accepted_applications.size).to be > 0
-    accepted_applications.each do |letter|
+    expect(applications.size).to be > 0
+    applications.each do |letter|
       letter.reload
-      expect(letter.status_notification_send).to be true
+      expect(letter.status_notification_sent).to be true
     end
-  end
 
-  scenario "logged in as Organizer I can send rejection emails and by that change the status notification flag" do
-    login(:organizer)
-    event = FactoryGirl.create(:event_with_accepted_applications, :in_selection_phase)
-    rejected_applications = event.application_letters.select { | application_letter | application_letter.status == 'rejected' }
+    applications = event.application_letters.select { | application_letter | application_letter.status == 'rejected' }
     visit event_path(event)
     click_button(I18n.t('events.applicants_overview.sending_rejections'))
     expect(page).to have_current_path(event_email_show_path(event_id: event.id), only_path: true)
-    fill_in :email_subject, with: "Subject Accepted"
-    fill_in :email_content, with: "Content Accepted"
+    fill_in :email_subject, with: "Subject Rejected"
+    fill_in :email_content, with: "Content Rejected"
     click_button I18n.t('.emails.email_form.send')
-    expect(rejected_applications.size).to be > 0
-    rejected_applications.each do |letter|
+    expect(applications.size).to be > 0
+    applications.each do |letter|
       letter.reload
-      expect(letter.status_notification_send).to be true
+      expect(letter.status_notification_sent).to be true
     end
   end
 

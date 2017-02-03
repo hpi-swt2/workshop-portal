@@ -40,7 +40,7 @@ ActiveRecord::Schema.define(version: 20170203180638) do
     t.text     "custom_application_fields"
     t.text     "annotation"
     t.string   "organisation"
-    t.boolean  "status_notification_send",  default: false, null: false
+    t.boolean  "status_notification_sent",  default: false, null: false
   end
 
   add_index "application_letters", ["event_id"], name: "index_application_letters_on_event_id"
@@ -84,7 +84,6 @@ ActiveRecord::Schema.define(version: 20170203180638) do
     t.date     "application_deadline"
     t.text     "custom_application_fields"
     t.boolean  "hidden",                     default: false
-    t.string   "image"
     t.boolean  "rejections_have_been_sent",  default: false
     t.boolean  "acceptances_have_been_sent", default: false
   end
@@ -130,8 +129,8 @@ ActiveRecord::Schema.define(version: 20170203180638) do
     t.integer  "number_of_participants"
     t.string   "knowledge_level"
     t.text     "annotations"
-    t.string   "zip_code_city"
     t.integer  "status",                 default: 0
+    t.string   "zip_code_city"
     t.string   "contact_person"
     t.text     "notes"
   end

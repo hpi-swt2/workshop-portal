@@ -6,7 +6,7 @@ class EmailsController < ApplicationController
 
     @templates = EmailTemplate.with_status(get_email_template_status)
     application_letter_status = get_corresponding_application_letter_status
-    @addresses = @event.email_addresses_of_type(application_letter_status)
+    @addresses = @event.email_addresses_of_type_without_notification_sent(application_letter_status)
 
     @email = Email.new(hide_recipients: true, reply_to: Rails.configuration.reply_to_address, recipients: @addresses.join(','),
                        subject: '', content: '')
@@ -31,18 +31,19 @@ class EmailsController < ApplicationController
     @event = Event.find(params[:event_id])
     status = get_email_template_status
     if @email.valid?
-
-      if get_corresponding_application_letter_status == :accepted
+      application_letter_status = get_corresponding_application_letter_status
+      if application_letter_status == :accepted
         @email.send_email_with_ical @event
       else
         @email.send_email
       end
 
-      if get_email_template_status == :acceptance
+      if status == :acceptance
         @event.acceptances_have_been_sent = true
-        @event.accept_all_pre_accepted_applications
-      elsif get_email_template_status == :rejection
+        @event.set_status_notification_flag_for_applications_with_status(application_letter_status)
+      elsif status == :rejection
         @event.rejections_have_been_sent = true
+        @event.set_status_notification_flag_for_applications_with_status(application_letter_status)
       end
       @event.save
 

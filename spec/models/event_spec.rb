@@ -85,16 +85,18 @@ describe Event do
   end
 
   it "computes the email addresses of the accepted and the rejected applications" do
-    event = FactoryGirl.create(:event)
+    event = FactoryGirl.create(:event, :in_selection_phase)
     accepted_application_letter_1 = FactoryGirl.create(:application_letter_accepted, :event => event, :user => FactoryGirl.create(:user))
     accepted_application_letter_2 = FactoryGirl.create(:application_letter_accepted, :event => event, :user => FactoryGirl.create(:user))
     accepted_application_letter_3 = FactoryGirl.create(:application_letter_accepted, :event => event, :user => FactoryGirl.create(:user))
-    rejected_application_letter = FactoryGirl.create(:application_letter_rejected, :event => event, :user => FactoryGirl.create(:user))
+    accepted_application_letter_4 = FactoryGirl.create(:application_letter_accepted, status_notification_sent: true, event: event, user: FactoryGirl.create(:user))
+    rejected_application_letter_1 = FactoryGirl.create(:application_letter_rejected, :event => event, :user => FactoryGirl.create(:user))
+    rejected_application_letter_2 = FactoryGirl.create(:application_letter_rejected, status_notification_sent: true, :event => event, :user => FactoryGirl.create(:user))
 
-    [accepted_application_letter_1, accepted_application_letter_2, accepted_application_letter_3, rejected_application_letter].each { |letter| event.application_letters.push(letter) }
+    [accepted_application_letter_1, accepted_application_letter_2, accepted_application_letter_3, accepted_application_letter_4, rejected_application_letter_1, rejected_application_letter_2].each { |letter| event.application_letters.push(letter) }
 
-    expect(event.email_addresses_of_type(:accepted)).to contain_exactly(accepted_application_letter_1.user.email, accepted_application_letter_2.user.email, accepted_application_letter_3.user.email)
-    expect(event.email_addresses_of_type(:rejected)).to contain_exactly(rejected_application_letter.user.email)
+    expect(event.email_addresses_of_type_without_notification_sent(:accepted)).to contain_exactly(accepted_application_letter_1.user.email, accepted_application_letter_2.user.email, accepted_application_letter_3.user.email)
+    expect(event.email_addresses_of_type_without_notification_sent(:rejected)).to contain_exactly(rejected_application_letter_1.user.email)
   end
 
   it "is either a public or private" do
@@ -192,19 +194,6 @@ describe Event do
     expect(Event.future).to include(event_future)
   end
 
-  describe "returns applicants email list" do
-    before :each do
-      @event = FactoryGirl.create(:event)
-    end
-
-    it "returns email address only of the given type" do
-      accepted_application = FactoryGirl.create(:application_letter_accepted, event: @event, user: FactoryGirl.create(:user))
-      rejected_application = FactoryGirl.create(:application_letter_rejected, event: @event, user: FactoryGirl.create(:user))
-      expect(@event.email_addresses_of_type(:accepted)).to contain_exactly(accepted_application.user.email) #TODO
-      expect(@event.email_addresses_of_type(:rejected)).to contain_exactly(rejected_application.user.email)
-    end
-  end
-
   it "generates an application letter list ordered by first name" do
     @event = FactoryGirl.create(:event)
     @user1 = FactoryGirl.create(:user, email:'a@b.com')
@@ -240,14 +229,20 @@ describe Event do
     expect(application_letters.all? { |application_letter| application_letter.status == 'accepted' }).to eq(true)
   end
 
-  it "accepts all its accepted application letters" do
-    event = FactoryGirl.create :event_with_accepted_applications, :in_selection_phase
-    accepted_application_letters = event.application_letters.select{ |application_letter| application_letter.status == 'accepted' }
-    event.accept_all_accepted_applications #TODO
-    expect(accepted_application_letters.count).to be > 0
-    accepted_application_letters.each do |application|
-      application.reload
-      expect(application.status).to eq 'accepted'
+  %i[accepted rejected].each do |status|
+    it "sets the status notification flag for all #{status} applications" do
+      event = FactoryGirl.create :event_with_accepted_applications, :in_selection_phase
+      application_letters = event.application_letters.select{ |application_letter| application_letter.status == status.to_s }
+      application_letters.each do |application|
+        application.status_notification_sent = false
+        application.save! if application.changed?
+      end
+      event.set_status_notification_flag_for_applications_with_status(status)
+      expect(application_letters.count).to be > 0
+      application_letters.each do |application|
+        application.reload
+        expect(application.status_notification_sent).to be true
+      end
     end
   end
 

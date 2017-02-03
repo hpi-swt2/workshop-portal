@@ -123,6 +123,15 @@ FactoryGirl.define do
       end
     end
 
+    trait :in_selection_phase_with_participants_locked do
+      after(:build) do |event|
+        event.published = true
+        event.application_deadline = Date.yesterday
+        event.acceptances_have_been_sent = true
+        event.rejections_have_been_sent = false
+      end
+    end
+
     trait :in_execution_phase do
       after(:build) do |event|
         event.published = true
