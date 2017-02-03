@@ -46,6 +46,8 @@ Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
   root 'application#index'
 
+  get 'imprint' => 'application#imprint', as: :imprint
+
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
   get 'events/:id/participants' => 'events#participants', as: :event_participants

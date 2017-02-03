@@ -23,6 +23,10 @@ de:
       was_updated: "Die Anfrage wurde aktualisiert"
       was_accepted: "Die Anfrage wurde angenommen"
       was_deleted: "Die Anfrage wurde gelöscht"
+    email:
+      topic: "Ihre Anfrage auf dem HPI Workshop-Portal"
+      content: "Hallo!
+                Ihre Anfrage ist bei uns eingegangen und wir melden uns schnellstmöglich bei Ihnen, um weitere Details abzustimmen."
   activerecord:
     models:
       request:

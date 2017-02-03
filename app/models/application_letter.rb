@@ -19,9 +19,10 @@ class ApplicationLetter < ActiveRecord::Base
 
   VALID_GRADES = 5..13
 
-  validates :user, :event, :experience, :motivation, :coding_skills, :emergency_number, presence: true
+  validates :user, :event, :motivation, :coding_skills, :emergency_number,:organisation, presence: true
   validates :grade, presence: true, numericality: { only_integer: true }
-  validates_inclusion_of :grade, :in => VALID_GRADES
+  #Use 0 as default for hidden event applications
+  validates_inclusion_of :grade, in: (VALID_GRADES.to_a.push(0))
   validates :vegetarian, :vegan, :allergic, inclusion: { in: [true, false] }
   validates :vegetarian, :vegan, :allergic, exclusion: { in: [nil] }
   validate :deadline_cannot_be_in_the_past, :if => Proc.new { |letter| !(letter.status_changed?) }
@@ -36,7 +37,7 @@ class ApplicationLetter < ActiveRecord::Base
   # @param none
   # @return [Array <String>] array of selectable statuses
   def self.selectable_statuses
-    return ["pre_accepted","rejected","pending","alternative"]
+    return ["accepted","rejected","pending","alternative"]
   end
 
   # Checks if the deadline is over
@@ -51,10 +52,10 @@ class ApplicationLetter < ActiveRecord::Base
   # Checks if it is allowed to change the status of the application
   #
   # @param none
-  # @return [Boolean] true if no status changes are allowed anymore
+  # @return [Boolean] true if status changes are allowed
   def status_change_allowed?
     if event.phase == :execution
-      (status_was == 'accepted' && status == 'canceled') || (status_was == 'alternative' && status == 'pre_accepted') || (status_was == 'pre_accepted' && status == 'accepted')
+      (status_was == 'accepted' && status == 'canceled') || (status_was == 'alternative' && status == 'accepted')
     else
       true
     end
@@ -129,7 +130,11 @@ class ApplicationLetter < ActiveRecord::Base
     habits = Array.new
     habits.push(ApplicationLetter.human_attribute_name(:vegetarian)) if vegetarian
     habits.push(ApplicationLetter.human_attribute_name(:vegan)) if vegan
-    habits.push(ApplicationLetter.human_attribute_name(:allergic)) if allergic
+    habits.push(ApplicationLetter.human_attribute_name(:allergies)) if allergic
     habits
+  end
+
+  def allergic
+    not allergies.empty?
   end
 end

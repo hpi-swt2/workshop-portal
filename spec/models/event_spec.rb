@@ -97,13 +97,11 @@ describe Event do
     expect(event.email_addresses_of_type(:rejected)).to contain_exactly(rejected_application_letter.user.email)
   end
 
-  it "is either a camp or a workshop" do
-    expect { FactoryGirl.build(:event, kind: :smth_invalid) }.to raise_error(ArgumentError)
-
-    event = FactoryGirl.build(:event, kind: :camp)
+  it "is either a public or private" do
+    event = FactoryGirl.build(:event, hidden: false)
     expect(event).to be_valid
 
-    event = FactoryGirl.build(:event, kind: :workshop)
+    event = FactoryGirl.build(:event, hidden: true)
     expect(event).to be_valid
   end
 
@@ -184,6 +182,16 @@ describe Event do
     expect(event.compute_occupied_places).to eq(2)
   end
 
+  it "returns all Events running now and in the future" do
+    event_today = FactoryGirl.create(:event)
+    event_today.date_ranges = [FactoryGirl.create(:date_range, start_date: Date.today, end_date: Date.tomorrow)]
+
+    event_future = FactoryGirl.create(:event, :single_day)
+
+    expect(Event.future).to include(event_today)
+    expect(Event.future).to include(event_future)
+  end
+
   describe "returns applicants email list" do
     before :each do
       @event = FactoryGirl.create(:event)
@@ -232,14 +240,6 @@ describe Event do
     expect(application_letters.all? { |application_letter| application_letter.status == 'accepted' }).to eq(true)
   end
 
-  it "locks the application status changing of the event" do
-    event = FactoryGirl.create(:event)
-    event.application_status_locked = false
-    event.save
-    event.lock_application_status
-    expect(event.application_status_locked).to eq(true)
-  end
-
   it "accepts all its accepted application letters" do
     event = FactoryGirl.create :event_with_accepted_applications, :in_selection_phase
     accepted_application_letters = event.application_letters.select{ |application_letter| application_letter.status == 'accepted' }
@@ -283,16 +283,13 @@ describe Event do
     expect(event.after_deadline?).to eq(true)
   end
 
-  it "can have unlimited participants" do
-    event = FactoryGirl.create(:event)
-    event.max_participants = Float::INFINITY
-    expect(event.participants_are_unlimited).to be(true)
-  end
-
-  it "has infinite max participants if max participants is unlimited" do
-    event = FactoryGirl.create(:event)
-    event.participants_are_unlimited = true
-    expect(event.max_participants).to be(Float::INFINITY)
+  it "locks participant selection iff acceptances or rejections have been sent" do
+    [true, false].repeated_permutation(2).each do |acceptances_sent, rejections_sent|
+      event = FactoryGirl.build(:event)
+      event.acceptances_have_been_sent = acceptances_sent
+      event.rejections_have_been_sent = rejections_sent
+      expect(event.participant_selection_locked).to eq(acceptances_sent || rejections_sent)
+    end
   end
 
   it "is in draft phase" do
