@@ -23,7 +23,7 @@ describe Profile do
   end
 
   it "cannot create Profile without mandatory fields" do
-    [:first_name, :last_name, :gender, :birth_date, :school, :street_name, :zip_code, :city, :state, :country].each do |attr|
+    [:first_name, :last_name, :gender, :birth_date, :street_name, :zip_code, :city, :state, :country].each do |attr|
       profile = FactoryGirl.build(:profile, attr => nil)
       expect(profile).to_not be_valid
     end
@@ -34,6 +34,14 @@ describe Profile do
     profile = FactoryGirl.build(:profile, birth_date: @age.years.ago())
 
     expect(profile.age).to eq(@age)
+  end
+
+  it "returns correctly whether the profile owner is an adult or not" do
+    profile = FactoryGirl.build(:profile)
+    adult_profile = FactoryGirl.build(:adult_profile)
+
+    expect(profile.adult?).to be false
+    expect(adult_profile.adult?).to be true
   end
 
   it "returns correct age in leap year edge case" do

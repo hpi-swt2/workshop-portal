@@ -12,9 +12,10 @@ def event_programmierkurs
       knowledge_level: 'Anfänger',
       date_ranges: [date_range_singleday],
       application_deadline: Date.tomorrow,
-      application_status_locked: false,
       published: true,
+      hidden: true,
       custom_application_fields: ['Lieblingsapp']
+
   )
 end
 
@@ -32,8 +33,9 @@ def event_mintcamp
       knowledge_level: 'Fortgeschrittene',
       date_ranges: [date_range_mint_camp],
       application_deadline: Date.tomorrow,
-      application_status_locked: false,
+      hidden: false,
       published: true
+
   )
 end
 
@@ -50,9 +52,10 @@ def event_bechersaeuberungsevent
       knowledge_level: 'Anfänger',
       date_ranges: [date_range_singleday],
       application_deadline: Date.tomorrow,
-      application_status_locked: false,
       published: true,
+      hidden: false,
       custom_application_fields: ['Lieblings-Becherart', 'Kannst du eine eigene Spülmaschine mitbringen?']
+
   )
 end
 
@@ -68,8 +71,9 @@ def event_gongakrobatik
       knowledge_level: 'Ihr braucht kein besonderes Vorwissen, jeder ist Willkommen!',
       date_ranges: [date_range_long], 
       application_deadline: Date.tomorrow,
-      application_status_locked: false,
+      hidden: false,
       published: true
+
   )
 end
 
@@ -90,8 +94,8 @@ def event_batterie_akustik
       organizer: 'IAB',
       date_ranges: [date_range_short, date_range_medium],
       application_deadline: Date.tomorrow,
-      application_status_locked: false,
       published: false,
+      hidden: false,
       custom_application_fields: ['Spielst du gerne in deiner Freizeit mit Batterien?']
   )
 end
@@ -115,7 +119,7 @@ def event_bachlorpodium
       max_participants: 442,
       date_ranges: [date_range_singleday1, date_range_singleday2, date_range_singleday3], 
       application_deadline: Date.tomorrow,
-      application_status_locked: false ,
+      hidden: true,
       published: true
   )
 end

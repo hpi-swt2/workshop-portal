@@ -22,7 +22,7 @@ RSpec.describe PortalMailer, type: :mailer do
     end
 
     it 'renders the sender email' do
-      expect(mail.from).to eq([Rails.configuration.default_reply_to_email])
+      expect(mail.from).to eq([Rails.configuration.from_address])
     end
 
     it 'sets the content' do

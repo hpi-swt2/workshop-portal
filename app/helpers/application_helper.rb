@@ -58,14 +58,12 @@ module ApplicationHelper
     # everyone gets settings
     o << (menu_item t(:settings, scope: 'navbar'), edit_user_registration_path)
     # everyone gets their profile, if it exists
-    if current_user.profile.present?
-      o << (menu_item t(:profile, scope: 'navbar'), profile_path(current_user.profile))
-    else
+    unless current_user.profile.present?
       o << (menu_item t(:create_profile, scope: 'navbar'), new_profile_path)
     end
     # pupils get their applications
     if current_user.role == "pupil"
-      o << (menu_item t(:my_application_letters, scope: 'navbar'), application_letters_path)
+      o << (menu_item t(:my_events, scope: 'navbar'), application_letters_path)
     end
     # admins get user management
     if current_user.role == "admin" || current_user.role == "organizer"
@@ -75,5 +73,25 @@ module ApplicationHelper
     o << (menu_item t(:logout, scope: 'navbar'), destroy_user_session_path, :method => :delete)
 
     o.html_safe
+  end
+
+  def resource_name
+    :user
+  end
+
+  def resource
+    @user ||= User.new
+  end
+
+  def devise_mapping
+    @devise_mapping ||= Devise.mappings[:user]
+  end
+
+  # Generates a nice looking pattern in one of the HPI colors
+  # for the given string.
+  def geopattern(string)
+    colors = ['#B1073A', '#DE6207', '#F7A900']
+    color = colors[Digest::SHA1.hexdigest(string).to_i(16) % colors.size]
+    GeoPattern.generate(string, color: color)
   end
 end

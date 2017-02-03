@@ -1,17 +1,29 @@
+require 'pdf_generation/badges_pdf'
 require 'pdf_generation/applications_pdf'
+require 'pdf_generation/participants_pdf'
 require 'rubygems'
 require 'zip'
 
 class EventsController < ApplicationController
-  before_action :set_event, only: [:show, :edit, :update, :destroy, :participants, :participants_pdf, :print_applications]
+
+  before_action :set_event, only: [:show, :edit, :update, :destroy, :participants, 
+    :participants_pdf, :print_applications, :print_applications_eating_habits, :badges, :print_badges]
+
 
   # GET /events
   def index
-    @events = Event.sorted_by_start_date(!can?(:view_unpublished, Event))
+    @events = add_event_query_conditions(Event.future)
+  end
+
+  def archive
+    @events = add_event_query_conditions(Event.past)
   end
 
   # GET /events/1
   def show
+    if @event.hidden and !can? :view_hidden, Event
+      redirect_to new_application_letter_path(:event_id => @event.id)
+    end
     @free_places = @event.compute_free_places
     @occupied_places = @event.compute_occupied_places
     @application_letters = filter_application_letters(@event.application_letters)
@@ -55,26 +67,35 @@ class EventsController < ApplicationController
 
   # GET /events/1/badges
   def badges
-    @event = Event.find(params[:event_id])
+    authorize! :print_badges, @event
     @participants = @event.participants
   end
 
   # POST /events/1/badges
   def print_badges
-    names = badges_name_params
+    authorize! :print_badges, @event
+    @participants = @event.participants
+    name_format = params[:name_format]
+    show_color = params[:show_color]
+    show_organisation = params[:show_organisation]
+    logo = params[:logo_upload]
 
-    # pdf document initialization
-    pdf = Prawn::Document.new(:page_size => 'A4')
-    pdf.stroke_color "000000"
-
-    # divide in pieces of 10 names
-    badge_pages = names.each_slice(10).to_a
-    badge_pages.each_with_index do | page, index |
-      create_badge_page(pdf, page, index)
+    selected_ids = params[:selected_ids]
+    selected_participants = User.where(id: selected_ids)
+    # remove users who are not actual participants
+    selected_participants &= @participants
+    if selected_participants.empty?
+      flash.now[:error] = I18n.t('events.badges.no_users_selected')
+      render 'badges' and return
     end
 
-
-    send_data pdf.render, filename: "badges.pdf", type: "application/pdf", disposition: "inline"
+    begin
+      pdf = BadgesPDF.generate(@event, selected_participants, name_format, show_color, show_organisation, logo)
+      send_data pdf, filename: "badges.pdf", type: "application/pdf", disposition: "inline"
+    rescue Prawn::Errors::UnsupportedImageType
+      flash.now[:error] = I18n.t('events.badges.wrong_file_format')
+      render 'badges'
+    end
   end
 
   # GET /events/1/participants
@@ -88,6 +109,12 @@ class EventsController < ApplicationController
     authorize! :print_applications, @event
     pdf = ApplicationsPDF.generate(@event)
     send_data pdf, filename: "applications_#{@event.name}_#{Date.today}.pdf", type: "application/pdf", disposition: "inline"
+  end
+
+  def print_applications_eating_habits
+    #authorize! :print_applications_eating_habits, @event
+    pdf = ParticipantsPDF.generate(@event)
+    send_data pdf, filename: "applications_eating_habits_#{@event.name}_#{Date.today}.pdf", type: "application/pdf", disposition: "inline"
   end
 
   # GET /events/1/accept-all-applicants
@@ -189,11 +216,11 @@ class EventsController < ApplicationController
     end
 
     data.unshift([
-                     I18n.t('controllers.events.participants_pdf.first_name'),
-                     I18n.t('controllers.events.participants_pdf.last_name'),
-                     I18n.t('controllers.events.participants_pdf.first_name'),
-                     I18n.t('controllers.events.participants_pdf.allergies')
-                 ])
+     I18n.t('controllers.events.participants_pdf.first_name'),
+     I18n.t('controllers.events.participants_pdf.last_name'),
+     I18n.t('controllers.events.participants_pdf.first_name'),
+     I18n.t('controllers.events.participants_pdf.allergies')
+    ])
 
     name = @event.name
     doc = Prawn::Document.new(:page_size => 'A4') do
@@ -220,35 +247,19 @@ class EventsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_event
       @event = Event.find(params[:id])
     end
 
-    # Only allow a trusted parameter "white list" through.
     def event_params
-      params.require(:event).permit(:name, :description, :max_participants, :participants_are_unlimited, :kind, :organizer, :knowledge_level, :application_deadline, :published, :custom_application_fields => [], date_ranges_attributes: [:start_date, :end_date, :id])
+      params.require(:event).permit(:name, :description, :max_participants, :organizer, :knowledge_level, :application_deadline, :published, :hidden, :custom_application_fields => [], date_ranges_attributes: [:start_date, :end_date, :id])
     end
 
-    # Generate all names to print from the query-params
-    #
-    # @return participant_names as array of strings
-    def badges_name_params
-      params.select { |key, value| key.include? "_print" }.values
-    end
-
-    # Create a name badge in a given pdf
-    #
-    # @param pdf, is a prawn pdf-object
-    # @param name [String] is the name label of the new badge
-    # @param x [Integer] is the x-coordinate of the upper left corner of the new badge
-    # @param y [Integer] is the y-coordinate of the upper left corner of the new badge
-    def create_badge(pdf, name, x, y)
-      width = 260
-      height = 150
-
-      pdf.stroke_rectangle [x, y], width, height
-      pdf.text_box name, :at => [x + width / 2 - 50 , y - 20], :width => width - 100, :height => height - 100, :overflow => :shrink_to_fit
+    def add_event_query_conditions(query)
+      conditions = {}
+      conditions[:hidden] = false unless can? :view_hidden, Event
+      conditions[:published] = true unless can? :view_unpublished, Event
+      query.where(conditions)
     end
 
     def filter_application_letters(application_letters)
@@ -258,21 +269,6 @@ class EventsController < ApplicationController
         application_letters.keep_if { |l| filters.include?(l.status) }
       end
       application_letters
-    end
-
-    # Create a page with maximum 10 badges
-    #
-    # @param pdf, is a prawn pdf-object
-    # @param names [Array of Strings] are the name which are printed to the badges
-    # @param index [Number] the page number
-    def create_badge_page(pdf, names, index)
-      # create no pagebreak for first page
-      pdf.start_new_page if index > 0
-
-      names.each_slice(2).with_index do |(left, right), row|
-        create_badge(pdf, left, 0, 750 - row * 150)
-        create_badge(pdf, right, 260, 750 - row * 150) unless right.nil?
-      end
     end
 
     # Checks if a file is valid and not empty

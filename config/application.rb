@@ -29,7 +29,7 @@ module WorkshopPortal
     # see Event::unreasonably_long, unit in days
     config.unreasonably_long_event_time_span = 300
 
-    # default reply_to email adress
-    config.default_reply_to_email = 'workshop-portal@gmail.com'
+    config.from_address = ENV['SMTP_ADDRESS'] ? ENV['SMTP_ADDRESS'] : 'noreply@localhost'
+    config.reply_to_address = config.from_address
   end
 end

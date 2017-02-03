@@ -2,10 +2,11 @@
 
 de:
   requests:
+    intro_text: "Wenn Sie einen Workshop am HPI durchführen wollen, füllen Sie bitte das folgende Formular aus. Die weitere Planung und Kommunikation wird über E-Mail erfolgen."
     new:
       title: "Neue Anfrage stellen"
-      workshop_information: "Informationen über den gewünschten Workshop"
-      personal_information: "Persönliche Daten"
+    workshop_information: "Informationen über den gewünschten Workshop"
+    personal_information: "Persönliche Daten"
     form_of_addresses:
       mr: "Herr"
       mrs: "Frau"
@@ -14,6 +15,7 @@ de:
       create_request: "Anfrage erstellen"
       accept: "Annehmen"
       set_contact_person: "Ansprechpartner festlegen"
+      set_notes: "Notizen speichern"
     hints:
       please_enter_two_topics: "Bitte 2 Wünsche angeben"
     notice:
@@ -46,9 +48,11 @@ de:
         id: "Nummer"
         created_at: "Erstellt am"
         contact_person: "Ansprechpartner"
+        notes: "Notizen"
         status: "Status"
         statuses:
-          open: "Noch nicht angenommen"
+          open: "Offen"
           accepted: "Angenommen"
+          declined: "Abgelehnt"
   dialogues:
     confirm_delete: "Bist du sicher, dass du diese Anfrage löschen möchtest? Diese Aktion kann nicht widerrufen werden."
