@@ -62,6 +62,22 @@ RSpec.describe EmailsController, type: :controller do
         }.to change{ActionMailer::Base.deliveries.count}.by(1)
       end
 
+      it "sends an Email with ical attachement for accepted applications" do
+        post :submit, send: I18n.t('.emails.email_form.send'), event_id: @event.id, email: @email, status: 'acceptance'
+
+        mail = ActionMailer::Base.deliveries.last
+        expect(mail.attachments.size).to eq(1)
+        attachment = mail.attachments[0]
+        expect(attachment.filename).to eq(I18n.t 'emails.ical_attachment')
+      end
+
+      it "does not send an Email with ical attachement for rejected applications" do
+        post :submit, send: I18n.t('.emails.email_form.send'), event_id: @event.id, email: @email, status: 'rejection'
+
+        mail = ActionMailer::Base.deliveries.last
+        expect(mail.attachments.size).to eq(0)
+      end
+
       it "redirects to event view page" do
         post :submit, send: I18n.t('.emails.email_form.send'), event_id: @event.id, email: @email
         expect(subject).to redirect_to(@event)
