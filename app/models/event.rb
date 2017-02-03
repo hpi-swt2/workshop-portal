@@ -2,16 +2,17 @@
 #
 # Table name: events
 #
-#  id               :integer          not null, primary key
-#  name             :string
-#  description      :string
-#  max_participants :integer
-#  date_ranges      :Collection
-#  published        :boolean
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
-#  application_status_locked  :boolean
-#  hidden           :boolean
+#  id                         :integer          not null, primary key
+#  name                       :string
+#  description                :string
+#  max_participants           :integer
+#  date_ranges                :Collection
+#  published                  :boolean
+#  created_at                 :datetime         not null
+#  updated_at                 :datetime         not null
+#  acceptances_have_been_sent :boolean
+#  rejections_have_been_sent  :boolean
+#  hidden                     :boolean
 #
 
 class Event < ActiveRecord::Base
@@ -47,7 +48,13 @@ class Event < ActiveRecord::Base
     @participants.sort { |x, y| self.compare_participants_by_agreement(x,y) }
   end
 
-
+  # Checks if the participant selection is locked
+  #
+  # @param none
+  # @return true if participant selection is locked
+  def participant_selection_locked
+    acceptances_have_been_sent || rejections_have_been_sent
+  end
 
   # @return the minimum start_date over all date ranges
   def start_date
@@ -168,14 +175,6 @@ class Event < ActiveRecord::Base
     application_letters.where(status: ApplicationLetter.statuses[:accepted]).count
   end
 
-  # Locks the ability to change application statuses
-  #
-  # @param none
-  # @return none
-  def lock_application_status
-    update(application_status_locked: true)
-  end
-
   # Returns the current state of the event (draft-, application-, selection- and execution-phase)
   #
   # @param none
@@ -183,8 +182,8 @@ class Event < ActiveRecord::Base
   def phase
     return :draft if !published
     return :application if published && !after_deadline?
-    return :selection if published && after_deadline? && !application_status_locked
-    return :execution if published && after_deadline? && application_status_locked
+    return :selection if published && after_deadline? && !(acceptances_have_been_sent && rejections_have_been_sent)
+    return :execution if published && after_deadline? && acceptances_have_been_sent && rejections_have_been_sent
   end
 
   # Returns a label listing the number of days to the deadline if
@@ -268,7 +267,7 @@ class Event < ActiveRecord::Base
   scope :draft_is, ->(status) { where("not published = ?", status) }
   scope :hidden_is, ->(status) { where("hidden = ?", status) }
   scope :with_date_ranges, -> { joins(:date_ranges).group('events.id').order('MIN(start_date)') }
-  scope :future, -> { with_date_ranges.having('date(MAX(end_date)) > ?', Time.zone.now.end_of_day) }
+  scope :future, -> { with_date_ranges.having('date(MAX(end_date)) > ?', Time.zone.yesterday.end_of_day) }
   scope :past, -> { with_date_ranges.having('date(MAX(end_date)) < ?', Time.zone.now.end_of_day) }
 
   # Returns events sorted by start date, returning only public ones

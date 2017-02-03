@@ -150,15 +150,18 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     expect(page).to have_css('label.active', text: I18n.t('application_status.accepted'))
   end
 
-  scenario "logged in as Organizer I can not change application status with radio buttons if the applications are locked" do
+  scenario "logged in as Organizer I can not change application status with radio buttons if acceptance emails or rejection emails have been sent" do
     login(:organizer)
-    @event.lock_application_status
-    @pupil = FactoryGirl.create(:profile)
-    @application_letter = FactoryGirl.create(:application_letter, event: @event, user: @pupil.user)
-    visit event_path(@event)
-    ApplicationLetter.statuses.keys.each do |new_status|
-      if new_status != @application_letter.status
-        expect(page).not_to have_text(I18n.t "application_status.#{new_status}")
+    [[true, true], [true, false], [false, true]].each do |acceptances_have_been_sent, rejections_have_been_sent|
+      @event.acceptances_have_been_sent = acceptances_have_been_sent
+      @event.rejections_have_been_sent = rejections_have_been_sent
+      @pupil = FactoryGirl.create(:profile)
+      @application_letter = FactoryGirl.create(:application_letter, event: @event, user: @pupil.user)
+      visit event_path(@event)
+      ApplicationLetter.statuses.keys.each do |new_status|
+        if new_status != @application_letter.status
+          expect(page).not_to have_css('label', text: I18n.t("application_status.#{new_status}"))
+        end
       end
     end
   end
