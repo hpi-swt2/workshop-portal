@@ -27,9 +27,9 @@ describe "Sending emails to applicants", type: :feature do
     expect(page).to have_text(I18n.t('.emails.submit.sending_successful'))
   end
 
-  scenario "logged in as Organizer after sending an Email to the applicants the event application status gets locked" do
+  scenario "logged in as Organizer after sending an acceptance Email to the applicants the event application status for sending acceptances gets locked" do
     login(:organizer)
-    @event.application_status_locked = false
+    @event.acceptances_have_been_sent = false
     @event.save
 
     visit event_email_show_path(@event, status: :acceptance)
@@ -37,7 +37,20 @@ describe "Sending emails to applicants", type: :feature do
     fill_in :email_content, with: "Content"
     click_button I18n.t('.emails.email_form.send')
 
-    expect(Event.find(@event.id).application_status_locked).to be(true)
+    expect(Event.find(@event.id).acceptances_have_been_sent).to be(true)
+  end
+
+  scenario "logged in as Organizer after sending an rejection Email to the applicants the event application status for sending rejections gets locked" do
+    login(:organizer)
+    @event.rejections_have_been_sent = false
+    @event.save
+
+    visit event_email_show_path(@event, status: :rejection)
+    fill_in :email_subject, with: "Subject"
+    fill_in :email_content, with: "Content"
+    click_button I18n.t('.emails.email_form.send')
+
+    expect(Event.find(@event.id).rejections_have_been_sent).to be(true)
   end
 
   scenario "logged in as Organizer I can save an email as a template" do
