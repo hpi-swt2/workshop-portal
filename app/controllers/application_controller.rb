@@ -19,8 +19,8 @@ class ApplicationController < ActionController::Base
     #       we should if this becomes a perf problem), there is no
     #       other solution
 
-    @events = Event.sorted_by_start_date(true)
-      .select { |a| a.start_date > Time.now }
+    @events = Event.future
+      .draft_is(false).hidden_is(false)
       .first(3)
     render 'index', locals: { full_width: true }
   end
