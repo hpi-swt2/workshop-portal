@@ -7,7 +7,7 @@
   </div>
   <h1><%= @event.name %></h1>
 </div>
-<%= image_tag "event-detail.png", class: "img-rounded img-responsive center-block m-t-1 m-b-1" %>
+<div id="wsp-event-show-banner" style="background-image: <%= geopattern(@event.name).to_data_uri %>"></div>
 <div class="row">
   <div class="col-md-1 col-md-offset-1 text-center col-sm-2">
     <%= render "event_date_large", event: @event %>
@@ -20,23 +20,27 @@
   </div>
   <div class="col-md-2 col-sm-offset-2 col-md-offset-0">
     <dl>
-      <dt><strong><%= model_class.human_attribute_name(:knowledge_level) %>:</strong></dt>
-      <dd><%= @event.knowledge_level %></dd>
+      <% if not @event.knowledge_level.blank? or can? :manage, Event %>
+        <dt><strong><%= model_class.human_attribute_name(:knowledge_level) %>:</strong></dt>
+        <dd><%= @event.knowledge_level %></dd>
+      <% end %>
       <dt><strong><%= model_class.human_attribute_name(:max_participants) %>:</strong></dt>
       <dd><%= @event.max_participants %></dd>
-      <dt><strong><%= model_class.human_attribute_name(:organizer) %>:</strong></dt>
-      <dd><%= @event.organizer %></dd>
+      <% if not @event.organizer.blank? or can? :manage, Event %>
+        <dt><strong><%= model_class.human_attribute_name(:organizer) %>:</strong></dt>
+        <dd><%= @event.organizer %></dd>
+      <% end %>
       <dt><strong><%= model_class.human_attribute_name(:application_deadline) %>:</strong></dt>
       <dd> <%= I18n.l(@event.application_deadline) + ' ' + I18n.t('midnight') %></dd>
       <% if can? :manage, Event %>
-      <dt><strong><%= model_class.human_attribute_name(:custom_application_fields) %>:</strong></dt>
-      <dd>
-        <ul>
-          <% @event.custom_application_fields.each do |field| %>
-            <li><%= field %></li>
-          <% end %>
-        </ul>
-      </dd>
+        <dt><strong><%= model_class.human_attribute_name(:custom_application_fields) %>:</strong></dt>
+        <dd>
+          <ul>
+            <% @event.custom_application_fields.each do |field| %>
+              <li><%= field %></li>
+            <% end %>
+          </ul>
+        </dd>
       <% end %>
     </dl>
   </div>

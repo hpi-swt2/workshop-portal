@@ -128,16 +128,6 @@ describe "Event", type: :feature do
       expect(page).to have_text('Anfangs-Datum darf nicht in der Vergangenheit liegen')
     end
 
-    it "should warn about unreasonably long time spans" do
-      visit new_event_path
-      fill_in 'Maximale Teilnehmerzahl', :with => 25
-      fill_in "event_application_deadline", :with => Date.current
-      fill_in "event[date_ranges_attributes][][start_date]", with: Date.current
-      fill_in "event[date_ranges_attributes][][end_date]", with: Date.current.next_year(3)
-      click_button I18n.t('.events.form.create')
-      expect(page).to have_text('End-Datum liegt ungewöhnlich weit vom Start-Datum entfernt.')
-    end
-
     it "should not allow an end date before a start date" do
       visit new_event_path
       fill_in "event[date_ranges_attributes][][start_date]", with: Date.current

@@ -18,6 +18,8 @@ class ApplicationLettersController < ApplicationController
   def new
     if not current_user
       message = I18n.t('application_letters.login_before_creation')
+      flash[:event_id] = params[:event_id]
+      flash.keep(:event_id)
       return redirect_to user_session_path, :alert => message
     elsif not current_user.profile.present?
       message = I18n.t('application_letters.fill_in_profile_before_creation')
@@ -65,8 +67,8 @@ class ApplicationLettersController < ApplicationController
     # Send Confirmation E-Mail
     email_params = {
         :hide_recipients => true,
-        :recipients => [current_user.email],
-        :reply_to => I18n.t('controllers.application_letters.confirmation_mail.sender'),
+        :recipients => current_user.email,
+        :reply_to => Rails.configuration.reply_to_address,
         :subject => I18n.t('controllers.application_letters.confirmation_mail.subject'),
         :content => I18n.t('controllers.application_letters.confirmation_mail.content', :seminar_name => seminar_name)
     }
