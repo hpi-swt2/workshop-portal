@@ -10,17 +10,21 @@
 #
 FactoryGirl.define do
   factory :email_template do
-    status :accepted
+    status :acceptance
     hide_recipients false
     subject "EmailTemplate-Subject"
     content "EmailTemplate-Content"
-  end
 
-  factory :email_template_accepted, parent: :email_template do
-    status :accepted
-  end
+    trait :default do
+      status :default
+    end
 
-  factory :email_template_rejected, parent: :email_template do
-    status :rejected
+    trait :acceptance do
+      status :acceptance
+    end
+
+    trait :rejection do
+      status :rejection
+    end
   end
 end

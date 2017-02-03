@@ -1,0 +1,10 @@
+<div class="row">
+  <div class="event-list col-md-10 col-md-offset-1">
+    <%= link_to events_path, :class => 'btn btn-default' do
+      glyph('chevron-left') + ' ' +
+      t('events.all_events')
+    end %>
+
+  <%= render @events %>
+  </div>
+</div>

@@ -53,8 +53,8 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     login(:organizer)
     @event.update!(max_participants: 1)
     visit event_path(@event)
-    expect(page).to have_button(I18n.t('events.applicants_overview.sending_acceptances'), disabled: true)
-    expect(page).to have_button(I18n.t('events.applicants_overview.sending_rejections'), disabled: true)
+    expect(page).to have_css('button[disabled]', text: I18n.t('events.applicants_overview.sending_acceptances'))
+    expect(page).to have_css('button[disabled]', text: I18n.t('events.applicants_overview.sending_rejections'))
   end
 
   scenario "logged in as Organizer I want to be unable to send emails if there is a negative number of free places left" do
@@ -67,8 +67,8 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
       FactoryGirl.create(:application_letter_accepted, :event => @event, :user => @pupil.user)
     end
     visit event_path(@event)
-    expect(page).to have_button(I18n.t('events.applicants_overview.sending_acceptances'), disabled: true)
-    expect(page).to have_button(I18n.t('events.applicants_overview.sending_rejections'), disabled: true)
+    expect(page).to have_css('button[disabled]', text: I18n.t('events.applicants_overview.sending_acceptances'))
+    expect(page).to have_css('button[disabled]', text: I18n.t('events.applicants_overview.sending_rejections'))
   end
 
   scenario "logged in as Organizer I want to be able to send an email to all accepted applicants" do
@@ -81,7 +81,8 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
       FactoryGirl.create(:application_letter_accepted, :event => @event, :user => @pupil.user)
     end
     visit event_path(@event)
-    click_link I18n.t('events.applicants_overview.sending_acceptances')
+    click_button I18n.t('events.applicants_overview.sending_acceptances')
+    expect(page).to have_text(I18n.t('emails.email_form.show_recipients'))
     choose(I18n.t('emails.email_form.show_recipients'))
     fill_in('email_subject', with: 'Subject')
     fill_in('email_content', with: 'Content')
@@ -98,7 +99,8 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
       FactoryGirl.create(:application_letter_rejected, :event => @event, :user => @pupil.user)
     end
     visit event_path(@event)
-    click_link I18n.t('events.applicants_overview.sending_rejections')
+    click_button I18n.t('events.applicants_overview.sending_rejections')
+    expect(page).to have_text(I18n.t('emails.email_form.show_recipients'))
     choose(I18n.t('emails.email_form.show_recipients'))
     fill_in('email_subject', with: 'Subject')
     fill_in('email_content', with: 'Content')
@@ -162,7 +164,9 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
   end
 
   scenario "logged in as Organizer I can push the accept all button to accept all applicants" do
-    @event = FactoryGirl.create(:event, :with_diverse_open_applications, :in_selection_phase, participants_are_unlimited: true)
+    @event = FactoryGirl.create(:event, :with_diverse_open_applications, :in_selection_phase)
+    @event.max_participants = @event.application_letters.size + 1
+    @event.save
     login(:organizer)
     visit event_path(@event)
     click_link I18n.t "events.applicants_overview.accept_all"
@@ -286,6 +290,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
 
     # sort this list by name
     click_link I18n.t('activerecord.attributes.profile.name')
+    expect(page).to have_css('a.dropup')
 
     sorted_accepted_names = @event.application_letters
       .to_a
