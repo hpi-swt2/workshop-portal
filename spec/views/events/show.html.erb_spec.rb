@@ -20,6 +20,33 @@ RSpec.describe "events/show", type: :view do
     expect(rendered).to have_text(@event.knowledge_level)
   end
 
+  it "does not render knowledge level or organizer if empty and the user isn't organizer" do
+    @event = assign(:event, FactoryGirl.create(:event, knowledge_level: '', organizer: ''))
+    sign_in(FactoryGirl.create(:user, role: :pupil))
+
+    render
+    expect(rendered).to_not have_text(Event.human_attribute_name(:knowledge_level))
+    expect(rendered).to_not have_text(Event.human_attribute_name(:organizer))
+  end
+
+  it "does not render knowledge level or organizer if nil and the user isn't organizer" do
+    @event = assign(:event, FactoryGirl.create(:event, knowledge_level: nil, organizer: nil))
+    sign_in(FactoryGirl.create(:user, role: :pupil))
+
+    render
+    expect(rendered).to_not have_text(Event.human_attribute_name(:knowledge_level))
+    expect(rendered).to_not have_text(Event.human_attribute_name(:organizer))
+  end
+
+  it "does render knowledge level or organizer if empty and the user is organizer" do
+    @event = assign(:event, FactoryGirl.create(:event, knowledge_level: '', organizer: ''))
+    sign_in(FactoryGirl.create(:user, role: :organizer))
+
+    render
+    expect(rendered).to have_text(Event.human_attribute_name(:knowledge_level))
+    expect(rendered).to have_text(Event.human_attribute_name(:organizer))
+  end
+
   it "displays counter" do
     free_places = assign(:free_places, @event.compute_free_places)
     occupied_places = assign(:occupied_places, @event.compute_occupied_places)
@@ -54,9 +81,26 @@ RSpec.describe "events/show", type: :view do
     expect(rendered).to have_link(t(:details, scope: 'events.applicants_overview'))
   end
 
+  it "should warn about unreasonably long time spans for organizers" do
+    @event = assign(:event, FactoryGirl.create(:event, :with_unreasonably_long_range))
+
+    sign_in(FactoryGirl.create(:user, role: :organizer))
+    render
+    expect(rendered).to have_text(I18n.t 'events.notices.unreasonable_timespan')
+  end
+
+  it "should not warn about unreasonably long time spans for others" do
+    @event = assign(:event, FactoryGirl.create(:event, :with_unreasonably_long_range))
+
+    sign_in(FactoryGirl.create(:user, role: :coach))
+    render
+    expect(rendered).to_not have_text(I18n.t 'events.notices.unreasonable_timespan')
+  end
+
   it "should not display accept-all-button for non-organizers" do
     @event = assign(:event, FactoryGirl.create(:event, :in_selection_phase))
-    @event.max_participants = Float::INFINITY
+    @event.max_participants = @event.application_letters.size + 1
+    @event.save
     [:coach, :pupil].each do | each |
       sign_in(FactoryGirl.create(:user, role: each))
       render
@@ -66,8 +110,9 @@ RSpec.describe "events/show", type: :view do
 
   it "should display accept-all-button for organizers if there are enough free places" do
     @event = assign(:event, FactoryGirl.create(:event, :with_diverse_open_applications, :in_selection_phase))
+    @event.max_participants = @event.application_letters.size + 1
+    @event.save
     sign_in(FactoryGirl.create(:user, role: :organizer))
-    @event.max_participants = Float::INFINITY
     render
     expect(rendered).to have_link(I18n.t('events.applicants_overview.accept_all'))
   end

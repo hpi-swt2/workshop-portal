@@ -1,4 +1,4 @@
-<% if can? :apply, Event %>
+<% if can? :view_apply_button, Event %>
   <% if current_user.present? && current_user.application_letter_for_event?(event) %>
       <%= link_to t("helpers.links.show_application"), check_application_letter_path(current_user.application_letter_for_event(event)),
                   :class => 'btn btn-default btn-sm' %>

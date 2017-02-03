@@ -12,7 +12,8 @@ RSpec.feature "Draft events", :type => :feature do
     fill_in "event_application_deadline", :with => @event.application_deadline
     fill_in "event[date_ranges_attributes][][start_date]", with: Date.current.next_day(2)
     fill_in "event[date_ranges_attributes][][end_date]", with: Date.current.next_day(3)
-    choose I18n.t "events.form.published.myoff"
+    choose I18n.t "events.form.draft.save"
+    choose I18n.t "events.type.public"
   end
 
   scenario "User saves a draft event, but doesn't publish it" do
@@ -31,7 +32,7 @@ RSpec.feature "Draft events", :type => :feature do
     click_button I18n.t "events.form.create"
 
     visit edit_event_path(@event)
-    choose I18n.t "events.form.published.myon"
+    choose I18n.t "events.form.draft.publish"
     click_button I18n.t "events.form.update"
 
     expect(page).to have_css(".alert-success")
