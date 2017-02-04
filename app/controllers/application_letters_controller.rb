@@ -107,7 +107,7 @@ class ApplicationLettersController < ApplicationController
 
   # PATCH/PUT /applications/1/status
   def update_status
-    if @application_letter.update_attributes(application_status_param)
+    if @application_letter.update_attributes(application_status_param.merge(status_notification_sent: false))
       if request.xhr?
         render json: {
           free_places: I18n.t('events.applicants_overview.free_places',

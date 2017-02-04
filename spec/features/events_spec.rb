@@ -167,12 +167,13 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     end
   end
 
-  scenario "logged in as Organizer I can cancel accepted applications (execution phase)" do #TODO copy from test below, when you get it to work
+  scenario "logged in as Organizer I can cancel accepted applications (execution phase)" do
     login(:organizer)
-    @pupil = FactoryGirl.create(:profile)
-    @application_letter = FactoryGirl.create(:application_letter_accepted, user: @pupil.user)
-    @application_letter.event = FactoryGirl.create(:event, :in_execution_phase)
-    visit event_path(@application_letter.event)
+    @event = FactoryGirl.create(:event_in_execution_with_applications_in_various_states, :applications_with_profile, accepted_application_letters_count: 1)
+    @application_letter = @event.application_letters.find { |application| application.status == 'accepted'}
+    @application_letter.status_notification_sent = true
+    @application_letter.save! 
+    visit event_path(@event)
     expect(page).to have_link(I18n.t "application_status.actions.cancel")
     click_link I18n.t "application_status.actions.cancel"
     expect(page).to_not have_link(I18n.t "application_status.actions.cancel")
@@ -181,21 +182,20 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     expect(@application_letter.status_notification_sent).to be false
   end
 
-  scenario "logged in as Organizer I can accept alternative applications (execution phase)" do #TODO fix this test, atm no application letters are displayed when visiting events#show
+
+  scenario "logged in as Organizer I can accept alternative applications (execution phase)" do
     login(:organizer)
     @event = FactoryGirl.create(:event_in_execution_with_applications_in_various_states, :applications_with_profile, alternative_application_letters_count: 1)
-    @application_letter_alternative = @event.application_letters.find { |application| application.status == 'alternative'}
-    @application_letter_alternative.status_notification_sent = true
-    @application_letter_alternative.save!
-    expect(@application_letter_alternative.user.profile).not_to be_nil #TODO remove
+    @application_letter = @event.application_letters.find { |application| application.status == 'alternative'}
+    @application_letter.status_notification_sent = true
+    @application_letter.save! 
     visit event_path(@event)
-    save_page
     expect(page).to have_link(I18n.t "application_status.actions.accept")
     click_link I18n.t "application_status.actions.accept"
     expect(page).to_not have_link(I18n.t "application_status.actions.accept")
-    @application_letter_alternative.reload
-    expect(@application_letter_alternative.status).to eq('accepted')
-    expect(@application_letter_alternative.status_notification_sent).to be false
+    @application_letter.reload
+    expect(@application_letter.status).to eq('accepted')
+    expect(@application_letter.status_notification_sent).to be false
   end
 
   scenario "logged in as Organizer I cannot accept alternative applications if no free places are available (execution phase)" do
