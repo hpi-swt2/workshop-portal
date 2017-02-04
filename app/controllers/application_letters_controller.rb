@@ -83,7 +83,10 @@ class ApplicationLettersController < ApplicationController
         :recipients => current_user.email,
         :reply_to => Rails.configuration.reply_to_address,
         :subject => I18n.t('controllers.application_letters.confirmation_mail.subject'),
-        :content => I18n.t('controllers.application_letters.confirmation_mail.content', :seminar_name => seminar_name)
+        :content => I18n.t('controllers.application_letters.confirmation_mail.content',
+                           :seminar_name => seminar_name,
+                           :first_name => current_user.profile.first_name,
+                           :last_name => current_user.profile.last_name)
     }
     @email = Email.new(email_params)
     Mailer.send_generic_email(@email.hide_recipients, @email.recipients, @email.reply_to, @email.subject, @email.content)

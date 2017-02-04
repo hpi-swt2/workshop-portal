@@ -76,9 +76,12 @@ de:
     pending_after_deadline: "In Bearbeitung"
     alternative: "Nachrücker"
 
-
   controllers:
     application_letters:
       confirmation_mail:
         subject: "Bewerbung erhalten"
-        content: "Hallo, \n\rDu hast dich erfolgreich für  {{semimar_name}} beworben. Deine Bewerbung wird jetzt bearbeitet. Für weitere Information besuche das Workshop Portal. Viele Grüße, das HPI Workshop Team"
+        content: >
+          Liebe(r) {{first_name}} {{last_name}},\n\r
+          du hast dich erfolgreich für die Veranstaltung {{seminar_name}} beworben.
+          Deine Bewerbung wird von uns bearbeitet. Für den aktuellen Status deiner Bewerbung
+          siehe unter "Meine Bewerbungen" im Portal ({{event_link}}).
