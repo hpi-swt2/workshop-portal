@@ -30,6 +30,8 @@
               <%= f.error_span(:status) %>
             </div>
         <% end %>
+    <% else %>
+      <%= t("application_status.#{application_letter.status}") %>
     <% end %>
 <% elsif can? :view_applicants, Event %>
     <%= t("application_status.#{application_letter.status}") %>

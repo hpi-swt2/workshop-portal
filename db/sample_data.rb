@@ -10,11 +10,14 @@ def add_sample_data
 
   events[:programmierkurs] = event_programmierkurs
   events[:mintcamp] = event_mintcamp
-  events[:bechersaeuberungsevent] = event_bechersaeuberungsevent
   events[:gongakrobatik] = event_gongakrobatik
   events[:batterie_akustik] = event_batterie_akustik
   events[:bachlorpodium] = event_bachlorpodium
   events[:past_deadline_event] = event_gongakrobatik
+
+  # past events are not valid by definition, however we
+  # would like to pretend to have some old ones
+  event_bechersaeuberungsevent.save!(validate: false)
 
   users = Hash.new
   users[:pupil] = user_pupil
