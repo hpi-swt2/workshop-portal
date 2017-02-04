@@ -183,11 +183,11 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
 
   scenario "logged in as Organizer I can accept alternative applications (execution phase)" do #TODO fix this test, atm no application letters are displayed when visiting events#show
     login(:organizer)
-    @event = FactoryGirl.create(:event_in_execution_with_applications_in_various_states, alternative_application_letters_count: 1)
-    @application_letter_alternative = @event.application_letters.select { |application| application.status == 'alternative'}.first
+    @event = FactoryGirl.create(:event_in_execution_with_applications_in_various_states, :applications_with_profile, alternative_application_letters_count: 1)
+    @application_letter_alternative = @event.application_letters.find { |application| application.status == 'alternative'}
     @application_letter_alternative.status_notification_sent = true
     @application_letter_alternative.save!
-    #expect(@application_letter_alternative.user.profile).to exist
+    expect(@application_letter_alternative.user.profile).not_to be_nil #TODO remove
     visit event_path(@event)
     save_page
     expect(page).to have_link(I18n.t "application_status.actions.accept")
