@@ -119,7 +119,7 @@ class ApplicationLetter < ActiveRecord::Base
   # Adds error
   def status_cannot_be_changed
     unless status_change_allowed?
-      errors.add(:event, "Die Bewerbungen wurden bereits bearbeitet, eine Statusänderung ist nicht mehr erlaubt.")
+      errors.add(:event, I18n.t('application_letters.validation.status_cannot_be_changed'))
     end
   end
 
@@ -127,7 +127,7 @@ class ApplicationLetter < ActiveRecord::Base
   # Adds error
   def status_notification_sent_cannot_be_changed
     unless status_notification_sent_change_allowed?
-      errors.add(:event, "Das Status-Benachrichtungsflag kann noch nicht gesetzt werden") #TODO
+      errors.add(:event, I18n.t('application_letters.validation.status_notification_sent_cannot_be_changed'))
     end
   end
 

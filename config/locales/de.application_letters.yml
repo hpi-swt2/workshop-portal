@@ -40,6 +40,9 @@ de:
       submit:
         create: "Anmelden"
         update: "Anmeldung aktualisieren"
+    validation:
+        status_cannot_be_changed: "Die Bewerbungen wurden bereits bearbeitet, eine Statusänderung ist nicht mehr erlaubt."
+        status_notification_sent_cannot_be_changed: "Das Status-Benachrichtungsflag kann noch nicht gesetzt werden"
 
     fields_filled_in: "Wir haben einige Felder bereits für dich ausgefüllt. Falls sich seit deiner letzten Bewerbung etwas geändert hat, kannst du es jetzt anpassen."
 
