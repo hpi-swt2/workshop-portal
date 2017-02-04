@@ -76,6 +76,18 @@ RSpec.describe "events/show", type: :view do
     expect(rendered).to have_css("td", :text => @application_letter.user.profile.age_at_time(@event.start_date))
   end
 
+  it "logged in as organizer it renders radio buttons for accept reject pending and alternative, but not canceled in selection phase" do
+    sign_in(FactoryGirl.create(:user, role: :organizer))
+    @event = assign(:event, FactoryGirl.create(:event, :with_diverse_open_applications, :in_selection_phase_with_no_mails_sent))
+    @application_letters = @event.application_letters #TODO I couldnt find a assign(:application_letters), still this gives the view access to it.
+    render
+    expect(rendered).to have_css("label", text: I18n.t('application_status.accepted'))
+    expect(rendered).to have_css("label", text: I18n.t('application_status.rejected'))
+    expect(rendered).to have_css("label", text: I18n.t('application_status.pending'))
+    expect(rendered).to have_css("label", text: I18n.t('application_status.alternative'))
+    expect(rendered).to_not have_css("label", text: I18n.t('application_status.canceled'))
+  end
+
   it "displays application details button" do
     render
     expect(rendered).to have_link(t(:details, scope: 'events.applicants_overview'))
@@ -98,7 +110,7 @@ RSpec.describe "events/show", type: :view do
   end
 
   it "should not display accept-all-button for non-organizers" do
-    @event = assign(:event, FactoryGirl.create(:event, :in_selection_phase))
+    @event = assign(:event, FactoryGirl.create(:event, :in_selection_phase_with_no_mails_sent))
     @event.max_participants = @event.application_letters.size + 1
     @event.save
     [:coach, :pupil].each do | each |
@@ -109,7 +121,7 @@ RSpec.describe "events/show", type: :view do
   end
 
   it "should display accept-all-button for organizers if there are enough free places" do
-    @event = assign(:event, FactoryGirl.create(:event, :with_diverse_open_applications, :in_selection_phase))
+    @event = assign(:event, FactoryGirl.create(:event, :with_diverse_open_applications, :in_selection_phase_with_no_mails_sent))
     @event.max_participants = @event.application_letters.size + 1
     @event.save
     sign_in(FactoryGirl.create(:user, role: :organizer))
@@ -118,7 +130,7 @@ RSpec.describe "events/show", type: :view do
   end
 
   it "should not display accept-all-button if there are not enough free places" do
-    @event = assign(:event, FactoryGirl.create(:event, :with_diverse_open_applications, :in_selection_phase))
+    @event = assign(:event, FactoryGirl.create(:event, :with_diverse_open_applications, :in_selection_phase_with_no_mails_sent))
     sign_in(FactoryGirl.create(:user, role: :organizer))
     @event.max_participants = 1
     render
@@ -144,7 +156,7 @@ RSpec.describe "events/show", type: :view do
     end
   end
 
-  it "displays a button to view the application if application deadline if over for an event where the pupil has applied" do
+  it "displays a button to view the application if application deadline is over for an event where the pupil has applied" do
     pupil = FactoryGirl.create(:user, role: :pupil)
     application_letter = FactoryGirl.create(:application_letter, user: pupil, event: @event)
     @event.application_deadline = Date.yesterday
@@ -165,7 +177,7 @@ RSpec.describe "events/show", type: :view do
       end
     end
   end
-  
+
   it "displays correct buttons in draft phase" do
     @event = assign(:event, FactoryGirl.create(:event, :in_draft_phase))
     sign_in(FactoryGirl.create(:user, role: :organizer))
@@ -201,7 +213,7 @@ RSpec.describe "events/show", type: :view do
   end
 
   it "displays correct buttons in selection phase" do
-    @event = assign(:event, FactoryGirl.create(:event, :in_selection_phase))
+    @event = assign(:event, FactoryGirl.create(:event, :in_selection_phase_with_no_mails_sent))
     sign_in(FactoryGirl.create(:user, role: :organizer))
     render
     expect(rendered).to have_link(t(:print_all, scope: 'events.applicants_overview'))
@@ -211,8 +223,22 @@ RSpec.describe "events/show", type: :view do
     expect(rendered).to_not have_link(t(:show_participants, scope: 'events.participants'))
   end
 
+  it "does not display send acceptances button after acceptances have been sent in selection phase" do
+    @event = assign(:event, FactoryGirl.create(:event, :in_selection_phase_with_acceptances_sent))
+    sign_in(FactoryGirl.create(:user, role: :organizer))
+    render
+    expect(rendered).to_not have_button(t(:sending_acceptances, scope: 'events.applicants_overview'))
+  end
+
+  it "does not display send acceptances button after acceptances have been sent in selection phase" do
+    @event = assign(:event, FactoryGirl.create(:event, :in_selection_phase_with_rejections_sent))
+    sign_in(FactoryGirl.create(:user, role: :organizer))
+    render
+    expect(rendered).to_not have_button(t(:sending_rejections, scope: 'events.applicants_overview'))
+  end
+
   it "displays the disabled send email buttons in selection phase (when there are unclassified applications)" do
-    @event = assign(:event, FactoryGirl.create(:event, :with_diverse_open_applications, :in_selection_phase))
+    @event = assign(:event, FactoryGirl.create(:event, :with_diverse_open_applications, :in_selection_phase_with_no_mails_sent))
     sign_in(FactoryGirl.create(:user, role: :organizer))
     render
     expect(rendered).to have_button(t(:sending_acceptances, scope: 'events.applicants_overview'), disabled: true)
@@ -220,7 +246,7 @@ RSpec.describe "events/show", type: :view do
   end
 
   it "displays the disabled send email buttons in selection phase (when there are too many accepted applications)" do
-    @event = assign(:event, FactoryGirl.create(:event_with_accepted_applications, :in_selection_phase, max_participants: 1))
+    @event = assign(:event, FactoryGirl.create(:event_with_accepted_applications, :in_selection_phase_with_no_mails_sent, max_participants: 1))
     sign_in(FactoryGirl.create(:user, role: :organizer))
     render
     expect(rendered).to have_button(t(:sending_acceptances, scope: 'events.applicants_overview'), disabled: true)
@@ -247,8 +273,8 @@ RSpec.describe "events/show", type: :view do
     expect(rendered).to have_link(t('events.participants.show_participants'))
   end
 
-  it "should not display particiants button when email were not already sent as organizer" do
-    @event = assign(:event, FactoryGirl.create(:event, :in_selection_phase))
+  it "should not display particiants button when emails have not been sent as organizer" do
+    @event = assign(:event, FactoryGirl.create(:event, :in_selection_phase_with_no_mails_sent))
     sign_in(FactoryGirl.create(:user, role: :organizer))
     render
     expect(rendered).not_to have_link(t('events.participants.show_participants'))

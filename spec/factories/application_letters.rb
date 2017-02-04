@@ -24,6 +24,7 @@ FactoryGirl.define do
     event
     annotation "Some"
     custom_application_fields ["Value 1", "Value 2", "Value 3"]
+    status_notification_sent false
   end
 
   factory :application_letter2, parent: :application_letter do
@@ -51,6 +52,10 @@ FactoryGirl.define do
 
   factory :application_letter_alternative, parent: :application_letter do
     status :alternative
+  end
+
+  factory :application_letter_canceled, parent: :application_letter do
+    status :canceled
   end
 
   factory :accepted_application_with_agreement_letters, parent: :application_letter do

@@ -12,7 +12,6 @@ def event_programmierkurs
       knowledge_level: 'Anfänger',
       date_ranges: [date_range_singleday],
       application_deadline: Date.tomorrow,
-      application_status_locked: false,
       published: true,
       hidden: true,
       custom_application_fields: ['Lieblingsapp']
@@ -34,7 +33,6 @@ def event_mintcamp
       knowledge_level: 'keine Vorkenntnisse nötig',
       date_ranges: [date_range_mint_camp],
       application_deadline: Date.tomorrow,
-      application_status_locked: false,
       hidden: false,
       published: true
 
@@ -42,10 +40,11 @@ def event_mintcamp
 end
 
 def event_bechersaeuberungsevent
-  date_range_singleday = DateRange.create!(
-      start_date: Date.new(2017, 04, 04),
-      end_date: Date.new(2017, 04, 05)
+  date_range_singleday = DateRange.new(
+      start_date: Date.yesterday,
+      end_date: Date.yesterday
   )
+  date_range_singleday.save!(validate: false)
   Event.new(
       name: 'Bechersäuberungsevent',
       description: 'Es dreht sich den ganzen Tag um das Säubern von Bechern. Wie säubert man einen Becher am effizientesten oder am schnellsten? Wie immer bieten wir eine Reihe an Expertenvorträgen an. Dieses Mal erfahrt ihr unter anderem wie ihr Edding-Markierungen selbst nach einer Spülmaschinen-Reinigung noch entfernen könnt oder wie man die richtige Größe für Becher-Stapel herausfindet und anwendet.',
@@ -53,8 +52,7 @@ def event_bechersaeuberungsevent
       organizer: 'FSR',
       knowledge_level: 'Anfänger',
       date_ranges: [date_range_singleday],
-      application_deadline: Date.tomorrow,
-      application_status_locked: false,
+      application_deadline: Date.yesterday.prev_day(2),
       published: true,
       hidden: false,
       custom_application_fields: ['Lieblings-Becherart', 'Kannst du eine eigene Spülmaschine mitbringen?']
@@ -74,7 +72,6 @@ def event_gongakrobatik
       knowledge_level: 'Ihr braucht kein besonderes Vorwissen, jeder ist Willkommen!',
       date_ranges: [date_range_long], 
       application_deadline: Date.tomorrow,
-      application_status_locked: false,
       hidden: false,
       published: true
 
@@ -98,7 +95,6 @@ def event_batterie_akustik
       organizer: 'IAB',
       date_ranges: [date_range_short, date_range_medium],
       application_deadline: Date.tomorrow,
-      application_status_locked: false,
       published: false,
       hidden: false,
       custom_application_fields: ['Spielst du gerne in deiner Freizeit mit Batterien?']
@@ -124,7 +120,6 @@ def event_bachlorpodium
       max_participants: 442,
       date_ranges: [date_range_singleday1, date_range_singleday2, date_range_singleday3], 
       application_deadline: Date.tomorrow,
-      application_status_locked: false ,
       hidden: true,
       published: true
   )
