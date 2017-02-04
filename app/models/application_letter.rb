@@ -25,12 +25,21 @@ class ApplicationLetter < ActiveRecord::Base
   validates_inclusion_of :grade, in: (VALID_GRADES.to_a.push(0))
   validates :vegetarian, :vegan, :allergic, inclusion: { in: [true, false] }
   validates :vegetarian, :vegan, :allergic, exclusion: { in: [nil] }
-  validate :deadline_cannot_be_in_the_past, :if => Proc.new { |letter| !(letter.status_changed?) }
-  validate :status_cannot_be_changed, :if => Proc.new { |letter| letter.status_changed?}
+  validate :deadline_cannot_be_in_the_past, :if => Proc.new { |letter| !(letter.status_changed? || letter.status_notification_sent_changed?) }
+  validate :status_notification_sent_cannot_be_changed, :if => Proc.new { |letter| letter.status_notification_sent_changed? }
+  validate :status_cannot_be_changed, :if => Proc.new { |letter| letter.status_changed? }
 
-  enum status: {accepted: 1, rejected: 0, pending: 2, alternative: 3}
+  enum status: {accepted: 1, rejected: 0, pending: 2, alternative: 3, canceled: 4}
   validates :status, inclusion: { in: statuses.keys }
 
+
+  # Returns an array of selectable statuses
+  #
+  # @param none
+  # @return [Array <String>] array of selectable statuses
+  def self.selectable_statuses
+    ["accepted","rejected","pending","alternative"]
+  end
 
   # Checks if the deadline is over
   # additionally only return if event and event.application_deadline is present
@@ -46,7 +55,21 @@ class ApplicationLetter < ActiveRecord::Base
   # @param none
   # @return [Boolean] true if status changes are allowed
   def status_change_allowed?
-    !event.participant_selection_locked
+    if event.phase == :execution
+      (status_was == 'accepted' && status == 'canceled') || (status_was == 'alternative' && status == 'accepted')
+    elsif event.phase == :selection && event.participant_selection_locked
+      false
+    else
+      true
+    end
+  end
+
+  # Checks if it is allowed to set the status_notification_sent flag
+  #
+  # @param none
+  # @return [Boolean] true if it can be changed
+  def status_notification_sent_change_allowed?
+    event.phase == :selection || event.phase == :execution
   end
 
   # Validator for after_deadline?
@@ -85,6 +108,8 @@ class ApplicationLetter < ActiveRecord::Base
         else
           return I18n.t("application_status.pending_before_deadline")
         end
+      when ApplicationLetter.statuses[:canceled]
+        return I18n.t("application_status.canceled")
       else
         return I18n.t("application_status.alternative")
     end
@@ -94,7 +119,15 @@ class ApplicationLetter < ActiveRecord::Base
   # Adds error
   def status_cannot_be_changed
     unless status_change_allowed?
-      errors.add(:event, "Die Bewerbungen wurden bereits bearbeitet, eine Statusänderung ist nicht mehr erlaubt.")
+      errors.add(:event, I18n.t('application_letters.validation.status_cannot_be_changed'))
+    end
+  end
+
+  # Validator for status_change_allowed?
+  # Adds error
+  def status_notification_sent_cannot_be_changed
+    unless status_notification_sent_change_allowed?
+      errors.add(:event, I18n.t('application_letters.validation.status_notification_sent_cannot_be_changed'))
     end
   end
 
