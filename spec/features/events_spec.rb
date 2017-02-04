@@ -49,7 +49,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
   end
 
   scenario "logged in as Organizer I want to be unable to send emails if there is any unclassified application left" do
-    @event = FactoryGirl.build(:event, :with_diverse_open_applications, :in_selection_phase)
+    @event = FactoryGirl.build(:event, :with_diverse_open_applications, :in_selection_phase_with_no_mails_sent)
     login(:organizer)
     @event.update!(max_participants: 1)
     visit event_path(@event)
@@ -58,7 +58,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
   end
 
   scenario "logged in as Organizer I want to be unable to send emails if there is a negative number of free places left" do
-    @event = FactoryGirl.create(:event, :in_selection_phase)
+    @event = FactoryGirl.create(:event, :in_selection_phase_with_no_mails_sent)
     login(:organizer)
     @event.update!(max_participants: 1)
     2.times do |n|
@@ -72,7 +72,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
   end
 
   scenario "logged in as Organizer I want to be able to send an email to all accepted applicants" do
-    @event = FactoryGirl.create(:event, :in_selection_phase)
+    @event = FactoryGirl.create(:event, :in_selection_phase_with_no_mails_sent)
     login(:organizer)
     @event.update!(max_participants: 2)
     2.times do |n|
@@ -90,7 +90,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
   end
 
   scenario "logged in as Organizer I want to be able to send an email to all rejected applicants" do
-    @event = FactoryGirl.create(:event, :in_selection_phase)
+    @event = FactoryGirl.create(:event, :in_selection_phase_with_no_mails_sent)
     login(:organizer)
     @event.update!(max_participants: 2)
     2.times do |n|
@@ -125,7 +125,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
 
   scenario "logged in as Organizer I can change application status with radio buttons in selection phase" do
     login(:organizer)
-    @event = FactoryGirl.create(:event, :with_open_application, :in_selection_phase)
+    @event = FactoryGirl.create(:event, :with_open_application, :in_selection_phase_with_no_mails_sent)
     visit event_path(@event)
     ApplicationLetter.statuses.keys.each do |new_status|
       choose(I18n.t "application_status.#{new_status}")
@@ -135,7 +135,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
 
   scenario "logged in as Organizer I can change application status with radio buttons without the page reloading in selection phase", js: true do
     login(:organizer)
-    @event = FactoryGirl.create(:event, :with_open_application, :in_selection_phase)
+    @event = FactoryGirl.create(:event, :with_open_application, :in_selection_phase_with_no_mails_sent)
     visit event_path(@event)
     find('label', text: I18n.t('application_status.accepted')).click
     check_values = lambda {
@@ -150,21 +150,26 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     expect(page).to have_css('label.active', text: I18n.t('application_status.accepted'))
   end
 
-  scenario "logged in as Organizer I can not change application status with radio buttons if the applications are locked" do
+  scenario "logged in as Organizer I can not change application status with radio buttons if acceptance emails or rejection emails have been sent" do
     login(:organizer)
-    @event.lock_application_status
-    @pupil = FactoryGirl.create(:profile)
-    @application_letter = FactoryGirl.create(:application_letter, event: @event, user: @pupil.user)
-    visit event_path(@event)
-    ApplicationLetter.statuses.keys.each do |new_status|
-      if new_status != @application_letter.status
-        expect(page).not_to have_text(I18n.t "application_status.#{new_status}")
+    [[true, true], [true, false], [false, true]].each do |acceptances_have_been_sent, rejections_have_been_sent|
+      @event.acceptances_have_been_sent = acceptances_have_been_sent
+      @event.rejections_have_been_sent = rejections_have_been_sent
+      @pupil = FactoryGirl.create(:profile)
+      @application_letter = FactoryGirl.create(:application_letter, event: @event, user: @pupil.user)
+      visit event_path(@event)
+      ApplicationLetter.statuses.keys.each do |new_status|
+        if new_status != @application_letter.status
+          expect(page).not_to have_css('label', text: I18n.t("application_status.#{new_status}"))
+        end
       end
     end
   end
 
   scenario "logged in as Organizer I can push the accept all button to accept all applicants" do
-    @event = FactoryGirl.create(:event, :with_diverse_open_applications, :in_selection_phase, participants_are_unlimited: true)
+    @event = FactoryGirl.create(:event, :with_diverse_open_applications, :in_selection_phase_with_no_mails_sent)
+    @event.max_participants = @event.application_letters.size + 1
+    @event.save
     login(:organizer)
     visit event_path(@event)
     click_link I18n.t "events.applicants_overview.accept_all"

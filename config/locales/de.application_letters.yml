@@ -36,6 +36,10 @@ de:
       eating_habits: "Essgewohnheiten"
     confirm_deletion: "Willst du diese Bewerbung wirklich löschen?"
     print_accepted_with_eatings_habits: "Drucke Teilnehmer mit Essgewohnheiten"
+    helpers:
+      submit:
+        create: "Anmelden"
+        update: "Anmeldung aktualisieren"
 
     fields_filled_in: "Wir haben einige Felder bereits für dich ausgefüllt. Falls sich seit deiner letzten Bewerbung etwas geändert hat, kannst du es jetzt anpassen."
 
@@ -51,13 +55,12 @@ de:
     attributes:
       application_letter:
           grade: "Klassenstufe"
-          experience: "Wie hast du von uns erfahren?"
           motivation: "Motivationsschreiben"
           coding_skills: "Mit welchen Programmiersprachen hast du bereits Erfahrungen gesammelt?"
           emergency_number: "Telefonnummer für Notfälle"
+          organisation: "Schule/Organisation"
           vegetarian: "Vegetarisch"
           vegan: "Vegan"
-          allergic: "Allergien vorhanden"
           allergies: "Falls Allergien vorhanden, welche?"
           annotation: "Hast du weitere Anmerkungen oder Fragen?"
           omnivorous: "Omnivor"
@@ -72,3 +75,10 @@ de:
     pending_before_deadline: "Beworben"
     pending_after_deadline: "In Bearbeitung"
     alternative: "Nachrücker"
+
+
+  controllers:
+    application_letters:
+      confirmation_mail:
+        subject: "Bewerbung erhalten"
+        content: "Hallo, \n\rDu hast dich erfolgreich für  {{semimar_name}} beworben. Deine Bewerbung wird jetzt bearbeitet. Für weitere Information besuche das Workshop Portal. Viele Grüße, das HPI Workshop Team"

@@ -33,10 +33,10 @@ RSpec.describe "application_letters/check", type: :view do
     it "renders application's attributes" do
       expect(rendered).to have_css('h3', text: I18n.t('application_letters.check.my_application'))
       expect(rendered).to have_text(@application_letter.grade)
-      expect(rendered).to have_text(@application_letter.experience)
       expect(rendered).to have_text(@application_letter.motivation)
       expect(rendered).to have_text(@application_letter.coding_skills)
       expect(rendered).to have_text(@application_letter.emergency_number)
+      expect(rendered).to have_text(@application_letter.organisation)
       expect(rendered).to have_text(@application_letter.allergies)
       expect(rendered).to have_text(@application_letter.annotation)
       expect(rendered).to have_text(@application_letter.eating_habits.join(', '))
@@ -52,9 +52,7 @@ RSpec.describe "application_letters/check", type: :view do
       expect(rendered).to have_text(@application_letter.user.profile.name)
       expect(rendered).to have_text(@application_letter.user.profile.gender)
       expect(rendered).to have_text(I18n.l(@application_letter.user.profile.birth_date))
-      expect(rendered).to have_text(@application_letter.user.profile.school)
       expect(rendered).to have_text(@application_letter.user.profile.address)
-      expect(rendered).to have_text(@application_letter.user.profile.graduates_school_in)
     end
 
     it "renders link to edit profile" do

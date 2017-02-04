@@ -31,6 +31,10 @@ class Ability
 
     user ||= User.new # guest user (not logged in)
 
+    # Even guests can see the apply button
+    # This is revoked for coaches and organizers below.
+    can :view_apply_button, Event
+
     if user.role? :pupil
       # Pupils can only edit their own profiles
       can [:new, :create], Profile
@@ -43,7 +47,6 @@ class Ability
       # Pupils can upload their letters of agreement
       can [:create], AgreementLetter
       can [:new, :create], Request
-      can :apply, Event
       cannot :view_personal_details, ApplicationLetter, user: { id: !user.id }
     end
     if user.role? :coach
@@ -51,8 +54,8 @@ class Ability
       can [:view_applicants, :view_participants, :view_material, :upload_material, :print_applications, :download_material], Event
       can [:view_and_add_notes, :show], ApplicationLetter
       can [:print_applications], Event
-      can :manage, Request
-      cannot :apply, Event
+      can [:show, :index], Request
+      cannot :view_apply_button, Event
       cannot :check, ApplicationLetter
     end
     if user.role? :organizer
@@ -63,8 +66,8 @@ class Ability
            :manage, :view_material, :upload_material, :print_agreement_letters, :download_material,
            :view_unpublished, :show_eating_habits, :print_applications_eating_habits, :view_hidden], Event
       can :send_email, Email
-      can :manage, Request
-      cannot :apply, Event
+      can [:manage, :set_contact_person, :set_notes], Request
+      cannot :view_apply_button, Event
       can [:update], ParticipantGroup
 
       # Organizers can update user roles of pupil, coach and organizer, but cannot manage admins and cannot update a role to admin

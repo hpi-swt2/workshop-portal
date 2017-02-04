@@ -25,8 +25,9 @@ class RequestsController < ApplicationController
   # POST /requests
   def create
     @request = Request.new(request_params)
-
     if @request.save
+      Mailer.send_generic_email(false, @request.email, Rails.configuration.reply_to_address, I18n.t('requests.email.topic'),
+                                I18n.t('requests.email.content'))
       redirect_to root_path, notice: I18n.t('requests.notice.was_created')
     else
       render :new
@@ -46,6 +47,16 @@ class RequestsController < ApplicationController
     @request = Request.find(params[:request_id])
     update_params = contact_person_params
     if !update_params[:contact_person].nil? and @request.update(update_params)
+      redirect_to @request, notice: I18n.t('requests.notice.was_updated')
+    else
+      render :show
+    end
+  end
+
+  def set_notes
+    @request = Request.find(params[:request_id])
+    update_params = notes_params
+    if !update_params[:notes].nil? and @request.update(update_params)
       redirect_to @request, notice: I18n.t('requests.notice.was_updated')
     else
       render :show
@@ -78,5 +89,9 @@ class RequestsController < ApplicationController
 
     def contact_person_params
       params.require(:request).permit(:contact_person)
+    end
+
+    def notes_params
+      params.require(:request).permit(:notes)
     end
 end

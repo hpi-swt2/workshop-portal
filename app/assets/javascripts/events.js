@@ -3,36 +3,65 @@
 
 jQuery(function() {
 
-    $('#send-emails-modal').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget);
-        var header = button.data('title');
-        var list = button.data('list');
-        var modal = $(this);
-        modal.find('.modal-title').text(header);
-        modal.find('#send-emails-mailto').attr('href', 'mailto:' + list);
-        modal.find('#send-emails-list').val(list);
-    });
+  $('#send-emails-modal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget);
+    var header = button.data('title');
+    var list = button.data('list');
+    var modal = $(this);
+    modal.find('.modal-title').text(header);
+    modal.find('#send-emails-mailto').attr('href', 'mailto:' + list);
+    modal.find('#send-emails-list').val(list);
+  });
+  var users = jQuery('#users');
+  var groups = jQuery('#groups');
 
-    var users = jQuery('#users');
-    var groups = jQuery('#groups');
+  jQuery('#all').change(function(event) {
+    var method = event.target.checked ? 'select_all' : 'deselect_all';
+    users.multiSelect(method);
+    groups.multiSelect(method);
+  });
 
-    jQuery('#all').change(function(event) {
-        var method = event.target.checked ? 'select_all' : 'deselect_all';
-        users.multiSelect(method);
-        groups.multiSelect(method);
-    });
+  var unable_all_on_deselect = function() {
+    jQuery('#all').attr('checked', false);
+  };
 
-    var unable_all_on_deselect = function() {
-        jQuery('#all').attr('checked', false);
-    };
-
-    users.multiSelect({
-        afterDeselect: unable_all_on_deselect
-    });
-    groups.multiSelect({
-        afterDeselect: unable_all_on_deselect
-    });
+  users.multiSelect({
+    afterDeselect: unable_all_on_deselect
+  });
+  groups.multiSelect({
+    afterDeselect: unable_all_on_deselect
+  });
 });
+
+function enableMultilinePlaceholder(){
+  // work around so that we can have a multiline placeholder
+  $("#description")
+    .val(function(index, oldVal) {
+      if (!oldVal) {
+        $(this).css('color', '#bbb');
+        return EVENT_DESCRIPTION_PLACEHOLDER;
+      }
+      return oldVal;
+    })
+    .focus(function(){
+      if($(this).val() === EVENT_DESCRIPTION_PLACEHOLDER){
+        $(this).val('').css('color', '#000');
+      }
+    })
+    .blur(function(){
+      if($(this).val() ===''){
+        $(this).val(EVENT_DESCRIPTION_PLACEHOLDER).css('color', '#bbb');
+      }
+    })
+    .parents("form").on("submit", function() {
+      $("#description").val(function(index, oldVal) {
+        return oldVal == EVENT_DESCRIPTION_PLACEHOLDER ? '' : oldVal;
+      });
+    });
+}
+// make sure multiline placeholders also work if the page is called via turbolink
+$(document).on('turbolinks:load', enableMultilinePlaceholder);
+jQuery(enableMultilinePlaceholder);
 
 function addCustomApplicationField() {
   jQuery(CUSTOM_APPLICATION_FIELD_TEMPLATE)

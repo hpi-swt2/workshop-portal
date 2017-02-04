@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170128122851) do
+ActiveRecord::Schema.define(version: 20170201201932) do
 
   create_table "agreement_letters", force: :cascade do |t|
     t.integer  "user_id",    null: false
@@ -32,15 +32,14 @@ ActiveRecord::Schema.define(version: 20170128122851) do
     t.datetime "updated_at",                            null: false
     t.integer  "status",                    default: 2, null: false
     t.integer  "grade"
-    t.string   "experience"
     t.string   "coding_skills"
     t.string   "emergency_number"
     t.boolean  "vegetarian"
     t.boolean  "vegan"
-    t.boolean  "allergic"
     t.string   "allergies"
     t.text     "custom_application_fields"
     t.text     "annotation"
+    t.string   "organisation"
   end
 
   add_index "application_letters", ["event_id"], name: "index_application_letters_on_event_id"
@@ -78,15 +77,15 @@ ActiveRecord::Schema.define(version: 20170128122851) do
     t.integer  "max_participants"
     t.datetime "created_at",                                 null: false
     t.datetime "updated_at",                                 null: false
-    t.integer  "kind",                       default: 0
-    t.boolean  "published"
+    t.boolean  "published",                  default: false
     t.string   "organizer"
     t.string   "knowledge_level"
     t.date     "application_deadline"
-    t.boolean  "application_status_locked"
-    t.boolean  "participants_are_unlimited", default: false
     t.text     "custom_application_fields"
-    t.boolean  "hidden"
+    t.boolean  "hidden",                     default: false
+    t.string   "image"
+    t.boolean  "rejections_have_been_sent",  default: false
+    t.boolean  "acceptances_have_been_sent", default: false
   end
 
   create_table "participant_groups", force: :cascade do |t|
@@ -99,20 +98,18 @@ ActiveRecord::Schema.define(version: 20170128122851) do
   add_index "participant_groups", ["user_id"], name: "index_participant_groups_on_user_id"
 
   create_table "profiles", force: :cascade do |t|
-    t.integer  "user_id",             null: false
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
+    t.integer  "user_id",           null: false
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
     t.string   "first_name"
     t.string   "last_name"
     t.string   "gender"
     t.date     "birth_date"
-    t.string   "school"
     t.string   "street_name"
     t.string   "zip_code"
     t.string   "city"
     t.string   "state"
     t.string   "country"
-    t.string   "graduates_school_in"
     t.text     "discovery_of_site"
   end
 
@@ -135,6 +132,7 @@ ActiveRecord::Schema.define(version: 20170128122851) do
     t.integer  "status",                 default: 0
     t.string   "zip_code_city"
     t.string   "contact_person"
+    t.text     "notes"
   end
 
   create_table "users", force: :cascade do |t|

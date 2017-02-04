@@ -20,7 +20,7 @@ describe ApplicationLetter do
   end
 
   it "can't be created without mandatory fields" do
-    [:grade, :experience, :motivation, :coding_skills, :emergency_number, :vegetarian, :vegan, :allergic].each do |attr|
+    [:grade, :motivation, :coding_skills, :emergency_number, :vegetarian, :vegan, :organisation].each do |attr|
       application = FactoryGirl.build(:application_letter, attr => nil)
       expect(application).to_not be_valid
     end
@@ -49,7 +49,7 @@ describe ApplicationLetter do
     application = FactoryGirl.build(:application_letter)
     application.vegan = false
     application.vegetarian = false
-    application.allergic = false
+    application.allergies = ""
     expect(application.eating_habits).to eq([])
   end
 
@@ -57,7 +57,7 @@ describe ApplicationLetter do
     application = FactoryGirl.build(:application_letter)
     application.vegan = true
     application.vegetarian = false
-    application.allergic = false
+    application.allergies = ""
     expect(application.eating_habits).to eq([ApplicationLetter.human_attribute_name(:vegan)])
   end
 
@@ -65,8 +65,8 @@ describe ApplicationLetter do
     application = FactoryGirl.build(:application_letter)
     application.vegan = false
     application.vegetarian = true
-    application.allergic = true
-    expect(application.eating_habits).to eq([ApplicationLetter.human_attribute_name(:vegetarian), ApplicationLetter.human_attribute_name(:allergic)])
+    application.allergies = "many"
+    expect(application.eating_habits).to eq([ApplicationLetter.human_attribute_name(:vegetarian), ApplicationLetter.human_attribute_name(:allergies)])
   end
 
   it "can not be updated after event application deadline"  do
@@ -74,17 +74,21 @@ describe ApplicationLetter do
     expect(application).to_not be_valid
   end
 
-  it "can not be updated if status is changed and application status is locked" do
+  it "can not be updated if status is changed and participant selection is locked" do
     application = FactoryGirl.build(:application_letter)
+    application.event.acceptances_have_been_sent = true
+    application.event.rejections_have_been_sent = true
+    expect(application.event.participant_selection_locked).to be(true)
     application.status = :rejected
-    application.event.application_status_locked = true
     expect(application).to_not be_valid
   end
 
-  it "can be updated if status is changed and application status is not locked" do
+  it "can be updated if status is changed and participant selection is not locked" do
     application = FactoryGirl.build(:application_letter_deadline_over)
+    application.event.acceptances_have_been_sent = false
+    application.event.rejections_have_been_sent = false
+    expect(application.event.participant_selection_locked).to be(false)
     application.status = :rejected
-    application.event.application_status_locked = false
     expect(application).to be_valid
   end
 

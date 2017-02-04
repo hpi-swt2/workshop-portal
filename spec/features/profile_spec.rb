@@ -103,7 +103,6 @@ RSpec.feature "Profile adaptation", :type => :feature do
     fill_in "profile_first_name", with:   ""
     fill_in "profile_last_name", with:   "Doe"
     fill_in "profile_birth_date", with: ""
-    fill_in "profile_school", with: ""
     fill_in "profile_street_name", with:   "Rudolf-Breitscheid-Str. 52"
     fill_in "profile_zip_code", with:   "14482"
     fill_in "profile_city" , with:  "Potsdam"
@@ -112,7 +111,7 @@ RSpec.feature "Profile adaptation", :type => :feature do
 
     find('input[name=commit]').click
 
-    expect(page).to have_css(".has-error", count: 9)
+    expect(page).to have_css(".has-error", count: 6)
   end
 
   scenario "user fills in a valid birth date" do

@@ -1,6 +1,6 @@
 <%- model_class = Event -%>
 <div class="page-header">
-  <h1><%=t '.title', :default => model_class.model_name.human.titleize %> (<%= @event.kind.humanize %>)</h1>
+  <h1><%=t '.title', :default => model_class.model_name.human.titleize %> (<%= @event.hidden ? I18n.t("events.type.private") : I18n.t("events.type.public") %>)</h1>
 </div>
 <% if can? :view_participants, Event %>
   <%= render :partial => 'email_modal' %>
@@ -24,7 +24,7 @@
           </th>
         <% end %>
         <% if can? :show_eatings_habits, Event %>
-          <th>
+          <th>7
             <%= sort_caret(t('activerecord.methods.application_letter.eating_habits'), 'eating-habits') %>
           </th>
         <% end %>

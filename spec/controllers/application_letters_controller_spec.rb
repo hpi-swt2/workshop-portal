@@ -22,7 +22,7 @@ RSpec.describe ApplicationLettersController, type: :controller do
 
   let(:valid_attributes) { FactoryGirl.build(:application_letter).attributes.merge(status: :pending) }
 
-  let(:invalid_attributes) { FactoryGirl.build(:application_letter, event_id: nil).attributes.merge(status: :pending)}
+  let(:invalid_attributes) { FactoryGirl.build(:application_letter, coding_skills: nil).attributes.merge(status: :pending)}
 
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
@@ -56,6 +56,14 @@ RSpec.describe ApplicationLettersController, type: :controller do
       it "assigns the requested application as @application" do
         get :edit, id: @application.to_param, session: valid_session
         expect(assigns(:application_letter)).to eq(@application)
+      end
+
+      it "sets the title text to 'Anmeldung aktualisieren' for hidden events" do
+        @event = FactoryGirl.create(:event, hidden: true)
+        @application_letter = FactoryGirl.create(:application_letter, event_id: @event.id)
+        sign_in @application_letter.user
+        get :edit, id: @application_letter.id, session: valid_session
+        expect(assigns(:submit_button_text)).to match I18n.t('application_letters.helpers.submit.update')
       end
     end
 
@@ -99,7 +107,6 @@ RSpec.describe ApplicationLettersController, type: :controller do
               emergency_number: "01234567891",
               vegetarian: true,
               vegan: true,
-              allergic: true,
               allergys: "Many",
               annotation: "This site is so cool."
           }
@@ -187,6 +194,15 @@ RSpec.describe ApplicationLettersController, type: :controller do
     end
   end
 
+  describe "GET #new" do
+    it "sets the title text to 'Anmeldung aktualisieren' for hidden events" do
+      sign_in FactoryGirl.create(:user_with_profile, role: :pupil)
+      @event = FactoryGirl.create(:event, hidden: true)
+      get :new, session: valid_session, event_id: @event.id
+      expect(assigns(:submit_button_text)).to match I18n.t('application_letters.helpers.submit.create')
+    end
+  end
+
   describe "POST #create" do
     before :each do
       sign_in FactoryGirl.create(:profile).user
@@ -196,6 +212,12 @@ RSpec.describe ApplicationLettersController, type: :controller do
         expect {
           post :create, application_letter: valid_attributes, session: valid_session
         }.to change(ApplicationLetter, :count).by(1)
+      end
+
+      it "sends an Email" do
+        expect {
+          post :create, application_letter: valid_attributes, session: valid_session
+        }.to change{ActionMailer::Base.deliveries.count}.by(1)
       end
 
       it "assigns a newly created application as @application" do
@@ -219,6 +241,13 @@ RSpec.describe ApplicationLettersController, type: :controller do
       it "re-renders the 'new' template" do
         post :create, application_letter: invalid_attributes, session: valid_session
         expect(response).to render_template("new")
+      end
+
+      it "re-renders the 'new' template for hidden events with title 'Anmeldung'" do
+        @event = FactoryGirl.create(:event, hidden: true)
+        @application_letter = FactoryGirl.build(:application_letter, coding_skills: nil, event_id: @event.id).attributes.merge(status: :pending)
+        post :create, application_letter: @application_letter, session: valid_session
+        expect(assigns(:submit_button_text)).to match I18n.t('application_letters.helpers.submit.create')
       end
     end
   end

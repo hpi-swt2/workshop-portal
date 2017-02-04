@@ -27,16 +27,14 @@ body, footer, main, .front-section {
     width: 100%;
 }
 
-footer.front-section {
-    border: none;
-}
-footer {
-    margin-top: 120px;
-}
 .m-l-1 { margin-left: 15px; }
 .m-r-1 { margin-right: 15px; }
 .m-t-1 { margin-top: 15px; }
 .m-b-1 { margin-bottom: 15px; }
+
+@media (max-width: 485px) {
+    .m-t-1-sm { margin-top: 15px; }
+}
 
 .img-float-corner-tr {
     float: right;

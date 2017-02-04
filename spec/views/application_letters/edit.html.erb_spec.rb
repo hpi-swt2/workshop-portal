@@ -2,7 +2,8 @@ require 'rails_helper'
 
 RSpec.describe "application_letters/edit", type: :view do
   before(:each) do
-    @application_letter = assign(:application_letter, FactoryGirl.create(:application_letter))
+    @event = assign(:event, FactoryGirl.create(:event))
+    @application_letter = assign(:application_letter, FactoryGirl.create(:application_letter, :event_id => @event.id))
   end
 
   it "renders the edit application form" do

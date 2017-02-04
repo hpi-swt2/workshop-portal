@@ -14,7 +14,8 @@ RSpec.describe "events/new", type: :view do
       assert_select "input#event_max_participants[name=?]", "event[max_participants]"
       assert_select "input#event_organizer[name=?]", "event[organizer]"
       assert_select "input#event_knowledge_level[name=?]", "event[knowledge_level]"
-      assert_select "input#event_hidden[name=?]", "event[hidden]"
+      assert_select "input#event_hidden[?]", "event[hidden]"
+      assert_select "input#event_published[?]", "event[published]"
     end
   end
 end
