@@ -7,6 +7,11 @@ RSpec::Steps.steps "Demo" do
   end
 end
 
+def logout(displayed_name)
+  click_link displayed_name
+  click_link I18n.t('navbar.logout')
+end
+
 def login(email, password)
   click_button I18n.t('navbar.login')
   fill_in 'login_email', with: email
