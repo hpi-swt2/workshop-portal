@@ -39,8 +39,10 @@ RSpec::Steps.steps "Demo" do
     fill_in 'event_organizer', with: 'HPI Schülerklub'
     fill_in 'event_knowledge_level', with: 'Fortgeschrittene'
     fill_in 'event_application_deadline', with: I18n.l(Date.new(2019, 01, 12))
-    #TODO: Add CAFS
+    #TODO: Add custom variable application fields
     click_button 'create_event'
+    expect(page).to_not have_text I18n.t('errors.form_invalid.one')
+    expect(page).to_not have_text I18n.t('errors.form_invalid.other')
   end
 end
 
