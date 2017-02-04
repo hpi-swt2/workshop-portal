@@ -188,6 +188,10 @@ RSpec.describe RequestsController, type: :controller do
         expect(assigns(:request)).to be_persisted
       end
 
+      it "sends an email" do
+        expect{ post :create, request: valid_attributes, session: valid_session }.to change{ ActionMailer::Base.deliveries.count }.by(1)
+      end
+
       it "redirects to the homepage" do
         post :create, request: valid_attributes, session: valid_session
         expect(response).to redirect_to(root_path)
@@ -198,6 +202,10 @@ RSpec.describe RequestsController, type: :controller do
       it "assigns a newly created but unsaved request as @request" do
         post :create, request: invalid_attributes, session: valid_session
         expect(assigns(:request)).to be_a_new(Request)
+      end
+
+      it "does not send an email" do
+        expect{ post :create, request: invalid_attributes, session: valid_session }.not_to change{ ActionMailer::Base.deliveries.count }
       end
 
       it "re-renders the 'new' template" do

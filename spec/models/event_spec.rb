@@ -250,7 +250,11 @@ describe Event do
   end
 
   it "is in selection phase" do
-    event = FactoryGirl.build(:event, :in_selection_phase)
+    event = FactoryGirl.build(:event, :in_selection_phase_with_no_mails_sent)
+    expect(event.phase).to eq(:selection)
+    event = FactoryGirl.build(:event, :in_selection_phase_with_acceptances_sent)
+    expect(event.phase).to eq(:selection)
+    event = FactoryGirl.build(:event, :in_selection_phase_with_rejections_sent)
     expect(event.phase).to eq(:selection)
   end
 
