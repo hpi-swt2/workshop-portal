@@ -171,30 +171,20 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     login(:organizer)
     event = FactoryGirl.create(:event_with_accepted_applications, :in_selection_phase_with_no_mails_sent, :with_no_status_notification_sent_yet)
 
-    applications = event.application_letters.select { | application_letter | application_letter.status == 'accepted' }
-    expect(applications.size).to be > 0
-    visit event_path(event)
-    click_button(I18n.t('events.applicants_overview.sending_acceptances'))
-    expect(page).to have_current_path(event_email_show_path(event_id: event.id), only_path: true)
-    fill_in :email_subject, with: "Subject Accepted"
-    fill_in :email_content, with: "Content Accepted"
-    click_button I18n.t('.emails.email_form.send')
-    applications.each do |letter|
-      letter.reload
-      expect(letter.status_notification_sent).to be true
-    end
-
-    applications = event.application_letters.select { | application_letter | application_letter.status == 'rejected' }
-    expect(applications.size).to be > 0
-    visit event_path(event)
-    click_button(I18n.t('events.applicants_overview.sending_rejections'))
-    expect(page).to have_current_path(event_email_show_path(event_id: event.id), only_path: true)
-    fill_in :email_subject, with: "Subject Rejected"
-    fill_in :email_content, with: "Content Rejected"
-    click_button I18n.t('.emails.email_form.send')
-    applications.each do |letter|
-      letter.reload
-      expect(letter.status_notification_sent).to be true
+    %w[accepted rejected].each do |status|
+      applications = event.application_letters.select { | application_letter | application_letter.status == status }
+      expect(applications.size).to be > 0
+      visit event_path(event)
+      send_email_button_label = (status == 'accepted') ? 'sending_acceptances' : 'sending_rejections'
+      click_button(I18n.t("events.applicants_overview.#{send_email_button_label}"))
+      expect(page).to have_current_path(event_email_show_path(event_id: event.id), only_path: true)
+      fill_in :email_subject, with: "Subject"
+      fill_in :email_content, with: "Content"
+      click_button I18n.t('.emails.email_form.send')
+      applications.each do |letter|
+        letter.reload
+        expect(letter.status_notification_sent).to be true
+      end
     end
   end
 
