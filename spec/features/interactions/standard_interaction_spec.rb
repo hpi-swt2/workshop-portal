@@ -1,7 +1,13 @@
 require 'rails_helper'
 require './db/sample_data/users'
+require './db/sample_data'
 
 RSpec::Steps.steps "Demo" do
+  it 'loads the seeds and populate with sample data' do
+    Rails.application.load_seed
+    add_sample_data
+  end
+
   it "should show the welcome page on startup" do
     visit root_path
     expect(page).to have_text I18n.t('start_page.welcome_to')
