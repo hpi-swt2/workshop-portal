@@ -200,12 +200,10 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
 
   scenario "logged in as Organizer I cannot accept alternative applications if no free places are available (execution phase)" do
     login(:organizer)
-    @pupil = FactoryGirl.create(:profile)
-    @event = FactoryGirl.create(:event, :in_execution_phase, max_participants: 1)
-    @application_letter_accepted = FactoryGirl.create(:application_letter_accepted, user: @pupil.user)
-    @application_letter_alternative = FactoryGirl.create(:application_letter_alternative, user: @pupil.user)
-    @application_letter_accepted.event = @event
-    @application_letter_alternative.event = @event
+    @event = FactoryGirl.create(:event_in_execution_with_applications_in_various_states, :applications_with_profile, accepted_application_letters_count: 2, alternative_application_letters_count: 1, max_participants: 2)
+    @application_letter = @event.application_letters.find { |application| application.status == 'alternative'}
+    @application_letter.status_notification_sent = true
+    @application_letter.save! 
     visit event_path(@event)
     expect(page).to_not have_link(I18n.t "application_status.accepted")
   end
