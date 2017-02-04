@@ -141,6 +141,15 @@ FactoryGirl.define do
       end
     end
 
+    trait :with_no_status_notification_sent_yet do
+       after(:create) do |event|
+         event.application_letters.each do |application|
+           application.status_notification_sent = false
+           application.save! if application.changed?
+         end
+       end
+    end
+
     factory :event_with_accepted_applications do
       name "Event-Name"
       description "Event-Description"

@@ -169,13 +169,8 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
 
   scenario "logged in as Organizer I can send acceptance and then rejection emails and by that change the status notification flag" do
     login(:organizer)
-    event = FactoryGirl.create(:event_with_accepted_applications, :in_selection_phase)
+    event = FactoryGirl.create(:event_with_accepted_applications, :in_selection_phase, :with_no_status_notification_sent_yet)
 
-    event.application_letters.each do |application|
-      application.status_notification_sent = false
-      application.save! if application.changed?
-    end
-  
     applications = event.application_letters.select { | application_letter | application_letter.status == 'accepted' }
     expect(applications.size).to be > 0
     visit event_path(event)
