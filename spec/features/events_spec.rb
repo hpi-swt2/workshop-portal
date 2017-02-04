@@ -49,7 +49,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
   end
 
   scenario "logged in as Organizer I want to be unable to send emails if there is any unclassified application left" do
-    @event = FactoryGirl.build(:event, :with_diverse_open_applications, :in_selection_phase)
+    @event = FactoryGirl.build(:event, :with_diverse_open_applications, :in_selection_phase_with_no_mails_sent)
     login(:organizer)
     @event.update!(max_participants: 1)
     visit event_path(@event)
@@ -58,7 +58,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
   end
 
   scenario "logged in as Organizer I want to be unable to send emails if there is a negative number of free places left" do
-    @event = FactoryGirl.create(:event, :in_selection_phase)
+    @event = FactoryGirl.create(:event, :in_selection_phase_with_no_mails_sent)
     login(:organizer)
     @event.update!(max_participants: 1)
     2.times do |n|
@@ -71,8 +71,9 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     expect(page).to have_css('button[disabled]', text: I18n.t('events.applicants_overview.sending_rejections'))
   end
 
+
   scenario "logged in as Organizer I want to be able to send an email to all accepted applicants in selection phase" do
-    @event = FactoryGirl.create(:event, :in_selection_phase)
+    @event = FactoryGirl.create(:event, :in_selection_phase_with_no_mails_sent)
     login(:organizer)
     @event.update!(max_participants: 2)
     2.times do |n|
@@ -89,8 +90,8 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     expect{click_button I18n.t('emails.email_form.send')}.to change{ActionMailer::Base.deliveries.count}.by(1)
   end
 
-  scenario "logged in as Organizer I want to be able to send an email to all rejected applicants" do
-    @event = FactoryGirl.create(:event, :in_selection_phase)
+  scenario "logged in as Organizer I want to be able to send an email to all rejected applicants in selection phase" do
+    @event = FactoryGirl.create(:event, :in_selection_phase_with_no_mails_sent)
     login(:organizer)
     @event.update!(max_participants: 2)
     2.times do |n|
@@ -105,7 +106,6 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     fill_in('email_subject', with: 'Subject')
     fill_in('email_content', with: 'Content')
     expect{click_button I18n.t('emails.email_form.send')}.to change{ActionMailer::Base.deliveries.count}.by(1)
-
   end
 
   scenario "logged in as Organizer I can see the correct count of free/occupied places" do
@@ -126,7 +126,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
 
   scenario "logged in as Organizer I can change application status with radio buttons in selection phase" do
     login(:organizer)
-    @event = FactoryGirl.create(:event, :with_open_application, :in_selection_phase)
+    @event = FactoryGirl.create(:event, :with_open_application, :in_selection_phase_with_no_mails_sent)
     visit event_path(@event)
     ApplicationLetter.selectable_statuses.each do |new_status|
       choose(I18n.t "application_status.#{new_status}")
@@ -136,7 +136,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
 
   scenario "logged in as Organizer I can change application status with radio buttons without the page reloading in selection phase", js: true do
     login(:organizer)
-    @event = FactoryGirl.create(:event, :with_open_application, :in_selection_phase)
+    @event = FactoryGirl.create(:event, :with_open_application, :in_selection_phase_with_no_mails_sent)
     visit event_path(@event)
     find('label', text: I18n.t('application_status.accepted')).click
     check_values = lambda {
@@ -169,7 +169,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
 
   scenario "logged in as Organizer I can send acceptance and then rejection emails and by that change the status notification flag" do
     login(:organizer)
-    event = FactoryGirl.create(:event_with_accepted_applications, :in_selection_phase, :with_no_status_notification_sent_yet)
+    event = FactoryGirl.create(:event_with_accepted_applications, :in_selection_phase_with_no_mails_sent, :with_no_status_notification_sent_yet)
 
     applications = event.application_letters.select { | application_letter | application_letter.status == 'accepted' }
     expect(applications.size).to be > 0
@@ -199,7 +199,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
   end
 
   scenario "logged in as Organizer I can push the accept all button to accept all applicants" do
-    @event = FactoryGirl.create(:event, :with_diverse_open_applications, :in_selection_phase)
+    @event = FactoryGirl.create(:event, :with_diverse_open_applications, :in_selection_phase_with_no_mails_sent)
     @event.max_participants = @event.application_letters.size + 1
     @event.save
     login(:organizer)

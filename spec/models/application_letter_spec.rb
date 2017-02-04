@@ -71,7 +71,7 @@ describe ApplicationLetter do
 
   it "can not be updated after event application deadline"  do
     application = FactoryGirl.build(:application_letter)
-    %i[in_selection_phase in_execution_phase].each do | phase |
+    %i[in_selection_phase_with_no_mails_sent in_execution_phase].each do | phase |
       application.event = FactoryGirl.create(:event, phase)
       expect(application).to_not be_valid
     end
@@ -110,7 +110,7 @@ describe ApplicationLetter do
 
   it "can update the status in selection phase" do
     application = FactoryGirl.build(:application_letter)
-    application.event = FactoryGirl.create(:event, :in_selection_phase)
+    application.event = FactoryGirl.create(:event, :in_selection_phase_with_no_mails_sent)
     application.status = :rejected
     expect(application).to be_valid
   end

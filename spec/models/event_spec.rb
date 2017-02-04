@@ -85,7 +85,7 @@ describe Event do
   end
 
   it "computes the email addresses of the accepted and the rejected applications" do
-    event = FactoryGirl.create(:event, :in_selection_phase)
+    event = FactoryGirl.create(:event, :in_selection_phase_with_no_mails_sent)
     accepted_application_letter_1 = FactoryGirl.create(:application_letter_accepted, :event => event, :user => FactoryGirl.create(:user))
     accepted_application_letter_2 = FactoryGirl.create(:application_letter_accepted, :event => event, :user => FactoryGirl.create(:user))
     accepted_application_letter_3 = FactoryGirl.create(:application_letter_accepted, :event => event, :user => FactoryGirl.create(:user))
@@ -223,7 +223,7 @@ describe Event do
   end
 
   it "accepts all its application letters" do
-    event = FactoryGirl.create :event, :with_diverse_open_applications, :in_selection_phase
+    event = FactoryGirl.create :event, :with_diverse_open_applications, :in_selection_phase_with_no_mails_sent
     event.accept_all_application_letters
     application_letters = ApplicationLetter.where(event: event.id)
     expect(application_letters.all? { |application_letter| application_letter.status == 'accepted' }).to eq(true)
@@ -231,7 +231,7 @@ describe Event do
 
   %i[accepted rejected].each do |status|
     it "sets the status notification flag for all #{status} applications" do
-      event = FactoryGirl.create :event_with_accepted_applications, :in_selection_phase
+      event = FactoryGirl.create :event_with_accepted_applications, :in_selection_phase_with_no_mails_sent
       application_letters = event.application_letters.select{ |application_letter| application_letter.status == status.to_s }
       application_letters.each do |application|
         application.status_notification_sent = false
@@ -257,7 +257,11 @@ describe Event do
   end
 
   it "is in selection phase" do
-    event = FactoryGirl.build(:event, :in_selection_phase)
+    event = FactoryGirl.build(:event, :in_selection_phase_with_no_mails_sent)
+    expect(event.phase).to eq(:selection)
+    event = FactoryGirl.build(:event, :in_selection_phase_with_acceptances_sent)
+    expect(event.phase).to eq(:selection)
+    event = FactoryGirl.build(:event, :in_selection_phase_with_rejections_sent)
     expect(event.phase).to eq(:selection)
   end
 
