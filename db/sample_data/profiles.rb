@@ -106,6 +106,21 @@ def profile_organizer(user)
   )
 end
 
+def profile_admin(user)
+  Profile.new(
+      user: user,
+      first_name: "Karl",
+      last_name: "Administrator",
+      gender: "female",
+      birth_date: Date.parse('1996.06.03'),
+      street_name: "Stahnsdorfer Str.",
+      zip_code: "14482",
+      city: "Potsdam",
+      state: "Brandenburg",
+      country: "Deutschland",
+  )
+end
+
 def profile_lisa(user)
   Profile.new(
       user: user,
