@@ -20,10 +20,12 @@ end
 def login(email, password)
   fill_in 'login_email', with: email
   fill_in 'login_password', with: password
+  click_button 'login_submit'
 end
 
 def sign_up(email, password)
   fill_in 'sign_up_email', with: email
   fill_in 'sign_up_password', with: password
   fill_in 'sign_up_password_confirmation', with: password
+  click_button 'sign_up_submit'
 end
