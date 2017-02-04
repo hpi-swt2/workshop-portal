@@ -3,6 +3,7 @@ require 'pdf_generation/applications_pdf'
 require 'pdf_generation/participants_pdf'
 require 'rubygems'
 require 'zip'
+require 'carrierwave'
 
 class EventsController < ApplicationController
 
@@ -261,7 +262,7 @@ class EventsController < ApplicationController
     end
 
     def event_params
-      params.require(:event).permit(:name, :description, :max_participants, :organizer, :knowledge_level, :application_deadline, :published, :hidden, :custom_application_fields => [], date_ranges_attributes: [:start_date, :end_date, :id])
+      params.require(:event).permit(:name, :description, :image, :max_participants, :organizer, :knowledge_level, :application_deadline, :published, :hidden, :custom_application_fields => [], date_ranges_attributes: [:start_date, :end_date, :id])
     end
 
     def add_event_query_conditions(query)

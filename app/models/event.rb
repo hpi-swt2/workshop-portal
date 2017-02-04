@@ -21,6 +21,8 @@ class Event < ActiveRecord::Base
 
   serialize :custom_application_fields, Array
 
+  mount_uploader :image, EventImageUploader
+
   has_many :application_letters
   has_many :agreement_letters
   has_many :participant_groups
@@ -34,6 +36,13 @@ class Event < ActiveRecord::Base
   validates :hidden, exclusion: { in: [nil] }
   validates :published, inclusion: { in: [true, false] }
   validates :published, exclusion: { in: [nil] }
+  validate :check_image_dimensions
+
+  # Use the image dimensions as returned from our uploader
+  # to verify that the image has sufficient size
+  def check_image_dimensions
+    errors.add(:image, I18n.t("events.errors.image_too_small")) if image.upload_width.present? && image.upload_height.present? && (image.upload_width < 200 || image.upload_height < 155)
+  end
 
 
   # Returns all participants for this event in following order:
@@ -145,17 +154,26 @@ class Event < ActiveRecord::Base
   # @param none
   # @return none
   def accept_all_application_letters
-    application_letters.each do |application_letter|
-      application_letter.update(status: :accepted)
+    application_letters.map { |application| application.update(status: :accepted) }
+  end
+
+  # Sets the status_notification_sent flag for all application letters of the given type
+  #
+  # @param status [Type] the desired application status the flag should be set for
+  # @return none
+  def set_status_notification_flag_for_applications_with_status(status)
+    applications = application_letters.select {|application| application.status == status.to_s}
+    applications.each do |application_letter|
+      application_letter.update(status_notification_sent: true)
     end
   end
 
   # Returns an array of strings of all email addresses of applications with a given status type
   #
   # @param type [Type] the status type of the email addresses that will be returned
-  # @return [Array<String>] Array of all email addresses of applications with given type
-  def email_addresses_of_type(type)
-    applications = application_letters.where(status: ApplicationLetter.statuses[type])
+  # @return [Array<String>] Array of all email addresses of applications with given type, that don't have status_notification_sent set
+  def email_addresses_of_type_without_notification_sent(type)
+    applications = application_letters.where(status: ApplicationLetter.statuses[type], status_notification_sent: false)
     applications.collect { |a| a.user.email }
   end
 
@@ -164,43 +182,8 @@ class Event < ActiveRecord::Base
   # @param none
   # @return [String] Concatenation of all email addresses of accepted applications, seperated by ','
   def email_addresses_of_accepted_applicants
-    email_addresses_of_type(:accepted).join(',')
-  end
-
-  # Returns a string of all email addresses of rejected applications
-  #
-  # @param none
-  # @return [String] Concatenation of all email addresses of rejected applications, seperated by ','
-  def email_addresses_of_rejected_applicants
-    email_addresses_of_type(:rejected).join(',')
-  end
-
-  # Returns a new acceptance email
-  #
-  # @param none
-  # @return [Email] new acceptance email
-  def generate_acceptances_email
-    email = Email.new
-    email.hide_recipients = false
-    email.recipients = email_addresses_of_accepted_applicants
-    email.reply_to = 'workshop.portal@hpi.de'
-    email.subject = ''
-    email.content = ''
-    return email
-  end
-
-  # Returns a new rejection email
-  #
-  # @param none
-  # @return [Email] new rejection email
-  def generate_rejections_email
-    email = Email.new
-    email.hide_recipients = false
-    email.recipients = email_addresses_of_rejected_applicants
-    email.reply_to = 'workshop.portal@hpi.de'
-    email.subject = ''
-    email.content = ''
-    return email
+    applications = application_letters.where(status: ApplicationLetter.statuses[:accepted])
+    applications.collect { |a| a.user.email }.join(',')
   end
 
   # Returns a new email to a set of participants

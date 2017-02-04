@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170201201932) do
+ActiveRecord::Schema.define(version: 20170203180638) do
 
   create_table "agreement_letters", force: :cascade do |t|
     t.integer  "user_id",    null: false
@@ -26,11 +26,11 @@ ActiveRecord::Schema.define(version: 20170201201932) do
 
   create_table "application_letters", force: :cascade do |t|
     t.string   "motivation"
-    t.integer  "user_id",                               null: false
-    t.integer  "event_id",                              null: false
-    t.datetime "created_at",                            null: false
-    t.datetime "updated_at",                            null: false
-    t.integer  "status",                    default: 2, null: false
+    t.integer  "user_id",                                   null: false
+    t.integer  "event_id",                                  null: false
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
+    t.integer  "status",                    default: 2,     null: false
     t.integer  "grade"
     t.string   "coding_skills"
     t.string   "emergency_number"
@@ -40,6 +40,7 @@ ActiveRecord::Schema.define(version: 20170201201932) do
     t.text     "custom_application_fields"
     t.text     "annotation"
     t.string   "organisation"
+    t.boolean  "status_notification_sent",  default: false, null: false
   end
 
   add_index "application_letters", ["event_id"], name: "index_application_letters_on_event_id"

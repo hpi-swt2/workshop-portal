@@ -147,6 +147,10 @@ de:
       page: "Seite"
     errors:
       application_deadline_before_start_of_event: "Bewerbungsschluss muss vor Beginn der Veranstaltung liegen"
+      image_too_small: "Das ausgewählte Bild muss mindestens 200 x 155 Pixel groß sein"
+
+    image_upload:
+      upload_local_file: "Lokale Datei hochladen"    
 
   activerecord:
       models:
@@ -157,6 +161,7 @@ de:
         event:
           name: "Name"
           description: "Beschreibung"
+          image: "Bild"
           max_participants: "Maximale Teilnehmerzahl"
           kind: "Art"
           active: "Aktiv"
