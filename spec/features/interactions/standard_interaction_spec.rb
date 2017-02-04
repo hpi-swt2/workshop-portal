@@ -22,6 +22,11 @@ RSpec::Steps.steps "Demo" do
     expect(page).to_not have_text I18n.t('devise.failure.not_found_in_database')
     expect(page).to_not have_text I18n.t('devise.failure.locked')
   end
+
+  it 'should let organizer click the new event button' do
+    click_link I18n.t('navbar.events')
+    click_link 'new_event'
+  end
   end
 end
 
