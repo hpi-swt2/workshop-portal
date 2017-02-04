@@ -38,12 +38,11 @@ class EmailsController < ApplicationController
         @email.send_email
       end
 
+      @event.set_status_notification_flag_for_applications_with_status(application_letter_status)
       if status == :acceptance
         @event.acceptances_have_been_sent = true
-        @event.set_status_notification_flag_for_applications_with_status(application_letter_status)
       elsif status == :rejection
         @event.rejections_have_been_sent = true
-        @event.set_status_notification_flag_for_applications_with_status(application_letter_status)
       end
       @event.save
 

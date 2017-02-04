@@ -114,7 +114,7 @@ FactoryGirl.define do
       end
     end
 
-    trait :in_selection_phase do
+    trait :in_selection_phase_with_no_mails_sent do
       after(:build) do |event|
         event.published = true
         event.application_deadline = Date.yesterday
@@ -132,6 +132,24 @@ FactoryGirl.define do
       end
     end
 
+    trait :in_selection_phase_with_acceptances_sent do
+      after(:build) do |event|
+        event.published = true
+        event.application_deadline = Date.yesterday
+        event.acceptances_have_been_sent = true
+        event.rejections_have_been_sent = false
+      end
+    end
+
+    trait :in_selection_phase_with_rejections_sent do
+      after(:build) do |event|
+        event.published = true
+        event.application_deadline = Date.yesterday
+        event.acceptances_have_been_sent = false
+        event.rejections_have_been_sent = true
+      end
+    end
+
     trait :in_execution_phase do
       after(:build) do |event|
         event.published = true
@@ -139,6 +157,15 @@ FactoryGirl.define do
         event.acceptances_have_been_sent = true
         event.rejections_have_been_sent = true
       end
+    end
+
+    trait :with_no_status_notification_sent_yet do
+       after(:create) do |event|
+         event.application_letters.each do |application|
+           application.status_notification_sent = false
+           application.save! if application.changed?
+         end
+       end
     end
 
     factory :event_with_accepted_applications do
@@ -154,7 +181,7 @@ FactoryGirl.define do
       organizer "Workshop-Organizer"
       knowledge_level "Workshop-Knowledge Level"
       application_deadline Date.current
-      
+
       after(:create) do |event, evaluator|
         create_list(:application_letter_accepted, evaluator.accepted_application_letters_count, event: event)
         create_list(:application_letter_rejected, evaluator.rejected_application_letters_count, event: event)

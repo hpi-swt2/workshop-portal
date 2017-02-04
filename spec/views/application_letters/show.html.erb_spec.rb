@@ -11,7 +11,7 @@ RSpec.describe "application_letters/show", type: :view do
   end
 
   it "renders radio buttons for accept reject pending and alternative, but not canceled in selection phase" do
-    @application_letter.event = FactoryGirl.create(:event, :in_selection_phase)
+    @application_letter.event = FactoryGirl.create(:event, :in_selection_phase_with_no_mails_sent)
     render
     expect(rendered).to have_css("label", text: I18n.t('application_status.accepted'))
     expect(rendered).to have_css("label", text: I18n.t('application_status.rejected'))

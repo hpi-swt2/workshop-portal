@@ -145,9 +145,7 @@ class Event < ActiveRecord::Base
   # @param none
   # @return none
   def accept_all_application_letters
-    application_letters.each do |application_letter|
-      application_letter.update(status: :accepted)
-    end
+    application_letters.map { |application| application.update(status: :accepted) }
   end
 
   # Sets the status_notification_sent flag for all application letters of the given type
