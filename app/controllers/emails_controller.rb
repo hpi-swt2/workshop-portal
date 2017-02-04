@@ -10,11 +10,12 @@ class EmailsController < ApplicationController
 
     @email = Email.new(hide_recipients: true, reply_to: Rails.configuration.reply_to_address, recipients: @addresses.join(','),
                        subject: '', content: '')
-
+    @send_generic = false
     render :email
   end
 
   def submit
+    @send_generic = false
     authorize! :send_email, Email
     if params[:send]
       send_email
@@ -23,6 +24,11 @@ class EmailsController < ApplicationController
     end
   end
 
+  def submit_generic
+    @send_generic = true
+    @templates = []
+    send_generic
+  end
 
   private
 
@@ -49,6 +55,17 @@ class EmailsController < ApplicationController
       @templates = EmailTemplate.with_status(get_email_template_status)
 
       flash.now[:alert] = t('.sending_failed')
+      render :email
+    end
+  end
+
+  def send_generic
+    @email = Email.new(email_params)
+    if @email.valid?
+      @email.send_email
+      redirect_to :events, notice: t('emails.submit.sending_successful')
+    else
+      flash.now[:alert] = t('emails.submit.sending_failed')
       render :email
     end
   end

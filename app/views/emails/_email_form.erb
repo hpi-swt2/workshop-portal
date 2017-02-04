@@ -1,4 +1,4 @@
-<%= form_for @email, url: {action: 'submit', controller: 'emails', status: params[:status]}, html: {class: 'email-form form-horizontal'} do |f| %>
+<%= form_for @email, url: @send_generic ? {action: 'submit_generic', controller: 'emails'} : {action: 'submit', controller: 'emails', status: params[:status]}, html: {class: 'email-form form-horizontal'} do |f| %>
   <div class="form-group">
     <label class="control-label col-sm-2" for="hide_show_recipients"><%= t('.further_recipients') %>:</label>
     <div class="btn-group col-sm-6" data-toggle="buttons">

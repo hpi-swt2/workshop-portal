@@ -80,6 +80,44 @@ RSpec.feature "Event participants overview", :type => :feature do
 
   end
 
+  scenario "logged in as Organizer I want to be able to send an email to all participants" do
+    login(:organizer)
+    for i in 1..5
+      user = FactoryGirl.create(:user)
+      profile = FactoryGirl.create(:profile, user: user, last_name: i.to_s)
+      application_letter = FactoryGirl.create(:application_letter_accepted, user: user, event: @event)
+      participant_group = FactoryGirl.create(:participant_group, user: user, event: @event, group: i)
+    end
+    visit event_participants_path(@event)
+    check :all
+    fill_in(:sender, with: 'test@test.com')
+    click_button(I18n.t('events.email_modal.send_email_label'))
+    fill_in('email_subject', with: 'Subject')
+    fill_in('email_content', with: 'Content')
+    expect{click_button I18n.t('emails.email_form.send')}.to change{ActionMailer::Base.deliveries.count}.by(1)
+    expect(page).to have_text(I18n.t('emails.submit.sending_successful'))
+  end
+
+
+  scenario "logged in as Organizer I cant send an invalid email to all participants" do
+    login(:organizer)
+    for i in 1..5
+      user = FactoryGirl.create(:user)
+      profile = FactoryGirl.create(:profile, user: user, last_name: i.to_s)
+      application_letter = FactoryGirl.create(:application_letter_accepted, user: user, event: @event)
+      participant_group = FactoryGirl.create(:participant_group, user: user, event: @event, group: i)
+    end
+    visit event_participants_path(@event)
+    check :all
+    # Email has no sender yet, because no sender is set. Should cause the sending to fail.
+    click_button(I18n.t('events.email_modal.send_email_label'))
+    fill_in('email_subject', with: 'Subject')
+    fill_in('email_content', with: 'Content')
+    expect{click_button I18n.t('emails.email_form.send')}.to change{ActionMailer::Base.deliveries.count}.by(0)
+    expect(page).to have_text(I18n.t('emails.submit.sending_failed'))
+  end
+
+
 
   def login(role)
     @profile = FactoryGirl.create(:profile)

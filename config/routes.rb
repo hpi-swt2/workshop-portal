@@ -25,6 +25,7 @@ Rails.application.routes.draw do
     post 'upload_material' => 'events#upload_material', as: :upload_material
     post 'download_material' => 'events#download_material', as: :download_material
     member do
+      post 'emails_generic' => 'emails#submit_generic', as: :email_submit_generic
       get 'participants_pdf'
       get 'print_applications'
       get 'print_applications_eating_habits'
