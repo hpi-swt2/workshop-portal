@@ -89,7 +89,10 @@ RSpec.feature "Application Letter Overview", :type => :feature do
 
     find('input[name=commit]').click
 
-    expect(page).to have_css(".has-error", count: 12)
+    # each field that errors generates three elements that have the has-error class
+    # we are expecting 3 fields to be invalid.
+    number_of_errors = 3 * 3
+    expect(page).to have_css(".has-error", count: number_of_errors)
   end
 
   describe "Application creation" do
