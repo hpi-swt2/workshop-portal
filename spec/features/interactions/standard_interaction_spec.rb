@@ -28,6 +28,19 @@ RSpec::Steps.steps "Demo" do
     click_link I18n.t('navbar.events')
     click_link 'new_event'
   end
+
+  it 'should let organizer fill out event creation page' do
+    #TODO: Add radio button choice
+    fill_in 'event_name', with: 'BwInf-Camp'
+    fill_in 'description', with: '[von hpi website geklaut]'
+    fill_in 'event_max_participants', with: 25
+    fill_in "event[date_ranges_attributes][][start_date]", with: I18n.l(Date.new(2019, 01, 20))
+    fill_in "event[date_ranges_attributes][][end_date]", with: I18n.l(Date.new(2019, 01, 22))
+    fill_in 'event_organizer', with: 'HPI Schülerklub'
+    fill_in 'event_knowledge_level', with: 'Fortgeschrittene'
+    fill_in 'event_application_deadline', with: I18n.l(Date.new(2019, 01, 12))
+    #TODO: Add CAFS
+    click_button 'create_event'
   end
 end
 
