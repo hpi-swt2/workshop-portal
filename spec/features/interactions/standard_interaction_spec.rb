@@ -1,7 +1,13 @@
 require 'rails_helper'
 require './db/sample_data/users'
+require './db/sample_data'
 
 RSpec::Steps.steps "Demo" do
+  it 'loads the seeds and populate with sample data' do
+    Rails.application.load_seed
+    add_sample_data
+  end
+
   it "should show the welcome page on startup" do
     visit root_path
     expect(page).to have_text I18n.t('start_page.welcome_to')
@@ -16,6 +22,11 @@ RSpec::Steps.steps "Demo" do
     expect(page).to_not have_text I18n.t('devise.failure.not_found_in_database')
     expect(page).to_not have_text I18n.t('devise.failure.locked')
     expect(page).to have_text I18n.t('start_page.welcome_to')
+  end
+
+  it 'should let organizer click the new event button' do
+    click_link I18n.t('navbar.events')
+    click_link 'new_event'
   end
   end
 end
