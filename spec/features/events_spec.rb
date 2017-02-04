@@ -177,26 +177,26 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     end
   
     applications = event.application_letters.select { | application_letter | application_letter.status == 'accepted' }
+    expect(applications.size).to be > 0
     visit event_path(event)
     click_button(I18n.t('events.applicants_overview.sending_acceptances'))
     expect(page).to have_current_path(event_email_show_path(event_id: event.id), only_path: true)
     fill_in :email_subject, with: "Subject Accepted"
     fill_in :email_content, with: "Content Accepted"
     click_button I18n.t('.emails.email_form.send')
-    expect(applications.size).to be > 0
     applications.each do |letter|
       letter.reload
       expect(letter.status_notification_sent).to be true
     end
 
     applications = event.application_letters.select { | application_letter | application_letter.status == 'rejected' }
+    expect(applications.size).to be > 0
     visit event_path(event)
     click_button(I18n.t('events.applicants_overview.sending_rejections'))
     expect(page).to have_current_path(event_email_show_path(event_id: event.id), only_path: true)
     fill_in :email_subject, with: "Subject Rejected"
     fill_in :email_content, with: "Content Rejected"
     click_button I18n.t('.emails.email_form.send')
-    expect(applications.size).to be > 0
     applications.each do |letter|
       letter.reload
       expect(letter.status_notification_sent).to be true
