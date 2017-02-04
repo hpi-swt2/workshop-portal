@@ -19,14 +19,7 @@ class EventImageUploader < CarrierWave::Uploader::Base
   def capture_size_before_cache(new_file) 
     # Only do this once, to the original version
     if version_name.blank?
-      # file sometimes is in memory
-      if new_file.path.nil?
-        img = ::MiniMagick::Image::read(new_file.file)
-        @upload_width = img[:width]
-        @upload_height = img[:height]
-      else
         @upload_width, @upload_height = `identify -format "%wx %h" #{new_file.path}`.split(/x/).map { |dim| dim.to_i }
-      end
     end
   end
 
