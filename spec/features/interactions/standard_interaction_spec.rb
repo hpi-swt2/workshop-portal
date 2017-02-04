@@ -8,11 +8,14 @@ RSpec::Steps.steps "Demo" do
   end
 
   it 'should let an organizer log in' do
+    #TODO: Use id instead of visible string, currently id is missing for login button
+    click_link I18n.t('navbar.login')
     login(user_organizer.email, user_password)
   end
 end
 
 def logout(displayed_name)
+  #TODO: Use id instead of visible string, currently id is missing for dropdown
   click_link displayed_name
   click_link I18n.t('navbar.logout')
 end
