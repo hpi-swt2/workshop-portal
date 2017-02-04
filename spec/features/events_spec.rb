@@ -173,9 +173,9 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     @application_letter = FactoryGirl.create(:application_letter_accepted, user: @pupil.user)
     @application_letter.event = FactoryGirl.create(:event, :in_execution_phase)
     visit event_path(@application_letter.event)
-    expect(page).to have_link(I18n.t "application_status.canceled")
-    click_link I18n.t "application_status.canceled"
-    expect(page).to_not have_link(I18n.t "application_status.canceled")
+    expect(page).to have_link(I18n.t "application_status.actions.cancel")
+    click_link I18n.t "application_status.actions.cancel"
+    expect(page).to_not have_link(I18n.t "application_status.actions.cancel")
     @application_letter.reload
     expect(@application_letter.status).to eq('canceled')
     expect(@application_letter.status_notification_sent).to be false
@@ -190,9 +190,9 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     #expect(@application_letter_alternative.user.profile).to exist
     visit event_path(@event)
     save_page
-    expect(page).to have_link(I18n.t "application_status.accepted")
-    click_link I18n.t "application_status.accepted"
-    expect(page).to_not have_link(I18n.t "application_status.accepted")
+    expect(page).to have_link(I18n.t "application_status.actions.accept")
+    click_link I18n.t "application_status.actions.accept"
+    expect(page).to_not have_link(I18n.t "application_status.actions.accept")
     @application_letter_alternative.reload
     expect(@application_letter_alternative.status).to eq('accepted')
     expect(@application_letter_alternative.status_notification_sent).to be false

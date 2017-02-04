@@ -3,10 +3,10 @@
         <%= t("application_status.#{application_letter.status}") %>
         <% if application_letter.event.phase == :execution %>
             <% if application_letter.status.to_sym == :accepted %>
-                <%= link_to t('application_status.canceled'), update_application_letter_status_path(application_letter, 'application_letter[status]': :canceled),
+                <%= link_to t('application_status.actions.cancel'), update_application_letter_status_path(application_letter, 'application_letter[status]': :canceled),
                             method: :put, class: 'btn btn-default' %>
-            <% elsif application_letter.status.to_sym == :alternative && application_letter.event.compute_free_places > 0 %>
-                <%= link_to t('application_status.accepted'), update_application_letter_status_path(application_letter, 'application_letter[status]': :accepted),
+            <% elsif application_letter.status.to_sym == :alternative && @has_free_places %>
+                <%= link_to t('application_status.actions.accept'), update_application_letter_status_path(application_letter, 'application_letter[status]': :accepted),
                             method: :put, class: 'btn btn-default' %>
             <% end %>
         <% end %>

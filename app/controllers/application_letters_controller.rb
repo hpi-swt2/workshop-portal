@@ -12,6 +12,7 @@ class ApplicationLettersController < ApplicationController
   # GET /applications/1
   def show
     @application_note = ApplicationNote.new
+    @has_free_places = @application_letter.event.compute_free_places > 0
   end
 
   # GET /applications/new

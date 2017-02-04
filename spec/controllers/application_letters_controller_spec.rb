@@ -50,6 +50,11 @@ RSpec.describe ApplicationLettersController, type: :controller do
         get :show, id: @application.to_param
         expect(assigns(:application_letter)).to eq(@application)
       end
+
+      it "assigns the free places status as @has_free_places" do
+        get :show, id: @application.to_param
+        expect(assigns(:has_free_places)).to eq(@application.event.compute_free_places > 0)
+      end
     end
 
     describe "GET #edit" do

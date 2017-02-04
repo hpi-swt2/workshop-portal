@@ -226,10 +226,9 @@ FactoryGirl.define do
       date_ranges { build_list :date_range, 1 }
       transient do
         accepted_application_letters_count 1
-        rejected_application_letters_count 0
+        rejected_application_letters_count 1
         alternative_application_letters_count 1
-        canceled_application_letters_count 0
-        pending_application_letters_count 0
+        canceled_application_letters_count 1
       end
       organizer "Workshop-Organizer"
       knowledge_level "Workshop-Knowledge Level"
@@ -238,14 +237,19 @@ FactoryGirl.define do
       after(:create) do |event, evaluator|
         create_list(:application_letter_accepted, evaluator.accepted_application_letters_count, event: event)
         create_list(:application_letter_rejected, evaluator.rejected_application_letters_count, event: event)
-        create_list(:application_letter_alternative, evaluator.alternative_application_letters_count, event: event, user: FactoryGirl.create(:profile).user)
+        create_list(:application_letter_alternative, evaluator.alternative_application_letters_count, event: event)
         create_list(:application_letter_canceled, evaluator.canceled_application_letters_count, event: event)
-        create_list(:application_letter_pending, evaluator.pending_application_letters_count, event: event)
         event.published = true
         event.application_deadline = Date.yesterday
         event.acceptances_have_been_sent = true
         event.rejections_have_been_sent = true
       end
+
+      trait :applications_with_profile do
+        after(:create) do |event|
+          event.application_letters.each {|application| application.user.profile = FactoryGirl.create(:profile) }
+        end        
+      end  
     end
   end
 end
