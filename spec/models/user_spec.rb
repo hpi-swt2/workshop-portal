@@ -69,17 +69,17 @@ describe User do
 
   end
 
-  it "returns correct default (pre) accepted applications count" do
+  it "returns correct default accepted applications count" do
     application_letter = FactoryGirl.create(:application_letter)
     expect(application_letter.user.accepted_applications_count(application_letter.event)).to eq(0)
   end
 
-  it "computes the correct number of (pre) accepted applications" do
+  it "computes the correct number of accepted applications" do
     user = FactoryGirl.create(:user)
     application_letter = FactoryGirl.create(:application_letter, event: FactoryGirl.create(:event), user: user)
     application_letter_accepted = FactoryGirl.create(:application_letter_accepted, event: FactoryGirl.create(:event), user: user)
     expect(user.accepted_applications_count(FactoryGirl.create(:event))).to eq(1)
-    application_letter_accepted_2 = FactoryGirl.create(:application_letter_pre_accepted, event: FactoryGirl.create(:event), user: user)
+    application_letter_accepted_2 = FactoryGirl.create(:application_letter_accepted, event: FactoryGirl.create(:event), user: user)
     expect(user.accepted_applications_count(FactoryGirl.create(:event))).to eq(2)
   end
 
@@ -97,7 +97,7 @@ describe User do
     expect(user.rejected_applications_count(FactoryGirl.create(:event))).to eq(2)
   end
 
-  it "only counts the (pre) accepted application of other events and ignores status of current event application" do
+  it "only counts the accepted application of other events and ignores status of current event application" do
     user = FactoryGirl.create(:user)
     other_event = FactoryGirl.create(:event)
     current_event = FactoryGirl.create(:event)

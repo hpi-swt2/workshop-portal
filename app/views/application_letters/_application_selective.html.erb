@@ -1,15 +1,16 @@
 <% if can? :edit_applicants, Event %>
-    <!--TODO: Change to event status check -->
-    <% if application_letter.event.application_status_locked %>
+    <% if application_letter.event.participant_selection_locked %>
         <%= t("application_status.#{application_letter.status}") %>
-        <% if application_letter.status.to_sym == :accepted %>
-            <%= link_to t('application_status.canceled'), update_application_letter_status_path(application_letter, 'application_letter[status]': :canceled),
-                        method: :put, class: 'btn btn-default' %>
-        <% elsif application_letter.status.to_sym == :alternative && application_letter.event.compute_free_places > 0 %>
-            <%= link_to t('application_status.pre_accepted'), update_application_letter_status_path(application_letter, 'application_letter[status]': :pre_accepted),
-                        method: :put, class: 'btn btn-default' %>
+        <% if application_letter.event.phase == :execution %>
+            <% if application_letter.status.to_sym == :accepted %>
+                <%= link_to t('application_status.canceled'), update_application_letter_status_path(application_letter, 'application_letter[status]': :canceled),
+                            method: :put, class: 'btn btn-default' %>
+            <% elsif application_letter.status.to_sym == :alternative && application_letter.event.compute_free_places > 0 %>
+                <%= link_to t('application_status.accepted'), update_application_letter_status_path(application_letter, 'application_letter[status]': :accepted),
+                            method: :put, class: 'btn btn-default' %>
+            <% end %>
         <% end %>
-    <% else %>
+    <% elsif application_letter.event.phase == :selection %>
         <%= form_for :application_letter, url: update_application_letter_status_path(application_letter), html: {method: :put} do |f| %>
             <div class="form-group">
               <div class="btn-group" data-toggle="buttons">

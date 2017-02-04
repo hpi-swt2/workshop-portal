@@ -1,5 +1,7 @@
 <%- model_class = ApplicationLetter -%>
 <div class="page-header">
-  <h1><%=t '.title', :default => [:'helpers.titles.new', 'New %{model}'], :model => model_class.model_name.human.titleize %></h1>
+  <h1>
+  	  <%=t @submit_button_text ? @submit_button_text : 'helpers.titles.new', :model => model_class.model_name.human.titleize %>
+  </h1>
 </div>
 <%= render :partial => 'form' %>

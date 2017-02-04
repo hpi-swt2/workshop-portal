@@ -3,6 +3,7 @@
 <head>
   <title>Workshop-Portal</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <%= stylesheet_link_tag    "https://fonts.googleapis.com/css?family=Open+Sans|Roboto+Slab" %>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <script>
@@ -47,10 +48,8 @@
 
   <footer>
     <div class="container">
-      <div>
-        <%= link_to t('footer.imprint'), '' %> |
+        <%= link_to t('footer.imprint'), imprint_path %> |
         <%= t 'footer.hoster_link_html' %>
-      </div>
       <div><%= t 'footer.copyright' %></div>
       <span class="ignore"><%= t "footer.ignore" %></span>
     </div>

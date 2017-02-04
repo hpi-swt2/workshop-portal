@@ -20,6 +20,33 @@ RSpec.describe "events/show", type: :view do
     expect(rendered).to have_text(@event.knowledge_level)
   end
 
+  it "does not render knowledge level or organizer if empty and the user isn't organizer" do
+    @event = assign(:event, FactoryGirl.create(:event, knowledge_level: '', organizer: ''))
+    sign_in(FactoryGirl.create(:user, role: :pupil))
+
+    render
+    expect(rendered).to_not have_text(Event.human_attribute_name(:knowledge_level))
+    expect(rendered).to_not have_text(Event.human_attribute_name(:organizer))
+  end
+
+  it "does not render knowledge level or organizer if nil and the user isn't organizer" do
+    @event = assign(:event, FactoryGirl.create(:event, knowledge_level: nil, organizer: nil))
+    sign_in(FactoryGirl.create(:user, role: :pupil))
+
+    render
+    expect(rendered).to_not have_text(Event.human_attribute_name(:knowledge_level))
+    expect(rendered).to_not have_text(Event.human_attribute_name(:organizer))
+  end
+
+  it "does render knowledge level or organizer if empty and the user is organizer" do
+    @event = assign(:event, FactoryGirl.create(:event, knowledge_level: '', organizer: ''))
+    sign_in(FactoryGirl.create(:user, role: :organizer))
+
+    render
+    expect(rendered).to have_text(Event.human_attribute_name(:knowledge_level))
+    expect(rendered).to have_text(Event.human_attribute_name(:organizer))
+  end
+
   it "displays counter" do
     free_places = assign(:free_places, @event.compute_free_places)
     occupied_places = assign(:occupied_places, @event.compute_occupied_places)
@@ -49,18 +76,16 @@ RSpec.describe "events/show", type: :view do
     expect(rendered).to have_css("td", :text => @application_letter.user.profile.age_at_time(@event.start_date))
   end
 
-  it "logged in as organizer it renders radio buttons for pre_accept reject pending and alternative in selection phase" do
+  it "logged in as organizer it renders radio buttons for accept reject pending and alternative, but not canceled in selection phase" do
     sign_in(FactoryGirl.create(:user, role: :organizer))
     @event = assign(:event, FactoryGirl.create(:event, :with_diverse_open_applications, :in_selection_phase))
     @application_letters = @event.application_letters #TODO I couldnt find a assign(:application_letters), still this gives the view access to it.
-    expect(@event.phase).to eq(:selection)
     render
-    expect(rendered).to have_css("label", text: I18n.t('application_status.pre_accepted'))
+    expect(rendered).to have_css("label", text: I18n.t('application_status.accepted'))
     expect(rendered).to have_css("label", text: I18n.t('application_status.rejected'))
     expect(rendered).to have_css("label", text: I18n.t('application_status.pending'))
     expect(rendered).to have_css("label", text: I18n.t('application_status.alternative'))
     expect(rendered).to_not have_css("label", text: I18n.t('application_status.canceled'))
-    expect(rendered).to_not have_css("label", text: I18n.t('application_status.accepted'))
   end
 
   it "displays application details button" do
@@ -68,9 +93,26 @@ RSpec.describe "events/show", type: :view do
     expect(rendered).to have_link(t(:details, scope: 'events.applicants_overview'))
   end
 
+  it "should warn about unreasonably long time spans for organizers" do
+    @event = assign(:event, FactoryGirl.create(:event, :with_unreasonably_long_range))
+
+    sign_in(FactoryGirl.create(:user, role: :organizer))
+    render
+    expect(rendered).to have_text(I18n.t 'events.notices.unreasonable_timespan')
+  end
+
+  it "should not warn about unreasonably long time spans for others" do
+    @event = assign(:event, FactoryGirl.create(:event, :with_unreasonably_long_range))
+
+    sign_in(FactoryGirl.create(:user, role: :coach))
+    render
+    expect(rendered).to_not have_text(I18n.t 'events.notices.unreasonable_timespan')
+  end
+
   it "should not display accept-all-button for non-organizers" do
     @event = assign(:event, FactoryGirl.create(:event, :in_selection_phase))
-    @event.max_participants = Float::INFINITY
+    @event.max_participants = @event.application_letters.size + 1
+    @event.save
     [:coach, :pupil].each do | each |
       sign_in(FactoryGirl.create(:user, role: each))
       render
@@ -80,8 +122,9 @@ RSpec.describe "events/show", type: :view do
 
   it "should display accept-all-button for organizers if there are enough free places" do
     @event = assign(:event, FactoryGirl.create(:event, :with_diverse_open_applications, :in_selection_phase))
+    @event.max_participants = @event.application_letters.size + 1
+    @event.save
     sign_in(FactoryGirl.create(:user, role: :organizer))
-    @event.max_participants = Float::INFINITY
     render
     expect(rendered).to have_link(I18n.t('events.applicants_overview.accept_all'))
   end

@@ -71,14 +71,14 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     expect(page).to have_css('button[disabled]', text: I18n.t('events.applicants_overview.sending_rejections'))
   end
 
-  scenario "logged in as Organizer I want to be able to send an email to all pre_accepted applicants" do
+  scenario "logged in as Organizer I want to be able to send an email to all accepted applicants in selection phase" do
     @event = FactoryGirl.create(:event, :in_selection_phase)
     login(:organizer)
     @event.update!(max_participants: 2)
     2.times do |n|
       @pupil = FactoryGirl.create(:profile)
       @pupil.user.role = :pupil
-      FactoryGirl.create(:application_letter_pre_accepted, :event => @event, :user => @pupil.user)
+      FactoryGirl.create(:application_letter_accepted, :event => @event, :user => @pupil.user)
     end
     visit event_path(@event)
     click_button I18n.t('events.applicants_overview.sending_acceptances')
@@ -105,6 +105,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     fill_in('email_subject', with: 'Subject')
     fill_in('email_content', with: 'Content')
     expect{click_button I18n.t('emails.email_form.send')}.to change{ActionMailer::Base.deliveries.count}.by(1)
+
   end
 
   scenario "logged in as Organizer I can see the correct count of free/occupied places" do
@@ -116,7 +117,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     2.times do |i| #2 to also test negative free places, those are fine
       @pupil = FactoryGirl.create(:profile)
       @pupil.user.role = :pupil
-      @application_letter = FactoryGirl.create(:application_letter_pre_accepted, event: @event, user: @pupil.user)
+      @application_letter = FactoryGirl.create(:application_letter_accepted, event: @event, user: @pupil.user)
       visit event_path(@event)
       expect(page).to have_text(I18n.t "free_places", count: (@event.max_participants).to_i - (i+1), scope: [:events, :applicants_overview])
       expect(page).to have_text(I18n.t "occupied_places", count: (i+1), scope: [:events, :applicants_overview])
@@ -137,7 +138,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     login(:organizer)
     @event = FactoryGirl.create(:event, :with_open_application, :in_selection_phase)
     visit event_path(@event)
-    find('label', text: I18n.t('application_status.pre_accepted')).click
+    find('label', text: I18n.t('application_status.accepted')).click
     check_values = lambda {
       expect(page).to have_text(I18n.t "free_places", count: (@event.max_participants).to_i - 1, scope: [:events, :applicants_overview])
       expect(page).to have_text(I18n.t "occupied_places", count: 1, scope: [:events, :applicants_overview])
@@ -147,103 +148,113 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     # verify that the state was actually persisted by reloading the page
     visit event_path(@event)
     check_values.call
-    expect(page).to have_css('label.active', text: I18n.t('application_status.pre_accepted'))
+    expect(page).to have_css('label.active', text: I18n.t('application_status.accepted'))
   end
 
-  scenario "logged in as Organizer I can not change application status with radio buttons if the applications are locked" do
+  scenario "logged in as Organizer I can not change application status with radio buttons if acceptance emails or rejection emails have been sent" do
     login(:organizer)
-    @event.lock_application_status
-    @pupil = FactoryGirl.create(:profile)
-    @application_letter = FactoryGirl.create(:application_letter, event: @event, user: @pupil.user)
-    visit event_path(@event)
-    ApplicationLetter.statuses.keys.each do |new_status|
-      if new_status != @application_letter.status
-        expect(page).not_to have_text(I18n.t "application_status.#{new_status}")
+    [[true, true], [true, false], [false, true]].each do |acceptances_have_been_sent, rejections_have_been_sent|
+      @event.acceptances_have_been_sent = acceptances_have_been_sent
+      @event.rejections_have_been_sent = rejections_have_been_sent
+      @pupil = FactoryGirl.create(:profile)
+      @application_letter = FactoryGirl.create(:application_letter, event: @event, user: @pupil.user)
+      visit event_path(@event)
+      ApplicationLetter.statuses.keys.each do |new_status|
+        if new_status != @application_letter.status
+          expect(page).not_to have_css('label', text: I18n.t("application_status.#{new_status}"))
+        end
       end
     end
   end
 
-  scenario "logged in as Organizer I can cancel accepted applications" do
+  scenario "logged in as Organizer I can cancel accepted applications (execution phase)" do
     login(:organizer)
     @pupil = FactoryGirl.create(:profile)
-    @application_letter = FactoryGirl.create(:application_letter_accepted, event: @event, user: @pupil.user)
-    @event.lock_application_status
-    visit event_path(@event)
+    @application_letter = FactoryGirl.create(:application_letter_accepted, user: @pupil.user)
+    @application_letter.event = FactoryGirl.create(:event, :in_execution_phase)
+    visit event_path(@application_letter.event)
     expect(page).to have_link(I18n.t "application_status.canceled")
     click_link I18n.t "application_status.canceled"
     expect(page).to_not have_link(I18n.t "application_status.canceled")
     @application_letter.reload
     expect(@application_letter.status).to eq('canceled')
+    expect(@application_letter.status_notification_sent).to be false
   end
 
-  scenario "logged in as Organizer I can pre_accept alternative applications" do
+  scenario "logged in as Organizer I can accept alternative applications (execution phase)" do
     login(:organizer)
     @pupil = FactoryGirl.create(:profile)
-    @application_letter_alternative = FactoryGirl.create(:application_letter_alternative, event: @event, user: @pupil.user)
-    @event.max_participants = 1
-    @event.save!
-    @event.lock_application_status
-    visit event_path(@event)
-    expect(page).to have_link(I18n.t "application_status.pre_accepted")
-    click_link I18n.t "application_status.pre_accepted"
-    expect(page).to_not have_link(I18n.t "application_status.pre_accepted")
+    @application_letter_alternative = FactoryGirl.create(:application_letter_alternative, event: FactoryGirl.create(:event, :in_execution_phase), user: @pupil.user) #TODO
+    #@application_letter_alternative.event = FactoryGirl.create(:event, :in_execution_phase)
+    #@application_letter_alternative.save!
+    visit event_path(@application_letter_alternative.event)
+    expect(@application_letter_alternative.event.application_letters.size).to eq 1
+    save_page
+    expect(page).to have_link(I18n.t "application_status.accepted")
+    click_link I18n.t "application_status.accepted"
+    expect(page).to_not have_link(I18n.t "application_status.accepted")
     @application_letter_alternative.reload
-    expect(@application_letter_alternative.status).to eq('pre_accepted')
+    expect(@application_letter_alternative.status).to eq('accepted')
+    expect(@application_letter_alternative.status_notification_sent).to be false
   end
 
-  scenario "logged in as Organizer I cannot pre accept alternative applications if no free places are available" do
+  scenario "logged in as Organizer I cannot accept alternative applications if no free places are available (execution phase)" do
     login(:organizer)
     @pupil = FactoryGirl.create(:profile)
-    @application_letter_accepted = FactoryGirl.create(:application_letter_accepted, event: @event, user: @pupil.user)
-    @application_letter_alternative = FactoryGirl.create(:application_letter_alternative, event: @event, user: @pupil.user)
-    @event.max_participants = 1
-    @event.save!
-    @event.lock_application_status
+    @event = FactoryGirl.create(:event, :in_execution_phase, max_participants: 1)
+    @application_letter_accepted = FactoryGirl.create(:application_letter_accepted, user: @pupil.user)
+    @application_letter_alternative = FactoryGirl.create(:application_letter_alternative, user: @pupil.user)
+    @application_letter_accepted.event = @event
+    @application_letter_alternative.event = @event
     visit event_path(@event)
-    expect(page).to_not have_link(I18n.t "application_status.pre_accepted")
+    expect(page).to_not have_link(I18n.t "application_status.accepted")
   end
 
-  scenario "logged in as Organizer I can send acceptance emails and by that accept the pre_accepted applicants" do
+  scenario "logged in as Organizer I can send acceptance and then rejection emails and by that change the status notification flag" do
     login(:organizer)
-    event = FactoryGirl.create(:event_with_pre_accepted_applications, :in_selection_phase)
-    pre_accepted_applications = event.application_letters.select { | application_letter | application_letter.status == 'pre_accepted' }
+    event = FactoryGirl.create(:event_with_accepted_applications, :in_selection_phase)
+
+    event.application_letters.each do |application|
+      application.status_notification_sent = false
+      application.save! if application.changed?
+    end
+  
+    applications = event.application_letters.select { | application_letter | application_letter.status == 'accepted' }
     visit event_path(event)
     click_button(I18n.t('events.applicants_overview.sending_acceptances'))
     expect(page).to have_current_path(event_email_show_path(event_id: event.id), only_path: true)
     fill_in :email_subject, with: "Subject Accepted"
     fill_in :email_content, with: "Content Accepted"
     click_button I18n.t('.emails.email_form.send')
-    expect(pre_accepted_applications.size).to be > 0
-    pre_accepted_applications.each do |letter|
+    expect(applications.size).to be > 0
+    applications.each do |letter|
       letter.reload
-      expect(letter.status.to_sym).to eq(:accepted)
+      expect(letter.status_notification_sent).to be true
     end
-  end
 
-  scenario "logged in as Organizer I can send rejection emails without accepting the pre_accepted applicants" do
-    login(:organizer)
-    event = FactoryGirl.create(:event_with_pre_accepted_applications, :in_selection_phase)
-    pre_accepted_applications = event.application_letters.select { | application_letter | application_letter.status == 'pre_accepted' }
+    applications = event.application_letters.select { | application_letter | application_letter.status == 'rejected' }
     visit event_path(event)
     click_button(I18n.t('events.applicants_overview.sending_rejections'))
     expect(page).to have_current_path(event_email_show_path(event_id: event.id), only_path: true)
-    fill_in :email_subject, with: "Subject Accepted"
-    fill_in :email_content, with: "Content Accepted"
+    fill_in :email_subject, with: "Subject Rejected"
+    fill_in :email_content, with: "Content Rejected"
     click_button I18n.t('.emails.email_form.send')
-    expect(pre_accepted_applications.size).to be > 0
-    pre_accepted_applications.each do |letter|
+    expect(applications.size).to be > 0
+    applications.each do |letter|
       letter.reload
-      expect(letter.status.to_sym).to eq(:pre_accepted)
+      expect(letter.status_notification_sent).to be true
     end
   end
 
-  scenario "logged in as Organizer I can push the accept all button to pre_accept all applicants" do
-    @event = FactoryGirl.create(:event, :with_diverse_open_applications, :in_selection_phase, participants_are_unlimited: true)
+  scenario "logged in as Organizer I can push the accept all button to accept all applicants" do
+    @event = FactoryGirl.create(:event, :with_diverse_open_applications, :in_selection_phase)
+    @event.max_participants = @event.application_letters.size + 1
+    @event.save
     login(:organizer)
     visit event_path(@event)
     click_link I18n.t "events.applicants_overview.accept_all"
     application_letters = ApplicationLetter.where(event: @event.id)
-    expect(application_letters.all? { |application_letter| application_letter.status == 'pre_accepted' }).to eq(true)
+    expect(application_letters.all? { |application_letter| application_letter.status == 'accepted' }).to eq(true)
   end
 
   scenario "logged in as Organizer and viewing the participants page all checkboxes are checked when pressing the \"check all\" button", js: true do
@@ -376,7 +387,6 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     uncheck I18n.t 'application_status.accepted'
     check I18n.t 'application_status.rejected'
     check I18n.t 'application_status.pending'
-    check I18n.t 'application_status.pre_accepted'
     check I18n.t 'application_status.alternative'
     check I18n.t 'application_status.canceled'
     click_button I18n.t 'events.applicants_overview.filter'

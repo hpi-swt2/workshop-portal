@@ -20,7 +20,7 @@ describe ApplicationLetter do
   end
 
   it "can't be created without mandatory fields" do
-    [:grade, :experience, :motivation, :coding_skills, :emergency_number, :vegetarian, :vegan, :allergic].each do |attr|
+    [:grade, :motivation, :coding_skills, :emergency_number, :vegetarian, :vegan, :organisation].each do |attr|
       application = FactoryGirl.build(:application_letter, attr => nil)
       expect(application).to_not be_valid
     end
@@ -49,7 +49,7 @@ describe ApplicationLetter do
     application = FactoryGirl.build(:application_letter)
     application.vegan = false
     application.vegetarian = false
-    application.allergic = false
+    application.allergies = ""
     expect(application.eating_habits).to eq([])
   end
 
@@ -57,7 +57,7 @@ describe ApplicationLetter do
     application = FactoryGirl.build(:application_letter)
     application.vegan = true
     application.vegetarian = false
-    application.allergic = false
+    application.allergies = ""
     expect(application.eating_habits).to eq([ApplicationLetter.human_attribute_name(:vegan)])
   end
 
@@ -65,8 +65,8 @@ describe ApplicationLetter do
     application = FactoryGirl.build(:application_letter)
     application.vegan = false
     application.vegetarian = true
-    application.allergic = true
-    expect(application.eating_habits).to eq([ApplicationLetter.human_attribute_name(:vegetarian), ApplicationLetter.human_attribute_name(:allergic)])
+    application.allergies = "many"
+    expect(application.eating_habits).to eq([ApplicationLetter.human_attribute_name(:vegetarian), ApplicationLetter.human_attribute_name(:allergies)])
   end
 
   it "can not be updated after event application deadline"  do
@@ -77,7 +77,7 @@ describe ApplicationLetter do
     end
   end
 
-  %i[accepted pre_accepted canceled alternative pending].each do | new_status |
+  %i[accepted canceled alternative pending].each do | new_status |
     it "cannot update the status in execution phase from rejected into #{new_status}" do
       application = FactoryGirl.create(:application_letter_rejected)
       application.event = FactoryGirl.create(:event, :in_execution_phase)
@@ -89,7 +89,7 @@ describe ApplicationLetter do
   it "can be canceled (only) if it was accepted before in execution phase" do
     application = FactoryGirl.create(:application_letter_accepted)
     application.event = FactoryGirl.create(:event, :in_execution_phase)
-    %i[pre_accepted accepted alternative pending rejected].each do | new_status |
+    %i[accepted alternative pending rejected].each do | new_status |
       application.status = new_status
       expect(application).to_not be_valid
     end
@@ -97,21 +97,10 @@ describe ApplicationLetter do
     expect(application).to be_valid
   end
 
-  it "can be promoted to pre_accepted (only) if it was alternative before in execution phase" do
+  it "can be promoted to accepted if it was alternative before in execution phase" do
     application = FactoryGirl.create(:application_letter_alternative)
     application.event = FactoryGirl.create(:event, :in_execution_phase)
-    %i[accepted accepted canceled pending rejected].each do | new_status |
-      application.status = new_status
-      expect(application).to_not be_valid
-    end
-    application.status = :pre_accepted
-    expect(application).to be_valid
-  end
-
-  it "can be actually accept pre_accepted applications (from alternatives) in execution phase" do
-    application = FactoryGirl.create(:application_letter_pre_accepted)
-    application.event = FactoryGirl.create(:event, :in_execution_phase)
-    %i[pre_accepted alternative canceled pending rejected].each do | new_status |
+    %i[alternative canceled pending rejected].each do | new_status |
       application.status = new_status
       expect(application).to_not be_valid
     end
@@ -122,6 +111,25 @@ describe ApplicationLetter do
   it "can update the status in selection phase" do
     application = FactoryGirl.build(:application_letter)
     application.event = FactoryGirl.create(:event, :in_selection_phase)
+    application.status = :rejected
+    expect(application).to be_valid
+  end
+
+  it "can not be updated if status is changed and participant selection is locked" do
+    application = FactoryGirl.build(:application_letter)
+    %i[in_selection_phase_with_participants_locked in_execution_phase].each do |phase|
+      application.event = FactoryGirl.create(:event, phase)
+      expect(application.event.participant_selection_locked).to be(true)
+      application.status = :rejected
+      expect(application).to_not be_valid
+    end
+  end
+
+  it "can be updated if status is changed and participant selection is not locked" do
+    application = FactoryGirl.build(:application_letter_deadline_over)
+    application.event.acceptances_have_been_sent = false
+    application.event.rejections_have_been_sent = false
+    expect(application.event.participant_selection_locked).to be(false)
     application.status = :rejected
     expect(application).to be_valid
   end

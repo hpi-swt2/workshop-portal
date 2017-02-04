@@ -18,14 +18,13 @@ FactoryGirl.define do
     name "Event-Name"
     description "Event-Description"
     max_participants 1
-    kind :workshop
-    published true
     organizer "Workshop-Organizer"
     knowledge_level "Workshop-Knowledge Level"
     application_deadline Date.tomorrow
     custom_application_fields ["Field 1", "Field 2", "Field 3"]
     date_ranges { build_list :date_range, 1 }
     hidden false
+    published true
 
     trait :in_the_past_valid do
       after(:build) do |event|
@@ -119,7 +118,17 @@ FactoryGirl.define do
       after(:build) do |event|
         event.published = true
         event.application_deadline = Date.yesterday
-        event.application_status_locked = false
+        event.acceptances_have_been_sent = false
+        event.rejections_have_been_sent = false
+      end
+    end
+
+    trait :in_selection_phase_with_participants_locked do
+      after(:build) do |event|
+        event.published = true
+        event.application_deadline = Date.yesterday
+        event.acceptances_have_been_sent = true
+        event.rejections_have_been_sent = false
       end
     end
 
@@ -127,7 +136,8 @@ FactoryGirl.define do
       after(:build) do |event|
         event.published = true
         event.application_deadline = Date.yesterday
-        event.application_status_locked = true
+        event.acceptances_have_been_sent = true
+        event.rejections_have_been_sent = true
       end
     end
 
@@ -157,31 +167,6 @@ FactoryGirl.define do
       end
     end
 
-    factory :event_with_pre_accepted_applications do
-      name "Event-Name"
-      description "Event-Description"
-      max_participants 20
-      date_ranges { build_list :date_range, 1 }
-      transient do
-        pre_accepted_application_letters_count 5
-        rejected_application_letters_count 5
-      end
-      organizer "Workshop-Organizer"
-      knowledge_level "Workshop-Knowledge Level"
-      application_deadline Date.current
-
-      after(:create) do |event, evaluator|
-        create_list(:application_letter_pre_accepted, evaluator.pre_accepted_application_letters_count, event: event)
-        create_list(:application_letter_rejected, evaluator.rejected_application_letters_count, event: event)
-      end
-
-      factory :event_with_pre_accepted_applications_and_agreement_letters do
-        after(:create) do |event, evaluator|
-          create_list(:pre_accepted_application_with_agreement_letters, evaluator.pre_accepted_application_letters_count, event: event)
-        end
-      end
-    end
-
     factory :event_with_applications_in_various_states do
       name "Event-Name"
       description "Event-Description"
@@ -190,7 +175,6 @@ FactoryGirl.define do
       transient do
         accepted_application_letters_count 5
         rejected_application_letters_count 5
-        pre_accepted_application_letters_count 1
         alternative_application_letters_count 2
         canceled_application_letters_count 1
         pending_application_letters_count 0
@@ -202,7 +186,6 @@ FactoryGirl.define do
       after(:create) do |event, evaluator|
         create_list(:application_letter_accepted, evaluator.accepted_application_letters_count, event: event)
         create_list(:application_letter_rejected, evaluator.rejected_application_letters_count, event: event)
-        create_list(:application_letter_pre_accepted, evaluator.pre_accepted_application_letters_count, event: event)
         create_list(:application_letter_alternative, evaluator.alternative_application_letters_count, event: event)
         create_list(:application_letter_canceled, evaluator.canceled_application_letters_count, event: event)
         create_list(:application_letter_pending, evaluator.pending_application_letters_count, event: event)

@@ -5,10 +5,12 @@ class EmailsController < ApplicationController
     @event = Event.find(params[:event_id])
 
     @templates = EmailTemplate.with_status(get_email_template_status)
-    @addresses = @event.email_addresses_of_type(get_corresponding_application_letter_status)
+    application_letter_status = get_corresponding_application_letter_status
+    @addresses = @event.email_addresses_of_type_without_notification_sent(application_letter_status)
 
-    @email = Email.new(hide_recipients: true, reply_to: 'workshop.portal@hpi.de', recipients: @addresses.join(','),
+    @email = Email.new(hide_recipients: true, reply_to: Rails.configuration.reply_to_address, recipients: @addresses.join(','),
                        subject: '', content: '')
+
     render :email
   end
 
@@ -29,11 +31,21 @@ class EmailsController < ApplicationController
     @event = Event.find(params[:event_id])
     status = get_email_template_status
     if @email.valid?
-      @email.send_email      
-      if(status == :acceptance || status == :rejection)
-        @event.accept_all_pre_accepted_applications if status == :acceptance
-        @event.lock_application_status
+      application_letter_status = get_corresponding_application_letter_status
+      if application_letter_status == :accepted
+        @email.send_email_with_ical @event
+      else
+        @email.send_email
       end
+
+      if status == :acceptance
+        @event.acceptances_have_been_sent = true
+        @event.set_status_notification_flag_for_applications_with_status(application_letter_status)
+      elsif status == :rejection
+        @event.rejections_have_been_sent = true
+        @event.set_status_notification_flag_for_applications_with_status(application_letter_status)
+      end
+      @event.save
 
       redirect_to @event, notice: t('.sending_successful')
     else
@@ -67,7 +79,7 @@ class EmailsController < ApplicationController
 
   def get_corresponding_application_letter_status
     return case params[:status]
-      when "acceptance" then :pre_accepted
+      when "acceptance" then :accepted
       when "rejection" then :rejected
       else :accepted
       end

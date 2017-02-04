@@ -4,7 +4,7 @@
 #  recipients             :string           not null
 #  reply_to               :string           not null
 #  subject                :string           not null
-#  content                :string           nol null
+#  content                :string           not null
 #
 class Email
   include ActiveAttr::TypecastedAttributes
@@ -27,11 +27,32 @@ class Email
     end
   end
 
-  def send_email
-    Mailer.send_generic_email(hide_recipients, recipients, reply_to, subject, content)
+  def send_email_with_ical(event)
+    send_email([get_ical_attachment(event)])
+  end
+
+  def send_email(attachments = [])
+    Mailer.send_generic_email(hide_recipients, recipients, reply_to, subject, content, attachments)
   end
 
   def persisted?
     false
+  end
+
+  private
+
+  def get_ical_attachment(event)
+    cal = Icalendar::Calendar.new
+    for date_range in event.date_ranges do
+      cal.event do |e|
+        e.dtstart     = date_range.start_date
+        e.dtend       = date_range.end_date
+        e.summary     = event.name
+        e.description = event.description
+        e.url         = Rails.application.routes.url_helpers.event_path(event)
+      end
+    end
+
+    {name: (I18n.t 'emails.ical_attachment'), content: cal.to_ical}
   end
 end
