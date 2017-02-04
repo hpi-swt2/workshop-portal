@@ -78,7 +78,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     2.times do |n|
       @pupil = FactoryGirl.create(:profile)
       @pupil.user.role = :pupil
-      application = FactoryGirl.create(:application_letter_accepted, :event => @event, :user => @pupil.user)
+      FactoryGirl.create(:application_letter_accepted, :event => @event, :user => @pupil.user)
     end
     visit event_path(@event)
     click_button I18n.t('events.applicants_overview.sending_acceptances')
