@@ -21,6 +21,8 @@ class Event < ActiveRecord::Base
 
   serialize :custom_application_fields, Array
 
+  mount_uploader :image, EventImageUploader
+
   has_many :application_letters
   has_many :agreement_letters
   has_many :participant_groups
@@ -34,6 +36,13 @@ class Event < ActiveRecord::Base
   validates :hidden, exclusion: { in: [nil] }
   validates :published, inclusion: { in: [true, false] }
   validates :published, exclusion: { in: [nil] }
+  validate :check_image_dimensions
+
+  # Use the image dimensions as returned from our uploader
+  # to verify that the image has sufficient size
+  def check_image_dimensions
+    errors.add(:image, I18n.t("events.errors.image_too_small")) if image.upload_width.present? && image.upload_height.present? && (image.upload_width < 200 || image.upload_height < 155)
+  end
 
 
   # Returns all participants for this event in following order:
