@@ -255,8 +255,8 @@ class Event < ActiveRecord::Base
   #
   # @return []
   def groups_with_id
-    existing = ParticipantGroup.GROUPS.select do |group_id,colorcode|
-      participant_groups.where('group = ?', group_id).count > 0
+    existing = ParticipantGroup::GROUPS.select do |group_id,colorcode|
+      participant_groups.where(:group => group_id).count > 0
     end
     existing.map do |group_id,colorcode|
       [I18n.t("participant_groups.options.#{colorcode}"), group_id]
@@ -271,7 +271,7 @@ class Event < ActiveRecord::Base
   end
 
   def email_addresses_of_group(group)
-    participant_groups.where('group = ?', group).map {|participant_group| participant_group.user.email}
+    participant_groups.where(:group => group).map {|participant_group| participant_group.user.email}
   end
 
   # Returns a list of email addresses
