@@ -76,6 +76,18 @@ RSpec.describe "events/show", type: :view do
     expect(rendered).to have_css("td", :text => @application_letter.user.profile.age_at_time(@event.start_date))
   end
 
+  it "logged in as organizer it renders radio buttons for accept reject pending and alternative, but not canceled in selection phase" do
+    sign_in(FactoryGirl.create(:user, role: :organizer))
+    @event = assign(:event, FactoryGirl.create(:event, :with_diverse_open_applications, :in_selection_phase_with_no_mails_sent))
+    @application_letters = @event.application_letters #TODO I couldnt find a assign(:application_letters), still this gives the view access to it.
+    render
+    expect(rendered).to have_css("label", text: I18n.t('application_status.accepted'))
+    expect(rendered).to have_css("label", text: I18n.t('application_status.rejected'))
+    expect(rendered).to have_css("label", text: I18n.t('application_status.pending'))
+    expect(rendered).to have_css("label", text: I18n.t('application_status.alternative'))
+    expect(rendered).to_not have_css("label", text: I18n.t('application_status.canceled'))
+  end
+
   it "displays application details button" do
     render
     expect(rendered).to have_link(t(:details, scope: 'events.applicants_overview'))
@@ -144,7 +156,7 @@ RSpec.describe "events/show", type: :view do
     end
   end
 
-  it "displays a button to view the application if application deadline if over for an event where the pupil has applied" do
+  it "displays a button to view the application if application deadline is over for an event where the pupil has applied" do
     pupil = FactoryGirl.create(:user, role: :pupil)
     application_letter = FactoryGirl.create(:application_letter, user: pupil, event: @event)
     @event.application_deadline = Date.yesterday

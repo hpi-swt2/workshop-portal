@@ -25,7 +25,7 @@ RSpec.describe EmailsController, type: :controller do
         expect(assigns(:email).recipients).to eq(@application.user.email)
       end
 
-      it "sets @template with template for accepted emails" do
+      it "sets @template with template for acceptance emails" do
         get :show, event_id: @event.id, status: :acceptance
         expect(assigns(:templates)).to eq([@template])
       end
@@ -43,7 +43,7 @@ RSpec.describe EmailsController, type: :controller do
         expect(assigns(:email).recipients).to eq(@application.user.email)
       end
 
-      it "sets @template with template for rejected emails" do
+      it "sets @template with template for rejection emails" do
         get :show, event_id: @event.id, status: :rejection
         expect(assigns(:templates)).to eq([@template])
       end
