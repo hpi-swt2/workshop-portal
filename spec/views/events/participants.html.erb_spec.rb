@@ -77,7 +77,7 @@ RSpec.describe "events/participants", type: :view do
   end
 
   it "does not show the print badges button when the event is in selection phase" do
-    @event = assign(:event, FactoryGirl.create(:event_with_accepted_applications, :in_selection_phase))
+    @event = assign(:event, FactoryGirl.create(:event_with_accepted_applications, :in_selection_phase_with_no_mails_sent))
     @participants = assign(:participants, @event.participants)
     render
     expect(rendered).to_not have_link(t(:print_button_label, scope: 'events.badges'))
