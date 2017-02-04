@@ -1,9 +1,14 @@
 require 'rails_helper'
+require './db/sample_data/users'
 
 RSpec::Steps.steps "Demo" do
-  it "should show the global title" do
+  it "should show the welcome page on startup" do
     visit root_path
-    page.should have_text "Workshop"
+    expect(page).to have_text I18n.t('start_page.welcome_to')
+  end
+
+  it 'should let an organizer log in' do
+    login(user_organizer.email, user_password)
   end
 end
 
