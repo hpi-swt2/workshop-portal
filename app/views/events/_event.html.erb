@@ -1,5 +1,5 @@
 <div class="event-preview media clearfix">
-  <%= image_tag "example.png", class: "img-rounded img-responsive img-float-corner-tr center-block" %>
+  <%= image_tag event.image_url(:list_view), class: "img-rounded img-responsive img-float-corner-tr center-block" if event.image_url%>
   <div class="media-left">
     <%= render "events/event_date_large", event: event %>
   </div>
