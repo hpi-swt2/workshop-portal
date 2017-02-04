@@ -131,14 +131,6 @@ class ApplicationLetter < ActiveRecord::Base
     end
   end
 
-  # Validator for status_change_allowed?
-  # Adds error
-  def status_notification_sent_cannot_be_changed
-    unless status_notification_sent_change_allowed?
-      errors.add(:event, "Das Status-Benachrichtungsflag kann noch nicht gesetzt werden") #TODO
-    end
-  end
-
   # Returns the age of the user based on the date the event starts
   #
   # @param none
