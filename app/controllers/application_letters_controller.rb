@@ -78,18 +78,12 @@ class ApplicationLettersController < ApplicationController
     end
 
     # Send Confirmation E-Mail
-    gender_endings = {
-        'male': 'r',
-        'female': '',
-        'other': '(r)'
-    }
     email_params = {
         :hide_recipients => true,
         :recipients => current_user.email,
         :reply_to => Rails.configuration.reply_to_address,
         :subject => I18n.t('controllers.application_letters.confirmation_mail.subject'),
-        :content => I18n.t('controllers.application_letters.confirmation_mail.content',
-                           :gender_ending => gender_endings[current_user.profile.gender],
+        :content => I18n.t("controllers.application_letters.confirmation_mail.content_#{current_user.profile.gender}",
                            :seminar_name => seminar_name,
                            :first_name => current_user.profile.first_name,
                            :last_name => current_user.profile.last_name,
