@@ -177,6 +177,41 @@ class Event < ActiveRecord::Base
     applications.collect { |a| a.user.email }
   end
 
+  # Returns a new email to a set of participants
+  #
+  # @param all [Boolean] If set to true, addresses all participants
+  # @param groups [Array<Integer>] The group-ids whoose members should be addressed
+  # @param users [Array<Integer>] The user-ids which should be addressed
+  # @return [Email] new email
+  def generate_participants_email(all, groups, users)
+    Email.new(
+        :hide_recipients => false,
+        :recipients => email_addresses_of_participants(all, groups, users),
+        :reply_to => '',
+        :subject => '',
+        :content => ''
+    )
+  end
+
+  # Returns a list of tuples containing all participant names and their id
+  #
+  # @return [Array<Array<String, Int>>]
+  def participants_with_id
+    participants.map{|participant| [participant.profile.name, participant.id]}
+  end
+
+  # Returns a list of group names and their id
+  #
+  # @return Array<Array<String, Int>>
+  def groups_with_id
+    existing = ParticipantGroup::GROUPS.select do |group_id,_|
+      group_id != 0 && participant_groups.where(:group => group_id).any?
+    end
+    existing.map do |group_id,color_code|
+      [I18n.t("participant_groups.options.#{color_code}"), group_id]
+    end
+  end
+
   # Returns the number of free places of the event, this value may be negative
   #
   # @param none
@@ -308,6 +343,52 @@ class Event < ActiveRecord::Base
   end
 
   protected
+
+  # Returns a string of all email addresses of accepted applications
+  #
+  # @param none
+  # @return [String] Concatenation of all email addresses of accepted applications, seperated by ','
+  def email_addresses_of_accepted_applicants
+    participants.collect { |user| user.email }.join(',')
+  end
+
+  # Returns a list of email addresses of all participants that are in one of the given groups
+  #
+  # @return [String]
+  def email_addresses_of_groups(groups)
+    if groups.nil?
+      groups = []
+    end
+    groups.reduce([]) {|addresses, group| addresses + email_addresses_of_group(group)}.uniq
+  end
+
+  # Returns a list of email addresses of all participants that are in this exact group
+  #
+  # @return [String]
+  def email_addresses_of_group(group)
+    participant_groups.where(:group => group).map {|participant_group| participant_group.user.email}
+  end
+
+  # Returns a list of email addresses
+  def email_addresses_of_users(users)
+    user = User.where(id: users)
+    user.map{ |user| user.email }
+  end
+
+  # Returns all email addresses of user that fit the given criteria
+  #
+  # @param all [Boolean] If set to true, return addresses of all participants
+  # @param groups [Array<Integer>] The group-ids whoose members-addresses should be looked up
+  # @param users [Array<Integer>] The user-ids whoose addresses should be returned
+  # @return [String] list of email addresses
+  def email_addresses_of_participants(all, groups, users)
+    if all
+      email_addresses_of_accepted_applicants
+    else
+      (email_addresses_of_groups(groups) + email_addresses_of_users(users)).uniq.join(',')
+    end
+  end
+
   # Compares two participants to achieve following order:
   # 1. All participants that have to submit an letter of agreement but did not yet do so, ordered by email.
   # 2. All participants that have to submit an letter of agreement and did do so, ordered by email.

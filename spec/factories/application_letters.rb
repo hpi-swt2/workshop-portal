@@ -18,7 +18,7 @@ FactoryGirl.define do
     vegetarian false
     vegan false
     allergies "Many"
-    user
+    association :user, factory: :user_with_profile
     event
     annotation "Some"
     custom_application_fields ["Value 1", "Value 2", "Value 3"]

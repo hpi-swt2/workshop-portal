@@ -10,23 +10,31 @@ class EmailsController < ApplicationController
 
     @email = Email.new(hide_recipients: true, reply_to: Rails.configuration.reply_to_address, recipients: @addresses.join(','),
                        subject: '', content: '')
-
+    @send_generic = false
     render :email
   end
 
-  def submit
+  def submit_application_result
     authorize! :send_email, Email
     if params[:send]
-      send_email
+      send_application_result_email
     elsif params[:save]
       save_template
     end
   end
 
+  def submit_generic
+    authorize! :send_email, Email
+    @templates = []
+    @event = Event.find(params[:id])
+    if params[:send]
+      send_generic
+    end
+  end
 
   private
 
-  def send_email
+  def send_application_result_email
     @email = Email.new(email_params)
     @event = Event.find(params[:event_id])
     status = get_email_template_status
@@ -49,11 +57,24 @@ class EmailsController < ApplicationController
       end
       @event.save
 
-      redirect_to @event, notice: t('.sending_successful')
+      redirect_to @event, notice: t('emails.submit.sending_successful')
     else
       @templates = EmailTemplate.with_status(status)
 
-      flash.now[:alert] = t('.sending_failed')
+      flash.now[:alert] = t('emails.submit.sending_failed')
+      @send_generic = false
+      render :email
+    end
+  end
+
+  def send_generic
+    @email = Email.new(email_params)
+    if @email.valid?
+      @email.send_email
+      redirect_to @event, notice: t('emails.submit.sending_successful')
+    else
+      flash.now[:alert] = t('emails.submit.sending_failed')
+      @send_generic = true
       render :email
     end
   end
@@ -65,13 +86,14 @@ class EmailsController < ApplicationController
                                     subject: @email.subject, content: @email.content })
 
     if @email.validates_presence_of(:subject, :content) && @template.save
-      flash.now[:success] = t('.saving_successful')
+      flash.now[:success] = t('emails.submit.saving_successful')
     else
-      flash.now[:alert] = t('.saving_failed')
+      flash.now[:alert] = t('emails.submit.saving_failed')
     end
     @event = Event.find(params[:event_id])
     @templates = EmailTemplate.with_status(get_email_template_status)
 
+    @send_generic = false
     render :email
   end
 

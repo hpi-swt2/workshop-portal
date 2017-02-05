@@ -300,4 +300,54 @@ describe Event do
       expect(event.participant_selection_locked).to eq(acceptances_sent || rejections_sent)
     end
   end
+
+
+  context "with valid accepted applications" do
+    before :each do
+      @event = FactoryGirl.create(:event)
+      @accepted_application_letter_1 = FactoryGirl.create(:application_letter_accepted, :event => @event)
+      @accepted_application_letter_2 = FactoryGirl.create(:application_letter_accepted, :event => @event)
+      @accepted_application_letter_3 = FactoryGirl.create(:application_letter_accepted, :event => @event)
+      @rejected_application_letter = FactoryGirl.create(:application_letter_rejected, :event => @event)
+    end
+
+    it "computes the email addresses of all participants" do
+      expect(@event.send(:email_addresses_of_participants,true, [], [])).to include(@accepted_application_letter_1.user.email,
+                                                                             @accepted_application_letter_2.user.email,
+                                                                             @accepted_application_letter_3.user.email)
+    end
+
+    it "computes the email addresses of a group" do
+      participant_group1 = FactoryGirl.create(:participant_group, :event => @event,
+                                              :user => @accepted_application_letter_1.user,
+                                              :group => 2)
+      result = @event.send(:email_addresses_of_participants, false, [participant_group1.group], [])
+      expect(result).to include(@accepted_application_letter_1.user.email)
+      expect(result).to_not include(@accepted_application_letter_2.user.email, @accepted_application_letter_3.user.email)
+    end
+
+    it "computes the email addresses of certain participants" do
+      result = @event.send(:email_addresses_of_participants, false, nil, [@accepted_application_letter_1.user.id])
+      expect(result).to include(@accepted_application_letter_1.user.email)
+      expect(result).to_not include(@accepted_application_letter_2.user.email, @accepted_application_letter_3.user.email)
+    end
+
+    it "computes the email addresses of a group and a participant" do
+      participant_group1 = FactoryGirl.create(:participant_group, :event => @event,
+                                              :user => @accepted_application_letter_1.user,
+                                              :group => 2)
+      result = @event.send(:email_addresses_of_participants, false, [participant_group1.group], [@accepted_application_letter_2.user.id])
+      expect(result).to include(@accepted_application_letter_1.user.email, @accepted_application_letter_2.user.email)
+      expect(result).to_not include(@accepted_application_letter_3.user.email)
+    end
+
+    it "computes the name and id of all participants" do
+      expect(@event.participants_with_id).to include(
+          [@accepted_application_letter_1.user.profile.name, @accepted_application_letter_1.user.id],
+          [@accepted_application_letter_2.user.profile.name, @accepted_application_letter_2.user.id],
+          [@accepted_application_letter_3.user.profile.name, @accepted_application_letter_3.user.id],
+        )
+    end
+  end
+
 end
