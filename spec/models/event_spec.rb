@@ -184,6 +184,16 @@ describe Event do
     expect(event.compute_occupied_places).to eq(2)
   end
 
+  it "computes the number of rejected applications with no mail sent yet" do
+    event = FactoryGirl.create(:event, :in_selection_phase_with_no_mails_sent)
+    FactoryGirl.create(:application_letter_accepted, user: FactoryGirl.create(:user), event: event)
+    expect(event.compute_number_of_rejections_without_mail).to eq(0)
+    FactoryGirl.create(:application_letter_rejected, :with_mail_sent, user: FactoryGirl.create(:user), event: event)
+    expect(event.compute_number_of_rejections_without_mail).to eq(0)
+    FactoryGirl.create(:application_letter_rejected, user: FactoryGirl.create(:user), event: event)
+    expect(event.compute_number_of_rejections_without_mail).to eq(1)
+  end
+
   it "returns all Events running now and in the future" do
     event_today = FactoryGirl.create(:event)
     event_today.date_ranges = [FactoryGirl.create(:date_range, start_date: Date.today, end_date: Date.tomorrow)]
