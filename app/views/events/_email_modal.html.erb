@@ -1,3 +1,26 @@
+<script type="application/javascript">
+  jQuery(function() {
+    var users = jQuery('#users');
+    var groups = jQuery('#groups');
+
+    jQuery('#all').change(function (event) {
+      var method = event.target.checked ? 'select_all' : 'deselect_all';
+      users.multiSelect(method);
+      groups.multiSelect(method);
+    });
+
+    var unable_all_on_deselect = function () {
+      jQuery('#all').attr('checked', false);
+    };
+
+    users.multiSelect({
+      afterDeselect: unable_all_on_deselect
+    });
+    groups.multiSelect({
+      afterDeselect: unable_all_on_deselect
+    });
+  })
+</script>
 <div class="modal fade" id="send_participant_email_modal" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <%= form_tag(send_participants_email_event_path(@event), method: :get, class:'form') do %>

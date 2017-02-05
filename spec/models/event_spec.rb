@@ -302,7 +302,7 @@ describe Event do
     end
 
     it "computes the email addresses of all participants" do
-      expect(@event.email_addresses_of_participants(true, [], [])).to include(@accepted_application_letter_1.user.email,
+      expect(@event.send(:email_addresses_of_participants,true, [], [])).to include(@accepted_application_letter_1.user.email,
                                                                              @accepted_application_letter_2.user.email,
                                                                              @accepted_application_letter_3.user.email)
     end
@@ -311,24 +311,22 @@ describe Event do
       participant_group1 = FactoryGirl.create(:participant_group, :event => @event,
                                               :user => @accepted_application_letter_1.user,
                                               :group => 2)
-      result = @event.email_addresses_of_participants(false, [participant_group1.group], [])
+      result = @event.send(:email_addresses_of_participants, false, [participant_group1.group], [])
       expect(result).to include(@accepted_application_letter_1.user.email)
       expect(result).to_not include(@accepted_application_letter_2.user.email, @accepted_application_letter_3.user.email)
     end
-
 
     it "computes the email addresses of certain participants" do
-      result = @event.email_addresses_of_participants(false, [], [@accepted_application_letter_1.user.id])
+      result = @event.send(:email_addresses_of_participants, false, nil, [@accepted_application_letter_1.user.id])
       expect(result).to include(@accepted_application_letter_1.user.email)
       expect(result).to_not include(@accepted_application_letter_2.user.email, @accepted_application_letter_3.user.email)
     end
-
 
     it "computes the email addresses of a group and a participant" do
       participant_group1 = FactoryGirl.create(:participant_group, :event => @event,
                                               :user => @accepted_application_letter_1.user,
                                               :group => 2)
-      result = @event.email_addresses_of_participants(false, [participant_group1.group], [@accepted_application_letter_2.user.id])
+      result = @event.send(:email_addresses_of_participants, false, [participant_group1.group], [@accepted_application_letter_2.user.id])
       expect(result).to include(@accepted_application_letter_1.user.email, @accepted_application_letter_2.user.email)
       expect(result).to_not include(@accepted_application_letter_3.user.email)
     end

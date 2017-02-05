@@ -164,7 +164,7 @@ RSpec.describe EventsController, type: :controller do
       end
       it "should assign a new email to accepted applications as @email" do
         get :send_participants_email, id: @event.to_param, session: valid_session, all: true, groups: [], users:[]
-        expect(assigns(:email)).to have_attributes(hide_recipients: false, recipients: @event.email_addresses_of_accepted_applicants, reply_to: '', subject: '', content: '')
+        expect(assigns(:email)).to have_attributes(hide_recipients: false, recipients: @event.send(:email_addresses_of_accepted_applicants), reply_to: '', subject: '', content: '')
       end
     end
 

@@ -13,7 +13,7 @@
  *= require bootstrap-datepicker
  *= require_tree .
  *= require_self
- *= require multi-select
+ *= require custom_bootstrap/multi-select.css
  *= require bootstrap_and_overrides
  */
 
