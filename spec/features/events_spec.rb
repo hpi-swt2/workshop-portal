@@ -199,7 +199,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     click_link I18n.t "application_status.actions.accept"
     expect(page).to_not have_link(I18n.t("application_status.actions.accept"), href: update_application_letter_status_path(@application_letter, 'application_letter[status]': :accepted))
     expect(page).to have_css('span.glyphicon-envelope', count: 1)
-    expect(page).to_not have_link(I18n.t('application_status.actions.cancel'), href: update_application_letter_status_path(@application_letter, 'application_letter[staus]': :canceled))
+    expect(page).to_not have_link(I18n.t('application_status.actions.cancel'), href: update_application_letter_status_path(@application_letter, 'application_letter[status]': :canceled))
     @application_letter.reload
     expect(@application_letter.status).to eq('accepted')
     expect(@application_letter.status_notification_sent).to be false
@@ -271,7 +271,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     @event.save
     login(:organizer)
     visit event_path(@event)
-    click_link I18n.t "events.applicants_overview.accept_all" 
+    click_link I18n.t "events.applicants_overview.accept_all"
     application_letters = ApplicationLetter.where(event: @event.id)
     expect(application_letters.all? { |application_letter| application_letter.status == 'accepted' }).to eq(true)
   end
