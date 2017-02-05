@@ -26,13 +26,11 @@ ActiveRecord::Schema.define(version: 20170203180638) do
 
   create_table "application_letters", force: :cascade do |t|
     t.string   "motivation"
-    t.integer  "user_id",                                   null: false
-    t.integer  "event_id",                                  null: false
-    t.datetime "created_at",                                null: false
-    t.datetime "updated_at",                                null: false
-    t.integer  "status",                    default: 2,     null: false
-    t.integer  "grade"
-    t.string   "coding_skills"
+    t.integer  "user_id",                               null: false
+    t.integer  "event_id",                              null: false
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
+    t.integer  "status",                    default: 2, null: false
     t.string   "emergency_number"
     t.boolean  "vegetarian"
     t.boolean  "vegan"
