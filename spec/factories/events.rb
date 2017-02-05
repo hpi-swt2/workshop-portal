@@ -240,7 +240,7 @@ FactoryGirl.define do
       knowledge_level "Workshop-Knowledge Level"
       application_deadline Date.current
 
-      after(:create) do |event, evaluator|
+      after(:build) do |event, evaluator|
         create_list(:application_letter_accepted, evaluator.accepted_application_letters_count, event: event)
         create_list(:application_letter_rejected, evaluator.rejected_application_letters_count, event: event)
         create_list(:application_letter_alternative, evaluator.alternative_application_letters_count, event: event)
@@ -249,7 +249,6 @@ FactoryGirl.define do
         event.application_deadline = Date.yesterday
         event.acceptances_have_been_sent = true
         event.rejections_have_been_sent = true
-        event.save!
       end
 
       trait :with_no_status_notification_sent_yet do
