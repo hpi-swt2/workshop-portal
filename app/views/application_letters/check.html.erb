@@ -26,7 +26,8 @@
       <%= truncate @application_letter.motivation, length: 300 do
         link_to I18n.t('events.list.read_on'),
           'javascript:jQuery("#application-motivation")
-            .text(jQuery("#application-motivation").attr("data-orig-text"))'
+            .text(jQuery("#application-motivation")
+              .attr("data-orig-text")); void(0)'
         end %>
       </td>
   </tr>
