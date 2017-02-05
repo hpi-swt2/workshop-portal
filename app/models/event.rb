@@ -154,17 +154,26 @@ class Event < ActiveRecord::Base
   # @param none
   # @return none
   def accept_all_application_letters
-    application_letters.each do |application_letter|
-      application_letter.update(status: :accepted)
+    application_letters.map { |application| application.update(status: :accepted) }
+  end
+
+  # Sets the status_notification_sent flag for all application letters of the given type
+  #
+  # @param status [Type] the desired application status the flag should be set for
+  # @return none
+  def set_status_notification_flag_for_applications_with_status(status)
+    applications = application_letters.select {|application| application.status == status.to_s}
+    applications.each do |application_letter|
+      application_letter.update(status_notification_sent: true)
     end
   end
 
   # Returns an array of strings of all email addresses of applications with a given status type
   #
   # @param type [Type] the status type of the email addresses that will be returned
-  # @return [Array<String>] Array of all email addresses of applications with given type
-  def email_addresses_of_type(type)
-    applications = application_letters.where(status: ApplicationLetter.statuses[type])
+  # @return [Array<String>] Array of all email addresses of applications with given type, that don't have status_notification_sent set
+  def email_addresses_of_type_without_notification_sent(type)
+    applications = application_letters.where(status: ApplicationLetter.statuses[type], status_notification_sent: false)
     applications.collect { |a| a.user.email }
   end
 
