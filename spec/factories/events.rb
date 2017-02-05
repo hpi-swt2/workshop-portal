@@ -232,11 +232,6 @@ FactoryGirl.define do
         create_list(:application_letter_pending, evaluator.pending_application_letters_count, event: event)
       end
 
-      trait :applications_with_profile do
-        after(:create) do |event|
-          event.application_letters.each {|application| application.user.profile = FactoryGirl.create(:profile) }
-        end        
-      end 
     end
 
     factory :event_in_execution_with_applications_in_various_states do
@@ -283,11 +278,6 @@ FactoryGirl.define do
          end
       end
 
-      trait :applications_with_profile do
-        after(:create) do |event|
-          event.application_letters.each {|application| application.user.profile = FactoryGirl.create(:profile) }
-        end        
-      end  
     end
   end
 end

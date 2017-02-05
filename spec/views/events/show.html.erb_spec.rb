@@ -297,7 +297,7 @@ RSpec.describe "events/show", type: :view do
   end
 
   it "renders a cancel button but no envelope glypicon for accepted applications with status notification sent in execution phase" do
-    @event = assign(:event, FactoryGirl.create(:event_in_execution_with_applications_in_various_states, :with_status_notification_sent, :applications_with_profile, accepted_application_letters_count: 1))
+    @event = assign(:event, FactoryGirl.create(:event_in_execution_with_applications_in_various_states, :with_status_notification_sent, accepted_application_letters_count: 1))
     @application_letters = @event.application_letters
     @application_letter = @event.application_letters.find{|l| l.status == 'accepted'}
     assign(:has_free_places, @event.compute_free_places > 0)
@@ -308,7 +308,7 @@ RSpec.describe "events/show", type: :view do
   end
 
   it "renders an envelope glyphicon but no cancel button in execution phase for each accepted application with status notification sent flag not set" do
-    @event = assign(:event, FactoryGirl.create(:event_in_execution_with_applications_in_various_states, :with_no_status_notification_sent, :applications_with_profile, accepted_application_letters_count: 1))
+    @event = assign(:event, FactoryGirl.create(:event_in_execution_with_applications_in_various_states, :with_no_status_notification_sent, accepted_application_letters_count: 1))
     @application_letters = @event.application_letters
     @application_letter = @event.application_letters.find{|l| l.status == 'accepted'}
     assign(:has_free_places, @event.compute_free_places > 0)
@@ -319,7 +319,7 @@ RSpec.describe "events/show", type: :view do
   end
 
   it "renders an accept button for alternative applications in execution phase" do
-    @event = assign(:event, FactoryGirl.create(:event_in_execution_with_applications_in_various_states, :applications_with_profile, alternative_application_letters_count: 1))
+    @event = assign(:event, FactoryGirl.create(:event_in_execution_with_applications_in_various_states, alternative_application_letters_count: 1))
     @application_letters = @event.application_letters
     @application_letter = @event.application_letters.find{|l| l.status == 'alternative'}
     assign(:has_free_places, @event.compute_free_places > 0)
@@ -329,7 +329,7 @@ RSpec.describe "events/show", type: :view do
   end
 
   it "doesnt render an accept button for alternative applications in execution phase when there are not enough free places" do
-    @event = assign(:event, FactoryGirl.create(:event_in_execution_with_applications_in_various_states, :applications_with_profile, alternative_application_letters_count: 1))
+    @event = assign(:event, FactoryGirl.create(:event_in_execution_with_applications_in_various_states, alternative_application_letters_count: 1))
     @application_letters = @event.application_letters
     @application_letter = @event.application_letters.find{|l| l.status == 'alternative'}
     assign(:has_free_places, false)
