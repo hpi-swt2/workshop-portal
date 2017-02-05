@@ -29,6 +29,7 @@ class EventsController < ApplicationController
     @occupied_places = @event.compute_occupied_places
     @application_letters = filter_application_letters(@event.application_letters)
     @material_files = get_material_files(@event)
+    @has_free_places = @free_places > 0
   end
 
   # GET /events/new
