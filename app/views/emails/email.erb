@@ -1,11 +1,14 @@
 <%- model_class = Email -%>
+<% width = @send_generic ? '12' : '8' %>
 <div class="page-header">
 </div>
 <div>
-  <div class="email-form col-md-8">
+  <div class="email-form col-md-<%= width %>">
     <%= render partial: 'emails/email_form', locals: { email: @email } %>
   </div>
+  <% unless @send_generic %>
   <div class="email-templates col-md-4">
     <%= render partial: 'emails/templates', locals: { template: @templates } %>
   </div>
+  <% end %>
 </div>

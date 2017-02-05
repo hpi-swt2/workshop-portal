@@ -21,7 +21,7 @@ Rails.application.routes.draw do
   resources :events do
     resources :agreement_letters, only: [:create], shallow: true
     get 'emails' => 'emails#show', as: :email_show
-    post 'emails' => 'emails#submit', as: :email_submit
+    post 'emails' => 'emails#submit_application_result', as: :email_submit_application_result
     post 'upload_material' => 'events#upload_material', as: :upload_material
     post 'download_material' => 'events#download_material', as: :download_material
     member do
