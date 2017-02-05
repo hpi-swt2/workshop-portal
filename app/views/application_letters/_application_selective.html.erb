@@ -3,8 +3,12 @@
         <%= t("application_status.#{application_letter.status}") %>
         <% if application_letter.event.phase == :execution %>
             <% if application_letter.status.to_sym == :accepted %>
-                <%= link_to t('application_status.actions.cancel'), update_application_letter_status_path(application_letter, 'application_letter[status]': :canceled),
+                <% if application_letter.status_notification_sent %>                
+                    <%= link_to t('application_status.actions.cancel'), update_application_letter_status_path(application_letter, 'application_letter[status]': :canceled),
                             method: :put, class: 'btn btn-default' %>
+                <% else %>
+                    <span class="glyphicon glyphicon-envelope">
+                <% end %>
             <% elsif application_letter.status.to_sym == :alternative && @has_free_places %>
                 <%= link_to t('application_status.actions.accept'), update_application_letter_status_path(application_letter, 'application_letter[status]': :accepted),
                             method: :put, class: 'btn btn-default' %>

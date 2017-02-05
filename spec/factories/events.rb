@@ -252,6 +252,24 @@ FactoryGirl.define do
         event.save!
       end
 
+      trait :with_no_status_notification_sent_yet do
+         after(:create) do |event|
+           event.application_letters.each do |application|
+             application.status_notification_sent = false
+             application.save! if application.changed?
+           end
+         end
+      end
+
+      trait :with_status_notification_sent do
+         after(:create) do |event|
+           event.application_letters.each do |application|
+             application.status_notification_sent = true
+             application.save! if application.changed?
+           end
+         end
+      end
+
       trait :applications_with_profile do
         after(:create) do |event|
           event.application_letters.each {|application| application.user.profile = FactoryGirl.create(:profile) }

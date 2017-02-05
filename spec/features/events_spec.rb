@@ -169,10 +169,8 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
 
   scenario "logged in as Organizer I can cancel accepted applications (execution phase)" do
     login(:organizer)
-    @event = FactoryGirl.create(:event_in_execution_with_applications_in_various_states, :applications_with_profile, accepted_application_letters_count: 1)
+    @event = FactoryGirl.create(:event_in_execution_with_applications_in_various_states, :with_status_notification_sent, :applications_with_profile, accepted_application_letters_count: 1)
     @application_letter = @event.application_letters.find { |application| application.status == 'accepted'}
-    @application_letter.status_notification_sent = true
-    @application_letter.save! 
     visit event_path(@event)
     expect(page).to have_link(I18n.t "application_status.actions.cancel")
     click_link I18n.t "application_status.actions.cancel"
@@ -180,19 +178,20 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     @application_letter.reload
     expect(@application_letter.status).to eq('canceled')
     expect(@application_letter.status_notification_sent).to be false
+    expect(page).to_not have_css('span.glyphicon-envelope')
   end
 
 
   scenario "logged in as Organizer I can accept alternative applications (execution phase)" do
     login(:organizer)
-    @event = FactoryGirl.create(:event_in_execution_with_applications_in_various_states, :applications_with_profile, alternative_application_letters_count: 1)
+    @event = FactoryGirl.create(:event_in_execution_with_applications_in_various_states, :with_status_notification_sent, :applications_with_profile, alternative_application_letters_count: 1)
     @application_letter = @event.application_letters.find { |application| application.status == 'alternative'}
-    @application_letter.status_notification_sent = true
-    @application_letter.save! 
     visit event_path(@event)
     expect(page).to have_link(I18n.t "application_status.actions.accept")
     click_link I18n.t "application_status.actions.accept"
     expect(page).to_not have_link(I18n.t "application_status.actions.accept")
+    expect(page).to have_css('span.glyphicon-envelope', count: 1)
+    expect(page).to_not have_link(I18n.t('application_status.actions.cancel'), href: update_application_letter_status_path(@application_letter, 'application_letter[status]': :canceled))
     @application_letter.reload
     expect(@application_letter.status).to eq('accepted')
     expect(@application_letter.status_notification_sent).to be false

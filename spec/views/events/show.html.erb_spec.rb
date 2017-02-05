@@ -298,14 +298,26 @@ RSpec.describe "events/show", type: :view do
     expect(rendered).not_to have_link(t('events.participants.show_participants'))
   end
 
-  it "renders a cancel button for accepted applications in execution phase" do
-    @event = assign(:event, FactoryGirl.create(:event_in_execution_with_applications_in_various_states, :applications_with_profile, accepted_application_letters_count: 1))
+  it "renders a cancel button but no envelope glypicon for accepted applications with status notification sent in execution phase" do
+    @event = assign(:event, FactoryGirl.create(:event_in_execution_with_applications_in_various_states, :with_status_notification_sent, :applications_with_profile, accepted_application_letters_count: 1))
     @application_letters = @event.application_letters
     @application_letter = @event.application_letters.find{|l| l.status == 'accepted'}
     assign(:has_free_places, @event.compute_free_places > 0)
     sign_in(FactoryGirl.create(:user, role: :organizer)) 
     render
     expect(rendered).to have_link(I18n.t('application_status.actions.cancel'), href: update_application_letter_status_path(@application_letter, 'application_letter[status]': :canceled))  
+    expect(rendered).to_not have_css('span.glyphicon-envelope')
+  end
+
+  it "renders an envelope glyphicon but no cancel button in execution phase for each accepted application with status notification sent flag not set" do
+    @event = assign(:event, FactoryGirl.create(:event_in_execution_with_applications_in_various_states, :with_no_status_notification_sent_yet, :applications_with_profile, accepted_application_letters_count: 1))
+    @application_letters = @event.application_letters
+    @application_letter = @event.application_letters.find{|l| l.status == 'accepted'}
+    assign(:has_free_places, @event.compute_free_places > 0)
+    sign_in(FactoryGirl.create(:user, role: :organizer)) 
+    render
+    expect(rendered).to have_css('span.glyphicon-envelope', count: 1)
+    expect(rendered).to_not have_link(I18n.t('application_status.actions.cancel'), href: update_application_letter_status_path(@application_letter, 'application_letter[status]': :canceled))  
   end
 
   it "renders an accept button for alternative applications in execution phase" do
@@ -325,6 +337,6 @@ RSpec.describe "events/show", type: :view do
     assign(:has_free_places, false)
     sign_in(FactoryGirl.create(:user, role: :organizer)) 
     render
-    expect(rendered).to_not have_link(I18n.t('application_status.actions.accept'), href: update_application_letter_status_path(@application_letter, 'application_letter[status]': :accepted))  
+    expect(rendered).to_not have_link(I18n.t('application_status.actions.accept'), href: update_application_letter_status_path(@application_letter, 'application_letter[status]': :accepted))
   end
 end
