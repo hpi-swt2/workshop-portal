@@ -159,7 +159,7 @@ FactoryGirl.define do
       end
     end
 
-    trait :with_no_status_notification_sent_yet do
+    trait :with_no_status_notification_sent do
        after(:create) do |event|
          event.application_letters.each do |application|
            application.status_notification_sent = false
@@ -251,7 +251,7 @@ FactoryGirl.define do
         event.rejections_have_been_sent = true
       end
 
-      trait :with_no_status_notification_sent_yet do
+      trait :with_no_status_notification_sent do
          after(:create) do |event|
            event.application_letters.each do |application|
              application.status_notification_sent = false
