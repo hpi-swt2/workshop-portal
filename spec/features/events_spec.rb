@@ -169,7 +169,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
 
   scenario "logged in as Organizer I can cancel accepted applications (execution phase) when status notification was sent" do
     login(:organizer)
-    @event = FactoryGirl.create(:event_in_execution_with_applications_in_various_states, :with_status_notification_sent, :applications_with_profile, accepted_application_letters_count: 1)
+    @event = FactoryGirl.create(:event_in_execution_with_applications_in_various_states, :with_status_notification_sent, accepted_application_letters_count: 1)
     @application_letter = @event.application_letters.find { |application| application.status == 'accepted'}
     visit event_path(@event)
     expect(page).to have_link(I18n.t("application_status.actions.cancel"), href: update_application_letter_status_path(@application_letter, 'application_letter[status]': :canceled))
@@ -192,7 +192,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
 
   scenario "logged in as Organizer I can accept alternative applications (execution phase)" do
     login(:organizer)
-    @event = FactoryGirl.create(:event_in_execution_with_applications_in_various_states, :with_status_notification_sent, :applications_with_profile, alternative_application_letters_count: 1)
+    @event = FactoryGirl.create(:event_in_execution_with_applications_in_various_states, :with_status_notification_sent, alternative_application_letters_count: 1)
     @application_letter = @event.application_letters.find { |application| application.status == 'alternative'}
     visit event_path(@event)
     expect(page).to have_link(I18n.t("application_status.actions.accept"), href: update_application_letter_status_path(@application_letter, 'application_letter[status]': :accepted))
@@ -207,7 +207,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
 
   scenario "logged in as Organizer I cannot accept alternative applications if no free places are available (execution phase)" do
     login(:organizer)
-    @event = FactoryGirl.create(:event_in_execution_with_applications_in_various_states, :applications_with_profile, accepted_application_letters_count: 2, alternative_application_letters_count: 1, max_participants: 2)
+    @event = FactoryGirl.create(:event_in_execution_with_applications_in_various_states, accepted_application_letters_count: 2, alternative_application_letters_count: 1, max_participants: 2)
     @application_letter = @event.application_letters.find { |application| application.status == 'alternative'}
     visit event_path(@event)
     expect(page).to_not have_link(I18n.t("application_status.actions.accept"), href: update_application_letter_status_path(@application_letter, 'application_letter[status]': :accepted))

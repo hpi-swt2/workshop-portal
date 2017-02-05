@@ -162,6 +162,17 @@ RSpec.describe EventsController, type: :controller do
       end
     end
 
+    describe "GET #send_participants_email" do
+      before :each do
+        @user = FactoryGirl.create(:user_with_profile, role: :admin)
+        sign_in @user
+      end
+      it "should assign a new email to accepted applications as @email" do
+        get :send_participants_email, id: @event.to_param, session: valid_session, all: true, groups: [], users:[]
+        expect(assigns(:email)).to have_attributes(hide_recipients: false, recipients: @event.send(:email_addresses_of_accepted_applicants), reply_to: '', subject: '', content: '')
+      end
+    end
+
     describe "GET #accept_all_applicants" do
       it "should redirect to the event" do
         get :accept_all_applicants, id: @event.to_param, session: valid_session

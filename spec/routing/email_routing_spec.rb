@@ -7,7 +7,7 @@ RSpec.describe EmailsController, type: :routing do
     end
 
     it "routes to #submit" do
-      expect(post: "/events/1/emails").to route_to("emails#submit", event_id: "1")
+      expect(post: "/events/1/emails").to route_to("emails#submit_application_result", event_id: "1")
     end
   end
 end

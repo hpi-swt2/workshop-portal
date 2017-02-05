@@ -3,7 +3,7 @@
 de:
   events:
     intro_text: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
-    description_placeholder: "## Untertitel\\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\\n \\n ## Lernziele\\n* a\\n* b\\n* c\\n\\n## Hinweise\\n* a\\n* b\\n* c" 
+    description_placeholder: "## Untertitel\\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\\n \\n ## Lernziele\\n* a\\n* b\\n* c\\n\\n## Hinweise\\n* a\\n* b\\n* c"
     archive: "Veranstaltungs-Archiv"
     all_events: "Alle Events"
 
@@ -63,19 +63,20 @@ de:
       print_participants: "Teilnehmerliste (PDF)"
       print_habits: "Essgewohnheiten drucken (PDF)"
       print_title: "Essgewohnheiten der Teilnehmer für %{title}"
-      print_summary: 
+      print_summary:
         one: "Insgesamt werden wir bei dieser Veranstaltung %{count} Teilnehmer/-in> haben."
         other: "Insgesamt werden wir bei dieser Veranstaltung %{count} Teilnehmer/-innen haben."
-      print_summary_vegetarian: 
+      print_summary_vegetarian:
         one: "%{count} Person ernährt sich vegetarisch."
         other: "%{count} Personen ernähren sich vegetarisch."
-      print_summary_vegan: 
+      print_summary_vegan:
         one: "%{count} Person ernährt sich vegan."
         other: "%{count} Personen ernähren sich vegan."
-      print_summary_omnivorous: 
+      print_summary_omnivorous:
         one: "%{count} Person ernährt sich omnivor."
         other: "%{count} Personen ernähren sich omnivor."
       print_summary_allergic: "Außerdem haben folgende Teilnehmer Allergien oder Unverträglichkeiten:"
+      send_email: "E-Mail an Teilnehmer versenden"
     agreement_letters_download:
       notices:
         no_participants_selected: "Keine Teilnehmer ausgewählt"
@@ -85,6 +86,14 @@ de:
     type:
       private: "Privat"
       public: "Öffentlich"
+    email_modal:
+      send_email: "E-Mail an Teilnehmer senden"
+      select_users: "Nutzer auswählen"
+      select_groups: "Gruppen auswählen"
+      select_all: "Alle auswählen"
+      sender: "Absenderadresse"
+      send_email_label: "Weiter"
+      close_modal: "Schließen"
     list:
       read_on: "Weiterlesen"
     participants_modal:

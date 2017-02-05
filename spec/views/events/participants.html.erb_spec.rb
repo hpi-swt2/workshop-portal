@@ -113,4 +113,16 @@ RSpec.describe "events/participants", type: :view do
     expect(rendered).to have_css('button#open_print_modal')
     expect(rendered).to have_css('input#print_participant_list')
   end
+
+  it "displays an modal that allows selection of email target" do
+    render
+    expect(rendered).to have_css('div#send_participant_email_modal')
+  end
+
+  it "allows selection of participants in the modal" do
+    application_letter = FactoryGirl.create(:application_letter, user: FactoryGirl.create(:user_with_profile, role: :organizer), event: @event, status: 1)
+    @event.application_letters.push(application_letter)
+    render
+    expect(rendered).to have_select('users', :with_options => [application_letter.user.profile.name])
+  end
 end
