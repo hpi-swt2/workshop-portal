@@ -42,7 +42,8 @@ describe "Sending emails to applicants", type: :feature do
 
   scenario "logged in as Organizer after sending an acceptance Email to the applicants of an event which has no rejected applications the event application status for sending rejections gets locked" do
     @event = FactoryGirl.create(:event_with_accepted_applications,
-                                rejected_application_letters_count: 0, rejections_have_been_sent: false)
+                                rejected_application_letters_count: 0,
+                                rejections_have_been_sent: false)
     login(:organizer)
 
     visit event_email_show_path(@event, status: :acceptance)

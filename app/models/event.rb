@@ -193,7 +193,7 @@ class Event < ActiveRecord::Base
     application_letters.where(status: ApplicationLetter.statuses[:accepted]).count
   end
 
-  # Returns the number of currently rejected applications of the event
+  # Returns the number of currently rejected applications with no mail sent of the event
   #
   # @param none
   # @return [Int] for number of rejected applications
