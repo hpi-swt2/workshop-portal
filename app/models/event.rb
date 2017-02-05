@@ -227,7 +227,7 @@ class Event < ActiveRecord::Base
   # @return Array<Array<String, Int>>
   def groups_with_id
     existing = ParticipantGroup::GROUPS.select do |group_id,_|
-      group_id != 0 and participant_groups.where(:group => group_id).any?
+      group_id != 0 && participant_groups.where(:group => group_id).any?
     end
     existing.map do |group_id,color_code|
       [I18n.t("participant_groups.options.#{color_code}"), group_id]
