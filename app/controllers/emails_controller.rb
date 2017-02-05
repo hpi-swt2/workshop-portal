@@ -49,6 +49,9 @@ class EmailsController < ApplicationController
       @event.set_status_notification_flag_for_applications_with_status(application_letter_status)
       if status == :acceptance
         @event.acceptances_have_been_sent = true
+        if not @event.has_rejected_participants_without_status_notification?
+          @event.rejections_have_been_sent = true
+        end
       elsif status == :rejection
         @event.rejections_have_been_sent = true
       end
