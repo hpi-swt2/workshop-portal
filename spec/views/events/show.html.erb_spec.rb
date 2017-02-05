@@ -339,7 +339,7 @@ RSpec.describe "events/show", type: :view do
   end
 
   it "renders an accept button for rejected applications in execution phase when there are no alternative applications" do
-    @event = assign(:event, FactoryGirl.create(:event_in_execution_with_applications_in_various_states, :applications_with_profile, rejected_application_letters_count: 1, alternative_application_letters_count: 0))
+    @event = assign(:event, FactoryGirl.create(:event_in_execution_with_applications_in_various_states, rejected_application_letters_count: 1, alternative_application_letters_count: 0))
     @application_letters = @event.application_letters
     @application_letter = @event.application_letters.find{|l| l.status == 'rejected'}
     assign(:has_free_places, @event.compute_free_places > 0)
@@ -348,7 +348,7 @@ RSpec.describe "events/show", type: :view do
   end
 
   it "doesnt render an accept button for rejected applications in execution phase when there are alternative applications" do
-    @event = assign(:event, FactoryGirl.create(:event_in_execution_with_applications_in_various_states, :applications_with_profile,  rejected_application_letters_count: 1, alternative_application_letters_count: 2))
+    @event = assign(:event, FactoryGirl.create(:event_in_execution_with_applications_in_various_states,  rejected_application_letters_count: 1, alternative_application_letters_count: 2))
     @application_letters = @event.application_letters
     @application_letter = @event.application_letters.find{|l| l.status == 'rejected'}
     assign(:has_free_places, @event.compute_free_places > 0)
@@ -357,7 +357,7 @@ RSpec.describe "events/show", type: :view do
   end
 
   it "doesnt render an accept button for rejected applications in execution phase when there are not enough free places" do
-    @event = assign(:event, FactoryGirl.create(:event_in_execution_with_applications_in_various_states, :applications_with_profile, rejected_application_letters_count: 1, alternative_application_letters_count: 0))
+    @event = assign(:event, FactoryGirl.create(:event_in_execution_with_applications_in_various_states, rejected_application_letters_count: 1, alternative_application_letters_count: 0))
     @application_letters = @event.application_letters
     @application_letter = @event.application_letters.find{|l| l.status == 'rejected'}
     assign(:has_free_places, false)
