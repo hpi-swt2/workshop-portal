@@ -193,12 +193,12 @@ class Event < ActiveRecord::Base
     application_letters.where(status: ApplicationLetter.statuses[:accepted]).count
   end
 
-  # Returns the number of currently rejected applications with no mail sent of the event
+  # Returns whether there are rejected applications with no mail sent of the event
   #
   # @param none
-  # @return [Int] for number of rejected applications
-  def compute_number_of_rejections_without_mail
-    application_letters.where(status: ApplicationLetter.statuses[:rejected], status_notification_sent: false).count
+  # @return [Boolean] true if there are rejected participants without mail
+  def has_rejected_participants_without_mail
+    application_letters.where(status: ApplicationLetter.statuses[:rejected], status_notification_sent: false).count > 0
   end
 
   # Returns the current state of the event (draft-, application-, selection- and execution-phase)
