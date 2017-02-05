@@ -185,11 +185,11 @@ describe Event do
   end
 
   it "returns all Events running now and in the future" do
-    event_today = FactoryGirl.create(:event)
-    event_today.date_ranges = [FactoryGirl.create(:date_range, start_date: Date.today, end_date: Date.tomorrow)]
+    event_past = FactoryGirl.create(:event, :in_the_past_valid)
+    event_today = FactoryGirl.create(:event, :is_only_today)
+    event_future = FactoryGirl.create(:event, :is_only_tomorrow)
 
-    event_future = FactoryGirl.create(:event, :single_day)
-
+    expect(Event.future).to_not include(event_past)
     expect(Event.future).to include(event_today)
     expect(Event.future).to include(event_future)
   end

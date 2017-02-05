@@ -50,6 +50,22 @@ FactoryGirl.define do
       end
     end
 
+    trait :is_only_today do
+      application_deadline Date.today
+
+      after(:build) do |event|
+        event.date_ranges = [FactoryGirl.create(:date_range, start_date: Date.today, end_date: Date.today)]
+      end
+    end
+
+    trait :is_only_tomorrow do
+      application_deadline Date.tomorrow
+
+      after(:build) do |event|
+        event.date_ranges = [FactoryGirl.create(:date_range, start_date: Date.tomorrow, end_date: Date.tomorrow)]
+      end
+    end
+
     trait :single_day do
       after(:build) do |event|
         event.date_ranges = []
