@@ -187,11 +187,11 @@ describe Event do
   it "computes whether there are rejected applications with no status notification sent yet" do
     event = FactoryGirl.create(:event, :in_selection_phase_with_no_mails_sent)
     FactoryGirl.create(:application_letter_accepted, user: FactoryGirl.create(:user), event: event)
-    expect(event.has_rejected_participants_without_status_notification).to eq(false)
+    expect(event.has_rejected_participants_without_status_notification?).to eq(false)
     FactoryGirl.create(:application_letter_rejected, :with_mail_sent, user: FactoryGirl.create(:user), event: event)
-    expect(event.has_rejected_participants_without_status_notification).to eq(false)
+    expect(event.has_rejected_participants_without_status_notification?).to eq(false)
     FactoryGirl.create(:application_letter_rejected, user: FactoryGirl.create(:user), event: event)
-    expect(event.has_rejected_participants_without_status_notification).to eq(true)
+    expect(event.has_rejected_participants_without_status_notification?).to eq(true)
   end
 
   it "returns all Events running now and in the future" do
