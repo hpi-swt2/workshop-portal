@@ -193,11 +193,11 @@ class Event < ActiveRecord::Base
     application_letters.where(status: ApplicationLetter.statuses[:accepted]).count
   end
 
-  # Returns whether there are rejected applications with no mail sent of the event
+  # Returns whether there are rejected applications with no status notification sent of the event
   #
   # @param none
-  # @return [Boolean] true if there are rejected participants without mail
-  def has_rejected_participants_without_mail
+  # @return [Boolean] true if there are rejected participants without status notification sent
+  def has_rejected_participants_without_status_notification
     application_letters.where(status: ApplicationLetter.statuses[:rejected], status_notification_sent: false).count > 0
   end
 
