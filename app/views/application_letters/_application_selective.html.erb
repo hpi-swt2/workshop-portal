@@ -12,6 +12,9 @@
             <% elsif application_letter.status.to_sym == :alternative && @has_free_places %>
                 <%= link_to t('application_status.actions.accept'), update_application_letter_status_path(application_letter, 'application_letter[status]': :accepted),
                             method: :put, class: 'btn btn-default' %>
+            <% elsif application_letter.status.to_sym == :rejected && @has_free_places && !application_letter.event.has_alternative_application_letters? %>
+                <%= link_to t('application_status.actions.accept'), update_application_letter_status_path(application_letter, 'application_letter[status]': :accepted),
+                            method: :put, class: 'btn btn-default' %>
             <% end %>
         <% end %>
     <% elsif application_letter.event.phase == :selection %>
