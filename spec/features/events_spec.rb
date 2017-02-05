@@ -184,7 +184,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
 
   scenario "logged in as Organizer I can accept alternative applications (execution phase)" do
     login(:organizer)
-    @event = FactoryGirl.create(:event_in_execution_with_applications_in_various_states, :with_status_notification_sent, :applications_with_profile, rejected_application_letters_count: 1, alternative_application_letters_count: 1)
+    @event = FactoryGirl.create(:event_in_execution_with_applications_in_various_states, :with_status_notification_sent, :applications_with_profile, rejected_application_letters_count: 0, alternative_application_letters_count: 1)
     @application_letter = @event.application_letters.find { |application| application.status == 'alternative'}
     visit event_path(@event)
     expect(page).to have_link(I18n.t "application_status.actions.accept", href: update_application_letter_status_path(@application_letter, 'application_letter[status]': :accepted))
