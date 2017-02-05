@@ -45,6 +45,12 @@ FactoryGirl.define do
 
   factory :application_letter_rejected, parent: :application_letter do
     status :rejected
+
+    trait :with_mail_sent do
+      after(:build) do |application|
+        application.status_notification_sent = true
+      end
+    end
   end
 
   factory :application_letter_alternative, parent: :application_letter do
