@@ -48,9 +48,6 @@
     margin: 15px 0;
     padding-bottom: 15px;
 }
-.event-preview.event-past {
-    opacity: 0.7;
-}
 .front-section:nth-child(even) .event-preview {
     border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 }

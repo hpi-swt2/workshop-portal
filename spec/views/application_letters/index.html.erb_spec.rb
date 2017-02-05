@@ -29,6 +29,11 @@ RSpec.describe "application_letters/index", type: :view do
       render
       expect(rendered).to have_content(I18n.t("application_status.alternative"))
     end
+    it "checks if page displays canceled status application letter" do
+      @application_letters = [FactoryGirl.create(:application_letter_canceled)]
+      render
+      expect(rendered).to have_content(I18n.t("application_status.canceled"))
+    end
   end
 
   it "should display the name of the event" do
