@@ -13,12 +13,6 @@ de:
       delete: "Bewerbung löschen"
     form:
       warning: "Die Deadline ist schon vorbei. Du kannst deine Bewerbung nicht mehr ändern."
-      help_text_coding_skills: "Wie gut beherrscht du sie deiner Meinung nach (Anfänger,
-      Fortgeschrittener, Experte)? Was kannst du in den Programmiersprachen
-      realisieren/hast du realisiert? Je ausführlicher du diese Beschreibst, desto
-      besser können wir schon in der Vorbereitung der Veranstaltung darauf eingehen.
-      Programmierkenntnisse sind keine  Voraussetzung zur Teilnahme. Diese Information
-      wird zur Gruppeneinteilung benötigt."
     login_before_creation: "Du musst angemeldet sein, um dich für Workshops bewerben zu können."
     successful_update: "Bewerbung erfolgreich bearbeitet"
     successful_deletion: "Bewerbung erfolgreich gelöscht"
@@ -57,9 +51,7 @@ de:
         other: "Anmerkungen"
     attributes:
       application_letter:
-          grade: "Klassenstufe"
           motivation: "Motivationsschreiben"
-          coding_skills: "Mit welchen Programmiersprachen hast du bereits Erfahrungen gesammelt?"
           emergency_number: "Telefonnummer für Notfälle"
           organisation: "Schule/Organisation"
           vegetarian: "Vegetarisch"

@@ -19,12 +19,8 @@
 
 <h3><%= t('.my_application') %></h3>
 <div id='application_details'>
-  <strong><%= ApplicationLetter.human_attribute_name(:grade) %>:</strong>
-  <%= @application_letter.grade %><br/>
   <strong><%= ApplicationLetter.human_attribute_name(:motivation) %>:</strong><br/>
   <%= @application_letter.motivation %><br/>
-  <strong><%= ApplicationLetter.human_attribute_name(:coding_skills) %>:</strong><br/>
-  <%= @application_letter.coding_skills %><br/>
   <strong><%= ApplicationLetter.human_attribute_name(:emergency_number) %>:</strong>
   <%= @application_letter.emergency_number %><br/>
   <strong><%= ApplicationLetter.human_attribute_name(:organisation) %>:</strong>
