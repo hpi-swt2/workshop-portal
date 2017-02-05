@@ -380,7 +380,6 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     click_button I18n.t 'events.applicants_overview.filter_by'
     check I18n.t 'application_status.accepted'
     click_button I18n.t 'events.applicants_overview.filter'
-    save_page
     accepted_names = @event.application_letters.to_a.select { |l| l.status.to_sym == :accepted }.map {|l| l.user.profile.name}
     not_accepted_names = @event.application_letters.to_a.select { |l| l.status.to_sym != :accepted }.map {|l| l.user.profile.name}
 
