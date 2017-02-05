@@ -92,7 +92,7 @@ de:
       select_groups: "Gruppen auswählen"
       select_all: "Alle"
       sender: "Absenderadresse"
-      send_email_label: "Absenden"
+      send_email_label: "Weiter"
       close_modal: "Schließen"
     list:
       read_on: "Weiterlesen"

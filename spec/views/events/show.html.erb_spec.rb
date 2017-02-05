@@ -3,8 +3,7 @@ require 'rails_helper'
 RSpec.describe "events/show", type: :view do
   before(:each) do
     @event = assign(:event, FactoryGirl.create(:event, :with_two_date_ranges))
-    @application_letter = FactoryGirl.create(:application_letter, user: FactoryGirl.create(:user_with_profile, role: :admin), event: @event)
-    @event.application_letters.push(@application_letter)
+    @application_letter = FactoryGirl.create(:application_letter, user: FactoryGirl.create(:user_with_profile, role: :organizer), event: @event)
     @application_letters = @event.application_letters
     @material_files = ["spec/testfiles/actual.pdf"]
     sign_in(@application_letter.user)

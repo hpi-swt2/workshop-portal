@@ -190,13 +190,12 @@ class Event < ActiveRecord::Base
   # @param all Boolean If set to true, addresses all participants
   # @param groups Array<Integer> The group-ids whoose members should be addressed
   # @param users Array<Integer> The user-ids which should be addressed
-  # @param sender String The reply_to address of the email
   # @return Email new email
-  def generate_participants_email(all, groups, users, sender)
+  def generate_participants_email(all, groups, users)
     Email.new(
         :hide_recipients => false,
         :recipients => email_addresses_of_participants(all, groups, users),
-        :reply_to => sender,
+        :reply_to => '',
         :subject => '',
         :content => ''
     )
@@ -228,7 +227,7 @@ class Event < ActiveRecord::Base
   # @return Array<Array<String, Int>>
   def groups_with_id
     existing = ParticipantGroup::GROUPS.select do |group_id,_|
-      participant_groups.where(:group => group_id).any?
+      group_id != 0 and participant_groups.where(:group => group_id).any?
     end
     existing.map do |group_id,color_code|
       [I18n.t("participant_groups.options.#{color_code}"), group_id]

@@ -8,20 +8,16 @@
           </div>
           <div class="modal-body">
             <div class="form-group">
+              <%= label_tag(:all, t('.select_all')) %>
+              <%= check_box_tag(:all, '1', false, class: 'form-control') %>
+            </div>
+            <div class="form-group">
               <%= label_tag(:users, t('.select_users')) %>
               <%= select_tag(:users, options_for_select(@event.participants_with_id), class:'form-control', multiple: true) %>
             </div>
             <div class="form-group">
               <%= label_tag(:groups, t('.select_groups')) %>
               <%= select_tag(:groups, options_for_select(@event.groups_with_id), class:'form-control', multiple: true) %>
-            </div>
-            <div class="form-group">
-              <%= label_tag(:all, t('.select_all')) %>
-              <%= check_box_tag(:all, '1', false, class: 'form-control') %>
-            </div>
-            <div class="form-group">
-              <%= label_tag(:sender, t('.sender')) %>
-              <%= text_field_tag(:sender, '', class: 'form-control') %>
             </div>
           </div>
           <div class="modal-footer">

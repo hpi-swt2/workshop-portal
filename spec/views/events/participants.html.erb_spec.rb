@@ -120,9 +120,9 @@ RSpec.describe "events/participants", type: :view do
   end
 
   it "allows selection of participants in the modal" do
-    application_letter = FactoryGirl.create(:application_letter, user: FactoryGirl.create(:user_with_profile, role: :admin), event: @event, status: 1)
+    application_letter = FactoryGirl.create(:application_letter, user: FactoryGirl.create(:user_with_profile, role: :organizer), event: @event, status: 1)
     @event.application_letters.push(application_letter)
     render
-    expect(rendered).to have_select('users', :with_options => [application_letter.user.profile.first_name + ' ' + application_letter.user.profile.last_name])
+    expect(rendered).to have_select('users', :with_options => [application_letter.user.profile.name])
   end
 end

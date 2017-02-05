@@ -129,7 +129,7 @@ class EventsController < ApplicationController
   def send_participants_email
     authorize! :send_email, Email
     event = Event.find(params[:id])
-    @email = event.generate_participants_email(params[:all],params[:groups], params[:users], params[:sender])
+    @email = event.generate_participants_email(params[:all],params[:groups], params[:users])
     @templates = []
     @send_generic = true
     render '/emails/email'

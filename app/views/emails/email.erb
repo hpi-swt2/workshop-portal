@@ -7,8 +7,8 @@
     <%= render partial: 'emails/email_form', locals: { email: @email } %>
   </div>
   <% unless @send_generic %>
-  <div class="email-templates col-md-4">
-    <%= render partial: 'emails/templates', locals: { template: @templates } %>
-  </div>
+    <div class="email-templates col-md-4">
+      <%= render partial: 'emails/templates', locals: { template: @templates } %>
+    </div>
   <% end %>
 </div>
