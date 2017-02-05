@@ -295,11 +295,10 @@ describe Event do
   context "with valid accepted applications" do
     before :each do
       @event = FactoryGirl.create(:event)
-      @accepted_application_letter_1 = FactoryGirl.create(:application_letter_accepted, :event => event)
-      @accepted_application_letter_2 = FactoryGirl.create(:application_letter_accepted, :event => event)
-      @accepted_application_letter_3 = FactoryGirl.create(:application_letter_accepted, :event => event)
-      @rejected_application_letter = FactoryGirl.create(:application_letter_rejected, :event => event)
-      [@accepted_application_letter_1, @accepted_application_letter_2, @accepted_application_letter_3, @rejected_application_letter].each { |letter| @event.application_letters.push(letter) }
+      @accepted_application_letter_1 = FactoryGirl.create(:application_letter_accepted, :event => @event)
+      @accepted_application_letter_2 = FactoryGirl.create(:application_letter_accepted, :event => @event)
+      @accepted_application_letter_3 = FactoryGirl.create(:application_letter_accepted, :event => @event)
+      @rejected_application_letter = FactoryGirl.create(:application_letter_rejected, :event => @event)
     end
 
     it "computes the email addresses of all participants" do

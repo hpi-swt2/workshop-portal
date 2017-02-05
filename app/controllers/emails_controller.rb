@@ -15,7 +15,6 @@ class EmailsController < ApplicationController
   end
 
   def submit_application_result
-    @send_generic = false
     authorize! :send_email, Email
     if params[:send]
       send_application_result_email
@@ -26,7 +25,6 @@ class EmailsController < ApplicationController
 
   def submit_generic
     authorize! :send_email, Email
-    @send_generic = true
     @templates = []
     @event = Event.find(params[:id])
     if params[:send]
@@ -61,6 +59,7 @@ class EmailsController < ApplicationController
       @templates = EmailTemplate.with_status(status)
 
       flash.now[:alert] = t('emails.submit.sending_failed')
+      @send_generic = false
       render :email
     end
   end
@@ -72,6 +71,7 @@ class EmailsController < ApplicationController
       redirect_to @event, notice: t('emails.submit.sending_successful')
     else
       flash.now[:alert] = t('emails.submit.sending_failed')
+      @send_generic = true
       render :email
     end
   end
@@ -90,6 +90,7 @@ class EmailsController < ApplicationController
     @event = Event.find(params[:event_id])
     @templates = EmailTemplate.with_status(get_email_template_status)
 
+    @send_generic = false
     render :email
   end
 

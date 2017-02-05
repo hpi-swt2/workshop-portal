@@ -187,10 +187,10 @@ class Event < ActiveRecord::Base
 
   # Returns a new email to a set of participants
   #
-  # @param all Boolean If set to true, addresses all participants
-  # @param groups Array<Integer> The group-ids whoose members should be addressed
-  # @param users Array<Integer> The user-ids which should be addressed
-  # @return Email new email
+  # @param all [Boolean] If set to true, addresses all participants
+  # @param groups [Array<Integer>] The group-ids whoose members should be addressed
+  # @param users [Array<Integer>] The user-ids which should be addressed
+  # @return [Email] new email
   def generate_participants_email(all, groups, users)
     Email.new(
         :hide_recipients => false,
@@ -203,10 +203,10 @@ class Event < ActiveRecord::Base
 
   # Returns all email addresses of user that fit the given criteria
   #
-  # @param all Boolean If set to true, return addresses of all participants
-  # @param groups Array<Integer> The group-ids whoose members-addresses should be looked up
-  # @param users Array<Integer> The user-ids whoose addresses should be returned
-  # @return String list of email addresses
+  # @param all [Boolean] If set to true, return addresses of all participants
+  # @param groups [Array<Integer>] The group-ids whoose members-addresses should be looked up
+  # @param users [Array<Integer>] The user-ids whoose addresses should be returned
+  # @return [String] list of email addresses
   def email_addresses_of_participants(all, groups, users)
     if all
       email_addresses_of_accepted_applicants
@@ -217,7 +217,7 @@ class Event < ActiveRecord::Base
 
   # Returns a list of tuples containing all participant names and their id
   #
-  # @return Array<Array<String, Int>>
+  # @return [Array<Array<String, Int>>]
   def participants_with_id
     participants.map{|participant| [participant.profile.name, participant.id]}
   end
@@ -238,6 +238,9 @@ class Event < ActiveRecord::Base
   #
   # @return [String]
   def email_addresses_of_groups(groups)
+    if groups.nil?
+      groups = []
+    end
     groups.reduce([]) {|addresses, group| addresses + email_addresses_of_group(group)}.uniq
   end
 
