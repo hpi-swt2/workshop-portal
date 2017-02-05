@@ -172,9 +172,9 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     @event = FactoryGirl.create(:event_in_execution_with_applications_in_various_states, :with_status_notification_sent, :applications_with_profile, accepted_application_letters_count: 1)
     @application_letter = @event.application_letters.find { |application| application.status == 'accepted'}
     visit event_path(@event)
-    expect(page).to have_link(I18n.t "application_status.actions.cancel")
+    expect(page).to have_link(I18n.t "application_status.actions.cancel", href: update_application_letter_status_path(@application_letter, 'application_letter[status]': :canceled))
     click_link I18n.t "application_status.actions.cancel"
-    expect(page).to_not have_link(I18n.t "application_status.actions.cancel")
+    expect(page).to_not have_link(I18n.t "application_status.actions.cancel", href: update_application_letter_status_path(@application_letter, 'application_letter[status]': :canceled))
     @application_letter.reload
     expect(@application_letter.status).to eq('canceled')
     expect(@application_letter.status_notification_sent).to be false
@@ -184,12 +184,13 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
 
   scenario "logged in as Organizer I can accept alternative applications (execution phase)" do
     login(:organizer)
-    @event = FactoryGirl.create(:event_in_execution_with_applications_in_various_states, :with_status_notification_sent, :applications_with_profile, alternative_application_letters_count: 1)
+    @event = FactoryGirl.create(:event_in_execution_with_applications_in_various_states, :with_status_notification_sent, :applications_with_profile, rejected_application_letters_count: 1, alternative_application_letters_count: 1)
     @application_letter = @event.application_letters.find { |application| application.status == 'alternative'}
     visit event_path(@event)
-    expect(page).to have_link(I18n.t "application_status.actions.accept")
+    expect(page).to have_link(I18n.t "application_status.actions.accept", href: update_application_letter_status_path(@application_letter, 'application_letter[status]': :accepted))
+    puts page.all(:link, I18n.t("application_status.actions.accept")).inspect
     click_link I18n.t "application_status.actions.accept"
-    expect(page).to_not have_link(I18n.t "application_status.actions.accept")
+    expect(page).to_not have_link(I18n.t "application_status.actions.accept", href: update_application_letter_status_path(@application_letter, 'application_letter[status]': :accepted))
     expect(page).to have_css('span.glyphicon-envelope', count: 1)
     expect(page).to_not have_link(I18n.t('application_status.actions.cancel'), href: update_application_letter_status_path(@application_letter, 'application_letter[status]': :canceled))
     @application_letter.reload
@@ -204,7 +205,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     @application_letter.status_notification_sent = true
     @application_letter.save! 
     visit event_path(@event)
-    expect(page).to_not have_link(I18n.t "application_status.actions.accept")
+    expect(page).to_not have_link(I18n.t "application_status.actions.accept", href: update_application_letter_status_path(@application_letter, 'application_letter[status]': :accepted))
   end
 
   scenario "logged in as Organizer I can send acceptance and then rejection emails and by that change the status notification flag" do
