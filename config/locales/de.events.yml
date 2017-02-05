@@ -90,7 +90,7 @@ de:
       send_email: "E-Mail an Teilnehmer senden"
       select_users: "Nutzer auswählen"
       select_groups: "Gruppen auswählen"
-      select_all: "Alle"
+      select_all: "Alle auswählen"
       sender: "Absenderadresse"
       send_email_label: "Weiter"
       close_modal: "Schließen"
