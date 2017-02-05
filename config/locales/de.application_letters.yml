@@ -85,17 +85,17 @@ de:
       confirmation_mail:
         subject: "Bewerbung erhalten"
         content_male: >
-          Lieber {{first_name}} {{last_name}},\n\r
-          du hast dich erfolgreich für die Veranstaltung {{seminar_name}} beworben.
+          Lieber %{first_name} %{last_name},\n\r
+          du hast dich erfolgreich für die Veranstaltung %{seminar_name} beworben.
           Deine Bewerbung wird von uns bearbeitet. Für den aktuellen Status deiner Bewerbung
-          siehe unter "Meine Veranstaltungen" im Portal ({{event_link}}).
+          siehe unter "Meine Veranstaltungen" im Portal (%{event_link}).
         content_female: >
-          Liebe {{first_name}} {{last_name}},\n\r
-          du hast dich erfolgreich für die Veranstaltung {{seminar_name}} beworben.
+          Liebe %{first_name} %{last_name},\n\r
+          du hast dich erfolgreich für die Veranstaltung %{seminar_name} beworben.
           Deine Bewerbung wird von uns bearbeitet. Für den aktuellen Status deiner Bewerbung
-          siehe unter "Meine Veranstaltungen" im Portal ({{event_link}}).
+          siehe unter "Meine Veranstaltungen" im Portal (%{event_link}).
         content_other: >
-          Liebe(r) {{first_name}} {{last_name}},\n\r
-          du hast dich erfolgreich für die Veranstaltung {{seminar_name}} beworben.
+          Liebe(r) %{first_name} %{last_name},\n\r
+          du hast dich erfolgreich für die Veranstaltung %{seminar_name} beworben.
           Deine Bewerbung wird von uns bearbeitet. Für den aktuellen Status deiner Bewerbung
-          siehe unter "Meine Veranstaltungen" im Portal ({{event_link}}).
+          siehe unter "Meine Veranstaltungen" im Portal (%{event_link}).
