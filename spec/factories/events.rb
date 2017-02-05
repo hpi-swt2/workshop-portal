@@ -175,7 +175,7 @@ FactoryGirl.define do
       end
     end
 
-    trait :with_no_status_notification_sent_yet do
+    trait :with_no_status_notification_sent do
        after(:create) do |event|
          event.application_letters.each do |application|
            application.status_notification_sent = false
@@ -233,6 +233,63 @@ FactoryGirl.define do
         create_list(:application_letter_canceled, evaluator.canceled_application_letters_count, event: event)
         create_list(:application_letter_pending, evaluator.pending_application_letters_count, event: event)
       end
+
+      trait :applications_with_profile do
+        after(:create) do |event|
+          event.application_letters.each {|application| application.user.profile = FactoryGirl.create(:profile) }
+        end        
+      end 
+    end
+
+    factory :event_in_execution_with_applications_in_various_states do
+      name "Event-Name"
+      description "Event-Description"
+      max_participants 20
+      date_ranges { build_list :date_range, 1 }
+      transient do
+        accepted_application_letters_count 1
+        rejected_application_letters_count 1
+        alternative_application_letters_count 1
+        canceled_application_letters_count 1
+      end
+      organizer "Workshop-Organizer"
+      knowledge_level "Workshop-Knowledge Level"
+      application_deadline Date.current
+
+      after(:build) do |event, evaluator|
+        create_list(:application_letter_accepted, evaluator.accepted_application_letters_count, event: event)
+        create_list(:application_letter_rejected, evaluator.rejected_application_letters_count, event: event)
+        create_list(:application_letter_alternative, evaluator.alternative_application_letters_count, event: event)
+        create_list(:application_letter_canceled, evaluator.canceled_application_letters_count, event: event)
+        event.published = true
+        event.application_deadline = Date.yesterday
+        event.acceptances_have_been_sent = true
+        event.rejections_have_been_sent = true
+      end
+
+      trait :with_no_status_notification_sent do
+         after(:create) do |event|
+           event.application_letters.each do |application|
+             application.status_notification_sent = false
+             application.save! if application.changed?
+           end
+         end
+      end
+
+      trait :with_status_notification_sent do
+         after(:create) do |event|
+           event.application_letters.each do |application|
+             application.status_notification_sent = true
+             application.save! if application.changed?
+           end
+         end
+      end
+
+      trait :applications_with_profile do
+        after(:create) do |event|
+          event.application_letters.each {|application| application.user.profile = FactoryGirl.create(:profile) }
+        end        
+      end  
     end
   end
 end

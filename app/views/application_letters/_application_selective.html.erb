@@ -1,22 +1,41 @@
-<% if (can? :edit_applicants, Event) && (application_letter.event.phase == :selection) && (!application_letter.event.participant_selection_locked) %>
-    <%= form_for :application_letter, url: update_application_letter_status_path(application_letter), html: {method: :put} do |f| %>
-        <div class="form-group">
-          <div class="btn-group" data-toggle="buttons">
-            <% ApplicationLetter.selectable_statuses.each do |key| %>
-                <label class="btn btn-xs btn-default <%= 'active' if application_letter.status == key %>">
-                    <%= f.radio_button :status,
-                        key,
-                        checked: application_letter.status == key,
-                        onchange:
-                            'ajaxUpdateApplicationStatus(this.form, "' +
-                                I18n.t('events.applicants_overview.failed_to_update') +
-                            '")' %>
-                  <%= t("application_status.#{key}") %>
-                </label>
+<% if can? :edit_applicants, Event %>
+    <% if application_letter.event.participant_selection_locked %>
+        <%= t("application_status.#{application_letter.status}") %>
+        <% if application_letter.event.phase == :execution %>
+            <% if application_letter.status.to_sym == :accepted %>
+                <% if application_letter.status_notification_sent %>                
+                    <%= link_to t('application_status.actions.cancel'), update_application_letter_status_path(application_letter, 'application_letter[status]': :canceled),
+                            method: :put, class: 'btn btn-default' %>
+                <% else %>
+                    <span class="glyphicon glyphicon-envelope">
+                <% end %>
+            <% elsif application_letter.status.to_sym == :alternative && @has_free_places %>
+                <%= link_to t('application_status.actions.accept'), update_application_letter_status_path(application_letter, 'application_letter[status]': :accepted),
+                            method: :put, class: 'btn btn-default' %>
             <% end %>
-          </div>
-          <%= f.error_span(:status) %>
-        </div>
+        <% end %>
+    <% elsif application_letter.event.phase == :selection %>
+        <%= form_for :application_letter, url: update_application_letter_status_path(application_letter), html: {method: :put} do |f| %>
+            <div class="form-group">
+              <div class="btn-group" data-toggle="buttons">
+                <% ApplicationLetter.selectable_statuses.each do |key| %>
+                    <label class="btn btn-xs btn-default <%= 'active' if application_letter.status == key %>">
+                      <%= f.radio_button :status,
+                                         key,
+                                         checked: application_letter.status == key,
+                                         onchange:
+                                             'ajaxUpdateApplicationStatus(this.form, "' +
+                                                 I18n.t('events.applicants_overview.failed_to_update') +
+                                                 '")' %>
+                      <%= t("application_status.#{key}") %>
+                    </label>
+                <% end %>
+              </div>
+              <%= f.error_span(:status) %>
+            </div>
+        <% end %>
+    <% else %>
+      <%= t("application_status.#{application_letter.status}") %>
     <% end %>
 <% elsif can? :view_applicants, Event %>
     <%= t("application_status.#{application_letter.status}") %>

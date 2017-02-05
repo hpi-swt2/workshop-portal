@@ -71,6 +71,9 @@ de:
     pending_after_deadline: "In Bearbeitung"
     canceled: "Abgesagt"
     alternative: "Nachrücker"
+    actions:
+      accept: "Annehmen"
+      cancel: "Absagen"
 
   controllers:
     application_letters:
