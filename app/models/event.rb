@@ -247,6 +247,14 @@ class Event < ActiveRecord::Base
     return :execution if published && after_deadline? && acceptances_have_been_sent && rejections_have_been_sent
   end
 
+  # Returns whether the event has application letters with status alternative
+  #
+  # @param none
+  # @return [Boolean] true, if any exists, false otherwise
+  def has_alternative_application_letters?
+    application_letters.any? { |application| application.status == 'alternative' }
+  end
+
   # Returns a label listing the number of days to the deadline if
   # it's <= 7 days to go. Otherwise returns nil.
   #

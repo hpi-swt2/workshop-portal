@@ -204,6 +204,17 @@ describe Event do
     expect(Event.future).to include(event_future)
   end
 
+  it "checks whether it has application letters with status alternative" do
+    event = FactoryGirl.build(:event)
+    expect(event.has_alternative_application_letters?).to be false
+
+    event.application_letters.push(FactoryGirl.build(:application_letter_accepted))
+    expect(event.has_alternative_application_letters?).to be false
+
+    event.application_letters.push(FactoryGirl.build(:application_letter_alternative))
+    expect(event.has_alternative_application_letters?).to be true
+  end
+
   it "generates an application letter list ordered by first name" do
     @event = FactoryGirl.create(:event)
     @user1 = FactoryGirl.create(:user, email:'a@b.com')
