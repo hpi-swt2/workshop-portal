@@ -52,7 +52,7 @@ class ApplicationLetter < ActiveRecord::Base
   # @return [Boolean] true if status changes are allowed
   def status_change_allowed?
     if event.phase == :execution
-      (status_was == 'accepted' && status == 'canceled') || (status_was == 'alternative' && status == 'accepted')
+      (status_was == 'accepted' && status == 'canceled') || (status_was == 'alternative' && status == 'accepted') || (status_was == 'rejected' && status == 'accepted' && !event.has_alternative_application_letters?)
     elsif event.phase == :selection && event.participant_selection_locked
       false
     else
