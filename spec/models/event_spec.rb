@@ -184,12 +184,22 @@ describe Event do
     expect(event.compute_occupied_places).to eq(2)
   end
 
+  it "computes whether there are rejected applications with no status notification sent yet" do
+    event = FactoryGirl.create(:event, :in_selection_phase_with_no_mails_sent)
+    FactoryGirl.create(:application_letter_accepted, user: FactoryGirl.create(:user), event: event)
+    expect(event.has_rejected_participants_without_status_notification?).to eq(false)
+    FactoryGirl.create(:application_letter_rejected, :with_mail_sent, user: FactoryGirl.create(:user), event: event)
+    expect(event.has_rejected_participants_without_status_notification?).to eq(false)
+    FactoryGirl.create(:application_letter_rejected, user: FactoryGirl.create(:user), event: event)
+    expect(event.has_rejected_participants_without_status_notification?).to eq(true)
+  end
+
   it "returns all Events running now and in the future" do
-    event_today = FactoryGirl.create(:event)
-    event_today.date_ranges = [FactoryGirl.create(:date_range, start_date: Date.today, end_date: Date.tomorrow)]
+    event_past = FactoryGirl.create(:event, :in_the_past_valid)
+    event_today = FactoryGirl.create(:event, :is_only_today)
+    event_future = FactoryGirl.create(:event, :is_only_tomorrow)
 
-    event_future = FactoryGirl.create(:event, :single_day)
-
+    expect(Event.future).to_not include(event_past)
     expect(Event.future).to include(event_today)
     expect(Event.future).to include(event_future)
   end
