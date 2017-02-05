@@ -310,7 +310,7 @@ RSpec.describe "events/show", type: :view do
   end
 
   it "renders an envelope glyphicon but no cancel button in execution phase for each accepted application with status notification sent flag not set" do
-    @event = assign(:event, FactoryGirl.create(:event_in_execution_with_applications_in_various_states, :with_no_status_notification_sent_yet, :applications_with_profile, accepted_application_letters_count: 1))
+    @event = assign(:event, FactoryGirl.create(:event_in_execution_with_applications_in_various_states, :with_no_status_notification_sent, :applications_with_profile, accepted_application_letters_count: 1))
     @application_letters = @event.application_letters
     @application_letter = @event.application_letters.find{|l| l.status == 'accepted'}
     assign(:has_free_places, @event.compute_free_places > 0)

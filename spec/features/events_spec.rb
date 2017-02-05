@@ -204,12 +204,12 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     @application_letter.status_notification_sent = true
     @application_letter.save! 
     visit event_path(@event)
-    expect(page).to_not have_link(I18n.t "application_status.accepted")
+    expect(page).to_not have_link(I18n.t "application_status.actions.accept")
   end
 
   scenario "logged in as Organizer I can send acceptance and then rejection emails and by that change the status notification flag" do
     login(:organizer)
-    event = FactoryGirl.create(:event_with_accepted_applications, :in_selection_phase_with_no_mails_sent, :with_no_status_notification_sent_yet)
+    event = FactoryGirl.create(:event_with_accepted_applications, :in_selection_phase_with_no_mails_sent, :with_no_status_notification_sent)
     %w[accepted rejected].each do |status|
       applications = event.application_letters.select { | application_letter | application_letter.status == status }
       expect(applications.size).to be > 0
