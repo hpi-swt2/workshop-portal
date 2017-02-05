@@ -198,7 +198,7 @@ class Event < ActiveRecord::Base
   # @param none
   # @return [Boolean] true if there are rejected participants without status notification sent
   def has_rejected_participants_without_status_notification?
-    application_letters.where(status: ApplicationLetter.statuses[:rejected], status_notification_sent: false).count > 0
+    application_letters.exists?(status: ApplicationLetter.statuses[:rejected], status_notification_sent: false)
   end
 
   # Returns the current state of the event (draft-, application-, selection- and execution-phase)
