@@ -127,7 +127,6 @@ class EventsController < ApplicationController
 
   # GET /events/1/send-participants-email
   def send_participants_email
-    authorize! :send_email, Email
     event = Event.find(params[:id])
     @email = event.generate_participants_email(params[:all],params[:groups], params[:users])
     @templates = []
