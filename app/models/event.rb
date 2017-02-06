@@ -2,16 +2,17 @@
 #
 # Table name: events
 #
-#  id               :integer          not null, primary key
-#  name             :string
-#  description      :string
-#  max_participants :integer
-#  date_ranges      :Collection
-#  published        :boolean
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
-#  application_status_locked  :boolean
-#  hidden           :boolean
+#  id                         :integer          not null, primary key
+#  name                       :string
+#  description                :string
+#  max_participants           :integer
+#  date_ranges                :Collection
+#  published                  :boolean
+#  created_at                 :datetime         not null
+#  updated_at                 :datetime         not null
+#  acceptances_have_been_sent :boolean
+#  rejections_have_been_sent  :boolean
+#  hidden                     :boolean
 #
 
 class Event < ActiveRecord::Base
@@ -19,6 +20,8 @@ class Event < ActiveRecord::Base
   TRUNCATE_DESCRIPTION_TEXT_LENGTH = 250
 
   serialize :custom_application_fields, Array
+
+  mount_uploader :image, EventImageUploader
 
   has_many :application_letters
   has_many :agreement_letters
@@ -33,6 +36,13 @@ class Event < ActiveRecord::Base
   validates :hidden, exclusion: { in: [nil] }
   validates :published, inclusion: { in: [true, false] }
   validates :published, exclusion: { in: [nil] }
+  validate :check_image_dimensions
+
+  # Use the image dimensions as returned from our uploader
+  # to verify that the image has sufficient size
+  def check_image_dimensions
+    errors.add(:image, I18n.t("events.errors.image_too_small")) if image.upload_width.present? && image.upload_height.present? && (image.upload_width < 200 || image.upload_height < 155)
+  end
 
 
   # Returns all participants for this event in following order:
@@ -47,7 +57,13 @@ class Event < ActiveRecord::Base
     @participants.sort { |x, y| self.compare_participants_by_agreement(x,y) }
   end
 
-
+  # Checks if the participant selection is locked
+  #
+  # @param none
+  # @return true if participant selection is locked
+  def participant_selection_locked
+    acceptances_have_been_sent || rejections_have_been_sent
+  end
 
   # @return the minimum start_date over all date ranges
   def start_date
@@ -138,18 +154,62 @@ class Event < ActiveRecord::Base
   # @param none
   # @return none
   def accept_all_application_letters
-    application_letters.each do |application_letter|
-      application_letter.update(status: :accepted)
+    application_letters.map { |application| application.update(status: :accepted) }
+  end
+
+  # Sets the status_notification_sent flag for all application letters of the given type
+  #
+  # @param status [Type] the desired application status the flag should be set for
+  # @return none
+  def set_status_notification_flag_for_applications_with_status(status)
+    applications = application_letters.select {|application| application.status == status.to_s}
+    applications.each do |application_letter|
+      application_letter.update(status_notification_sent: true)
     end
   end
 
   # Returns an array of strings of all email addresses of applications with a given status type
   #
   # @param type [Type] the status type of the email addresses that will be returned
-  # @return [Array<String>] Array of all email addresses of applications with given type
-  def email_addresses_of_type(type)
-    applications = application_letters.where(status: ApplicationLetter.statuses[type])
+  # @return [Array<String>] Array of all email addresses of applications with given type, that don't have status_notification_sent set
+  def email_addresses_of_type_without_notification_sent(type)
+    applications = application_letters.where(status: ApplicationLetter.statuses[type], status_notification_sent: false)
     applications.collect { |a| a.user.email }
+  end
+
+  # Returns a new email to a set of participants
+  #
+  # @param all [Boolean] If set to true, addresses all participants
+  # @param groups [Array<Integer>] The group-ids whoose members should be addressed
+  # @param users [Array<Integer>] The user-ids which should be addressed
+  # @return [Email] new email
+  def generate_participants_email(all, groups, users)
+    Email.new(
+        :hide_recipients => false,
+        :recipients => email_addresses_of_participants(all, groups, users),
+        :reply_to => '',
+        :subject => '',
+        :content => ''
+    )
+  end
+
+  # Returns a list of tuples containing all participant names and their id
+  #
+  # @return [Array<Array<String, Int>>]
+  def participants_with_id
+    participants.map{|participant| [participant.profile.name, participant.id]}
+  end
+
+  # Returns a list of group names and their id
+  #
+  # @return Array<Array<String, Int>>
+  def groups_with_id
+    existing = ParticipantGroup::GROUPS.select do |group_id,_|
+      group_id != 0 && participant_groups.where(:group => group_id).any?
+    end
+    existing.map do |group_id,color_code|
+      [I18n.t("participant_groups.options.#{color_code}"), group_id]
+    end
   end
 
   # Returns the number of free places of the event, this value may be negative
@@ -168,12 +228,12 @@ class Event < ActiveRecord::Base
     application_letters.where(status: ApplicationLetter.statuses[:accepted]).count
   end
 
-  # Locks the ability to change application statuses
+  # Returns whether there are rejected applications with no status notification sent of the event
   #
   # @param none
-  # @return none
-  def lock_application_status
-    update(application_status_locked: true)
+  # @return [Boolean] true if there are rejected participants without status notification sent
+  def has_rejected_participants_without_status_notification?
+    application_letters.exists?(status: ApplicationLetter.statuses[:rejected], status_notification_sent: false)
   end
 
   # Returns the current state of the event (draft-, application-, selection- and execution-phase)
@@ -183,8 +243,16 @@ class Event < ActiveRecord::Base
   def phase
     return :draft if !published
     return :application if published && !after_deadline?
-    return :selection if published && after_deadline? && !application_status_locked
-    return :execution if published && after_deadline? && application_status_locked
+    return :selection if published && after_deadline? && !(acceptances_have_been_sent && rejections_have_been_sent)
+    return :execution if published && after_deadline? && acceptances_have_been_sent && rejections_have_been_sent
+  end
+
+  # Returns whether the event has application letters with status alternative
+  #
+  # @param none
+  # @return [Boolean] true, if any exists, false otherwise
+  def has_alternative_application_letters?
+    application_letters.any? { |application| application.status == 'alternative' }
   end
 
   # Returns a label listing the number of days to the deadline if
@@ -193,7 +261,7 @@ class Event < ActiveRecord::Base
   # @return string containing the label or nil
   def application_deadline_label
     days = (application_deadline - Date.current).to_i
-    I18n.t('events.notices.deadline_approaching', count: days) if days <= 7 and days > 0
+    return I18n.t('events.notices.deadline_approaching', count: days) if days <= 7 and days >= 0
   end
 
   # Uses the start date to determine whether or not this event is in the past (or more
@@ -206,7 +274,7 @@ class Event < ActiveRecord::Base
 
   # Returns a label that describes the duration of the event in days,
   # also mentioning whether or not the event happens on consecutive
-  # days. If the event is only on a single day, it returns nothing.
+  # days.
   #
   # @return the duration label or nil
   def duration_label
@@ -216,7 +284,7 @@ class Event < ActiveRecord::Base
 
     if date_ranges.size > 1
       I18n.t('events.notices.time_span_non_consecutive', count: days)
-    elsif days > 1
+    else
       I18n.t('events.notices.time_span_consecutive', count: days)
     end
   end
@@ -268,7 +336,7 @@ class Event < ActiveRecord::Base
   scope :draft_is, ->(status) { where("not published = ?", status) }
   scope :hidden_is, ->(status) { where("hidden = ?", status) }
   scope :with_date_ranges, -> { joins(:date_ranges).group('events.id').order('MIN(start_date)') }
-  scope :future, -> { with_date_ranges.having('date(MAX(end_date)) > ?', Time.zone.now.end_of_day) }
+  scope :future, -> { with_date_ranges.having('date(MAX(end_date)) > ?', Time.zone.yesterday.end_of_day) }
   scope :past, -> { with_date_ranges.having('date(MAX(end_date)) < ?', Time.zone.now.end_of_day) }
 
   # Returns events sorted by start date, returning only public ones
@@ -283,6 +351,52 @@ class Event < ActiveRecord::Base
   end
 
   protected
+
+  # Returns a string of all email addresses of accepted applications
+  #
+  # @param none
+  # @return [String] Concatenation of all email addresses of accepted applications, seperated by ','
+  def email_addresses_of_accepted_applicants
+    participants.collect { |user| user.email }.join(',')
+  end
+
+  # Returns a list of email addresses of all participants that are in one of the given groups
+  #
+  # @return [String]
+  def email_addresses_of_groups(groups)
+    if groups.nil?
+      groups = []
+    end
+    groups.reduce([]) {|addresses, group| addresses + email_addresses_of_group(group)}.uniq
+  end
+
+  # Returns a list of email addresses of all participants that are in this exact group
+  #
+  # @return [String]
+  def email_addresses_of_group(group)
+    participant_groups.where(:group => group).map {|participant_group| participant_group.user.email}
+  end
+
+  # Returns a list of email addresses
+  def email_addresses_of_users(users)
+    user = User.where(id: users)
+    user.map{ |user| user.email }
+  end
+
+  # Returns all email addresses of user that fit the given criteria
+  #
+  # @param all [Boolean] If set to true, return addresses of all participants
+  # @param groups [Array<Integer>] The group-ids whoose members-addresses should be looked up
+  # @param users [Array<Integer>] The user-ids whoose addresses should be returned
+  # @return [String] list of email addresses
+  def email_addresses_of_participants(all, groups, users)
+    if all
+      email_addresses_of_accepted_applicants
+    else
+      (email_addresses_of_groups(groups) + email_addresses_of_users(users)).uniq.join(',')
+    end
+  end
+
   # Compares two participants to achieve following order:
   # 1. All participants that have to submit an letter of agreement but did not yet do so, ordered by email.
   # 2. All participants that have to submit an letter of agreement and did do so, ordered by email.

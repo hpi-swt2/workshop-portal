@@ -3,6 +3,7 @@ require 'pdf_generation/applications_pdf'
 require 'pdf_generation/participants_pdf'
 require 'rubygems'
 require 'zip'
+require 'carrierwave'
 
 class EventsController < ApplicationController
   load_and_authorize_resource
@@ -30,6 +31,7 @@ class EventsController < ApplicationController
     @occupied_places = @event.compute_occupied_places
     @application_letters = filter_application_letters(@event.application_letters)
     @material_files = get_material_files(@event)
+    @has_free_places = @free_places > 0
   end
 
   # GET /events/new
@@ -121,6 +123,16 @@ class EventsController < ApplicationController
     event = Event.find(params[:id])
     event.accept_all_application_letters
     redirect_to event_path(event)
+  end
+
+  # GET /events/1/send-participants-email
+  def send_participants_email
+    authorize! :send_email, Email
+    event = Event.find(params[:id])
+    @email = event.generate_participants_email(params[:all],params[:groups], params[:users])
+    @templates = []
+    @send_generic = true
+    render '/emails/email'
   end
 
   #POST /events/1/participants/agreement_letters
@@ -249,7 +261,7 @@ class EventsController < ApplicationController
     end
 
     def event_params
-      params.require(:event).permit(:name, :description, :max_participants, :organizer, :knowledge_level, :application_deadline, :published, :hidden, :custom_application_fields => [], date_ranges_attributes: [:start_date, :end_date, :id])
+      params.require(:event).permit(:name, :description, :image, :max_participants, :organizer, :knowledge_level, :application_deadline, :published, :hidden, :custom_application_fields => [], date_ranges_attributes: [:start_date, :end_date, :id])
     end
 
     def add_event_query_conditions(query)

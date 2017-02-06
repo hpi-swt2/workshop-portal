@@ -36,7 +36,7 @@ RSpec.feature "Event participants overview", :type => :feature do
     link_name = I18n.t("activerecord.attributes.participant_group.group")
     click_link link_name
     sorted_by_group = @event.participants.sort_by {|p| @event.participant_group_for(p).group }
-    names = sorted_by_group.map {|p| p.profile.name }
+    names = sorted_by_group.map {|p| (p.email)}
     expect(page).to contain_ordered(names)
 
     click_link link_name # again
@@ -45,27 +45,27 @@ RSpec.feature "Event participants overview", :type => :feature do
 
   end
 
-  scenario "logged in as an Organizer I want to be able to sort the participants table by their eating habits" do
+  scenario "logged in as anOrganizer I want to be able to sort the participants table by their eating habits" do
     # Peter, vegan
-    create_accepted_application_with(@event, "Peter", false, true, false)
+    pe = create_accepted_application_with(@event, "Peter", false, true, false)
 
     # Paul, vegan, allergic
-    create_accepted_application_with(@event, "Paul", true, true, false)
+    pa = create_accepted_application_with(@event, "Paul", true, true, false)
 
     # Mary, vegetarian
-    create_accepted_application_with(@event, "Mary", false, false, true)
+    ma = create_accepted_application_with(@event, "Mary", false, false, true)
 
     # Otti, vegetarian, allergic
-    create_accepted_application_with(@event, "Otti", true, false, true)
+    ot = create_accepted_application_with(@event, "Otti", true, false, true)
 
     # Benno, none
-    create_accepted_application_with(@event, "Benno", false, false, false)
+    be = create_accepted_application_with(@event, "Benno", false, false, false)
 
     #Expected Sorting Order
     #Benno, Mary, Peter, Otti, Paul ASC
     #Paul, Otti, Peter, Mary, Benno DESC
 
-    expected_order = ["Benno", "Mary", "Peter", "Otti", "Paul"]
+    expected_order = [be.user.email, ma.user.email, pe.user.email, ot.user.email, pa.user.email]
 
     login(:organizer)
     visit event_participants_path(@event)
@@ -79,6 +79,51 @@ RSpec.feature "Event participants overview", :type => :feature do
 
   end
 
+  def login(role)
+    @profile = FactoryGirl.create(:profile)
+    @profile.user.role = role
+    login_as(@profile.user, :scope => :user)
+  end
+end
+
+RSpec.feature "Event participants overview", :type => :feature do
+  before :each do
+    @event = FactoryGirl.create(:event)
+    @users = []
+    for i in 1..5
+      user = FactoryGirl.create(:user)
+      @users.push(user)
+      profile = FactoryGirl.create(:profile, user: user, last_name: i.to_s)
+      application_letter = FactoryGirl.create(:application_letter_accepted, user: user, event: @event)
+      participant_group = FactoryGirl.create(:participant_group, user: user, event: @event, group: i)
+    end
+  end
+
+  scenario "logged in as Organizer I want to be able to send an email to all participants" do
+    login(:organizer)
+    emails = @users.map {|user| user.email}
+    visit event_participants_path(@event)
+    check :all
+    click_button(I18n.t('events.email_modal.send_email_label'))
+    fill_in('email_reply_to', with: Rails.configuration.reply_to_address)
+    fill_in('email_subject', with: 'Subject')
+    fill_in('email_content', with: 'Content')
+    expect(find_field('email_recipients').value).to include(*emails)
+    expect{click_button I18n.t('emails.email_form.send')}.to change{ActionMailer::Base.deliveries.count}.by(1)
+    expect(page).to have_text(I18n.t('emails.submit.sending_successful'))
+  end
+
+  scenario "logged in as Organizer I cant send an invalid email to all participants" do
+    login(:organizer)
+    visit event_participants_path(@event)
+    check :all
+    # Email has no sender yet, because no sender is set. Should cause the sending to fail.
+    click_button(I18n.t('events.email_modal.send_email_label'))
+    fill_in('email_subject', with: 'Subject')
+    fill_in('email_content', with: 'Content')
+    expect{click_button I18n.t('emails.email_form.send')}.to change{ActionMailer::Base.deliveries.count}.by(0)
+    expect(page).to have_text(I18n.t('emails.submit.sending_failed'))
+  end
 
   def login(role)
     @profile = FactoryGirl.create(:profile)

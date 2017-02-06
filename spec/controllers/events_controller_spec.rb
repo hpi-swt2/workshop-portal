@@ -71,6 +71,11 @@ RSpec.describe EventsController, type: :controller do
         get :show, id: @event.to_param, session: valid_session
         expect(assigns(:occupied_places)).to eq(@event.compute_occupied_places)
       end
+
+      it "assigns the free places status as @has_free_places" do
+        get :show, id: @event.to_param
+        expect(assigns(:has_free_places)).to eq(@event.compute_free_places > 0)
+      end
     end
 
     describe "GET #new" do
@@ -164,6 +169,17 @@ RSpec.describe EventsController, type: :controller do
           get :participants, id: @event.to_param, session: valid_session
           expect(assigns(:participants)).to eq(@event.participants)
         end
+      end
+    end
+
+    describe "GET #send_participants_email" do
+      before :each do
+        @user = FactoryGirl.create(:user_with_profile, role: :admin)
+        sign_in @user
+      end
+      it "should assign a new email to accepted applications as @email" do
+        get :send_participants_email, id: @event.to_param, session: valid_session, all: true, groups: [], users:[]
+        expect(assigns(:email)).to have_attributes(hide_recipients: false, recipients: @event.send(:email_addresses_of_accepted_applicants), reply_to: '', subject: '', content: '')
       end
     end
 

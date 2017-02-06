@@ -1,4 +1,4 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: "workshop.portal@gmail.com"
+  default from: Rails.configuration.from_address
   layout 'mailer'
 end

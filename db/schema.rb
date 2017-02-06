@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170201154540) do
+ActiveRecord::Schema.define(version: 20170203180638) do
 
   create_table "agreement_letters", force: :cascade do |t|
     t.integer  "user_id",    null: false
@@ -26,13 +26,11 @@ ActiveRecord::Schema.define(version: 20170201154540) do
 
   create_table "application_letters", force: :cascade do |t|
     t.string   "motivation"
-    t.integer  "user_id",                               null: false
-    t.integer  "event_id",                              null: false
-    t.datetime "created_at",                            null: false
-    t.datetime "updated_at",                            null: false
-    t.integer  "status",                    default: 2, null: false
-    t.integer  "grade"
-    t.string   "coding_skills"
+    t.integer  "user_id",                                   null: false
+    t.integer  "event_id",                                  null: false
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
+    t.integer  "status",                    default: 2,     null: false
     t.string   "emergency_number"
     t.boolean  "vegetarian"
     t.boolean  "vegan"
@@ -40,6 +38,7 @@ ActiveRecord::Schema.define(version: 20170201154540) do
     t.text     "custom_application_fields"
     t.text     "annotation"
     t.string   "organisation"
+    t.boolean  "status_notification_sent",  default: false, null: false
   end
 
   add_index "application_letters", ["event_id"], name: "index_application_letters_on_event_id"
@@ -75,15 +74,17 @@ ActiveRecord::Schema.define(version: 20170201154540) do
     t.string   "name"
     t.text     "description"
     t.integer  "max_participants"
-    t.datetime "created_at",                                null: false
-    t.datetime "updated_at",                                null: false
+    t.datetime "created_at",                                 null: false
+    t.datetime "updated_at",                                 null: false
     t.boolean  "published",                  default: false
     t.string   "organizer"
     t.string   "knowledge_level"
     t.date     "application_deadline"
-    t.boolean  "application_status_locked"
     t.text     "custom_application_fields"
     t.boolean  "hidden",                     default: false
+    t.string   "image"
+    t.boolean  "rejections_have_been_sent",  default: false
+    t.boolean  "acceptances_have_been_sent", default: false
   end
 
   create_table "participant_groups", force: :cascade do |t|

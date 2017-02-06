@@ -6,44 +6,75 @@ class EmailsController < ApplicationController
 
     @templates = EmailTemplate.with_status(get_email_template_status)
     application_letter_status = get_corresponding_application_letter_status
-    @addresses = @event.email_addresses_of_type(application_letter_status)
+    @addresses = @event.email_addresses_of_type_without_notification_sent(application_letter_status)
 
-    @email = Email.new(hide_recipients: true, reply_to: 'workshop.portal@hpi.de', recipients: @addresses.join(','),
+    @email = Email.new(hide_recipients: true, reply_to: Rails.configuration.reply_to_address, recipients: @addresses.join(','),
                        subject: '', content: '')
-
+    @send_generic = false
     render :email
   end
 
-  def submit
+  def submit_application_result
     authorize! :send_email, Email
     if params[:send]
-      send_email
+      send_application_result_email
     elsif params[:save]
       save_template
     end
   end
 
+  def submit_generic
+    authorize! :send_email, Email
+    @templates = []
+    @event = Event.find(params[:id])
+    if params[:send]
+      send_generic
+    end
+  end
 
   private
 
-  def send_email
+  def send_application_result_email
     @email = Email.new(email_params)
     @event = Event.find(params[:event_id])
-
+    status = get_email_template_status
     if @email.valid?
-      if get_corresponding_application_letter_status == :accepted
+      application_letter_status = get_corresponding_application_letter_status
+      if application_letter_status == :accepted
         @email.send_email_with_ical @event
       else
         @email.send_email
       end
 
-      @event.lock_application_status
+      @event.set_status_notification_flag_for_applications_with_status(application_letter_status)
+      if status == :acceptance
+        @event.acceptances_have_been_sent = true
+        if not @event.has_rejected_participants_without_status_notification?
+          @event.rejections_have_been_sent = true
+        end
+      elsif status == :rejection
+        @event.rejections_have_been_sent = true
+      end
+      @event.save
 
-      redirect_to @event, notice: t('.sending_successful')
+      redirect_to @event, notice: t('emails.submit.sending_successful')
     else
-      @templates = EmailTemplate.with_status(get_email_template_status)
+      @templates = EmailTemplate.with_status(status)
 
-      flash.now[:alert] = t('.sending_failed')
+      flash.now[:alert] = t('emails.submit.sending_failed')
+      @send_generic = false
+      render :email
+    end
+  end
+
+  def send_generic
+    @email = Email.new(email_params)
+    if @email.valid?
+      @email.send_email
+      redirect_to @event, notice: t('emails.submit.sending_successful')
+    else
+      flash.now[:alert] = t('emails.submit.sending_failed')
+      @send_generic = true
       render :email
     end
   end
@@ -55,13 +86,14 @@ class EmailsController < ApplicationController
                                     subject: @email.subject, content: @email.content })
 
     if @email.validates_presence_of(:subject, :content) && @template.save
-      flash.now[:success] = t('.saving_successful')
+      flash.now[:success] = t('emails.submit.saving_successful')
     else
-      flash.now[:alert] = t('.saving_failed')
+      flash.now[:alert] = t('emails.submit.saving_failed')
     end
     @event = Event.find(params[:event_id])
     @templates = EmailTemplate.with_status(get_email_template_status)
 
+    @send_generic = false
     render :email
   end
 
