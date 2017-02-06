@@ -261,8 +261,7 @@ class Event < ActiveRecord::Base
   # @return string containing the label or nil
   def application_deadline_label
     days = (application_deadline - Date.current).to_i
-    return I18n.t('events.notices.deadline_approaching', count: days) if days <= 7 and days > 0
-    return I18n.t('events.notices.deadline_approaching.today') if days == 0
+    return I18n.t('events.notices.deadline_approaching', count: days) if days <= 7 and days >= 0
   end
 
   # Uses the start date to determine whether or not this event is in the past (or more
@@ -285,7 +284,7 @@ class Event < ActiveRecord::Base
 
     if date_ranges.size > 1
       I18n.t('events.notices.time_span_non_consecutive', count: days)
-    elsif days >= 1
+    else
       I18n.t('events.notices.time_span_consecutive', count: days)
     end
   end

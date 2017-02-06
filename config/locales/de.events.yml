@@ -117,7 +117,7 @@ de:
       deadline_approaching:
         one: "Bewerbungsfrist in einem Tag"
         other: "Bewerbungsfrist in %{count} Tagen"
-        today: "Bewerbungsfrist heute"
+        zero: "Bewerbungsfrist heute"
       time_span_non_consecutive:
         one: "Umfang: Ein Tag mit Unterbrechung"
         other: "Umfang: %{count} Tage mit Unterbrechung"

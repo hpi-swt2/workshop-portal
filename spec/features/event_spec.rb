@@ -80,7 +80,7 @@ describe "Event", type: :feature do
     it "should display note of today's deadline" do
       FactoryGirl.create :event, :is_only_today
       visit events_path
-      expect(page).to have_text(I18n.t("events.notices.deadline_approaching.today"))
+      expect(page).to have_text(I18n.t("events.notices.deadline_approaching", count: 0))
     end
 
     it "should display the days left to apply" do
