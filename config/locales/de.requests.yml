@@ -39,10 +39,11 @@ de:
         size: "20 Personen"
         target_group: "Informatikeinsteiger (auch ohne Programmiererfahrung), ca. ab Klasse 10"
         content: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita consequuntur voluptate eveniet praesentium vitae. Velit, pariatur et quidem earum, consectetur molestias perspiciatis cupiditate voluptas expedita aliquam, tempore, unde fuga dignissimos." 
+    intro_text: "Wenn Sie einen Workshop am HPI durchführen wollen, füllen Sie bitte das folgende Formular aus. Die weitere Planung und Kommunikation wird über E-Mail erfolgen."
     new:
       title: "Neue Anfrage stellen"
-      workshop_information: "Informationen über den gewünschten Workshop"
-      personal_information: "Persönliche Daten"
+    workshop_information: "Informationen über den gewünschten Workshop"
+    personal_information: "Persönliche Daten"
     form_of_addresses:
       mr: "Herr"
       mrs: "Frau"
@@ -51,6 +52,7 @@ de:
       create_request: "Anfrage erstellen"
       accept: "Annehmen"
       set_contact_person: "Ansprechpartner festlegen"
+      set_notes: "Notizen speichern"
     hints:
       please_enter_two_topics: "Bitte 2 Wünsche angeben"
     notice:
@@ -79,6 +81,7 @@ de:
         id: "Nummer"
         created_at: "Erstellt am"
         contact_person: "Ansprechpartner"
+        notes: "Notizen"
         status: "Status"
         statuses:
           open: "Offen"

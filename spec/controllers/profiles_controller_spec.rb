@@ -25,7 +25,7 @@ RSpec.describe ProfilesController, type: :controller do
   # adjust the attributes here as well.
   let(:valid_attributes) { FactoryGirl.build(:profile).attributes }
 
-  let(:invalid_attributes) { FactoryGirl.build(:profile, school: nil).attributes }
+  let(:invalid_attributes) { FactoryGirl.build(:profile, birth_date: nil).attributes }
 
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
@@ -67,13 +67,11 @@ RSpec.describe ProfilesController, type: :controller do
               last_name: "Doe",
               gender: "male",
               birth_date: 15.years.ago,
-              school: "Schule am Griebnitzsee",
               street_name: "August-Bebel-Str. 88",
               zip_code: "14482",
               city: "Potsdam",
               state: "Babelsberg",
               country: "Deutschland",
-              graduates_school_in: "Bereits Abitur"
           }
         }
 

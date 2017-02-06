@@ -20,8 +20,8 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 de:
-  app_name: "Workshop-Portal"
-  website_name: "WorkshopPortal"
+  app_name: "Workshop Portal"
+  website_name: "Workshop Portal"
   host_name: "Hasso-Plattner-Institut"
   unauthorized:
       manage:
@@ -31,10 +31,10 @@ de:
     events: "Veranstaltungen"
     profiles: "Nutzer"
     application_letters: "Bewerbungen"
-    my_application_letters: "Meine Bewerbungen"
+    my_events: "Meine Veranstaltungen"
     user_management: "Benutzerverwaltung"
     requests: "Anfragen"
-    new_request: "Anfrage stellen"
+    new_request: "Workshop anfragen"
     profile: "Mein Profil"
     create_profile: "Mein Profil anlegen"
     settings: "Einstellungen"
@@ -48,18 +48,31 @@ de:
   midnight: "Mitternacht"
   start_page:
     welcome_to: "Herzlich willkommen im"
-    workshop_portal_hpi_html: "Workshop<br>portal des HPI."
+    workshop_portal_hpi_html: "Workshop<div class='row spacer-15'></div>Portal des HPI."
     register_now: "Registrieren"
     welcome: "Herzlich Willkommen"
     place_request: "Anfrage stellen"
     all_events: 'Alle Veranstaltungen'
-    intro_text: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-    intro_text_events: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
-    intro_text_requests: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
-    outro_text_requests: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-    website_name: "WorkshopPortal"
-    host_name: "HPI-Schülerklub"
-  footer: "Companion Cube <3"
+    intro_text_html: "Bist Du interessiert an IT-Systems-Engineering, Design Thinking oder Entrepreneurship? Dann bist Du hier bei uns genau richtig. Hier findest du spannende Camps und Workshops des Hasso-Plattner-Instituts für Schülerinnen und Schüler sowie Berufstätige, die eine Abwechslung zum normalen Alltag suchen.<br>Schau doch mal bei uns vorbei!"
+    intro_text_events: "Hier findest du einen Überblick der kommenden Veranstaltungen am Hasso-Plattner-Institut. Beispielsweise können sich Schülerinnen und Schüler bei den Veranstaltungen der Schülerakademie gezielt über den Studiengang \"IT-Systems Engineering\" oder allgemein über das Informatikstudium und neue Technologien informieren."
+    intro_text_requests: "Das HPI organisiert auch individualisierte Workshops, beispielsweise für Schülerinnen und Schüler, die besonders interessiert an Informatik sind oder für Unternehmen, die ihre Mitarbeiter weiterbilden möchte."
+    outro_text_requests: "Mit einer gewissen zeitlichen Flexibilität und etwas zeitlichem Vorlauf können wir meist alle Anfragen verwirklichen."
+    website_name: "Workshop Portal"
+    about_hpi:
+      title: "Über das HPI"
+      lead_html: "Das <a href='https://hpi.de/' target='_blank'>Hasso-Plattner-Institut für Softwaresystemtechnik GmbH</a> an der Universität Potsdam ist Deutschlands universitäres Exzellenz-Zentrum für IT-Systems Engineering. Als einziges Universitäts-Institut in Deutschland bietet es den Bachelor- und Master-Studiengang \"IT-Systems Engineering\" an – ein besonders praxisnahes und ingenieurwissenschaftliches Informatik-Studium, das von derzeit 480 Studenten genutzt wird. Die HPI School of Design Thinking, Europas erste Innovationsschule für Studenten nach dem Vorbild der Stanforder d.school, bietet 240 Plätze für ein Zusatzstudium an."
+  footer:
+    copyright: "© 2017 Hasso-Plattner-Institut"
+    ignore: "Companion Cube <3"
+    imprint: "Impressum"
+    hoster_link_html: "<a href='https://hpi.de/'>Hasso-Plattner-Institut</a>"
+  imprint:
+    managing_directors: "Vertretungsberechtigte Geschäftsführer:"
+    editor: "Redaktion:"
+    web_design: "Webdesign:"
+    texts: "Texte:"
+    legal_information: "Rechtliche Hinweise:"
+    legal_information_text: "Das Hasso-Plattner-Institut (HPI) überprüft und aktualisiert regelmäßig die Inhalte seiner Websites. Trotz größtmöglicher Sorgfalt können wir nicht ausschließen, dass einzelne Informationen auf unseren Seiten veraltet oder nicht zutreffend sind. Daher können wir keine Haftung für Aktualität, Genauigkeit und Vollständigkeit der publizierten Informationen übernehmen. Das gleiche gilt für alle Websites, die von den HPI-Seiten über Hyperlinks erreichbar sind. Für alle diese Links gilt: Wir erklären ausdrücklich, dass wir keinen Einfluss auf die Gestaltung und die Inhalte der verlinkten Seite haben. Deshalb distanzieren wir uns hiermit ausdrücklich von allen Inhalten aller verlinkten Seiten und machen uns ihre Inhalte nicht zu Eigen. Diese Erklärung gilt für alle auf unserer Seite angebrachten Links zu fremden Seiten. Für den Inhalt dieser verlinkten Seiten ist das HPI nicht verantwortlich. Weiterhin behält sich das HPI jederzeit Änderungen und Ergänzungen der angezeigten Informationen vor. Inhalt und Struktur der HPI-Website sind durch das Copyright geschützt. Die Weiterverwendung von Informationen und Daten, vor allem die Verwendung von Texten und Illustrationen ist nur nach unserer Zustimmung zulässig."
   navigational:
     back: Zurück
     forward: Weiter

@@ -18,14 +18,21 @@ FactoryGirl.define do
     name "Event-Name"
     description "Event-Description"
     max_participants 1
-    kind :workshop
-    published true
     organizer "Workshop-Organizer"
     knowledge_level "Workshop-Knowledge Level"
     application_deadline Date.tomorrow
     custom_application_fields ["Field 1", "Field 2", "Field 3"]
     date_ranges { build_list :date_range, 1 }
     hidden false
+    published true
+
+    trait :in_the_past_valid do
+      after(:build) do |event|
+        event.date_ranges = [FactoryGirl.create(:date_range, :in_the_past_valid)]
+      end
+      name "Past Event"
+      to_create {|instance| instance.save(validate: false) }
+    end
 
     trait :with_two_date_ranges do
       after(:build) do |event|
@@ -111,7 +118,8 @@ FactoryGirl.define do
       after(:build) do |event|
         event.published = true
         event.application_deadline = Date.yesterday
-        event.application_status_locked = false
+        event.acceptances_have_been_sent = false
+        event.rejections_have_been_sent = false
       end
     end
 
@@ -119,7 +127,8 @@ FactoryGirl.define do
       after(:build) do |event|
         event.published = true
         event.application_deadline = Date.yesterday
-        event.application_status_locked = true
+        event.acceptances_have_been_sent = true
+        event.rejections_have_been_sent = true
       end
     end
 
