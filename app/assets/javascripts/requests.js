@@ -13,6 +13,6 @@ function enableOwlCarousel() {
 	});
 }
 
-jQuery(document).on('turbolinks:partical-load', enableOwlCarousel);
+jQuery(document).on('turbolinks:load', enableOwlCarousel);
 jQuery(enableOwlCarousel);
 
