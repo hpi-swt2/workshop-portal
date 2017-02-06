@@ -48,7 +48,7 @@ RSpec.describe "application_letters/check", type: :view do
     it "renders applicant's attributes" do
       expect(rendered).to have_css('h3', text: I18n.t('application_letters.check.my_personal_data'))
       expect(rendered).to have_text(@application_letter.user.profile.name)
-      expect(rendered).to have_text(@application_letter.user.profile.gender)
+      expect(rendered).to have_text(I18n.t('profiles.genders.' + @application_letter.user.profile.gender))
       expect(rendered).to have_text(I18n.l(@application_letter.user.profile.birth_date))
       expect(rendered).to have_text(@application_letter.user.profile.address)
     end
