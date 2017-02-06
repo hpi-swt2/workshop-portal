@@ -65,10 +65,22 @@ describe "Event", type: :feature do
       expect(page).to have_text(I18n.t("events.notices.time_span_consecutive", count: 6))
     end
 
+    it "should display the duration of a sigle day event" do
+      FactoryGirl.create :event, :single_day
+      visit events_path
+      expect(page).to have_text(I18n.t("events.notices.time_span_consecutive", count: 1))
+    end
+
     it "should display note of non consecutive date ranges" do
       FactoryGirl.create :event, :with_multiple_date_ranges
       visit events_path
       expect(page).to have_text(I18n.t("events.notices.time_span_non_consecutive", count: 16))
+    end
+
+    it "should display note of today's deadline" do
+      FactoryGirl.create :event, :is_only_today
+      visit events_path
+      expect(page).to have_text(I18n.t("events.notices.deadline_approaching", count: 0))
     end
 
     it "should display the days left to apply" do
