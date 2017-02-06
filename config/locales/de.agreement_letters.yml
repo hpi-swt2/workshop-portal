@@ -9,6 +9,6 @@ de:
     corrupt_document: "PDF Dokument ist fehlerhaft."
     upload_success: "Datei erfolgreich hochgeladen."
     upload_failed: "Fehler beim Hochladen."
-    already_uploaded: "Datei hochgeladen am %{timestamp}"
+    already_uploaded: "Einverständnigserklärung hochgeladen am %{timestamp}"
     write_failed: "Datei konnte nicht gespeichert werden."
     please_upload: "Bitte lade deine Einverständniserklärung für \"%{event}\" hoch."
