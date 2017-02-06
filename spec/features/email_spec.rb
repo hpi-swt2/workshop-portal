@@ -40,9 +40,10 @@ describe "Sending emails to applicants", type: :feature do
     expect(Event.find(@event.id).acceptances_have_been_sent).to be(true)
   end
 
-  scenario "logged in as Organizer after sending an acceptance Email to the applicants of an event which has no rejected applications the event application status for sending rejections gets locked" do
-    @event = FactoryGirl.create(:event_with_accepted_applications,
+  scenario "logged in as Organizer after sending an acceptance Email to the applicants of an event which has no rejected or alternative applications the event application status for sending rejections gets locked" do
+    @event = FactoryGirl.create(:event_with_applications_in_various_states,
                                 rejected_application_letters_count: 0,
+                                alternative_application_letters_count: 0,
                                 rejections_have_been_sent: false)
     login(:organizer)
 

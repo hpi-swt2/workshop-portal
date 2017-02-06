@@ -7,6 +7,9 @@ class EmailsController < ApplicationController
     @templates = EmailTemplate.with_status(get_email_template_status)
     application_letter_status = get_corresponding_application_letter_status
     @addresses = @event.email_addresses_of_type_without_notification_sent(application_letter_status)
+    if (get_email_template_status == :rejection) && (@event.has_alternative_participants_without_status_notification?)
+      @addresses.append(@event.email_addresses_of_type_without_notification_sent(:alternative))
+    end
 
     @email = Email.new(hide_recipients: true, reply_to: Rails.configuration.reply_to_address, recipients: @addresses.join(','),
                        subject: '', content: '')
@@ -49,11 +52,12 @@ class EmailsController < ApplicationController
       @event.set_status_notification_flag_for_applications_with_status(application_letter_status)
       if status == :acceptance
         @event.acceptances_have_been_sent = true
-        if not @event.has_rejected_participants_without_status_notification?
+        if not @event.has_rejected_or_alternative_participants_without_status_notification?
           @event.rejections_have_been_sent = true
         end
       elsif status == :rejection
         @event.rejections_have_been_sent = true
+        @event.set_status_notification_flag_for_applications_with_status(:alternative)
       end
       @event.save
 
