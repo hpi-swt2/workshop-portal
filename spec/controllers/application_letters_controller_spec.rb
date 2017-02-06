@@ -22,7 +22,7 @@ RSpec.describe ApplicationLettersController, type: :controller do
 
   let(:valid_attributes) { FactoryGirl.build(:application_letter).attributes.merge(status: :pending) }
 
-  let(:invalid_attributes) { FactoryGirl.build(:application_letter, coding_skills: nil).attributes.merge(status: :pending)}
+  let(:invalid_attributes) { FactoryGirl.build(:application_letter, motivation: nil).attributes.merge(status: :pending)}
 
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
@@ -49,6 +49,11 @@ RSpec.describe ApplicationLettersController, type: :controller do
       it "assigns the requested application as @application" do
         get :show, id: @application.to_param
         expect(assigns(:application_letter)).to eq(@application)
+      end
+
+      it "assigns the free places status as @has_free_places" do
+        get :show, id: @application.to_param
+        expect(assigns(:has_free_places)).to eq(@application.event.compute_free_places > 0)
       end
     end
 
@@ -100,10 +105,8 @@ RSpec.describe ApplicationLettersController, type: :controller do
       context "with valid params" do
         let(:new_attributes) {
           {
-              grade: 10,
               experience: "None",
               motivation: "None",
-              coding_skills: "None",
               emergency_number: "01234567891",
               vegetarian: true,
               vegan: true,
@@ -245,7 +248,7 @@ RSpec.describe ApplicationLettersController, type: :controller do
 
       it "re-renders the 'new' template for hidden events with title 'Anmeldung'" do
         @event = FactoryGirl.create(:event, hidden: true)
-        @application_letter = FactoryGirl.build(:application_letter, coding_skills: nil, event_id: @event.id).attributes.merge(status: :pending)
+        @application_letter = FactoryGirl.build(:application_letter, motivation: nil, event_id: @event.id).attributes.merge(status: :pending)
         post :create, application_letter: @application_letter, session: valid_session
         expect(assigns(:submit_button_text)).to match I18n.t('application_letters.helpers.submit.create')
       end

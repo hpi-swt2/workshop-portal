@@ -17,12 +17,8 @@ class ApplicationLetter < ActiveRecord::Base
   has_many :application_notes
   serialize :custom_application_fields, Array
 
-  VALID_GRADES = 5..13
-
-  validates :user, :event, :motivation, :coding_skills, :emergency_number,:organisation, presence: true
-  validates :grade, presence: true, numericality: { only_integer: true }
+  validates :user, :event, :motivation, :emergency_number,:organisation, presence: true
   #Use 0 as default for hidden event applications
-  validates_inclusion_of :grade, in: (VALID_GRADES.to_a.push(0))
   validates :vegetarian, :vegan, :allergic, inclusion: { in: [true, false] }
   validates :vegetarian, :vegan, :allergic, exclusion: { in: [nil] }
   validate :deadline_cannot_be_in_the_past, :if => Proc.new { |letter| !(letter.status_changed? || letter.status_notification_sent_changed?) }
@@ -56,7 +52,7 @@ class ApplicationLetter < ActiveRecord::Base
   # @return [Boolean] true if status changes are allowed
   def status_change_allowed?
     if event.phase == :execution
-      (status_was == 'accepted' && status == 'canceled') || (status_was == 'alternative' && status == 'accepted')
+      (status_was == 'accepted' && status == 'canceled') || (status_was == 'alternative' && status == 'accepted') || (status_was == 'rejected' && status == 'accepted' && !event.has_alternative_application_letters?)
     elsif event.phase == :selection && event.participant_selection_locked
       false
     else
