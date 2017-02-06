@@ -3,6 +3,7 @@
   <h1><%=t '.title', :default => model_class.model_name.human.titleize %> (<%= @event.hidden ? I18n.t("events.type.private") : I18n.t("events.type.public") %>)</h1>
 </div>
 <% if can? :view_participants, Event %>
+  <%= render :partial => 'email_modal' %>
   <%= render :partial => 'participants_modal' %>
   <%= render :partial => 'show_event' %>
 
@@ -29,8 +30,8 @@
         <% end %>
       </tr>
       <% sort_participants
-        @participants.each do |participant| 
-          application_letter = ApplicationLetter.find_by(user_id: participant.id, event_id: @event.id) 
+        @participants.each do |participant|
+          application_letter = ApplicationLetter.find_by(user_id: participant.id, event_id: @event.id)
       %>
       <tr>
         <td>
@@ -62,15 +63,15 @@
              <ul id="eating-habit--list">
              <% if application_letter.vegan %>
                <li>
-                 <img 
+                 <img
                    class="img img-responsive eating-habit--icon"
                    src="<%= image_url('application_letter_vegan.png') %>"
                  >
                </li>
-             <% end %>                
+             <% end %>
              <% if application_letter.vegetarian %>
                <li>
-                 <img 
+                 <img
                    class="img img-responsive eating-habit--icon"
                    src="<%= image_url('application_letter_vegetarian.png') %>"
                  >
@@ -81,30 +82,31 @@
                  <%= image_tag('application_letter_allergic.png',
                                   class: "img img-responsive eating-habit--icon has-popover",
                                   tabindex: 50,
-                                  data: { 
-                                    toggle: "popover", 
-                                    content: application_letter.allergies, 
-                                    placement: "bottom" 
-                                    }) 
+                                  data: {
+                                    toggle: "popover",
+                                    content: application_letter.allergies,
+                                    placement: "bottom"
+                                    })
                   %>
                </li>
              <% end %>
            </ul>
-           <% end %> 
+           <% end %>
           </td>
         <% end %>
       </tr>
       <% end %>
     </table>
 
-    <button class="btn btn-default" type="button" data-toggle="modal" data-target="#print_participant_modal" id="open_print_modal"><%= t("events.participants.print_participants") %>
-    </button>
+    <button class="btn btn-default" type="button" data-toggle="modal" data-target="#print_participant_modal" id="open_print_modal"><%= t("events.participants.print_participants") %></button>
+    <button class="btn btn-default" type="button" data-toggle="modal" data-target="#send_participant_email_modal" id="open_email_modal"><%= t("events.participants.send_email") %></button>
+
     <%= form_tag(event_path(@event) + "/participants/agreement_letters", { method: :post, id: 'downloadLettersForm' }) do %>
 
       <% if can? :print_agreement_letters, Event and @has_agreement_letters %>
         <div id="participants_download_submit_button">
-        <%= submit_tag t('events.agreement_letters_download.download_all_as'), 
-              :name => "download_all", 
+        <%= submit_tag t('events.agreement_letters_download.download_all_as'),
+              :name => "download_all",
               :class => "btn btn-default" %>
         <%= select_tag :download_type, options_for_select([['pdf'], ['zip']]) %>
         </div>
@@ -138,7 +140,7 @@
         input.setAttribute("name", this.name);
         input.setAttribute("value", this.value);
         document.getElementById("downloadLettersForm").appendChild(input);
-      }
+        }
     });
   });
   </script>

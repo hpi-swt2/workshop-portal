@@ -51,63 +51,73 @@
   </div>
 
   <div class="form-group">
-    <%= f.label :max_participants, :class => 'control-label col-lg-2' %>
+    <%= f.label :image, :class => 'control-label col-lg-2' %>
+    <%= image_tag(@event.image_url) if @event.image? %>
     <div class="col-lg-10">
-      <%= f.text_field :max_participants, :class => 'form-control' %>
-      <%=f.error_span(:max_participants) %>
+      <%= f.error_span(:image) %>
+      <%= I18n.t :"events.image_upload.upload_local_file" %><br/>
+      <%= f.file_field :image %>
     </div>
   </div>
-  <div class="form-group">
-    <%= f.label :date_ranges, :class => 'control-label col-lg-2' %>
-    <div class="col-lg-10 <%= 'has-error' unless @event.errors.messages[:date_ranges].empty? %>" id="event-date-pickers">
-      <% def date_picker_template(start_date = Date.current, end_date = Date.current)
-        start_picker = text_field_tag "event[date_ranges_attributes][][start_date]", (I18n.l start_date),
-          class: 'form-control', :"data-enable-datepicker" => 'true'
-        end_picker = text_field_tag "event[date_ranges_attributes][][end_date]", (I18n.l end_date),
-          class: 'form-control', :"data-enable-datepicker" => 'true'
 
-        "<div>#{start_picker} #{t 'date_range.to'} #{end_picker} "+
-          "<a class=\"close\" onclick=\"javascript:removeEventDatePicker(event.target)\">&times;</a></div>"
-      end %>
+    <div class="form-group">
+      <%= f.label :max_participants, :class => 'control-label col-lg-2' %>
+      <div class="col-lg-10">
+        <%= f.text_field :max_participants, :class => 'form-control' %>
+        <%= f.error_span(:max_participants) %>
+      </div>
+    </div>
+    <div class="form-group">
+      <%= f.label :date_ranges, :class => 'control-label col-lg-2' %>
+      <div class="col-lg-10 <%= 'has-error' unless @event.errors.messages[:date_ranges].empty? %>" id="event-date-pickers">
+        <% def date_picker_template(start_date = Date.current, end_date = Date.current)
+          start_picker = text_field_tag "event[date_ranges_attributes][][start_date]", (I18n.l start_date),
+            class: 'form-control', :"data-enable-datepicker" => 'true'
+          end_picker = text_field_tag "event[date_ranges_attributes][][end_date]", (I18n.l end_date),
+            class: 'form-control', :"data-enable-datepicker" => 'true'
 
-      <%=
-        if @event.date_ranges.blank?
-          date_picker_template.html_safe
-        else
-          @event.date_ranges
-            .map { |d| date_picker_template d.start_date, d.end_date }
-            .reduce(:+)
-            .html_safe
-        end
-      %>
-      <a class="btn btn-xs btn-default" href="javascript:addEventDatePicker()" id="event-add-date-picker">
-        <%= t 'events.form.add_timespan' %>
-      </a>
-      <%=f.error_span(:date_ranges) %>
+          "<div>#{start_picker} #{t 'date_range.to'} #{end_picker} "+
+            "<a class=\"close\" onclick=\"javascript:removeEventDatePicker(event.target)\">&times;</a></div>"
+        end %>
+
+        <%=
+          if @event.date_ranges.blank?
+            date_picker_template.html_safe
+          else
+            @event.date_ranges
+              .map { |d| date_picker_template d.start_date, d.end_date }
+              .reduce(:+)
+              .html_safe
+          end
+        %>
+        <a class="btn btn-xs btn-default" href="javascript:addEventDatePicker()" id="event-add-date-picker">
+          <%= t 'events.form.add_timespan' %>
+        </a>
+        <%=f.error_span(:date_ranges) %>
+      </div>
+      <script>var EVENT_DATE_PICKER_TEMPLATE = '<%= date_picker_template.gsub("\n", "").html_safe %>';</script>
     </div>
-    <script>var EVENT_DATE_PICKER_TEMPLATE = '<%= date_picker_template.gsub("\n", "").html_safe %>';</script>
-  </div>
-  <div class="form-group">
-    <%= f.label :organizer, :class => 'control-label col-lg-2' %>
-    <div class="col-lg-10">
-      <%= f.text_field :organizer, :class => 'form-control', :placeholder => 'optional' %>
-      <%=f.error_span(:organizer) %>
+    <div class="form-group">
+      <%= f.label :organizer, :class => 'control-label col-lg-2' %>
+      <div class="col-lg-10">
+        <%= f.text_field :organizer, :class => 'form-control', :placeholder => 'optional' %>
+        <%=f.error_span(:organizer) %>
+      </div>
     </div>
-  </div>
-  <div class="form-group">
-    <%= f.label :knowledge_level, :class => 'control-label col-lg-2' %>
-    <div class="col-lg-10">
-      <%= f.text_field :knowledge_level, :class => 'form-control', :placeholder => 'optional' %>
-      <%=f.error_span(:knowledge_level) %>
+    <div class="form-group">
+      <%= f.label :knowledge_level, :class => 'control-label col-lg-2' %>
+      <div class="col-lg-10">
+        <%= f.text_field :knowledge_level, :class => 'form-control', :placeholder => 'optional' %>
+        <%=f.error_span(:knowledge_level) %>
+      </div>
     </div>
-  </div>
-  <div class="form-group">
-    <%= f.label :application_deadline, :class => 'control-label col-lg-2' %>
-    <div class="col-lg-10">
-      <%= f.text_field :application_deadline, :"data-enable-datepicker" => 'true', value: ((I18n.l  @event.application_deadline) if @event.application_deadline.present?), class: "form-control" %>
-      <%=f.error_span(:application_deadline) %>
+    <div class="form-group">
+      <%= f.label :application_deadline, :class => 'control-label col-lg-2' %>
+      <div class="col-lg-10">
+        <%= f.text_field :application_deadline, :"data-enable-datepicker" => 'true', value: ((I18n.l  @event.application_deadline) if @event.application_deadline.present?), class: "form-control" %>
+        <%=f.error_span(:application_deadline) %>
+      </div>
     </div>
-  </div>
   <%= (render 'custom_application_fields_input', form: f) if @event.new_record? %>
   <div class="form-group">
     <div class="col-lg-offset-2 col-lg-10">
@@ -123,6 +133,7 @@
             :data => { :confirm => t('.confirm', :default => t("events.confirmation_prompts.confirm_delete", :default => 'Are you sure?')) },
             :class => 'btn btn-danger' %>
       <% end %>
+  </div>
     </div>
   </div>
 

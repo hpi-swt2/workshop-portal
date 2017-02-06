@@ -64,22 +64,27 @@
     </div>
 
     <% if (can? :send_email, Email) && (@event.phase == :selection) %>
-    <div class="btn-group send-emails-buttons pull-right tooltip-wrapper has-tooltip" role="group" data-toggle="tooltip" title="<%= @event.send_mails_tooltip %>">
-      <%= form_tag event_email_show_path(@event), method: :get do %>
-        <%= hidden_field_tag "status", "acceptance" %>          
-        <%= button_tag t('.sending_acceptances'), class: 'send-emails-button btn btn-default', disabled: @event.send_mails_tooltip.present? %>
+      <% if not @event.acceptances_have_been_sent %>
+      <div class="btn-group send-emails-buttons pull-right tooltip-wrapper has-tooltip" role="group" data-toggle="tooltip" title="<%= @event.send_mails_tooltip %>">
+        <%= form_tag event_email_show_path(@event), method: :get do %>
+          <%= hidden_field_tag "status", "acceptance" %>
+          <%= button_tag t('.sending_acceptances'), class: 'send-emails-button btn btn-default', disabled: @event.send_mails_tooltip.present? %>
+        <% end %>
+      </div>
       <% end %>
-      <%= form_tag event_email_show_path(@event), method: :get do %>
-        <%= hidden_field_tag "status", "rejection" %>
-        <%= button_tag t('.sending_rejections'), class: 'send-emails-button btn btn-default', disabled: @event.send_mails_tooltip.present? %>
+      <% if not @event.rejections_have_been_sent %>
+      <div class="btn-group send-emails-buttons pull-right tooltip-wrapper has-tooltip" role="group" data-toggle="tooltip" title="<%= @event.send_mails_tooltip %>">
+        <%= form_tag event_email_show_path(@event), method: :get do %>
+          <%= hidden_field_tag "status", "rejection" %>
+          <%= button_tag t('.sending_rejections'), class: 'send-emails-button btn btn-default', disabled: @event.send_mails_tooltip.present? %>
+        <% end %>
+      </div>
       <% end %>
-
-    </div>
     <% end %>
+
     <% if (can? :view_participants, Event) && (@event.phase == :execution) %>
       <%= link_to t('events.participants.show_participants'),
                   event_path(@event) + "/participants" , :class => 'btn btn-primary btn-sm pull-right'  %>
     <% end %>
-
   </div>
 </div>

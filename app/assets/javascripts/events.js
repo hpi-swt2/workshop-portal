@@ -45,25 +45,25 @@ $(document).on('turbolinks:load', enableMultilinePlaceholder);
 jQuery(enableMultilinePlaceholder);
 
 function addCustomApplicationField() {
-  $(CUSTOM_APPLICATION_FIELD_TEMPLATE)
+  jQuery(CUSTOM_APPLICATION_FIELD_TEMPLATE)
     .insertBefore('#add-custom-application-fields');
 }
 
 function removeCustomApplicationField(button) {
-  $(button).parents('.input-group').remove();
+  jQuery(button).parents('.input-group').remove();
 }
 
 function addEventDatePicker() {
-  var picker = $('#event-add-date-picker');
+  var picker = jQuery('#event-add-date-picker');
 
-  $(EVENT_DATE_PICKER_TEMPLATE)
+  jQuery(EVENT_DATE_PICKER_TEMPLATE)
     .insertBefore(picker);
 
   enableDatepickers();
 }
 
 function removeEventDatePicker(button) {
-  $(button).parent('div').remove();
+  jQuery(button).parent('div').remove();
 }
 
 function flipAllCheckboxes(rootCheckbox, className) {

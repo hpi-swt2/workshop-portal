@@ -1,4 +1,5 @@
-<%= form_for @email, url: {action: 'submit', controller: 'emails', status: params[:status]}, html: {class: 'email-form form-horizontal'} do |f| %>
+<% url = @send_generic ? {action: 'submit_generic', controller: 'emails'} : {action: 'submit_application_result', controller: 'emails', status: params[:status]} %>
+<%= form_for @email, url: url, html: {class: 'email-form form-horizontal'} do |f| %>
   <div class="form-group">
     <label class="control-label col-sm-2" for="hide_show_recipients"><%= t('.further_recipients') %>:</label>
     <div class="btn-group col-sm-6" data-toggle="buttons">
@@ -45,7 +46,9 @@
     </div>
   </div>
   <div class="btn-group pull-right" role="group">
-    <%= f.submit t('.save_template'), name: 'save', class: 'email-submit btn btn-default' %>
+    <% unless @send_generic %>
+      <%= f.submit t('.save_template'), name: 'save', class: 'email-submit btn btn-default' %>
+    <% end %>
     <%= f.submit t('.send'), name: 'send', class: 'email-submit btn btn-primary' %>
   </div>
 <% end %>
