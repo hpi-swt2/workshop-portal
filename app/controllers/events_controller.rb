@@ -5,6 +5,8 @@ require 'rubygems'
 require 'zip'
 
 class EventsController < ApplicationController
+  load_and_authorize_resource
+  skip_authorize_resource :only => [:show,:index,:archive,:upload_material,:badges,:new,:create,:destroy,:accept_all_applicants,:print_applications_eating_habits] 
 
   before_action :set_event, only: [:show, :edit, :update, :destroy, :participants,
     :participants_pdf, :print_applications, :print_applications_eating_habits, :badges, :print_badges]
@@ -38,7 +40,7 @@ class EventsController < ApplicationController
   # GET /events/1/edit
   def edit
     @event = Event.find(params[:id])
-    authorize! :edit, @event
+    #authorize! :edit, @event
 
   end
 
@@ -55,7 +57,7 @@ class EventsController < ApplicationController
   # PATCH/PUT /events/1
   def update
     attrs = event_params
-    authorize! :update, @event
+    #authorize! :update, @event
     if @event.update(attrs)
       redirect_to @event, notice: I18n.t('events.notices.updated')
     else
@@ -71,13 +73,13 @@ class EventsController < ApplicationController
 
   # GET /events/1/badges
   def badges
-    authorize! :print_badges, @event
+    #authorize! :print_badges, @event
     @participants = @event.participants
   end
 
   # POST /events/1/badges
   def print_badges
-    authorize! :print_badges, @event
+    #authorize! :print_badges, @event
     @participants = @event.participants
     name_format = params[:name_format]
     show_color = params[:show_color]
@@ -110,7 +112,7 @@ class EventsController < ApplicationController
 
   # GET /events/1/print_applications
   def print_applications
-    authorize! :print_applications, @event
+    #authorize! :print_applications, @event
     pdf = ApplicationsPDF.generate(@event)
     send_data pdf, filename: "applications_#{@event.name}_#{Date.today}.pdf", type: "application/pdf", disposition: "inline"
   end
@@ -135,7 +137,7 @@ class EventsController < ApplicationController
     if not params.has_key?(:selected_participants)
       redirect_to event_participants_url(@event), notice: I18n.t('events.agreement_letters_download.notices.no_participants_selected') and return
     end
-    authorize! :print_agreement_letters, @event
+    #authorize! :print_agreement_letters, @event
     if params[:download_type] == "zip"
       filename = "agreement_letters_#{@event.name}_#{Date.today}.zip"
       temp_file = Tempfile.new(filename)
@@ -241,7 +243,7 @@ class EventsController < ApplicationController
     unless params.has_key?(:file)
       redirect_to event_path(event), alert: I18n.t('events.material_area.no_file_given') and return
     end
-    authorize! :download_material, event
+    #authorize! :download_material, event
 
     file_full_path = File.join(event.material_path, params[:file])
     unless File.exists?(file_full_path)
