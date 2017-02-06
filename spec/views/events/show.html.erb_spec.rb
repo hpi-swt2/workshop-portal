@@ -3,9 +3,7 @@ require 'rails_helper'
 RSpec.describe "events/show", type: :view do
   before(:each) do
     @event = assign(:event, FactoryGirl.create(:event, :with_two_date_ranges))
-    @application_letter = FactoryGirl.create(:application_letter, user: FactoryGirl.create(:user, role: :admin), event: @event)
-    @application_letter.user.profile = FactoryGirl.build(:profile)
-    @event.application_letters.push(@application_letter)
+    @application_letter = FactoryGirl.create(:application_letter, user: FactoryGirl.create(:user_with_profile, role: :organizer), event: @event)
     @application_letters = @event.application_letters
     @material_files = ["spec/testfiles/actual.pdf"]
     assign(:has_free_places, @event.compute_free_places > 0)
@@ -299,7 +297,7 @@ RSpec.describe "events/show", type: :view do
   end
 
   it "renders a cancel button but no envelope glypicon for accepted applications with status notification sent in execution phase" do
-    @event = assign(:event, FactoryGirl.create(:event_in_execution_with_applications_in_various_states, :with_status_notification_sent, :applications_with_profile, accepted_application_letters_count: 1))
+    @event = assign(:event, FactoryGirl.create(:event_in_execution_with_applications_in_various_states, :with_status_notification_sent, accepted_application_letters_count: 1))
     @application_letters = @event.application_letters
     @application_letter = @event.application_letters.find{|l| l.status == 'accepted'}
     assign(:has_free_places, @event.compute_free_places > 0)
@@ -310,7 +308,7 @@ RSpec.describe "events/show", type: :view do
   end
 
   it "renders an envelope glyphicon but no cancel button in execution phase for each accepted application with status notification sent flag not set" do
-    @event = assign(:event, FactoryGirl.create(:event_in_execution_with_applications_in_various_states, :with_no_status_notification_sent, :applications_with_profile, accepted_application_letters_count: 1))
+    @event = assign(:event, FactoryGirl.create(:event_in_execution_with_applications_in_various_states, :with_no_status_notification_sent, accepted_application_letters_count: 1))
     @application_letters = @event.application_letters
     @application_letter = @event.application_letters.find{|l| l.status == 'accepted'}
     assign(:has_free_places, @event.compute_free_places > 0)
@@ -321,7 +319,7 @@ RSpec.describe "events/show", type: :view do
   end
 
   it "renders an accept button for alternative applications in execution phase" do
-    @event = assign(:event, FactoryGirl.create(:event_in_execution_with_applications_in_various_states, :applications_with_profile, alternative_application_letters_count: 1))
+    @event = assign(:event, FactoryGirl.create(:event_in_execution_with_applications_in_various_states, alternative_application_letters_count: 1))
     @application_letters = @event.application_letters
     @application_letter = @event.application_letters.find{|l| l.status == 'alternative'}
     assign(:has_free_places, @event.compute_free_places > 0)
@@ -331,11 +329,38 @@ RSpec.describe "events/show", type: :view do
   end
 
   it "doesnt render an accept button for alternative applications in execution phase when there are not enough free places" do
-    @event = assign(:event, FactoryGirl.create(:event_in_execution_with_applications_in_various_states, :applications_with_profile, alternative_application_letters_count: 1))
+    @event = assign(:event, FactoryGirl.create(:event_in_execution_with_applications_in_various_states, alternative_application_letters_count: 1))
     @application_letters = @event.application_letters
     @application_letter = @event.application_letters.find{|l| l.status == 'alternative'}
     assign(:has_free_places, false)
     sign_in(FactoryGirl.create(:user, role: :organizer)) 
+    render
+    expect(rendered).to_not have_link(I18n.t('application_status.actions.accept'), href: update_application_letter_status_path(@application_letter, 'application_letter[status]': :accepted))
+  end
+
+  it "renders an accept button for rejected applications in execution phase when there are no alternative applications" do
+    @event = assign(:event, FactoryGirl.create(:event_in_execution_with_applications_in_various_states, rejected_application_letters_count: 1, alternative_application_letters_count: 0))
+    @application_letters = @event.application_letters
+    @application_letter = @event.application_letters.find{|l| l.status == 'rejected'}
+    assign(:has_free_places, @event.compute_free_places > 0)
+    render
+    expect(rendered).to have_link(I18n.t('application_status.actions.accept'), href: update_application_letter_status_path(@application_letter, 'application_letter[status]': :accepted))
+  end
+
+  it "doesnt render an accept button for rejected applications in execution phase when there are alternative applications" do
+    @event = assign(:event, FactoryGirl.create(:event_in_execution_with_applications_in_various_states,  rejected_application_letters_count: 1, alternative_application_letters_count: 2))
+    @application_letters = @event.application_letters
+    @application_letter = @event.application_letters.find{|l| l.status == 'rejected'}
+    assign(:has_free_places, @event.compute_free_places > 0)
+    render
+    expect(rendered).to_not have_link(I18n.t('application_status.actions.accept'), href: update_application_letter_status_path(@application_letter, 'application_letter[status]': :accepted))
+  end
+
+  it "doesnt render an accept button for rejected applications in execution phase when there are not enough free places" do
+    @event = assign(:event, FactoryGirl.create(:event_in_execution_with_applications_in_various_states, rejected_application_letters_count: 1, alternative_application_letters_count: 0))
+    @application_letters = @event.application_letters
+    @application_letter = @event.application_letters.find{|l| l.status == 'rejected'}
+    assign(:has_free_places, false)
     render
     expect(rendered).to_not have_link(I18n.t('application_status.actions.accept'), href: update_application_letter_status_path(@application_letter, 'application_letter[status]': :accepted))
   end

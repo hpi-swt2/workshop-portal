@@ -18,7 +18,6 @@ RSpec.describe "application_letters/check", type: :view do
 
   before(:context) do
     @application_letter = assign(:application_letter, FactoryGirl.create(:application_letter))
-    @application_letter.user.profile = FactoryGirl.build(:profile)
   end
 
   context "independent of deadline exceeded or not" do

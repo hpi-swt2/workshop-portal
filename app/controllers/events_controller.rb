@@ -126,6 +126,16 @@ class EventsController < ApplicationController
     redirect_to event_path(event)
   end
 
+  # GET /events/1/send-participants-email
+  def send_participants_email
+    authorize! :send_email, Email
+    event = Event.find(params[:id])
+    @email = event.generate_participants_email(params[:all],params[:groups], params[:users])
+    @templates = []
+    @send_generic = true
+    render '/emails/email'
+  end
+
   #POST /events/1/participants/agreement_letters
   # creates either a zip or a pdf containing all agreement letters for all selected participants
   def download_agreement_letters
