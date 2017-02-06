@@ -112,7 +112,6 @@ class EventsController < ApplicationController
   end
 
   def print_applications_eating_habits
-    #authorize! :print_applications_eating_habits, @event
     pdf = ParticipantsPDF.generate(@event)
     send_data pdf, filename: "applications_eating_habits_#{@event.name}_#{Date.today}.pdf", type: "application/pdf", disposition: "inline"
   end
