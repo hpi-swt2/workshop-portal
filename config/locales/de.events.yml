@@ -40,6 +40,11 @@ de:
       table_action: "Aktion"
       download: "Herunterladen"
       download_file_not_found: "Datei wurde nicht gefunden"
+      remove: "Löschen"
+      create_dir: "Unterverzeichnis erstellen"
+      file_moved: "Datei bewegt!"
+      file_removed: "Datei gelöscht!"
+      dir_created: "Ordner erstellt!"
     badges:
       first_name: "Nur Vorname"
       last_name: "Nur Nachname"

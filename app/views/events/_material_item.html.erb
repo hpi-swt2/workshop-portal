@@ -1,0 +1,29 @@
+<li>
+  <strong><%= file[:name] %></strong>
+  <% if file[:type] == 'file' %>
+      <%= form_tag(event_download_material_path(@event)) do %>
+        <%= hidden_field_tag "file", file[:path] %>
+        <%= submit_tag t('events.material_area.download'),
+                       class: 'btn btn-primary btn-xs',
+                       id: "material_upload_btn_#{@event.id}_#{file[:name]}"
+        %>
+      <% end %>
+      <% if can? :upload_material, Event %>
+        <%= form_tag(event_remove_material_path(@event)) do %>
+            <%= hidden_field_tag "path", file[:path] %>
+            <%= submit_tag t('events.material_area.remove'),
+                           class: 'btn btn-primary btn-xs',
+                           id: "material_remove_btn_#{@event.id}_#{file[:name]}"
+            %>
+        <% end %>
+      <% end %>
+  <% else %>
+      (Directory)
+      <button class="btn btn-primary btn-xs" id="<%="material_add_dir_btn_#{@event.id}_#{file[:name]}" %>"><%= t('events.material_area.create_dir') %></button>
+      <ul>
+        <% file[:content].each do |file| %>
+            <%= render( partial: 'material_item', locals: { file: file }) %>
+        <% end %>
+      </ul>
+  <% end %>
+</li>

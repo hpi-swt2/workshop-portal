@@ -104,6 +104,7 @@ class EventsController < ApplicationController
   def participants
     @participants = @event.participants_by_agreement_letter
     @has_agreement_letters = @event.agreement_letters.any?
+    @has_participants = @event.participants.any?
   end
 
   # GET /events/1/print_applications
@@ -193,7 +194,7 @@ class EventsController < ApplicationController
   # POST /events/1/upload_material
   def upload_material
     event = Event.find(params[:event_id])
-    material_path = event.material_path
+    material_path = params[:path] == ''? File.join(event.material_path, params[:path]) : event.material_path
     Dir.mkdir(material_path) unless File.exists?(material_path)
 
     file = params[:file_upload]
@@ -258,6 +259,36 @@ class EventsController < ApplicationController
     send_file file_full_path, :x_sendfile => true
   end
 
+  def move_material
+    event = Event.find(params[:event_id])
+    unless params.has_key?(:from) and params.has_key?(:to)
+      redirect_to event_path(event), alert: I18n.t('events.material_area.no_file_given') and return
+    end
+
+    move_file(event, params[:from], params[:to])
+    redirect_to event_path(event), notice: I18n.t('events.material_area.file_moved')
+  end
+
+  def remove_material
+    event = Event.find(params[:event_id])
+    unless params.has_key?(:path)
+      redirect_to event_path(event), alert: I18n.t('events.material_area.no_file_given') and return
+    end
+
+    remove_file(event, params[:path])
+    redirect_to event_path(event), notice: I18n.t('events.material_area.file_removed')
+  end
+
+  def make_material_folder
+    event = Event.find(params[:event_id])
+    unless params.has_key?(:path) and params.has_key?(:name)
+      redirect_to event_path(event), alert: I18n.t('events.material_area.no_file_given') and return
+    end
+
+    make_dir(event, params[:path], params[:name])
+    redirect_to event_path(event), notice: I18n.t('events.material_area.dir_created')
+  end
+
   private
     def set_event
       @event = Event.find(params[:id])
@@ -297,6 +328,64 @@ class EventsController < ApplicationController
     # @return [Array of Strings]
     def get_material_files(event)
       material_path = event.material_path
-      File.exists?(material_path) ? Dir.glob(File.join(material_path, "*")) : []
+      if File.exists?(material_path)
+        build_files(material_path, '')
+      else
+        []
+      end
+    end
+
+    def build_files(base_path, current_path)
+      list = []
+      path = current_path == '' ? base_path : File.join(base_path, current_path)
+      Dir.foreach(path) do |file|
+        unless file == '.' or file == '..'
+          sub_path = current_path == '' ? file : File.join(current_path, file)
+          hash = {:name => file, :path  => sub_path}
+          if File.directory?(File.join(path, file))
+            hash[:type] = 'dir'
+            hash[:content] = build_files(base_path, sub_path)
+          else
+            hash[:type] = 'file'
+          end
+          list.push hash
+        end
+      end
+      list
+    end
+
+    # Moves one material file to another place
+    #
+    # @param [Event]
+    # @param [String]
+    # @param [String]
+    # @return [None]
+    def move_file(event, fr, to)
+      fr = File.join(event.material_path,fr)
+      to = File.join(event.material_path,to)
+      if File.exists?(fr) and not File.exists?(to)
+        FileUtils.mv(fr,to)
+      end
+    end
+
+    # Removes one material file
+    #
+    # @param [Event]
+    # @param [String]
+    # @return [None]
+    def remove_file(event, path)
+      path = File.join(event.material_path,path)
+      FileUtils.rm(path) if File.exists?(path)
+    end
+
+    # Adds an directory
+    #
+    # @param [Event]
+    # @param [String]
+    # @return [None]
+    def   make_dir(event, path, name)
+      path = File.join(event.material_path, path)
+      full_path = File.join(path, name)
+      Dir.mkdir(full_path) if Dir.exists?(path)
     end
 end
