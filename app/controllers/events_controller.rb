@@ -6,7 +6,7 @@ require 'zip'
 
 class EventsController < ApplicationController
   load_and_authorize_resource
-  skip_authorize_resource :only => [:show,:index,:archive,:upload_material,:badges,:new,:create,:destroy,:accept_all_applicants,:print_applications_eating_habits] 
+  skip_authorize_resource :only => [:show,:index,:archive,:upload_material,:badges,:new,:create,:destroy,:accept_all_applicants,:print_applications_eating_habits,:participants_pdf,:participants] 
 
   before_action :set_event, only: [:show, :edit, :update, :destroy, :participants,
     :participants_pdf, :print_applications, :print_applications_eating_habits, :badges, :print_badges]

@@ -280,6 +280,19 @@ describe "Event", type: :feature do
         expect(page).to have_text("Du bist nicht authorisiert diese Aktion auszuführen.")
     end
 
+    it "should not be possible to visit when logged out" do
+        event = FactoryGirl.create(:event, hidden: false)
+        visit edit_event_path(event)
+        expect(page).to have_text("Du bist nicht authorisiert diese Aktion auszuführen.")
+    end
+  
+    it "should not be possible to visit as coach" do
+        login_as(FactoryGirl.create(:user, role: :coach), :scope => :user)
+        event = FactoryGirl.create(:event, hidden: false)
+        visit edit_event_path(event)
+        expect(page).to have_text("Du bist nicht authorisiert diese Aktion auszuführen.")
+    end
+
     it "should preselect the event kind" do
       login_as(FactoryGirl.create(:user, role: :organizer), :scope => :user)
       event = FactoryGirl.create(:event, hidden: false)
