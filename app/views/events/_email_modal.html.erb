@@ -1,0 +1,53 @@
+<script type="application/javascript">
+  jQuery(function() {
+    var users = jQuery('#users');
+    var groups = jQuery('#groups');
+
+    jQuery('#all').change(function (event) {
+      var method = event.target.checked ? 'select_all' : 'deselect_all';
+      users.multiSelect(method);
+      groups.multiSelect(method);
+    });
+
+    var unable_all_on_deselect = function () {
+      jQuery('#all').attr('checked', false);
+    };
+
+    users.multiSelect({
+      afterDeselect: unable_all_on_deselect
+    });
+    groups.multiSelect({
+      afterDeselect: unable_all_on_deselect
+    });
+  })
+</script>
+<div class="modal fade" id="send_participant_email_modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <%= form_tag(send_participants_email_event_path(@event), method: :get, class:'form') do %>
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title"><%= t('.send_email') %></h4>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <%= label_tag(:all, t('.select_all')) %>
+              <%= check_box_tag(:all, '1', false, class: 'form-control') %>
+            </div>
+            <div class="form-group">
+              <%= label_tag(:users, t('.select_users')) %>
+              <%= select_tag(:users, options_for_select(@event.participants_with_id), class:'form-control', multiple: true) %>
+            </div>
+            <div class="form-group">
+              <%= label_tag(:groups, t('.select_groups')) %>
+              <%= select_tag(:groups, options_for_select(@event.groups_with_id), class:'form-control', multiple: true) %>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal"><%= t('.close_modal') %></button>
+            <%= submit_tag(t('.send_email_label'), class: 'btn btn-default', id:'print_participant_list' ) %>
+          </div>
+        </div><!-- /.modal-content -->
+    <% end %>
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

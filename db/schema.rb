@@ -31,8 +31,6 @@ ActiveRecord::Schema.define(version: 20170203180638) do
     t.datetime "created_at",                                null: false
     t.datetime "updated_at",                                null: false
     t.integer  "status",                    default: 2,     null: false
-    t.integer  "grade"
-    t.string   "coding_skills"
     t.string   "emergency_number"
     t.boolean  "vegetarian"
     t.boolean  "vegan"

@@ -18,7 +18,6 @@ RSpec.describe "application_letters/check", type: :view do
 
   before(:context) do
     @application_letter = assign(:application_letter, FactoryGirl.create(:application_letter))
-    @application_letter.user.profile = FactoryGirl.build(:profile)
   end
 
   context "independent of deadline exceeded or not" do
@@ -33,9 +32,7 @@ RSpec.describe "application_letters/check", type: :view do
 
     it "renders application's attributes" do
       expect(rendered).to have_css('h3', text: I18n.t('application_letters.check.my_application'))
-      expect(rendered).to have_text(@application_letter.grade)
       expect(rendered).to have_text(@application_letter.motivation)
-      expect(rendered).to have_text(@application_letter.coding_skills)
       expect(rendered).to have_text(@application_letter.emergency_number)
       expect(rendered).to have_text(@application_letter.organisation)
       expect(rendered).to have_text(@application_letter.allergies)
@@ -51,7 +48,7 @@ RSpec.describe "application_letters/check", type: :view do
     it "renders applicant's attributes" do
       expect(rendered).to have_css('h3', text: I18n.t('application_letters.check.my_personal_data'))
       expect(rendered).to have_text(@application_letter.user.profile.name)
-      expect(rendered).to have_text(@application_letter.user.profile.gender)
+      expect(rendered).to have_text(I18n.t('profiles.genders.' + @application_letter.user.profile.gender))
       expect(rendered).to have_text(I18n.l(@application_letter.user.profile.birth_date))
       expect(rendered).to have_text(@application_letter.user.profile.address)
     end

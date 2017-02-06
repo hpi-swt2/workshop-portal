@@ -12,6 +12,7 @@ class ApplicationLettersController < ApplicationController
   # GET /applications/1
   def show
     @application_note = ApplicationNote.new
+    @has_free_places = @application_letter.event.compute_free_places > 0
   end
 
   # GET /applications/new
@@ -32,7 +33,7 @@ class ApplicationLettersController < ApplicationController
     last_application_letter = ApplicationLetter.where(user: current_user).order("created_at").last
     if last_application_letter
       attrs_to_fill_in = last_application_letter.attributes
-        .slice("grade", "coding_skills", "emergency_number", "vegetarian", "vegan", "allergies")
+        .slice("emergency_number", "vegetarian", "vegan", "allergies")
       @application_letter.attributes = attrs_to_fill_in
       flash.now[:notice] = I18n.t('application_letters.fields_filled_in')
     end
@@ -110,7 +111,7 @@ class ApplicationLettersController < ApplicationController
 
   # PATCH/PUT /applications/1/status
   def update_status
-    if @application_letter.update_attributes(application_status_param)
+    if @application_letter.update_attributes(application_status_param.merge(status_notification_sent: false))
       if request.xhr?
         render json: {
           free_places: I18n.t('events.applicants_overview.free_places',
@@ -142,7 +143,7 @@ class ApplicationLettersController < ApplicationController
     # Only allow a trusted parameter "white list" through.
     # Don't allow user_id as you shouldn't be able to set the user from outside of create/update.
     def application_params
-      params.require(:application_letter).permit(:grade, :motivation, :coding_skills, :emergency_number, :organisation,
+      params.require(:application_letter).permit(:motivation, :emergency_number, :organisation,
                                                  :vegetarian, :vegan, :allergies, :annotation, :user_id, :event_id)
       .merge({:custom_application_fields => params[:custom_application_fields]})
     end

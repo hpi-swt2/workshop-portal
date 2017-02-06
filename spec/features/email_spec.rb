@@ -40,6 +40,20 @@ describe "Sending emails to applicants", type: :feature do
     expect(Event.find(@event.id).acceptances_have_been_sent).to be(true)
   end
 
+  scenario "logged in as Organizer after sending an acceptance Email to the applicants of an event which has no rejected applications the event application status for sending rejections gets locked" do
+    @event = FactoryGirl.create(:event_with_accepted_applications,
+                                rejected_application_letters_count: 0,
+                                rejections_have_been_sent: false)
+    login(:organizer)
+
+    visit event_email_show_path(@event, status: :acceptance)
+    fill_in :email_subject, with: "Subject"
+    fill_in :email_content, with: "Content"
+    click_button I18n.t('.emails.email_form.send')
+
+    expect(Event.find(@event.id).rejections_have_been_sent).to be(true)
+  end
+
   scenario "logged in as Organizer after sending an rejection Email to the applicants the event application status for sending rejections gets locked" do
     login(:organizer)
     @event.rejections_have_been_sent = false
@@ -90,4 +104,3 @@ describe "Sending emails to applicants", type: :feature do
     login_as(@profile.user, :scope => :user)
   end
 end
-

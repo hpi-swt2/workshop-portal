@@ -39,5 +39,8 @@ RSpec.describe ApplicationLettersController, type: :routing do
       expect(:delete => "/applications/1").to route_to("application_letters#destroy", :id => "1")
     end
 
+    it "routes to #update via PUT" do
+      expect(:put => "/applications/1/status").to route_to("application_letters#update_status", :id => "1")
+    end
   end
 end

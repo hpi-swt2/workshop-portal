@@ -20,24 +20,10 @@ describe ApplicationLetter do
   end
 
   it "can't be created without mandatory fields" do
-    [:grade, :motivation, :coding_skills, :emergency_number, :vegetarian, :vegan, :organisation].each do |attr|
+    [:motivation, :emergency_number, :vegetarian, :vegan, :organisation].each do |attr|
       application = FactoryGirl.build(:application_letter, attr => nil)
       expect(application).to_not be_valid
     end
-  end
-
-  it "does only accept valid grades" do
-    application = FactoryGirl.build(:application_letter, :grade => 8)
-    expect(application).to be_valid
-
-    application = FactoryGirl.build(:application_letter, :grade => "erste")
-    expect(application).to_not be_valid
-
-    application = FactoryGirl.build(:application_letter, :grade => 4)
-    expect(application).to_not be_valid
-
-    application = FactoryGirl.build(:application_letter, :grade => 14)
-    expect(application).to_not be_valid
   end
 
   it "has application_notes" do
@@ -77,7 +63,7 @@ describe ApplicationLetter do
     end
   end
 
-  %i[accepted canceled alternative pending].each do | new_status |
+  %i[canceled alternative pending].each do | new_status |
     it "cannot update the status in execution phase from rejected into #{new_status}" do
       application = FactoryGirl.create(:application_letter_rejected)
       application.event = FactoryGirl.create(:event, :in_execution_phase)
@@ -106,6 +92,27 @@ describe ApplicationLetter do
     end
     application.status = :accepted
     expect(application).to be_valid
+  end
+
+  it "can be promoted to accepted if it was rejected before in execution phase when there are no alternative applications" do
+    application = FactoryGirl.create(:application_letter_rejected)
+    application.event = FactoryGirl.create(:event, :in_execution_phase)
+    %i[alternative canceled pending rejected].each do | new_status |
+      application.status = new_status
+      expect(application).to_not be_valid
+    end
+    application.status = :accepted
+    expect(application).to be_valid
+  end
+
+  it "cannot be promoted to accepted if it was rejected before in execution phase when there are alternative applications" do
+    application = FactoryGirl.create(:application_letter_rejected)
+    application.event = FactoryGirl.create(:event, :in_execution_phase)
+    application.event.application_letters.push(FactoryGirl.create(:application_letter_alternative))
+    %i[alternative canceled pending rejected accepted].each do | new_status |
+      application.status = new_status
+      expect(application).to_not be_valid
+    end
   end
 
   it "can update the status in selection phase" do
@@ -141,8 +148,7 @@ describe ApplicationLetter do
   end
 
   it "calculates the correct age of applicant when event starts" do
-    user = FactoryGirl.build(:user)
-    profile = FactoryGirl.build(:profile, user: user)
+    user = FactoryGirl.build(:user_with_profile)
     application = FactoryGirl.build(:application_letter, user: user)
     application.user.profile.birth_date = application.event.start_date - 18.years
     expect(application.user.profile.age_at_time(application.event.start_date)).to eq(18)
