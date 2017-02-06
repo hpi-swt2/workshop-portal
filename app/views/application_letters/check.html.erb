@@ -18,43 +18,79 @@
 <% end %>
 
 <h3><%= t('.my_application') %></h3>
-<div id='application_details'>
-  <strong><%= ApplicationLetter.human_attribute_name(:motivation) %>:</strong><br/>
-  <%= @application_letter.motivation %><br/>
-  <strong><%= ApplicationLetter.human_attribute_name(:emergency_number) %>:</strong>
-  <%= @application_letter.emergency_number %><br/>
-  <strong><%= ApplicationLetter.human_attribute_name(:organisation) %>:</strong>
-  <%= @application_letter.organisation %><br/>
-
-  <strong><%=t('.eating_habits') %>:</strong>
-  <%= @application_letter.eating_habits.join(', ') %><br/>
-
-  <strong><%= ApplicationLetter.human_attribute_name(:allergies) %>:</strong><br/>
-  <%= @application_letter.allergies %><br/>
-  <strong><%= ApplicationLetter.human_attribute_name(:annotation) %>:</strong><br/>
-  <%= @application_letter.annotation %><br/>
+<table id='application_details' class="table application-details-table">
+  <col width="250">
+  <tr>
+    <th><%= ApplicationLetter.human_attribute_name(:motivation) %>:</th>
+    <td id="application-motivation" data-orig-text="<%= @application_letter.motivation %>">
+      <%= truncate @application_letter.motivation, length: 300 do
+        link_to I18n.t('events.list.read_on'),
+          'javascript:jQuery("#application-motivation")
+            .text(jQuery("#application-motivation")
+              .attr("data-orig-text")); void(0)'
+        end %>
+      </td>
+  </tr>
+</table>
+<hr>
+<table class="application-details-table table">
+  <col width="250">
+  <tr>
+    <th><%= ApplicationLetter.human_attribute_name(:organisation) %>:</th>
+    <td><%= @application_letter.organisation %></td>
+  </tr>
+</table>
+<hr>
+<table class="application-details-table table">
+  <col width="250">
+  <tr>
+    <th><%=t('.eating_habits') %>:</th>
+    <td><%= @application_letter.eating_habits.join(', ') %></td>
+  </tr>
+  <tr>
+    <th><%= ApplicationLetter.human_attribute_name(:allergies) %>:</th>
+    <td><%= @application_letter.allergies %></td>
+  </tr>
+  <tr>
+    <th><%= ApplicationLetter.human_attribute_name(:emergency_number) %>:</th>
+    <td><%= @application_letter.emergency_number %></td>
+  </tr>
+  <tr>
+    <th><%= ApplicationLetter.human_attribute_name(:annotation) %>:</th>
+    <td><%= @application_letter.annotation %></td>
+  </tr>
   <% @application_letter.event.custom_application_fields
     .zip(@application_letter.custom_application_fields)
     .each do |field_name, field_value| %>
-    <strong><%= field_name %>:</strong>
-    <%= field_value %>
-    <br/>
+    <tr>
+      <th><%= field_name %>:</th>
+      <td><%= field_value %></td>
+    </tr>
   <% end %>
-</div>
+</table>
 <% unless @application_deadline_exceeded %>
   <%= link_to t('.edit', :default => t("helpers.links.edit")), edit_application_letter_path(@application_letter), id: 'edit_application_link', class: 'btn btn-default' %>
 <% end %>
 
 <h3><%= t('.my_personal_data') %></h3>
-<div id="applicant_details">
-  <strong><%= Profile.human_attribute_name(:name) %>:</strong>
-  <%= @application_letter.user.profile.name %><br/>
-  <strong><%= Profile.human_attribute_name(:gender) %>:</strong>
-  <%= @application_letter.user.profile.gender %><br/>
-  <strong><%= Profile.human_attribute_name(:birth_date) %>:</strong>
-  <%= l(@application_letter.user.profile.birth_date) %><br/>
-  <strong><%= Profile.human_attribute_name(:address) %>:</strong>
-  <%= @application_letter.user.profile.address %><br/>
-</div>
+<table id="applicant_details" class="application-details-table table">
+  <col width="250">
+  <tr>
+    <th><%= Profile.human_attribute_name(:name) %>:</th>
+    <td><%= @application_letter.user.profile.name %></td>
+  </tr>
+  <tr>
+    <th><%= Profile.human_attribute_name(:gender) %>:</th>
+    <td><%= t "profiles.genders.#{@application_letter.user.profile.gender}"  %></td>
+  </tr>
+  <tr>
+    <th><%= Profile.human_attribute_name(:birth_date) %>:</th>
+    <td><%= l(@application_letter.user.profile.birth_date) %></td>
+  </tr>
+  <tr>
+    <th><%= Profile.human_attribute_name(:address) %>:</th>
+    <td><%= @application_letter.user.profile.address %></td>
+  </tr>
+</table>
 <%= link_to t('.edit', :default => t("helpers.links.edit")),
               edit_profile_path(@application_letter.user.profile), id: 'edit_profile_link', class: 'btn btn-default' %>

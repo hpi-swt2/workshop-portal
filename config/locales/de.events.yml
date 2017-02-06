@@ -117,11 +117,12 @@ de:
       deadline_approaching:
         one: "Bewerbungsfrist in einem Tag"
         other: "Bewerbungsfrist in %{count} Tagen"
+        zero: "Bewerbungsfrist heute"
       time_span_non_consecutive:
         one: "Umfang: Ein Tag mit Unterbrechung"
         other: "Umfang: %{count} Tage mit Unterbrechung"
       time_span_consecutive:
-        one: "Umfang: Ein Tag"
+        one: "Umfang: 1 Tag"
         other: "Umfang: %{count} Tage"
       past_event: "Vergangene Veranstaltung"
       is_published: "Ist veröffentlicht"
@@ -150,7 +151,7 @@ de:
       image_too_small: "Das ausgewählte Bild muss mindestens 200 x 155 Pixel groß sein"
 
     image_upload:
-      upload_local_file: "Lokale Datei hochladen"    
+      upload_local_file: "Lokale Datei hochladen"
 
   activerecord:
       models:
