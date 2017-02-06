@@ -69,6 +69,7 @@ def add_sample_data
     save_models(models)
   end
   
+  # set deadline to past to work around validation of application letters
   events[:past_deadline_event].application_deadline = Date.yesterday
   events[:past_deadline_event].save!
 end
