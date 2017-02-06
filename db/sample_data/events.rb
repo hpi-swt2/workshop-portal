@@ -139,7 +139,6 @@ def event_summer_camp
       knowledge_level: 'Fortgeschrittene',
       date_ranges: [date_range_summer_camp],
       application_deadline: Date.tomorrow,
-      application_status_locked: false,
       hidden: false,
       published: true
 
