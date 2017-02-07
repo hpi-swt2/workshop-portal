@@ -21,7 +21,7 @@ RSpec::Steps.steps "Demo" do
     expect(page).to_not have_text I18n.t('devise.failure.invalid')
     expect(page).to_not have_text I18n.t('devise.failure.not_found_in_database')
     expect(page).to_not have_text I18n.t('devise.failure.locked')
-    expect(page).to have_text I18n.t('start_page.welcome_to')
+    expect(page).to have_text I18n.t('devise.sessions.signed_in')
   end
 
   it 'should let organizer click the new event button' do
