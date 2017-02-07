@@ -30,7 +30,7 @@ def event_mintcamp
       description: 'Wie soll die digitale Zukunft in den Schulen aussehen? In immer mehr Schulen kommen Smartboards zum Einsatz. Diese elektronischen Tafeln haben das Potenzial den Unterricht und das Lernen nachhaltig zu verbessern. Häufig wird das Gerät allerdings auf seinen älteren Verwandten reduziert und nur zum Schreiben, bestenfalls auch für die Medienwiedergabe genutzt. Der Grund dafür sind meist schwer verständliche Programme, die weder die Bedürfnisse der Schüler noch die der Lehrer erfüllen. Dabei sind weitaus interessantere und vor allem sinnvollere Anwendungen für die intelligenten Tafeln denkbar. In diesem MINT-Camp entwickeln wir in kleinen Teams zunächst mit Hilfe von Design Thinking spannende neuartige Ideen für Smartboards. Anschließend werden die Ideen mit Webtechnologien implementiert und können direkt ausprobiert werden. Zum Abschluss hat jedes Team die Möglichkeit seine fertig entwickelte Anwendung zu präsentieren. Dabei stehen euch die ganze Zeit HPI-Studenten zur Seite und helfen euch bei Problemen aller Art. Vorkenntnisse sind keine erforderlich. ',
       max_participants: 25,
       organizer: 'HPI Schülerklub',
-      knowledge_level: 'Fortgeschrittene',
+      knowledge_level: 'keine Vorkenntnisse nötig',
       date_ranges: [date_range_mint_camp],
       application_deadline: Date.tomorrow,
       hidden: false,
@@ -123,5 +123,25 @@ def event_bachlorpodium
       application_deadline: Date.tomorrow,
       hidden: true,
       published: true
+  )
+end
+
+def event_summer_camp
+  date_range_summer_camp = DateRange.create!(
+      start_date: Date.new(2017, 06, 30),
+      end_date: Date.new(2017, 07, 04)
+  )
+
+  Event.new(
+      name: 'Sommer-Camp',
+      description: 'Jeder hat schon einmal eine Projektarbeit alleine oder in einem kleinen Team durchgeführt. Wie geht man jedoch vor, wenn an ein Projekt mit 39 Kolleginnen und Kollegen bearbeitet? Beim Sommercamp lernen die Teilnehmenden dies an einem praktischen Beispiel. Neben der gemeinsamen Lösung von Teilproblemen stehen dabei Themen wie effiziente Aufgabenteilung, effektive Kommunikation und Projektorganisation auf dem Plan. Programmiererfahrungen in einer objektorientierten Sprache sind hilfreich, jedoch nicht nötig. Im Vordergrund steht die Bereitschaft, engagiert zur Teamarbeit beizutragen sowie das Interesse am Lösen algorithmischer Problemstellungen.​ Neben diesen inhaltlichen Schwerpunkten haben die Schüler auch Gelegenheit, das Campusleben am HPI kennen zu lernen, Erfahrungen auszutauschen und neue Kontakte zu knüpfen. Sie werden während des gesamten Camps von Studenten des HPI betreut. **Kosten:** Teilnehmergebühr: 100 EUR Reisekostenanteil: 20 EUR ',
+      max_participants: 25,
+      organizer: 'HPI Schülerklub',
+      knowledge_level: 'Fortgeschrittene',
+      date_ranges: [date_range_summer_camp],
+      application_deadline: Date.tomorrow,
+      hidden: false,
+      published: true
+
   )
 end
