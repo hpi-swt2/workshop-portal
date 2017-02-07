@@ -6,6 +6,7 @@ RSpec.describe "events/show", type: :view do
     @application_letter = FactoryGirl.create(:application_letter, user: FactoryGirl.create(:user_with_profile, role: :organizer), event: @event)
     @application_letters = @event.application_letters
     @material_files = ["spec/testfiles/actual.pdf"]
+    @material_directories = []
     assign(:has_free_places, @event.compute_free_places > 0)
     sign_in(@application_letter.user)
   end

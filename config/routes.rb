@@ -25,6 +25,7 @@ Rails.application.routes.draw do
     post 'upload_material' => 'events#upload_material', as: :upload_material
     post 'download_material' => 'events#download_material', as: :download_material
     post 'remove_material' => 'events#remove_material', as: :remove_material
+    post 'move_material' => 'events#move_material', as: :move_material
     post 'make_material_folder' => 'events#make_material_folder', as: :make_material_folder
     member do
       post 'emails_generic' => 'emails#submit_generic', as: :email_submit_generic

@@ -42,13 +42,19 @@ de:
       download_file_not_found: "Datei wurde nicht gefunden"
       remove: "Löschen"
       create_dir: "Unterverzeichnis erstellen"
+      move: "Verschieben"
       file_moved: "Datei bewegt!"
       file_removed: "Datei gelöscht!"
       dir_created: "Ordner erstellt!"
+      deletion_confirmation: "Wollen sie diesen Ordner wirklich löschen? Sein Inhalt wird ebenfalls gelöscht!"
     material_sub_dir_modal:
       close_modal: "Schließen"
       name: "Ordnername"
       submit: "Neuen Ordner erstellen"
+    material_move_modal:
+      close_modal: "Schließen"
+      to: "Zielordners"
+      submit: "In Zielordner verschieben"
     badges:
       first_name: "Nur Vorname"
       last_name: "Nur Nachname"

@@ -29,6 +29,7 @@ class EventsController < ApplicationController
     @occupied_places = @event.compute_occupied_places
     @application_letters = filter_application_letters(@event.application_letters)
     @material_files = get_material_files(@event)
+    @material_directories = get_material_directory_list(@event)
     @has_free_places = @free_places > 0
   end
 
@@ -254,7 +255,7 @@ class EventsController < ApplicationController
 
     file_full_path = File.join(event.material_path, params[:file])
     unless File.exists?(file_full_path)
-      redirect_to event_path(event), alert: t("events.material_area.download_file_not_found") and return
+      redirect_to event_path(event), alert: t('events.material_area.download_file_not_found') and return
     end
     send_file file_full_path, :x_sendfile => true
   end
@@ -335,6 +336,30 @@ class EventsController < ApplicationController
       end
     end
 
+    def get_material_directory_list(event)
+      material_path = event.material_path
+      if File.exists?(material_path)
+        [['/','']].concat(build_directories(material_path, ''))
+      else
+        [['/','']]
+      end
+    end
+
+    def build_directories(base_path, current_path)
+      list = []
+      path = current_path == '' ? base_path : File.join(base_path, current_path)
+      Dir.foreach(path) do |file|
+        unless file == '.' or file == '..'
+          sub_path = current_path == '' ? file : File.join(current_path, file)
+          if File.directory?(File.join(path, file))
+            list.push(['/' + sub_path, sub_path])
+            list = list.concat(build_directories(base_path, sub_path))
+          end
+        end
+      end
+      list
+    end
+
     def build_files(base_path, current_path)
       list = []
       path = current_path == '' ? base_path : File.join(base_path, current_path)
@@ -345,37 +370,44 @@ class EventsController < ApplicationController
           if File.directory?(File.join(path, file))
             hash[:type] = 'dir'
             hash[:content] = build_files(base_path, sub_path)
+            hash[:empty] = hash[:content].length == 0 ? true : false
           else
             hash[:type] = 'file'
           end
           list.push hash
         end
       end
-      list
+      list.sort { |a,b|
+        if a[:type] == b[:type]
+          a[:name] <=> b[:name]
+        else
+          a[:type] == 'dir' ? -1 : 1
+        end
+      }
     end
 
     # Moves one material file to another place
     #
-    # @param [Event]
-    # @param [String]
-    # @param [String]
+    # @param [Event] The event to update
+    # @param [String] from The path of the file at the moment
+    # @param [String] to The path of the directory to move into (can be /)
     # @return [None]
     def move_file(event, fr, to)
       fr = File.join(event.material_path,fr)
       to = File.join(event.material_path,to)
-      if File.exists?(fr) and not File.exists?(to)
-        FileUtils.mv(fr,to)
+      if File.exists?(fr) and File.exists?(to) and File.directory?(to)
+        FileUtils.mv(fr,File.join(to, File.basename(fr)))
       end
     end
 
     # Removes one material file
     #
-    # @param [Event]
-    # @param [String]
+    # @param [Event] The event to change
+    # @param [String] The path of the file in the event dir to remove
     # @return [None]
     def remove_file(event, path)
       path = File.join(event.material_path,path)
-      FileUtils.rm(path) if File.exists?(path)
+      FileUtils.rm_rf(path) if File.exists?(path)
     end
 
     # Adds an directory
