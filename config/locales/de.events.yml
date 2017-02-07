@@ -45,6 +45,10 @@ de:
       file_moved: "Datei bewegt!"
       file_removed: "Datei gelöscht!"
       dir_created: "Ordner erstellt!"
+    material_sub_dir_modal:
+      close_modal: "Schließen"
+      name: "Ordnername"
+      submit: "Neuen Ordner erstellen"
     badges:
       first_name: "Nur Vorname"
       last_name: "Nur Nachname"

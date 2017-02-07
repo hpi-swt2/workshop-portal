@@ -20,6 +20,14 @@
   <% else %>
       (Directory)
       <button class="btn btn-primary btn-xs" id="<%="material_add_dir_btn_#{@event.id}_#{file[:name]}" %>"><%= t('events.material_area.create_dir') %></button>
+      <script type="application/javascript">
+        $(function(){
+          $("#<%="material_add_dir_btn_#{@event.id}_#{file[:name]}" %>").click(function(){
+            $('#material_sub_dir_path').val("<%= file[:path] %>");
+            $('#material_sub_dir_modal').modal('show');
+          });
+        })
+      </script>
       <ul>
         <% file[:content].each do |file| %>
             <%= render( partial: 'material_item', locals: { file: file }) %>
