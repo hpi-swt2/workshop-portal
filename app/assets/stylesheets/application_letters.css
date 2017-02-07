@@ -30,3 +30,11 @@ ul#eating-habit--list > li {
 	float: left;
 	margin-left: 3px;
 }
+
+.application-details-table.table {
+  table-layout: fixed;
+}
+.application-details-table.table td, .application-details-table.table th {
+  border: none;
+  padding: 5px;
+}

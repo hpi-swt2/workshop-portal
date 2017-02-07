@@ -12,22 +12,20 @@
 #
 FactoryGirl.define do
   factory :application_letter do
-    grade 10
     motivation "None"
-    coding_skills "None"
     emergency_number "01234567891"
     organisation "Schule am Griebnitzsee"
     vegetarian false
     vegan false
     allergies "Many"
-    user
+    association :user, factory: :user_with_profile
     event
     annotation "Some"
     custom_application_fields ["Value 1", "Value 2", "Value 3"]
+    status_notification_sent false
   end
 
   factory :application_letter2, parent: :application_letter do
-    grade 11
     motivation "Ich bin sehr motiviert, glaubt mir."
     emergency_number "110"
     vegetarian true
@@ -47,10 +45,20 @@ FactoryGirl.define do
 
   factory :application_letter_rejected, parent: :application_letter do
     status :rejected
+
+    trait :with_mail_sent do
+      after(:build) do |application|
+        application.status_notification_sent = true
+      end
+    end
   end
 
   factory :application_letter_alternative, parent: :application_letter do
     status :alternative
+  end
+
+  factory :application_letter_canceled, parent: :application_letter do
+    status :canceled
   end
 
   factory :accepted_application_with_agreement_letters, parent: :application_letter do

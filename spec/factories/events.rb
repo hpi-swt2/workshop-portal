@@ -50,6 +50,22 @@ FactoryGirl.define do
       end
     end
 
+    trait :is_only_today do
+      application_deadline Date.today
+
+      after(:build) do |event|
+        event.date_ranges = [FactoryGirl.create(:date_range, start_date: Date.today, end_date: Date.today)]
+      end
+    end
+
+    trait :is_only_tomorrow do
+      application_deadline Date.tomorrow
+
+      after(:build) do |event|
+        event.date_ranges = [FactoryGirl.create(:date_range, start_date: Date.tomorrow, end_date: Date.tomorrow)]
+      end
+    end
+
     trait :single_day do
       after(:build) do |event|
         event.date_ranges = []
@@ -96,8 +112,6 @@ FactoryGirl.define do
     trait :with_diverse_open_applications do
       after(:build) do |event, evaluator|
         create_list(:application_letter, 2, event: event)
-        event.application_letters[0].user.profile = FactoryGirl.build :profile, :high_values, user: event.application_letters[0].user
-        event.application_letters[1].user.profile = FactoryGirl.build :profile, :low_values, user: event.application_letters[1].user
       end
     end
 
@@ -114,11 +128,39 @@ FactoryGirl.define do
       end
     end
 
-    trait :in_selection_phase do
+    trait :in_selection_phase_with_no_mails_sent do
       after(:build) do |event|
         event.published = true
         event.application_deadline = Date.yesterday
-        event.application_status_locked = false
+        event.acceptances_have_been_sent = false
+        event.rejections_have_been_sent = false
+      end
+    end
+
+    trait :in_selection_phase_with_participants_locked do
+      after(:build) do |event|
+        event.published = true
+        event.application_deadline = Date.yesterday
+        event.acceptances_have_been_sent = true
+        event.rejections_have_been_sent = false
+      end
+    end
+
+    trait :in_selection_phase_with_acceptances_sent do
+      after(:build) do |event|
+        event.published = true
+        event.application_deadline = Date.yesterday
+        event.acceptances_have_been_sent = true
+        event.rejections_have_been_sent = false
+      end
+    end
+
+    trait :in_selection_phase_with_rejections_sent do
+      after(:build) do |event|
+        event.published = true
+        event.application_deadline = Date.yesterday
+        event.acceptances_have_been_sent = false
+        event.rejections_have_been_sent = true
       end
     end
 
@@ -126,8 +168,18 @@ FactoryGirl.define do
       after(:build) do |event|
         event.published = true
         event.application_deadline = Date.yesterday
-        event.application_status_locked = true
+        event.acceptances_have_been_sent = true
+        event.rejections_have_been_sent = true
       end
+    end
+
+    trait :with_no_status_notification_sent do
+       after(:create) do |event|
+         event.application_letters.each do |application|
+           application.status_notification_sent = false
+           application.save! if application.changed?
+         end
+       end
     end
 
     factory :event_with_accepted_applications do
@@ -143,7 +195,7 @@ FactoryGirl.define do
       organizer "Workshop-Organizer"
       knowledge_level "Workshop-Knowledge Level"
       application_deadline Date.current
-      
+
       after(:create) do |event, evaluator|
         create_list(:application_letter_accepted, evaluator.accepted_application_letters_count, event: event)
         create_list(:application_letter_rejected, evaluator.rejected_application_letters_count, event: event)
@@ -153,6 +205,77 @@ FactoryGirl.define do
         after(:create) do |event, evaluator|
           create_list(:accepted_application_with_agreement_letters, evaluator.accepted_application_letters_count, event: event)
         end
+      end
+    end
+
+    factory :event_with_applications_in_various_states do
+      name "Event-Name"
+      description "Event-Description"
+      max_participants 20
+      date_ranges { build_list :date_range, 1 }
+      transient do
+        accepted_application_letters_count 5
+        rejected_application_letters_count 5
+        alternative_application_letters_count 2
+        canceled_application_letters_count 1
+        pending_application_letters_count 0
+      end
+      organizer "Workshop-Organizer"
+      knowledge_level "Workshop-Knowledge Level"
+      application_deadline Date.current
+
+      after(:create) do |event, evaluator|
+        create_list(:application_letter_accepted, evaluator.accepted_application_letters_count, event: event)
+        create_list(:application_letter_rejected, evaluator.rejected_application_letters_count, event: event)
+        create_list(:application_letter_alternative, evaluator.alternative_application_letters_count, event: event)
+        create_list(:application_letter_canceled, evaluator.canceled_application_letters_count, event: event)
+        create_list(:application_letter_pending, evaluator.pending_application_letters_count, event: event)
+      end
+
+    end
+
+    factory :event_in_execution_with_applications_in_various_states do
+      name "Event-Name"
+      description "Event-Description"
+      max_participants 20
+      date_ranges { build_list :date_range, 1 }
+      transient do
+        accepted_application_letters_count 1
+        rejected_application_letters_count 1
+        alternative_application_letters_count 1
+        canceled_application_letters_count 1
+      end
+      organizer "Workshop-Organizer"
+      knowledge_level "Workshop-Knowledge Level"
+      application_deadline Date.current
+
+      after(:build) do |event, evaluator|
+        create_list(:application_letter_accepted, evaluator.accepted_application_letters_count, event: event)
+        create_list(:application_letter_rejected, evaluator.rejected_application_letters_count, event: event)
+        create_list(:application_letter_alternative, evaluator.alternative_application_letters_count, event: event)
+        create_list(:application_letter_canceled, evaluator.canceled_application_letters_count, event: event)
+        event.published = true
+        event.application_deadline = Date.yesterday
+        event.acceptances_have_been_sent = true
+        event.rejections_have_been_sent = true
+      end
+
+      trait :with_no_status_notification_sent do
+         after(:create) do |event|
+           event.application_letters.each do |application|
+             application.status_notification_sent = false
+             application.save! if application.changed?
+           end
+         end
+      end
+
+      trait :with_status_notification_sent do
+         after(:create) do |event|
+           event.application_letters.each do |application|
+             application.status_notification_sent = true
+             application.save! if application.changed?
+           end
+         end
       end
 
     end

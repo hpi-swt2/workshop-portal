@@ -1,9 +1,10 @@
 <h3><%= t('.templates') %></h3>
 <div class="list-group">
    <% @templates.each do |template| %>
-    <a href="#" class="list-group-item">
-      <h4 class="list-group-item-heading"><%= template[:subject] %></h4>
-      <p class="list-group-item-text"><%= template[:content] %></p>
+    <a href="" class="email-template list-group-item">
+      <p class="template-hide_recipients hidden"><%= template[:hide_recipients] %></p>
+      <h4 class="template-subject list-group-item-heading"><%= template[:subject] %></h4>
+      <p class="template-content list-group-item-text"><%= template[:content] %></p>
     </a>
   <% end %>
 </div>

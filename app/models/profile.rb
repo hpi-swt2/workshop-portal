@@ -68,6 +68,15 @@ class Profile < ActiveRecord::Base
     [:first_name, :last_name, :gender, :birth_date, :street_name, :zip_code, :city, :state, :country, :discovery_of_site]
   end
 
+
+  # Returns an array containing the allowed methods to sort by
+  #
+  # @param none
+  # @return [Symbol] List of methods
+  def self.allowed_sort_methods
+    Profile.allowed_params + [:address, :name, :age]
+  end
+
   private
   def birthdate_not_in_future
     if birth_date.present? and birth_date > Date.current
