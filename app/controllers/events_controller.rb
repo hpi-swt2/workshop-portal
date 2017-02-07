@@ -195,8 +195,15 @@ class EventsController < ApplicationController
   # POST /events/1/upload_material
   def upload_material
     event = Event.find(params[:event_id])
-    material_path = params[:path] == ''? File.join(event.material_path, params[:path]) : event.material_path
-    Dir.mkdir(material_path) unless File.exists?(material_path)
+    material_path = if params[:path].to_s == ''
+      event.material_path
+    else
+      File.join(event.material_path, params[:path])
+    end
+
+    unless File.directory?(material_path)
+      redirect_to event_path(event), alert: t("events.material_area.invalid_path_given") and return
+    end
 
     file = params[:file_upload]
     unless is_file?(file)
