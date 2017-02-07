@@ -12,12 +12,12 @@ module ApplicantsOverviewHelper
 
   def sort_application_letters
     
-    if params[:sort] && params[:sort] != 'applicant_age_when_event_starts' && params[:sort] != 'eating-habits'
-      @application_letters.sort_by! {|l| l.user.profile.send(params[:sort]) } 
-    end
-
-    if params[:sort] && params[:sort] == 'applicant_age_when_event_starts' && params[:sort] != 'eating-habits'
-      @application_letters.sort_by! {|l| l.send(params[:sort]) } 
+    if params[:sort]
+      unless Profile.allowed_sort_methods.include? params[:sort].to_sym
+        raise CanCan::AccessDenied
+      else
+        @application_letters.sort_by! {|l| l.user.profile.send(params[:sort]) }
+      end
     end
 
     @application_letters.reverse! if params[:order] == 'descending'
