@@ -266,6 +266,10 @@ class EventsController < ApplicationController
       redirect_to event_path(event), alert: I18n.t('events.material_area.no_file_given') and return
     end
 
+    if params[:to].start_with?(params[:from])
+      redirect_to event_path(event), alert: I18n.t('events.material_area.cant_move_in_child') and return
+    end
+
     move_file(event, params[:from], params[:to])
     redirect_to event_path(event), notice: I18n.t('events.material_area.file_moved')
   end
@@ -415,7 +419,7 @@ class EventsController < ApplicationController
     # @param [Event]
     # @param [String]
     # @return [None]
-    def   make_dir(event, path, name)
+    def make_dir(event, path, name)
       path = File.join(event.material_path, path)
       full_path = File.join(path, name)
       Dir.mkdir(full_path) if Dir.exists?(path)

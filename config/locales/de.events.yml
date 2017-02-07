@@ -47,6 +47,7 @@ de:
       file_removed: "Datei gelöscht!"
       dir_created: "Ordner erstellt!"
       deletion_confirmation: "Wollen sie diesen Ordner wirklich löschen? Sein Inhalt wird ebenfalls gelöscht!"
+      cant_move_in_child: "Ein Ordner kann nicht in sich selber oder einen Unterordner verschoben werden!"
     material_sub_dir_modal:
       close_modal: "Schließen"
       name: "Ordnername"
