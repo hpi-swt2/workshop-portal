@@ -1,0 +1,30 @@
+
+<div class="form-group">
+  <%= form.label :image, :class => 'control-label col-lg-2' %>
+  <div class="col-lg-10">
+    <div class="image-buttons" data-toggle="buttons">
+
+      <% if @event.image? %>
+        <label class="btn" style="background-image: url(<%= image_path(@event.image_url(:thumb)) %>)">
+          <input type="radio" name="options" id="option1" autocomplete="off" checked>
+        </label>
+      <% end %>
+
+      <% Dir.glob('app/assets/images/stock_photos/*').each do |image| %>
+        <label class="btn" style="background-image: url(<%= image_path('stock_photos/' + image.split('/').last) %>)">
+          <input type="radio" name="options" id="option1" autocomplete="off" checked>
+        </label>
+      <% end %>
+
+    </div>
+
+    <div class="panel panel-default m-t-1">
+      <div class="panel-body">
+        <strong><p><%= I18n.t 'events.image_upload.upload_local_file' %></p></strong>
+        <%= form.file_field :image %>
+      </div>
+    </div>
+    <%= form.error_span(:image) %>
+  </div>
+</div>
+
