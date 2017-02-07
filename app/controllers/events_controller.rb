@@ -247,15 +247,18 @@ class EventsController < ApplicationController
 
   # POST /events/1/download_material
   def download_material
-    event = Event.find(params[:event_id])
+    @event = Event.find(params[:event_id])
     unless params.has_key?(:file)
-      redirect_to event_path(event), alert: I18n.t('events.material_area.no_file_given') and return
+      redirect_to event_path(@event), alert: I18n.t('events.material_area.no_file_given') and return
     end
-    authorize! :download_material, event
+    authorize! :download_material, @event
 
-    file_full_path = File.join(event.material_path, params[:file])
+    file_full_path = File.join(@event.material_path, params[:file])
     unless File.exists?(file_full_path)
-      redirect_to event_path(event), alert: t('events.material_area.download_file_not_found') and return
+      redirect_to event_path(@event), alert: t('events.material_area.download_file_not_found') and return
+    end
+    if File.directory?(file_full_path)
+      send_zipped_materials(file_full_path) and return
     end
     send_file file_full_path, :x_sendfile => true
   end
@@ -448,5 +451,38 @@ class EventsController < ApplicationController
       path = File.join(event.material_path, path)
       full_path = File.join(path, name)
       Dir.mkdir(full_path) if Dir.exists?(path)
+    end
+
+    def send_zipped_materials(full_path)
+      filename = "material_#{@event.name}_#{Date.today}.zip"
+      temp_file = Tempfile.new(filename)
+      begin
+        Zip::OutputStream.open(temp_file) { |zos| }
+        Zip::File.open(temp_file.path, Zip::File::CREATE) do |zipfile|
+          collect_files_for_zip(full_path, '', zipfile)
+        end
+        zip_data = File.read(temp_file.path)
+        send_data(zip_data, :type => 'application/zip', :filename => filename)
+      ensure
+        temp_file.close
+        temp_file.unlink
+      end
+    end
+
+    def collect_files_for_zip(base_path, current_path, zip)
+      path = current_path == '' ? base_path : File.join(base_path, current_path)
+      if current_path != ''
+        zip.mkdir current_path
+      end
+      Dir.foreach(path) do |file|
+        unless file == '.' or file == '..'
+          sub_path = current_path == '' ? file : File.join(current_path, file)
+          if File.directory?(File.join(path, file))
+            collect_files_for_zip(base_path, sub_path, zip)
+          else
+            zip.add(sub_path, File.join(path, file))
+          end
+        end
+      end
     end
 end
