@@ -266,7 +266,7 @@ class EventsController < ApplicationController
       redirect_to event_path(event), alert: I18n.t('events.material_area.no_file_given') and return
     end
 
-    if params[:to].start_with?(params[:from])
+    if params[:to] == params[:from] or params[:to].start_with?(params[:from] + File::SEPARATOR)
       redirect_to event_path(event), alert: I18n.t('events.material_area.cant_move_in_child') and return
     end
 
