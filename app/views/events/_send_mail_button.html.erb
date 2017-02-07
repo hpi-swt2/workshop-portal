@@ -1,0 +1,6 @@
+<div class="btn-group send-emails-buttons pull-right tooltip-wrapper has-tooltip" role="group" data-toggle="tooltip" title="<%= @event.send_mails_tooltip %>">
+  <%= form_tag event_email_show_path(@event), method: :get do %>
+      <%= hidden_field_tag "status", template_status %>
+      <%= button_tag button_label, class: 'send-emails-button btn btn-default', disabled: @event.send_mails_tooltip.present? %>
+  <% end %>
+</div>

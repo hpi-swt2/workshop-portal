@@ -42,10 +42,18 @@
   <%= @application_letter.motivation %>
 </p>
 <% unless @application_letter.annotation.nil? %>
-<p>
-  <h5><%= t('.annotation_title') %></h5>
-  <%= @application_letter.annotation %>
-</p>
+  <p>
+    <h5><%= t('.annotation_title') %></h5>
+    <%= @application_letter.annotation %>
+  </p>
+<% end %>
+<% @application_letter.event.custom_application_fields
+    .zip(@application_letter.custom_application_fields)
+    .each do |field_name, field_value| %>
+  <p>
+    <h5><%= field_name %>:</h5>
+    <%= field_value %>
+  <p>
 <% end %>
 <br>
 <% if can? :view_and_add_notes, ApplicationLetter  %>
