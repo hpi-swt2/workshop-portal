@@ -5,7 +5,7 @@
   <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10 col-xs-offset-0 col-sm-offset-0 col-md-offset-1 col-lg-offset-1" id="event_material_area">
     <h3><%= t '.title', title: @event.name %></h3>
 
-    <ul>
+    <ul style="list-style-type: none;">
       <% @material_files.each do |file| %>
           <%= render( partial: 'material_item', locals: { file: file }) %>
       <% end %>

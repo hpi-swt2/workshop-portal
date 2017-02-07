@@ -31,7 +31,7 @@
       <% if can? :upload_material, Event %>
         <button class="btn btn-primary btn-xs add-dir-button" data-path="<%= file[:path] %>"><%= t('events.material_area.create_dir') %></button>
       <% end %>
-      <ul>
+      <ul style="list-style-type: none;">
         <% file[:content].each do |file| %>
             <%= render( partial: 'material_item', locals: { file: file }) %>
         <% end %>
