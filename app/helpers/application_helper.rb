@@ -5,11 +5,11 @@ require 'redcarpet/render_strip'
 # except paragraphs
 class MarkdownRenderTruncate < Redcarpet::Render::Base
   def paragraph(text)
-    text + ' '
+    CGI::escapeHTML(text) + ' '
   end
 
   def link(link, title, content)
-    content
+    CGI::escapeHTML(content)
   end
 end
 
@@ -50,7 +50,7 @@ module ApplicationHelper
       autolink: true,
       superscript: true,
       disable_indented_code_blocks: true
-    }).render(strip_tags(text)).html_safe
+    }).render(text).html_safe
   end
 
   def dropdown_items
