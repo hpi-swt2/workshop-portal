@@ -29,8 +29,9 @@ RSpec::Steps.steps "Demo" do
     click_link 'new_event'
   end
 
-  it 'should let organizer fill out event creation page' do
-    #TODO: Add radio button choice
+  it 'should let organizer fill out event creation page', js: true do
+    choose I18n.t "events.type.public"
+    choose I18n.t "events.form.draft.publish"
     fill_in 'event_name', with: 'BwInf-Camp'
     fill_in 'description', with: '[von hpi website geklaut]'
     fill_in 'event_max_participants', with: 25
