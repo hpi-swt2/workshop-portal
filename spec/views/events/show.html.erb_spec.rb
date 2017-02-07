@@ -280,6 +280,18 @@ RSpec.describe "events/show", type: :view do
     expect(rendered).to_not have_button(t(:sending_rejections, scope: 'events.applicants_overview'), disabled: true)
   end
 
+  it "displays correct buttons in execution phase when there are alternatives accepted with no status notification sent" do
+    @event = assign(:event, FactoryGirl.create(:event_in_execution_with_applications_in_various_states, :with_no_status_notification_sent, accepted_application_letters_count: 1))
+    assign(:has_free_places, @event.compute_free_places > 0)
+    sign_in(FactoryGirl.create(:user, role: :organizer))
+    render
+    expect(rendered).to_not have_link(t(:print_all, scope: 'events.applicants_overview'))
+    expect(rendered).to_not have_link(t(:accept_all, scope: 'events.applicants_overview'))
+    expect(rendered).to have_button(t(:sending_acceptances, scope: 'events.applicants_overview'))
+    expect(rendered).to_not have_button(t(:sending_rejections, scope: 'events.applicants_overview'))
+    expect(rendered).to have_link(t(:show_participants, scope: 'events.participants'))
+  end
+
   it "should display particiants button when email were already sent as organizer" do
     @event = assign(:event, FactoryGirl.create(:event, :in_execution_phase))
     assign(:has_free_places, @event.compute_free_places > 0)

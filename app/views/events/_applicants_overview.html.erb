@@ -14,7 +14,7 @@
         <%= sort_caret(Profile.human_attribute_name(:gender), :gender) %>
       </th>
       <th style="max-width: 100px">
-        <%= sort_caret(( t('.age_when_event_starts')), :applicant_age_when_event_starts ) %>
+        <%= sort_caret(( t('.age_when_event_starts')), :age ) %>
       </th>
       <th>
         <%= t '.participations' %> <br>
@@ -62,29 +62,23 @@
         <%= link_to t('.print_all'), print_applications_event_path(@event.to_param), :target => "_blank", :class => 'btn btn-default' %>
       <% end %>
     </div>
-
-    <% if (can? :send_email, Email) && (@event.phase == :selection) %>
-      <% if not @event.acceptances_have_been_sent %>
-      <div class="btn-group send-emails-buttons pull-right tooltip-wrapper has-tooltip" role="group" data-toggle="tooltip" title="<%= @event.send_mails_tooltip %>">
-        <%= form_tag event_email_show_path(@event), method: :get do %>
-          <%= hidden_field_tag "status", "acceptance" %>
-          <%= button_tag t('.sending_acceptances'), class: 'send-emails-button btn btn-default', disabled: @event.send_mails_tooltip.present? %>
+    <% if can? :send_email, Email %>
+      <% if @event.phase == :selection %>
+        <% if not @event.acceptances_have_been_sent %>
+          <%= render partial: 'send_mail_button', locals: {button_label: t('.sending_acceptances'), template_status: "acceptance"} %>
         <% end %>
-      </div>
-      <% end %>
-      <% if not @event.rejections_have_been_sent %>
-      <div class="btn-group send-emails-buttons pull-right tooltip-wrapper has-tooltip" role="group" data-toggle="tooltip" title="<%= @event.send_mails_tooltip %>">
-        <%= form_tag event_email_show_path(@event), method: :get do %>
-          <%= hidden_field_tag "status", "rejection" %>
-          <%= button_tag t('.sending_rejections'), class: 'send-emails-button btn btn-default', disabled: @event.send_mails_tooltip.present? %>
+        <% if not @event.rejections_have_been_sent %>
+              <%= render partial: 'send_mail_button', locals: {button_label: t('.sending_rejections'), template_status: "rejection"} %>
         <% end %>
-      </div>
+      <% elsif (@event.phase == :execution) && @event.has_participants_without_status_notification?(:accepted) %>
+          <%= render partial: 'send_mail_button', locals: {button_label: t('.sending_acceptances'), template_status: "acceptance"} %>
       <% end %>
     <% end %>
 
     <% if (can? :view_participants, Event) && (@event.phase == :execution) %>
       <%= link_to t('events.participants.show_participants'),
-                  event_path(@event) + "/participants" , :class => 'btn btn-primary btn-sm pull-right'  %>
+                  event_path(@event) + "/participants" , :class => 'btn btn-primary pull-right'  %>
+
     <% end %>
   </div>
 </div>
