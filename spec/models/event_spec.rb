@@ -184,45 +184,14 @@ describe Event do
     expect(event.compute_occupied_places).to eq(2)
   end
 
-  it "computes whether there are rejected applications with no status notification sent yet" do
+  it "computes whether there are applications with no status notification sent yet" do
     event = FactoryGirl.create(:event, :in_selection_phase_with_no_mails_sent)
     FactoryGirl.create(:application_letter_accepted, user: FactoryGirl.create(:user), event: event)
-    expect(event.has_rejected_participants_without_status_notification?).to eq(false)
+    expect(event.has_participants_without_status_notification?(:accepted)).to eq(true)
     FactoryGirl.create(:application_letter_rejected, :with_mail_sent, user: FactoryGirl.create(:user), event: event)
-    expect(event.has_rejected_participants_without_status_notification?).to eq(false)
+    expect(event.has_participants_without_status_notification?(:rejected)).to eq(false)
     FactoryGirl.create(:application_letter_rejected, user: FactoryGirl.create(:user), event: event)
-    expect(event.has_rejected_participants_without_status_notification?).to eq(true)
-  end
-
-  it "computes whether there are alternative applications with no status notification sent yet" do
-    event = FactoryGirl.create(:event, :in_selection_phase_with_no_mails_sent)
-    FactoryGirl.create(:application_letter_accepted, user: FactoryGirl.create(:user), event: event)
-    expect(event.has_alternative_participants_without_status_notification?).to eq(false)
-    FactoryGirl.create(:application_letter_alternative, :with_mail_sent, user: FactoryGirl.create(:user), event: event)
-    expect(event.has_alternative_participants_without_status_notification?).to eq(false)
-    FactoryGirl.create(:application_letter_alternative, user: FactoryGirl.create(:user), event: event)
-    expect(event.has_alternative_participants_without_status_notification?).to eq(true)
-  end
-
-  it "computes whether there are rejected or alternative applications with no status notification sent yet" do
-    event = FactoryGirl.create(:event, :in_selection_phase_with_no_mails_sent)
-    FactoryGirl.create(:application_letter_accepted, user: FactoryGirl.create(:user), event: event)
-    FactoryGirl.create(:application_letter_rejected, :with_mail_sent, user: FactoryGirl.create(:user), event: event)
-    FactoryGirl.create(:application_letter_alternative, :with_mail_sent, user: FactoryGirl.create(:user), event: event)
-    expect(event.has_rejected_or_alternative_participants_without_status_notification?).to eq(false)
-
-    event = FactoryGirl.create(:event, :in_selection_phase_with_no_mails_sent)
-    FactoryGirl.create(:application_letter_rejected, user: FactoryGirl.create(:user), event: event)
-    expect(event.has_rejected_or_alternative_participants_without_status_notification?).to eq(true)
-
-    event = FactoryGirl.create(:event, :in_selection_phase_with_no_mails_sent)
-    FactoryGirl.create(:application_letter_alternative, user: FactoryGirl.create(:user), event: event)
-    expect(event.has_rejected_or_alternative_participants_without_status_notification?).to eq(true)
-
-    event = FactoryGirl.create(:event, :in_selection_phase_with_no_mails_sent)
-    FactoryGirl.create(:application_letter_rejected, user: FactoryGirl.create(:user), event: event)
-    FactoryGirl.create(:application_letter_alternative, user: FactoryGirl.create(:user), event: event)
-    expect(event.has_rejected_or_alternative_participants_without_status_notification?).to eq(true)
+    expect(event.has_participants_without_status_notification?(:rejected)).to eq(true)
   end
 
   it "returns all Events running now and in the future" do
