@@ -50,7 +50,7 @@ module ApplicationHelper
       autolink: true,
       superscript: true,
       disable_indented_code_blocks: true
-    }).render(text).html_safe
+    }).render(strip_tags(text)).html_safe
   end
 
   def dropdown_items
