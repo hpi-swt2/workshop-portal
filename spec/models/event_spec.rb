@@ -184,6 +184,16 @@ describe Event do
     expect(event.compute_occupied_places).to eq(2)
   end
 
+  it "computes whether there are rejected applications with no status notification sent yet" do
+    event = FactoryGirl.create(:event, :in_selection_phase_with_no_mails_sent)
+    FactoryGirl.create(:application_letter_accepted, user: FactoryGirl.create(:user), event: event)
+    expect(event.has_rejected_participants_without_status_notification?).to eq(false)
+    FactoryGirl.create(:application_letter_rejected, :with_mail_sent, user: FactoryGirl.create(:user), event: event)
+    expect(event.has_rejected_participants_without_status_notification?).to eq(false)
+    FactoryGirl.create(:application_letter_rejected, user: FactoryGirl.create(:user), event: event)
+    expect(event.has_rejected_participants_without_status_notification?).to eq(true)
+  end
+
   it "returns all Events running now and in the future" do
     event_past = FactoryGirl.create(:event, :in_the_past_valid)
     event_today = FactoryGirl.create(:event, :is_only_today)
@@ -192,6 +202,17 @@ describe Event do
     expect(Event.future).to_not include(event_past)
     expect(Event.future).to include(event_today)
     expect(Event.future).to include(event_future)
+  end
+
+  it "checks whether it has application letters with status alternative" do
+    event = FactoryGirl.build(:event)
+    expect(event.has_alternative_application_letters?).to be false
+
+    event.application_letters.push(FactoryGirl.build(:application_letter_accepted))
+    expect(event.has_alternative_application_letters?).to be false
+
+    event.application_letters.push(FactoryGirl.build(:application_letter_alternative))
+    expect(event.has_alternative_application_letters?).to be true
   end
 
   it "generates an application letter list ordered by first name" do
@@ -290,4 +311,54 @@ describe Event do
       expect(event.participant_selection_locked).to eq(acceptances_sent || rejections_sent)
     end
   end
+
+
+  context "with valid accepted applications" do
+    before :each do
+      @event = FactoryGirl.create(:event)
+      @accepted_application_letter_1 = FactoryGirl.create(:application_letter_accepted, :event => @event)
+      @accepted_application_letter_2 = FactoryGirl.create(:application_letter_accepted, :event => @event)
+      @accepted_application_letter_3 = FactoryGirl.create(:application_letter_accepted, :event => @event)
+      @rejected_application_letter = FactoryGirl.create(:application_letter_rejected, :event => @event)
+    end
+
+    it "computes the email addresses of all participants" do
+      expect(@event.send(:email_addresses_of_participants,true, [], [])).to include(@accepted_application_letter_1.user.email,
+                                                                             @accepted_application_letter_2.user.email,
+                                                                             @accepted_application_letter_3.user.email)
+    end
+
+    it "computes the email addresses of a group" do
+      participant_group1 = FactoryGirl.create(:participant_group, :event => @event,
+                                              :user => @accepted_application_letter_1.user,
+                                              :group => 2)
+      result = @event.send(:email_addresses_of_participants, false, [participant_group1.group], [])
+      expect(result).to include(@accepted_application_letter_1.user.email)
+      expect(result).to_not include(@accepted_application_letter_2.user.email, @accepted_application_letter_3.user.email)
+    end
+
+    it "computes the email addresses of certain participants" do
+      result = @event.send(:email_addresses_of_participants, false, nil, [@accepted_application_letter_1.user.id])
+      expect(result).to include(@accepted_application_letter_1.user.email)
+      expect(result).to_not include(@accepted_application_letter_2.user.email, @accepted_application_letter_3.user.email)
+    end
+
+    it "computes the email addresses of a group and a participant" do
+      participant_group1 = FactoryGirl.create(:participant_group, :event => @event,
+                                              :user => @accepted_application_letter_1.user,
+                                              :group => 2)
+      result = @event.send(:email_addresses_of_participants, false, [participant_group1.group], [@accepted_application_letter_2.user.id])
+      expect(result).to include(@accepted_application_letter_1.user.email, @accepted_application_letter_2.user.email)
+      expect(result).to_not include(@accepted_application_letter_3.user.email)
+    end
+
+    it "computes the name and id of all participants" do
+      expect(@event.participants_with_id).to include(
+          [@accepted_application_letter_1.user.profile.name, @accepted_application_letter_1.user.id],
+          [@accepted_application_letter_2.user.profile.name, @accepted_application_letter_2.user.id],
+          [@accepted_application_letter_3.user.profile.name, @accepted_application_letter_3.user.id],
+        )
+    end
+  end
+
 end

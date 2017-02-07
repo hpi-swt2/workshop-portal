@@ -18,7 +18,7 @@ FactoryGirl.define do
     vegetarian false
     vegan false
     allergies "Many"
-    user
+    association :user, factory: :user_with_profile
     event
     annotation "Some"
     custom_application_fields ["Value 1", "Value 2", "Value 3"]
@@ -45,6 +45,12 @@ FactoryGirl.define do
 
   factory :application_letter_rejected, parent: :application_letter do
     status :rejected
+
+    trait :with_mail_sent do
+      after(:build) do |application|
+        application.status_notification_sent = true
+      end
+    end
   end
 
   factory :application_letter_alternative, parent: :application_letter do
