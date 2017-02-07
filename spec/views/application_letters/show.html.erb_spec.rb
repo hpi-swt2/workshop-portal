@@ -21,11 +21,17 @@ RSpec.describe "application_letters/show", type: :view do
     expect(rendered).to_not have_css("label", text: I18n.t('application_status.canceled'))
   end
 
-  it "renders application's attributes" do
+  it "renders application's attributes, including custom application fields" do
     render
     expect(rendered).to have_text(@application_letter.event.name)
     expect(rendered).to have_text(@application_letter.motivation)
     expect(rendered).to have_text(@application_letter.annotation)
+    @application_letter.event.custom_application_fields.each do |field_name|
+      expect(rendered).to have_text(field_name)
+    end
+    @application_letter.custom_application_fields.each do |field_value|
+      expect(rendered).to have_text(field_value)
+    end
   end
 
   it "renders applicant's attributes" do

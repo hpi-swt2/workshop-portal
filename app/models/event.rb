@@ -319,7 +319,7 @@ class Event < ActiveRecord::Base
   #
   # @return [String] path in the material storage
   def material_path
-    File.join("storage/materials/", self.id.to_s + "_" + self.name)
+    File.join("storage/materials/", self.id.to_s + "_event")
   end
 
   # Make sure we add errors from our date_range children

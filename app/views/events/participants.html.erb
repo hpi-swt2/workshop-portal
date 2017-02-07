@@ -99,7 +99,6 @@
     </table>
 
     <button class="btn btn-default" type="button" data-toggle="modal" data-target="#print_participant_modal" id="open_print_modal"><%= t("events.participants.print_participants") %></button>
-    <button class="btn btn-default" type="button" data-toggle="modal" data-target="#send_participant_email_modal" id="open_email_modal"><%= t("events.participants.send_email") %></button>
 
     <%= form_tag(event_path(@event) + "/participants/agreement_letters", { method: :post, id: 'downloadLettersForm' }) do %>
 
@@ -129,6 +128,7 @@
                   :disabled => @participants.empty?
                    %>
     <% end %>
+    <button class="btn btn-default" type="button" data-toggle="modal" data-target="#send_participant_email_modal" id="open_email_modal"><%= t("events.participants.send_email") %></button>
 
   <script>
   $('.colorselector').colorselector();
