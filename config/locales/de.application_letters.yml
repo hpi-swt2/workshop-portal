@@ -82,24 +82,27 @@ de:
         content_male: |
           Lieber %{first_name} %{last_name},
 
-          du hast dich erfolgreich für die Veranstaltung %{seminar_name} beworben.
+          du hast dich erfolgreich für die Veranstaltung "%{seminar_name}" beworben.
           Deine Bewerbung wird von uns bearbeitet. Für den aktuellen Status deiner Bewerbung
           siehe unter "Meine Veranstaltungen" im Portal (%{event_link}).
 
-          Viele Grüße, das HPI Workshop Team
+          Viele Grüße
+          das HPI Workshop Team
         content_female: |
           Liebe %{first_name} %{last_name},
 
-          du hast dich erfolgreich für die Veranstaltung %{seminar_name} beworben.
+          du hast dich erfolgreich für die Veranstaltung "%{seminar_name}" beworben.
           Deine Bewerbung wird von uns bearbeitet. Für den aktuellen Status deiner Bewerbung
           siehe unter "Meine Veranstaltungen" im Portal (%{event_link}).
 
-          Viele Grüße, das HPI Workshop Team
+          Viele Grüße
+          das HPI Workshop Team
         content_other: |
           Liebe(r) %{first_name} %{last_name},
 
-          du hast dich erfolgreich für die Veranstaltung %{seminar_name} beworben.
+          du hast dich erfolgreich für die Veranstaltung "%{seminar_name}" beworben.
           Deine Bewerbung wird von uns bearbeitet. Für den aktuellen Status deiner Bewerbung
           siehe unter "Meine Veranstaltungen" im Portal (%{event_link}).
 
-          Viele Grüße, das HPI Workshop Team
+          Viele Grüße
+          das HPI Workshop Team
