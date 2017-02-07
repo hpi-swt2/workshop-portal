@@ -3,7 +3,7 @@ require './db/sample_data/users'
 require './db/sample_data'
 
 RSpec::Steps.steps "Demo" do
-  it 'loads the seeds and populate with sample data' do
+  before(:all) do
     Rails.application.load_seed
     add_sample_data
   end
