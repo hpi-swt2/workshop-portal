@@ -17,7 +17,7 @@
     </a>
 
     <p>
-      <%= truncate(markdown(event.description, true), length: Event::TRUNCATE_DESCRIPTION_TEXT_LENGTH) %>
+      <%= truncate(markdown(strip_tags(event.description), true), length: Event::TRUNCATE_DESCRIPTION_TEXT_LENGTH) %>
       <%= link_to " " + I18n.t('events.list.read_on'), event_path(event) %>
 
       <div class="pull-left">
