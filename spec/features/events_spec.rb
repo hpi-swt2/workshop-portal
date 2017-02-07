@@ -244,6 +244,15 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     expect(page).to_not have_link(I18n.t("application_status.actions.accept"), href: update_application_letter_status_path(@application_letter, 'application_letter[status]': :accepted))
   end
 
+  scenario "logged in as Organizer I can send emails to accepted alternatives who got no acceptance mail yet (execution phase)" do
+    login(:organizer)
+    @event = FactoryGirl.create(:event_in_execution_with_applications_in_various_states, :with_no_status_notification_sent, accepted_application_letters_count: 1)
+    @application_letter = @event.application_letters.find { |application| application.status == 'accepted'}
+    visit event_path(@event)
+    expect(page).to have_button(I18n.t('events.applicants_overview.sending_acceptances'))
+    click_button(I18n.t('events.applicants_overview.sending_acceptances'))
+    expect(page).to have_selector("input#email_recipients[value='#{@application_letter.user.email}']")
+  end
 
   scenario "logged in as Organizer I can send acceptance and then rejection emails and by that change the status notification flag" do
     login(:organizer)
