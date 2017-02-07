@@ -26,6 +26,7 @@
   <% end %>
   <% if can? :upload_material, Event %>
       <button class="btn btn-primary btn-xs move-dir-button" data-path="<%= file[:path] %>"><%= t('events.material_area.move') %></button>
+      <button class="btn btn-primary btn-xs rename-dir-button" data-path="<%= file[:path] %>"><%= t('events.material_area.rename') %></button>
   <% end %>
   <% if file[:type] == 'dir' %>
       <% if can? :upload_material, Event %>

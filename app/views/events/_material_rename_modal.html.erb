@@ -1,7 +1,7 @@
-<div class="modal fade" id="material_move_modal" tabindex="-1" role="dialog">
+<div class="modal fade" id="material_rename_modal" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
-    <%= form_tag(event_move_material_path(@event), class:'form') do %>
-        <%= hidden_field_tag "from", "", id: 'material_move_path' %>
+    <%= form_tag(event_rename_material_path(@event), class:'form') do %>
+        <%= hidden_field_tag "from", "", id: 'material_rename_path' %>
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -10,7 +10,7 @@
           <div class="modal-body">
             <div class="form-group">
               <%= label_tag(:to, t('.to')) %>
-              <%= select_tag(:to, options_for_select(@material_directories), class:'form-control') %>
+              <%= text_field_tag(:to, '', class:'form-control') %>
             </div>
           </div>
           <div class="modal-footer">

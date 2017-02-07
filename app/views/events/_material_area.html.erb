@@ -2,6 +2,7 @@
   <a name="material_area"></a>
   <%= render( partial: 'material_sub_dir_modal' ) %>
   <%= render( partial: 'material_move_modal' ) %>
+  <%= render( partial: 'material_rename_modal' ) %>
   <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10 col-xs-offset-0 col-sm-offset-0 col-md-offset-1 col-lg-offset-1" id="event_material_area">
     <h3><%= t '.title', title: @event.name %></h3>
 
@@ -24,8 +25,14 @@
           $('#material_move_modal').modal('show');
         }
 
+        function openRenameModal(){
+          $('#material_rename_path').val($(this).data('path'));
+          $('#material_rename_modal').modal('show');
+        }
+
         $('.move-dir-button').click(openMoveModal);
-        $('.add-dir-button').click(openAddDirModal)
+        $('.add-dir-button').click(openAddDirModal);
+        $('.rename-dir-button').click(openRenameModal);
       });
     </script>
 

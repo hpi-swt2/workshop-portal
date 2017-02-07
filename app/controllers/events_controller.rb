@@ -274,6 +274,17 @@ class EventsController < ApplicationController
     redirect_to event_path(event), notice: I18n.t('events.material_area.file_moved')
   end
 
+  def rename_material
+    event = Event.find(params[:event_id])
+
+    unless params.has_key?(:from) and params.has_key?(:to)
+      redirect_to event_path(event), alert: I18n.t('events.material_area.no_file_given') and return
+    end
+
+    rename_file(event, params[:from], params[:to])
+    redirect_to event_path(event), notice: I18n.t('events.material_area.file_renamed')
+  end
+
   def remove_material
     event = Event.find(params[:event_id])
     unless params.has_key?(:path)
@@ -401,6 +412,20 @@ class EventsController < ApplicationController
       to = File.join(event.material_path,to)
       if File.exists?(fr) and File.exists?(to) and File.directory?(to)
         FileUtils.mv(fr,File.join(to, File.basename(fr)))
+      end
+    end
+
+    # Moves one material file to another place
+    #
+    # @param [Event] The event to update
+    # @param [String] from The path of the file at the moment
+    # @param [String] to The path of the directory to move into (can be /)
+    # @return [None]
+    def rename_file(event, fr, to)
+      fr = File.join(event.material_path,fr)
+      to = File.join(File.dirname(fr),to)
+      if File.exists?(fr) and not File.exists?(to)
+        File.rename(fr,to)
       end
     end
 
