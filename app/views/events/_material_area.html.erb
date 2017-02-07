@@ -36,6 +36,13 @@
       });
     </script>
 
+    <%= form_tag(event_download_material_path(@event), style: 'display: inline;') do %>
+      <%= hidden_field_tag "file", '' %>
+      <%= submit_tag t('.download_all'),
+                     class: 'btn btn-default',
+                     id: "material_download"
+      %>
+    <% end %>
     <% if can? :upload_material, Event %>
       <button class="btn btn-default add-dir-button" data-path=""><%= t('events.material_area.create_dir') %></button>
       <%= form_tag(event_upload_material_path(@event), class: 'btn btn-default', multipart: true) do %>

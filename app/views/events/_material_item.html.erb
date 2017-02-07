@@ -4,31 +4,31 @@
   <% else %>
     <span class="glyphicon glyphicon-folder-open"></span>
   <% end %>
-  <strong><%= file[:name] %></strong>
   <%= form_tag(event_download_material_path(@event), style: 'display: inline;') do %>
     <%= hidden_field_tag "file", file[:path] %>
-    <%= submit_tag t('events.material_area.download'),
-                   class: 'btn btn-primary btn-xs',
+    <%= submit_tag file[:name],
+                   class: 'btn btn-xs btn-link',
                    id: "material_upload_btn_#{@event.id}_#{file[:name]}"
     %>
   <% end %>
   <% if can? :upload_material, Event %>
     <%= form_tag(event_remove_material_path(@event), style: 'display: inline;') do %>
       <%= hidden_field_tag "path", file[:path] %>
-      <%= submit_tag t('events.material_area.remove'),
+      <%= button_tag "<span class=\"glyphicon glyphicon-trash\"></span>".html_safe,
                      class: 'btn btn-primary btn-xs',
                      id: "material_remove_btn_#{@event.id}_#{file[:name]}",
+                     type: 'submit',
                      onclick: file[:type] == 'dir' ? "return confirm('" + t('events.material_area.deletion_confirmation') + "')" : ''
       %>
     <% end %>
   <% end %>
   <% if can? :upload_material, Event %>
-    <button class="btn btn-primary btn-xs move-dir-button" data-path="<%= file[:path] %>"><%= t('events.material_area.move') %></button>
-    <button class="btn btn-primary btn-xs rename-dir-button" data-path="<%= file[:path] %>"><%= t('events.material_area.rename') %></button>
+    <button class="btn btn-primary btn-xs move-dir-button" data-path="<%= file[:path] %>"><span class="glyphicon glyphicon-move"></span></button>
+    <button class="btn btn-primary btn-xs rename-dir-button" data-path="<%= file[:path] %>"><span class="glyphicon glyphicon-pencil"></span></button>
   <% end %>
   <% if file[:type] == 'dir' %>
     <% if can? :upload_material, Event %>
-      <button class="btn btn-primary btn-xs add-dir-button" data-path="<%= file[:path] %>"><%= t('events.material_area.create_dir') %></button>
+      <button class="btn btn-primary btn-xs add-dir-button" data-path="<%= file[:path] %>"><span class="glyphicon glyphicon-folder-open"></span></button>
     <% end %>
     <ul style="list-style-type: none;">
       <% file[:content].each do |file| %>

@@ -43,6 +43,7 @@ de:
       remove: "Löschen"
       create_dir: "Unterverzeichnis erstellen"
       move: "Verschieben"
+      download_all: "Alles herunterladen"
       rename: "Umbenennen"
       file_moved: "Datei bewegt!"
       file_removed: "Datei gelöscht!"

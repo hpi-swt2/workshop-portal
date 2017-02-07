@@ -195,6 +195,10 @@ class EventsController < ApplicationController
   # POST /events/1/upload_material
   def upload_material
     event = Event.find(params[:event_id])
+    unless File.directory?(event.material_path)
+      Dir.mkdir(event.material_path)
+    end
+
     material_path = if params[:path].to_s == ''
       event.material_path
     else
@@ -307,6 +311,10 @@ class EventsController < ApplicationController
 
   def make_material_folder
     event = Event.find(params[:event_id])
+    unless File.directory?(event.material_path)
+      Dir.mkdir(event.material_path)
+    end
+
     unless params.has_key?(:path) and params.has_key?(:name)
       redirect_to event_path(event), alert: I18n.t('events.material_area.no_file_given') and return
     end
@@ -427,8 +435,8 @@ class EventsController < ApplicationController
 
     # Moves one material file to another place
     #
-    # @param [Event] The event to update
-    # @param [String] from The path of the file at the moment
+    # @param [Event] event The event to update
+    # @param [String] fr from The path of the file at the moment
     # @param [String] to The path of the directory to move into (can be /)
     # @return [None]
     def rename_file(event, fr, to)
@@ -441,8 +449,8 @@ class EventsController < ApplicationController
 
     # Removes one material file
     #
-    # @param [Event] The event to change
-    # @param [String] The path of the file in the event dir to remove
+    # @param [Event] event The event to change
+    # @param [String] path The path of the file in the event dir to remove
     # @return [None]
     def remove_file(event, path)
       path = File.join(event.material_path,path)
@@ -451,15 +459,20 @@ class EventsController < ApplicationController
 
     # Adds an directory
     #
-    # @param [Event]
-    # @param [String]
+    # @param [Event] event The event to update
+    # @param [String] path The path where the directory should be added
+    # @param [String] name The name of the new directory
     # @return [None]
     def make_dir(event, path, name)
       path = File.join(event.material_path, path)
       full_path = File.join(path, name)
-      Dir.mkdir(full_path) if Dir.exists?(path)
+      Dir.mkdir(full_path) if (Dir.exists?(path)) && (not File.exists? full_path)
     end
 
+    # Collects all files in the given directory and generates an zip-file.
+    #
+    # @param [String] full_path The full absolute path to look up
+    # @return [None]
     def send_zipped_materials(full_path)
       filename = "material_#{@event.name}_#{Date.today}.zip"
       temp_file = Tempfile.new(filename)
