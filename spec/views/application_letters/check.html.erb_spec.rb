@@ -11,9 +11,7 @@ RSpec.describe "application_letters/check", type: :view do
     render
     expect(rendered).to have_selector("input[type='file']")
     expect(rendered).to have_selector("input[type='submit']")
-    expect(rendered).to have_text("Einverständniserklärung ")
-
-
+    expect(rendered).to have_text("Bitte lade deine Einverständniserklärung für ")
   end
 
   before(:context) do
