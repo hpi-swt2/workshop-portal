@@ -14,7 +14,6 @@
   <% @application_letters.each do |application| %>
       <tr>
         <td><%= link_to application.event.name, event_path(application.event) %></td>
-
         <% if current_user.present? && current_user.role == 'pupil' && application.event.phase == :selection %>
           <td><%= t('application_status.pending_after_deadline') %></td>
         <% else %>
