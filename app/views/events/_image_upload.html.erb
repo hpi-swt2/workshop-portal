@@ -23,6 +23,7 @@
       <div class="panel-body">
         <strong><p><%= I18n.t 'events.image_upload.upload_local_file' %></p></strong>
         <%= form.file_field :custom_image %>
+        <%= form.hidden_field :custom_image_cache %>
         <p class="help-block"><%= t 'events.errors.image_too_small' %></p>
         <%= form.error_span(:custom_image) %>
       </div>

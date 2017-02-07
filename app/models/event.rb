@@ -38,6 +38,16 @@ class Event < ActiveRecord::Base
   validates :published, exclusion: { in: [nil] }
   validate :check_image_dimensions
 
+  after_validation :update_image
+
+  # if we uploaded a custom image, we want it to be synced to the "official"
+  # image slot. only do this if we actually uploaded one and that image is valid
+  def update_image
+    if custom_image.filename.present? and errors[:custom_image].empty?
+      self.image = '/' + custom_image.list_view.store_path
+    end
+  end
+
   # Use the image dimensions as returned from our uploader
   # to verify that the image has sufficient size
   def check_image_dimensions

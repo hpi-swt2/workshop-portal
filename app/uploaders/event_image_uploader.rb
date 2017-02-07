@@ -9,7 +9,7 @@ class EventImageUploader < CarrierWave::Uploader::Base
   # Return the directory that images will be uploaded to
   # @return [String] the path relative to the `public` folder
   def store_dir
-    "uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
+    "uploads/#{model.class.to_s.underscore}/#{mounted_as}"
   end
 
   before :cache, :capture_size_before_cache
