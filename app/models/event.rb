@@ -21,7 +21,7 @@ class Event < ActiveRecord::Base
 
   serialize :custom_application_fields, Array
 
-  mount_uploader :image, EventImageUploader
+  mount_uploader :custom_image, EventImageUploader
 
   has_many :application_letters
   has_many :agreement_letters
@@ -41,7 +41,11 @@ class Event < ActiveRecord::Base
   # Use the image dimensions as returned from our uploader
   # to verify that the image has sufficient size
   def check_image_dimensions
-    errors.add(:image, I18n.t("events.errors.image_too_small")) if image.upload_width.present? && image.upload_height.present? && (image.upload_width < 200 || image.upload_height < 155)
+    if custom_image.upload_width.present? &&
+       custom_image.upload_height.present? &&
+       (custom_image.upload_width < 200 || custom_image.upload_height < 155)
+      errors.add(:custom_image, I18n.t("events.errors.image_too_small"))
+    end
   end
 
 

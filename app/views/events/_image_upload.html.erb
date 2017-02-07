@@ -4,15 +4,16 @@
   <div class="col-lg-10">
     <div class="image-buttons" data-toggle="buttons">
 
-      <% if @event.image? %>
-        <label class="btn" style="background-image: url(<%= image_path(@event.image_url(:thumb)) %>)">
-          <input type="radio" name="options" id="option1" autocomplete="off" checked>
+      <% if @event.custom_image? %>
+        <% val = @event.custom_image_url(:list_view) %>
+        <label class="btn <%= 'active' if val == @event.image %>" style="background-image: url(<%= image_path(@event.custom_image_url(:thumb)) %>)">
+          <%= form.radio_button :image, val, id: path_to_id(val), autocomplete: 'off' %>
         </label>
       <% end %>
 
-      <% Dir.glob('app/assets/images/stock_photos/*').each do |image| %>
-        <label class="btn" style="background-image: url(<%= image_path('stock_photos/' + image.split('/').last) %>)">
-          <input type="radio" name="options" id="option1" autocomplete="off" checked>
+      <% stock_photo_paths.each do |image| %>
+        <label class="btn <%= 'active' if image == @event.image %>" style="background-image: url(<%= image_path(image) %>)">
+          <%= form.radio_button :image, image, id: path_to_id(image), autocomplete: 'off' %>
         </label>
       <% end %>
 
@@ -21,7 +22,9 @@
     <div class="panel panel-default m-t-1">
       <div class="panel-body">
         <strong><p><%= I18n.t 'events.image_upload.upload_local_file' %></p></strong>
-        <%= form.file_field :image %>
+        <%= form.file_field :custom_image %>
+        <p class="help-block"><%= t 'events.errors.image_too_small' %></p>
+        <%= form.error_span(:custom_image) %>
       </div>
     </div>
     <%= form.error_span(:image) %>
