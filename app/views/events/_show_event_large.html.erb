@@ -1,11 +1,17 @@
 <%- model_class = Event -%>
-<div>
-  <div class="pull-right">
+<div class="row">
+  <div class="col-xs-12 col-sm-7 col-md-7 col-lg-7 col-md-offset-1">
+    <h1 class="page-title"><%= @event.name %></h1>
+  </div>
+  <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 text-right">
     <%= render :partial => 'apply_button', :locals => {event: @event} %>
     <%= link_to t('.edit', :default => t('helpers.links.edit')), edit_event_path(@event),
                 :class => 'btn btn-default btn-sm' if can? :edit, @event %>
   </div>
-  <h1><%= @event.name %></h1>
+</div>
+<div class="row">
+  <div class="col-xs-12 col-sm-10 col-md-10 col-lg-10 col-md-offset-1 line-spacer">
+  </div>
 </div>
 <div class="row">
   <div class="col-md-1 col-md-offset-1 text-center col-sm-2">
@@ -16,6 +22,7 @@
   </div>
   <div class="col-md-7 col-sm-10">
     <%= markdown @event.description %>
+    <div class="spacer-60"></div>
   </div>
   <div class="col-md-2 col-sm-offset-2 col-md-offset-0">
     <dl>
@@ -30,7 +37,7 @@
         <dd><%= @event.organizer %></dd>
       <% end %>
       <dt><strong><%= model_class.human_attribute_name(:application_deadline) %>:</strong></dt>
-      <dd> <%= I18n.l(@event.application_deadline) + ' ' + I18n.t('midnight') %></dd>
+      <dd> <%= I18n.l(@event.application_deadline) + ' ' + t('midnight') %></dd>
       <% if can? :manage, Event %>
         <dt><strong><%= model_class.human_attribute_name(:custom_application_fields) %>:</strong></dt>
         <dd>
@@ -42,5 +49,9 @@
         </dd>
       <% end %>
     </dl>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12 col-sm-10 col-md-10 col-lg-10 col-md-offset-1 line-spacer">
   </div>
 </div>
