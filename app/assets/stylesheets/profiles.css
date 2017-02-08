@@ -4,11 +4,11 @@
 */
 
 
-#profile_details dt {
+.profile_details dt {
     width: 200px;
     white-space: normal;
 }
 
-#profile_details dd {
+.profile_details dd {
     margin-left: 220px;
 }
