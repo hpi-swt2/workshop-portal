@@ -525,7 +525,7 @@ class EventsController < ApplicationController
           collect_files_for_zip(full_path, '', zipfile)
         end
         zip_data = File.read(temp_file.path)
-        send_data(zip_data, :type => 'application/zip', :filename => filename)
+        send_data(zip_data, :type => 'application/zip', :filename => filename, :disposition => 'inline', :x_sendfile => true)
       ensure
         temp_file.close
         temp_file.unlink

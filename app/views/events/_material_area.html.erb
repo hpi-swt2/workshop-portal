@@ -19,7 +19,7 @@
             %>
         <% end %>
         <% if can? :upload_material, Event %>
-          <button class="btn btn-primary btn-xs add-dir-button" data-path=""><span class="glyphicon glyphicon-folder-open"></span></button>
+          <button class="btn btn-primary btn-xs add-dir-button" data-path="" id="root-dir-btn"><span class="glyphicon glyphicon-folder-open"></span></button>
         <% end %>
         <ul style="list-style-type: none;">
           <% @material_files.each do |file| %>
