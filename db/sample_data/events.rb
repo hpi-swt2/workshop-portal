@@ -154,7 +154,7 @@ def event_summer_camp
         Sie werden während des gesamten Camps von Studenten des HPI betreut.
         **Kosten:** Teilnehmergebühr: 100 EUR
         Reisekostenanteil: 20 EUR ',
-      max_participants: 25,
+      max_participants: 3,
       organizer: 'HPI Schülerklub',
       knowledge_level: 'Fortgeschrittene',
       date_ranges: [date_range_summer_camp],

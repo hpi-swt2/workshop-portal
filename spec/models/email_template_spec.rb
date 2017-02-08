@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: email_templates
+# Table name: email_templates.rb
 #
 #  id               :integer          not null, primary key
 #  status           :integer(enum)    not null

@@ -63,7 +63,7 @@ ActiveRecord::Schema.define(version: 20170203180638) do
 
   add_index "date_ranges", ["event_id"], name: "index_date_ranges_on_event_id"
 
-  create_table "email_templates", force: :cascade do |t|
+  create_table "email_templates.rb", force: :cascade do |t|
     t.integer "status"
     t.string  "subject"
     t.text    "content"

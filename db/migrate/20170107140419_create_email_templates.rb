@@ -1,6 +1,6 @@
 class CreateEmailTemplates < ActiveRecord::Migration
   def change
-    create_table :email_templates do |t|
+    create_table :'email_templates.rb' do |t|
       t.integer :status
       t.string :subject
       t.text :content
