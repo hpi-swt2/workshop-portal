@@ -344,6 +344,9 @@ RSpec.describe EventsController, type: :controller do
     it "does nothing when renaming to the same name" do
       mock_writing_to_filesystem do
         upload_file
+        rename(file.original_filename, file.original_filename)
+        expect(response).to redirect_to :action => :show, :id => @event.id
+        expect(File.exists?(File.join(@event.material_path, file.original_filename)))
       end
     end
 
