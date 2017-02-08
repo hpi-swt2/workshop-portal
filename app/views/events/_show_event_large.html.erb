@@ -5,7 +5,7 @@
     <%= link_to t('.edit', :default => t('helpers.links.edit')), edit_event_path(@event),
                 :class => 'btn btn-default btn-sm' if can? :edit, @event %>
   </div>
-  <h1><%= @event.name %></h1>
+  <h1 class="event-title"><%= @event.name %></h1>
 </div>
 <div class="row">
   <div class="col-md-1 col-md-offset-1 text-center col-sm-2">
