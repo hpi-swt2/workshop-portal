@@ -14,7 +14,11 @@
   <% @application_letters.each do |application| %>
       <tr>
         <td><%= link_to application.event.name, event_path(application.event) %></td>
-        <td><%= application.status_type %></td>
+        <% if current_user.present? && current_user.role == 'pupil' && application.event.phase == :selection %>
+          <td><%= t('application_status.pending_after_deadline') %></td>
+        <% else %>
+          <td><%= application.status_type %></td>
+        <% end %>
         <td>
         <%= link_to t('.details'),
                       check_application_letter_path(application), :class => 'btn btn-default btn-xs' %>

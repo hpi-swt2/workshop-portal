@@ -67,6 +67,7 @@ RSpec.feature "Application Letter Overview", :type => :feature do
     end
 
     check_filled_field.call(:emergency_number)
+    check_filled_field.call(:organisation)
     check_filled_field.call(:allergies)
     check_checked_checkbox.call(:vegetarian)
     check_checked_checkbox.call(:vegan)
