@@ -60,4 +60,12 @@
 	background:#869791
 }
 
+.owl-prev, .owl-next {
+	display: inline;
+	font-size: 40px;
+	margin-right: 30px;
+	font-style: none;
+	font-weight: 100;
+}
+
  
