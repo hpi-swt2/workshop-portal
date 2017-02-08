@@ -20,7 +20,7 @@ class ApplicationController < ActionController::Base
     #       other solution
 
     @events = Event.sorted_by_start_date(true)
-      .select { |a| a.start_date > Time.now.yesterday }
+      .select { |a| a.start_date > Time.zone.now.yesterday }
       .first(3)
     render 'index', locals: { full_width: true }
   end
