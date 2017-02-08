@@ -2,13 +2,17 @@ require 'rails_helper'
 
 RSpec.describe "application_letters/check", type: :view do
 
+  before(:each) do
+    @application_letter = assign(:application_letter, FactoryGirl.create(:application_letter))
+  end
+
   it "should show an upload form for an agreement letter for profiles with an age of <18 and accepted application" do
     @user = FactoryGirl.create(:user)
+    @user.profile = FactoryGirl.create(:profile, user: @user)
     event = FactoryGirl.create(:event)
-    @application_letter = FactoryGirl.create(:application_letter_accepted, user: @user, event: event)
-    @application_letter.user.profile = FactoryGirl.build(:profile)
+    @application_letter = FactoryGirl.create(:application_letter, status: :accepted, user: @user, event: event)
+    assign(:application_letter, @application_letter)
     render
-    expect(@application_letter.accepted?).to eq(true)
     expect(rendered).to have_selector("input[type='file']")
     expect(rendered).to have_selector("input[type='submit']")
     expect(rendered).to have_text(I18n.t('agreement_letters.agreement_letter'))
@@ -16,18 +20,15 @@ RSpec.describe "application_letters/check", type: :view do
 
   it "should not show an upload form for an agreement letter without accepted application" do
     @user = FactoryGirl.create(:user)
+    @user.profile = FactoryGirl.create(:profile, user: @user)
     event = FactoryGirl.create(:event)
     @application_letter = FactoryGirl.create(:application_letter, user: @user, event: event)
-    @application_letter.user.profile = FactoryGirl.build(:profile)
+    assign(:application_letter, @application_letter)
     render
     expect(rendered).not_to have_selector("input[type='file']")
     expect(rendered).not_to have_selector("input[type='submit']")
     expect(rendered).not_to have_text(I18n.t('agreement_letters.agreement_letter'))
   end  
-
-  before(:context) do
-    @application_letter = assign(:application_letter, FactoryGirl.create(:application_letter))
-  end
 
   context "independent of deadline exceeded or not" do
     before(:each) do

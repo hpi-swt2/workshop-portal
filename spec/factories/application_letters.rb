@@ -17,6 +17,7 @@ FactoryGirl.define do
     organisation "Schule am Griebnitzsee"
     vegetarian false
     vegan false
+    status :pending
     allergies "Many"
     association :user, factory: :user_with_profile
     event
