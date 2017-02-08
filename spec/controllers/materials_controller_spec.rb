@@ -56,6 +56,17 @@ RSpec.describe EventsController, type: :controller do
       end
     end
 
+    it "creates the material_directory if not already present" do
+      mock_writing_to_filesystem do
+        FileUtils.rm_rf(@event.material_path) if File.exists?(@event.material_path)
+        upload_file
+        expect(response).to redirect_to :action => :show, :id => @event.id
+        expect(Dir.exists?(@event.material_path))
+        expect(File.exists?(File.join(@event.material_path, file.original_filename)))
+        expect(flash[:notice]).to match(I18n.t(:success_message, scope: 'events.material_area'))
+      end
+    end
+
     it "shows error if no file was given" do
       mock_writing_to_filesystem do
         post :upload_material, event_id: @event.to_param
@@ -92,6 +103,18 @@ RSpec.describe EventsController, type: :controller do
         mkdir(dirname)
         expect(response).to redirect_to :action => :show, :id => @event.id
         expect(Dir.exists?(File.join(@event.material_path, dirname)))
+        expect(flash[:notice]).to match(I18n.t(:dir_created, scope: 'events.material_area'))
+      end
+    end
+
+    it "creates the material_directory if not already present" do
+      mock_writing_to_filesystem do
+        FileUtils.rm_rf(@event.material_path) if File.exists?(@event.material_path)
+        subdir = "subdir"
+        mkdir(subdir)
+        expect(response).to redirect_to :action => :show, :id => @event.id
+        expect(Dir.exists?(@event.material_path))
+        expect(Dir.exists?(File.join(@event.material_path, subdir)))
         expect(flash[:notice]).to match(I18n.t(:dir_created, scope: 'events.material_area'))
       end
     end
