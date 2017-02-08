@@ -81,7 +81,6 @@ GEM
     codeclimate-test-reporter (1.0.3)
       simplecov
     coderay (1.1.1)
-    color (1.8)
     combine_pdf (0.2.32)
       ruby-rc4 (>= 0.1.5)
     commonjs (0.2.7)
@@ -117,8 +116,6 @@ GEM
       railties (>= 3.0.0)
     figaro (1.1.1)
       thor (~> 0.14)
-    geo_pattern (1.4.0)
-      color (~> 1.5)
     globalid (0.3.7)
       activesupport (>= 4.1.0)
     has_scope (0.7.0)
@@ -334,7 +331,6 @@ DEPENDENCIES
   devise_openid_authenticatable
   factory_girl_rails
   figaro
-  geo_pattern
   has_scope
   icalendar
   jquery-rails
