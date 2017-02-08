@@ -34,6 +34,7 @@ de:
       upload: "Datei hochladen"
       success_message: "Datei erfolgreich hochgeladen"
       no_file_given: "Keine Datei angegeben"
+      invalid_path_given: "Dateipfade dürfen nicht mit / beginnen oder mehrere Punkte enthalten oder leer sein. "
       saving_fails: "Datei konnte nicht gespeichert werden"
       table_name: "Dateiname"
       table_type: "Dateityp"

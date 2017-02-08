@@ -206,7 +206,7 @@ class EventsController < ApplicationController
     end
 
     unless File.directory?(material_path)
-      redirect_to event_path(event), alert: t("events.material_area.invalid_path_given") and return
+      redirect_to event_path(event), alert: t("events.material_area.download_file_not_found") and return
     end
 
     file = params[:file_upload]
@@ -262,6 +262,9 @@ class EventsController < ApplicationController
     unless params.has_key?(:file)
       redirect_to event_path(@event), alert: I18n.t('events.material_area.no_file_given') and return
     end
+    if invalid_pathname? params[:file]
+      redirect_to event_path(@event), alert: I18n.t('events.material_area.invalid_path_given') and return
+    end
     authorize! :download_material, @event
 
     file_full_path = File.join(@event.material_path, params[:file])
@@ -279,6 +282,9 @@ class EventsController < ApplicationController
     unless params.has_key?(:from) and params.has_key?(:to)
       redirect_to event_path(event), alert: I18n.t('events.material_area.no_file_given') and return
     end
+    if invalid_pathname?(params[:from]) || invalid_pathname?(params[:to])
+      redirect_to event_path(event), alert: I18n.t('events.material_area.invalid_path_given') and return
+    end
 
     if params[:to] == params[:from] or params[:to].start_with?(params[:from] + File::SEPARATOR)
       redirect_to event_path(event), alert: I18n.t('events.material_area.cant_move_in_child') and return
@@ -294,6 +300,9 @@ class EventsController < ApplicationController
     unless params.has_key?(:from) and params.has_key?(:to)
       redirect_to event_path(event), alert: I18n.t('events.material_area.no_file_given') and return
     end
+    if invalid_pathname?(params[:from]) || invalid_filename?(params[:to])
+      redirect_to event_path(event), alert: I18n.t('events.material_area.invalid_path_given') and return
+    end
 
     rename_file(event, params[:from], params[:to])
     redirect_to event_path(event), notice: I18n.t('events.material_area.file_renamed')
@@ -303,6 +312,9 @@ class EventsController < ApplicationController
     event = Event.find(params[:event_id])
     unless params.has_key?(:path)
       redirect_to event_path(event), alert: I18n.t('events.material_area.no_file_given') and return
+    end
+    if invalid_pathname?(params[:path])
+      redirect_to event_path(event), alert: I18n.t('events.material_area.invalid_path_given') and return
     end
 
     remove_file(event, params[:path])
@@ -317,6 +329,9 @@ class EventsController < ApplicationController
 
     unless params.has_key?(:path) and params.has_key?(:name)
       redirect_to event_path(event), alert: I18n.t('events.material_area.no_file_given') and return
+    end
+    if invalid_pathname?(params[:path]) || invalid_filename?(params[:name])
+      redirect_to event_path(event), alert: I18n.t('events.material_area.invalid_path_given') and return
     end
 
     make_dir(event, params[:path], params[:name])
@@ -504,5 +519,17 @@ class EventsController < ApplicationController
           end
         end
       end
+    end
+
+    def invalid_pathname?(pathname)
+      (Pathname(pathname).absolute?) || (contains_invalid_chars(pathname))
+    end
+
+    def invalid_filename?(pathname)
+      (['/','\\'].any? { |s| pathname.include?(s) }) || (pathname == '.') || (pathname == '') || (contains_invalid_chars(pathname))
+    end
+
+    def contains_invalid_chars(pathname)
+      ([':','*','?','|','"','<','>'].any? { |s| pathname.include?(s) }) || (/^\S*\.\.+\S*$/.match(pathname) != nil)
     end
 end

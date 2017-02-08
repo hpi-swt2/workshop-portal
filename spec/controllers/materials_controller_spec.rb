@@ -49,7 +49,7 @@ RSpec.describe EventsController, type: :controller do
         upload_file(path: not_a_directory)
         expect(response).to redirect_to :action => :show, :id => @event.id
         expect(File.exists?(File.join(@event.material_path, not_a_directory, file.original_filename))).to be false
-        expect(flash[:alert]).to match(I18n.t(:invalid_path_given, scope: 'events.material_area'))
+        expect(flash[:alert]).to match(I18n.t(:download_file_not_found, scope: 'events.material_area'))
       end
     end
 
@@ -71,7 +71,6 @@ RSpec.describe EventsController, type: :controller do
     end
 
     it "sanitizes filenames" do
-      pending "TODO: Sanitizing"
       mock_writing_to_filesystem do
         dangerous_name = "../hacked_you.lol"
         allow_any_instance_of(Rack::Test::UploadedFile).to receive(:original_filename).and_return(dangerous_name)
@@ -95,7 +94,6 @@ RSpec.describe EventsController, type: :controller do
     end
 
     it "sanitizes directory names" do
-      pending "TODO: Sanitizing"
       mock_writing_to_filesystem do
         dangerous_name = "../hacked_you.lol"
         mkdir(dangerous_name)
@@ -106,14 +104,12 @@ RSpec.describe EventsController, type: :controller do
     end
 
     it "sanitizes path names" do
-      pending "TODO: Sanitizing"
       mock_writing_to_filesystem do
         name = "subdir"
         dangerous_path = "../hacked_you.lol"
         mkdir(name, dangerous_path)
         expect(response).to redirect_to :action => :show, :id => @event.id
-        expect(File.exists?(File.join(@event.material_path, dangerous_path, name))).to be false
-        expect(flash[:notice]).to match(I18n.t(:success_message, scope: 'events.material_area'))
+        expect(flash[:notice]).to match(I18n.t(:invalid_path_given, scope: 'events.material_area'))
       end
     end
 
@@ -168,7 +164,6 @@ RSpec.describe EventsController, type: :controller do
     end
 
     it "sanitizes path names" do
-      pending "TODO: Write decent test"
       mock_writing_to_filesystem do
         dangerous_path = "../your_root_directory"
         post :remove_material, event_id: @event.to_param, path: dangerous_path
@@ -183,7 +178,7 @@ RSpec.describe EventsController, type: :controller do
         path = "photo_of_my_girlfriend.jpg"
         post :remove_material, event_id: @event.to_param, path: path
         expect(response).to redirect_to :action => :show, :id => @event.id
-        expect(flash[:alert]).to match(I18n.t(:invalid_path_given, scope: 'events.material_area'))
+        expect(flash[:alert]).to match(I18n.t(:download_file_not_found, scope: 'events.material_area'))
       end
     end
   end
