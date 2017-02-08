@@ -99,7 +99,7 @@ RSpec.describe EventsController, type: :controller do
         mkdir(dangerous_name)
         expect(response).to redirect_to :action => :show, :id => @event.id
         expect(File.exists?(File.join(@event.material_path, dangerous_name))).to be false
-        expect(flash[:notice]).to match(I18n.t(:success_message, scope: 'events.material_area'))
+        expect(flash[:alert]).to match(I18n.t(:invalid_path_given, scope: 'events.material_area'))
       end
     end
 
@@ -107,9 +107,9 @@ RSpec.describe EventsController, type: :controller do
       mock_writing_to_filesystem do
         name = "subdir"
         dangerous_path = "../hacked_you.lol"
-        mkdir(name, dangerous_path)
+        mkdir(name, path: dangerous_path)
         expect(response).to redirect_to :action => :show, :id => @event.id
-        expect(flash[:notice]).to match(I18n.t(:invalid_path_given, scope: 'events.material_area'))
+        expect(flash[:alert]).to match(I18n.t(:invalid_path_given, scope: 'events.material_area'))
       end
     end
 
@@ -407,7 +407,7 @@ RSpec.describe EventsController, type: :controller do
   end
 
   def mkdir(name, options = {})
-    path = options[:path] ? File.join(@event.material_path, options[:path]) : ""
+    path = options[:path] ? options[:path] : ""
     post :make_material_folder, event_id: @event.to_param, path: path, name: name
   end
 end
