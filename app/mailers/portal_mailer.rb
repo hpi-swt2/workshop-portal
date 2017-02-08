@@ -11,7 +11,7 @@ class PortalMailer < ApplicationMailer
     attached_files.each do | attachment |
       attachments[attachment[:name]] = attachment[:content]
     end
-    mail(to: recipients, from: reply_to, reply_to: reply_to, subject: subject) do | format |
+    mail(to: recipients, reply_to: reply_to, subject: subject) do | format |
       format.html { markdown content }
       format.text { content }
     end
