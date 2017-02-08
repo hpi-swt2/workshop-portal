@@ -7,7 +7,6 @@
   </div>
   <h1><%= @event.name %></h1>
 </div>
-<div id="wsp-event-show-banner" style="background-image: <%= geopattern(@event.name).to_data_uri %>"></div>
 <div class="row">
   <div class="col-md-1 col-md-offset-1 text-center col-sm-2">
     <%= render "event_date_large", event: @event %>

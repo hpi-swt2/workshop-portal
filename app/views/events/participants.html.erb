@@ -41,7 +41,7 @@
           <%= participant.email %>
         </td>
         <td>
-          <% if participant.requires_agreement_letter_for_event?(@event) %>
+          <% if not participant.requires_agreement_letter_for_event?(@event) %>
             <span class="text-muted"> <%= t '.unnecessary' %> </span>
           <% elsif participant.agreement_letter_for_event?(@event) %>
             <span class="text-success" title="<%= participant.agreement_letter_for_event(@event).updated_at %>"> <%= t '.available' %> </span>

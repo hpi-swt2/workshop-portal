@@ -219,6 +219,9 @@ a:hover h1, a:hover h2, a:hover h3, a:hover h4 {
 input.form-control {
     font-family: @font-family-serif;
 }
+.control-label {
+    word-wrap: break-word;
+}
 
 
 .event-date {
@@ -231,4 +234,16 @@ input.form-control {
 	}
 }
 
-@import "custom_bootstrap/multi-select.css";
+
+@import "multi-select.css";
+
+.image-buttons .btn {
+    height: 100px;
+    width: 100px;
+    background-size: cover;
+    background-position: center;
+    border: 3px solid @body-bg;
+}
+.image-buttons .btn.active {
+    border: 3px solid @brand-primary;
+}

@@ -77,7 +77,7 @@ class User < ActiveRecord::Base
   # @param none
   # @return [Array<Event>]
   def events_with_missing_agreement_letters
-    events.select{ |e| (AgreementLetter.where(user_id: self.id, event_id: e.id).blank? and not requires_agreement_letter_for_event?(e))}
+    events.select{ |e| (AgreementLetter.where(user_id: self.id, event_id: e.id).blank? and requires_agreement_letter_for_event?(e))}
   end
 
   # Returns true iff. user has submitted an agreement_letter for the given event
@@ -101,7 +101,7 @@ class User < ActiveRecord::Base
   # @param [Event] given_event
   # @return [Boolean]
   def requires_agreement_letter_for_event?(given_event)
-    return self.older_than_required_age_at_start_date_of_event?(given_event, 18)
+    return (not self.older_than_required_age_at_start_date_of_event?(given_event, 18))
   end
 
   # Returns true iff. the age of user is age or more at the start_date of given_event. Returns false if age of user is unknown.

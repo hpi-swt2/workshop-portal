@@ -1,0 +1,34 @@
+
+<div class="form-group">
+  <%= form.label :image, :class => 'control-label col-lg-2' %>
+  <div class="col-lg-10">
+    <div class="image-buttons" data-toggle="buttons">
+
+      <% if @event.custom_image? %>
+        <% val = @event.custom_image_url(:list_view) %>
+        <label class="btn <%= 'active' if val == @event.image %>" style="background-image: url(<%= image_path(@event.custom_image_url(:thumb)) %>)">
+          <%= form.radio_button :image, val, id: path_to_id(val), autocomplete: 'off' %>
+        </label>
+      <% end %>
+
+      <% stock_photo_paths.each do |image| %>
+        <label class="btn <%= 'active' if image == @event.image %>" style="background-image: url(<%= image_path(image) %>)">
+          <%= form.radio_button :image, image, id: path_to_id(image), autocomplete: 'off' %>
+        </label>
+      <% end %>
+
+    </div>
+
+    <div class="panel panel-default m-t-1">
+      <div class="panel-body">
+        <strong><p><%= I18n.t 'events.image_upload.upload_local_file' %></p></strong>
+        <%= form.file_field :custom_image %>
+        <%= form.hidden_field :custom_image_cache %>
+        <p class="help-block"><%= t 'events.errors.image_too_small' %></p>
+        <%= form.error_span(:custom_image) %>
+      </div>
+    </div>
+    <%= form.error_span(:image) %>
+  </div>
+</div>
+
