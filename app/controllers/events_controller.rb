@@ -264,13 +264,14 @@ class EventsController < ApplicationController
   # POST /events/1/download_material
   def download_material
     @event = Event.find(params[:event_id])
+    authorize! :download_material, @event
+
     unless params.has_key?(:file)
       redirect_to event_path(@event), alert: I18n.t('events.material_area.no_file_given') and return
     end
     if invalid_pathname? params[:file]
       redirect_to event_path(@event), alert: I18n.t('events.material_area.invalid_path_given') and return
     end
-    authorize! :download_material, @event
 
     file_full_path = File.join(@event.material_path, params[:file])
     unless File.exists?(file_full_path)
@@ -285,6 +286,7 @@ class EventsController < ApplicationController
   def move_material
     event = Event.find(params[:event_id])
     authorize! :upload_material, event
+
     unless params.has_key?(:from) and params.has_key?(:to)
       redirect_to event_path(event), alert: I18n.t('events.material_area.no_file_given') and return
     end
@@ -335,13 +337,13 @@ class EventsController < ApplicationController
   def remove_material
     event = Event.find(params[:event_id])
     authorize! :upload_material, event
+
     unless params.has_key?(:path)
       redirect_to event_path(event), alert: I18n.t('events.material_area.no_file_given') and return
     end
     if invalid_pathname?(params[:path])
       redirect_to event_path(event), alert: I18n.t('events.material_area.invalid_path_given') and return
     end
-
 
     path = File.join(event.material_path,params[:path])
     unless File.exists?(path)

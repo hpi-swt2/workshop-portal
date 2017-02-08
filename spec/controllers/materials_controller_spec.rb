@@ -306,18 +306,39 @@ RSpec.describe EventsController, type: :controller do
     end
 
     it "sanitizes from-path names" do
-      pending "TODO: Sanitizing"
-      fail
+      mock_writing_to_filesystem do
+        invalid_from = "...../..."
+        to = 'dir/test'
+        mkdir('dir')
+        rename(invalid_from, to)
+        expect(response).to redirect_to :action => :show, :id => @event.id
+        expect(File.exists?(File.join(@event.material_path, to))).to be false
+        expect(flash[:alert]).to match(I18n.t(:invalid_path_given, scope: 'events.material_area'))
+      end
     end
 
     it "sanitizes to-path names" do
-      pending "TODO: Sanitizing"
-      fail
+      mock_writing_to_filesystem do
+        from = 'file'
+        invalid_to = '../../../test/invalid'
+        mkdir('dir')
+        rename(from, invalid_to)
+        expect(response).to redirect_to :action => :show, :id => @event.id
+        expect(File.exists?(File.join(@event.material_path, invalid_to))).to be false
+        expect(flash[:alert]).to match(I18n.t(:invalid_path_given, scope: 'events.material_area'))
+      end
     end
 
     it "does not move files to a different directory" do
-      pending "TODO: Sanitizing"
-      fail
+      mock_writing_to_filesystem do
+        from = 'file'
+        invalid_to = 'test/invalid'
+        mkdir('dir')
+        rename(from, invalid_to)
+        expect(response).to redirect_to :action => :show, :id => @event.id
+        expect(File.exists?(File.join(@event.material_path, invalid_to))).to be false
+        expect(flash[:alert]).to match(I18n.t(:invalid_path_given, scope: 'events.material_area'))
+      end
     end
 
     it "does nothing when renaming to the same name" do
