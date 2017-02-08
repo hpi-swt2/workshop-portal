@@ -31,7 +31,7 @@ class Profile < ActiveRecord::Base
   # @param none
   # @return [Int] for age as number of years
   def age
-    return age_at_time(Time.now)
+    return age_at_time(Time.zone.now)
   end
 
   # Returns the age of the user based on the given date
