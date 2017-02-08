@@ -55,6 +55,7 @@ class Event < ActiveRecord::Base
        custom_image.upload_height.present? &&
        (custom_image.upload_width < 200 || custom_image.upload_height < 155)
       errors.add(:custom_image, I18n.t("events.errors.image_too_small"))
+      custom_image.remove!
     end
   end
 

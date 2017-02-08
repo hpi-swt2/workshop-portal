@@ -34,6 +34,8 @@ describe "Event pictures", type: :feature do
       click_button I18n.t('.events.form.update')
 
       expect(Event.last.image).to eq(previous_image)
+      # assert that our invalid image wasn't added as an option
+      expect(page).to have_css('.image-buttons .btn', count: stock_photo_paths.count)
     end
 
     it "should allow uploading images" do
