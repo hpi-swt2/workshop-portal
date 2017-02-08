@@ -120,6 +120,16 @@ RSpec.feature "Application Letter Overview", :type => :feature do
         expect(page).to have_text("#{field_name}: value #{index}")
       end
     end
+
+    it "displays values I entered in custom fields when I edit the application later" do
+      letter = FactoryGirl.create(:application_letter)
+      login_as(letter.user, :scope => :user)
+      visit edit_application_letter_path(letter)
+
+      letter.custom_application_fields.each do |field|
+        expect(page).to have_css("input[value='#{field}']")
+      end
+    end
   end
 
   %i[pupil coach].each do |role|
