@@ -3,7 +3,7 @@
   <h1><%=t '.title', :default => model_class.model_name.human.titleize %></h1>
 </div>
 
-<dl class="dl-horizontal">
+<dl class="dl-horizontal profile_details">
   <% [:first_name, :last_name, :gender, :birth_date, :street_name, :zip_code, :city, :state, :country, :discovery_of_site].each do |attr_name| %>
     <dt><strong><%= model_class.human_attribute_name(attr_name) %>:</strong></dt>
     <% if attr_name == :gender %>
