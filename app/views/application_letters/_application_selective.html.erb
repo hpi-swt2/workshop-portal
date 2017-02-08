@@ -5,16 +5,16 @@
             <% if application_letter.status.to_sym == :accepted %>
                 <% if application_letter.status_notification_sent %>                
                     <%= link_to t('application_status.actions.cancel'), update_application_letter_status_path(application_letter, 'application_letter[status]': :canceled),
-                            method: :put, class: 'btn btn-default' %>
+                            method: :put, class: 'btn btn-sm btn-default' %>
                 <% else %>
-                    <span class="glyphicon glyphicon-envelope">
+                    <span class="glyphicon glyphicon-envelope"></span>
                 <% end %>
             <% elsif application_letter.status.to_sym == :alternative && @has_free_places %>
                 <%= link_to t('application_status.actions.accept'), update_application_letter_status_path(application_letter, 'application_letter[status]': :accepted),
-                            method: :put, class: 'btn btn-default' %>
+                            method: :put, class: 'btn btn-sm btn-default' %>
             <% elsif application_letter.status.to_sym == :rejected && @has_free_places && !application_letter.event.has_alternative_application_letters? %>
                 <%= link_to t('application_status.actions.accept'), update_application_letter_status_path(application_letter, 'application_letter[status]': :accepted),
-                            method: :put, class: 'btn btn-default' %>
+                            method: :put, class: 'btn btn-sm btn-default' %>
             <% end %>
         <% end %>
     <% elsif application_letter.event.phase == :selection %>
