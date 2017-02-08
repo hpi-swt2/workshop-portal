@@ -48,15 +48,15 @@ class Ability
       can [:create], AgreementLetter
       can [:new, :create], Request
       cannot :view_personal_details, ApplicationLetter, user: { id: !user.id }
-      cannot [:edit, :update], Event
+      can [:show, :index, :archive], Event
+      cannot [:edit, :update, :new, :create, :destroy, :accept_all_applicants, :print_applications_eating_habits, :participants_pdf, :participants], Event
     end
     if user.role? :coach
       # Coaches can view Applications and participants for and view, upload and download materials for Event
       can [:view_applicants, :view_participants, :view_material, :upload_material, :print_applications, :download_material], Event
       can [:view_and_add_notes, :show], ApplicationLetter
-      can [:print_applications], Event
       can [:show, :index], Request
-      cannot [:view_apply_button, :edit, :update], Event
+      cannot [:view_apply_button, :edit, :update, :new, :create, :destroy], Event
       cannot :check, ApplicationLetter
     end
     if user.role? :organizer
@@ -70,7 +70,7 @@ class Ability
       can [:manage, :set_contact_person, :set_notes], Request
       cannot :apply, Event
       cannot :view_apply_button, Event
-      can [:edit, :update], Event
+      can [:edit, :update, :destroy], Event
       can [:update], ParticipantGroup
 
       # Organizers can update user roles of pupil, coach and organizer, but cannot manage admins and cannot update a role to admin
@@ -80,6 +80,8 @@ class Ability
     end
     if user.role? :admin
       can :manage, :all
+      can [:edit, :update, :destroy], Event
+      
       can :view_delete_button, ApplicationLetter
       cannot [:edit, :update], ApplicationLetter
     end

@@ -47,6 +47,7 @@ RSpec.describe EventsController, type: :controller do
   context "With an existing event" do
     before :each do
       @event = Event.create! valid_attributes
+      
     end
 
     describe "GET #index" do
@@ -148,11 +149,35 @@ RSpec.describe EventsController, type: :controller do
       describe "DELETE #destroy" do
         it "destroys the requested event" do
           expect {
+            sign_in FactoryGirl.create(:user, role: :pupil)
+            delete :destroy, id: @event.to_param, session: valid_session
+          }.to change(Event, :count).by(0)
+        end
+
+        it "destroys the requested event" do
+          expect {
+            sign_in FactoryGirl.create(:user, role: :coach)
+            delete :destroy, id: @event.to_param, session: valid_session
+          }.to change(Event, :count).by(0)
+        end
+        
+        it "destroys the requested event" do
+          expect {
+            sign_in FactoryGirl.create(:user, role: :organizer)
             delete :destroy, id: @event.to_param, session: valid_session
           }.to change(Event, :count).by(-1)
         end
 
+        it "destroys the requested event" do
+          expect {
+            sign_in FactoryGirl.create(:user, role: :admin)
+            delete :destroy, id: @event.to_param, session: valid_session
+          }.to change(Event, :count).by(-1)
+        end
+        
+        
         it "redirects to the events list" do
+          sign_in FactoryGirl.create(:user, role: :organizer)
           delete :destroy, id: @event.to_param, session: valid_session
           expect(response).to redirect_to(events_url)
         end
@@ -230,7 +255,8 @@ RSpec.describe EventsController, type: :controller do
     let(:valid_attributes) { FactoryGirl.attributes_for(:event_with_accepted_applications) }
 
     it "should return an pdf" do
-      login(:organizer)
+      sign_in FactoryGirl.create(:user, role: :organizer)
+      #login(:organizer)
       event = Event.create! valid_attributes
       profile = FactoryGirl.create(:profile)
       user = FactoryGirl.create(:user, profile: profile)
@@ -241,7 +267,8 @@ RSpec.describe EventsController, type: :controller do
     end
 
     it "should return an pdf with the eating habits of the user" do
-      login(:organizer)
+      sign_in FactoryGirl.create(:user, role: :organizer)
+      #login(:organizer)
       event = Event.create! valid_attributes
 
       user = FactoryGirl.create(:user)
@@ -414,6 +441,10 @@ RSpec.describe EventsController, type: :controller do
 
   describe "POST #create" do
     context "with valid params" do
+      before :each do
+        sign_in FactoryGirl.create(:user, role: :organizer)
+      end 
+
       it "creates a new Event" do
         expect {
           post :create, valid_attributes_post, session: valid_session
@@ -425,6 +456,7 @@ RSpec.describe EventsController, type: :controller do
         expect(assigns(:event)).to be_a(Event)
         expect(assigns(:event)).to be_persisted
       end
+
 
       it "saves optional attributes" do
         post :create, valid_attributes_post, session: valid_session
@@ -447,12 +479,14 @@ RSpec.describe EventsController, type: :controller do
       end
 
       it "re-renders the 'new' template" do
+        sign_in FactoryGirl.create(:user, role: :organizer)
         post :create, event: invalid_attributes, session: valid_session
         expect(response).to render_template("new")
       end
     end
 
     it "should attach correct date ranges to the event entity" do
+      sign_in FactoryGirl.create(:user, role: :organizer)
       post :create, valid_attributes_post, session: valid_session
       expect(assigns(:event)).to be_a(Event)
       expect(assigns(:event)).to be_persisted
