@@ -228,12 +228,12 @@ class Event < ActiveRecord::Base
     application_letters.where(status: ApplicationLetter.statuses[:accepted]).count
   end
 
-  # Returns whether there are rejected applications with no status notification sent of the event
+  # Returns whether there are applications of given state with no status notification sent of the event
   #
-  # @param none
-  # @return [Boolean] true if there are rejected participants without status notification sent
-  def has_rejected_participants_without_status_notification?
-    application_letters.exists?(status: ApplicationLetter.statuses[:rejected], status_notification_sent: false)
+  # @param [Symbol] status
+  # @return [Boolean] true if there are participants of given state without status notification sent
+  def has_participants_without_status_notification?(status)
+    application_letters.exists?(status: ApplicationLetter.statuses[status], status_notification_sent: false)
   end
 
   # Returns the current state of the event (draft-, application-, selection- and execution-phase)
@@ -319,7 +319,7 @@ class Event < ActiveRecord::Base
   #
   # @return [String] path in the material storage
   def material_path
-    File.join("storage/materials/", self.id.to_s + "_" + self.name)
+    File.join("storage/materials/", self.id.to_s + "_event")
   end
 
   # Make sure we add errors from our date_range children

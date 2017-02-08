@@ -52,7 +52,8 @@ def application_letter_applicant_programmierkurs_1(user, event)
     allergies: "Tomaten",
     annotation: "Euer Angebot find ich echt super.",
     user: user,
-    event: event
+    event: event,
+    custom_application_fields: ['Dooodlejump', '8', 'Java']
   )
 end
 
@@ -66,7 +67,8 @@ def application_letter_applicant_programmierkurs_2(user, event)
     allergies: "",
     annotation: "Euer Angebot find ich echt super.",
     user: user,
-    event: event
+    event: event,
+    custom_application_fields: ['Snapchat', '10', 'Python']
   )
 end
 
@@ -80,6 +82,7 @@ def application_letter_applicant_programmierkurs_3(user, event)
       allergies: "",
       annotation: "Euer Angebot find ich echt super.",
       user: user,
-      event: event
+      event: event,
+      custom_application_fields: ['Facebook, Twitter', '9', 'C++, C#']
   )
 end

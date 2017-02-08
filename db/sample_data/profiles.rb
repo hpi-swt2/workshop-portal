@@ -2,7 +2,7 @@ def profile_pupil(user)
   Profile.new(
     user: user,
     first_name: "Karl",
-    last_name: "Doe",
+    last_name: "Schüler",
     gender: "male",
     birth_date: Date.parse('2005.11.29'),
     street_name: "Rudolf-Breitscheid-Str. 52",
@@ -73,6 +73,51 @@ def profile_tobi(user)
     city: "Potsdam",
     state: "Brandenburg",
     country: "Deutschland",
+  )
+end
+
+def profile_coach(user)
+  Profile.new(
+    user: user,
+    first_name: "Tom",
+    last_name: "Betreuer",
+    gender: "male",
+    birth_date: Date.parse('1995.08.31'),
+    street_name: "Stahnsdorfer Str.",
+    zip_code: "14482",
+    city: "Potsdam",
+    state: "Brandenburg",
+    country: "Deutschland",
+  )
+end
+
+def profile_organizer(user)
+  Profile.new(
+      user: user,
+      first_name: "Lisa",
+      last_name: "Organisatorin",
+      gender: "female",
+      birth_date: Date.parse('1996.09.21'),
+      street_name: "Stahnsdorfer Str.",
+      zip_code: "14482",
+      city: "Potsdam",
+      state: "Brandenburg",
+      country: "Deutschland",
+  )
+end
+
+def profile_admin(user)
+  Profile.new(
+      user: user,
+      first_name: "Karl",
+      last_name: "Administrator",
+      gender: "female",
+      birth_date: Date.parse('1996.06.03'),
+      street_name: "Stahnsdorfer Str.",
+      zip_code: "14482",
+      city: "Potsdam",
+      state: "Brandenburg",
+      country: "Deutschland",
   )
 end
 

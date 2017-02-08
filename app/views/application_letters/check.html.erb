@@ -18,6 +18,7 @@
 <% end %>
 
 <h3><%= t('.my_application') %></h3>
+
 <table id='application_details' class="table application-details-table">
   <col width="250">
   <tr>
@@ -59,6 +60,7 @@
     <th><%= ApplicationLetter.human_attribute_name(:annotation) %>:</th>
     <td><%= @application_letter.annotation %></td>
   </tr>
+
   <% @application_letter.event.custom_application_fields
     .zip(@application_letter.custom_application_fields)
     .each do |field_name, field_value| %>
