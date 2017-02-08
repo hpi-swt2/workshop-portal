@@ -7,8 +7,7 @@ RSpec.describe "application_letters/check", type: :view do
   end
 
   it "should show an upload form for an agreement letter for profiles with an age of <18 and accepted application" do
-    @user = FactoryGirl.create(:user)
-    @user.profile = FactoryGirl.create(:profile, user: @user)
+    @user = FactoryGirl.create(:user_with_profile)
     event = FactoryGirl.create(:event)
     @application_letter = FactoryGirl.create(:application_letter, status: :accepted, user: @user, event: event)
     assign(:application_letter, @application_letter)
@@ -19,8 +18,7 @@ RSpec.describe "application_letters/check", type: :view do
   end
 
   it "should not show an upload form for an agreement letter without accepted application" do
-    @user = FactoryGirl.create(:user)
-    @user.profile = FactoryGirl.create(:profile, user: @user)
+    @user = FactoryGirl.create(:user_with_profile)
     event = FactoryGirl.create(:event)
     @application_letter = FactoryGirl.create(:application_letter, user: @user, event: event)
     assign(:application_letter, @application_letter)
