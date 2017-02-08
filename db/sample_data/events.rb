@@ -74,7 +74,7 @@ def event_gongakrobatik
       end_date: Date.new(2021, 03, 05)
   )
   Event.new(
-      name: 'Einführung in die Kunst der Gongakrobatik',
+      name: 'Gongakrobatik',
       description: 'Schon im alten China erzählte man sich von den sa­gen­um­wo­benen Legenden der Gongakrobatik. Spätestens seit dieser Trend auch seinen Weg nach Japan gefunden hat, stellt sich die Gongakrobatik auch für uns als ernstzunehmende Alternative gegenüber herkömmlichen Stimmbildungübungen und ähnlichem dar. 
         In dieser Einführung möchten wir euch einen groben Überblick über das Thema geben: Wie findet man am besten seinen Weg in die Gongakrobatik, was braucht man dafür. 
         In den letzten Jahren hat sich zudem eine große Community rund um dieses faszinierende Thema gebildet. Höhepunkt der Veranstaltung ist demnach unser Besuch einer echten Gongmanufaktor im Herzen Berlins, durchgeführt von dem Ding Gong-Verein Berlin. 
