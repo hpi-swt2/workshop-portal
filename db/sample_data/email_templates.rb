@@ -2,10 +2,10 @@ def email_template_acceptance
   EmailTemplate.new(
     status: :acceptance,
     hide_recipients: false,
-    subject: "Zusage für <TODO>",
+    subject: "Zusage für TODO",
     content: 'Liebe Camp-Teilnehmerinnen und -Teilnehmer,
 
-zunächst einmal herzlichen Glückwunsch: Du bist dabei! Bitte lies dir die nachfolgenden Informationen zum <TODO>, das vom <TODO> bis <TODO> stattfinden wird, aufmerksam durch. Sollte deine Teilnahme doch nicht möglich sein, bitten wir dich im Interesse der Schüler auf der Warteliste darum, uns so schnell wie möglich zu informieren.
+zunächst einmal herzlichen Glückwunsch: Du bist dabei! Bitte lies dir die nachfolgenden Informationen zum TODO, das vom TODO bis TODO stattfinden wird, aufmerksam durch. Sollte deine Teilnahme doch nicht möglich sein, bitten wir dich im Interesse der Schüler auf der Warteliste darum, uns so schnell wie möglich zu informieren.
 Terminliches und Telefonnummern
 Die Zeitpunkte für An- und Abreise sowie Telefonnummern für Probleme, z.B. größeren Zugverspätungen am Anreisetag findest du auf dem angehängten Ablaufplan.
 
@@ -48,9 +48,9 @@ def email_template_rejection
   EmailTemplate.new(
       status: :rejection,
       hide_recipients: false,
-      subject: "Absage für <TODO>",
+      subject: "Absage für TODO",
       content: 'Liebe Bewerberin / lieber Bewerber
-Leider müssen wir dir mitteilen, dass du für <TODO> nicht zugelassen wurdest.
+Leider müssen wir dir mitteilen, dass du für TODO nicht zugelassen wurdest.
 Versuche es doch ein anderes unserer Camps.
 
 Viele Grüße,

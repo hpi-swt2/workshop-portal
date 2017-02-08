@@ -34,7 +34,7 @@ def application_letter_applicant_gongakrobatik_accepted(user, event)
       emergency_number: "01234567891",
       organisation: "Schule am Griebnitzsee",
       vegetarian: false,
-      vegan: false,
+      vegan: true,
       allergies: "Tomaten",
       annotation: "Euer Angebot find ich echt super.",
       user: user,
