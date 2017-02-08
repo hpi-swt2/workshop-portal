@@ -1,3 +1,11 @@
+GIT
+  remote: git://github.com/acrogenesis/owlcarousel-rails.git
+  revision: 2dd679c61b795fa08003994c74d140c214781141
+  branch: OwlCarousel2
+  specs:
+    owlcarousel-rails (1.1.3.3)
+      jquery-rails
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -337,6 +345,7 @@ DEPENDENCIES
   jquery-turbolinks
   jquery-ui-rails
   less-rails
+  owlcarousel-rails!
   mini_magick
   parser (~> 2.2.2.5)
   pdf-inspector
