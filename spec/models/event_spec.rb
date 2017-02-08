@@ -184,14 +184,14 @@ describe Event do
     expect(event.compute_occupied_places).to eq(2)
   end
 
-  it "computes whether there are rejected applications with no status notification sent yet" do
+  it "computes whether there are applications with no status notification sent yet" do
     event = FactoryGirl.create(:event, :in_selection_phase_with_no_mails_sent)
     FactoryGirl.create(:application_letter_accepted, user: FactoryGirl.create(:user), event: event)
-    expect(event.has_rejected_participants_without_status_notification?).to eq(false)
+    expect(event.has_participants_without_status_notification?(:accepted)).to eq(true)
     FactoryGirl.create(:application_letter_rejected, :with_mail_sent, user: FactoryGirl.create(:user), event: event)
-    expect(event.has_rejected_participants_without_status_notification?).to eq(false)
+    expect(event.has_participants_without_status_notification?(:rejected)).to eq(false)
     FactoryGirl.create(:application_letter_rejected, user: FactoryGirl.create(:user), event: event)
-    expect(event.has_rejected_participants_without_status_notification?).to eq(true)
+    expect(event.has_participants_without_status_notification?(:rejected)).to eq(true)
   end
 
   it "returns all Events running now and in the future" do
@@ -202,6 +202,17 @@ describe Event do
     expect(Event.future).to_not include(event_past)
     expect(Event.future).to include(event_today)
     expect(Event.future).to include(event_future)
+  end
+
+  it "checks whether it has application letters with status alternative" do
+    event = FactoryGirl.build(:event)
+    expect(event.has_alternative_application_letters?).to be false
+
+    event.application_letters.push(FactoryGirl.build(:application_letter_accepted))
+    expect(event.has_alternative_application_letters?).to be false
+
+    event.application_letters.push(FactoryGirl.build(:application_letter_alternative))
+    expect(event.has_alternative_application_letters?).to be true
   end
 
   it "generates an application letter list ordered by first name" do

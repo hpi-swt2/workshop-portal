@@ -167,29 +167,37 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     end
   end
 
-  scenario "logged in as Organizer I can cancel accepted applications (execution phase)" do
+  scenario "logged in as Organizer I can cancel accepted applications (execution phase) when status notification was sent" do
     login(:organizer)
     @event = FactoryGirl.create(:event_in_execution_with_applications_in_various_states, :with_status_notification_sent, accepted_application_letters_count: 1)
     @application_letter = @event.application_letters.find { |application| application.status == 'accepted'}
     visit event_path(@event)
-    expect(page).to have_link(I18n.t "application_status.actions.cancel")
+    expect(page).to have_link(I18n.t("application_status.actions.cancel"), href: update_application_letter_status_path(@application_letter, 'application_letter[status]': :canceled))
     click_link I18n.t "application_status.actions.cancel"
-    expect(page).to_not have_link(I18n.t "application_status.actions.cancel")
+    expect(page).to_not have_link(I18n.t("application_status.actions.cancel"), href: update_application_letter_status_path(@application_letter, 'application_letter[status]': :canceled))
     @application_letter.reload
     expect(@application_letter.status).to eq('canceled')
     expect(@application_letter.status_notification_sent).to be false
     expect(page).to_not have_css('span.glyphicon-envelope')
   end
 
+  scenario "logged in as Organizer I cannot cancel accepted applications (execution phase) when status notification was not sent" do
+    login(:organizer)
+    @event = FactoryGirl.create(:event_in_execution_with_applications_in_various_states, :with_no_status_notification_sent, accepted_application_letters_count: 1)
+    @application_letter = @event.application_letters.find { |application| application.status == 'accepted'}
+    visit event_path(@event)
+    expect(page).to_not have_link(I18n.t("application_status.actions.cancel"), href: update_application_letter_status_path(@application_letter, 'application_letter[status]': :canceled))
+    expect(page).to have_css('span.glyphicon-envelope')
+  end
 
   scenario "logged in as Organizer I can accept alternative applications (execution phase)" do
     login(:organizer)
     @event = FactoryGirl.create(:event_in_execution_with_applications_in_various_states, :with_status_notification_sent, alternative_application_letters_count: 1)
     @application_letter = @event.application_letters.find { |application| application.status == 'alternative'}
     visit event_path(@event)
-    expect(page).to have_link(I18n.t "application_status.actions.accept")
+    expect(page).to have_link(I18n.t("application_status.actions.accept"), href: update_application_letter_status_path(@application_letter, 'application_letter[status]': :accepted))
     click_link I18n.t "application_status.actions.accept"
-    expect(page).to_not have_link(I18n.t "application_status.actions.accept")
+    expect(page).to_not have_link(I18n.t("application_status.actions.accept"), href: update_application_letter_status_path(@application_letter, 'application_letter[status]': :accepted))
     expect(page).to have_css('span.glyphicon-envelope', count: 1)
     expect(page).to_not have_link(I18n.t('application_status.actions.cancel'), href: update_application_letter_status_path(@application_letter, 'application_letter[status]': :canceled))
     @application_letter.reload
@@ -201,13 +209,52 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     login(:organizer)
     @event = FactoryGirl.create(:event_in_execution_with_applications_in_various_states, accepted_application_letters_count: 2, alternative_application_letters_count: 1, max_participants: 2)
     @application_letter = @event.application_letters.find { |application| application.status == 'alternative'}
-    @application_letter.status_notification_sent = true
-    @application_letter.save! 
     visit event_path(@event)
-    expect(page).to_not have_link(I18n.t "application_status.accepted")
+    expect(page).to_not have_link(I18n.t("application_status.actions.accept"), href: update_application_letter_status_path(@application_letter, 'application_letter[status]': :accepted))
   end
 
-  scenario "logged in as Organizer I can send acceptance and then rejection emails and by that change the status notification flag" do
+  scenario "logged in as Organizer I can accept rejected applications (execution phase) when there are no alternative applications" do
+    login(:organizer)
+    @event = FactoryGirl.create(:event_in_execution_with_applications_in_various_states, :with_status_notification_sent, alternative_application_letters_count: 0, rejected_application_letters_count: 1)
+    @application_letter = @event.application_letters.find { |application| application.status == 'rejected'}
+    visit event_path(@event)
+    expect(page).to have_link(I18n.t("application_status.actions.accept"), href: update_application_letter_status_path(@application_letter, 'application_letter[status]': :accepted))
+    click_link I18n.t "application_status.actions.accept"
+    expect(page).to_not have_link(I18n.t("application_status.actions.accept"), href: update_application_letter_status_path(@application_letter, 'application_letter[status]': :accepted))
+    expect(page).to have_css('span.glyphicon-envelope', count: 1)
+    expect(page).to_not have_link(I18n.t('application_status.actions.cancel'), href: update_application_letter_status_path(@application_letter, 'application_letter[status]': :canceled))
+    @application_letter.reload
+    expect(@application_letter.status).to eq('accepted')
+    expect(@application_letter.status_notification_sent).to be false
+  end
+
+  scenario "logged in as Organizer I cannot accept rejected applications (execution phase) when there are alternative applications" do
+    login(:organizer)
+    @event = FactoryGirl.create(:event_in_execution_with_applications_in_various_states, alternative_application_letters_count: 1, rejected_application_letters_count: 1)
+    @application_letter = @event.application_letters.find { |application| application.status == 'rejected'}
+    visit event_path(@event)
+    expect(page).to_not have_link(I18n.t("application_status.actions.accept"), href: update_application_letter_status_path(@application_letter, 'application_letter[status]': :accepted))
+  end
+
+  scenario "logged in as Organizer I cannot accept rejected applications if no free places are available (execution phase)" do
+    login(:organizer)
+    @event = FactoryGirl.create(:event_in_execution_with_applications_in_various_states, accepted_application_letters_count: 2, alternative_application_letters_count: 0, rejected_application_letters_count: 1, max_participants: 2)
+    @application_letter = @event.application_letters.find { |application| application.status == 'rejected'}
+    visit event_path(@event)
+    expect(page).to_not have_link(I18n.t("application_status.actions.accept"), href: update_application_letter_status_path(@application_letter, 'application_letter[status]': :accepted))
+  end
+
+  scenario "logged in as Organizer I can send emails to accepted alternatives who got no acceptance mail yet (execution phase)" do
+    login(:organizer)
+    @event = FactoryGirl.create(:event_in_execution_with_applications_in_various_states, :with_no_status_notification_sent, accepted_application_letters_count: 1)
+    @application_letter = @event.application_letters.find { |application| application.status == 'accepted'}
+    visit event_path(@event)
+    expect(page).to have_button(I18n.t('events.applicants_overview.sending_acceptances'))
+    click_button(I18n.t('events.applicants_overview.sending_acceptances'))
+    expect(page).to have_selector("input#email_recipients[value='#{@application_letter.user.email}']")
+  end
+
+  scenario "logged in as Organizer I can send acceptance and then rejection emails and by that change the status notification flag  (without alternatives)" do
     login(:organizer)
     event = FactoryGirl.create(:event_with_accepted_applications, :in_selection_phase_with_no_mails_sent, :with_no_status_notification_sent)
     %w[accepted rejected].each do |status|
@@ -225,6 +272,20 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
         expect(letter.status_notification_sent).to be true
       end
     end
+  end
+
+  scenario "logged in as Organizer I can send alternative emails (treated like rejections) and by that change the status notification flag" do
+    login(:organizer)
+    event = FactoryGirl.create(:event_with_accepted_applications, :in_selection_phase_with_no_mails_sent, :with_no_status_notification_sent)
+    application = FactoryGirl.create(:application_letter_alternative, event: event, user: FactoryGirl.build(:user))
+    visit event_path(event)
+    click_button(I18n.t("events.applicants_overview.sending_rejections"))
+    expect(page).to have_current_path(event_email_show_path(event_id: event.id), only_path: true)
+    fill_in :email_subject, with: "Subject alternative"
+    fill_in :email_content, with: "Content alternative"
+    click_button I18n.t('.emails.email_form.send')
+    application.reload
+    expect(application.status_notification_sent).to be true
   end
 
   scenario "logged in as Organizer I can push the accept all button to accept all applicants" do
@@ -337,15 +398,11 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
   scenario "logged in as Organizer I can filter displayed application letters by their status and simultaneously sort them", js: true do
     login(:organizer)
     @event = FactoryGirl.create(:event_with_applications_in_various_states)
-    @event.application_letters.each do |letter|
-      letter.user.profile = FactoryGirl.build(:profile, user: letter.user)
-    end
 
     visit event_path(@event)
     click_button I18n.t 'events.applicants_overview.filter_by'
     check I18n.t 'application_status.accepted'
     click_button I18n.t 'events.applicants_overview.filter'
-
     accepted_names = @event.application_letters.to_a.select { |l| l.status.to_sym == :accepted }.map {|l| l.user.profile.name}
     not_accepted_names = @event.application_letters.to_a.select { |l| l.status.to_sym != :accepted }.map {|l| l.user.profile.name}
 

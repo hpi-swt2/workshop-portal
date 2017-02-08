@@ -228,12 +228,12 @@ class Event < ActiveRecord::Base
     application_letters.where(status: ApplicationLetter.statuses[:accepted]).count
   end
 
-  # Returns whether there are rejected applications with no status notification sent of the event
+  # Returns whether there are applications of given state with no status notification sent of the event
   #
-  # @param none
-  # @return [Boolean] true if there are rejected participants without status notification sent
-  def has_rejected_participants_without_status_notification?
-    application_letters.exists?(status: ApplicationLetter.statuses[:rejected], status_notification_sent: false)
+  # @param [Symbol] status
+  # @return [Boolean] true if there are participants of given state without status notification sent
+  def has_participants_without_status_notification?(status)
+    application_letters.exists?(status: ApplicationLetter.statuses[status], status_notification_sent: false)
   end
 
   # Returns the current state of the event (draft-, application-, selection- and execution-phase)
@@ -247,13 +247,21 @@ class Event < ActiveRecord::Base
     return :execution if published && after_deadline? && acceptances_have_been_sent && rejections_have_been_sent
   end
 
+  # Returns whether the event has application letters with status alternative
+  #
+  # @param none
+  # @return [Boolean] true, if any exists, false otherwise
+  def has_alternative_application_letters?
+    application_letters.any? { |application| application.status == 'alternative' }
+  end
+
   # Returns a label listing the number of days to the deadline if
   # it's <= 7 days to go. Otherwise returns nil.
   #
   # @return string containing the label or nil
   def application_deadline_label
     days = (application_deadline - Date.current).to_i
-    I18n.t('events.notices.deadline_approaching', count: days) if days <= 7 and days > 0
+    return I18n.t('events.notices.deadline_approaching', count: days) if days <= 7 and days >= 0
   end
 
   # Uses the start date to determine whether or not this event is in the past (or more
@@ -266,7 +274,7 @@ class Event < ActiveRecord::Base
 
   # Returns a label that describes the duration of the event in days,
   # also mentioning whether or not the event happens on consecutive
-  # days. If the event is only on a single day, it returns nothing.
+  # days.
   #
   # @return the duration label or nil
   def duration_label
@@ -276,7 +284,7 @@ class Event < ActiveRecord::Base
 
     if date_ranges.size > 1
       I18n.t('events.notices.time_span_non_consecutive', count: days)
-    elsif days > 1
+    else
       I18n.t('events.notices.time_span_consecutive', count: days)
     end
   end
@@ -311,7 +319,7 @@ class Event < ActiveRecord::Base
   #
   # @return [String] path in the material storage
   def material_path
-    File.join("storage/materials/", self.id.to_s + "_" + self.name)
+    File.join("storage/materials/", self.id.to_s + "_event")
   end
 
   # Make sure we add errors from our date_range children

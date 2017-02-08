@@ -63,7 +63,7 @@ describe ApplicationLetter do
     end
   end
 
-  %i[accepted canceled alternative pending].each do | new_status |
+  %i[canceled alternative pending].each do | new_status |
     it "cannot update the status in execution phase from rejected into #{new_status}" do
       application = FactoryGirl.create(:application_letter_rejected)
       application.event = FactoryGirl.create(:event, :in_execution_phase)
@@ -92,6 +92,27 @@ describe ApplicationLetter do
     end
     application.status = :accepted
     expect(application).to be_valid
+  end
+
+  it "can be promoted to accepted if it was rejected before in execution phase when there are no alternative applications" do
+    application = FactoryGirl.create(:application_letter_rejected)
+    application.event = FactoryGirl.create(:event, :in_execution_phase)
+    %i[alternative canceled pending rejected].each do | new_status |
+      application.status = new_status
+      expect(application).to_not be_valid
+    end
+    application.status = :accepted
+    expect(application).to be_valid
+  end
+
+  it "cannot be promoted to accepted if it was rejected before in execution phase when there are alternative applications" do
+    application = FactoryGirl.create(:application_letter_rejected)
+    application.event = FactoryGirl.create(:event, :in_execution_phase)
+    application.event.application_letters.push(FactoryGirl.create(:application_letter_alternative))
+    %i[alternative canceled pending rejected accepted].each do | new_status |
+      application.status = new_status
+      expect(application).to_not be_valid
+    end
   end
 
   it "can update the status in selection phase" do
