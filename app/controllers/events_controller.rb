@@ -7,7 +7,7 @@ require 'carrierwave'
 
 class EventsController < ApplicationController
   load_and_authorize_resource
-  skip_authorize_resource :only => [:show,:index,:archive,:upload_material,:badges,:new,:create,:destroy,:accept_all_applicants,:print_applications_eating_habits,:participants_pdf,:participants] 
+  skip_authorize_resource :only => [:show,:index,:archive,:new,:create,:destroy,:print_applications_eating_habits] 
 
   before_action :set_event, only: [:show, :edit, :update, :destroy, :participants,
     :participants_pdf, :print_applications, :print_applications_eating_habits, :badges, :print_badges]
@@ -246,7 +246,7 @@ class EventsController < ApplicationController
     unless params.has_key?(:file)
       redirect_to event_path(event), alert: I18n.t('events.material_area.no_file_given') and return
     end
-   
+
     file_full_path = File.join(event.material_path, params[:file])
     unless File.exists?(file_full_path)
       redirect_to event_path(event), alert: t("events.material_area.download_file_not_found") and return

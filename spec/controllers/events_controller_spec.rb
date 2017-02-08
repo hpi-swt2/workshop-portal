@@ -160,6 +160,11 @@ RSpec.describe EventsController, type: :controller do
 
       describe "GET #participants" do
         let(:valid_attributes) { FactoryGirl.attributes_for(:event_with_accepted_applications) }
+        
+        before :each do
+          @user = FactoryGirl.create(:user_with_profile, role: :admin)
+          sign_in @user
+        end
 
         it "assigns the event as @event" do
           get :participants, id: @event.to_param, session: valid_session
@@ -184,6 +189,10 @@ RSpec.describe EventsController, type: :controller do
     end
 
     describe "GET #accept_all_applicants" do
+        before :each do
+          @user = FactoryGirl.create(:user_with_profile, role: :organizer)
+          sign_in @user
+        end
       it "should redirect to the event" do
         get :accept_all_applicants, id: @event.to_param, session: valid_session
         expect(response).to redirect_to(@event)
@@ -203,6 +212,10 @@ RSpec.describe EventsController, type: :controller do
 
   describe "GET #participants_pdf" do
     let(:valid_attributes) { FactoryGirl.attributes_for(:event_with_accepted_applications) }
+    before :each do
+      @user = FactoryGirl.create(:user_with_profile, role: :organizer)
+      sign_in @user
+    end
 
     it "should return an pdf" do
       event = Event.create! valid_attributes
@@ -347,6 +360,7 @@ RSpec.describe EventsController, type: :controller do
 
   describe "POST #upload_material" do
     before :each do
+      sign_in FactoryGirl.create(:user, role: :organizer)
       filepath = Rails.root.join('spec/testfiles/actual.pdf')
       @file = fixture_file_upload(filepath, 'application/pdf')
       @event = Event.create! valid_attributes
