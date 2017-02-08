@@ -195,6 +195,7 @@ class EventsController < ApplicationController
   # POST /events/1/upload_material
   def upload_material
     event = Event.find(params[:event_id])
+    authorize! :upload_material, event
     unless File.directory?(event.material_path)
       Dir.mkdir(event.material_path)
     end
@@ -279,6 +280,7 @@ class EventsController < ApplicationController
 
   def move_material
     event = Event.find(params[:event_id])
+    authorize! :upload_material, event
     unless params.has_key?(:from) and params.has_key?(:to)
       redirect_to event_path(event), alert: I18n.t('events.material_area.no_file_given') and return
     end
@@ -305,6 +307,7 @@ class EventsController < ApplicationController
 
   def rename_material
     event = Event.find(params[:event_id])
+    authorize! :upload_material, event
 
     unless params.has_key?(:from) and params.has_key?(:to)
       redirect_to event_path(event), alert: I18n.t('events.material_area.no_file_given') and return
@@ -327,6 +330,7 @@ class EventsController < ApplicationController
 
   def remove_material
     event = Event.find(params[:event_id])
+    authorize! :upload_material, event
     unless params.has_key?(:path)
       redirect_to event_path(event), alert: I18n.t('events.material_area.no_file_given') and return
     end
@@ -339,12 +343,13 @@ class EventsController < ApplicationController
     unless File.exists?(path)
       redirect_to event_path(event), alert: I18n.t('events.material_area.download_file_not_found') and return
     end
-    remove_file(params[:path])
+    remove_file(path)
     redirect_to event_path(event), notice: I18n.t('events.material_area.file_removed')
   end
 
   def make_material_folder
     event = Event.find(params[:event_id])
+    authorize! :upload_material, event
     unless File.directory?(event.material_path)
       Dir.mkdir(event.material_path)
     end
@@ -396,7 +401,7 @@ class EventsController < ApplicationController
 
     # Checks if a file is valid and not empty
     #
-    # @param [ActionDispatch::Http::UploadedFile] is a file object
+    # @param [ActionDispatch::Http::UploadedFile] file is a file object
     # @return [Boolean] whether @file is a valid file
     def is_file?(file)
       file.respond_to?(:open) && file.respond_to?(:content_type) && file.respond_to?(:size)
@@ -467,7 +472,7 @@ class EventsController < ApplicationController
 
     # Moves one material file to another place
     #
-    # @param [String] from The path of the file at the moment
+    # @param [String] fr The path of the file at the moment
     # @param [String] to The path of the directory to move into (can be /)
     # @return [None]
     def move_file(fr, to)
@@ -493,7 +498,7 @@ class EventsController < ApplicationController
 
     # Adds an directory
     #
-    # @param [String] path The path where the directory should be added
+    # @param [String] full_path The path where the directory should be added
     # @return [None]
     def make_dir(full_path)
         Dir.mkdir(full_path)
