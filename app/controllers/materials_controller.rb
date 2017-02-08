@@ -3,48 +3,46 @@ require 'zip'
 
 class MaterialsController < ApplicationController
 
+  before_action :set_and_authorize_event
+
   # POST /events/1/upload_material
   def upload_material
-    event = Event.find(params[:event_id])
-    authorize! :upload_material, event
-    unless File.directory?(event.material_path)
-      Dir.mkdir(event.material_path)
+    unless File.directory?(@event.material_path)
+      Dir.mkdir(@event.material_path)
     end
 
     path = params[:path].to_s
     file = params[:file_upload]
 
     unless is_file?(file)
-      redirect_to event_path(event), alert: t("events.material_area.no_file_given")
+      redirect_to event_path(@event), alert: t("events.material_area.no_file_given")
       return false
     end
 
     if invalid_pathname?(path) or invalid_filename?(file.original_filename)
-      redirect_to event_path(event), alert: t("events.material_area.invalid_path_given") and return
+      redirect_to event_path(@event), alert: t("events.material_area.invalid_path_given") and return
     end
     material_path = if path == ''
-      event.material_path
+      @event.material_path
     else
-      File.join(event.material_path, path)
+      File.join(@event.material_path, path)
     end
 
     unless File.directory?(material_path)
-      redirect_to event_path(event), alert: t("events.material_area.download_file_not_found") and return
+      redirect_to event_path(@event), alert: t("events.material_area.download_file_not_found") and return
     end
 
     begin
       File.write(File.join(material_path, file.original_filename), file.read, mode: "wb")
     rescue IOError
-      redirect_to event_path(event), alert: I18n.t("events.material_area.saving_fails")
+      redirect_to event_path(@event), alert: I18n.t("events.material_area.saving_fails")
       return false
     end
-    redirect_to event_path(event), notice: I18n.t("events.material_area.success_message")
+    redirect_to event_path(@event), notice: I18n.t("events.material_area.success_message")
   end
 
   # POST /events/1/download_material
   def download_material
-    @event = Event.find(params[:event_id])
-    authorize! :download_material, @event
 
     unless params.has_key?(:file)
       redirect_to event_path(@event), alert: I18n.t('events.material_area.no_file_given') and return
@@ -64,104 +62,95 @@ class MaterialsController < ApplicationController
   end
 
   def move_material
-    event = Event.find(params[:event_id])
-    authorize! :upload_material, event
-
     unless params.has_key?(:from) and params.has_key?(:to)
-      redirect_to event_path(event), alert: I18n.t('events.material_area.no_file_given') and return
+      redirect_to event_path(@event), alert: I18n.t('events.material_area.no_file_given') and return
     end
     if invalid_pathname?(params[:from]) || invalid_pathname?(params[:to])
-      redirect_to event_path(event), alert: I18n.t('events.material_area.invalid_path_given') and return
+      redirect_to event_path(@event), alert: I18n.t('events.material_area.invalid_path_given') and return
     end
 
     if params[:to] == params[:from] or params[:to].start_with?(params[:from] + File::SEPARATOR)
-      redirect_to event_path(event), alert: I18n.t('events.material_area.cant_move_in_child') and return
+      redirect_to event_path(@event), alert: I18n.t('events.material_area.cant_move_in_child') and return
     end
 
-    fr = File.join(event.material_path,params[:from])
-    to = File.join(event.material_path,params[:to])
+    fr = File.join(@event.material_path,params[:from])
+    to = File.join(@event.material_path,params[:to])
     unless File.exists?(fr) and File.exists?(to) and File.directory?(to)
-      redirect_to event_path(event), alert: I18n.t('events.material_area.download_file_not_found') and return
+      redirect_to event_path(@event), alert: I18n.t('events.material_area.download_file_not_found') and return
     end
     if File.exists?(File.join(to, File.basename(fr)))
-      redirect_to event_path(event), alert: I18n.t('events.material_area.already_exists') and return
+      redirect_to event_path(@event), alert: I18n.t('events.material_area.already_exists') and return
     end
 
     move_file(fr, to)
-    redirect_to event_path(event), notice: I18n.t('events.material_area.file_moved')
+    redirect_to event_path(@event), notice: I18n.t('events.material_area.file_moved')
   end
 
   def rename_material
-    event = Event.find(params[:event_id])
-    authorize! :upload_material, event
 
     unless params.has_key?(:from) and params.has_key?(:to)
-      redirect_to event_path(event), alert: I18n.t('events.material_area.no_file_given') and return
+      redirect_to event_path(@event), alert: I18n.t('events.material_area.no_file_given') and return
     end
     if invalid_pathname?(params[:from]) || invalid_filename?(params[:to])
-      redirect_to event_path(event), alert: I18n.t('events.material_area.invalid_path_given') and return
+      redirect_to event_path(@event), alert: I18n.t('events.material_area.invalid_path_given') and return
     end
 
-    fr = File.join(event.material_path,params[:from])
+    fr = File.join(@event.material_path,params[:from])
     to = File.join(File.dirname(fr),params[:to])
     unless File.exists?(fr)
-      redirect_to event_path(event), alert: I18n.t('events.material_area.download_file_not_found') and return
+      redirect_to event_path(@event), alert: I18n.t('events.material_area.download_file_not_found') and return
     end
     if File.exists?(to)
-      redirect_to event_path(event), alert: I18n.t('events.material_area.already_exists') and return
+      redirect_to event_path(@event), alert: I18n.t('events.material_area.already_exists') and return
     end
     rename_file(fr, to)
-    redirect_to event_path(event), notice: I18n.t('events.material_area.file_renamed')
+    redirect_to event_path(@event), notice: I18n.t('events.material_area.file_renamed')
   end
 
   def remove_material
-    event = Event.find(params[:event_id])
-    authorize! :upload_material, event
-
     unless params.has_key?(:path)
-      redirect_to event_path(event), alert: I18n.t('events.material_area.no_file_given') and return
+      redirect_to event_path(@event), alert: I18n.t('events.material_area.no_file_given') and return
     end
     if invalid_pathname?(params[:path])
-      redirect_to event_path(event), alert: I18n.t('events.material_area.invalid_path_given') and return
+      redirect_to event_path(@event), alert: I18n.t('events.material_area.invalid_path_given') and return
     end
 
     path = File.join(event.material_path,params[:path])
     unless File.exists?(path)
-      redirect_to event_path(event), alert: I18n.t('events.material_area.download_file_not_found') and return
+      redirect_to event_path(@event), alert: I18n.t('events.material_area.download_file_not_found') and return
     end
     remove_file(path)
-    redirect_to event_path(event), notice: I18n.t('events.material_area.file_removed')
+    redirect_to event_path(@event), notice: I18n.t('events.material_area.file_removed')
   end
 
   def make_material_folder
-    event = Event.find(params[:event_id])
-    authorize! :upload_material, event
-    unless File.directory?(event.material_path)
-      Dir.mkdir(event.material_path)
+    unless File.directory?(@event.material_path)
+      Dir.mkdir(@event.material_path)
     end
 
     unless params.has_key?(:path) and params.has_key?(:name)
-      redirect_to event_path(event), alert: I18n.t('events.material_area.no_file_given') and return
+      redirect_to event_path(@event), alert: I18n.t('events.material_area.no_file_given') and return
     end
     if invalid_pathname?(params[:path]) || invalid_filename?(params[:name])
-      redirect_to event_path(event), alert: I18n.t('events.material_area.invalid_path_given') and return
+      redirect_to event_path(@event), alert: I18n.t('events.material_area.invalid_path_given') and return
     end
 
-    path = File.join(event.material_path, params[:path])
+    path = File.join(@event.material_path, params[:path])
     full_path = File.join(path, params[:name])
     unless Dir.exists?(path)
-      redirect_to event_path(event), alert: I18n.t('events.material_area.download_file_not_found') and return
+      redirect_to event_path(@event), alert: I18n.t('events.material_area.download_file_not_found') and return
     end
     if File.exists? full_path
-      redirect_to event_path(event), alert: I18n.t('events.material_area.already_exists') and return
+      redirect_to event_path(@event), alert: I18n.t('events.material_area.already_exists') and return
     end
     make_dir(full_path)
-    redirect_to event_path(event), notice: I18n.t('events.material_area.dir_created')
+    redirect_to event_path(@event), notice: I18n.t('events.material_area.dir_created')
   end
 
   private
-    def set_event
+    def set_and_authorize_event
       @event = Event.find(params[:event_id])
+      authorize! :upload_material, @event
     end
 
     # Checks if a file is valid and not empty
