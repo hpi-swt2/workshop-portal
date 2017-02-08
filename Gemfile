@@ -111,6 +111,10 @@ gem 'will_paginate-bootstrap'
 # Markdown renderer
 gem 'redcarpet'
 
+# Image Upload and Processing
+gem 'carrierwave'
+gem 'mini_magick'
+
 # Ical generator
 gem 'icalendar'
 
