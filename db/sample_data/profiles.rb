@@ -1,7 +1,7 @@
 def profile_pupil(user)
   Profile.new(
     user: user,
-    first_name: "Karl",
+    first_name: "Hendrik",
     last_name: "Schüler",
     gender: "male",
     birth_date: Date.parse('2005.11.29'),
@@ -94,9 +94,9 @@ end
 def profile_organizer(user)
   Profile.new(
       user: user,
-      first_name: "Lisa",
-      last_name: "Organisatorin",
-      gender: "female",
+      first_name: "Tobias",
+      last_name: "Organisator",
+      gender: "male",
       birth_date: Date.parse('1996.09.21'),
       street_name: "Stahnsdorfer Str.",
       zip_code: "14482",
