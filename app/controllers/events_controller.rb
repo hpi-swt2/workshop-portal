@@ -290,7 +290,16 @@ class EventsController < ApplicationController
       redirect_to event_path(event), alert: I18n.t('events.material_area.cant_move_in_child') and return
     end
 
-    move_file(event, params[:from], params[:to])
+    fr = File.join(event.material_path,params[:from])
+    to = File.join(event.material_path,params[:to])
+    unless File.exists?(fr) and File.exists?(to) and File.directory?(to)
+      redirect_to event_path(event), alert: I18n.t('events.material_area.download_file_not_found') and return
+    end
+    if File.exists?(File.join(to, File.basename(fr)))
+      redirect_to event_path(event), alert: I18n.t('events.material_area.already_exists') and return
+    end
+
+    move_file(fr, to)
     redirect_to event_path(event), notice: I18n.t('events.material_area.file_moved')
   end
 
@@ -304,7 +313,15 @@ class EventsController < ApplicationController
       redirect_to event_path(event), alert: I18n.t('events.material_area.invalid_path_given') and return
     end
 
-    rename_file(event, params[:from], params[:to])
+    fr = File.join(event.material_path,params[:from])
+    to = File.join(File.dirname(fr),params[:to])
+    unless File.exists?(fr)
+      redirect_to event_path(event), alert: I18n.t('events.material_area.download_file_not_found') and return
+    end
+    if File.exists?(to)
+      redirect_to event_path(event), alert: I18n.t('events.material_area.already_exists') and return
+    end
+    rename_file(fr, to)
     redirect_to event_path(event), notice: I18n.t('events.material_area.file_renamed')
   end
 
@@ -317,7 +334,12 @@ class EventsController < ApplicationController
       redirect_to event_path(event), alert: I18n.t('events.material_area.invalid_path_given') and return
     end
 
-    remove_file(event, params[:path])
+
+    path = File.join(event.material_path,params[:path])
+    unless File.exists?(path)
+      redirect_to event_path(event), alert: I18n.t('events.material_area.download_file_not_found') and return
+    end
+    remove_file(params[:path])
     redirect_to event_path(event), notice: I18n.t('events.material_area.file_removed')
   end
 
@@ -334,7 +356,16 @@ class EventsController < ApplicationController
       redirect_to event_path(event), alert: I18n.t('events.material_area.invalid_path_given') and return
     end
 
-    make_dir(event, params[:path], params[:name])
+
+    path = File.join(event.material_path, params[:path])
+    full_path = File.join(path, params[:name])
+    unless Dir.exists?(path)
+      redirect_to event_path(event), alert: I18n.t('events.material_area.download_file_not_found') and return
+    end
+    if File.exists? full_path
+      redirect_to event_path(event), alert: I18n.t('events.material_area.already_exists') and return
+    end
+    make_dir(full_path)
     redirect_to event_path(event), notice: I18n.t('events.material_area.dir_created')
   end
 
@@ -436,52 +467,36 @@ class EventsController < ApplicationController
 
     # Moves one material file to another place
     #
-    # @param [Event] The event to update
     # @param [String] from The path of the file at the moment
     # @param [String] to The path of the directory to move into (can be /)
     # @return [None]
-    def move_file(event, fr, to)
-      fr = File.join(event.material_path,fr)
-      to = File.join(event.material_path,to)
-      if File.exists?(fr) and File.exists?(to) and File.directory?(to)
-        FileUtils.mv(fr,File.join(to, File.basename(fr)))
-      end
+    def move_file(fr, to)
+      FileUtils.mv(fr,File.join(to, File.basename(fr)))
     end
 
     # Moves one material file to another place
     #
-    # @param [Event] event The event to update
     # @param [String] fr from The path of the file at the moment
     # @param [String] to The path of the directory to move into (can be /)
     # @return [None]
-    def rename_file(event, fr, to)
-      fr = File.join(event.material_path,fr)
-      to = File.join(File.dirname(fr),to)
-      if File.exists?(fr) and not File.exists?(to)
-        File.rename(fr,to)
-      end
+    def rename_file(fr, to)
+      File.rename(fr,to)
     end
 
     # Removes one material file
     #
-    # @param [Event] event The event to change
     # @param [String] path The path of the file in the event dir to remove
     # @return [None]
-    def remove_file(event, path)
-      path = File.join(event.material_path,path)
-      FileUtils.rm_rf(path) if File.exists?(path)
+    def remove_file(path)
+      FileUtils.rm_rf(path)
     end
 
     # Adds an directory
     #
-    # @param [Event] event The event to update
     # @param [String] path The path where the directory should be added
-    # @param [String] name The name of the new directory
     # @return [None]
-    def make_dir(event, path, name)
-      path = File.join(event.material_path, path)
-      full_path = File.join(path, name)
-      Dir.mkdir(full_path) if (Dir.exists?(path)) && (not File.exists? full_path)
+    def make_dir(full_path)
+        Dir.mkdir(full_path)
     end
 
     # Collects all files in the given directory and generates an zip-file.

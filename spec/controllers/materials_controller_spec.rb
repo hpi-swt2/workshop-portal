@@ -117,7 +117,6 @@ RSpec.describe EventsController, type: :controller do
     end
 
     it "does not overwrite existing directories" do
-      pending "TODO: Warning message when overwriting was avoided"
       mock_writing_to_filesystem do
         name = "subdir"
         filename = "gentoo.txt"
@@ -131,7 +130,6 @@ RSpec.describe EventsController, type: :controller do
     end
 
     it "does not overwrite existing files" do
-      pending "TODO: Warning message when overwriting was avoided"
       mock_writing_to_filesystem do
         name = "gentoo.txt"
         upload_file(name: name)
@@ -176,7 +174,6 @@ RSpec.describe EventsController, type: :controller do
     end
 
     it "shows an error when given a non-existent file" do
-      pending "TODO: show alert"
       mock_writing_to_filesystem do
         path = "photo_of_my_girlfriend.jpg"
         remove_file(path)
@@ -219,7 +216,6 @@ RSpec.describe EventsController, type: :controller do
     end
 
     it "shows an error instead of overwriting a file" do
-      pending "TODO: do not overwrite file"
       mock_writing_to_filesystem do
         subdir = "rickenbacker"
         text = "Ramona Flowers"
@@ -235,26 +231,25 @@ RSpec.describe EventsController, type: :controller do
     end
 
     it "shows an error when given a non-existent from-path" do
-      pending "TODO: show error"
       mock_writing_to_filesystem do
         subdir = "subdir"
         mkdir(subdir)
         move_file(file.original_filename, subdir)
         expect(response).to redirect_to :action => :show, :id => @event.id
         expect(File.exists?(File.join(@event.material_path, subdir, file.original_filename))).to be false
-        expect(flash[:alert]).to match(I18n.t(:invalid_path_given, scope: 'events.material_area'))
+        expect(flash[:alert]).to match(I18n.t(:download_file_not_found, scope: 'events.material_area'))
       end
     end
 
     it "shows an error when given a non-existent to-path" do
-      pending "TODO: show error"
+
       mock_writing_to_filesystem do
         subdir = "subdir"
         upload_file
         move_file(file.original_filename, subdir)
         expect(response).to redirect_to :action => :show, :id => @event.id
         expect(File.exists?(File.join(@event.material_path, subdir, file.original_filename))).to be false
-        expect(flash[:alert]).to match(I18n.t(:invalid_path_given, scope: 'events.material_area'))
+        expect(flash[:alert]).to match(I18n.t(:download_file_not_found, scope: 'events.material_area'))
       end
     end
 
@@ -332,7 +327,6 @@ RSpec.describe EventsController, type: :controller do
     end
 
     it "shows an error instead of overwriting a file" do
-      pending "TODO: Warning message when overwriting was avoided"
       mock_writing_to_filesystem do
         first_file = "purity"
         text = "fresh_blood"
@@ -348,13 +342,12 @@ RSpec.describe EventsController, type: :controller do
     end
 
     it "shows an error when given a non-existent from-path" do
-      pending "TODO: Error message when renaming non-existent file"
       mock_writing_to_filesystem do
         new_name = "serenity"
         rename(file.original_filename, new_name)
         expect(response).to redirect_to :action => :show, :id => @event.id
         expect(File.exists?(File.join(@event.material_path, new_name))).to be false
-        expect(flash[:alert]).to match(I18n.t(:invalid_path_given, scope: 'events.material_area'))
+        expect(flash[:alert]).to match(I18n.t(:download_file_not_found, scope: 'events.material_area'))
       end
     end
   end
