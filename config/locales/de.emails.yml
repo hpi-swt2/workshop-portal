@@ -15,6 +15,8 @@ de:
       content: 'Inhalt'
       send: 'Senden'
       save_template: 'Als Vorlage speichern'
+      supports_markdown_html: 'Dieser Editor unterstützt %{href}.'
+      supports_markdown_link: 'Markdown'
     submit:
       sending_successful: 'Email wurde erfolgreich versendet'
       sending_failed: 'Email konnte nicht versenden werden'
