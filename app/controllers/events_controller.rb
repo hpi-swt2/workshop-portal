@@ -200,10 +200,14 @@ class EventsController < ApplicationController
       Dir.mkdir(event.material_path)
     end
 
-    material_path = if params[:path].to_s == ''
+    path = params[:path].to_s
+    if invalid_pathname?(path)
+      redirect_to event_path(event), alert: t("events.material_area.invalid_path_given") and return
+    end
+    material_path = if path == ''
       event.material_path
     else
-      File.join(event.material_path, params[:path])
+      File.join(event.material_path, path)
     end
 
     unless File.directory?(material_path)
