@@ -80,7 +80,7 @@ RSpec.describe EventsController, type: :controller do
         upload_file
         expect(response).to redirect_to :action => :show, :id => @event.id
         expect(File.exists?(File.join(@event.material_path, file.original_filename))).to be false
-        expect(flash[:notice]).to match(I18n.t(:success_message, scope: 'events.material_area'))
+        expect(flash[:alert]).to match(I18n.t(:invalid_path_given, scope: 'events.material_area'))
       end
     end
   end

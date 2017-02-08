@@ -201,7 +201,14 @@ class EventsController < ApplicationController
     end
 
     path = params[:path].to_s
-    if invalid_pathname?(path)
+    file = params[:file_upload]
+
+    unless is_file?(file)
+      redirect_to event_path(event), alert: t("events.material_area.no_file_given")
+      return false
+    end
+
+    if invalid_pathname?(path) or invalid_filename?(file.original_filename)
       redirect_to event_path(event), alert: t("events.material_area.invalid_path_given") and return
     end
     material_path = if path == ''
@@ -214,11 +221,6 @@ class EventsController < ApplicationController
       redirect_to event_path(event), alert: t("events.material_area.download_file_not_found") and return
     end
 
-    file = params[:file_upload]
-    unless is_file?(file)
-      redirect_to event_path(event), alert: t("events.material_area.no_file_given")
-      return false
-    end
     begin
       File.write(File.join(material_path, file.original_filename), file.read, mode: "wb")
     rescue IOError
