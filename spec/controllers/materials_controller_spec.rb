@@ -24,7 +24,7 @@ RSpec.describe EventsController, type: :controller do
   describe "POST #upload_material" do
     it "uploads a file to the event's root material directory" do
       mock_writing_to_filesystem do
-        post :upload_material, event_id: @event.to_param, path: '', file_upload: file
+        upload_file
         expect(response).to redirect_to :action => :show, :id => @event.id
         expect(File.exists?(File.join(@event.material_path, file.original_filename)))
         expect(flash[:notice]).to match(I18n.t(:success_message, scope: 'events.material_area'))
@@ -34,8 +34,8 @@ RSpec.describe EventsController, type: :controller do
     it "uploads a file to a material subdirectory" do
       mock_writing_to_filesystem do
         subdir = "subdir"
-        Dir.mkdir(File.join(@event.material_path, subdir))
-        post :upload_material, event_id: @event.to_param, path: subdir, file_upload: file
+        mkdir(subdir)
+        upload_file(path: subdir)
         expect(response).to redirect_to :action => :show, :id => @event.id
         expect(File.exists?(File.join(@event.material_path, subdir, file.original_filename)))
         expect(flash[:notice]).to match(I18n.t(:success_message, scope: 'events.material_area'))
@@ -44,9 +44,9 @@ RSpec.describe EventsController, type: :controller do
 
     it "shows error if given path is not a directory" do
       mock_writing_to_filesystem do
-        post :upload_material, event_id: @event.to_param, path: '', file_upload: file
+        upload_file
         not_a_directory = file.original_filename
-        post :upload_material, event_id: @event.to_param, path: not_a_directory, file_upload: file
+        upload_file(path: not_a_directory)
         expect(response).to redirect_to :action => :show, :id => @event.id
         expect(File.exists?(File.join(@event.material_path, not_a_directory, file.original_filename))).to be false
         expect(flash[:alert]).to match(I18n.t(:invalid_path_given, scope: 'events.material_area'))
@@ -64,7 +64,7 @@ RSpec.describe EventsController, type: :controller do
     it "shows error if file saving was not successfull" do
       mock_writing_to_filesystem do
         allow(File).to receive(:write).and_raise(IOError)
-        post :upload_material, event_id: @event.to_param, file_upload: file
+        upload_file
         expect(response).to redirect_to :action => :show, :id => @event.id
         expect(flash[:alert]).to match(I18n.t(:saving_fails, scope: 'events.material_area'))
       end
@@ -75,7 +75,7 @@ RSpec.describe EventsController, type: :controller do
       mock_writing_to_filesystem do
         dangerous_name = "../hacked_you.lol"
         allow_any_instance_of(Rack::Test::UploadedFile).to receive(:original_filename).and_return(dangerous_name)
-        post :upload_material, event_id: @event.to_param, path: '', file_upload: file
+        upload_file
         expect(response).to redirect_to :action => :show, :id => @event.id
         expect(File.exists?(File.join(@event.material_path, file.original_filename))).to be false
         expect(flash[:notice]).to match(I18n.t(:success_message, scope: 'events.material_area'))
@@ -87,10 +87,9 @@ RSpec.describe EventsController, type: :controller do
     it "creates a directory" do
       mock_writing_to_filesystem do
         dirname = "testdir"
-        path = ''
-        post :make_material_folder, event_id: @event.to_param, path: path, name: dirname
+        mkdir(dirname)
         expect(response).to redirect_to :action => :show, :id => @event.id
-        expect(Dir.exists?(File.join(@event.material_path, path, dirname)))
+        expect(Dir.exists?(File.join(@event.material_path, dirname)))
         expect(flash[:notice]).to match(I18n.t(:dir_created, scope: 'events.material_area'))
       end
     end
@@ -99,10 +98,9 @@ RSpec.describe EventsController, type: :controller do
       pending "TODO: Sanitizing"
       mock_writing_to_filesystem do
         dangerous_name = "../hacked_you.lol"
-        path = ""
-        post :make_material_folder, event_id: @event.to_param, path: path, name: dangerous_name
+        mkdir(dangerous_name)
         expect(response).to redirect_to :action => :show, :id => @event.id
-        expect(File.exists?(File.join(@event.material_path, path, dangerous_name))).to be false
+        expect(File.exists?(File.join(@event.material_path, dangerous_name))).to be false
         expect(flash[:notice]).to match(I18n.t(:success_message, scope: 'events.material_area'))
       end
     end
@@ -112,7 +110,7 @@ RSpec.describe EventsController, type: :controller do
       mock_writing_to_filesystem do
         name = "subdir"
         dangerous_path = "../hacked_you.lol"
-        post :make_material_folder, event_id: @event.to_param, path: dangerous_path, name: name
+        mkdir(name, dangerous_path)
         expect(response).to redirect_to :action => :show, :id => @event.id
         expect(File.exists?(File.join(@event.material_path, dangerous_path, name))).to be false
         expect(flash[:notice]).to match(I18n.t(:success_message, scope: 'events.material_area'))
@@ -123,13 +121,12 @@ RSpec.describe EventsController, type: :controller do
       pending "TODO: Warning message when overwriting was avoided"
       mock_writing_to_filesystem do
         name = "subdir"
-        path = ""
-        full_path = File.join(@event.material_path, path, name)
-        Dir.mkdir(full_path)
-        File.write(File.join(full_path, "gentoo.txt"), "") # empty file to test if first dir was deleted
-        post :make_material_folder, event_id: @event.to_param, path: path, name: name
+        filename = "gentoo.txt"
+        mkdir(name)
+        upload_file(name: filename, dir: name) # empty file to test if first dir was deleted
+        mkdir(name)
         expect(response).to redirect_to :action => :show, :id => @event.id
-        expect(File.exists?(File.join(full_path, "gentoo.txt")))
+        expect(File.exists?(File.join(@event.material_path, name, "gentoo.txt")))
         expect(flash[:alert]).to match(I18n.t(:already_exists, scope: 'events.material_area'))
       end
     end
@@ -138,12 +135,10 @@ RSpec.describe EventsController, type: :controller do
       pending "TODO: Warning message when overwriting was avoided"
       mock_writing_to_filesystem do
         name = "gentoo.txt"
-        path = ""
-        full_path = File.join(@event.material_path, path, name)
-        File.write(full_path, "")
-        post :make_material_folder, event_id: @event.to_param, path: path, name: name
+        upload_file(name: name)
+        mkdir(name)
         expect(response).to redirect_to :action => :show, :id => @event.id
-        expect(File.directory?(full_path)).to be false
+        expect(File.directory?(File.join(@event.material_path, name))).to be false
         expect(flash[:alert]).to match(I18n.t(:already_exists, scope: 'events.material_area'))
       end
     end
@@ -153,7 +148,7 @@ RSpec.describe EventsController, type: :controller do
     it "removes a file" do
       mock_writing_to_filesystem do
         path = "gentoo.txt"
-        File.write(File.join(@event.material_path, path), "")
+        upload_file(name: path)
         post :remove_material, event_id: @event.to_param, path: path
         expect(response).to redirect_to :action => :show, :id => @event.id
         expect(File.exists?(File.join(@event.material_path, path))).to be false
@@ -163,8 +158,8 @@ RSpec.describe EventsController, type: :controller do
 
     it "removes a directory" do
       mock_writing_to_filesystem do
-        path = "gentoo.txt"
-        Dir.mkdir(File.join(@event.material_path, path))
+        path = "darjeeling"
+        mkdir(path)
         post :remove_material, event_id: @event.to_param, path: path
         expect(response).to redirect_to :action => :show, :id => @event.id
         expect(File.exists?(File.join(@event.material_path, path))).to be false
@@ -197,8 +192,8 @@ RSpec.describe EventsController, type: :controller do
     it "moves a file to another directory" do
       mock_writing_to_filesystem do
         subdir = "subdir"
-        Dir.mkdir(File.join(@event.material_path, subdir))
-        post :upload_material, event_id: @event.to_param, path: '', file_upload: file
+        mkdir(subdir)
+        upload_file
         post :move_material, event_id: @event.to_param, from: file.original_filename, to: subdir
         expect(response).to redirect_to :action => :show, :id => @event.id
         expect(File.exists?(File.join(@event.material_path, subdir, file.original_filename)))
@@ -210,8 +205,8 @@ RSpec.describe EventsController, type: :controller do
       mock_writing_to_filesystem do
         name = "testdir"
         subdir = "subdir"
-        Dir.mkdir(File.join(@event.material_path, subdir))
-        post :make_material_folder, event_id: @event.to_param, path: '', name: name
+        mkdir(subdir)
+        mkdir(name)
         post :move_material, event_id: @event.to_param, from: name, to: subdir
         expect(response).to redirect_to :action => :show, :id => @event.id
         expect(Dir.exists?(File.join(@event.material_path, subdir, name)))
@@ -228,11 +223,11 @@ RSpec.describe EventsController, type: :controller do
     it "shows an error instead of overwriting a file" do
       pending "TODO: do not overwrite file"
       mock_writing_to_filesystem do
-        subdir = "subdir"
+        subdir = "rickenbacker"
         text = "Ramona Flowers"
-        Dir.mkdir(File.join(@event.material_path, subdir))
-        File.write(File.join(@event.material_path, subdir, file.original_filename), text)
-        post :upload_material, event_id: @event.to_param, path: '', file_upload: file
+        upload_file
+        mkdir(subdir)
+        upload_file(name: file.original_filename, dir: subdir, content: text)
         post :move_material, event_id: @event.to_param, from: file.original_filename, to: subdir
         expect(response).to redirect_to :action => :show, :id => @event.id
         expect(File.exists?(File.join(@event.material_path, subdir, file.original_filename)))
@@ -245,7 +240,7 @@ RSpec.describe EventsController, type: :controller do
       pending "TODO: show error"
       mock_writing_to_filesystem do
         subdir = "subdir"
-        Dir.mkdir(File.join(@event.material_path, subdir))
+        mkdir(subdir)
         post :move_material, event_id: @event.to_param, from: file.original_filename, to: subdir
         expect(response).to redirect_to :action => :show, :id => @event.id
         expect(File.exists?(File.join(@event.material_path, subdir, file.original_filename))).to be false
@@ -257,7 +252,7 @@ RSpec.describe EventsController, type: :controller do
       pending "TODO: show error"
       mock_writing_to_filesystem do
         subdir = "subdir"
-        post :upload_material, event_id: @event.to_param, path: '', file_upload: file
+        upload_file
         post :move_material, event_id: @event.to_param, from: file.original_filename, to: subdir
         expect(response).to redirect_to :action => :show, :id => @event.id
         expect(File.exists?(File.join(@event.material_path, subdir, file.original_filename))).to be false
@@ -268,7 +263,7 @@ RSpec.describe EventsController, type: :controller do
     it "shows an error when moving a directory into itself" do
       mock_writing_to_filesystem do
         dir = "dir"
-        Dir.mkdir(File.join(@event.material_path, dir))
+        mkdir(dir)
         post :move_material, event_id: @event.to_param, from: dir, to: dir
         expect(response).to redirect_to :action => :show, :id => @event.id
         expect(File.exists?(File.join(@event.material_path, dir)))
@@ -280,8 +275,8 @@ RSpec.describe EventsController, type: :controller do
       mock_writing_to_filesystem do
         dir = "dir"
         subdir = "subdir"
-        Dir.mkdir(File.join(@event.material_path, dir))
-        Dir.mkdir(File.join(@event.material_path, dir, subdir))
+        mkdir(dir)
+        mkdir(subdir, path: dir)
         post :move_material, event_id: @event.to_param, from: dir, to: File.join(dir, subdir)
         expect(response).to redirect_to :action => :show, :id => @event.id
         expect(File.exists?(File.join(@event.material_path, dir)))
@@ -295,7 +290,7 @@ RSpec.describe EventsController, type: :controller do
     it "renames a file" do
       mock_writing_to_filesystem do
         new_name = "otter_in_my_water"
-        post :upload_material, event_id: @event.to_param, path: '', file_upload: file
+        upload_file
         post :rename_material, event_id: @event.to_param, from: file.original_filename, to: new_name
         expect(response).to redirect_to :action => :show, :id => @event.id
         expect(File.exists?(File.join(@event.material_path, file.original_filename))).to be false
@@ -308,7 +303,7 @@ RSpec.describe EventsController, type: :controller do
       mock_writing_to_filesystem do
         name = "meduka"
         new_name = "meguca"
-        post :make_material_folder, event_id: @event.to_param, path: '', name: name
+        mkdir(name)
         post :rename_material, event_id: @event.to_param, from: name, to: new_name
         expect(response).to redirect_to :action => :show, :id => @event.id
         expect(Dir.exists?(File.join(@event.material_path, new_name)))
@@ -337,8 +332,8 @@ RSpec.describe EventsController, type: :controller do
       mock_writing_to_filesystem do
         first_file = "purity"
         text = "fresh_blood"
-        File.write(File.join(@event.material_path, first_file), text)
-        post :upload_material, event_id: @event.to_param, path: '', file_upload: file
+        upload_file
+        upload_file(name: first_file, content: text)
         post :rename_material, event_id: @event.to_param, from: file.original_filename, to: first_file
         expect(response).to redirect_to :action => :show, :id => @event.id
         expect(File.exists?(File.join(@event.material_path, file.original_filename)))
@@ -363,7 +358,7 @@ RSpec.describe EventsController, type: :controller do
   describe "POST #download_material" do
     it "downloads a file from the event's root material directory" do
       mock_writing_to_filesystem do
-        post :upload_material, event_id: @event.to_param, file_upload: file
+        upload_file
         post :download_material, event_id: @event.to_param, file: file.original_filename
         expect(response.header['Content-Type']).to match('application/pdf')
       end
@@ -372,8 +367,8 @@ RSpec.describe EventsController, type: :controller do
     it "downloads a file from a subdirectory" do
       mock_writing_to_filesystem do
         subdir = "bebop"
-        post :make_material_folder, event_id: @event.to_param, path: '', name: subdir
-        post :upload_material, event_id: @event.to_param, path: subdir, file_upload: file
+        mkdir(subdir)
+        upload_file(path: subdir)
         post :download_material, event_id: @event.to_param, file: File.join(subdir, file.original_filename)
         expect(response.header['Content-Type']).to match('application/pdf')
       end
@@ -382,7 +377,7 @@ RSpec.describe EventsController, type: :controller do
     it "downloads a directory as a zip" do
       mock_writing_to_filesystem do
         subdir = "normandy"
-        post :make_material_folder, event_id: @event.to_param, path: '', name: subdir
+        mkdir(subdir)
         post :download_material, event_id: @event.to_param, file: subdir
         expect(response.header['Content-Type']).to match('application/zip')
       end
@@ -390,7 +385,7 @@ RSpec.describe EventsController, type: :controller do
 
     it "shows error if no file was given" do
       mock_writing_to_filesystem do
-        post :upload_material, event_id: @event.to_param, file_upload: file
+        upload_file
         post :download_material, event_id: @event.to_param
         expect(response).to redirect_to :action => :show, :id => @event.id
         expect(flash[:alert]).to match(I18n.t(:no_file_given, scope: 'events.material_area'))
@@ -400,11 +395,24 @@ RSpec.describe EventsController, type: :controller do
     it "shows error if file was not found" do
       mock_writing_to_filesystem do
         filename = "non-existing/file.pdf"
-        post :upload_material, event_id: @event.to_param, file_upload: file
+        upload_file
         post :download_material, event_id: @event.to_param, file: filename
         expect(response).to redirect_to :action => :show, :id => @event.id
         expect(flash[:alert]).to match(I18n.t(:download_file_not_found, scope: 'events.material_area'))
       end
     end
+  end
+
+  def upload_file(options = {})
+    if options[:name].to_s == ""
+      post :upload_material, event_id: @event.to_param, path: options[:path], file_upload: file
+    else
+      File.write(File.join(@event.material_path, options[:dir].to_s, options[:name]), options[:content].to_s)
+    end
+  end
+
+  def mkdir(name, options = {})
+    path = options[:path] ? File.join(@event.material_path, options[:path]) : ""
+    post :make_material_folder, event_id: @event.to_param, path: path, name: name
   end
 end
