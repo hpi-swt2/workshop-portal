@@ -56,6 +56,17 @@ RSpec.describe EventsController, type: :controller do
       end
     end
 
+    it "creates the material_directory if not already present" do
+      mock_writing_to_filesystem do
+        FileUtils.rm_rf(@event.material_path) if File.exists?(@event.material_path)
+        upload_file
+        expect(response).to redirect_to :action => :show, :id => @event.id
+        expect(Dir.exists?(@event.material_path))
+        expect(File.exists?(File.join(@event.material_path, file.original_filename)))
+        expect(flash[:notice]).to match(I18n.t(:success_message, scope: 'events.material_area'))
+      end
+    end
+
     it "shows error if no file was given" do
       mock_writing_to_filesystem do
         post :upload_material, event_id: @event.to_param
@@ -96,6 +107,18 @@ RSpec.describe EventsController, type: :controller do
       end
     end
 
+    it "creates the material_directory if not already present" do
+      mock_writing_to_filesystem do
+        FileUtils.rm_rf(@event.material_path) if File.exists?(@event.material_path)
+        subdir = "subdir"
+        mkdir(subdir)
+        expect(response).to redirect_to :action => :show, :id => @event.id
+        expect(Dir.exists?(@event.material_path))
+        expect(Dir.exists?(File.join(@event.material_path, subdir)))
+        expect(flash[:notice]).to match(I18n.t(:dir_created, scope: 'events.material_area'))
+      end
+    end
+
     it "sanitizes directory names" do
       mock_writing_to_filesystem do
         dangerous_name = "../hacked_you.lol"
@@ -129,7 +152,7 @@ RSpec.describe EventsController, type: :controller do
         name = "subdir"
         filename = "gentoo.txt"
         mkdir(name)
-        upload_file(name: filename, dir: name) # empty file to test if first dir was deleted
+        upload_file(name: filename, path: name) # empty file to test if first dir was deleted
         mkdir(name)
         expect(response).to redirect_to :action => :show, :id => @event.id
         expect(File.exists?(File.join(@event.material_path, name, "gentoo.txt")))
@@ -267,7 +290,7 @@ RSpec.describe EventsController, type: :controller do
         text = "Ramona Flowers"
         upload_file
         mkdir(subdir)
-        upload_file(name: file.original_filename, dir: subdir, content: text)
+        upload_file(name: file.original_filename, path: subdir, content: text)
         move_file(file.original_filename, subdir)
         expect(response).to redirect_to :action => :show, :id => @event.id
         expect(File.exists?(File.join(@event.material_path, subdir, file.original_filename)))
@@ -486,16 +509,110 @@ RSpec.describe EventsController, type: :controller do
     end
   end
 
+  describe "MaterialController private methods" do
+    # /
+    #   dir1/
+    #     subdir/
+    #     subdir2/
+    #       subsubdir/
+    #         file3
+    #     subdir3/
+    #       file1
+    #       file2
+    #     file
+    #   dir2/
+    #     subdir/
+    #       subsubdir/
+    #   dir3/
+    #   file1
+    #   file2
+    #   file3
+    before :each do
+      @event.material_path
+      mkdir("dir1")
+        mkdir("subdir", path: "dir1")
+        mkdir("subdir2", path: "dir1")
+          mkdir("subsubdir", path: ["dir1", "subdir2"])
+            upload_file(name: "file3", path: ["dir1", "subdir2", "subsubdir"])
+        mkdir("subdir3", path: "dir1")
+          upload_file(name: "file1", path: ["dir1", "subdir3"])
+          upload_file(name: "file2", path: ["dir1", "subdir3"])
+        upload_file(name: "file", path: "dir1")
+      mkdir("dir2")
+        mkdir("subdir", path: "dir2")
+          mkdir("subsubdir", path: ["dir2", "subdir"])
+      mkdir("dir3")
+      upload_file(name: "file1")
+      upload_file(name: "file2")
+      upload_file(name: "file3")
+    end
+
+    it "returns a complete list of the material filesystem" do
+      namelist = lambda { |list| list.map { |hash| hash[:name] } }
+
+      root_list = EventsController.new.send(:get_material_files, @event)
+      expected_root_namelist = ["dir1", "dir2", "dir3", "file1", "file2", "file3"]
+      expect(namelist.call(root_list)).to eq expected_root_namelist
+
+        dir1_list = root_list[0][:content]
+        expected_dir1_namelist = ["subdir", "subdir2", "subdir3", "file"]
+        expect(namelist.call(dir1_list)).to eq expected_dir1_namelist
+
+          dir1_subdir_list = dir1_list[0][:content]
+          expect(dir1_subdir_list).to be_empty
+
+          dir1_subdir2_list = dir1_list[1][:content]
+          expected_dir1_subdir2_namelist = ["subsubdir"]
+          expect(namelist.call(dir1_subdir2_list)).to eq expected_dir1_subdir2_namelist
+
+            dir1_subdir2_subsubdir_list = dir1_subdir2_list[0][:content]
+            expected_dir1_subdir2_subsubdir_namelist = ["file3"]
+            expect(namelist.call(dir1_subdir2_subsubdir_list)).to eq expected_dir1_subdir2_subsubdir_namelist
+
+          dir1_subdir3_list = dir1_list[2][:content]
+          expected_dir1_subdir3_namelist = ["file1", "file2"]
+          expect(namelist.call(dir1_subdir3_list)).to eq expected_dir1_subdir3_namelist
+
+        dir2_list = root_list[1][:content]
+        expected_dir2_namelist = ["subdir"]
+        expect(namelist.call(dir2_list)).to eq expected_dir2_namelist
+
+          dir2_subdir_list = dir2_list[0][:content]
+          expected_dir2_subdir_namelist = ["subsubdir"]
+          expect(namelist.call(dir2_subdir_list)).to eq expected_dir2_subdir_namelist
+
+            dir2_subdir_subsubdir_list = dir2_subdir_list[0][:content]
+            expect(dir2_subdir_subsubdir_list).to be_empty
+    end
+
+    it "returns a zipped version of the material filesystem" do
+      download_file
+      zip = response.body
+      Dir.mktmpdir do |dir|
+        Zip::InputStream.open(StringIO.new(zip)) do |zip_file|
+          zip_file.each do |f|
+            fpath = File.join(dir, f.name)
+            zip_file.extract(f, fpath)
+          end
+        end
+        Dir[File.join(@event.material_path, '**', '*')].each do |filename|
+          expect(File.exists?(File.join(dir, filename)))
+        end
+      end
+    end
+  end
+
   def upload_file(options = {})
+    path = options[:path] ? File.join(options[:path]) : ""
     if options[:name].to_s == ""
-      post :upload_material, event_id: @event.to_param, path: options[:path], file_upload: file
+      post :upload_material, event_id: @event.to_param, path: path, file_upload: file
     else
-      File.write(File.join(@event.material_path, options[:dir].to_s, options[:name]), options[:content].to_s)
+      File.write(File.join(@event.material_path, path, options[:name]), options[:content].to_s)
     end
   end
 
   def mkdir(name, options = {})
-    path = options[:path] ? options[:path] : ""
+    path = options[:path] ? File.join(options[:path]) : ""
     post :make_material_folder, event_id: @event.to_param, path: path, name: name
   end
 
