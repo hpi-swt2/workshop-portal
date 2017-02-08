@@ -86,12 +86,4 @@ module ApplicationHelper
   def devise_mapping
     @devise_mapping ||= Devise.mappings[:user]
   end
-
-  # Generates a nice looking pattern in one of the HPI colors
-  # for the given string.
-  def geopattern(string)
-    colors = ['#B1073A', '#DE6207', '#F7A900']
-    color = colors[Digest::SHA1.hexdigest(string).to_i(16) % colors.size]
-    GeoPattern.generate(string, color: color)
-  end
 end
