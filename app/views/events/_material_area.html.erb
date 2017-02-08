@@ -1,8 +1,10 @@
 <% if can? :view_material, Event %>
   <a name="material_area"></a>
-  <%= render( partial: 'material_sub_dir_modal' ) %>
-  <%= render( partial: 'material_move_modal' ) %>
-  <%= render( partial: 'material_rename_modal' ) %>
+  <% if can? :upload_material, Event %>
+    <%= render( partial: 'material_sub_dir_modal' ) %>
+    <%= render( partial: 'material_move_modal' ) %>
+    <%= render( partial: 'material_rename_modal' ) %>
+  <% end %>
   <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10 col-xs-offset-0 col-sm-offset-0 col-md-offset-1 col-lg-offset-1" id="event_material_area">
     <h3><%= t '.title', title: @event.name %></h3>
 
@@ -48,6 +50,14 @@
         $('.move-dir-button').click(openMoveModal);
         $('.add-dir-button').click(openAddDirModal);
         $('.rename-dir-button').click(openRenameModal);
+
+        $('#material_sub_dir_modal').on('shown', function () {
+          $('#material_sub_dir_name').get(0).focus();
+        });
+
+        $('#material_rename_modal').on('shown', function () {
+          $('#material_rename_to').get(0).focus();
+        })
       });
     </script>
 
