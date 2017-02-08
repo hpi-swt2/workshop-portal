@@ -44,7 +44,7 @@ class Email
   def get_agreement_letter_attachment
     {
       name: (I18n.t 'emails.agreement_letter_attachment'),
-      content: File.read(Rails.root.join('storage', 'agreement_letters', 'real_agreement_letter.pdf'))
+      content: Rails.configuration.empty_agreement_letter_path
     }
   end
 
