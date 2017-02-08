@@ -69,3 +69,14 @@
 }
 
  
+
+
+.request_details dt {
+    width: 200px;
+    white-space: normal;
+}
+
+.request_details dd {
+    margin-left: 220px;
+}
+
