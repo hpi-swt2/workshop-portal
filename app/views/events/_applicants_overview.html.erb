@@ -45,7 +45,7 @@
           <td>
             <%= render :partial => 'application_letters/application_selective', locals: {application_letter: application_letter} %>
           </td>
-          <td>
+          <td class="application-notes">
             <%= link_to application_letter_path(application_letter, anchor: "application-notes"),
               :class => 'btn btn-default btn-xs has-tooltip',
               :'data-toggle' => 'tooltip',

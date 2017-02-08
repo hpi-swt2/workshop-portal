@@ -52,8 +52,8 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     login(:organizer)
     event = FactoryGirl.create(:event, :with_one_application_note)
     visit event_path(event)
-    expect(page).to have_css('a.has-tooltip', count: 1)
-    expect(page).to have_css("a[title='#{event.application_letters.second.application_notes.first.note}']")
+    expect(page).to have_css('.application-notes a.has-tooltip', count: 1)
+    expect(page).to have_css(".application-notes a[title='#{event.application_letters.second.application_notes.first.note}']")
   end
 
   scenario "logged in as Organizer I want to be unable to send emails if there is any unclassified application left" do

@@ -25,7 +25,6 @@ FactoryGirl.define do
     status_notification_sent false
 
     trait :with_notes do
-      #association :notes, factory: :application_note
       application_notes { build_list :application_note, 1 }
     end
   end
