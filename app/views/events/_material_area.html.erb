@@ -7,9 +7,24 @@
     <h3><%= t '.title', title: @event.name %></h3>
 
     <ul style="list-style-type: none;">
-      <% @material_files.each do |file| %>
-          <%= render( partial: 'material_item', locals: { file: file }) %>
-      <% end %>
+      <li><span class="glyphicon glyphicon-folder-close"></span> /
+        <%= form_tag(event_download_material_path(@event), style: 'display: inline;') do %>
+            <%= hidden_field_tag "file", '' %>
+            <%= button_tag t('.download_all'),
+                           class: 'btn btn-xs btn-primary',
+                           type: 'submit',
+                           id: "material_download"
+            %>
+        <% end %>
+        <% if can? :upload_material, Event %>
+          <button class="btn btn-primary btn-xs add-dir-button" data-path=""><span class="glyphicon glyphicon-folder-open"></span></button>
+        <% end %>
+        <ul style="list-style-type: none;">
+          <% @material_files.each do |file| %>
+              <%= render( partial: 'material_item', locals: { file: file }) %>
+          <% end %>
+        </ul>
+      </li>
     </ul>
 
 
@@ -36,17 +51,8 @@
       });
     </script>
 
-    <%= form_tag(event_download_material_path(@event), style: 'display: inline;') do %>
-      <%= hidden_field_tag "file", '' %>
-      <%= submit_tag t('.download_all'),
-                     class: 'btn btn-default',
-                     id: "material_download"
-      %>
-    <% end %>
     <% if can? :upload_material, Event %>
-      <button class="btn btn-default add-dir-button" data-path=""><%= t('events.material_area.create_dir') %></button>
-      <%= form_tag(event_upload_material_path(@event), class: 'btn btn-default', multipart: true) do %>
-
+        <%= form_tag(event_upload_material_path(@event), class: 'btn btn-default', multipart: true) do %>
           <%= file_field_tag "file_upload",
                              class: "btn btn-default btn-file",
                              style: 'display:inline',
