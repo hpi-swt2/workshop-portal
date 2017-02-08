@@ -4,8 +4,10 @@ require 'pdf_generation/participants_pdf'
 require 'rubygems'
 require 'zip'
 require 'carrierwave'
+require "event_image_upload_helper"
 
 class EventsController < ApplicationController
+  include EventImageUploadHelper
 
   before_action :set_event, only: [:show, :edit, :update, :destroy, :participants, 
     :participants_pdf, :print_applications, :print_applications_eating_habits, :badges, :print_badges]
@@ -34,7 +36,7 @@ class EventsController < ApplicationController
 
   # GET /events/new
   def new
-    @event = Event.new
+    @event = Event.new image: stock_photo_paths.first
   end
 
   # GET /events/1/edit
@@ -264,7 +266,7 @@ class EventsController < ApplicationController
     end
 
     def event_params
-      params.require(:event).permit(:name, :description, :image, :max_participants, :organizer, :knowledge_level, :application_deadline, :published, :hidden, :custom_application_fields => [], date_ranges_attributes: [:start_date, :end_date, :id])
+      params.require(:event).permit(:name, :description, :image, :custom_image, :custom_image_cache, :max_participants, :organizer, :knowledge_level, :application_deadline, :published, :hidden, :custom_application_fields => [], date_ranges_attributes: [:start_date, :end_date, :id])
     end
 
     def add_event_query_conditions(query)

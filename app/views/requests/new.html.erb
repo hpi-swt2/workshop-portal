@@ -3,4 +3,45 @@
   <h1><%=t 'requests.new.title', :default => model_class.model_name.human(count: 1).titleize %></h1>
   <p class="lead"><%= t('requests.intro_text') %></p>
 </div>
+<h3><%= t "requests.templates.headline" %></h3>
+<p class="lead"><%= t "requests.templates.lead_paragraph" %></p>
+<div class="spacer-30"></div>
+<div class="owl-carousel" id="requestGallery">
+  <% 5.times do |i| %>
+  <div>
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h3 class="panel-title"><%= t "requests.templates.panel#{i+1}.title" %></h3>
+      </div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+            <h5><%= t "requests.templates.duration" %></h5>
+            <%= t "requests.templates.panel#{i+1}.duration" %>
+          </div>
+          <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+            <h5><%= t "requests.templates.size" %></h5>
+            <%= t "requests.templates.panel#{i+1}.size" %>
+          </div>
+        </div>
+        <div class="row spacer-15"></div>
+        <div class="row">
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <h5><%= t "requests.templates.target_group" %></h5>
+            <%= t "requests.templates.panel#{i+1}.target_group" %>
+          </div>
+        </div>
+        <div class="row spacer-15"></div>
+        <div class="row">
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+          <h5><%= t "requests.templates.content" %></h5>
+            <%= t "requests.templates.panel#{i+1}.content" %>
+          </div>
+        </div>
+      </div>  
+    </div>
+  </div>
+  <% end %>
+</div>
+<div class="spacer-30"></div>
 <%= render :partial => 'form' %>
