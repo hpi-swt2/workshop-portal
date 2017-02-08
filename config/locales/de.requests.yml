@@ -2,6 +2,43 @@
 
 de:
   requests:
+    templates:
+      headline: "Beispiel-Anfragen"
+      lead_paragraph: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laborum fugiat quasi expedita distinctio, suscipit, eaque deleniti similique eveniet in accusantium voluptas blanditiis id modi voluptatibus culpa illum aliquam. Neque, dolore."  
+      duration: "Dauer"
+      size: "Gruppengröße"
+      target_group: "Zielgruppe"
+      content: "Inhalt"
+      panel1:
+        title: "Workshop 1"
+        duration: "2-3 h"
+        size: "20 Personen"
+        target_group: "Informatikeinsteiger (auch ohne Programmiererfahrung), ca. ab Klasse 10"
+        content: "Die Kenntnisse werden weiter vertieft und Umformungen und Normalformen, sowie Beweise anhand von Aussagenlogik besprochen. Neben dem theoretischen Teil des Workshops werden auch Anwendungsgebiete und Relevanz von Mathematik und Theoretischer Informatk in der Softwareentwicklung besprochen."
+      panel2:
+        title: "Workshop 2"
+        duration: "2-3 h"
+        size: "20 Personen"
+        target_group: "Informatikeinsteiger (auch ohne Programmiererfahrung), ca. ab Klasse 10"
+        content: "Die Kenntnisse werden weiter vertieft und Umformungen und Normalformen, sowie Beweise anhand von Aussagenlogik besprochen. Neben dem theoretischen Teil des Workshops werden auch Anwendungsgebiete und Relevanz von Mathematik und Theoretischer Informatk in der Softwareentwicklung besprochen."
+      panel3:
+        title: "Workshop 3"
+        duration: "2-3 h"
+        size: "20 Personen"
+        target_group: "Informatikeinsteiger (auch ohne Programmiererfahrung), ca. ab Klasse 10"
+        content: "Die Kenntnisse werden weiter vertieft und Umformungen und Normalformen, sowie Beweise anhand von Aussagenlogik besprochen. Neben dem theoretischen Teil des Workshops werden auch Anwendungsgebiete und Relevanz von Mathematik und Theoretischer Informatk in der Softwareentwicklung besprochen."
+      panel4:
+        title: "Workshop 4"
+        duration: "2-3 h"
+        size: "20 Personen"
+        target_group: "Informatikeinsteiger (auch ohne Programmiererfahrung), ca. ab Klasse 10"
+        content: "Die Kenntnisse werden weiter vertieft und Umformungen und Normalformen, sowie Beweise anhand von Aussagenlogik besprochen. Neben dem theoretischen Teil des Workshops werden auch Anwendungsgebiete und Relevanz von Mathematik und Theoretischer Informatk in der Softwareentwicklung besprochen."
+      panel5:
+        title: "Workshop 5"
+        duration: "2-3 h"
+        size: "20 Personen"
+        target_group: "Informatikeinsteiger (auch ohne Programmiererfahrung), ca. ab Klasse 10"
+        content: "Die Kenntnisse werden weiter vertieft und Umformungen und Normalformen, sowie Beweise anhand von Aussagenlogik besprochen. Neben dem theoretischen Teil des Workshops werden auch Anwendungsgebiete und Relevanz von Mathematik und Theoretischer Informatk in der Softwareentwicklung besprochen." 
     intro_text: "Wenn Sie einen Workshop am HPI durchführen wollen, füllen Sie bitte das folgende Formular aus. Die weitere Planung und Kommunikation wird über E-Mail erfolgen."
     new:
       title: "Neue Anfrage stellen"

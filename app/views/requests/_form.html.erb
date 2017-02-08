@@ -1,5 +1,5 @@
 <%= form_for @request, :html => {:class => "form-horizontal request"} do |f| %>
-
+    
     <%= render partial: "shared/error_message", locals: {entity: @request} %>
 
     <h3><%=t 'requests.workshop_information' %></h3>

@@ -137,6 +137,17 @@ FactoryGirl.define do
       end
     end
 
+    trait :in_selection_phase_with_no_mails_sent_and_application do
+      after(:build) do |event, evaluator|
+        create_list(:application_letter, 1, event: event, status: :accepted)
+
+        event.published = true
+        event.application_deadline = Date.yesterday
+        event.acceptances_have_been_sent = false
+        event.rejections_have_been_sent = false
+      end
+    end
+
     trait :in_selection_phase_with_participants_locked do
       after(:build) do |event|
         event.published = true
