@@ -49,9 +49,10 @@ def email_template_rejection
       status: :rejection,
       hide_recipients: false,
       subject: "Absage für TODO",
-      content: 'Liebe Bewerberin / lieber Bewerber
-Leider müssen wir dir mitteilen, dass du für TODO nicht zugelassen wurdest.
-Versuche es doch ein anderes unserer Camps.
+      content: 'Liebe Bewerberin / lieber Bewerber,
+
+leider müssen wir dir mitteilen, dass du für TODO nicht zugelassen wurdest.
+Versuche es doch bei einem anderen unserer Camps.
 
 Viele Grüße,
 dein HPI-Workshop-Team'
