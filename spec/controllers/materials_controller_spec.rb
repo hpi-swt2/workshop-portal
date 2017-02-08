@@ -106,6 +106,14 @@ RSpec.describe EventsController, type: :controller do
       end
     end
 
+    it "does not accept unset parameters" do
+      mock_writing_to_filesystem do
+        post :make_material_folder, event_id: @event.to_param, path: ''
+        expect(response).to redirect_to :action => :show, :id => @event.id
+        expect(flash[:alert]).to match(I18n.t(:no_file_given, scope: 'events.material_area'))
+      end
+    end
+
     it "sanitizes path names" do
       mock_writing_to_filesystem do
         name = "subdir"
@@ -139,6 +147,17 @@ RSpec.describe EventsController, type: :controller do
         expect(flash[:alert]).to match(I18n.t(:already_exists, scope: 'events.material_area'))
       end
     end
+
+    it "does not create an directory in an unexisting directory" do
+      mock_writing_to_filesystem do
+        name = "mydir"
+        path = "myunexistingdir"
+        mkdir(name, path: path)
+        expect(response).to redirect_to :action => :show, :id => @event.id
+        expect(File.directory?(File.join(@event.material_path, path, name))).to be false
+        expect(flash[:alert]).to match(I18n.t(:download_file_not_found, scope: 'events.material_area'))
+      end
+    end
   end
 
   describe "POST #remove_material" do
@@ -150,6 +169,14 @@ RSpec.describe EventsController, type: :controller do
         expect(response).to redirect_to :action => :show, :id => @event.id
         expect(File.exists?(File.join(@event.material_path, path))).to be false
         expect(flash[:notice]).to match(I18n.t(:file_removed, scope: 'events.material_area'))
+      end
+    end
+
+    it "does not accept unset parameters" do
+      mock_writing_to_filesystem do
+        post :remove_material, event_id: @event.to_param
+        expect(response).to redirect_to :action => :show, :id => @event.id
+        expect(flash[:alert]).to match(I18n.t(:no_file_given, scope: 'events.material_area'))
       end
     end
 
@@ -196,6 +223,17 @@ RSpec.describe EventsController, type: :controller do
       end
     end
 
+
+    it "sanitizes path names" do
+      mock_writing_to_filesystem do
+        dangerous_path = "../your_root_directory"
+        path = "myfile.txt"
+        move_file(dangerous_path, path)
+        expect(response).to redirect_to :action => :show, :id => @event.id
+        expect(flash[:alert]).to match(I18n.t(:invalid_path_given, scope: 'events.material_area'))
+      end
+    end
+
     it "moves a directory to another directory" do
       mock_writing_to_filesystem do
         name = "testdir"
@@ -206,6 +244,14 @@ RSpec.describe EventsController, type: :controller do
         expect(response).to redirect_to :action => :show, :id => @event.id
         expect(Dir.exists?(File.join(@event.material_path, subdir, name)))
         expect(flash[:notice]).to match(I18n.t(:file_moved, scope: 'events.material_area'))
+      end
+    end
+
+    it "does not accept unset parameters" do
+      mock_writing_to_filesystem do
+        post :move_material, event_id: @event.to_param
+        expect(response).to redirect_to :action => :show, :id => @event.id
+        expect(flash[:alert]).to match(I18n.t(:no_file_given, scope: 'events.material_area'))
       end
     end
 
@@ -305,6 +351,14 @@ RSpec.describe EventsController, type: :controller do
       end
     end
 
+    it "does not accept unset parameters" do
+      mock_writing_to_filesystem do
+        post :rename_material, event_id: @event.to_param
+        expect(response).to redirect_to :action => :show, :id => @event.id
+        expect(flash[:alert]).to match(I18n.t(:no_file_given, scope: 'events.material_area'))
+      end
+    end
+
     it "sanitizes from-path names" do
       mock_writing_to_filesystem do
         invalid_from = "...../..."
@@ -389,6 +443,14 @@ RSpec.describe EventsController, type: :controller do
         upload_file(path: subdir)
         download_file(subdir, file.original_filename)
         expect(response.header['Content-Type']).to match('application/pdf')
+      end
+    end
+
+    it "does not accept an hackish pathname" do
+      mock_writing_to_filesystem do
+        subdir = "/mypath/../"
+        download_file(subdir, '')
+        expect(flash[:alert]).to match(I18n.t(:invalid_path_given, scope: 'events.material_area'))
       end
     end
 
