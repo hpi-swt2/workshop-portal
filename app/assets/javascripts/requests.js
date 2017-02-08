@@ -10,6 +10,9 @@ function enableOwlCarousel() {
 		dots: true,
 		margin: 30,
 		nav: true,
+		navText: [
+      "<i class='icon-chevron-left icon-white'><</i>",
+      "<i class='icon-chevron-right icon-white'>></i>" ]
 	});
 }
 
