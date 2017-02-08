@@ -2,9 +2,11 @@
 
 de:
   events:
+    intro_text: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+    description_placeholder: "## Untertitel\\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\\n \\n ## Lernziele\\n* a\\n* b\\n* c\\n\\n## Hinweise\\n* a\\n* b\\n* c"
     archive: "Veranstaltungs-Archiv"
     all_events: "Alle Events"
-    intro_text: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+
     applicants_overview:
       title: "Bewerber für %{title}"
       participations: "Anzahl der Bewerbungen"
@@ -45,7 +47,7 @@ de:
       print: "Namensschilder drucken"
       title: "Namensschilder drucken für das Event "
       logo_upload: "Logo (optional)"
-      show_school: "Schule anzeigen"
+      show_organisation: "Schule/Organisation anzeigen"
       show_color: "Gruppenfarbe anzeigen"
       name_format: "Format der Namen"
       no_users_selected: "Es wurde kein Teilnehmer ausgewählt."
@@ -61,28 +63,37 @@ de:
       print_participants: "Teilnehmerliste (PDF)"
       print_habits: "Essgewohnheiten drucken (PDF)"
       print_title: "Essgewohnheiten der Teilnehmer für %{title}"
-      print_summary: 
+      print_summary:
         one: "Insgesamt werden wir bei dieser Veranstaltung %{count} Teilnehmer/-in> haben."
         other: "Insgesamt werden wir bei dieser Veranstaltung %{count} Teilnehmer/-innen haben."
-      print_summary_vegetarian: 
+      print_summary_vegetarian:
         one: "%{count} Person ernährt sich vegetarisch."
         other: "%{count} Personen ernähren sich vegetarisch."
-      print_summary_vegan: 
+      print_summary_vegan:
         one: "%{count} Person ernährt sich vegan."
         other: "%{count} Personen ernähren sich vegan."
-      print_summary_omnivorous: 
+      print_summary_omnivorous:
         one: "%{count} Person ernährt sich omnivor."
         other: "%{count} Personen ernähren sich omnivor."
       print_summary_allergic: "Außerdem haben folgende Teilnehmer Allergien oder Unverträglichkeiten:"
+      send_email: "E-Mail an Teilnehmer versenden"
     agreement_letters_download:
       notices:
         no_participants_selected: "Keine Teilnehmer ausgewählt"
         no_agreement_letters: "Keiner der gewählten Teilnehmer hat eine Einverständniserklärung"
       select_all: "Alle auswählen"
       download_all_as: "Einverständniserklärungen herunterladen als"
-    kinds:
-      workshop: "Workshop"
-      camp: "Camp"
+    type:
+      private: "Privat"
+      public: "Öffentlich"
+    email_modal:
+      send_email: "E-Mail an Teilnehmer senden"
+      select_users: "Nutzer auswählen"
+      select_groups: "Gruppen auswählen"
+      select_all: "Alle auswählen"
+      sender: "Absenderadresse"
+      send_email_label: "Weiter"
+      close_modal: "Schließen"
     list:
       read_on: "Weiterlesen"
     participants_modal:
@@ -106,12 +117,13 @@ de:
       deadline_approaching:
         one: "Bewerbungsfrist in einem Tag"
         other: "Bewerbungsfrist in %{count} Tagen"
+        zero: "Bewerbungsfrist heute"
       time_span_non_consecutive:
-        one: "Über einen Tag mit Unterbrechung"
-        other: "Über %{count} Tage mit Unterbrechung"
+        one: "Umfang: Ein Tag mit Unterbrechung"
+        other: "Umfang: %{count} Tage mit Unterbrechung"
       time_span_consecutive:
-        one: "Über einen Tag"
-        other: "Über %{count} Tage"
+        one: "Umfang: 1 Tag"
+        other: "Umfang: %{count} Tage"
       past_event: "Vergangene Veranstaltung"
       is_published: "Ist veröffentlicht"
 
@@ -125,9 +137,9 @@ de:
       label_of_custom_field: "Name des eigenen Felds"
       custom_application_fields_cant_be_changed_later: "Die eigenen Felder für die Bewerbung können nach dem ersten Speichern nicht mehr geändert werden."
       add_timespan: "Zeitspanne hinzufügen"
-      published:
-        myon: "An"
-        myoff: "Aus"
+      draft:
+        save: "Speichern"
+        publish: "Veröffentlichen"
     email:
       templates: "Vorlagen"
     applications_pdf:
@@ -136,6 +148,10 @@ de:
       page: "Seite"
     errors:
       application_deadline_before_start_of_event: "Bewerbungsschluss muss vor Beginn der Veranstaltung liegen"
+      image_too_small: "Das ausgewählte Bild muss mindestens 200 x 155 Pixel groß sein"
+
+    image_upload:
+      upload_local_file: "Lokale Datei hochladen"
 
   activerecord:
       models:
@@ -146,8 +162,8 @@ de:
         event:
           name: "Name"
           description: "Beschreibung"
+          image: "Bild"
           max_participants: "Maximale Teilnehmerzahl"
-          participants_are_unlimited: "Unbegrenzte Teilnehmerzahl"
           kind: "Art"
           active: "Aktiv"
           start_date: "Beginn"
@@ -160,8 +176,9 @@ de:
             one: "Zeitspanne"
             other: "Zeitspannen"
           application_deadline: "Bewerbungsschluss"
-          published: "Öffentlich"
+          published: "Entwurf"
           hidden: "Versteckt"
+          type: "Veranstaltungstyp"
   helpers:
     submit:
       event:

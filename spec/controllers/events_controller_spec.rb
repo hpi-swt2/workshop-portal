@@ -71,6 +71,11 @@ RSpec.describe EventsController, type: :controller do
         get :show, id: @event.to_param, session: valid_session
         expect(assigns(:occupied_places)).to eq(@event.compute_occupied_places)
       end
+
+      it "assigns the free places status as @has_free_places" do
+        get :show, id: @event.to_param
+        expect(assigns(:has_free_places)).to eq(@event.compute_free_places > 0)
+      end
     end
 
     describe "GET #new" do
@@ -157,6 +162,17 @@ RSpec.describe EventsController, type: :controller do
       end
     end
 
+    describe "GET #send_participants_email" do
+      before :each do
+        @user = FactoryGirl.create(:user_with_profile, role: :admin)
+        sign_in @user
+      end
+      it "should assign a new email to accepted applications as @email" do
+        get :send_participants_email, id: @event.to_param, session: valid_session, all: true, groups: [], users:[]
+        expect(assigns(:email)).to have_attributes(hide_recipients: false, recipients: @event.send(:email_addresses_of_accepted_applicants), reply_to: '', subject: '', content: '')
+      end
+    end
+
     describe "GET #accept_all_applicants" do
       it "should redirect to the event" do
         get :accept_all_applicants, id: @event.to_param, session: valid_session
@@ -165,7 +181,7 @@ RSpec.describe EventsController, type: :controller do
     end
   end
 
-  describe "GET #show for hidden event as pupil"
+  describe "GET #show for private event as pupil"
     it "should redirect to new application letter page" do
       @event = FactoryGirl.create(:event, hidden: true)
       @user = FactoryGirl.create(:user_with_profile, role: :pupil)
@@ -225,7 +241,7 @@ RSpec.describe EventsController, type: :controller do
       user = FactoryGirl.create(:user)
       profile = FactoryGirl.create(:profile, user: user, last_name: "Paul")
       application_letter = FactoryGirl.create(:application_letter_accepted,
-        user: user, event: event, vegan: true, allergic: true)
+        user: user, event: event, vegan: true, allergies: "many")
       user = FactoryGirl.create(:user)
       profile = FactoryGirl.create(:profile, user: user, last_name: "Mary")
       application_letter = FactoryGirl.create(:application_letter_accepted,
@@ -233,7 +249,7 @@ RSpec.describe EventsController, type: :controller do
       user = FactoryGirl.create(:user)
       profile = FactoryGirl.create(:profile, user: user, last_name: "Otti")
       application_letter = FactoryGirl.create(:application_letter_accepted,
-        user: user, event: event, vegetarian: true, allergic: true)
+        user: user, event: event, vegetarian: true, allergies: "many")
       user = FactoryGirl.create(:user)
       profile = FactoryGirl.create(:profile, user: user, last_name: "Benno")
       application_letter = FactoryGirl.create(:application_letter_accepted,

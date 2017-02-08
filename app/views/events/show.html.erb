@@ -1,6 +1,4 @@
-<%- model_class = Event -%>
-
-<% if @event.unreasonably_long %>
+<% if @event.unreasonably_long and can? :manage, @event %>
   <div class="panel panel-warning">
     <div class="panel-body">
       <%= t 'events.notices.unreasonable_timespan' %>

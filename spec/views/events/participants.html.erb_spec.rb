@@ -50,9 +50,7 @@ RSpec.describe "events/participants", type: :view do
   end
 
   it "displays print badges button (in event execution phase)" do
-    @event.published = true
-    @event.application_deadline = Date.yesterday
-    @event.application_status_locked = true
+    @event = assign(:event, FactoryGirl.create(:event, :in_execution_phase))
     render
     expect(rendered).to have_link(t(:print_button_label, scope: 'events.badges', disabled: false))
   end
@@ -79,7 +77,7 @@ RSpec.describe "events/participants", type: :view do
   end
 
   it "does not show the print badges button when the event is in selection phase" do
-    @event = assign(:event, FactoryGirl.create(:event_with_accepted_applications, :in_selection_phase))
+    @event = assign(:event, FactoryGirl.create(:event_with_accepted_applications, :in_selection_phase_with_no_mails_sent))
     @participants = assign(:participants, @event.participants)
     render
     expect(rendered).to_not have_link(t(:print_button_label, scope: 'events.badges'))
@@ -114,5 +112,17 @@ RSpec.describe "events/participants", type: :view do
     expect(rendered).to have_css('div#print_participant_modal')
     expect(rendered).to have_css('button#open_print_modal')
     expect(rendered).to have_css('input#print_participant_list')
+  end
+
+  it "displays an modal that allows selection of email target" do
+    render
+    expect(rendered).to have_css('div#send_participant_email_modal')
+  end
+
+  it "allows selection of participants in the modal" do
+    application_letter = FactoryGirl.create(:application_letter, user: FactoryGirl.create(:user_with_profile, role: :organizer), event: @event, status: 1)
+    @event.application_letters.push(application_letter)
+    render
+    expect(rendered).to have_select('users', :with_options => [application_letter.user.profile.name])
   end
 end
