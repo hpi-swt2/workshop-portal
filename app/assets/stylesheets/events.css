@@ -3,6 +3,10 @@
   They will automatically be included in application.css.
 */
 
+h1.event-title {
+    margin-bottom: 0.5em;
+}
+
 #event_overview dt {
     width: 200px;
 }
