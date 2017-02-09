@@ -1,6 +1,4 @@
 <%- model_class = ApplicationLetter -%>
-<div class="col-sm-8 col-sm-offset-2">
-
 <p class='alert alert-info' >
   <% if @application_deadline_exceeded %>
     <%= t('.deadline_exceeded') %>
@@ -8,6 +6,9 @@
     <%= t('.can_change_until', application_deadline: l(@application_letter.event.application_deadline)) %>
   <% end %>
 </p>
+
+<div class="col-sm-8 col-sm-offset-2">
+
 <div class="page-header">
   <h1><%=t '.check_application_for', event_name: @application_letter.event.name %></h1>
 </div>
