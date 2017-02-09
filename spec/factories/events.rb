@@ -193,6 +193,12 @@ FactoryGirl.define do
        end
     end
 
+    trait :with_one_application_note do
+      after(:create) do |event|
+        event.application_letters = [build(:application_letter), build(:application_letter, :with_notes)]
+      end
+    end
+
     factory :event_with_accepted_applications do
       name "Event-Name"
       description "Event-Description"
