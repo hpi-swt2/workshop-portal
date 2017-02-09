@@ -31,16 +31,14 @@ de:
         title: "Roboter-Programmierung"
         duration: "mit Erfahrung: 6h, ohne Erfahrung: 8 h"
         size: "max. 40"
-        target_group: "Für eine erfolgreiche Teilnahme an diesem Workshop sind Programmierkenntnisse (Verständnis von Kontrollstrukturen, Variablen, Funktionen und optional Objektorientierung)
-in einer oder mehreren Programmiersprachen erforderlich. Des Weiteren ist es von Vorteil, wenn den Schüler/innen Grundlagen der Vektorrechnung bekannt sind oder ein gutes allgemeines mathematisches Grundverständnis vorhanden ist."
+        target_group: "Für eine erfolgreiche Teilnahme an diesem Workshop sind Programmierkenntnisse (Verständnis von Kontrollstrukturen, Variablen, Funktionen und optional Objektorientierung) in einer oder mehreren Programmiersprachen erforderlich. Des Weiteren ist es von Vorteil, wenn den Schüler/innen Grundlagen der Vektorrechnung bekannt sind oder ein gutes allgemeines mathematisches Grundverständnis vorhanden ist."
         content: "Programmierung einer künstlichen Intelligenz zur Steuerung eines weltenerobernden Kampfroboter. Die Teilnehmer entwickeln in Kleingruppen künstliche Intelligenzen innerhalb eines Java-Frameworks. Diese treten am Ende des Tages in einem Turnier gegeneinander an."
       panel5:
         title: "Algorithmen erarbeiten"
         duration: "mind. 6h, mit Implementierung mind. 8h"
         size: "nach Absprache, mind. 10 Schüler/innen, max. 40 Schüler/innen"
         target_group: "Programmier-Einsteiger und Fortgeschrittene, ca. ab Klasse 10"
-        content: "Typische Probleme der Informatik stecken überall im Alltag: Wie liefert ein Postbote am besten seine Pakete aus? Wie setzt man Mitarbeiter in seinem Unternehmen ein, so dass alle glücklich sind? Wie packt man die Artikel einer Bestellung möglichst platzsparend in einen Karton? Der Workshop bietet den Schülerinnen und Schülern Einblicke in typische Problemstellungen der Algorithmik und stellt sie vor die Aufgabe, gute Algorithmen für diese Probleme zu finden. 
-Gruppen mit Programmierkenntnisse können ihre Lösungen anschließend in Java implementieren, ansonsten macht auch das theoretische Bearbeiten der Aufgaben viel Spaß." 
+        content: "Typische Probleme der Informatik stecken überall im Alltag: Wie liefert ein Postbote am besten seine Pakete aus? Wie setzt man Mitarbeiter in seinem Unternehmen ein, so dass alle glücklich sind? Wie packt man die Artikel einer Bestellung möglichst platzsparend in einen Karton? Der Workshop bietet den Schülerinnen und Schülern Einblicke in typische Problemstellungen der Algorithmik und stellt sie vor die Aufgabe, gute Algorithmen für diese Probleme zu finden. Gruppen mit Programmierkenntnisse können ihre Lösungen anschließend in Java implementieren, ansonsten macht auch das theoretische Bearbeiten der Aufgaben viel Spaß." 
     intro_text: "Wenn Sie einen Workshop am HPI durchführen wollen, füllen Sie bitte das folgende Formular aus. Die weitere Planung und Kommunikation wird über E-Mail erfolgen."
     new:
       title: "Neue Anfrage stellen"

@@ -6,7 +6,7 @@ function enableOwlCarousel() {
 		center: false,
 		items: 2,
 		autoplay: false,
-		autoHeight: true,
+		loop: true,
 		dots: true,
 		margin: 30,
 		nav: true,
