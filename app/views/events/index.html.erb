@@ -7,7 +7,7 @@
 <div class="row">
   <div class="event-list col-md-10 col-md-offset-1">
     <div class="clearfix">
-      <%= link_to new_event_path, :class => 'btn btn-primary pull-right' do
+      <%= link_to new_event_path, :class => 'btn btn-primary pull-right', :id => 'new_event' do
         glyph('plus') + ' ' +
         t('.new', :default => t('helpers.links.new'))
       end if can? :new, Event %>
