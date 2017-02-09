@@ -10,6 +10,10 @@
       selected: participant_group.group
     ),
     {},
-    { onchange: 'this.form.submit()', class: 'colorselector', autocomplete: 'off' }
+    {
+      onchange: 'ajaxUpdateParticipantColor(this.form, "' +
+        I18n.t('events.participants.failed_to_update_color') + '")',
+      class: 'colorselector',
+      autocomplete: 'off' }
   ) %>
 <% end %>

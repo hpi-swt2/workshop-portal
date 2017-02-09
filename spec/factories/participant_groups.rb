@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :participant_group do
     event
-    user
+    association :user, factory: :user_with_profile
     group 1
   end
 end
