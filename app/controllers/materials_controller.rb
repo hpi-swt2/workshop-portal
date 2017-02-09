@@ -14,36 +14,26 @@ class MaterialsController < ApplicationController
     path = params[:path].to_s
     file = params[:file_upload]
 
-    unless is_file?(file)
-      redirect_to event_path(@event), alert: t("events.material_area.no_file_given")
-      return false
-    end
-
-    if invalid_pathname?(path) or invalid_filename?(file.original_filename)
+    if !is_file?(file)
+      redirect_to event_path(@event), alert: t("events.material_area.no_file_given") and return
+    elsif invalid_pathname?(path) || invalid_filename?(file.original_filename)
       redirect_to event_path(@event), alert: t("events.material_area.invalid_path_given") and return
-    end
-    material_path = if path == ''
-      @event.material_path
-    else
-      File.join(@event.material_path, path)
-    end
-
-    unless File.directory?(material_path)
+    elsif !File.directory?(File.join(@event.material_path, path))
       redirect_to event_path(@event), alert: t("events.material_area.download_file_not_found") and return
     end
 
+    file_path = File.join(@event.material_path, path, file.original_filename)
     begin
-      File.write(File.join(material_path, file.original_filename), file.read, mode: "wb")
+      File.write(file_path, file.read, mode: "wb")
     rescue IOError
-      redirect_to event_path(@event), alert: I18n.t("events.material_area.saving_fails")
-      return false
+      redirect_to event_path(@event), alert: t("events.material_area.saving_fails") and return
     end
+
     redirect_to event_path(@event), notice: I18n.t("events.material_area.success_message")
   end
 
   # POST /events/1/download_material
   def download_material
-
     unless params.has_key?(:file)
       redirect_to event_path(@event), alert: I18n.t('events.material_area.no_file_given') and return
     end
@@ -56,9 +46,10 @@ class MaterialsController < ApplicationController
       redirect_to event_path(@event), alert: t('events.material_area.download_file_not_found') and return
     end
     if File.directory?(file_full_path)
-      send_zipped_materials(file_full_path) and return
+      send_zipped_materials(file_full_path)
+    else
+      send_file file_full_path, :x_sendfile => true
     end
-    send_file file_full_path, :x_sendfile => true
   end
 
   def move_material
@@ -87,7 +78,6 @@ class MaterialsController < ApplicationController
   end
 
   def rename_material
-
     unless params.has_key?(:from) and params.has_key?(:to)
       redirect_to event_path(@event), alert: I18n.t('events.material_area.no_file_given') and return
     end
@@ -115,7 +105,7 @@ class MaterialsController < ApplicationController
       redirect_to event_path(@event), alert: I18n.t('events.material_area.invalid_path_given') and return
     end
 
-    path = File.join(event.material_path,params[:path])
+    path = File.join(@event.material_path,params[:path])
     unless File.exists?(path)
       redirect_to event_path(@event), alert: I18n.t('events.material_area.download_file_not_found') and return
     end
@@ -172,7 +162,7 @@ class MaterialsController < ApplicationController
 
     # Moves one material file to another place
     #
-    # @param [String] fr from The path of the file at the moment
+    # @param [String] fr The path of the file at the moment
     # @param [String] to The path of the directory to move into (can be /)
     # @return [None]
     def rename_file(fr, to)
@@ -187,17 +177,17 @@ class MaterialsController < ApplicationController
       FileUtils.rm_rf(path)
     end
 
-    # Adds an directory
+    # Adds a directory
     #
     # @param [String] full_path The path where the directory should be added
     # @return [None]
     def make_dir(full_path)
-        Dir.mkdir(full_path)
+      Dir.mkdir(full_path)
     end
 
     # Collects all files in the given directory and generates an zip-file.
     #
-    # @param [String] full_path The full absolute path to look up
+    # @param full_path [String] The full absolute path to look up
     # @return [None]
     def send_zipped_materials(full_path)
       filename = "material_#{@event.name}_#{Date.today}.zip"
@@ -205,7 +195,7 @@ class MaterialsController < ApplicationController
       begin
         Zip::OutputStream.open(temp_file) { |zos| }
         Zip::File.open(temp_file.path, Zip::File::CREATE) do |zipfile|
-          collect_files_for_zip(full_path, '', zipfile)
+          collect_files_for_zip(full_path, '.', zipfile)
         end
         zip_data = File.read(temp_file.path)
         send_data(zip_data, :type => 'application/zip', :filename => filename, :disposition => 'inline', :x_sendfile => true)
@@ -215,19 +205,18 @@ class MaterialsController < ApplicationController
       end
     end
 
-    def collect_files_for_zip(base_path, current_path, zip)
-      path = current_path == '' ? base_path : File.join(base_path, current_path)
-      if current_path != ''
-        zip.mkdir current_path
-      end
-      Dir.foreach(path) do |file|
-        unless file == '.' or file == '..'
-          sub_path = current_path == '' ? file : File.join(current_path, file)
-          if File.directory?(File.join(path, file))
-            collect_files_for_zip(base_path, sub_path, zip)
-          else
-            zip.add(sub_path, File.join(path, file))
-          end
+    def collect_files_for_zip(materials_path, current_path, zip)
+      absolute_path = File.join(materials_path, current_path)
+      Dir.foreach(absolute_path) do |file|
+        next if file == '.' || file == '..'
+
+        absolute_file_path = File.join(absolute_path, file)
+        relative_file_path = File.join(current_path, file)
+        if File.directory?(absolute_file_path)
+          zip.mkdir(absolute_file_path)
+          collect_files_for_zip(materials_path, relative_file_path, zip)
+        else
+          zip.add(relative_file_path, absolute_file_path)
         end
       end
     end
