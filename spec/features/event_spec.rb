@@ -316,20 +316,6 @@ describe "Event", type: :feature do
     end
   end
 
-  it "should allow selecting colors", js: true do
-    login_as(FactoryGirl.create(:user, role: :organizer), :scope => :user)
-
-    group = FactoryGirl.create(:participant_group)
-    FactoryGirl.create(:application_letter_accepted, user: group.user, event: group.event)
-
-    visit event_participants_path(group.event)
-
-    first('.dropdown-colorselector .dropdown-toggle').click
-    first('.color-btn[data-color="#00008B"]').click
-
-    expect(page).to have_css("option[data-color='#00008B'][selected]", visible: false)
-  end
-
   describe "printing badges" do
     before :each do
       login_as(FactoryGirl.create(:user, role: :organizer), :scope => :user)
