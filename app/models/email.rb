@@ -44,7 +44,7 @@ class Email
   def get_agreement_letter_attachment
     {
       name: (I18n.t 'emails.agreement_letter_attachment'),
-      content: Rails.configuration.empty_agreement_letter_path
+      content: File.read(Rails.configuration.empty_agreement_letter_path)
     }
   end
 
