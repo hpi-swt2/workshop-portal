@@ -188,8 +188,8 @@ class MaterialsController < ApplicationController
       end
     end
 
-    def collect_files_for_zip(materials_path, current_path, zip)
-      absolute_path = File.join(materials_path, current_path)
+    def collect_files_for_zip(material_path, current_path, zip)
+      absolute_path = File.join(material_path, current_path)
       Dir.foreach(absolute_path) do |file|
         next if file == '.' || file == '..'
 
@@ -197,7 +197,7 @@ class MaterialsController < ApplicationController
         relative_file_path = File.join(current_path, file)
         if File.directory?(absolute_file_path)
           zip.mkdir(absolute_file_path)
-          collect_files_for_zip(materials_path, relative_file_path, zip)
+          collect_files_for_zip(material_path, relative_file_path, zip)
         else
           zip.add(relative_file_path, absolute_file_path)
         end

@@ -28,8 +28,8 @@ class EventsController < ApplicationController
     @free_places = @event.compute_free_places
     @occupied_places = @event.compute_occupied_places
     @application_letters = filter_application_letters(@event.application_letters)
-    @material_files = get_material_files(@event)
-    @material_directories = get_material_directory_list(@event)
+    @material_files = get_material_files(@event.material_path)
+    @material_directories = get_material_directory_list(@event.material_path)
     @has_free_places = @free_places > 0
   end
 
@@ -254,55 +254,30 @@ class EventsController < ApplicationController
     #
     # @param [Event]
     # @return [Array of Strings]
-    def get_material_files(event)
-      material_path = event.material_path
+    def get_material_files(material_path)
       if File.exists?(material_path)
-        build_files(material_path, '')
+        build_files(material_path, '.')
       else
         []
       end
     end
 
-    def get_material_directory_list(event)
-      material_path = event.material_path
-      if File.exists?(material_path)
-        [['/','']].concat(build_directories(material_path, ''))
-      else
-        [['/','']]
-      end
-    end
-
-    def build_directories(base_path, current_path)
+    def build_files(material_path, current_path)
       list = []
-      path = current_path == '' ? base_path : File.join(base_path, current_path)
-      Dir.foreach(path) do |file|
-        unless file == '.' or file == '..'
-          sub_path = current_path == '' ? file : File.join(current_path, file)
-          if File.directory?(File.join(path, file))
-            list.push(['/' + sub_path, sub_path])
-            list = list.concat(build_directories(base_path, sub_path))
-          end
-        end
-      end
-      list
-    end
+      absolute_path = File.join(material_path, current_path)
+      Dir.foreach(absolute_path) do |file|
+        next if file == '.' or file == '..'
 
-    def build_files(base_path, current_path)
-      list = []
-      path = current_path == '' ? base_path : File.join(base_path, current_path)
-      Dir.foreach(path) do |file|
-        unless file == '.' or file == '..'
-          sub_path = current_path == '' ? file : File.join(current_path, file)
-          hash = {:name => file, :path  => sub_path}
-          if File.directory?(File.join(path, file))
-            hash[:type] = 'dir'
-            hash[:content] = build_files(base_path, sub_path)
-            hash[:empty] = hash[:content].length == 0 ? true : false
-          else
-            hash[:type] = 'file'
-          end
-          list.push hash
+        absolute_file_path = File.join(absolute_path, file)
+        relative_file_path = File.join(current_path, file)
+        hash = {name: file, path: relative_file_path}
+        if File.directory?(absolute_file_path)
+          hash[:type] = 'dir'
+          hash[:content] = build_files(material_path, relative_file_path)
+        else
+          hash[:type] = 'file'
         end
+        list.push(hash)
       end
       list.sort { |a,b|
         if a[:type] == b[:type]
@@ -311,5 +286,28 @@ class EventsController < ApplicationController
           a[:type] == 'dir' ? -1 : 1
         end
       }
+    end
+
+    def get_material_directory_list(material_path)
+      if File.exists?(material_path)
+        [['/','']].concat(build_directories(material_path, ''))
+      else
+        [['/','']]
+      end
+    end
+
+    def build_directories(material_path, current_path)
+      list = []
+      path = current_path == '' ? material_path : File.join(material_path, current_path)
+      Dir.foreach(path) do |file|
+        next if file == '.' or file == '..'
+
+        sub_path = current_path == '' ? file : File.join(current_path, file)
+        if File.directory?(File.join(path, file))
+          list.push(['/' + sub_path, sub_path])
+          list = list.concat(build_directories(material_path, sub_path))
+        end
+      end
+      list
     end
 end

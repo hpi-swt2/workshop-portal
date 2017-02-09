@@ -550,7 +550,7 @@ RSpec.describe MaterialsController, type: :controller do
     it "returns a complete list of the material filesystem" do
       namelist = lambda { |list| list.map { |hash| hash[:name] } }
 
-      root_list = EventsController.new.send(:get_material_files, @event)
+      root_list = EventsController.new.send(:get_material_files, @event.material_path)
       expected_root_namelist = ["dir1", "dir2", "dir3", "file1", "file2", "file3"]
       expect(namelist.call(root_list)).to eq expected_root_namelist
 
