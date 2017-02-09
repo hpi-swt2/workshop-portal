@@ -77,3 +77,21 @@ function flipAllCheckboxes(rootCheckbox, className) {
     });
   }
 }
+
+function ajaxUpdateParticipantColor(form, errorMessage) {
+  if (!window.FormData)
+    return form.submit();
+
+  var xhr = new XMLHttpRequest();
+  xhr.open(form.method, form.action);
+  xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+  xhr.onload = function() {
+    if (xhr.status < 200 || xhr.status >= 300)
+      return alert(errorMessage);
+  };
+  xhr.onerror = function() {
+      alert(errorMessage);
+  };
+
+  xhr.send(new FormData(form));
+}

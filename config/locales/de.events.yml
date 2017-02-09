@@ -78,6 +78,7 @@ de:
         other: "%{count} Personen ernähren sich omnivor."
       print_summary_allergic: "Außerdem haben folgende Teilnehmer Allergien oder Unverträglichkeiten:"
       send_email: "E-Mail an Teilnehmer versenden"
+      failed_to_update_color: "Gruppen-Farbe ändern ist fehlgeschlagen!"
     agreement_letters_download:
       notices:
         no_participants_selected: "Keine Teilnehmer ausgewählt"
