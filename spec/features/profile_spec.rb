@@ -5,7 +5,7 @@ RSpec.feature "Upload letter of agreement", :type => :feature do
     @profile = FactoryGirl.create(:profile)
     @user = FactoryGirl.create(:user, role: :pupil, profile: @profile)
     @event = FactoryGirl.create(:event)
-    @application_letter = FactoryGirl.create(:application_letter, user: @user, event: @event)
+    @application_letter = FactoryGirl.create(:application_letter_accepted, user: @user, event: @event)
     login_as(@user, scope: :user)
     visit check_application_letter_path(@application_letter)
   end
@@ -26,6 +26,7 @@ RSpec.feature "Upload letter of agreement", :type => :feature do
       expect(page).not_to have_css(".alert-danger")
       expect(page).to have_css(".alert-success")
       expect(page).to have_text(I18n.t("agreement_letters.upload_success"))
+      expect(page).to have_text(I18n.t("agreement_letters.already_uploaded"))
     end
   end
 

@@ -17,12 +17,17 @@ FactoryGirl.define do
     organisation "Schule am Griebnitzsee"
     vegetarian false
     vegan false
+    status :pending
     allergies "Many"
     association :user, factory: :user_with_profile
     event
     annotation "Some"
     custom_application_fields ["Value 1", "Value 2", "Value 3"]
     status_notification_sent false
+
+    trait :with_notes do
+      application_notes { build_list :application_note, 1 }
+    end
   end
 
   factory :application_letter2, parent: :application_letter do

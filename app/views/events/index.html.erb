@@ -3,11 +3,10 @@
   <h1><%=t '.title', :default => model_class.model_name.human(:count => model_class.count).titleize %></h1>
   <p class="lead"><%= t('start_page.intro_text_events') %></p>
 </div>
-
 <div class="row">
   <div class="event-list col-md-10 col-md-offset-1">
     <div class="clearfix">
-      <%= link_to new_event_path, :class => 'btn btn-primary pull-right' do
+      <%= link_to new_event_path, :class => 'btn btn-primary pull-right', :id => 'new_event' do
         glyph('plus') + ' ' +
         t('.new', :default => t('helpers.links.new'))
       end if can? :new, Event %>

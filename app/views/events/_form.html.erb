@@ -5,11 +5,11 @@
     <div class="form-group">
       <%= f.label :type, :class => 'control-label col-lg-2' %>
       <div class="btn-group col-lg-10" data-toggle="buttons">
-        <label class="btn btn-default <%= 'active' if not @event.hidden %>">
+        <label class="btn btn-default <%= 'active' if not @event.hidden %>" id="public_type">
           <%= f.radio_button :hidden, false %>
           <%= I18n.t :"events.type.public" %>
         </label>
-        <label class="btn btn-default <%= 'active' if @event.hidden %>">
+        <label class="btn btn-default <%= 'active' if @event.hidden %>" id="private_type">
           <%= f.radio_button :hidden, true %>
           <%= I18n.t :"events.type.private" %>
         </label>
@@ -19,11 +19,11 @@
     <div class="form-group">
       <%= f.label :published, :class => 'control-label col-lg-2' %>
       <div class="btn-group col-lg-10" data-toggle="buttons">
-        <label class="btn btn-default <%= 'active' if not @event.published %>">
+        <label class="btn btn-default <%= 'active' if not @event.published %>" id="save_draft_option">
           <%= f.radio_button :published, false %>
           <%= I18n.t :"events.form.draft.save" %>
         </label>
-        <label class="btn btn-default <%= 'active' if @event.published %>">
+        <label class="btn btn-default <%= 'active' if @event.published %>" id="publish_event_option">
           <%= f.radio_button :published, true %>
           <%= I18n.t :"events.form.draft.publish" %>
         </label>
@@ -46,17 +46,7 @@
         var EVENT_DESCRIPTION_PLACEHOLDER = '<%= I18n.t "events.description_placeholder" %>';
       </script>
       <%=f.error_span(:description) %>
-      Dieser Editor unterstüzt <a href="https://daringfireball.net/projects/markdown/syntax">Markdown</a>
-    </div>
-  </div>
-
-  <div class="form-group">
-    <%= f.label :image, :class => 'control-label col-lg-2' %>
-    <%= image_tag(@event.image_url) if @event.image? %>
-    <div class="col-lg-10">
-      <%= f.error_span(:image) %>
-      <%= I18n.t :"events.image_upload.upload_local_file" %><br/>
-      <%= f.file_field :image %>
+      <%= t('markdown.supports_markdown_html', href: link_to(t('markdown.supports_markdown_link'), 'https://daringfireball.net/projects/markdown/syntax')) %>
     </div>
   </div>
 
@@ -76,7 +66,7 @@
           end_picker = text_field_tag "event[date_ranges_attributes][][end_date]", (I18n.l end_date),
             class: 'form-control', :"data-enable-datepicker" => 'true'
 
-          "<div>#{start_picker} #{t 'date_range.to'} #{end_picker} "+
+          "<div>#{start_picker} #{t 'date_range.pronouns.to'} #{end_picker} "+
             "<a class=\"close\" onclick=\"javascript:removeEventDatePicker(event.target)\">&times;</a></div>"
         end %>
 
@@ -118,11 +108,12 @@
         <%=f.error_span(:application_deadline) %>
       </div>
     </div>
+    <%= render 'image_upload', form: f %>
   <%= (render 'custom_application_fields_input', form: f) if @event.new_record? %>
   <div class="form-group">
     <div class="col-lg-offset-2 col-lg-10">
       <% if @event.new_record? %>
-        <%= f.submit t('.create'), :name => 'create', :class => 'btn btn-primary' %>
+        <%= f.submit t('.create'), :name => 'create', :class => 'btn btn-primary', :id => 'create_event' %>
       <% else %>
         <%= f.submit t('.update'), :name => 'update', :class => 'btn btn-primary' %>
       <% end %>

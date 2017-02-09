@@ -67,6 +67,7 @@ RSpec.feature "Application Letter Overview", :type => :feature do
     end
 
     check_filled_field.call(:emergency_number)
+    check_filled_field.call(:organisation)
     check_filled_field.call(:allergies)
     check_checked_checkbox.call(:vegetarian)
     check_checked_checkbox.call(:vegan)
@@ -119,6 +120,16 @@ RSpec.feature "Application Letter Overview", :type => :feature do
         expect(page).to have_text("#{field_name}: value #{index}")
       end
     end
+
+    it "displays values I entered in custom fields when I edit the application later" do
+      letter = FactoryGirl.create(:application_letter)
+      login_as(letter.user, :scope => :user)
+      visit edit_application_letter_path(letter)
+
+      letter.custom_application_fields.each do |field|
+        expect(page).to have_css("input[value='#{field}']")
+      end
+    end
   end
 
   %i[pupil coach].each do |role|
@@ -150,7 +161,7 @@ RSpec.feature "Application Letter Overview", :type => :feature do
     expect(page).to_not have_text login_error_message
   end
 
-  it "shows an error if you don't have a profile and redirects you to the application page after profile creation" do
+  it "shows an error if you don't have a profile and redirects you to the application page after profile creation, even if you make an error in the process" do
     user = FactoryGirl.create(:user)
     event = FactoryGirl.create(:event)
     profile_required_message = I18n.t 'application_letters.fill_in_profile_before_creation'
@@ -162,7 +173,15 @@ RSpec.feature "Application Letter Overview", :type => :feature do
     # Fill in profile
     page.assert_current_path new_profile_path
     expect(page).to have_text profile_required_message
-    fill_in_and_submit_profile
+
+    # leave out a required field
+    fill_in_profile
+    fill_in "profile_birth_date", with: ""
+    submit_profile
+
+    # do it again, correctly
+    fill_in_profile
+    submit_profile
 
     expect(page).to have_text('Bewerbung erstellen')
   end
@@ -187,7 +206,8 @@ RSpec.feature "Application Letter Overview", :type => :feature do
     # Fill in profile
     page.assert_current_path new_profile_path
     expect(page).to have_text profile_required_message
-    fill_in_and_submit_profile
+    fill_in_profile
+    submit_profile
 
     expect(page).to have_text('Bewerbung erstellen')
   end
@@ -264,7 +284,7 @@ RSpec.feature "Application Letter Overview", :type => :feature do
     fill_in "application_letter_annotation", with:   "Some"
   end
 
-  def fill_in_and_submit_profile
+  def fill_in_profile
     fill_in "profile_first_name", with: "John"
     fill_in "profile_last_name", with: "Doe"
     fill_in "profile_birth_date", with: "19.03.2016"
@@ -273,7 +293,9 @@ RSpec.feature "Application Letter Overview", :type => :feature do
     fill_in "profile_city", with: "Potsdam"
     fill_in "profile_state", with: "Babelsberg"
     fill_in "profile_country", with: "Deutschland"
+  end
 
+  def submit_profile
     find('input[name=commit]').click
   end
 end
