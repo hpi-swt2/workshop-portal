@@ -2,3 +2,13 @@
   Place all the styles related to the matching controller here.
   They will automatically be included in application.css.
 */
+
+
+.profile_details dt {
+    width: 200px;
+    white-space: normal;
+}
+
+.profile_details dd {
+    margin-left: 220px;
+}

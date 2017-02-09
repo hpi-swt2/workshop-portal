@@ -63,11 +63,11 @@
   </div>
 
   <% if @application_letter.event
-      @application_letter.event.custom_application_fields.each do |field_name| %>
+      @application_letter.event.custom_application_fields.zip(@application_letter.custom_application_fields).each do |field_name, field_value| %>
       <div class="form-group">
         <%= label_tag "custom_application_fields[]", field_name, :class => 'control-label col-lg-2' %>
         <div class="col-lg-10">
-          <%= text_field_tag "custom_application_fields[]", nil, :class => 'form-control' %> <%=f.error_span("custom_application_fields[]") %>
+          <%= text_field_tag "custom_application_fields[]", field_value, :class => 'form-control' %> <%=f.error_span("custom_application_fields[]") %>
         </div>
       </div>
     <% end %>

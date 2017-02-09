@@ -5,6 +5,24 @@ RSpec.describe "requests/new", type: :view do
     assign(:request, FactoryGirl.build(:request))
   end
 
+  it "should show workshop templates as a inspiration for the from below" do
+    render
+    expect(rendered).to have_text(I18n.t("requests.templates.headline"))
+    expect(rendered).to have_text(I18n.t("requests.templates.lead_paragraph"))
+    expect(rendered).to have_text(I18n.t("requests.templates.duration"), count: 5)
+    expect(rendered).to have_text(I18n.t("requests.templates.size"), count: 5)
+    expect(rendered).to have_text(I18n.t("requests.templates.target_group"), count: 5)
+    expect(rendered).to have_text(I18n.t("requests.templates.content"), count: 5)
+
+    5.times do |i|
+      expect(rendered).to have_text(I18n.t("requests.templates.panel#{i+1}.title"))
+      expect(rendered).to have_text(I18n.t("requests.templates.panel#{i+1}.duration"))
+      expect(rendered).to have_text(I18n.t("requests.templates.panel#{i+1}.size"))
+      expect(rendered).to have_text(I18n.t("requests.templates.panel#{i+1}.target_group"))
+      expect(rendered).to have_text(I18n.t("requests.templates.panel#{i+1}.content"))
+    end
+  end
+
   it "renders new request form" do
     render
 
