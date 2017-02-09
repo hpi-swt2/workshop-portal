@@ -3,7 +3,7 @@ def email_template_acceptance
     status: :acceptance,
     hide_recipients: false,
     subject: "Zusage",
-    content: 'Liebe Camp-Teilnehmerinnen und -Teilnehmer,
+    content: 'Liebe Bewerberin / lieber Bewerber,
 
 zunächst einmal herzlichen Glückwunsch: **Du bist dabei!** Bitte lies Dir die nachfolgenden Informationen zum Camp aufmerksam durch. Sollte deine Teilnahme doch nicht möglich sein, bitten wir dich im Interesse der Schüler auf der Warteliste darum, uns so schnell wie möglich zu informieren.
 Terminliches und Telefonnummern
@@ -23,7 +23,8 @@ Wir wünschen Dir eine schnelle und sichere Anreise. Bei Fragen kannst Du dich n
 
 Viele Grüße aus Potsdam,
 dein HPI-Workshop-Team
-------------------------------------------------------------------------------
+
+_________________________________________________________
 Hasso-Plattner-Institut für Softwaresystemtechnik GmbH
 Prof.-Dr.-Helmert-Straße 2-3
 14482 Potsdam
@@ -31,7 +32,7 @@ Prof.-Dr.-Helmert-Straße 2-3
 www.hpi.de
 www.hpi.de/schueler
 
-Folgen Sie uns auch auf:
+Folge uns auch auf:
 www.facebook.com/hpi.schuelerklub
 www.facebook.com/HassoPlattnerInstitute
 www.twitter.com/HPI_Online
@@ -56,7 +57,7 @@ Versuche es doch bei einem anderen unserer Camps.
 
 Viele Grüße aus Potsdam,
 dein HPI-Workshop-Team
-------------------------------------------------------------------------------
+_________________________________________________________
 Hasso-Plattner-Institut für Softwaresystemtechnik GmbH
 Prof.-Dr.-Helmert-Straße 2-3
 14482 Potsdam
@@ -64,7 +65,7 @@ Prof.-Dr.-Helmert-Straße 2-3
 www.hpi.de
 www.hpi.de/schueler
 
-Folgen Sie uns auch auf:
+Folge uns auch auf:
 www.facebook.com/hpi.schuelerklub
 www.facebook.com/HassoPlattnerInstitute
 www.twitter.com/HPI_Online
