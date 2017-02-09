@@ -46,7 +46,7 @@
         var EVENT_DESCRIPTION_PLACEHOLDER = '<%= I18n.t "events.description_placeholder" %>';
       </script>
       <%=f.error_span(:description) %>
-      Dieser Editor unterstüzt <a href="https://daringfireball.net/projects/markdown/syntax">Markdown</a>
+      <%= t('markdown.supports_markdown_html', href: link_to(t('markdown.supports_markdown_link'), 'https://daringfireball.net/projects/markdown/syntax')) %>
     </div>
   </div>
 

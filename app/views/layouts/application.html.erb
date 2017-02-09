@@ -32,10 +32,16 @@
   <% end %>
 <% end %>
 
-<%# https://github.com/seyhunak/twitter-bootstrap-rails#flash-helper %>
+<%# https://github.com/seyhunak/twitter-bootstrap-rails#flash-helper
+  due to the background image in the top banner that needs to attach
+  to the top navbar, we can't display any elements betweeen the first
+  section and the navbar. our flashs are instead displayed in the
+  `application/index` template %>
+<% if not current_page?('/') %>
 <div class="container">
   <%= bootstrap_flash %>
 </div>
+<% end %>
 
 <main>
   <% if not local_assigns[:full_width] %>
