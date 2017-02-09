@@ -61,7 +61,7 @@ def profile_applicant(user)
   )
 end
 
-def profile_Keven(user)
+def profile_keven(user)
   Profile.new(
     user: user,
     first_name: "Keven",
