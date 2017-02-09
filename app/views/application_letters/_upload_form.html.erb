@@ -8,7 +8,7 @@
   <% else %>
     <% upload_message = t('.update', default: t("agreement_letters.update")) %>
     <%= glyph 'ok' %>
-    <%= t("agreement_letters.already_uploaded", timestamp: l(agreement_letter.updated_at)) %>
+    <%= t("agreement_letters.already_uploaded") %>
   <% end %>
   </div>
 
