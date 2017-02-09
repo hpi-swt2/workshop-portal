@@ -160,14 +160,28 @@ a:hover h1, a:hover h2, a:hover h3, a:hover h4 {
 }
 
 
-.spacer-20	{
+.spacer-20 {
 	width: 100%;
 	height: 20px;
 	min-height: 20px; 
 }
+
+.spacer-30 {
+	width: 100%;
+	height: 30px;
+	min-height: 30px; 
+}
+
+.spacer-60 {
+	width: 100%;
+	height: 60px;
+	min-height: 60px; 
+}
+
 // Fontpage 
 
 #wsp-welcome {
+	
 	padding-top: 0px !important;
 
 	ul {
@@ -240,8 +254,6 @@ strong, b {
 	font-weight: 700;
 }
 
-
-
 @import "multi-select.css";
 
 .image-buttons .btn {
@@ -257,20 +269,42 @@ strong, b {
 }
 
 
+
 #requestGallery {
 	.panel {
 		min-height: 500px;
 	}
 }
 
-.title {
+.title, .page-title {
 	font-size: 64px;
+	line-height: 1;
+}
+
+.line-spacer {
+	border-bottom: 1px solid @gray-lighter;
+	margin-top: 0px;
+	margin-bottom: 30px;
+	width: 100%;
+}
+
+.events-facts {
+	ul {
+		padding-left: 25px;
+	}
 }
 
 .bottom-align-text {
 	position: absolute;
 	bottom: 15px;
 	right: 0;
+}
+
+.bottom-align-text {
+	position: absolute;
+	bottom: 15px;
+	right: 0;
+
 }
 
 .relative-box {
