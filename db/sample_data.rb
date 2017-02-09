@@ -44,12 +44,12 @@ def add_sample_data
   profiles[:admin] = profile_admin(users[:hpi_admin])
 
   application_letters = Hash.new
-  application_letters[:applicant_gongakrobatik] = application_letter_applicant_gongakrobatik(users[:applicant], events[:gongakrobatik])
-  application_letters[:applicant_gongakrobatik_past_deadline] = application_letter_applicant_gongakrobatik(users[:keven], events[:past_deadline_event])
-  application_letters[:applicant_gongakrobatik_accepcted] = application_letter_applicant_gongakrobatik_accepted(users[:lisa], events[:past_deadline_event])
-  application_letters[:applicant_gongakrobatik_rejected] = application_letter_applicant_gongakrobatik_rejected(users[:applicant], events[:past_deadline_event])
-  application_letters[:applicant_gongakrobatik_max] = application_letter_applicant_gongakrobatik_accepted(users[:ralf], events[:past_deadline_event])
-  application_letters[:applicant_gongakrobatik_karl] = application_letter_applicant_gongakrobatik_accepted(users[:pupil], events[:past_deadline_event])
+  application_letters[:applicant_gongakrobatik] = application_letter_1(users[:applicant], events[:gongakrobatik])
+  application_letters[:applicant_gongakrobatik_past_deadline] = application_letter_1(users[:keven], events[:past_deadline_event])
+  application_letters[:applicant_gongakrobatik_accepcted] = application_letter_2(users[:lisa], events[:past_deadline_event])
+  application_letters[:applicant_gongakrobatik_rejected] = application_letter_3(users[:applicant], events[:past_deadline_event])
+  application_letters[:applicant_gongakrobatik_max] = application_letter_4(users[:ralf], events[:past_deadline_event])
+  application_letters[:applicant_gongakrobatik_karl] = application_letter_5(users[:pupil], events[:past_deadline_event])
   application_letters[:applicant_programmierkurs_lisa] = application_letter_applicant_programmierkurs_1(users[:lisa], events[:programmierkurs])
   application_letters[:applicant_programmierkurs_max] = application_letter_applicant_programmierkurs_2(users[:ralf], events[:programmierkurs])
   application_letters[:applicant_programmierkurs_tobi] = application_letter_applicant_programmierkurs_3(users[:keven], events[:programmierkurs])
