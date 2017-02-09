@@ -137,8 +137,6 @@ de:
       label_of_custom_field: "Name des eigenen Felds"
       custom_application_fields_cant_be_changed_later: "Die eigenen Felder für die Bewerbung können nach dem ersten Speichern nicht mehr geändert werden."
       add_timespan: "Zeitspanne hinzufügen"
-      supports_markdown_html: 'Dieser Editor unterstützt %{href}.'
-      supports_markdown_link: 'Markdown'
       draft:
         save: "Speichern"
         publish: "Veröffentlichen"
