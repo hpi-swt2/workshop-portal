@@ -23,7 +23,7 @@ class Profile < ActiveRecord::Base
   # @param none
   # @return [Boolean] whether the user is an adult
   def adult?()
-    self.birth_date <= 18.years.ago
+    self.birth_date.in_time_zone <= 18.years.ago
   end
 
   # Returns the age of the user based on the current date
@@ -31,7 +31,7 @@ class Profile < ActiveRecord::Base
   # @param none
   # @return [Int] for age as number of years
   def age
-    return age_at_time(Time.now)
+    return age_at_time(Time.zone.now)
   end
 
   # Returns the age of the user based on the given date
@@ -79,7 +79,7 @@ class Profile < ActiveRecord::Base
 
   private
   def birthdate_not_in_future
-    if birth_date.present? and birth_date > Date.current
+    if birth_date.present? and birth_date.in_time_zone > Date.current
       errors.add(:birth_date, I18n.t('profiles.validation.birthday_in_future'))
     end
   end

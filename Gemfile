@@ -81,6 +81,9 @@ gem 'rubocop', '~> 0.29.1'
 # See https://github.com/plataformatec/simple_form
 # gem 'simple_form'
 
+# OWl Carousel for nice Slideshows
+# https://github.com/acrogenesis/owlcarousel-rails
+gem 'owlcarousel-rails', github: 'acrogenesis/owlcarousel-rails', branch: 'OwlCarousel2'
 
 # coveralls.io
 gem 'coveralls', require: false
@@ -115,13 +118,11 @@ gem 'mini_magick'
 # Ical generator
 gem 'icalendar'
 
-# Pattern generator
-gem 'geo_pattern'
-
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
   gem 'rspec-rails', '~> 3.2'
+  gem 'rspec-steps', '~> 2.1.1'
   gem 'capybara', '~> 2.5'
   gem 'poltergeist'
   gem 'database_cleaner'

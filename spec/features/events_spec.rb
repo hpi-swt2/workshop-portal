@@ -48,6 +48,14 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     expect(page).to have_css("div#occupied_places")
   end
 
+  scenario "comments on applications are displayed as comment icon tooltip, if there are any" do
+    login(:organizer)
+    event = FactoryGirl.create(:event, :with_one_application_note)
+    visit event_path(event)
+    expect(page).to have_css('.application-notes a.has-tooltip', count: 1)
+    expect(page).to have_css(".application-notes a[title='#{event.application_letters.second.application_notes.first.note}']")
+  end
+
   scenario "logged in as Organizer I want to be unable to send emails if there is any unclassified application left" do
     @event = FactoryGirl.build(:event, :with_diverse_open_applications, :in_selection_phase_with_no_mails_sent)
     login(:organizer)
@@ -244,8 +252,17 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     expect(page).to_not have_link(I18n.t("application_status.actions.accept"), href: update_application_letter_status_path(@application_letter, 'application_letter[status]': :accepted))
   end
 
+  scenario "logged in as Organizer I can send emails to accepted alternatives who got no acceptance mail yet (execution phase)" do
+    login(:organizer)
+    @event = FactoryGirl.create(:event_in_execution_with_applications_in_various_states, :with_no_status_notification_sent, accepted_application_letters_count: 1)
+    @application_letter = @event.application_letters.find { |application| application.status == 'accepted'}
+    visit event_path(@event)
+    expect(page).to have_button(I18n.t('events.applicants_overview.sending_acceptances'))
+    click_button(I18n.t('events.applicants_overview.sending_acceptances'))
+    expect(page).to have_selector("input#email_recipients[value='#{@application_letter.user.email}']")
+  end
 
-  scenario "logged in as Organizer I can send acceptance and then rejection emails and by that change the status notification flag" do
+  scenario "logged in as Organizer I can send acceptance and then rejection emails and by that change the status notification flag  (without alternatives)" do
     login(:organizer)
     event = FactoryGirl.create(:event_with_accepted_applications, :in_selection_phase_with_no_mails_sent, :with_no_status_notification_sent)
     %w[accepted rejected].each do |status|
@@ -263,6 +280,20 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
         expect(letter.status_notification_sent).to be true
       end
     end
+  end
+
+  scenario "logged in as Organizer I can send alternative emails (treated like rejections) and by that change the status notification flag" do
+    login(:organizer)
+    event = FactoryGirl.create(:event_with_accepted_applications, :in_selection_phase_with_no_mails_sent, :with_no_status_notification_sent)
+    application = FactoryGirl.create(:application_letter_alternative, event: event, user: FactoryGirl.build(:user))
+    visit event_path(event)
+    click_button(I18n.t("events.applicants_overview.sending_rejections"))
+    expect(page).to have_current_path(event_email_show_path(event_id: event.id), only_path: true)
+    fill_in :email_subject, with: "Subject alternative"
+    fill_in :email_content, with: "Content alternative"
+    click_button I18n.t('.emails.email_form.send')
+    application.reload
+    expect(application.status_notification_sent).to be true
   end
 
   scenario "logged in as Organizer I can push the accept all button to accept all applicants" do

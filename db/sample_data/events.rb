@@ -15,8 +15,8 @@ def event_programmierkurs
       application_deadline: Date.tomorrow,
       published: true,
       hidden: true,
-      custom_application_fields: ['Lieblingsapp', 'Klassenstufe', 'Mit welchen Programmiersprachen hast du bereits Erfahrungen gesammelt']
-
+      custom_application_fields: ['Lieblingsapp', 'Klassenstufe', 'Mit welchen Programmiersprachen hast du bereits Erfahrungen gesammelt'],
+      image: 'stock_photos/DSC02540.jpg'
   )
 end
 
@@ -41,8 +41,8 @@ def event_mintcamp
       application_deadline: Date.tomorrow,
       hidden: false,
       published: true,
-      custom_application_fields: ['Klassenstufe', 'Mit welchen Programmiersprachen hast du bereits Erfahrungen gesammelt']
-
+      custom_application_fields: ['Klassenstufe', 'Mit welchen Programmiersprachen hast du bereits Erfahrungen gesammelt'],
+      image: 'stock_photos/Sommercamp-28.jpg'
   )
 end
 
@@ -63,8 +63,8 @@ def event_bechersaeuberungsevent
       application_deadline: Date.yesterday.prev_day(2),
       published: true,
       hidden: false,
-      custom_application_fields: ['Lieblings-Becherart', 'Kannst du eine eigene Spülmaschine mitbringen?']
-
+      custom_application_fields: ['Lieblings-Becherart', 'Kannst du eine eigene Spülmaschine mitbringen?'],
+      image: 'stock_photos/Sommercamp-12.jpg'
   )
 end
 
@@ -74,7 +74,7 @@ def event_gongakrobatik
       end_date: Date.new(2021, 03, 05)
   )
   Event.new(
-      name: 'Einführung in die Kunst der Gongakrobatik',
+      name: 'Gongakrobatik',
       description: 'Schon im alten China erzählte man sich von den sa­gen­um­wo­benen Legenden der Gongakrobatik. Spätestens seit dieser Trend auch seinen Weg nach Japan gefunden hat, stellt sich die Gongakrobatik auch für uns als ernstzunehmende Alternative gegenüber herkömmlichen Stimmbildungübungen und ähnlichem dar. 
         In dieser Einführung möchten wir euch einen groben Überblick über das Thema geben: Wie findet man am besten seinen Weg in die Gongakrobatik, was braucht man dafür. 
         In den letzten Jahren hat sich zudem eine große Community rund um dieses faszinierende Thema gebildet. Höhepunkt der Veranstaltung ist demnach unser Besuch einer echten Gongmanufaktor im Herzen Berlins, durchgeführt von dem Ding Gong-Verein Berlin. 
@@ -84,8 +84,8 @@ def event_gongakrobatik
       date_ranges: [date_range_long], 
       application_deadline: Date.tomorrow,
       hidden: false,
-      published: true
-
+      published: true,
+      image: 'stock_photos/Sommercamp-42.jpg'
   )
 end
 
@@ -112,7 +112,8 @@ def event_batterie_akustik
       application_deadline: Date.tomorrow,
       published: false,
       hidden: false,
-      custom_application_fields: ['Spielst du gerne in deiner Freizeit mit Batterien?']
+      custom_application_fields: ['Spielst du gerne in deiner Freizeit mit Batterien?'],
+      image: 'stock_photos/Sommercamp-47.jpg'
   )
 end
 
@@ -136,7 +137,8 @@ def event_bachlorpodium
       date_ranges: [date_range_singleday1, date_range_singleday2, date_range_singleday3], 
       application_deadline: Date.tomorrow,
       hidden: true,
-      published: true
+      published: true,
+      image: 'stock_photos/DSC02540.jpg'
   )
 end
 
@@ -154,13 +156,13 @@ def event_summer_camp
         Sie werden während des gesamten Camps von Studenten des HPI betreut.
         **Kosten:** Teilnehmergebühr: 100 EUR
         Reisekostenanteil: 20 EUR ',
-      max_participants: 25,
+      max_participants: 3,
       organizer: 'HPI Schülerklub',
       knowledge_level: 'Fortgeschrittene',
       date_ranges: [date_range_summer_camp],
       application_deadline: Date.tomorrow,
       hidden: false,
-      published: true
-
+      published: true,
+      image: 'stock_photos/Sommercamp-47.jpg'
   )
 end

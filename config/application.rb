@@ -31,5 +31,7 @@ module WorkshopPortal
 
     config.from_address = ENV['SMTP_ADDRESS'] ? ENV['SMTP_ADDRESS'] : 'noreply@localhost'
     config.reply_to_address = config.from_address
+
+    config.empty_agreement_letter_path = Rails.root.join('storage', 'agreement_letters', 'real_agreement_letter.pdf')
   end
 end

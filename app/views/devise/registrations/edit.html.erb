@@ -1,108 +1,113 @@
 <%= render partial: "shared/error_message_detailed", locals: {entity: resource} %>
-<div class="panel panel-default devise-bs">
-  <div class="panel-heading">
-    <h4><%= t('.title', :resource => Profile.model_name.human , :default => "Edit #{resource_name.to_s.humanize}") %></h4>
-  </div>
-  <div class="panel-body">
-      <% if @user.profile.present? %>
-        <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :namespace => 'profile', :html => { :method => :put, :class => 'form-horizontal' }) do |f| %>
-          <%= render partial: "shared/error_message_detailed", locals: {entity: resource.profile} %>
-          <%= f.fields_for :profile, resource.profile do |builder| %>
-            <%= render partial: "profiles/form_fields", locals: {f: builder, '@profile': resource.profile} %>
-          <% end %>
-        <% end %>
-      <% else %>
-          <div class="row">
-              <div class="col-lg-10 col-lg-offset-2">
-                <a href="<%= new_profile_path %>" class="btn btn-primary" id="create_profile_btn"> <%= I18n.t('navbar.create_profile') %> </a>
+<div class="row">
+  <div class="col-xs-12 col-sm-10 col-md-10 col-lg-10 col-xs-offset-0 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">
+    <div class="panel panel-default panel-primary devise-bs">
+      <div class="panel-heading">
+        <h3 class="panel-title"><%= t('.title', :resource => Profile.model_name.human , :default => "Edit #{resource_name.to_s.humanize}") %></h3>
+      </div>
+      <div class="panel-body">
+          <% if @user.profile.present? %>
+            <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :namespace => 'profile', :html => { :method => :put, :class => 'form-horizontal' }) do |f| %>
+              <%= render partial: "shared/error_message_detailed", locals: {entity: resource.profile} %>
+              <%= f.fields_for :profile, resource.profile do |builder| %>
+                <%= render partial: "profiles/form_fields", locals: {f: builder, '@profile': resource.profile} %>
+              <% end %>
+            <% end %>
+          <% else %>
+              <div class="row">
+                  <div class="col-lg-10 col-lg-offset-2">
+                    <a href="<%= new_profile_path %>" class="btn btn-primary" id="create_profile_btn"> <%= I18n.t('navbar.create_profile') %> </a>
+                  </div>
               </div>
-          </div>
-      <% end %>
+          <% end %>
+      </div>
+    </div>
+    <div class="panel panel-default panel-primary devise-bs">
+      <div class="panel-heading">
+        <h3 class="panel-title"><%= t('users.email.edit', :default => "Edit email") %></h3>
+      </div>
+      <div class="panel-body">
+        <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :namespace => 'email', :html => { :method => :put, :class => 'form-horizontal' }) do |f| %>
+            <div class="form-group">
+              <%= f.label :email, :class => 'control-label col-lg-2 required' %>
+              <div class="col-lg-10">
+                <%= f.email_field :email, class: "form-control" %>
+              </div>
+            </div>
+            <div class="form-group">
+              <%= f.label :current_password, :class => 'control-label col-lg-2 required' %>
+              <div class="col-lg-10">
+                <%= f.password_field :current_password, class: "form-control" %>
+                <span class="help-block">
+                  <%= t('devise.messages.we_need_your_current_password_to_confirm_your_changes', :default => 'we need your current password to confirm your changes') %>
+                </span>
+              </div>
+            </div>
+
+            <div class="text-right col-lg-12" >
+              <label class="required"> </label>
+              <%= t("errors.messages.required") %>
+            </div>
+
+            <div class="form-group">
+              <div class="col-lg-10 col-lg-offset-2">
+                <%= f.submit t('.update', :default => "Update"), class: "btn btn-primary" %>
+              </div>
+            </div>
+        <% end %>
+      </div>
+    </div>
+    <div class="panel panel-default panel-primary devise-bs">
+      <div class="panel-heading">
+        <h3 class="panel-title"><%= t('.title', :resource => resource_class.model_name.human , :default => "Edit #{resource_name.to_s.humanize}") %></h3>
+      </div>
+      <div class="panel-body">
+        <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :namespace => 'password', :html => { :method => :put, :class => 'form-horizontal' }) do |f| %>
+            <div class="form-group">
+              <%= f.label :password, :class => 'control-label col-lg-2 required' %>
+              <div class="col-lg-10">
+                <%= f.password_field :password, :autocomplete => "off", class: "form-control" %>
+                <span class="help-block">
+                  <%= t('devise.messages.leave_blank_if_you_don_t_want_to_change_it', :default => "leave blank if you don't want to change it") %>
+                </span>
+              </div>
+            </div>
+            <div class="form-group">
+              <%= f.label :password_confirmation, :class => 'control-label col-lg-2 required' %>
+              <div class="col-lg-10">
+                <%= f.password_field :password_confirmation, class: "form-control"  %>
+                <span class="help-block">
+                  <%= t('devise.messages.leave_blank_if_you_don_t_want_to_change_it', :default => "leave blank if you don't want to change it") %>
+                </span>
+              </div>
+            </div>
+            <div class="form-group">
+              <%= f.label :current_password, :class => 'control-label col-lg-2 required' %>
+              <div class="col-lg-10">
+                <%= f.password_field :current_password, class: "form-control" %>
+                <span class="help-block">
+                  <%= t('devise.messages.we_need_your_current_password_to_confirm_your_changes', :default => 'we need your current password to confirm your changes') %>
+                </span>
+              </div>
+            </div>
+
+            <div class="text-right col-lg-12" >
+              <label class="required"> </label>
+              <%= t("errors.messages.required") %>
+            </div>
+
+            <div class="form-group">
+              <div class="col-lg-10 col-lg-offset-2">
+                <%= f.submit t('.update', :default => "Update"), class: "btn btn-primary" %>
+              </div>
+            </div>
+        <% end %>
+      </div>
+    </div>
+
+    <p class="text-right">
+      <%= link_to t('.cancel_my_account', :default => "Cancel my account"), registration_path(resource_name), :data => { :confirm => t('.are_you_sure', :default => "Are you sure?") }, :method => :delete, :class => 'btn btn-danger' %>
+    </p>
+
   </div>
 </div>
-<div class="panel panel-default devise-bs">
-  <div class="panel-heading">
-    <h4><%= t('users.email.edit', :default => "Edit email") %></h4>
-  </div>
-  <div class="panel-body">
-    <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :namespace => 'email', :html => { :method => :put, :class => 'form-horizontal' }) do |f| %>
-        <div class="form-group">
-          <%= f.label :email, :class => 'control-label col-lg-2 required' %>
-          <div class="col-lg-10">
-            <%= f.email_field :email, class: "form-control" %>
-          </div>
-        </div>
-        <div class="form-group">
-          <%= f.label :current_password, :class => 'control-label col-lg-2 required' %>
-          <div class="col-lg-10">
-            <%= f.password_field :current_password, class: "form-control" %>
-            <span class="help-block">
-              <%= t('devise.messages.we_need_your_current_password_to_confirm_your_changes', :default => 'we need your current password to confirm your changes') %>
-            </span>
-          </div>
-        </div>
-
-        <div class="text-right col-lg-12" >
-          <label class="required"> </label>
-          <%= t("errors.messages.required") %>
-        </div>
-
-        <div class="form-group">
-          <div class="col-lg-10 col-lg-offset-2">
-            <%= f.submit t('.update', :default => "Update"), class: "btn btn-primary" %>
-          </div>
-        </div>
-    <% end %>
-  </div>
-</div>
-<div class="panel panel-default devise-bs">
-  <div class="panel-heading">
-    <h4><%= t('.title', :resource => resource_class.model_name.human , :default => "Edit #{resource_name.to_s.humanize}") %></h4>
-  </div>
-  <div class="panel-body">
-    <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :namespace => 'password', :html => { :method => :put, :class => 'form-horizontal' }) do |f| %>
-        <div class="form-group">
-          <%= f.label :password, :class => 'control-label col-lg-2 required' %>
-          <div class="col-lg-10">
-            <%= f.password_field :password, :autocomplete => "off", class: "form-control" %>
-            <span class="help-block">
-              <%= t('devise.messages.leave_blank_if_you_don_t_want_to_change_it', :default => "leave blank if you don't want to change it") %>
-            </span>
-          </div>
-        </div>
-        <div class="form-group">
-          <%= f.label :password_confirmation, :class => 'control-label col-lg-2 required' %>
-          <div class="col-lg-10">
-            <%= f.password_field :password_confirmation, class: "form-control"  %>
-            <span class="help-block">
-              <%= t('devise.messages.leave_blank_if_you_don_t_want_to_change_it', :default => "leave blank if you don't want to change it") %>
-            </span>
-          </div>
-        </div>
-        <div class="form-group">
-          <%= f.label :current_password, :class => 'control-label col-lg-2 required' %>
-          <div class="col-lg-10">
-            <%= f.password_field :current_password, class: "form-control" %>
-            <span class="help-block">
-              <%= t('devise.messages.we_need_your_current_password_to_confirm_your_changes', :default => 'we need your current password to confirm your changes') %>
-            </span>
-          </div>
-        </div>
-
-        <div class="text-right col-lg-12" >
-          <label class="required"> </label>
-          <%= t("errors.messages.required") %>
-        </div>
-
-        <div class="form-group">
-          <div class="col-lg-10 col-lg-offset-2">
-            <%= f.submit t('.update', :default => "Update"), class: "btn btn-primary" %>
-          </div>
-        </div>
-    <% end %>
-  </div>
-</div>
-
-<p class="text-right">
-  <%= link_to t('.cancel_my_account', :default => "Cancel my account"), registration_path(resource_name), :data => { :confirm => t('.are_you_sure', :default => "Are you sure?") }, :method => :delete, :class => 'btn btn-danger' %>
-</p>

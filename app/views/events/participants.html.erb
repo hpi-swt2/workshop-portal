@@ -24,7 +24,7 @@
           </th>
         <% end %>
         <% if can? :show_eatings_habits, Event %>
-          <th>7
+          <th>
             <%= sort_caret(t('activerecord.methods.application_letter.eating_habits'), 'eating-habits') %>
           </th>
         <% end %>
@@ -41,7 +41,7 @@
           <%= participant.email %>
         </td>
         <td>
-          <% if participant.requires_agreement_letter_for_event?(@event) %>
+          <% if not participant.requires_agreement_letter_for_event?(@event) %>
             <span class="text-muted"> <%= t '.unnecessary' %> </span>
           <% elsif participant.agreement_letter_for_event?(@event) %>
             <span class="text-success" title="<%= participant.agreement_letter_for_event(@event).updated_at %>"> <%= t '.available' %> </span>
@@ -57,7 +57,7 @@
             <%= check_box_tag('selected_participants[]', participant.id, false, class: 'participant_selection') %>
           </td>
         <% end %>
-        <% if can? :show_eatings_habits, Event %>
+        <% if can? :show_eatings_habits, Event %> 
           <td>
            <% if application_letter && ( application_letter.vegan || application_letter.vegetarian || application_letter.allergic ) %>
              <ul id="eating-habit--list">

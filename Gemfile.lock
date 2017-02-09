@@ -1,3 +1,11 @@
+GIT
+  remote: git://github.com/acrogenesis/owlcarousel-rails.git
+  revision: 2dd679c61b795fa08003994c74d140c214781141
+  branch: OwlCarousel2
+  specs:
+    owlcarousel-rails (1.1.3.3)
+      jquery-rails
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -81,7 +89,6 @@ GEM
     codeclimate-test-reporter (1.0.3)
       simplecov
     coderay (1.1.1)
-    color (1.8)
     combine_pdf (0.2.32)
       ruby-rc4 (>= 0.1.5)
     commonjs (0.2.7)
@@ -117,8 +124,6 @@ GEM
       railties (>= 3.0.0)
     figaro (1.1.1)
       thor (~> 0.14)
-    geo_pattern (1.4.0)
-      color (~> 1.5)
     globalid (0.3.7)
       activesupport (>= 4.1.0)
     has_scope (0.7.0)
@@ -230,6 +235,10 @@ GEM
     ref (2.0.0)
     responders (2.3.0)
       railties (>= 4.2.0, < 5.1)
+    rspec (3.5.0)
+      rspec-core (~> 3.5.0)
+      rspec-expectations (~> 3.5.0)
+      rspec-mocks (~> 3.5.0)
     rspec-core (3.5.4)
       rspec-support (~> 3.5.0)
     rspec-expectations (3.5.0)
@@ -246,6 +255,8 @@ GEM
       rspec-expectations (~> 3.5.0)
       rspec-mocks (~> 3.5.0)
       rspec-support (~> 3.5.0)
+    rspec-steps (2.1.1)
+      rspec (>= 3.0, < 3.99)
     rspec-support (3.5.0)
     rubocop (0.29.1)
       astrolabe (~> 1.3)
@@ -334,7 +345,6 @@ DEPENDENCIES
   devise_openid_authenticatable
   factory_girl_rails
   figaro
-  geo_pattern
   has_scope
   icalendar
   jquery-rails
@@ -342,6 +352,7 @@ DEPENDENCIES
   jquery-ui-rails
   less-rails
   mini_magick
+  owlcarousel-rails!
   parser (~> 2.2.2.5)
   pdf-inspector
   pg
@@ -356,6 +367,7 @@ DEPENDENCIES
   redcarpet
   ref
   rspec-rails (~> 3.2)
+  rspec-steps (~> 2.1.1)
   rubocop (~> 0.29.1)
   rubyzip
   simplecov
