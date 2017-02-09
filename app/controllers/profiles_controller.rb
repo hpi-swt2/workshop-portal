@@ -36,6 +36,7 @@ class ProfilesController < ApplicationController
         redirect_to edit_user_registration_path, notice: I18n.t('profiles.successful_creation')
       end
     else
+      flash.keep(:event_id)
       render :new
     end
   end
