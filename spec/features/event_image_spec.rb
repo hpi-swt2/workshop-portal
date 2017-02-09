@@ -7,6 +7,7 @@ describe "Event pictures", type: :feature do
 
   describe "new event" do
     before :each do
+      login_as(FactoryGirl.create(:user, role: :organizer), :scope => :user)
       visit new_event_path
       choose I18n.t "events.form.draft.publish"
       fill_in "Maximale Teilnehmerzahl", :with => 25

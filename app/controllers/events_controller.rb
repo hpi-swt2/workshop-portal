@@ -8,7 +8,7 @@ require "event_image_upload_helper"
 
 class EventsController < ApplicationController
   include EventImageUploadHelper
-load_and_authorize_resource
+  load_and_authorize_resource
  
   before_action :set_event, only: [:show, :edit, :update, :destroy, :participants,
     :participants_pdf, :print_applications, :print_applications_eating_habits, :badges, :print_badges]
