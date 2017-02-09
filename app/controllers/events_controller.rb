@@ -253,7 +253,7 @@ class EventsController < ApplicationController
     # Returns all file names stored in the material storage of the event
     def get_material_files(material_path)
       if File.exists?(material_path)
-        build_files(material_path, '.')
+        build_files(material_path, '')
       else
         []
       end
@@ -266,7 +266,7 @@ class EventsController < ApplicationController
         next if file == '.' or file == '..'
 
         absolute_file_path = File.join(absolute_path, file)
-        relative_file_path = File.join(current_path, file)
+        relative_file_path = current_path == '' ? file : File.join(current_path, file)
         hash = {name: file, path: relative_file_path}
         if File.directory?(absolute_file_path)
           hash[:type] = 'dir'
