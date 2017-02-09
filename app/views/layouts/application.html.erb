@@ -33,9 +33,11 @@
 <% end %>
 
 <%# https://github.com/seyhunak/twitter-bootstrap-rails#flash-helper %>
+<% if not current_page?('/') %>
 <div class="container">
   <%= bootstrap_flash %>
 </div>
+<% end %>
 
 <main>
   <% if not local_assigns[:full_width] %>
