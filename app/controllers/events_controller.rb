@@ -7,7 +7,6 @@ require 'carrierwave'
 
 class EventsController < ApplicationController
   load_and_authorize_resource
-  skip_authorize_resource :only => [:show,:index,:archive] 
 
   before_action :set_event, only: [:show, :edit, :update, :destroy, :participants,
     :participants_pdf, :print_applications, :print_applications_eating_habits, :badges, :print_badges]
