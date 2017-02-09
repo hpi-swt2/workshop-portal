@@ -4,7 +4,7 @@ de:
   requests:
     templates:
       headline: "Beispiel-Anfragen"
-      lead_paragraph: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laborum fugiat quasi expedita distinctio, suscipit, eaque deleniti similique eveniet in accusantium voluptas blanditiis id modi voluptatibus culpa illum aliquam. Neque, dolore."  
+      lead_paragraph: "In diesem Bereich könnt ihr eigene Veranstaltungen, Workshops und Themen vorschlagen. Ihr wisst nicht, was ihr schreiben sollt? Inspiration findet ihr in den orange-farbenen Boxen!"  
       duration: "Dauer"
       size: "Gruppengröße"
       target_group: "Zielgruppe"

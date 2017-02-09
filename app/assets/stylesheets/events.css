@@ -48,6 +48,18 @@
     margin: 15px 0;
     padding-bottom: 15px;
 }
+
+.event-preview a{
+    color: #000;
+    transition: all 0.5s;
+}
+
+.event-preview a:hover {
+    text-decoration: none;
+    color: #DE6207;
+    transition: all 0.5s;
+}
+
 .front-section:nth-child(even) .event-preview {
     border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 }
