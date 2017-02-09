@@ -30,7 +30,8 @@ class EventsController < ApplicationController
     @free_places = @event.compute_free_places
     @occupied_places = @event.compute_occupied_places
     @application_letters = filter_application_letters(@event.application_letters)
-    @material_files = get_material_files(@event)
+    @material_files = get_material_files(@event.material_path)
+    @material_directories = get_material_directory_list(@event.material_path)
     @has_free_places = @free_places > 0
   end
 
@@ -106,6 +107,7 @@ class EventsController < ApplicationController
   def participants
     @participants = @event.participants_by_agreement_letter
     @has_agreement_letters = @event.agreement_letters.any?
+    @has_participants = @event.participants.any?
   end
 
   # GET /events/1/print_applications
@@ -192,26 +194,6 @@ class EventsController < ApplicationController
     end
   end
 
-  # POST /events/1/upload_material
-  def upload_material
-    event = Event.find(params[:event_id])
-    material_path = event.material_path
-    Dir.mkdir(material_path) unless File.exists?(material_path)
-
-    file = params[:file_upload]
-    unless is_file?(file)
-      redirect_to event_path(event), alert: t("events.material_area.no_file_given")
-      return false
-    end
-    begin
-      File.write(File.join(material_path, file.original_filename), file.read, mode: "wb")
-    rescue IOError
-      redirect_to event_path(event), alert: I18n.t("events.material_area.saving_fails")
-      return false
-    end
-    redirect_to event_path(event), notice: I18n.t("events.material_area.success_message")
-  end
-
   # GET /event/1/participants_pdf
   def participants_pdf
     default = {:order_by => 'email', :order_direction => 'asc'}
@@ -245,21 +227,6 @@ class EventsController < ApplicationController
     send_data doc.render, :filename => "participants.pdf", :type => "application/pdf", disposition: "inline"
   end
 
-  # POST /events/1/download_material
-  def download_material
-    event = Event.find(params[:event_id])
-    unless params.has_key?(:file)
-      redirect_to event_path(event), alert: I18n.t('events.material_area.no_file_given') and return
-    end
-    authorize! :download_material, event
-
-    file_full_path = File.join(event.material_path, params[:file])
-    unless File.exists?(file_full_path)
-      redirect_to event_path(event), alert: t("events.material_area.download_file_not_found") and return
-    end
-    send_file file_full_path, :x_sendfile => true
-  end
-
   private
     def set_event
       @event = Event.find(params[:id])
@@ -285,20 +252,62 @@ class EventsController < ApplicationController
       application_letters
     end
 
-    # Checks if a file is valid and not empty
-    #
-    # @param [ActionDispatch::Http::UploadedFile] is a file object
-    # @return [Boolean] whether @file is a valid file
-    def is_file?(file)
-      file.respond_to?(:open) && file.respond_to?(:content_type) && file.respond_to?(:size)
+    # Returns all file names stored in the material storage of the event
+    def get_material_files(material_path)
+      if File.exists?(material_path)
+        build_files(material_path, '')
+      else
+        []
+      end
     end
 
-    # Gets all file names stored in the material storage of the event
-    #
-    # @param [Event]
-    # @return [Array of Strings]
-    def get_material_files(event)
-      material_path = event.material_path
-      File.exists?(material_path) ? Dir.glob(File.join(material_path, "*")) : []
+    def build_files(material_path, current_path)
+      list = []
+      absolute_path = File.join(material_path, current_path)
+      Dir.foreach(absolute_path) do |file|
+        next if file == '.' or file == '..'
+
+        absolute_file_path = File.join(absolute_path, file)
+        relative_file_path = current_path == '' ? file : File.join(current_path, file)
+        hash = {name: file, path: relative_file_path}
+        if File.directory?(absolute_file_path)
+          hash[:type] = 'dir'
+          hash[:content] = build_files(material_path, relative_file_path)
+        else
+          hash[:type] = 'file'
+        end
+        list.push(hash)
+      end
+      list.sort { |a,b|
+        if a[:type] == b[:type]
+          a[:name] <=> b[:name]
+        else
+          a[:type] == 'dir' ? -1 : 1
+        end
+      }
+    end
+
+    # Returns all directory names stored in the material storage of the event
+    def get_material_directory_list(material_path)
+      if File.exists?(material_path)
+        [['/','']].concat(build_directories(material_path, ''))
+      else
+        [['/','']]
+      end
+    end
+
+    def build_directories(material_path, current_path)
+      list = []
+      path = current_path == '' ? material_path : File.join(material_path, current_path)
+      Dir.foreach(path) do |file|
+        next if file == '.' or file == '..'
+
+        sub_path = current_path == '' ? file : File.join(current_path, file)
+        if File.directory?(File.join(path, file))
+          list.push(['/' + sub_path, sub_path])
+          list = list.concat(build_directories(material_path, sub_path))
+        end
+      end
+      list
     end
 end

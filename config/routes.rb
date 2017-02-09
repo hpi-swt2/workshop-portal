@@ -22,8 +22,12 @@ Rails.application.routes.draw do
     resources :agreement_letters, only: [:create], shallow: true
     get 'emails' => 'emails#show', as: :email_show
     post 'emails' => 'emails#submit_application_result', as: :email_submit_application_result
-    post 'upload_material' => 'events#upload_material', as: :upload_material
-    post 'download_material' => 'events#download_material', as: :download_material
+    post 'upload_material' => 'materials#upload_material', as: :upload_material
+    post 'download_material' => 'materials#download_material', as: :download_material
+    post 'remove_material' => 'materials#remove_material', as: :remove_material
+    post 'rename_material' => 'materials#rename_material', as: :rename_material
+    post 'move_material' => 'materials#move_material', as: :move_material
+    post 'make_material_folder' => 'materials#make_material_folder', as: :make_material_folder
     member do
       post 'emails_generic' => 'emails#submit_generic', as: :email_submit_generic
       get 'participants_pdf'

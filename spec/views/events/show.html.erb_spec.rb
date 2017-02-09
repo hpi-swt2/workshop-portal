@@ -5,7 +5,8 @@ RSpec.describe "events/show", type: :view do
     @event = assign(:event, FactoryGirl.create(:event, :with_two_date_ranges))
     @application_letter = FactoryGirl.create(:application_letter, user: FactoryGirl.create(:user_with_profile, role: :organizer), event: @event)
     @application_letters = @event.application_letters
-    @material_files = ["spec/testfiles/actual.pdf"]
+    @material_files = [{:type => 'file', :path => 'actual.pdf', :name => 'actual.pdf'}]
+    @material_directories = []
     assign(:has_free_places, @event.compute_free_places > 0)
     sign_in(@application_letter.user)
   end
@@ -144,11 +145,17 @@ RSpec.describe "events/show", type: :view do
   it "displays material area" do
     render
     expect(rendered).to have_text(t(:title, title: @event.name, scope: 'events.material_area'))
-    expect(rendered).to have_css("th", :text => t(:table_name, scope:'events.material_area'))
-    expect(rendered).to have_css("th", :text => t(:table_type, scope:'events.material_area'))
-    expect(rendered).to have_css("th", :text => t(:table_action, scope:'events.material_area'))
     expect(rendered).to have_button(t(:upload, scope: 'events.material_area'))
-    expect(rendered).to have_button(t(:download, scope: 'events.material_area'))
+    expect(rendered).to have_button(t(:download_all, scope: 'events.material_area'))
+    expect(rendered).to have_css('ul li span.glyphicon.glyphicon-folder-close') # Tests for the root list
+    @material_files.each { |file| expect(rendered).to have_button(file[:name]) }
+  end
+
+  it "displays all 3 material modals" do
+    render
+    expect(rendered).to have_css('div#material_move_modal')
+    expect(rendered).to have_css('div#material_rename_modal')
+    expect(rendered).to have_css('div#material_sub_dir_modal')
   end
 
   it "does not display apply button when application deadline is over" do

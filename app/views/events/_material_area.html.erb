@@ -1,36 +1,68 @@
 <% if can? :view_material, Event %>
+  <a name="material_area"></a>
+  <% if can? :upload_material, Event %>
+    <%= render( partial: 'material_sub_dir_modal' ) %>
+    <%= render( partial: 'material_move_modal' ) %>
+    <%= render( partial: 'material_rename_modal' ) %>
+  <% end %>
   <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10 col-xs-offset-0 col-sm-offset-0 col-md-offset-1 col-lg-offset-1" id="event_material_area">
     <h3><%= t '.title', title: @event.name %></h3>
 
-    <table class="table table-striped">
-      <thead>
-      <tr>
-        <th><%=t '.table_name' %></th>
-        <th><%=t '.table_type' %></th>
-        <th><%=t '.table_action' %></th>
-      </tr>
-      </thead>
-      <tbody>
-      <% @material_files.each do |file| %>
-          <tr>
-            <td><%= File.basename(file, File.extname(file))  %></td>
-            <td><%= File.extname(file) %></td>
-            <td>
-              <%= form_tag(event_download_material_path(@event)) do %>
-                  <%= hidden_field_tag "file", File.basename(file) %>
-                  <%= submit_tag t('.download'),
-                                 class: 'btn btn-primary',
-                                 id: "material_upload_btn_#{@event.id}_#{File.basename(file)}"%>
-            </td>
-              <% end %>
-          </tr>
-      <% end %>
-      </tbody>
-    </table>
+    <ul style="list-style-type: none;">
+      <li><span class="glyphicon glyphicon-folder-close"></span> /
+        <%= form_tag(event_download_material_path(@event), style: 'display: inline;') do %>
+            <%= hidden_field_tag "file", '' %>
+            <%= button_tag t('.download_all'),
+                           class: 'btn btn-xs btn-primary',
+                           type: 'submit',
+                           id: "material_download"
+            %>
+        <% end %>
+        <% if can? :upload_material, Event %>
+          <button class="btn btn-primary btn-xs add-dir-button" data-path="" id="root-dir-btn"><span class="glyphicon glyphicon-folder-open"></span></button>
+        <% end %>
+        <ul style="list-style-type: none;">
+          <% @material_files.each do |file| %>
+              <%= render( partial: 'material_item', locals: { file: file }) %>
+          <% end %>
+        </ul>
+      </li>
+    </ul>
+
+
+    <script type="application/javascript">
+      $(function(){
+        function openAddDirModal(){
+          $('#material_sub_dir_path').val($(this).data('path'));
+          $('#material_sub_dir_modal').modal('show');
+        }
+
+        function openMoveModal(){
+          $('#material_move_path').val($(this).data('path'));
+          $('#material_move_modal').modal('show');
+        }
+
+        function openRenameModal(){
+          $('#material_rename_path').val($(this).data('path'));
+          $('#material_rename_modal').modal('show');
+        }
+
+        $('.move-dir-button').click(openMoveModal);
+        $('.add-dir-button').click(openAddDirModal);
+        $('.rename-dir-button').click(openRenameModal);
+
+        $('#material_sub_dir_modal').on('shown', function () {
+          $('#material_sub_dir_name').get(0).focus();
+        });
+
+        $('#material_rename_modal').on('shown', function () {
+          $('#material_rename_to').get(0).focus();
+        })
+      });
+    </script>
 
     <% if can? :upload_material, Event %>
-      <%= form_tag(event_upload_material_path(@event), class: 'btn btn-default', multipart: true) do %>
-
+        <%= form_tag(event_upload_material_path(@event), class: 'btn btn-default', multipart: true) do %>
           <%= file_field_tag "file_upload",
                              class: "btn btn-default btn-file",
                              style: 'display:inline',
