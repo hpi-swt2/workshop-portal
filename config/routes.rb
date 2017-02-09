@@ -20,18 +20,18 @@ Rails.application.routes.draw do
   get 'events/archive' => 'events#archive', as: :events_archive
   resources :events do
     resources :agreement_letters, only: [:create], shallow: true
-    get 'emails' => 'emails#show', as: :email_show
-    post 'emails' => 'emails#submit_application_result', as: :email_submit_application_result
     post 'upload_material' => 'events#upload_material', as: :upload_material
     post 'download_material' => 'events#download_material', as: :download_material
     member do
-      post 'emails_generic' => 'emails#submit_generic', as: :email_submit_generic
       get 'participants_pdf'
       get 'print_applications'
       get 'print_applications_eating_habits'
       get 'badges'
       post 'badges' => 'events#print_badges', as: :print_badges
-      get 'send_participants_email'
+      get 'participants_email'
+      post 'participants_email' => 'emails#submit'
+      get 'email' => 'emails#show', as: :email_show
+      post 'email' => 'emails#submit', as: :email_submit
     end
   end
   resources :profiles, except: [:index, :destroy]

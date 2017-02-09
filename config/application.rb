@@ -31,5 +31,9 @@ module WorkshopPortal
 
     config.from_address = ENV['SMTP_ADDRESS'] ? ENV['SMTP_ADDRESS'] : 'noreply@localhost'
     config.reply_to_address = config.from_address
+
+    config.personalization_replacement = { '$NAME$' => :name,
+                                           '$FIRST_NAME$' => :first_name,
+                                           '$LAST_NAME$' => :last_name }
   end
 end

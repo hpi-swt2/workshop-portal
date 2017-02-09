@@ -20,4 +20,7 @@ de:
       sending_failed: 'Email konnte nicht versenden werden'
       saving_successful: 'Vorlage erfolgreich gespeichert'
       saving_failed: 'Vorlage konnte nicht gespeichert werden'
+      personalization_warning: >+
+        'Die Personalisierung der Email ist nicht möglich, da für mindestens einen Empfänger keine Nutzerprofil gefunden wurde.
+        Klicken sie erneut auf Senden um die Email unpersonalisiert zu verschicken.'
     ical_attachment: "Termin.ics"

@@ -202,7 +202,7 @@ class Event < ActiveRecord::Base
     Email.new(
         :hide_recipients => false,
         :recipients => email_addresses_of_participants(all, groups, users),
-        :reply_to => '',
+        :reply_to => Rails.configuration.reply_to_address,
         :subject => '',
         :content => ''
     )

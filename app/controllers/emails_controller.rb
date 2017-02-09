@@ -2,7 +2,7 @@ class EmailsController < ApplicationController
 
   def show
     authorize! :send_email, Email
-    @event = Event.find(params[:event_id])
+    @event = Event.find(params[:id])
 
     @templates = EmailTemplate.with_status(get_status)
     @addresses = @event.email_addresses_of_type_without_notification_sent(get_status)
@@ -13,33 +13,24 @@ class EmailsController < ApplicationController
 
     @email = Email.new(hide_recipients: true, reply_to: Rails.configuration.reply_to_address, recipients: @addresses.join(','),
                        subject: '', content: '')
-    @send_generic = false
     render :email
   end
 
-  def submit_application_result
+  def submit
     authorize! :send_email, Email
     if params[:send]
-      send_application_result_email
+      send_email
     elsif params[:save]
       save_template
     end
   end
 
-  def submit_generic
-    authorize! :send_email, Email
-    @templates = []
-    @event = Event.find(params[:id])
-    if params[:send]
-      send_generic
-    end
-  end
-
   private
 
-  def send_application_result_email
+  def send_email
     @email = Email.new(email_params)
-    @event = Event.find(params[:event_id])
+    @event = Event.find(params[:id])
+    @templates = EmailTemplate.with_status(get_status)
 
     if @email.valid?
       @attachments = []
@@ -47,28 +38,27 @@ class EmailsController < ApplicationController
         @attachments.push(@event.get_ical_attachment)
       end
 
-      @email.send_email(@attachments)
+      @generic = generic?
+      @force_generic = force_generic?
+
+      if !@email.containsPersonalizationTags? || generic? or force_generic?
+        @email.send_generic_email(@attachments)
+      else
+        if @email.personalizable?
+          @email.send_personalized_email(@attachments)
+        else
+          flash.now[:warning] = t('emails.submit.personalization_warning')
+          params[:force_generic] = true
+          render :email
+          return
+        end
+      end
 
       update_event(@event)
 
       redirect_to @event, notice: t('emails.submit.sending_successful')
     else
-      @templates = EmailTemplate.with_status(get_status)
-
       flash.now[:alert] = t('emails.submit.sending_failed')
-      @send_generic = false
-      render :email
-    end
-  end
-
-  def send_generic
-    @email = Email.new(email_params)
-    if @email.valid?
-      @email.send_email
-      redirect_to @event, notice: t('emails.submit.sending_successful')
-    else
-      flash.now[:alert] = t('emails.submit.sending_failed')
-      @send_generic = true
       render :email
     end
   end
@@ -84,10 +74,8 @@ class EmailsController < ApplicationController
     else
       flash.now[:alert] = t('emails.submit.saving_failed')
     end
-    @event = Event.find(params[:event_id])
+    @event = Event.find(params[:id])
     @templates = EmailTemplate.with_status(get_status)
-
-    @send_generic = false
     render :email
   end
 
@@ -108,6 +96,15 @@ class EmailsController < ApplicationController
 
   def get_status
     params[:status] ? params[:status].to_sym : :default
+  end
+
+  def generic?
+    # personalization depends on the existens of tags unless specificly turned off
+    params[:generic] ? (params[:generic] == 'true' ? true : false) : false
+  end
+
+  def force_generic?
+    params[:force_generic] ? true : false
   end
 
   # Only allow a trusted parameter "white list" through.
