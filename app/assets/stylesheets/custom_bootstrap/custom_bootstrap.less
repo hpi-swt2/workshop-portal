@@ -142,10 +142,12 @@ a:hover h1, a:hover h2, a:hover h3, a:hover h4 {
 		padding-bottom: 30px;
 		word-wrap: break-word;
 	}
+
 @media (max-width: @screen-sm-max) {
  h1 { font-size: 5rem; }
  h2 { font-size: 4rem; }
 }
+
 @media (max-width: @screen-xs-max) {
  h1 { font-size: 3.5rem; }
  h2 { font-size: 2.5rem; }
@@ -249,7 +251,21 @@ strong, b {
     background-position: center;
     border: 3px solid @body-bg;
 }
+
 .image-buttons .btn.active {
     border: 3px solid @brand-primary;
 }
 
+.title {
+	font-size: 64px;
+}
+
+.bottom-align-text {
+	position: absolute;
+	bottom: 15px;
+	right: 0;
+}
+
+.relative-box {
+	position: relative;
+}
