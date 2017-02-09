@@ -77,3 +77,6 @@ de:
     forward: Weiter
     top: oben
     bottom: unten
+  markdown:
+    supports_markdown_html: 'Dieser Editor unterstützt %{href}.'
+    supports_markdown_link: 'Markdown'
