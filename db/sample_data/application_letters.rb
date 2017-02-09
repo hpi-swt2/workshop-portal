@@ -28,9 +28,9 @@ def application_letter_2(user, event)
   )
 end
 
-def application_letter_4(user, event)
+def application_letter_3(user, event)
   ApplicationLetter.new(
-      motivation: "Den normalen Unterricht in der Schule finde ich ziemlich langweilig und würde mich darüber freuen, etwas über den Tellerrand zu schauen und spannende Dinge lernen. Ich arbeite sehr gerne im Team und freue mich darauf, Gleichgesinnte kennen zu lernen.",
+      motivation: "Ich habe schon seit der 8. Klasse das Programmieren als Hobby entdeckt und habe schon eine eigene App im Google Play Store veröffentlicht. Meine anderen Hobbies sind Baseln und Löten, aber Software bauen kann ich von denen am besten. Desshalb will ich gerne mehr darüber lernen. Ich arbeite gerne im Team und freue micht deshalb besonders auf die Zusammenarbeit mit anderen, die auch gerne Programmieren. ",
       emergency_number: "01234567891",
       organisation: "Schule am Griebnitzsee",
       vegetarian: false,
@@ -43,9 +43,9 @@ def application_letter_4(user, event)
   )
 end
 
-def application_letter_3(user, event)
+def application_letter_4(user, event)
   ApplicationLetter.new(
-      motivation: "Ich habe schon seit der 8. Klasse das Programmieren als Hobby entdeckt und habe schon eine eigene App im Google Play Store veröffentlicht. Meine anderen Hobbies sind Baseln und Löten, aber Software bauen kann ich von denen am besten. Desshalb will ich gerne mehr darüber lernen. Ich arbeite gerne im Team und freue micht deshalb besonders auf die Zusammenarbeit mit anderen, die auch gerne Programmieren. ",
+      motivation: "Den normalen Unterricht in der Schule finde ich ziemlich langweilig und würde mich darüber freuen, etwas über den Tellerrand zu schauen und spannende Dinge lernen. Ich arbeite sehr gerne im Team und freue mich darauf, Gleichgesinnte kennen zu lernen.",
       emergency_number: "01234567891",
       organisation: "Schule am Griebnitzsee",
       vegetarian: false,

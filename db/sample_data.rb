@@ -36,7 +36,7 @@ def add_sample_data
   profiles[:teacher] = profile_teacher(users[:teacher])
   profiles[:applicant] = profile_applicant(users[:applicant])
 
-  profiles[:keven] = profile_keven(users[:keven])
+  profiles[:keven] = profile_pupil_keven(users[:keven])
   profiles[:lisa] = profile_lisa(users[:lisa])
   profiles[:ralf]  = profile_pupil_max(users[:ralf])
   profiles[:organizer] = profile_organizer(users[:organizer])
