@@ -45,6 +45,7 @@ class EmailsController < ApplicationController
       @attachments = []
       if get_status == :accepted
         @attachments.push(@event.get_ical_attachment)
+        @attachments.push(AgreementLetter.get_attachment)
       end
 
       @email.send_email(@attachments)

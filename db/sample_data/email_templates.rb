@@ -1,6 +1,6 @@
 def email_template_acceptance
   EmailTemplate.new(
-    status: :acceptance,
+    status: :accepted,
     hide_recipients: false,
     subject: "Zusage für TODO",
     content: 'Liebe Camp-Teilnehmerinnen und -Teilnehmer,
@@ -46,7 +46,7 @@ end
 
 def email_template_rejection
   EmailTemplate.new(
-      status: :rejection,
+      status: :rejected,
       hide_recipients: false,
       subject: "Absage für TODO",
       content: 'Liebe Bewerberin / lieber Bewerber,

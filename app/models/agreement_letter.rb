@@ -103,4 +103,11 @@ class AgreementLetter < ActiveRecord::Base
       true
     end
   end
+
+  def self.get_attachment
+    {
+        name: (I18n.t 'emails.agreement_letter_attachment'),
+        content: File.read(Rails.configuration.empty_agreement_letter_path)
+    }
+  end
 end
