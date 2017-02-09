@@ -66,7 +66,7 @@
           end_picker = text_field_tag "event[date_ranges_attributes][][end_date]", (I18n.l end_date),
             class: 'form-control', :"data-enable-datepicker" => 'true'
 
-          "<div>#{start_picker} #{t 'date_range.to'} #{end_picker} "+
+          "<div>#{start_picker} #{t 'date_range.pronouns.to'} #{end_picker} "+
             "<a class=\"close\" onclick=\"javascript:removeEventDatePicker(event.target)\">&times;</a></div>"
         end %>
 
