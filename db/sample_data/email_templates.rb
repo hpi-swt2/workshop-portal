@@ -16,7 +16,7 @@ Aus versicherungstechnischen Gründen musst Du, falls Du noch nicht volljährig 
 Wer Digitalkamera, Laptop, etc. mit zum Camp bringt, ist für deren Sicherheit selbst zuständig. Für Verluste kann das Hasso-Plattner-Institut leider nicht aufkommen.
 Weitere Informationen
 
-Aktuelle Information findest Du auch auf der Facebook-Seite des Schülerklubs unter: https://www.facebook.com/hpi.schuelerklub. Zudem haben wir eine Veranstaltung auf Facebook angelegt: https://www.facebook.com/events/846978382011807/. Dort könnt ihr euch über Fahrgemeinschaften austauschen.
+Aktuelle Information findest Du auch auf der Facebook-Seite des Schülerklubs unter: https://www.facebook.com/hpi.schuelerklub. Zudem haben wir eine Veranstaltung auf Facebook angelegt: https://www.facebook.com/events/846978382011807/. Dort kannst Du dich mit anderen Teilnehmern über Fahrgemeinschaften austauschen.
 
 Wir wünschen Dir eine schnelle und sichere Anreise. Bei Fragen kannst Du dich natürlich jederzeit an uns wenden.
 
