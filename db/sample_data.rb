@@ -38,7 +38,7 @@ def add_sample_data
 
   profiles[:keven] = profile_pupil_keven(users[:keven])
   profiles[:lisa] = profile_lisa(users[:lisa])
-  profiles[:ralf]  = profile_pupil_max(users[:ralf])
+  profiles[:ralf]  = profile_pupil_ralf(users[:ralf])
   profiles[:organizer] = profile_organizer(users[:organizer])
   profiles[:coach]  = profile_coach(users[:coach])
   profiles[:admin] = profile_admin(users[:hpi_admin])
@@ -48,14 +48,14 @@ def add_sample_data
   application_letters[:applicant_gongakrobatik_past_deadline] = application_letter_1(users[:keven], events[:past_deadline_event])
   application_letters[:applicant_gongakrobatik_accepcted] = application_letter_2(users[:lisa], events[:past_deadline_event])
   application_letters[:applicant_gongakrobatik_rejected] = application_letter_3(users[:applicant], events[:past_deadline_event])
-  application_letters[:applicant_gongakrobatik_max] = application_letter_4(users[:ralf], events[:past_deadline_event])
+  application_letters[:applicant_gongakrobatik_ralf] = application_letter_4(users[:ralf], events[:past_deadline_event])
   application_letters[:applicant_gongakrobatik_karl] = application_letter_5(users[:pupil], events[:past_deadline_event])
   application_letters[:applicant_programmierkurs_lisa] = application_letter_applicant_programmierkurs_1(users[:lisa], events[:programmierkurs])
-  application_letters[:applicant_programmierkurs_max] = application_letter_applicant_programmierkurs_2(users[:ralf], events[:programmierkurs])
+  application_letters[:applicant_programmierkurs_ralf] = application_letter_applicant_programmierkurs_2(users[:ralf], events[:programmierkurs])
   application_letters[:applicant_programmierkurs_tobi] = application_letter_applicant_programmierkurs_3(users[:keven], events[:programmierkurs])
 
   application_letters[:applicant_mintcamp_lisa] = application_letter_applicant_programmierkurs_2(users[:lisa], events[:mintcamp])
-  application_letters[:applicant_mintcamp_max] = application_letter_applicant_programmierkurs_1(users[:ralf], events[:mintcamp])
+  application_letters[:applicant_mintcamp_ralf] = application_letter_applicant_programmierkurs_1(users[:ralf], events[:mintcamp])
   application_letters[:applicant_mintcamp_tobi] = application_letter_applicant_programmierkurs_3(users[:keven], events[:mintcamp])
 
   requests = Hash.new
@@ -63,7 +63,7 @@ def add_sample_data
 
   agreement_letters = Hash.new
   agreement_letters[:applicant_gongakrobatik] = agreement_letter_applicant_gongakrobatik(users[:applicant], events[:past_deadline_event])
-  agreement_letters[:max_gongakrobatik] = agreement_letter_applicant_gongakrobatik(users[:ralf], events[:past_deadline_event])
+  agreement_letters[:ralf_gongakrobatik] = agreement_letter_applicant_gongakrobatik(users[:ralf], events[:past_deadline_event])
 
 
   email_templates = Hash.new
