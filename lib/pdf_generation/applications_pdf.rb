@@ -8,7 +8,6 @@ class ApplicationsPDF
   # @return [String] the generated PDF
   def self.generate(event)
     self.new(event).create.render
-
   end
 
   def initialize(event)
