@@ -122,6 +122,7 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
   gem 'rspec-rails', '~> 3.2'
+  gem 'rspec-steps', '~> 2.1.1'
   gem 'capybara', '~> 2.5'
   gem 'poltergeist'
   gem 'database_cleaner'
