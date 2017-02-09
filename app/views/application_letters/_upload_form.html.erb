@@ -7,6 +7,7 @@
     <%= t('agreement_letters.please_upload', event: @application_letter.event.name)%>
   <% else %>
     <% upload_message = t('.update', default: t("agreement_letters.update")) %>
+    <%= glyph 'ok' %>
     <%= t("agreement_letters.already_uploaded", timestamp: l(agreement_letter.updated_at)) %>
   <% end %>
   </div>

@@ -13,7 +13,6 @@
 </div>
 
 <% if @application_letter.user.requires_agreement_letter_for_event?(@application_letter.event) and @application_letter.accepted? %>
-  <h3 id="agreement_header"><%= t('agreement_letters.please_upload', event: @application_letter.event.name) %></h3>
   <%= render('upload_form', event_id: @application_letter.event.id, agreement_letter: @application_letter.event.agreement_letter_for(@application_letter.user)) %>
 <% end %>
 
