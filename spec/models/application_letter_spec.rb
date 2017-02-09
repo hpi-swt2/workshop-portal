@@ -155,4 +155,15 @@ describe ApplicationLetter do
     application.user.profile.birth_date = application.event.start_date - 18.years + 1.day
     expect(application.user.profile.age_at_time(application.event.start_date)).to eq(17)
   end
+
+  it "returns if deadline is over" do
+    application = FactoryGirl.build(:application_letter)
+    application.event.application_deadline = Date.tomorrow
+    application_over = FactoryGirl.build(:application_letter_deadline_over)
+    application_without_event = FactoryGirl.build(:application_letter)
+    application_without_event.event = nil
+    expect(application.after_deadline?).to be(false)
+    expect(application_over.after_deadline?).to be(true)
+    expect(application_without_event.after_deadline?).to be(nil)
+  end
 end
