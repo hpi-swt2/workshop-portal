@@ -54,9 +54,42 @@
     transition: all 0.5s;
 }
 
+.event-preview a.btn-success{
+    color: #fff;
+    transition: all 0.5s;
+}
+
+.event-preview a.btn-danger{
+    color: #fff;
+    transition: all 0.5s;
+}
+
+.event-preview a.btn-default{
+    color: #000;
+    transition: all 0.5s;
+}
+
 .event-preview a:hover {
     text-decoration: none;
     color: #DE6207;
+    transition: all 0.5s;
+}
+
+.event-preview a.btn-success:hover {
+    text-decoration: none;
+    color: #fff;
+    transition: all 0.5s;
+}
+
+.event-preview a.btn-danger:hover {
+    text-decoration: none;
+    color: #fff;
+    transition: all 0.5s;
+}
+
+.event-preview a.btn-default:hover {
+    text-decoration: none;
+    color: #000;
     transition: all 0.5s;
 }
 
@@ -118,3 +151,12 @@
     height: 150px;
     margin-bottom: 15px;
 }
+
+.text-success{
+    color: #009600;
+}
+
+#event-date-pickers a.close {
+    color: #000;
+}
+
