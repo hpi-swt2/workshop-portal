@@ -561,7 +561,7 @@ RSpec.describe MaterialsController, type: :controller do
     #   file2
     #   file3
     before :each do
-      Dir.mkdir(material_tmp_dir)
+      FileUtils.mkdir_p(material_tmp_dir)
       allow_any_instance_of(Event).to receive(:material_path).and_return(material_tmp_dir)
 
       mkdir("dir1")
