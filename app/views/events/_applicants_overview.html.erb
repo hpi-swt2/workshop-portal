@@ -65,13 +65,13 @@
     <% if can? :send_email, Email %>
       <% if @event.phase == :selection %>
         <% if not @event.acceptances_have_been_sent %>
-          <%= render partial: 'send_mail_button', locals: {button_label: t('.sending_acceptances'), template_status: "acceptance"} %>
+          <%= render partial: 'send_mail_button', locals: {button_label: t('.sending_acceptances'), template_status: "accepted"} %>
         <% end %>
         <% if not @event.rejections_have_been_sent %>
-              <%= render partial: 'send_mail_button', locals: {button_label: t('.sending_rejections'), template_status: "rejection"} %>
+              <%= render partial: 'send_mail_button', locals: {button_label: t('.sending_rejections'), template_status: "rejected"} %>
         <% end %>
       <% elsif (@event.phase == :execution) && @event.has_participants_without_status_notification?(:accepted) %>
-          <%= render partial: 'send_mail_button', locals: {button_label: t('.sending_acceptances'), template_status: "acceptance"} %>
+          <%= render partial: 'send_mail_button', locals: {button_label: t('.sending_acceptances'), template_status: "accepted"} %>
       <% end %>
     <% end %>
 
