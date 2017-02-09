@@ -6,7 +6,8 @@ RSpec.describe MaterialsController, type: :controller do
     filepath = Rails.root.join('spec/testfiles/actual.pdf')
     fixture_file_upload(filepath, 'application/pdf')
   end
-  let(:dangerous_names) { ["", "../youve_been_hacked.lol"] }
+  let(:material_tmp_dir) { File.join('tmp', 'material_test') }
+  #let(:dangerous_names) { [nil, ".", "", "../youve_been_hacked.lol", ">a.out" "/home"] }
 
   def mock_writing_to_filesystem
     Dir.mktmpdir do |dir|
@@ -16,6 +17,38 @@ RSpec.describe MaterialsController, type: :controller do
       allow_any_instance_of(Event).to receive(:material_path).and_return(subdir)
       yield
     end
+  end
+
+  def upload_file(options = {})
+    path = options[:path] ? File.join(options[:path]) : ""
+    if options[:name].to_s == ""
+      post :upload_material, event_id: @event.to_param, path: path, file_upload: file
+    else
+      File.write(File.join(@event.material_path, path, options[:name]), options[:content].to_s)
+    end
+  end
+
+  def mkdir(name, options = {})
+    path = options[:path] ? File.join(options[:path]) : ""
+    post :make_material_folder, event_id: @event.to_param, path: path, name: name
+  end
+
+  def rename(from, to)
+    post :rename_material, event_id: @event.to_param, from: from, to: to
+  end
+
+  def move_file(from, to)
+    to_path = File.join(to)
+    post :move_material, event_id: @event.to_param, from: from, to: to_path
+  end
+
+  def download_file(*path_components)
+    path = File.join(path_components)
+    post :download_material, event_id: @event.to_param, file: path
+  end
+
+  def remove_file(path)
+    post :remove_material, event_id: @event.to_param, path: path
   end
 
   before :each do
@@ -384,7 +417,7 @@ RSpec.describe MaterialsController, type: :controller do
 
     it "sanitizes from-path names" do
       mock_writing_to_filesystem do
-        invalid_from = "...../..."
+        invalid_from = "../swag"
         to = 'dir/test'
         mkdir('dir')
         rename(invalid_from, to)
@@ -528,7 +561,9 @@ RSpec.describe MaterialsController, type: :controller do
     #   file2
     #   file3
     before :each do
-      @event.material_path
+      Dir.mkdir(material_tmp_dir)
+      allow_any_instance_of(Event).to receive(:material_path).and_return(material_tmp_dir)
+
       mkdir("dir1")
         mkdir("subdir", path: "dir1")
         mkdir("subdir2", path: "dir1")
@@ -545,6 +580,10 @@ RSpec.describe MaterialsController, type: :controller do
       upload_file(name: "file1")
       upload_file(name: "file2")
       upload_file(name: "file3")
+    end
+
+    after :each do
+      FileUtils.rm_rf(material_tmp_dir)
     end
 
     it "returns a complete list of the material filesystem" do
@@ -600,37 +639,5 @@ RSpec.describe MaterialsController, type: :controller do
         end
       end
     end
-  end
-
-  def upload_file(options = {})
-    path = options[:path] ? File.join(options[:path]) : ""
-    if options[:name].to_s == ""
-      post :upload_material, event_id: @event.to_param, path: path, file_upload: file
-    else
-      File.write(File.join(@event.material_path, path, options[:name]), options[:content].to_s)
-    end
-  end
-
-  def mkdir(name, options = {})
-    path = options[:path] ? File.join(options[:path]) : ""
-    post :make_material_folder, event_id: @event.to_param, path: path, name: name
-  end
-
-  def rename(from, to)
-    post :rename_material, event_id: @event.to_param, from: from, to: to
-  end
-
-  def move_file(from, to)
-    to_path = File.join(to)
-    post :move_material, event_id: @event.to_param, from: from, to: to_path
-  end
-
-  def download_file(*path_components)
-    path = File.join(path_components)
-    post :download_material, event_id: @event.to_param, file: path
-  end
-
-  def remove_file(path)
-    post :remove_material, event_id: @event.to_param, path: path
   end
 end

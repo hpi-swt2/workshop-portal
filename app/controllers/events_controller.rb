@@ -250,10 +250,7 @@ class EventsController < ApplicationController
       application_letters
     end
 
-    # Gets all file names stored in the material storage of the event
-    #
-    # @param [Event]
-    # @return [Array of Strings]
+    # Returns all file names stored in the material storage of the event
     def get_material_files(material_path)
       if File.exists?(material_path)
         build_files(material_path, '.')
@@ -288,6 +285,7 @@ class EventsController < ApplicationController
       }
     end
 
+    # Returns all directory names stored in the material storage of the event
     def get_material_directory_list(material_path)
       if File.exists?(material_path)
         [['/','']].concat(build_directories(material_path, ''))
