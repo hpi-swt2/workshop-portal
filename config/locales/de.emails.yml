@@ -21,3 +21,4 @@ de:
       saving_successful: 'Vorlage erfolgreich gespeichert'
       saving_failed: 'Vorlage konnte nicht gespeichert werden'
     ical_attachment: "Termin.ics"
+    agreement_letter_attachment: "Einverstaendniserklaerung.pdf"
