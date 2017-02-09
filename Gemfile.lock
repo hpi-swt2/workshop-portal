@@ -345,8 +345,8 @@ DEPENDENCIES
   jquery-turbolinks
   jquery-ui-rails
   less-rails
-  owlcarousel-rails!
   mini_magick
+  owlcarousel-rails!
   parser (~> 2.2.2.5)
   pdf-inspector
   pg
