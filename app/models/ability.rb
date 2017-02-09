@@ -56,7 +56,7 @@ class Ability
       can [:view_applicants, :view_participants, :view_material, :upload_material, :print_applications, :download_material], Event
       can [:view_and_add_notes, :show], ApplicationLetter
       can [:show, :index], Request
-      cannot [:view_apply_button], Event
+      cannot :view_apply_button, Event
       cannot :check, ApplicationLetter
     end
     if user.role? :organizer

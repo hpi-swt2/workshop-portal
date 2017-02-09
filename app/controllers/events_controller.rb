@@ -71,6 +71,7 @@ class EventsController < ApplicationController
 
   # GET /events/1/badges
   def badges
+    authorize! :print_badges, @event
     @participants = @event.participants
   end
 
@@ -140,6 +141,7 @@ class EventsController < ApplicationController
     if not params.has_key?(:selected_participants)
       redirect_to event_participants_url(@event), notice: I18n.t('events.agreement_letters_download.notices.no_participants_selected') and return
     end
+    authorize! :print_agreement_letters, @event
     if params[:download_type] == "zip"
       filename = "agreement_letters_#{@event.name}_#{Date.today}.zip"
       temp_file = Tempfile.new(filename)
