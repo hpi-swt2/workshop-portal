@@ -4,7 +4,7 @@
 </div>
 
 <h3><%=t 'requests.workshop_information' %></h3>
-<dl class="dl-horizontal">
+<dl class="dl-horizontal request_details">
   <dt><strong><%= model_class.human_attribute_name(:topic_of_workshop) %>:</strong></dt>
   <dd><%= @request.topic_of_workshop %></dd>
   <dt><strong><%= model_class.human_attribute_name(:number_of_participants) %>:</strong></dt>
@@ -20,7 +20,7 @@
 </dl>
 
 <% if can? :set_contact_person, Request %>
-<dl class="dl-horizontal">
+<dl class="dl-horizontal request_details">
   <dt><strong><%= model_class.human_attribute_name(:contact_person) %>:</strong></dt>
   <dd>
     <%= form_for @request, url: request_set_contact_person_path(@request), html: { class: 'form-inline' } do |f| %>
@@ -38,7 +38,7 @@
 <% end %>
 
 <% if can? :set_notes, Request %>
-<dl class="dl-horizontal">
+<dl class="dl-horizontal request_details">
   <dt><strong><%= model_class.human_attribute_name(:notes) %>:</strong></dt>
   <dd>
     <%= form_for @request, url: request_set_notes_path(@request) do |f| %>
@@ -52,7 +52,7 @@
 <% end %>
 
 <h3><%= t('requests.personal_information') %></h3>
-<dl class="dl-horizontal">
+<dl class="dl-horizontal request_details">
   <dt><strong><%= model_class.human_attribute_name(:first_name) %>:</strong></dt>
   <dd><%= @request.first_name %></dd>
   <dt><strong><%= model_class.human_attribute_name(:last_name) %>:</strong></dt>

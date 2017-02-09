@@ -67,6 +67,7 @@ RSpec.feature "Application Letter Overview", :type => :feature do
     end
 
     check_filled_field.call(:emergency_number)
+    check_filled_field.call(:organisation)
     check_filled_field.call(:allergies)
     check_checked_checkbox.call(:vegetarian)
     check_checked_checkbox.call(:vegan)
@@ -117,6 +118,16 @@ RSpec.feature "Application Letter Overview", :type => :feature do
 
       @event.custom_application_fields.each_with_index do |field_name, index|
         expect(page).to have_text("#{field_name}: value #{index}")
+      end
+    end
+
+    it "displays values I entered in custom fields when I edit the application later" do
+      letter = FactoryGirl.create(:application_letter)
+      login_as(letter.user, :scope => :user)
+      visit edit_application_letter_path(letter)
+
+      letter.custom_application_fields.each do |field|
+        expect(page).to have_css("input[value='#{field}']")
       end
     end
   end

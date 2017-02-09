@@ -51,10 +51,10 @@ FactoryGirl.define do
     end
 
     trait :is_only_today do
-      application_deadline Date.today
+      application_deadline Date.current
 
       after(:build) do |event|
-        event.date_ranges = [FactoryGirl.create(:date_range, start_date: Date.today, end_date: Date.today)]
+        event.date_ranges = [FactoryGirl.create(:date_range, start_date: Date.current, end_date: Date.current)]
       end
     end
 
@@ -130,6 +130,17 @@ FactoryGirl.define do
 
     trait :in_selection_phase_with_no_mails_sent do
       after(:build) do |event|
+        event.published = true
+        event.application_deadline = Date.yesterday
+        event.acceptances_have_been_sent = false
+        event.rejections_have_been_sent = false
+      end
+    end
+
+    trait :in_selection_phase_with_no_mails_sent_and_application do
+      after(:build) do |event, evaluator|
+        create_list(:application_letter, 1, event: event, status: :accepted)
+
         event.published = true
         event.application_deadline = Date.yesterday
         event.acceptances_have_been_sent = false

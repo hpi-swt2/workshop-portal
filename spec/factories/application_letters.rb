@@ -17,6 +17,7 @@ FactoryGirl.define do
     organisation "Schule am Griebnitzsee"
     vegetarian false
     vegan false
+    status :pending
     allergies "Many"
     association :user, factory: :user_with_profile
     event
@@ -55,6 +56,12 @@ FactoryGirl.define do
 
   factory :application_letter_alternative, parent: :application_letter do
     status :alternative
+
+    trait :with_mail_sent do
+      after(:build) do |application|
+        application.status_notification_sent = true
+      end
+    end
   end
 
   factory :application_letter_canceled, parent: :application_letter do

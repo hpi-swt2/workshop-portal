@@ -50,16 +50,6 @@
     </div>
   </div>
 
-  <div class="form-group">
-    <%= f.label :image, :class => 'control-label col-lg-2' %>
-    <%= image_tag(@event.image_url) if @event.image? %>
-    <div class="col-lg-10">
-      <%= f.error_span(:image) %>
-      <%= I18n.t :"events.image_upload.upload_local_file" %><br/>
-      <%= f.file_field :image %>
-    </div>
-  </div>
-
     <div class="form-group">
       <%= f.label :max_participants, :class => 'control-label col-lg-2' %>
       <div class="col-lg-10">
@@ -118,6 +108,7 @@
         <%=f.error_span(:application_deadline) %>
       </div>
     </div>
+    <%= render 'image_upload', form: f %>
   <%= (render 'custom_application_fields_input', form: f) if @event.new_record? %>
   <div class="form-group">
     <div class="col-lg-offset-2 col-lg-10">

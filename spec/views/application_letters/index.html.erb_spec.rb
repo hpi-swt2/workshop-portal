@@ -53,4 +53,24 @@ RSpec.describe "application_letters/index", type: :view do
     render
     expect(rendered).to have_link(@application_letters[0].event.name, href: event_path(@application_letters[0].event.id))
   end
+
+  it "should hide the temporary state of an applicant from the user" do
+    @event = assign(:event, FactoryGirl.create(:event, :in_selection_phase_with_no_mails_sent_and_application))
+    @application_letter = @event.application_letters[0]
+    @application_letter.user = FactoryGirl.create(:user_with_profile, role: :pupil)
+    @application_letters = @event.application_letters
+    @current_user = sign_in(@event.application_letters[0].user)
+    render
+    expect(rendered).to have_text(I18n.t('application_status.pending_after_deadline'))
+  end
+
+  it "should show the temporary state of an applicant to a coach" do
+    @event = assign(:event, FactoryGirl.create(:event, :in_selection_phase_with_no_mails_sent_and_application))
+    @application_letter = @event.application_letters[0]
+    @application_letter.user = FactoryGirl.create(:user_with_profile, role: :coach)
+    @application_letters = @event.application_letters
+    @current_user = sign_in(@application_letter.user)
+    render
+    expect(rendered).to have_text(@application_letter.status_type)
+  end
 end
