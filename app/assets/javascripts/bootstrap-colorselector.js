@@ -74,7 +74,11 @@
         $(this).next().find("ul").find("li").find(".selected").removeClass("selected");
         $(this).next().find("ul").find("li").find("a[data-color='" + color + "']").addClass("selected");
 
-        $(this).next().find(".btn-colorselector").css("background-color", color);
+        // nasty hack to make nasty hack in ParticipantGroup for unsetting colors work
+        // They supply us with an invalid background-color so that it won't be set,
+        // which we have to work-around in order to see any change at all on later changes.
+        var bgColor = color == '#0' ? '' : color;
+        $(this).next().find(".btn-colorselector").css("background-color", bgColor);
 
         callback(value, color, title);
       });
