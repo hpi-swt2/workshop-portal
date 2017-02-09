@@ -7,9 +7,7 @@ class MaterialsController < ApplicationController
 
   # POST /events/1/upload_material
   def upload_material
-    unless File.directory?(@event.material_path)
-      Dir.mkdir(@event.material_path)
-    end
+    Dir.mkdir(@event.material_path) unless Dir.exists?(@event.material_path)
 
     path = params[:path].to_s
     file = params[:file_upload]
@@ -34,106 +32,91 @@ class MaterialsController < ApplicationController
 
   # POST /events/1/download_material
   def download_material
-    unless params.has_key?(:file)
-      redirect_to event_path(@event), alert: I18n.t('events.material_area.no_file_given') and return
-    end
-    if invalid_pathname? params[:file]
-      redirect_to event_path(@event), alert: I18n.t('events.material_area.invalid_path_given') and return
-    end
+    file_full_path = File.join(@event.material_path, params[:file].to_s)
 
-    file_full_path = File.join(@event.material_path, params[:file])
-    unless File.exists?(file_full_path)
+    if !params.has_key?(:file)
+      redirect_to event_path(@event), alert: I18n.t('events.material_area.no_file_given') and return
+    elsif invalid_pathname? params[:file]
+      redirect_to event_path(@event), alert: I18n.t('events.material_area.invalid_path_given') and return
+    elsif !File.exists?(file_full_path)
       redirect_to event_path(@event), alert: t('events.material_area.download_file_not_found') and return
     end
+
     if File.directory?(file_full_path)
       send_zipped_materials(file_full_path)
     else
-      send_file file_full_path, :x_sendfile => true
+      send_file file_full_path, x_sendfile: true
     end
   end
 
   def move_material
-    unless params.has_key?(:from) and params.has_key?(:to)
+    from_path = File.join(@event.material_path, params[:from].to_s)
+    to_path = File.join(@event.material_path, params[:to].to_s)
+
+    if !params.has_key?(:from) or !params.has_key?(:to)
       redirect_to event_path(@event), alert: I18n.t('events.material_area.no_file_given') and return
-    end
-    if invalid_pathname?(params[:from]) || invalid_pathname?(params[:to])
+    elsif invalid_pathname?(params[:from]) || invalid_pathname?(params[:to])
       redirect_to event_path(@event), alert: I18n.t('events.material_area.invalid_path_given') and return
-    end
-
-    if params[:to] == params[:from] or params[:to].start_with?(params[:from] + File::SEPARATOR)
+    elsif params[:to] == params[:from] or params[:to].start_with?(params[:from] + File::SEPARATOR)
       redirect_to event_path(@event), alert: I18n.t('events.material_area.cant_move_in_child') and return
-    end
-
-    fr = File.join(@event.material_path,params[:from])
-    to = File.join(@event.material_path,params[:to])
-    unless File.exists?(fr) and File.exists?(to) and File.directory?(to)
+    elsif !File.exists?(from_path) or !File.exists?(to_path) or !File.directory?(to_path)
       redirect_to event_path(@event), alert: I18n.t('events.material_area.download_file_not_found') and return
-    end
-    if File.exists?(File.join(to, File.basename(fr)))
+    elsif File.exists?(File.join(to_path, File.basename(from_path)))
       redirect_to event_path(@event), alert: I18n.t('events.material_area.already_exists') and return
     end
 
-    move_file(fr, to)
+    move_file(from_path, to_path)
     redirect_to event_path(@event), notice: I18n.t('events.material_area.file_moved')
   end
 
   def rename_material
-    unless params.has_key?(:from) and params.has_key?(:to)
-      redirect_to event_path(@event), alert: I18n.t('events.material_area.no_file_given') and return
-    end
-    if invalid_pathname?(params[:from]) || invalid_filename?(params[:to])
-      redirect_to event_path(@event), alert: I18n.t('events.material_area.invalid_path_given') and return
-    end
+    from_path = File.join(@event.material_path, params[:from].to_s)
+    to_path = File.join(File.dirname(from_path), params[:to].to_s)
 
-    fr = File.join(@event.material_path,params[:from])
-    to = File.join(File.dirname(fr),params[:to])
-    unless File.exists?(fr)
+    if !params.has_key?(:from) or !params.has_key?(:to)
+      redirect_to event_path(@event), alert: I18n.t('events.material_area.no_file_given') and return
+    elsif invalid_pathname?(params[:from]) || invalid_filename?(params[:to])
+      redirect_to event_path(@event), alert: I18n.t('events.material_area.invalid_path_given') and return
+    elsif !File.exists?(from_path)
       redirect_to event_path(@event), alert: I18n.t('events.material_area.download_file_not_found') and return
-    end
-    if File.exists?(to)
+    elsif File.exists?(to_path)
       redirect_to event_path(@event), alert: I18n.t('events.material_area.already_exists') and return
     end
-    rename_file(fr, to)
+
+    rename_file(from_path, to_path)
     redirect_to event_path(@event), notice: I18n.t('events.material_area.file_renamed')
   end
 
   def remove_material
-    unless params.has_key?(:path)
+    path = File.join(@event.material_path, params[:path].to_s)
+    if !params.has_key?(:path)
       redirect_to event_path(@event), alert: I18n.t('events.material_area.no_file_given') and return
-    end
-    if invalid_pathname?(params[:path])
+    elsif invalid_pathname?(params[:path])
       redirect_to event_path(@event), alert: I18n.t('events.material_area.invalid_path_given') and return
-    end
-
-    path = File.join(@event.material_path,params[:path])
-    unless File.exists?(path)
+    elsif !File.exists?(path)
       redirect_to event_path(@event), alert: I18n.t('events.material_area.download_file_not_found') and return
     end
+
     remove_file(path)
     redirect_to event_path(@event), notice: I18n.t('events.material_area.file_removed')
   end
 
   def make_material_folder
-    unless File.directory?(@event.material_path)
-      Dir.mkdir(@event.material_path)
-    end
+    Dir.mkdir(@event.material_path) unless File.directory?(@event.material_path)
+    path = File.join(@event.material_path, params[:path].to_s)
+    new_dir_path = File.join(path, params[:name].to_s)
 
-    unless params.has_key?(:path) and params.has_key?(:name)
+    if !params.has_key?(:path) or !params.has_key?(:name)
       redirect_to event_path(@event), alert: I18n.t('events.material_area.no_file_given') and return
-    end
-    if invalid_pathname?(params[:path]) || invalid_filename?(params[:name])
+    elsif invalid_pathname?(params[:path]) || invalid_filename?(params[:name])
       redirect_to event_path(@event), alert: I18n.t('events.material_area.invalid_path_given') and return
-    end
-
-    path = File.join(@event.material_path, params[:path])
-    full_path = File.join(path, params[:name])
-    unless Dir.exists?(path)
+    elsif !Dir.exists?(path)
       redirect_to event_path(@event), alert: I18n.t('events.material_area.download_file_not_found') and return
-    end
-    if File.exists? full_path
+    elsif File.exists? new_dir_path
       redirect_to event_path(@event), alert: I18n.t('events.material_area.already_exists') and return
     end
-    make_dir(full_path)
+
+    make_dir(new_dir_path)
     redirect_to event_path(@event), notice: I18n.t('events.material_area.dir_created')
   end
 
@@ -157,7 +140,7 @@ class MaterialsController < ApplicationController
     # @param [String] to The path of the directory to move into (can be /)
     # @return [None]
     def move_file(fr, to)
-      FileUtils.mv(fr,File.join(to, File.basename(fr)))
+      FileUtils.mv(fr, File.join(to, File.basename(fr)))
     end
 
     # Moves one material file to another place
@@ -166,10 +149,10 @@ class MaterialsController < ApplicationController
     # @param [String] to The path of the directory to move into (can be /)
     # @return [None]
     def rename_file(fr, to)
-      File.rename(fr,to)
+      File.rename(fr, to)
     end
 
-    # Removes one material file
+    # Removes one material file or directory
     #
     # @param [String] path The path of the file in the event dir to remove
     # @return [None]
@@ -198,7 +181,7 @@ class MaterialsController < ApplicationController
           collect_files_for_zip(full_path, '.', zipfile)
         end
         zip_data = File.read(temp_file.path)
-        send_data(zip_data, :type => 'application/zip', :filename => filename, :disposition => 'inline', :x_sendfile => true)
+        send_data(zip_data, type: 'application/zip', filename: filename, disposition: 'inline', x_sendfile: true)
       ensure
         temp_file.close
         temp_file.unlink
@@ -226,10 +209,13 @@ class MaterialsController < ApplicationController
     end
 
     def invalid_filename?(pathname)
-      (['/','\\'].any? { |s| pathname.include?(s) }) || (pathname == '.') || (pathname == '') || (contains_invalid_chars(pathname))
+      (/[\/\\]/ =~ pathname) ||
+        (pathname == '.') ||
+        (pathname == '') ||
+        (contains_invalid_chars(pathname))
     end
 
     def contains_invalid_chars(pathname)
-      ([':','*','?','|','"','<','>'].any? { |s| pathname.include?(s) }) || (/^\S*\.\.+\S*$/.match(pathname) != nil)
+      (/^\S*\.\.+\S*$/ =~ pathname) || (/[:*?|"<>]/ =~ pathname)
     end
 end
