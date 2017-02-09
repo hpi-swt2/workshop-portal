@@ -27,8 +27,8 @@ class Email
     end
   end
 
-  def send_email_with_ical(event)
-    send_email([get_ical_attachment(event)])
+  def send_email_with_ical_and_agreement_letter(event)
+    send_email([get_ical_attachment(event), get_agreement_letter_attachment])
   end
 
   def send_email(attachments = [])
@@ -40,6 +40,13 @@ class Email
   end
 
   private
+
+  def get_agreement_letter_attachment
+    {
+      name: (I18n.t 'emails.agreement_letter_attachment'),
+      content: File.read(Rails.configuration.empty_agreement_letter_path)
+    }
+  end
 
   def get_ical_attachment(event)
     cal = Icalendar::Calendar.new

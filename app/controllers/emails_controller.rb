@@ -44,7 +44,7 @@ class EmailsController < ApplicationController
     if @email.valid?
       application_letter_status = get_corresponding_application_letter_status
       if application_letter_status == :accepted
-        @email.send_email_with_ical @event
+        @email.send_email_with_ical_and_agreement_letter @event
       else
         @email.send_email
       end
