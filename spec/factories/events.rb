@@ -51,10 +51,10 @@ FactoryGirl.define do
     end
 
     trait :is_only_today do
-      application_deadline Date.today
+      application_deadline Date.current
 
       after(:build) do |event|
-        event.date_ranges = [FactoryGirl.create(:date_range, start_date: Date.today, end_date: Date.today)]
+        event.date_ranges = [FactoryGirl.create(:date_range, start_date: Date.current, end_date: Date.current)]
       end
     end
 
