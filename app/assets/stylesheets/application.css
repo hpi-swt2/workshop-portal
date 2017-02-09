@@ -29,6 +29,17 @@ body, footer, main, .front-section {
     width: 100%;
 }
 
+.banner {
+    position: absolute;
+    top: 50px;
+    left: 0px;
+    right: 0px;
+    width: auto;
+    height: 100%;
+    z-index: -1;
+    filter: brightness(50%);
+}
+
 .m-l-1 { margin-left: 15px; }
 .m-r-1 { margin-right: 15px; }
 .m-t-1 { margin-top: 15px; }
