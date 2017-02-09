@@ -10,14 +10,13 @@ Terminliches und Telefonnummern
 Die Zeitpunkte für An- und Abreise sowie Telefonnummern für Probleme, z.B. größeren Zugverspätungen am Anreisetag findest Du auf dem angehängten Ablaufplan.
 
 ## Einverständniserklärung
-Aus versicherungstechnischen Gründen musst Du, falls Du noch nicht volljährig bist, eine Einverständniserklärung deiner Eltern hochladen.
+Aus versicherungstechnischen Gründen musst Du, falls Du noch nicht volljährig bist, eine Einverständniserklärung deiner Eltern hochladen. Die Vorlage dafür findest Du im Anhang dieser E-Mail.
 
 ## Wertsachen
 Wer Digitalkamera, Laptop, etc. mit zum Camp bringt, ist für deren Sicherheit selbst zuständig. Für Verluste kann das Hasso-Plattner-Institut leider nicht aufkommen.
 Weitere Informationen
-Weitere Informationen werden nächste Woche direkt vom MINT-EC per Mail an euch versandt.
 
-Aktuelle Information findest Du auch auf der Facebook-Seite des Schülerklubs unter: https://www.facebook.com/hpi.schuelerklub. Zudem hat der MINT-EC eine Veranstaltung auf Facebook angelegt: https://www.facebook.com/events/846978382011807/
+Aktuelle Information findest Du auch auf der Facebook-Seite des Schülerklubs unter: https://www.facebook.com/hpi.schuelerklub. Zudem haben wir eine Veranstaltung auf Facebook angelegt: https://www.facebook.com/events/846978382011807/. Dort könnt ihr euch über Fahrgemeinschaften austauschen.
 
 Wir wünschen Dir eine schnelle und sichere Anreise. Bei Fragen kannst Du dich natürlich jederzeit an uns wenden.
 
