@@ -1,24 +1,24 @@
 <div class="event-preview media clearfix">
-  <%= image_tag event.image_url(:list_view), class: "img-rounded img-responsive img-float-corner-tr center-block" if event.image_url%>
+  <%= image_tag event.image, class: "img-responsive img-float-corner-tr center-block", width: 200 if event.image.present? %>
   <div class="media-left">
     <%= render "events/event_date_large", event: event %>
   </div>
 
   <div class="media-body">
-    <a href="<%= event_path(event) %>">
       <h3>
+        <a href="<%= event_path(event) %>">
         <%= event.name %>
+        </a>
         <small>
           <%= tag_label t('activerecord.attributes.event.draft'), :default if not event.published and can? :view_unpublished, Event %>
           <%= tag_label t('activerecord.attributes.event.hidden'), :default if event.hidden and can? :view_hidden, Event %>
           <%= tag_label t('events.notices.past_event'), :default if event.is_past %>
         </small>
       </h3>
-    </a>
 
     <p>
       <%= truncate(markdown(event.description, true), length: Event::TRUNCATE_DESCRIPTION_TEXT_LENGTH) %>
-      <%= link_to " " + I18n.t('events.list.read_on'), event_path(event) %>
+      <%= link_to " " + t('events.list.read_on'), event_path(event) %>
 
       <div class="pull-left">
         <div class="m-b-1">

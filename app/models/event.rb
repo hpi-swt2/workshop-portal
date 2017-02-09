@@ -21,7 +21,7 @@ class Event < ActiveRecord::Base
 
   serialize :custom_application_fields, Array
 
-  mount_uploader :image, EventImageUploader
+  mount_uploader :custom_image, EventImageUploader
 
   has_many :application_letters
   has_many :agreement_letters
@@ -38,10 +38,25 @@ class Event < ActiveRecord::Base
   validates :published, exclusion: { in: [nil] }
   validate :check_image_dimensions
 
+  after_validation :update_image
+
+  # if we uploaded a custom image, we want it to be synced to the "official"
+  # image slot. only do this if we actually uploaded one and that image is valid
+  def update_image
+    if custom_image.filename.present? and errors[:custom_image].empty?
+      self.image = '/' + custom_image.list_view.store_path
+    end
+  end
+
   # Use the image dimensions as returned from our uploader
   # to verify that the image has sufficient size
   def check_image_dimensions
-    errors.add(:image, I18n.t("events.errors.image_too_small")) if image.upload_width.present? && image.upload_height.present? && (image.upload_width < 200 || image.upload_height < 155)
+    if custom_image.upload_width.present? &&
+       custom_image.upload_height.present? &&
+       (custom_image.upload_width < 200 || custom_image.upload_height < 155)
+      errors.add(:custom_image, I18n.t("events.errors.image_too_small"))
+      custom_image.remove!
+    end
   end
 
 
@@ -402,13 +417,13 @@ class Event < ActiveRecord::Base
   # 2. All participants that have to submit an letter of agreement and did do so, ordered by email.
   # 3. All participants that do not have to submit an letter of agreement, ordered by email.
   def compare_participants_by_agreement(participant1, participant2)
-    if participant1.requires_agreement_letter_for_event?(self)
-      if participant2.requires_agreement_letter_for_event?(self)
+    unless participant1.requires_agreement_letter_for_event?(self)
+      unless participant2.requires_agreement_letter_for_event?(self)
         return participant1.email <=> participant2.email
       end
       return 1
     end
-    if participant2.requires_agreement_letter_for_event?(self)
+    unless participant2.requires_agreement_letter_for_event?(self)
       return -1
     end
     if participant1.agreement_letter_for_event?(self)
