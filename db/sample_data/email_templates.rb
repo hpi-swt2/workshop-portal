@@ -21,7 +21,7 @@ Aktuelle Information findest Du auch auf der Facebook-Seite des Schülerklubs un
 Wir wünschen Dir eine schnelle und sichere Anreise. Bei Fragen kannst Du dich natürlich jederzeit an uns wenden.
 
 Viele Grüße aus Potsdam,
-dein HPI-Workshop-Team
+Dein HPI-Workshop-Team
 
 _________________________________________________________
 Hasso-Plattner-Institut für Softwaresystemtechnik GmbH
