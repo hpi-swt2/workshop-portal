@@ -1,17 +1,20 @@
 <%- model_class = User -%>
-<div class="page-header">
-  <h1><%= t '.title', :default => model_class.model_name.human(count: 2).titleize %></h1>
-
-  <%= form_tag(users_path, :method => "get", id: "search-form") do %>
-      <div class="input-group col-md-4">
-        <%= text_field_tag :search, params[:search], class: "form-control", placeholder: t(".search_users", :default => "Search users") %>
-        <div class="input-group-btn">
-          <button class="btn btn-primary" type="submit" id="search-button"><i class="glyphicon glyphicon-search"></i></button>
+<div class="row relative-box">
+  <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8 page-header">
+    <h1><%= t '.title', :default => model_class.model_name.human(count: 2).titleize %></h1>  
+  </div>
+  <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+    <%= form_tag(users_path, :method => "get", id: "search-form") do %>
+        <div class="input-group col-md-4">
+          <%= text_field_tag :search, params[:search], class: "form-control", placeholder: t(".search_users", :default => "Search users") %>
+          <div class="input-group-btn">
+            <button class="btn btn-primary" type="submit" id="search-button"><i class="glyphicon glyphicon-search"></i></button>
+          </div>
         </div>
-      </div>
-  <% end %>
+    <% end %>
+  </div>
 </div>
-
+<div class="spacer-20"></div>
 <table class="table table-striped">
   <thead>
     <tr>
@@ -38,8 +41,8 @@
                     <%= f.collection_select(:role, User::ROLES, :to_s, lambda{|i| t("users.roles." + i.to_s)}, {:selected => user.role.to_s })  %>
                 <% else %>
                     <%= f.collection_select(:role, User::ROLES.reject{|r| r == :admin}, :to_s, lambda{|i| t("users.roles." + i.to_s)}, {:selected => user.role.to_s })  %>
-                <% end %>
-                <%= f.submit t('.save', :default => "Save"), class: "btn btn-xs btn-primary" %>
+                <% end %>&nbsp;&nbsp;&nbsp;
+                <%= f.submit t('.save', :default => "Save"), class: "btn btn-sm btn-primary" %>
             <% end %>
           </td>
         </tr>
