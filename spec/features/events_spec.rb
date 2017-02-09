@@ -48,6 +48,14 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     expect(page).to have_css("div#occupied_places")
   end
 
+  scenario "comments on applications are displayed as comment icon tooltip, if there are any" do
+    login(:organizer)
+    event = FactoryGirl.create(:event, :with_one_application_note)
+    visit event_path(event)
+    expect(page).to have_css('.application-notes a.has-tooltip', count: 1)
+    expect(page).to have_css(".application-notes a[title='#{event.application_letters.second.application_notes.first.note}']")
+  end
+
   scenario "logged in as Organizer I want to be unable to send emails if there is any unclassified application left" do
     @event = FactoryGirl.build(:event, :with_diverse_open_applications, :in_selection_phase_with_no_mails_sent)
     login(:organizer)

@@ -57,7 +57,7 @@
 <% end %>
 <br>
 <% if can? :view_and_add_notes, ApplicationLetter  %>
-  <dl class="dl-horizontal">
+  <dl class="dl-horizontal" id="application-notes">
     <dt><strong><%= ApplicationNote.model_name.human(count: @application_letter.application_notes.count) %>:</strong></dt>
     <dd><% @application_letter.application_notes.each do |note| %>
           <div> <%= note.note %> </div>
