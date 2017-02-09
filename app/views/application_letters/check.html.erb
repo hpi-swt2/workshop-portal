@@ -1,5 +1,4 @@
 <%- model_class = ApplicationLetter -%>
-
 <p class='alert alert-info' >
   <% if @application_deadline_exceeded %>
     <%= t('.deadline_exceeded') %>
@@ -7,91 +6,59 @@
     <%= t('.can_change_until', application_deadline: l(@application_letter.event.application_deadline)) %>
   <% end %>
 </p>
+
+<div class="col-sm-8 col-sm-offset-2">
+
 <div class="page-header">
   <h1><%=t '.check_application_for', event_name: @application_letter.event.name %></h1>
 </div>
 
 <% if @application_letter.user.requires_agreement_letter_for_event?(@application_letter.event) and @application_letter.accepted? %>
-  <h3 id="agreement_header"><%= t('agreement_letters.please_upload', event: @application_letter.event.name) %></h3>
   <%= render('upload_form', event_id: @application_letter.event.id, agreement_letter: @application_letter.event.agreement_letter_for(@application_letter.user)) %>
 <% end %>
 
 <h3><%= t('.my_application') %></h3>
-
-<table id='application_details' class="table application-details-table">
-  <col width="250">
-  <tr>
-    <th><%= ApplicationLetter.human_attribute_name(:motivation) %>:</th>
-    <td id="application-motivation" data-orig-text="<%= @application_letter.motivation %>">
-      <%= truncate @application_letter.motivation, length: 300 do
-        link_to I18n.t('events.list.read_on'),
-          'javascript:jQuery("#application-motivation")
-            .text(jQuery("#application-motivation")
-              .attr("data-orig-text")); void(0)'
-        end %>
-      </td>
-  </tr>
-</table>
-<hr>
-<table class="application-details-table table">
-  <col width="250">
-  <tr>
-    <th><%= ApplicationLetter.human_attribute_name(:organisation) %>:</th>
-    <td><%= @application_letter.organisation %></td>
-  </tr>
-</table>
-<hr>
-<table class="application-details-table table">
-  <col width="250">
-  <tr>
-    <th><%=t('.eating_habits') %>:</th>
-    <td><%= @application_letter.eating_habits.join(', ') %></td>
-  </tr>
-  <tr>
-    <th><%= ApplicationLetter.human_attribute_name(:allergies) %>:</th>
-    <td><%= @application_letter.allergies %></td>
-  </tr>
-  <tr>
-    <th><%= ApplicationLetter.human_attribute_name(:emergency_number) %>:</th>
-    <td><%= @application_letter.emergency_number %></td>
-  </tr>
-  <tr>
-    <th><%= ApplicationLetter.human_attribute_name(:annotation) %>:</th>
-    <td><%= @application_letter.annotation %></td>
-  </tr>
-
+<dl>
+  <dt><%= ApplicationLetter.human_attribute_name(:motivation) %>:</dt>
+  <dd id="application-motivation" data-orig-text="<%= @application_letter.motivation %>">
+    <%= truncate @application_letter.motivation, length: 300 do
+      link_to I18n.t('events.list.read_on'),
+        'javascript:jQuery("#application-motivation")
+          .text(jQuery("#application-motivation")
+            .attr("data-orig-text")); void(0)'
+      end %>
+  </dd>
+  <dt><%= ApplicationLetter.human_attribute_name(:organisation) %>:</dt>
+  <dd><%= @application_letter.organisation %></dd>
+  <dt><%=t('.eating_habits') %>:</dt>
+  <dd><%= @application_letter.eating_habits.join(', ') %></dd>
+  <dt><%= ApplicationLetter.human_attribute_name(:allergies) %>:</dt>
+  <dd><%= @application_letter.allergies %></dd>
+  <dt><%= ApplicationLetter.human_attribute_name(:emergency_number) %>:</dt>
+  <dd><%= @application_letter.emergency_number %></dd>
+  <dt><%= ApplicationLetter.human_attribute_name(:annotation) %>:</dt>
+  <dd><%= @application_letter.annotation %></dd>
   <% @application_letter.event.custom_application_fields
     .zip(@application_letter.custom_application_fields)
     .each do |field_name, field_value| %>
-    <tr>
-      <th><%= field_name %>:</th>
-      <td><%= field_value %></td>
-    </tr>
+    <dt><%= field_name %>:</dt>
+    <dd><%= field_value %></dd>
   <% end %>
-</table>
 <% unless @application_deadline_exceeded %>
   <%= link_to t('.edit', :default => t("helpers.links.edit")), edit_application_letter_path(@application_letter), id: 'edit_application_link', class: 'btn btn-default' %>
 <% end %>
 
 <h3><%= t('.my_personal_data') %></h3>
-<table id="applicant_details" class="application-details-table table">
-  <col width="250">
-  <tr>
-    <th><%= Profile.human_attribute_name(:name) %>:</th>
-    <td><%= @application_letter.user.profile.name %></td>
-  </tr>
-  <tr>
-    <th><%= Profile.human_attribute_name(:gender) %>:</th>
-    <td><%= t "profiles.genders.#{@application_letter.user.profile.gender}"  %></td>
-  </tr>
-  <tr>
-    <th><%= Profile.human_attribute_name(:birth_date) %>:</th>
-    <td><%= l(@application_letter.user.profile.birth_date) %></td>
-  </tr>
-  <tr>
-    <th><%= Profile.human_attribute_name(:address) %>:</th>
-    <td><%= @application_letter.user.profile.address %></td>
-  </tr>
-</table>
+<dl>
+  <dt><%= Profile.human_attribute_name(:name) %>:</dt>
+  <dd><%= @application_letter.user.profile.name %></dd>
+  <dt><%= Profile.human_attribute_name(:gender) %>:</dt>
+  <dd><%= t "profiles.genders.#{@application_letter.user.profile.gender}"  %></dd>
+  <dt><%= Profile.human_attribute_name(:birth_date) %>:</dt>
+  <dd><%= l(@application_letter.user.profile.birth_date) %></dd>
+  <dt><%= Profile.human_attribute_name(:address) %>:</dt>
+  <dd><%= @application_letter.user.profile.address %></dd>
+</dl>
 <%= link_to t('.edit', :default => t("helpers.links.edit")),
               edit_profile_path(@application_letter.user.profile), id: 'edit_profile_link', class: 'btn btn-default' %>
+</div>
