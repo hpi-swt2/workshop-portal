@@ -1,7 +1,7 @@
 <div class="event-date text-center">
   <span class="event-day"><%= l event.start_date, format: "%d" %></span>
   <span class="event-month"><%= l event.start_date, format: "%b" %></span>
-  <% if event.start_date.year != Time.now.year %>
+  <% if event.start_date.year != Time.zone.now.year %>
       <span class="event-year"><%= event.start_date.year %></span>
   <% end %>
 </div>
