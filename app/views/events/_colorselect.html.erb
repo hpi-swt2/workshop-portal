@@ -5,7 +5,7 @@
       ParticipantGroup::GROUPS.map { |key, value|
         [I18n.t("participant_groups.options.#{value}"),
         key,
-        {'data-color' => '#' + value}]
+        {'data-color' => value == '0' ? '' : '#' + value}]
       },
       selected: participant_group.group
     ),
