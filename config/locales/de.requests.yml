@@ -63,7 +63,7 @@ de:
     email:
       topic: "Ihre Anfrage auf dem HPI Workshop-Portal"
       content:  |
-        Hallo %{first_name} %{last_name}!
+        Hallo %{first_name} %{last_name},
 
         Ihre Anfrage ist bei uns eingegangen und wir melden uns schnellstmöglich bei Ihnen, um weitere Details abzustimmen.
 
