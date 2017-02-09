@@ -66,9 +66,9 @@ RSpec.describe EmailsController, type: :controller do
         post :submit_application_result, send: I18n.t('.emails.email_form.send'), event_id: @event.id, email: @email, status: :accepted
 
         mail = ActionMailer::Base.deliveries.last
-        expect(mail.attachments.size).to eq(1)
-        attachment = mail.attachments[0]
-        expect(attachment.filename).to eq(I18n.t 'emails.ical_attachment')
+        expect(mail.attachments.size).to eq(2)
+        expect(mail.attachments[0].filename).to eq(I18n.t 'emails.ical_attachment')
+        expect(mail.attachments[1].filename).to eq(I18n.t 'emails.agreement_letter_attachment')
       end
 
       it "does not send an Email with ical attachement for rejected applications" do

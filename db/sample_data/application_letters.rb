@@ -8,7 +8,8 @@ def application_letter_applicant_gongakrobatik(user, event)
     allergies: "",
     annotation: "Euer Angebot find ich echt super.",
     user: user,
-    event: event
+    event: event,
+    status: ApplicationLetter.statuses[:pending]
   )
 end
 
@@ -23,7 +24,7 @@ def application_letter_applicant_gongakrobatik_rejected(user, event)
       annotation: "",
       user: user,
       event: event,
-      status: ApplicationLetter.statuses[:rejected]
+      status: ApplicationLetter.statuses[:pending]
   )
 end
 
@@ -33,12 +34,12 @@ def application_letter_applicant_gongakrobatik_accepted(user, event)
       emergency_number: "01234567891",
       organisation: "Schule am Griebnitzsee",
       vegetarian: false,
-      vegan: false,
+      vegan: true,
       allergies: "Tomaten",
       annotation: "Euer Angebot find ich echt super.",
       user: user,
       event: event,
-      status: ApplicationLetter.statuses[:accepted]
+      status: ApplicationLetter.statuses[:pending]
   )
 end
 
@@ -53,7 +54,8 @@ def application_letter_applicant_programmierkurs_1(user, event)
     annotation: "Euer Angebot find ich echt super.",
     user: user,
     event: event,
-    custom_application_fields: ['Dooodlejump', '8', 'Java']
+    custom_application_fields: ['Dooodlejump', '8', 'Java'],
+    status: ApplicationLetter.statuses[:accepted]
   )
 end
 
@@ -68,7 +70,8 @@ def application_letter_applicant_programmierkurs_2(user, event)
     annotation: "Euer Angebot find ich echt super.",
     user: user,
     event: event,
-    custom_application_fields: ['Snapchat', '10', 'Python']
+    custom_application_fields: ['Snapchat', '10', 'Python'],
+    status: ApplicationLetter.statuses[:rejected]
   )
 end
 
@@ -83,6 +86,7 @@ def application_letter_applicant_programmierkurs_3(user, event)
       annotation: "Euer Angebot find ich echt super.",
       user: user,
       event: event,
-      custom_application_fields: ['Facebook, Twitter', '9', 'C++, C#']
+      custom_application_fields: ['Facebook, Twitter', '9', 'C++, C#'],
+      status: ApplicationLetter.statuses[:accepted]
   )
 end

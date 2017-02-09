@@ -45,6 +45,15 @@
           <td>
             <%= render :partial => 'application_letters/application_selective', locals: {application_letter: application_letter} %>
           </td>
+          <td class="application-notes">
+            <%= link_to application_letter_path(application_letter, anchor: "application-notes"),
+              :class => 'btn btn-default btn-xs has-tooltip',
+              :'data-toggle' => 'tooltip',
+              :'data-placement' => 'bottom',
+              :title => application_letter.application_notes.first.note.truncate_words(10) do 
+                glyph 'comment'
+              end if application_letter.application_notes.present? %>
+          </td>
           <td>
             <%= link_to t('.details'), application_letter_path(application_letter), :class => 'btn btn-default btn-xs' %>
           </td>
