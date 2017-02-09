@@ -152,6 +152,11 @@
     margin-bottom: 15px;
 }
 
+.text-success{
+    color: #009600;
+}
+
 #event-date-pickers a.close {
     color: #000;
 }
+
