@@ -85,7 +85,7 @@ RSpec.describe ApplicationLettersController, type: :controller do
 
       it "sets the flashes if agreement_letters are missing" do
         user = FactoryGirl.create(:user_with_profile)
-        event = FactoryGirl.create(:event)
+        event = FactoryGirl.create(:event, acceptances_have_been_sent: true)
         FactoryGirl.create(:application_letter_accepted, user: user, event: event)
         sign_in(user)
 
