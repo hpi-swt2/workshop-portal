@@ -10,35 +10,35 @@ de:
       target_group: "Zielgruppe"
       content: "Inhalt"
       panel1:
-        title: "Workshop 1"
-        duration: "2-3 h"
-        size: "20 Personen"
-        target_group: "Informatikeinsteiger (auch ohne Programmiererfahrung), ca. ab Klasse 10"
-        content: "Die Kenntnisse werden weiter vertieft und Umformungen und Normalformen, sowie Beweise anhand von Aussagenlogik besprochen. Neben dem theoretischen Teil des Workshops werden auch Anwendungsgebiete und Relevanz von Mathematik und Theoretischer Informatk in der Softwareentwicklung besprochen."
+        title: "Ant-Me 1"
+        duration: "mit Erfahrung: 3-6h, ohne Erfahrung: 4-6h"
+        size: "Keine Beschränkung"
+        target_group: "Programmier-Einsteiger und Fortgeschrittene, ca. ab Klasse 9"
+        content: "Auf interessante und leicht verständliche Weise soll AntMe! das Erlernen der Software-Entwicklung mit der objektorientierten Programmiersprache C# ermöglichen. Die Lernwelt ist eine simulierte Welt der Ameisen. Die Teilnehmenden steuern ein Ameisenvolk mit Hilfe eigenentwickelter und selbstprogrammierter Algorithmen. Die Welt der Ameisen bildet die Programmierumgebung für den Spielablauf. Spielerisch und kreativ wird der Lernende mit AntMe! an den Aufbau und die Funktionsweise von Quelltexten, Kontrollstrukturen, Objekten und Methoden herangeführt."
       panel2:
-        title: "Workshop 2"
-        duration: "2-3 h"
-        size: "20 Personen"
-        target_group: "Informatikeinsteiger (auch ohne Programmiererfahrung), ca. ab Klasse 10"
-        content: "Die Kenntnisse werden weiter vertieft und Umformungen und Normalformen, sowie Beweise anhand von Aussagenlogik besprochen. Neben dem theoretischen Teil des Workshops werden auch Anwendungsgebiete und Relevanz von Mathematik und Theoretischer Informatk in der Softwareentwicklung besprochen."
+        title: "LogicTraffic-Workshop"
+        duration: "ca. 3-4h"
+        size: "Keine Beschränkung"
+        target_group: "Programmier-Einsteiger und Fortgeschrittene, ca. ab Klasse 10"
+        content: "Mittels Aussagenlogik müssen bei LogicTraffic Ampelschaltungen an Straßenkreuzungen sicher gemacht werden. Anhand dieses anschaulichen Beispiels werden die Bausteine aussagenlogischer Formeln eingeführt und praxisrelevant erprobt. Anschließend werden die Kenntnisse weiter vertieft, und Umformungen und Normalformen, sowie Beweise anhand von Aussagenlogik besprochen. Neben dem theoretischen Teil des Workshops werden auch Anwendungsgebiete und Relevanz von Mathematik und Theoretischer Informatk in der Softwareentwicklung besprochen."
       panel3:
-        title: "Workshop 3"
-        duration: "2-3 h"
-        size: "20 Personen"
-        target_group: "Informatikeinsteiger (auch ohne Programmiererfahrung), ca. ab Klasse 10"
-        content: "Die Kenntnisse werden weiter vertieft und Umformungen und Normalformen, sowie Beweise anhand von Aussagenlogik besprochen. Neben dem theoretischen Teil des Workshops werden auch Anwendungsgebiete und Relevanz von Mathematik und Theoretischer Informatk in der Softwareentwicklung besprochen."
+        title: "Algorithmen-Challenge"
+        duration: "mind. 6 h, vorzugsweise 8 h oder mehr"
+        size: "Keine Beschränkung"
+        target_group: "Dieser Workshop ist besonders für Schüler/innen geeignet, die Spaß am Lösen von (algorithmischen) Knobelaufgaben haben. Die Schüler/innen sollten Experten im Programmieren sein und in der Lage sein mit komplexen Datenstrukturen Probleme effizient zu lösen. Die Programmiersprache ist hierbei relativ egal, es bietet sich allerdings eine Sprache an, die Objektorientierte, Prozedurale oder Funktionale Programmierparadigmen unterstützt."
+        content: "Bei diesem Workshop treten die Schüler in Kleingruppen in einem eigens am HPI entwickelten Strategiespiel an. Sie müssen sich durch das Lösen von algorithmischen Problemen Punkte verdienen, um damit eine Eisenbahn-Imperium in den USA aufzubauen, das seinesgleichen sucht."
       panel4:
-        title: "Workshop 4"
-        duration: "2-3 h"
-        size: "20 Personen"
-        target_group: "Informatikeinsteiger (auch ohne Programmiererfahrung), ca. ab Klasse 10"
-        content: "Die Kenntnisse werden weiter vertieft und Umformungen und Normalformen, sowie Beweise anhand von Aussagenlogik besprochen. Neben dem theoretischen Teil des Workshops werden auch Anwendungsgebiete und Relevanz von Mathematik und Theoretischer Informatk in der Softwareentwicklung besprochen."
+        title: "Roboter-Programmierung"
+        duration: "mit Erfahrung: 6h, ohne Erfahrung: 8 h"
+        size: "max. 40"
+        target_group: "Für eine erfolgreiche Teilnahme an diesem Workshop sind Programmierkenntnisse (Verständnis von Kontrollstrukturen, Variablen, Funktionen und optional Objektorientierung) in einer oder mehreren Programmiersprachen erforderlich. Des Weiteren ist es von Vorteil, wenn den Schüler/innen Grundlagen der Vektorrechnung bekannt sind oder ein gutes allgemeines mathematisches Grundverständnis vorhanden ist."
+        content: "Programmierung einer künstlichen Intelligenz zur Steuerung eines weltenerobernden Kampfroboter. Die Teilnehmer entwickeln in Kleingruppen künstliche Intelligenzen innerhalb eines Java-Frameworks. Diese treten am Ende des Tages in einem Turnier gegeneinander an."
       panel5:
-        title: "Workshop 5"
-        duration: "2-3 h"
-        size: "20 Personen"
-        target_group: "Informatikeinsteiger (auch ohne Programmiererfahrung), ca. ab Klasse 10"
-        content: "Die Kenntnisse werden weiter vertieft und Umformungen und Normalformen, sowie Beweise anhand von Aussagenlogik besprochen. Neben dem theoretischen Teil des Workshops werden auch Anwendungsgebiete und Relevanz von Mathematik und Theoretischer Informatk in der Softwareentwicklung besprochen." 
+        title: "Algorithmen erarbeiten"
+        duration: "mind. 6h, mit Implementierung mind. 8h"
+        size: "nach Absprache, mind. 10 Schüler/innen, max. 40 Schüler/innen"
+        target_group: "Programmier-Einsteiger und Fortgeschrittene, ca. ab Klasse 10"
+        content: "Typische Probleme der Informatik stecken überall im Alltag: Wie liefert ein Postbote am besten seine Pakete aus? Wie setzt man Mitarbeiter in seinem Unternehmen ein, so dass alle glücklich sind? Wie packt man die Artikel einer Bestellung möglichst platzsparend in einen Karton? Der Workshop bietet den Schülerinnen und Schülern Einblicke in typische Problemstellungen der Algorithmik und stellt sie vor die Aufgabe, gute Algorithmen für diese Probleme zu finden. Gruppen mit Programmierkenntnisse können ihre Lösungen anschließend in Java implementieren, ansonsten macht auch das theoretische Bearbeiten der Aufgaben viel Spaß." 
     intro_text: "Wenn Sie einen Workshop am HPI durchführen wollen, füllen Sie bitte das folgende Formular aus. Die weitere Planung und Kommunikation wird über E-Mail erfolgen."
     new:
       title: "Neue Anfrage stellen"
@@ -62,8 +62,13 @@ de:
       was_deleted: "Die Anfrage wurde gelöscht"
     email:
       topic: "Ihre Anfrage auf dem HPI Workshop-Portal"
-      content: "Hallo!
-                Ihre Anfrage ist bei uns eingegangen und wir melden uns schnellstmöglich bei Ihnen, um weitere Details abzustimmen."
+      content:  |
+        Hallo %{first_name} %{last_name},
+
+        Ihre Anfrage ist bei uns eingegangen und wir melden uns schnellstmöglich bei Ihnen, um weitere Details abzustimmen.
+
+        Viele Grüße
+        das HPI Workshop Team"
   activerecord:
     models:
       request:
