@@ -4,7 +4,7 @@ def profile_pupil(user)
     first_name: "Hendrik",
     last_name: "Schüler",
     gender: "male",
-    birth_date: Date.parse('1995.11.29'),
+    birth_date: Date.parse('2001.11.29'),
     street_name: "Rudolf-Breitscheid-Str. 52",
     zip_code: "14482",
     city: "Potsdam",
