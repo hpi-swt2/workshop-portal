@@ -1,7 +1,7 @@
 def email_template_acceptance
   EmailTemplate.new(
     status: :acceptance,
-    hide_recipients: false,
+    hide_recipients: true,
     subject: "Zusage",
     content: 'Liebe Bewerberin / lieber Bewerber,
 
@@ -48,7 +48,7 @@ end
 def email_template_rejection
   EmailTemplate.new(
       status: :rejection,
-      hide_recipients: false,
+      hide_recipients: true,
       subject: "Absage",
       content: 'Liebe Bewerberin / lieber Bewerber,
 
