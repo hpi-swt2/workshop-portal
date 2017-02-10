@@ -1,5 +1,5 @@
 <% if can? :view_material, Event %>
-  <div class="col-xs-12" id="event_material_area">
+  <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10 col-xs-offset-0 col-sm-offset-0 col-md-offset-1 col-lg-offset-1" id="event_material_area">
     <h3><%= t '.title', title: @event.name %></h3>
 
     <table class="table table-striped">
@@ -27,9 +27,7 @@
       <% end %>
       </tbody>
     </table>
-  </div>
-  <div class="spacer-60"></div>
-  <div class="col-xs-12 col-sm-6 col-xs-offset-0 col-sm-offset-3" id="event_material_area">
+
     <% if can? :upload_material, Event %>
       <%= form_tag(event_upload_material_path(@event), class: 'btn btn-default', multipart: true) do %>
 

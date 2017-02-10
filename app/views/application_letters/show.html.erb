@@ -11,7 +11,7 @@
 
 <dl class="dl-horizontal" id="applicant_details">
   <dt><strong><%= Profile.human_attribute_name(:gender) %>:</strong></dt>
-  <dd><%= t("profiles.genders.#{@application_letter.user.profile.gender}") %></dd>
+  <dd><%= @application_letter.user.profile.gender %></dd>
   <dt><strong><%= t('.age_when_event_starts') %>:</strong></dt>
   <dd><%= @application_letter.user.profile.age_at_time(@application_letter.event.start_date) %></dd>
   <% if can? :view_personal_details, ApplicationLetter  %>

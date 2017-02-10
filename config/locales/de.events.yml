@@ -6,7 +6,6 @@ de:
     description_placeholder: "## Untertitel\\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\\n \\n ## Lernziele\\n* a\\n* b\\n* c\\n\\n## Hinweise\\n* a\\n* b\\n* c"
     archive: "Veranstaltungs-Archiv"
     all_events: "Alle Events"
-    facts: "Fakten"
 
     applicants_overview:
       title: "Bewerber für %{title}"
@@ -78,7 +77,6 @@ de:
         other: "%{count} Personen ernähren sich omnivor."
       print_summary_allergic: "Außerdem haben folgende Teilnehmer Allergien oder Unverträglichkeiten:"
       send_email: "E-Mail an Teilnehmer versenden"
-      failed_to_update_color: "Gruppen-Farbe ändern ist fehlgeschlagen!"
     agreement_letters_download:
       notices:
         no_participants_selected: "Keine Teilnehmer ausgewählt"

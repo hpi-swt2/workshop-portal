@@ -26,7 +26,7 @@ de:
       deadline_exceeded: "Die Bewerbungsfrist ist abgelaufen. Die Bewerbung kann nicht mehr bearbeitet werden."
       my_application: "Meine Bewerbung"
       my_personal_data: "Meine persönlichen Daten"
-      check_application_for: "Bewerbung %{event_name}"
+      check_application_for: "Bewerbung für %{event_name} prüfen"
       eating_habits: "Essgewohnheiten"
     confirm_deletion: "Willst du diese Bewerbung wirklich löschen?"
     print_accepted_with_eatings_habits: "Drucke Teilnehmer mit Essgewohnheiten"

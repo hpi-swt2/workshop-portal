@@ -1,57 +1,50 @@
 <%- model_class = User -%>
-<div class="row">
-  <div class="col-xs-12 col-sm-10 col-md-10 col-lg-10 col-xs-offset-0 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">
-    <div class="row relative-box">
-      <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
-        <h1><%= t '.title', :default => model_class.model_name.human(count: 2).titleize %></h1>  
+<div class="page-header">
+  <h1><%= t '.title', :default => model_class.model_name.human(count: 2).titleize %></h1>
+
+  <%= form_tag(users_path, :method => "get", id: "search-form") do %>
+      <div class="input-group col-md-4">
+        <%= text_field_tag :search, params[:search], class: "form-control", placeholder: t(".search_users", :default => "Search users") %>
+        <div class="input-group-btn">
+          <button class="btn btn-primary" type="submit" id="search-button"><i class="glyphicon glyphicon-search"></i></button>
+        </div>
       </div>
-      <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 bottom-align-text">
-        <%= form_tag(users_path, :method => "get", id: "search-form") do %>
-            <div class="input-group col-md-12">
-              <%= text_field_tag :search, params[:search], class: "form-control", placeholder: t(".search_users", :default => "Search users") %>
-              <div class="input-group-btn">
-                <button class="btn btn-primary" type="submit" id="search-button"><i class="glyphicon glyphicon-search"></i></button>
-              </div>
-            </div>
-        <% end %>
-      </div>
-    </div>
-    <div class="spacer-20"></div>
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th><%= model_class.human_attribute_name(:name) %></th>
-          <th><%= model_class.human_attribute_name(:created_at) %></th>
-          <th><%= model_class.human_attribute_name(:role) %></th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @users.each do |user| %>
-          <% if can? :destroy, user %>
-            <tr>
-              <td>
-                <% if not user.profile.nil? %>
-                    <%= link_to user.name, profile_path(user.profile) %>
-                <% else %>
-                    <%= user.name %>
-                <% end %>
-              </td>
-              <td><%= I18n.l(user.created_at) %></td>
-              <td>
-                <%= form_for user, url: update_user_role_path(user) do |f| %>
-                    <% if can? :update_role_to_admin, @user %>
-                        <%= f.collection_select(:role, User::ROLES, :to_s, lambda{|i| t("users.roles." + i.to_s)}, {:selected => user.role.to_s })  %>
-                    <% else %>
-                        <%= f.collection_select(:role, User::ROLES.reject{|r| r == :admin}, :to_s, lambda{|i| t("users.roles." + i.to_s)}, {:selected => user.role.to_s })  %>
-                    <% end %>&nbsp;&nbsp;&nbsp;
-                    <%= f.submit t('.save', :default => "Save"), class: "btn btn-sm btn-primary" %>
-                <% end %>
-              </td>
-            </tr>
-          <% end %>
-        <% end %>
-      </tbody>
-    </table>
-    <%= will_paginate @users, renderer: BootstrapPagination::Rails %>        
-  </div>
+  <% end %>
 </div>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th><%= model_class.human_attribute_name(:name) %></th>
+      <th><%= model_class.human_attribute_name(:created_at) %></th>
+      <th><%= model_class.human_attribute_name(:role) %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @users.each do |user| %>
+      <% if can? :destroy, user %>
+        <tr>
+          <td>
+            <% if not user.profile.nil? %>
+                <%= link_to user.name, profile_path(user.profile) %>
+            <% else %>
+                <%= user.name %>
+            <% end %>
+          </td>
+          <td><%= I18n.l(user.created_at) %></td>
+          <td>
+            <%= form_for user, url: update_user_role_path(user) do |f| %>
+                <% if can? :update_role_to_admin, @user %>
+                    <%= f.collection_select(:role, User::ROLES, :to_s, lambda{|i| t("users.roles." + i.to_s)}, {:selected => user.role.to_s })  %>
+                <% else %>
+                    <%= f.collection_select(:role, User::ROLES.reject{|r| r == :admin}, :to_s, lambda{|i| t("users.roles." + i.to_s)}, {:selected => user.role.to_s })  %>
+                <% end %>
+                <%= f.submit t('.save', :default => "Save"), class: "btn btn-xs btn-primary" %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>
+<%= will_paginate @users, renderer: BootstrapPagination::Rails %>

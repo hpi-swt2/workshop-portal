@@ -5,11 +5,11 @@
     <div class="form-group">
       <%= f.label :type, :class => 'control-label col-lg-2' %>
       <div class="btn-group col-lg-10" data-toggle="buttons">
-        <label class="btn btn-default <%= 'active' if not @event.hidden %>" id="public_type">
+        <label class="btn btn-default <%= 'active' if not @event.hidden %>">
           <%= f.radio_button :hidden, false %>
           <%= I18n.t :"events.type.public" %>
         </label>
-        <label class="btn btn-default <%= 'active' if @event.hidden %>" id="private_type">
+        <label class="btn btn-default <%= 'active' if @event.hidden %>">
           <%= f.radio_button :hidden, true %>
           <%= I18n.t :"events.type.private" %>
         </label>
@@ -19,11 +19,11 @@
     <div class="form-group">
       <%= f.label :published, :class => 'control-label col-lg-2' %>
       <div class="btn-group col-lg-10" data-toggle="buttons">
-        <label class="btn btn-default <%= 'active' if not @event.published %>" id="save_draft_option">
+        <label class="btn btn-default <%= 'active' if not @event.published %>">
           <%= f.radio_button :published, false %>
           <%= I18n.t :"events.form.draft.save" %>
         </label>
-        <label class="btn btn-default <%= 'active' if @event.published %>" id="publish_event_option">
+        <label class="btn btn-default <%= 'active' if @event.published %>">
           <%= f.radio_button :published, true %>
           <%= I18n.t :"events.form.draft.publish" %>
         </label>
@@ -46,7 +46,7 @@
         var EVENT_DESCRIPTION_PLACEHOLDER = '<%= I18n.t "events.description_placeholder" %>';
       </script>
       <%=f.error_span(:description) %>
-      <%= t('markdown.supports_markdown_html', href: link_to(t('markdown.supports_markdown_link'), 'https://daringfireball.net/projects/markdown/syntax')) %>
+      Dieser Editor unterstüzt <a href="https://daringfireball.net/projects/markdown/syntax">Markdown</a>
     </div>
   </div>
 
@@ -113,7 +113,7 @@
   <div class="form-group">
     <div class="col-lg-offset-2 col-lg-10">
       <% if @event.new_record? %>
-        <%= f.submit t('.create'), :name => 'create', :class => 'btn btn-primary', :id => 'create_event' %>
+        <%= f.submit t('.create'), :name => 'create', :class => 'btn btn-primary' %>
       <% else %>
         <%= f.submit t('.update'), :name => 'update', :class => 'btn btn-primary' %>
       <% end %>

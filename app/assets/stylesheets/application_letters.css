@@ -31,9 +31,10 @@ ul#eating-habit--list > li {
 	margin-left: 3px;
 }
 
-dl:not(.dl-horizontal) dd {
-  margin-bottom: 30px;
+.application-details-table.table {
+  table-layout: fixed;
 }
-dl:not(.dl-horizontal) dt {
-  margin-bottom: 5px;
+.application-details-table.table td, .application-details-table.table th {
+  border: none;
+  padding: 5px;
 }

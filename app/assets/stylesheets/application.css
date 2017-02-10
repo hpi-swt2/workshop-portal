@@ -29,11 +29,6 @@ body, footer, main, .front-section {
     width: 100%;
 }
 
-.banner {
-    background-position: center;
-    background-size: cover;
-}
-
 .m-l-1 { margin-left: 15px; }
 .m-r-1 { margin-right: 15px; }
 .m-t-1 { margin-top: 15px; }

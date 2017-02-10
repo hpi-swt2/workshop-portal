@@ -26,7 +26,6 @@ RSpec.feature "Upload letter of agreement", :type => :feature do
       expect(page).not_to have_css(".alert-danger")
       expect(page).to have_css(".alert-success")
       expect(page).to have_text(I18n.t("agreement_letters.upload_success"))
-      expect(page).to have_text(I18n.t("agreement_letters.already_uploaded"))
     end
   end
 

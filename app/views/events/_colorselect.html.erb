@@ -5,15 +5,11 @@
       ParticipantGroup::GROUPS.map { |key, value|
         [I18n.t("participant_groups.options.#{value}"),
         key,
-        {'data-color' => value == '0' ? '' : '#' + value}]
+        {'data-color' => '#' + value}]
       },
       selected: participant_group.group
     ),
     {},
-    {
-      onchange: 'ajaxUpdateParticipantColor(this.form, "' +
-        I18n.t('events.participants.failed_to_update_color') + '")',
-      class: 'colorselector',
-      autocomplete: 'off' }
+    { onchange: 'this.form.submit()', class: 'colorselector', autocomplete: 'off' }
   ) %>
 <% end %>

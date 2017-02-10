@@ -41,7 +41,7 @@ class AgreementLetter < ActiveRecord::Base
       true
     rescue IOError
       self.destroy
-      errors.add(I18n.t('agreement_letters.file_error'), I18n.t('agreement_letters.write_failed'))
+      errors.add(:file, I18n.t('agreement_letters.write_failed'))
       false
     end
   end
@@ -51,7 +51,7 @@ class AgreementLetter < ActiveRecord::Base
     if super
       true
     else
-      errors.add(I18n.t('agreement_letters.file_error'), I18n.t('agreement_letters.upload_failed'))
+      errors.add(:file, I18n.t('agreement_letters.upload_failed'))
       false
     end
   end
@@ -67,16 +67,16 @@ class AgreementLetter < ActiveRecord::Base
   private
     def valid_file?(file)
       if !is_file?(file)
-        errors.add(I18n.t('agreement_letters.file_error'), I18n.t("agreement_letters.not_a_file"))
+        errors.add(:file, I18n.t("agreement_letters.not_a_file"))
         false
       elsif too_big?(file)
-        errors.add(I18n.t('agreement_letters.file_error'), I18n.t("agreement_letters.file_too_big"))
+        errors.add(:file, I18n.t("agreement_letters.file_too_big"))
         false
       elsif wrong_filetype?(file)
-        errors.add(I18n.t('agreement_letters.file_error'), I18n.t("agreement_letters.wrong_filetype"))
+        errors.add(:file, I18n.t("agreement_letters.wrong_filetype"))
         false
       elsif unable_to_open?(file)
-        errors.add(I18n.t('agreement_letters.file_error'), I18n.t("agreement_letters.corrupt_document"))
+        errors.add(:file, I18n.t("agreement_letters.corrupt_document"))
         false
       else
         true

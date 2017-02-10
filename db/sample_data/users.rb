@@ -4,7 +4,7 @@ end
 
 def user_pupil
   User.new(
-    email: "hendrik.raetz@student.hpi.de",
+    email: "schueler@example.com",
     password: user_password,
     role: :pupil
   )

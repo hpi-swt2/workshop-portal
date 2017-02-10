@@ -4,7 +4,6 @@ require './db/sample_data/events'
 require './db/sample_data/profiles'
 require './db/sample_data/requests'
 require './db/sample_data/users'
-require './db/sample_data/email_templates'
 
 def add_sample_data
   events = Hash.new
@@ -46,8 +45,8 @@ def add_sample_data
 
   application_letters = Hash.new
   application_letters[:applicant_gongakrobatik] = application_letter_applicant_gongakrobatik(users[:applicant], events[:gongakrobatik])
-  application_letters[:applicant_gongakrobatik_past_deadline] = application_letter_applicant_gongakrobatik(users[:tobi], events[:past_deadline_event])
-  application_letters[:applicant_gongakrobatik_accepcted] = application_letter_applicant_gongakrobatik_accepted(users[:lisa], events[:past_deadline_event])
+  application_letters[:applicant_gongakrobatik_past_deadline] = application_letter_applicant_gongakrobatik(users[:applicant], events[:past_deadline_event])
+  application_letters[:applicant_gongakrobatik_accepcted] = application_letter_applicant_gongakrobatik_accepted(users[:applicant], events[:past_deadline_event])
   application_letters[:applicant_gongakrobatik_rejected] = application_letter_applicant_gongakrobatik_rejected(users[:applicant], events[:past_deadline_event])
   application_letters[:applicant_gongakrobatik_max] = application_letter_applicant_gongakrobatik_accepted(users[:max], events[:past_deadline_event])
   application_letters[:applicant_gongakrobatik_karl] = application_letter_applicant_gongakrobatik_accepted(users[:pupil], events[:past_deadline_event])
@@ -55,8 +54,8 @@ def add_sample_data
   application_letters[:applicant_programmierkurs_max] = application_letter_applicant_programmierkurs_2(users[:max], events[:programmierkurs])
   application_letters[:applicant_programmierkurs_tobi] = application_letter_applicant_programmierkurs_3(users[:tobi], events[:programmierkurs])
 
-  application_letters[:applicant_mintcamp_lisa] = application_letter_applicant_programmierkurs_2(users[:lisa], events[:mintcamp])
-  application_letters[:applicant_mintcamp_max] = application_letter_applicant_programmierkurs_1(users[:max], events[:mintcamp])
+  application_letters[:applicant_mintcamp_lisa] = application_letter_applicant_programmierkurs_1(users[:lisa], events[:mintcamp])
+  application_letters[:applicant_mintcamp_max] = application_letter_applicant_programmierkurs_2(users[:max], events[:mintcamp])
   application_letters[:applicant_mintcamp_tobi] = application_letter_applicant_programmierkurs_3(users[:tobi], events[:mintcamp])
 
   requests = Hash.new
@@ -66,19 +65,13 @@ def add_sample_data
   agreement_letters[:applicant_gongakrobatik] = agreement_letter_applicant_gongakrobatik(users[:applicant], events[:past_deadline_event])
   agreement_letters[:max_gongakrobatik] = agreement_letter_applicant_gongakrobatik(users[:max], events[:past_deadline_event])
 
-
-  email_templates = Hash.new
-  email_templates[:acceptance_template] = email_template_acceptance
-  email_templates[:rejection_template] = email_template_rejection
-
-  [events, users, profiles, application_letters, requests, agreement_letters, email_templates].each do |models|
+  [events, users, profiles, application_letters, requests, agreement_letters].each do |models|
     save_models(models)
   end
   
   # set deadline to past to work around validation of application letters
   events[:past_deadline_event].application_deadline = Date.yesterday
   events[:past_deadline_event].save!
-
 end
 
 private

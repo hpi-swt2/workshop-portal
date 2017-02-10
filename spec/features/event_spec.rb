@@ -185,7 +185,7 @@ describe "Event", type: :feature do
 
       click_button I18n.t('.events.form.create')
 
-      expect(page).to have_text("Bewerbungsschluss " + I18n.l(deadline))
+      expect(page).to have_text("Bewerbungsschluss: " + I18n.l(deadline))
     end
     it "should not allow an application deadline after the start of the event" do
       visit new_event_path

@@ -1,60 +1,46 @@
 <%- model_class = Event -%>
-<div class="row relative-box">
-  <div class="col-xs-12 col-sm-9">
-    <h1 class="page-title"><%= @event.name %></h1>
-  </div>
-  <div class="col-xs-12 col-sm-3 text-right bottom-align-text">
+<div>
+  <div class="pull-right">
     <%= render :partial => 'apply_button', :locals => {event: @event} %>
     <%= link_to t('.edit', :default => t('helpers.links.edit')), edit_event_path(@event),
                 :class => 'btn btn-default btn-sm' if can? :edit, @event %>
   </div>
-</div>
-<div class="line-spacer">
+  <h1><%= @event.name %></h1>
 </div>
 <div class="row">
-  <div class="col-md-1 text-center col-sm-2">
+  <div class="col-md-1 col-md-offset-1 text-center col-sm-2">
     <%= render "event_date_large", event: @event %>
     <div class="m-t-1">
       <%= render @event.date_ranges %>
     </div>
   </div>
-  <div class="col-md-8">
+  <div class="col-md-7 col-sm-10">
     <%= markdown @event.description %>
-    <div class="spacer-60"></div>
   </div>
-  <div class="col-md-3">
-    <div class="panel panel-primary events-facts">
-      <div class="panel-heading">
-        <%= t('events.facts') %>
-      </div>
-      <div class="panel-body">
-        <% if not @event.knowledge_level.blank? or can? :manage, Event %>
-          <h5><%= model_class.human_attribute_name(:knowledge_level) %></h5>
-          <p><%= @event.knowledge_level %></p>
-        <% end %>
-        <h5><%= model_class.human_attribute_name(:max_participants) %></h5>
-        <p><%= @event.max_participants %></p>
-        <% if not @event.organizer.blank? or can? :manage, Event %>
-          <p><h5><%= model_class.human_attribute_name(:organizer) %></h5>
-          <p><%= @event.organizer %></p>
-        <% end %>
-        <h5><%= model_class.human_attribute_name(:application_deadline) %></h5>
-        <p> <%= I18n.l(@event.application_deadline) + ' ' + t('midnight') %></p>
-        <% if can? :manage, Event %>
-          <h5><%= model_class.human_attribute_name(:custom_application_fields) %></h5>
-          <p>
-            <ul>
-              <% @event.custom_application_fields.each do |field| %>
-                <li><%= field %></li>
-              <% end %>
-            </ul>
-          </p>
-        <% end %>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="row">
-  <div class="line-spacer">
+  <div class="col-md-2 col-sm-offset-2 col-md-offset-0">
+    <dl>
+      <% if not @event.knowledge_level.blank? or can? :manage, Event %>
+        <dt><strong><%= model_class.human_attribute_name(:knowledge_level) %>:</strong></dt>
+        <dd><%= @event.knowledge_level %></dd>
+      <% end %>
+      <dt><strong><%= model_class.human_attribute_name(:max_participants) %>:</strong></dt>
+      <dd><%= @event.max_participants %></dd>
+      <% if not @event.organizer.blank? or can? :manage, Event %>
+        <dt><strong><%= model_class.human_attribute_name(:organizer) %>:</strong></dt>
+        <dd><%= @event.organizer %></dd>
+      <% end %>
+      <dt><strong><%= model_class.human_attribute_name(:application_deadline) %>:</strong></dt>
+      <dd> <%= I18n.l(@event.application_deadline) + ' ' + I18n.t('midnight') %></dd>
+      <% if can? :manage, Event %>
+        <dt><strong><%= model_class.human_attribute_name(:custom_application_fields) %>:</strong></dt>
+        <dd>
+          <ul>
+            <% @event.custom_application_fields.each do |field| %>
+              <li><%= field %></li>
+            <% end %>
+          </ul>
+        </dd>
+      <% end %>
+    </dl>
   </div>
 </div>

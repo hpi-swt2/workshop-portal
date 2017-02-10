@@ -1,18 +1,13 @@
 <%= form_tag(event_agreement_letters_path(event_id), multipart: true) do %>
-<div class="panel <%= agreement_letter.nil? ? 'panel-warning' : 'panel-success' %>">
 
-  <div class="panel-heading">
   <% if agreement_letter.nil? %>
     <% upload_message = t("agreement_letters.upload") %>
-    <%= t('agreement_letters.please_upload', event: @application_letter.event.name)%>
   <% else %>
     <% upload_message = t('.update', default: t("agreement_letters.update")) %>
-    <%= glyph 'ok' %>
-    <%= t("agreement_letters.already_uploaded") %>
+    <% already_uploaded_msg = t("agreement_letters.already_uploaded", timestamp: l(agreement_letter.updated_at)) %>
   <% end %>
-  </div>
 
-  <div class="panel-body">
+  <span class="help-block bg-success"><%= already_uploaded_msg %></span>
   <%= file_field_tag "letter_upload",
     class: "btn btn-default btn-file",
     style: 'display:inline',
@@ -21,6 +16,5 @@
   <%= submit_tag upload_message,
     class: 'btn btn-default',
     id: "upload_btn_#{event_id}" %>
-  </div>
-</div>
 <% end %>
+

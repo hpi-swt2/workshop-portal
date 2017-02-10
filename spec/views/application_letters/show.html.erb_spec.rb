@@ -37,7 +37,7 @@ RSpec.describe "application_letters/show", type: :view do
   it "renders applicant's attributes" do
     render
     expect(rendered).to have_text(@application_letter.user.profile.name)
-    expect(rendered).to have_text(I18n.t("profiles.genders.#{@application_letter.user.profile.gender}"))
+    expect(rendered).to have_text(@application_letter.user.profile.gender)
     expect(rendered).to have_text(@application_letter.user.profile.age_at_time(@application_letter.event.start_date))
     expect(rendered).to have_text(@application_letter.user.accepted_applications_count(@application_letter.event))
     expect(rendered).to have_text(@application_letter.user.rejected_applications_count(@application_letter.event))

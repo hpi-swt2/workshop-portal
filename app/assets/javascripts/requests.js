@@ -4,8 +4,8 @@
 function enableOwlCarousel() {
 	$(".owl-carousel").owlCarousel({
 		center: false,
-		items: 2,
-		autoplay: false,
+		item: 2,
+		autoplay: true,
 		loop: true,
 		dots: true,
 		margin: 30,
