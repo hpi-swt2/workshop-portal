@@ -74,7 +74,7 @@
 @import "twitter/bootstrap/utilities.less";
 @import "twitter/bootstrap/responsive-utilities.less";
 
-body {
+body:not(.wsp-home), .wsp-home .banner.front-section {
 	padding-top: 120px;
 }
 
@@ -183,6 +183,10 @@ a:hover h1, a:hover h2, a:hover h3, a:hover h4 {
 #wsp-welcome {
 	
 	padding-top: 0px !important;
+
+    h1, h4, p {
+    	color: #FFF;
+    }
 
 	ul {
 		list-style: none;

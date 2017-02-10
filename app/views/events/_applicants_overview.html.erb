@@ -39,7 +39,7 @@
        @application_letters.select {|l| l.user.profile }.each do | application_letter |%>
         <tr>
           <td><%= application_letter.user.profile.name %></td>
-          <td><%= application_letter.user.profile.gender %></td>
+          <td><%= t("profiles.genders.#{application_letter.user.profile.gender}") %></td>
           <td><%= application_letter.user.profile.age_at_time(@event.start_date)  %> </td>
           <td><%= application_letter.user.accepted_applications_count(@event) %> / <%= application_letter.user.rejected_applications_count(@event) %></td>
           <td>

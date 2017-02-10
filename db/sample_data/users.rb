@@ -26,9 +26,9 @@ def user_applicant
   )
 end
 
-def user_max
+def user_ralf
   User.new(
-    email: "max@schueler.com",
+    email: "ralf.teusner@hpi.de",
     password: user_password,
     role: :pupil
   )
@@ -42,9 +42,9 @@ def user_lisa
   )
 end
 
-def user_tobi
+def user_keven
   User.new(
-    email: "tobias.duerschmid@t-online.de",
+    email: "keven.richly@hpi.de",
     password: user_password,
     role: :pupil
   )
