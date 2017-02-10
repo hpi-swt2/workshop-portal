@@ -24,9 +24,9 @@ def add_sample_data
   users[:pupil] = user_pupil
   users[:teacher] = user_teacher
   users[:applicant] = user_applicant
-  users[:keven] = user_keven
+  users[:tobi] = user_tobi
   users[:lisa] = user_lisa
-  users[:ralf] = user_ralf
+  users[:max] = user_max
   users[:coach] = user_coach
   users[:organizer] = user_organizer
   users[:hpi_admin] = user_admin
@@ -36,34 +36,35 @@ def add_sample_data
   profiles[:teacher] = profile_teacher(users[:teacher])
   profiles[:applicant] = profile_applicant(users[:applicant])
 
-  profiles[:keven] = profile_pupil_keven(users[:keven])
+  profiles[:tobi] = profile_tobi(users[:tobi])
+  profiles[:tobi] = profile_tobi(users[:tobi])
   profiles[:lisa] = profile_lisa(users[:lisa])
-  profiles[:ralf]  = profile_pupil_ralf(users[:ralf])
+  profiles[:max]  = profile_pupil_max(users[:max])
   profiles[:organizer] = profile_organizer(users[:organizer])
   profiles[:coach]  = profile_coach(users[:coach])
   profiles[:admin] = profile_admin(users[:hpi_admin])
 
   application_letters = Hash.new
-  application_letters[:applicant_gongakrobatik] = application_letter_1(users[:applicant], events[:gongakrobatik])
-  application_letters[:applicant_gongakrobatik_past_deadline] = application_letter_1(users[:keven], events[:past_deadline_event])
-  application_letters[:applicant_gongakrobatik_accepcted] = application_letter_2(users[:lisa], events[:past_deadline_event])
-  application_letters[:applicant_gongakrobatik_rejected] = application_letter_3(users[:applicant], events[:past_deadline_event])
-  application_letters[:applicant_gongakrobatik_ralf] = application_letter_4(users[:ralf], events[:past_deadline_event])
-  application_letters[:applicant_gongakrobatik_karl] = application_letter_5(users[:pupil], events[:past_deadline_event])
+  application_letters[:applicant_gongakrobatik] = application_letter_applicant_gongakrobatik(users[:applicant], events[:gongakrobatik])
+  application_letters[:applicant_gongakrobatik_past_deadline] = application_letter_applicant_gongakrobatik(users[:tobi], events[:past_deadline_event])
+  application_letters[:applicant_gongakrobatik_accepcted] = application_letter_applicant_gongakrobatik_accepted(users[:lisa], events[:past_deadline_event])
+  application_letters[:applicant_gongakrobatik_rejected] = application_letter_applicant_gongakrobatik_rejected(users[:applicant], events[:past_deadline_event])
+  application_letters[:applicant_gongakrobatik_max] = application_letter_applicant_gongakrobatik_accepted(users[:max], events[:past_deadline_event])
+  application_letters[:applicant_gongakrobatik_karl] = application_letter_applicant_gongakrobatik_accepted(users[:pupil], events[:past_deadline_event])
   application_letters[:applicant_programmierkurs_lisa] = application_letter_applicant_programmierkurs_1(users[:lisa], events[:programmierkurs])
-  application_letters[:applicant_programmierkurs_ralf] = application_letter_applicant_programmierkurs_2(users[:ralf], events[:programmierkurs])
-  application_letters[:applicant_programmierkurs_tobi] = application_letter_applicant_programmierkurs_3(users[:keven], events[:programmierkurs])
+  application_letters[:applicant_programmierkurs_max] = application_letter_applicant_programmierkurs_2(users[:max], events[:programmierkurs])
+  application_letters[:applicant_programmierkurs_tobi] = application_letter_applicant_programmierkurs_3(users[:tobi], events[:programmierkurs])
 
   application_letters[:applicant_mintcamp_lisa] = application_letter_applicant_programmierkurs_2(users[:lisa], events[:mintcamp])
-  application_letters[:applicant_mintcamp_ralf] = application_letter_applicant_programmierkurs_1(users[:ralf], events[:mintcamp])
-  application_letters[:applicant_mintcamp_tobi] = application_letter_applicant_programmierkurs_3(users[:keven], events[:mintcamp])
+  application_letters[:applicant_mintcamp_max] = application_letter_applicant_programmierkurs_1(users[:max], events[:mintcamp])
+  application_letters[:applicant_mintcamp_tobi] = application_letter_applicant_programmierkurs_3(users[:tobi], events[:mintcamp])
 
   requests = Hash.new
   requests[:hardware_entwicklung] = request_hardware_entwicklung
 
   agreement_letters = Hash.new
   agreement_letters[:applicant_gongakrobatik] = agreement_letter_applicant_gongakrobatik(users[:applicant], events[:past_deadline_event])
-  agreement_letters[:ralf_gongakrobatik] = agreement_letter_applicant_gongakrobatik(users[:ralf], events[:past_deadline_event])
+  agreement_letters[:max_gongakrobatik] = agreement_letter_applicant_gongakrobatik(users[:max], events[:past_deadline_event])
 
 
   email_templates = Hash.new
