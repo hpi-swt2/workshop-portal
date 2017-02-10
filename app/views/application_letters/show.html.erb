@@ -11,7 +11,7 @@
 
 <dl class="dl-horizontal" id="applicant_details">
   <dt><strong><%= Profile.human_attribute_name(:gender) %>:</strong></dt>
-  <dd><%= @application_letter.user.profile.gender %></dd>
+  <dd><%= t("profiles.genders.#{@application_letter.user.profile.gender}") %></dd>
   <dt><strong><%= t('.age_when_event_starts') %>:</strong></dt>
   <dd><%= @application_letter.user.profile.age_at_time(@application_letter.event.start_date) %></dd>
   <% if can? :view_personal_details, ApplicationLetter  %>
@@ -57,7 +57,7 @@
 <% end %>
 <br>
 <% if can? :view_and_add_notes, ApplicationLetter  %>
-  <dl class="dl-horizontal">
+  <dl class="dl-horizontal" id="application-notes">
     <dt><strong><%= ApplicationNote.model_name.human(count: @application_letter.application_notes.count) %>:</strong></dt>
     <dd><% @application_letter.application_notes.each do |note| %>
           <div> <%= note.note %> </div>

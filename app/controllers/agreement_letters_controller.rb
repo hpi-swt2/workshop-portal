@@ -18,7 +18,7 @@ class AgreementLettersController < ApplicationController
                   notice: t("agreement_letters.upload_success")
     else
       redirect_to check_application_letter_path(application_letter),
-                  alert: @agreement_letter.errors.messages
+                  alert: @agreement_letter.errors.full_messages
     end
   end
 end

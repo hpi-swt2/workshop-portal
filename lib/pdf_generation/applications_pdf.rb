@@ -51,8 +51,7 @@ class ApplicationsPDF
     end
 
     def description_table_data
-      data = [[Event.human_attribute_name(:description)+":", @event.description],
-              [Event.human_attribute_name(:max_participants) + ":", @event.max_participants],
+      data = [[Event.human_attribute_name(:max_participants) + ":", @event.max_participants],
               [Event.human_attribute_name(:date_ranges) + ":", @event.date_ranges[0].to_s]]
       data += @event.date_ranges.drop(1).map { |d| ["", d.to_s] }
       data += [[Event.human_attribute_name(:organizer) + ":", @event.organizer]] if @event.organizer

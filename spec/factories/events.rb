@@ -51,10 +51,10 @@ FactoryGirl.define do
     end
 
     trait :is_only_today do
-      application_deadline Date.today
+      application_deadline Date.current
 
       after(:build) do |event|
-        event.date_ranges = [FactoryGirl.create(:date_range, start_date: Date.today, end_date: Date.today)]
+        event.date_ranges = [FactoryGirl.create(:date_range, start_date: Date.current, end_date: Date.current)]
       end
     end
 
@@ -191,6 +191,12 @@ FactoryGirl.define do
            application.save! if application.changed?
          end
        end
+    end
+
+    trait :with_one_application_note do
+      after(:create) do |event|
+        event.application_letters = [build(:application_letter), build(:application_letter, :with_notes)]
+      end
     end
 
     factory :event_with_accepted_applications do
