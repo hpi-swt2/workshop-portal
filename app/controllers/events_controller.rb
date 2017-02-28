@@ -8,8 +8,9 @@ require "event_image_upload_helper"
 
 class EventsController < ApplicationController
   include EventImageUploadHelper
-
-  before_action :set_event, only: [:show, :edit, :update, :destroy, :participants, 
+  load_and_authorize_resource
+  skip_authorize_resource :only => [:badges, :download_agreement_letters, :send_participants_email]
+  before_action :set_event, only: [:show, :edit, :update, :destroy, :participants,
     :participants_pdf, :print_applications, :print_applications_eating_habits, :badges, :print_badges]
 
 
@@ -41,6 +42,7 @@ class EventsController < ApplicationController
 
   # GET /events/1/edit
   def edit
+    @event = Event.find(params[:id])
   end
 
   # POST /events
@@ -77,7 +79,6 @@ class EventsController < ApplicationController
 
   # POST /events/1/badges
   def print_badges
-    authorize! :print_badges, @event
     @participants = @event.participants
     name_format = params[:name_format]
     show_color = params[:show_color]
@@ -110,13 +111,11 @@ class EventsController < ApplicationController
 
   # GET /events/1/print_applications
   def print_applications
-    authorize! :print_applications, @event
     pdf = ApplicationsPDF.generate(@event)
     send_data pdf, filename: "applications_#{@event.name}_#{Date.today}.pdf", type: "application/pdf", disposition: "inline"
   end
 
   def print_applications_eating_habits
-    #authorize! :print_applications_eating_habits, @event
     pdf = ParticipantsPDF.generate(@event)
     send_data pdf, filename: "applications_eating_habits_#{@event.name}_#{Date.today}.pdf", type: "application/pdf", disposition: "inline"
   end
@@ -251,7 +250,6 @@ class EventsController < ApplicationController
     unless params.has_key?(:file)
       redirect_to event_path(event), alert: I18n.t('events.material_area.no_file_given') and return
     end
-    authorize! :download_material, event
 
     file_full_path = File.join(event.material_path, params[:file])
     unless File.exists?(file_full_path)
