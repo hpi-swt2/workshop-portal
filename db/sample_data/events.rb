@@ -1,7 +1,12 @@
+
+def next_year
+  Date.today.next_year.year
+end
+
 def event_programmierkurs
   date_range_singleday = DateRange.create!(
-      start_date: Date.new(2017, 05, 04),
-      end_date: Date.new(2017, 05, 05)
+      start_date: Date.new(next_year, 05, 04),
+      end_date: Date.new(next_year, 05, 05)
   )
 
   Event.new(
@@ -22,8 +27,8 @@ end
 
 def event_mintcamp
   date_range_mint_camp = DateRange.create!(
-      start_date: Date.new(2017, 03, 30),
-      end_date: Date.new(2017, 04, 04)
+      start_date: Date.new(next_year, 03, 30),
+      end_date: Date.new(next_year, 04, 04)
   )
 
   Event.new(
@@ -70,8 +75,8 @@ end
 
 def event_gongakrobatik
   date_range_long = DateRange.create!(
-      start_date: Date.new(2020, 02, 29),
-      end_date: Date.new(2021, 03, 05)
+      start_date: Date.new(next_year, 02, 28),
+      end_date: Date.new(next_year + 1, 03, 05)
   )
   Event.new(
       name: 'Gongakrobatik',
@@ -96,8 +101,8 @@ def event_batterie_akustik
   )
 
   date_range_medium = DateRange.create!(
-      start_date: Date.new(2017, 06, 01),
-      end_date: Date.new(2017, 06, 14)
+      start_date: Date.new(next_year, 06, 01),
+      end_date: Date.new(next_year, 06, 14)
   )
   Event.new(
       name: 'Batterie-Akustik für Fortgeschrittene',
@@ -123,12 +128,12 @@ def event_bachlorpodium
       end_date: Date.tomorrow
   )
   date_range_singleday2 = DateRange.create!(
-      start_date: Date.new(2017, 04, 04),
-      end_date: Date.new(2017, 04, 05)
+      start_date: Date.new(next_year, 04, 04),
+      end_date: Date.new(next_year, 04, 05)
   )
   date_range_singleday3 = DateRange.create!(
-      start_date: Date.new(2017, 04, 06),
-      end_date: Date.new(2017, 04, 06)
+      start_date: Date.new(next_year, 04, 06),
+      end_date: Date.new(next_year, 04, 06)
   )
   Event.new(
       name: 'Bachelorpodium',
@@ -144,8 +149,8 @@ end
 
 def event_summer_camp
   date_range_summer_camp = DateRange.create!(
-      start_date: Date.new(2017, 06, 30),
-      end_date: Date.new(2017, 07, 04)
+      start_date: Date.new(next_year, 06, 30),
+      end_date: Date.new(next_year, 07, 04)
   )
 
   Event.new(
