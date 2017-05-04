@@ -13,10 +13,9 @@
   <h1><%=t '.check_application_for', event_name: @application_letter.event.name %></h1>
 </div>
 
-<% if @application_letter.user.requires_agreement_letter_for_event?(@application_letter.event) and @application_letter.accepted? %>
+<% if @application_letter.user.requires_agreement_letter_for_event?(@application_letter.event) and @application_letter.accepted? and @application_letter.event.acceptances_have_been_sent? %>
   <%= render('upload_form', event_id: @application_letter.event.id, agreement_letter: @application_letter.event.agreement_letter_for(@application_letter.user)) %>
 <% end %>
-
 <h3><%= t('.my_application') %></h3>
 <dl>
   <dt><%= ApplicationLetter.human_attribute_name(:motivation) %>:</dt>

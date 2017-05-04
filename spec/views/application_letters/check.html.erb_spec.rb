@@ -10,6 +10,8 @@ RSpec.describe "application_letters/check", type: :view do
     @user = FactoryGirl.create(:user_with_profile)
     event = FactoryGirl.create(:event)
     @application_letter = FactoryGirl.create(:application_letter, status: :accepted, user: @user, event: event)
+    event.application_deadline = Date.yesterday
+    event.acceptances_have_been_sent = true
     assign(:application_letter, @application_letter)
     render
     expect(rendered).to have_selector("input[type='file']")
