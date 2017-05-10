@@ -36,7 +36,7 @@ FactoryGirl.define do
     vegetarian true
   end
 
-  factory :application_letter_long, parent: :application_letter do
+  trait :long_motivation do
     motivation "Ich bin sehr motiviert, glaubt mir." * 200
   end
 
@@ -44,36 +44,29 @@ FactoryGirl.define do
     association :event, factory: :event, application_deadline: Date.yesterday
   end
 
-  factory :application_letter_accepted, parent: :application_letter do
+  trait :accepted do
     status :accepted
   end
 
-  factory :application_letter_rejected, parent: :application_letter do
+  trait :rejected do
     status :rejected
-
-    trait :with_mail_sent do
-      after(:build) do |application|
-        application.status_notification_sent = true
-      end
-    end
   end
 
-  factory :application_letter_alternative, parent: :application_letter do
+  trait :alternative do
     status :alternative
-
-    trait :with_mail_sent do
-      after(:build) do |application|
-        application.status_notification_sent = true
-      end
-    end
   end
 
-  factory :application_letter_canceled, parent: :application_letter do
+  trait :canceled do
     status :canceled
   end
 
-  factory :accepted_application_with_agreement_letters, parent: :application_letter do
-    status :accepted
+  trait :with_mail_sent do
+    after(:build) do |application|
+      application.status_notification_sent = true
+    end
+  end
+
+  trait :with_agreement_letter do
     after(:build) do |application_letter|
       FactoryGirl.create(:real_agreement_letter, user: application_letter.user, event: application_letter.event)
     end

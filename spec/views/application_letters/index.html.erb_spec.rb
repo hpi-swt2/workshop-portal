@@ -4,12 +4,12 @@ RSpec.describe "application_letters/index", type: :view do
 
   context "checks states of applications" do
     it "checks if page displays accepted application" do
-      @application_letters = [FactoryGirl.create(:application_letter_accepted)]
+      @application_letters = [FactoryGirl.create(:application_letter, :accepted)]
       render
       expect(rendered).to have_content(I18n.t("application_status.accepted"))
     end
     it "checks if page displays rejected application" do
-      @application_letters = [FactoryGirl.create(:application_letter_rejected)]
+      @application_letters = [FactoryGirl.create(:application_letter, :rejected)]
       render
       expect(rendered).to have_content(I18n.t("application_status.rejected"))
     end
@@ -25,12 +25,12 @@ RSpec.describe "application_letters/index", type: :view do
       expect(rendered).to have_content(I18n.t("application_status.pending_before_deadline"))
     end
     it "checks if page displays alternative status application letter" do
-      @application_letters = [FactoryGirl.create(:application_letter_alternative)]
+      @application_letters = [FactoryGirl.create(:application_letter, :alternative)]
       render
       expect(rendered).to have_content(I18n.t("application_status.alternative"))
     end
     it "checks if page displays canceled status application letter" do
-      @application_letters = [FactoryGirl.create(:application_letter_canceled)]
+      @application_letters = [FactoryGirl.create(:application_letter, :canceled)]
       render
       expect(rendered).to have_content(I18n.t("application_status.canceled"))
     end

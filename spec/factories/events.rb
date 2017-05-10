@@ -214,13 +214,13 @@ FactoryGirl.define do
       application_deadline Date.current
 
       after(:create) do |event, evaluator|
-        create_list(:application_letter_accepted, evaluator.accepted_application_letters_count, event: event)
-        create_list(:application_letter_rejected, evaluator.rejected_application_letters_count, event: event)
+        create_list(:application_letter, evaluator.accepted_application_letters_count, :accepted, event: event)
+        create_list(:application_letter, evaluator.rejected_application_letters_count, :rejected, event: event)
       end
 
       factory :event_with_accepted_applications_and_agreement_letters do
         after(:create) do |event, evaluator|
-          create_list(:accepted_application_with_agreement_letters, evaluator.accepted_application_letters_count, event: event)
+          create_list(:application_letter, evaluator.accepted_application_letters_count, :accepted, :with_agreement_letter, event: event)
         end
       end
     end
@@ -242,11 +242,11 @@ FactoryGirl.define do
       application_deadline Date.current
 
       after(:create) do |event, evaluator|
-        create_list(:application_letter_accepted, evaluator.accepted_application_letters_count, event: event)
-        create_list(:application_letter_rejected, evaluator.rejected_application_letters_count, event: event)
-        create_list(:application_letter_alternative, evaluator.alternative_application_letters_count, event: event)
-        create_list(:application_letter_canceled, evaluator.canceled_application_letters_count, event: event)
-        create_list(:application_letter_pending, evaluator.pending_application_letters_count, event: event)
+        create_list(:application_letter, evaluator.accepted_application_letters_count, :accepted, event: event)
+        create_list(:application_letter, evaluator.rejected_application_letters_count, :rejected, event: event)
+        create_list(:application_letter, evaluator.alternative_application_letters_count, :alternative, event: event)
+        create_list(:application_letter, evaluator.canceled_application_letters_count, :canceled, event: event)
+        create_list(:application_letter, evaluator.pending_application_letters_count, :pending, event: event)
       end
 
     end
@@ -267,10 +267,10 @@ FactoryGirl.define do
       application_deadline Date.current
 
       after(:build) do |event, evaluator|
-        create_list(:application_letter_accepted, evaluator.accepted_application_letters_count, event: event)
-        create_list(:application_letter_rejected, evaluator.rejected_application_letters_count, event: event)
-        create_list(:application_letter_alternative, evaluator.alternative_application_letters_count, event: event)
-        create_list(:application_letter_canceled, evaluator.canceled_application_letters_count, event: event)
+        create_list(:application_letter, evaluator.accepted_application_letters_count, :accepted, event: event)
+        create_list(:application_letter, evaluator.rejected_application_letters_count, :rejected, event: event)
+        create_list(:application_letter, evaluator.alternative_application_letters_count, :alternative, event: event)
+        create_list(:application_letter, evaluator.canceled_application_letters_count, :canceled, event: event)
         event.published = true
         event.application_deadline = Date.yesterday
         event.acceptances_have_been_sent = true
