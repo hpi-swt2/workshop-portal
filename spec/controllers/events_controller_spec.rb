@@ -571,7 +571,7 @@ RSpec.describe EventsController, type: :controller do
 
     it "includes at last one page per application" do
       FactoryGirl.create(:application_letter, event: @event,)
-      FactoryGirl.create(:application_letter2, event: @event,)
+      FactoryGirl.create(:application_letter, :alternative_data, event: @event)
       User.find_each { |u| FactoryGirl.create(:profile, user: u) }
       get :print_applications, id: @event.to_param, session: valid_session
       page_analysis = PDF::Inspector::Page.analyze(response.body)

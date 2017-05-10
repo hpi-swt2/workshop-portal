@@ -133,7 +133,7 @@ describe ApplicationLetter do
   end
 
   it "can be updated if status is changed and participant selection is not locked" do
-    application = FactoryGirl.build(:application_letter_deadline_over)
+    application = FactoryGirl.build(:application_letter, :deadline_over)
     application.event.acceptances_have_been_sent = false
     application.event.rejections_have_been_sent = false
     expect(application.event.participant_selection_locked).to be(false)
@@ -142,7 +142,7 @@ describe ApplicationLetter do
   end
 
   it "can be updated if status is changed"  do
-     application = FactoryGirl.build(:application_letter_deadline_over)
+     application = FactoryGirl.build(:application_letter, :deadline_over)
      application.status = :rejected
      expect(application).to be_valid
   end
@@ -159,7 +159,7 @@ describe ApplicationLetter do
   it "returns if deadline is over" do
     application = FactoryGirl.build(:application_letter)
     application.event.application_deadline = Date.tomorrow
-    application_over = FactoryGirl.build(:application_letter_deadline_over)
+    application_over = FactoryGirl.build(:application_letter, :deadline_over)
     application_without_event = FactoryGirl.build(:application_letter)
     application_without_event.event = nil
     expect(application.after_deadline?).to be(false)
