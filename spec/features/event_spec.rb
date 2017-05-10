@@ -122,6 +122,9 @@ describe "Event", type: :feature do
   end
 
   describe "create page" do
+    before :each do
+        login_as(FactoryGirl.create(:user, role: :organizer), :scope => :user)
+    end
     I18n.t(".events.type").each do |type|
       it "should allow picking the #{type[1]} type" do
         visit new_event_path
@@ -223,8 +226,6 @@ describe "Event", type: :feature do
     end
 
     it "should allow to add custom fields", js: true do
-      login_as(FactoryGirl.create(:user, role: :organizer), :scope => :user)
-
       visit new_event_path
 
       click_link I18n.t "events.form.add_field"
@@ -285,13 +286,35 @@ describe "Event", type: :feature do
   end
 
   describe "edit page" do
-    it "should preselect the event type" do
+    it "should not be possible to visit as pupil" do
+        login_as(FactoryGirl.create(:user, role: :pupil), :scope => :user)
+        event = FactoryGirl.create(:event, hidden: false)
+        visit edit_event_path(event)
+        expect(page).to have_text("Du bist nicht authorisiert diese Aktion auszuführen.")
+    end
+
+    it "should not be possible to visit when logged out" do
+        event = FactoryGirl.create(:event, hidden: false)
+        visit edit_event_path(event)
+        expect(page).to have_text("Du bist nicht authorisiert diese Aktion auszuführen.")
+    end
+
+    it "should not be possible to visit as coach" do
+        login_as(FactoryGirl.create(:user, role: :coach), :scope => :user)
+        event = FactoryGirl.create(:event, hidden: false)
+        visit edit_event_path(event)
+        expect(page).to have_text("Du bist nicht authorisiert diese Aktion auszuführen.")
+    end
+
+    it "should preselect the event kind" do
+      login_as(FactoryGirl.create(:user, role: :organizer), :scope => :user)
       event = FactoryGirl.create(:event, hidden: false)
       visit edit_event_path(event)
       expect(find_field(I18n.t("events.type.public"))[:checked]).to_not be_nil
     end
 
     it "should display all existing date ranges" do
+      login_as(FactoryGirl.create(:user, role: :organizer), :scope => :user)
       event = FactoryGirl.create(:event, :with_two_date_ranges)
       visit edit_event_path(event.id)
 
@@ -299,6 +322,7 @@ describe "Event", type: :feature do
     end
 
     it "should save edits to the date ranges" do
+      login_as(FactoryGirl.create(:user, role: :organizer), :scope => :user)
       event = FactoryGirl.create(:event, :with_two_date_ranges)
       date_start = Date.current.next_year
       date_end = Date.tomorrow.next_year

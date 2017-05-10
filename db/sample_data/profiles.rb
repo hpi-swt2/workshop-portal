@@ -4,7 +4,7 @@ def profile_pupil(user)
     first_name: "Hendrik",
     last_name: "Schüler",
     gender: "male",
-    birth_date: Date.parse('2001.11.29'),
+    birth_date: Date.parse('1995.11.29'),
     street_name: "Rudolf-Breitscheid-Str. 52",
     zip_code: "14482",
     city: "Potsdam",
@@ -13,11 +13,11 @@ def profile_pupil(user)
   )
 end
 
-def profile_pupil_ralf(user)
+def profile_pupil_max(user)
   Profile.new(
     user: user,
-    first_name: "Ralf",
-    last_name: "Schüler",
+    first_name: "Max",
+    last_name: "Mustermann",
     gender: "male",
     birth_date: Date.parse('2005.12.09'),
     street_name: "Musterstraße 42",
@@ -61,11 +61,11 @@ def profile_applicant(user)
   )
 end
 
-def profile_pupil_keven(user)
+def profile_tobi(user)
   Profile.new(
     user: user,
-    first_name: "Keven",
-    last_name: "Schüler",
+    first_name: "Tobias",
+    last_name: "Dürschmid",
     gender: "male",
     birth_date: Date.parse('1995.08.31'),
     street_name: "Stahnsdorfer Str.",
