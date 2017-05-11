@@ -4,7 +4,7 @@ end
 
 def user_pupil
   User.new(
-    email: "hendrik.raetz@student.hpi.de",
+    email: "student@example.com",
     password: user_password,
     role: :pupil
   )
@@ -44,7 +44,7 @@ end
 
 def user_tobi
   User.new(
-    email: "tobias.duerschmid@t-online.de",
+    email: "tobi@example.com",
     password: user_password,
     role: :pupil
   )
@@ -68,7 +68,7 @@ end
 
 def user_admin
   User.new(
-    email: "admin@hpi.de",
+    email: "admin@example.com",
     password: user_password,
     role: :admin
   )
