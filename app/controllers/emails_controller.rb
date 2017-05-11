@@ -4,11 +4,17 @@ class EmailsController < ApplicationController
     authorize! :send_email, Email
     @event = Event.find(params[:event_id])
 
-    @templates = EmailTemplate.with_status(get_status)
-    @addresses = @event.email_addresses_of_type_without_notification_sent(get_status)
-
-    if (get_status == :rejected) && (@event.has_participants_without_status_notification?(:alternative))
-      @addresses.append(@event.email_addresses_of_type_without_notification_sent(:alternative))
+    status = get_status
+    @templates = EmailTemplate.with_status(status)
+    if status == :acceptance
+      @addresses = @event.email_addresses_of_type_without_notification_sent(:accepted)
+    elsif (status == :rejection)
+      @addresses = @event.email_addresses_of_type_without_notification_sent(:rejected)
+      if @event.has_participants_without_status_notification?(:alternative)
+        @addresses.append(@event.email_addresses_of_type_without_notification_sent(:alternative))
+      end  
+    else 
+      @addresses = []
     end
 
     @email = Email.new(hide_recipients: true, reply_to: Rails.configuration.reply_to_address, recipients: @addresses.join(','),
@@ -40,10 +46,10 @@ class EmailsController < ApplicationController
   def send_application_result_email
     @email = Email.new(email_params)
     @event = Event.find(params[:event_id])
-
+    status = get_status
     if @email.valid?
       @attachments = []
-      if get_status == :accepted
+      if status == :acceptance
         @attachments.push(@event.get_ical_attachment)
         @attachments.push(AgreementLetter.get_attachment)
       end
@@ -54,7 +60,7 @@ class EmailsController < ApplicationController
 
       redirect_to @event, notice: t('emails.submit.sending_successful')
     else
-      @templates = EmailTemplate.with_status(get_status)
+      @templates = EmailTemplate.with_status(status)
 
       flash.now[:alert] = t('emails.submit.sending_failed')
       @send_generic = false
@@ -93,15 +99,16 @@ class EmailsController < ApplicationController
   end
 
   def update_event(event)
-    if get_status == :accepted
-      event.set_status_notification_flag_for_applications_with_status(get_status)
+    status = get_status
+    if status == :acceptance
+      event.set_status_notification_flag_for_applications_with_status(:accepted)
       event.acceptances_have_been_sent = true
       if not (event.has_participants_without_status_notification?(:rejected) || @event.has_participants_without_status_notification?(:alternative))
         event.rejections_have_been_sent = true
       end
-    elsif get_status == :rejected
+    elsif get_status == :rejection
       event.rejections_have_been_sent = true
-      event.set_status_notification_flag_for_applications_with_status(get_status)
+      event.set_status_notification_flag_for_applications_with_status(:rejected)
       event.set_status_notification_flag_for_applications_with_status(:alternative)
     end
     event.save
