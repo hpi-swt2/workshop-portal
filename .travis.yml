@@ -12,12 +12,12 @@ script:
 deploy:
   provider: heroku
   api_key:
-    secure: Bmhk+hyGJTqqRwrEGSTfyHRgsCphBvsqm3QBCV+3gNCKSASqpCyVIyuECtiih6mGpgKDHF7KsHM89gYnmP8/xkMVdDg/G5smUfJJZ1kO8seaP9oR2PkomPwYG99SSG7C/+NOXaTSRXMqsdCwpxQWu6NPMVGC9aRGlBDQdxK4b+GAOnvGe/7Ivrw10DCB8oSiUW09H2yAufpB2bRQHGR2IF4zKendYpboRr1GzgY1PzmN7sT3hmnvoQ+xFYdet6xfWW8SMw7Tz6aOS44w2OSauRyalw5jVQ8lejOBMfe78NfKSv6VWA/+YAQXWLcYN6ov9EKvowIq59e6YTgLGwn6HZTbQW0WTbQ9UTJGVH7QLH5sAAguYUar9D6T0I5kJ6emMqmqPnHBPxVLK7S+ba3aFkESQhBeQbgFdKp8jr3JpZiSD2Ok48U/bCO3wTQ7nXHscs88qkctjNPwGBRdlfC/3DrFcEF0ST9QhMj3oamCaHZ0dopE31hdpBJgnpzkFByELIcyx7uzBqYBqZd16THZqtB7hPNKhE4TskVGK0WJdq5TQ9fjIQhU/HMIIxXoaC+LJPMJ45AonunY9JmeI6jwdPMoOSChZv0d8ZAhlemtTNxurYp7Llv+j7ODYJNitDG/VEc2+LjgiHjM0uSvyBiit0bShpX3zGgNV+qeXxA4dBw=
+    secure: AlD8OcLJ2bYi0rJdd44kQnqLvFPv0Flx+gIYORY5jXnA/Q5yjLjkjVE7tP+qOsTY0nMV54Sxxh1mg4YZY9NEe7GVkSMak1Ymmv9b+Y6Z8Nmu0BAtB8gOCwh5/gQ+5EIVuv/wybYMpjbj1YsJL76Z7lZOo7O8iq3KMGxsMC0Q8yJtpimYAErpfEp/FzA+ewi+cG2VwwPOi1S98m0W4KsrMq/5OZZFHvn8qtf+OcGj0MGZz0RO3IkRjE/lTpAi7KqkzgXHX4e+WrTonudpvmuhJHMR9K+TudFZkjbGC2GPlhmG5ip3iIgiNhKnGLsHhIaxGrkedI9uC/YvwT4my2qFcVGz4DR+KcO9QFFG+UCST/c8ekJT3i1eRoLDOK7l/2gzkxdr1LtN8mM8vMMVE8Jhy3JhrSRXHxa8se6w7nSMY1FjnpA0RWh1BWtW+ny8hlkv9Zs4s7l48QALn+3uc6/IQndGeHzkJQ3iIKjwe0Md9rFSDUtIas0mUGfQNrJQykGkb858Xj0hi4ZrxXyaLcr0dQMOcYOfynt/1aYYces4N8h6Aa+B1bA2Iv+OmebP8vnhlyMrnFBZgcmw3awx70/XlD74M0SmqJ7g01AFIJMD1ta3pxRyKV0QOz8eocKDTmjdYrzYSECWuRgY7gDZ7+VWJUGUfkXCodAZL02aEWV9I2M=
   app:
-    production: workshop-portal
-    dev:  workshop-portal-dev
+    production: workshopportal
+    dev: workshopportal-dev
   on:
-    repo: hpi-swt2/workshop-portal
+    repo: hpi-schuelerklub/workshop-portal
   run:
   - rake db:schema:load
   - rake db:seed
