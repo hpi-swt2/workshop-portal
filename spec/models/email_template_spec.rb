@@ -22,8 +22,8 @@ describe EmailTemplate do
   end
 
   it "accepts valid status values" do
-    expect(FactoryGirl.build(:email_template, :acceptance)).to be_valid
-    expect(FactoryGirl.build(:email_template, :rejection)).to be_valid
+    expect(FactoryGirl.build(:email_template, :accepted)).to be_valid
+    expect(FactoryGirl.build(:email_template, :rejected)).to be_valid
     expect(FactoryGirl.build(:email_template, :default)).to be_valid
   end
   
@@ -34,9 +34,9 @@ describe EmailTemplate do
   end
 
   it "returns correct templates by status" do
-    accepted_template = FactoryGirl.create(:email_template, :acceptance)
-    rejected_template = FactoryGirl.create(:email_template, :rejection)
-    expect(EmailTemplate.with_status(:acceptance)).to eq([accepted_template])
-    expect(EmailTemplate.with_status(:rejection)).to eq([rejected_template])
+    accepted_template = FactoryGirl.create(:email_template, :accepted)
+    rejected_template = FactoryGirl.create(:email_template, :rejected)
+    expect(EmailTemplate.with_status(:accepted)).to eq([accepted_template])
+    expect(EmailTemplate.with_status(:rejected)).to eq([rejected_template])
   end
 end
