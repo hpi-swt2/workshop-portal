@@ -15,7 +15,7 @@ RSpec.describe EmailsController, type: :controller do
 
     context "with valid accepted applications" do
       before :each do
-        @application = FactoryGirl.create(:application_letter_accepted, event: @event, user: FactoryGirl.build(:user))
+        @application = FactoryGirl.create(:application_letter, :accepted, event: @event)
         @template = FactoryGirl.create(:email_template, :acceptance)
       end
 
@@ -33,7 +33,7 @@ RSpec.describe EmailsController, type: :controller do
 
     context "with valid rejected applications" do
       before :each do
-        @application = FactoryGirl.create(:application_letter_rejected, event: @event, user: FactoryGirl.build(:user))
+        @application = FactoryGirl.create(:application_letter, :rejected, event: @event)
         @template = FactoryGirl.create(:email_template, :rejection)
       end
 

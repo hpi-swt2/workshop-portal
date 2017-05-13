@@ -346,7 +346,7 @@ describe "Event", type: :feature do
       @event = FactoryGirl.create(:event)
       @users = 12.times.collect do
         user = FactoryGirl.create(:user_with_profile)
-        FactoryGirl.create(:application_letter_accepted, user: user, event: @event)
+        FactoryGirl.create(:application_letter, :accepted, user: user, event: @event)
         user
       end
       visit badges_event_path(@event)

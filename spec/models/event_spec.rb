@@ -38,30 +38,30 @@ describe Event do
     @event = FactoryGirl.create(:event)
     @user1 = FactoryGirl.create(:user, email: 'ghk@example.com')
     @profile1 = FactoryGirl.create(:profile, user: @user1, birth_date: 15.years.ago)
-    @application1 = FactoryGirl.create(:application_letter_accepted, user: @user1, event: @event)
+    @application1 = FactoryGirl.create(:application_letter, :accepted, user: @user1, event: @event)
     @agreement1 = FactoryGirl.create(:agreement_letter, user: @user1, event: @event)
 
     @user2 = FactoryGirl.create(:user, email: 'bba@example.com')
     @profile2 = FactoryGirl.create(:profile, user: @user2, birth_date: 16.years.ago)
-    @application2 = FactoryGirl.create(:application_letter_accepted, user: @user2, event: @event)
+    @application2 = FactoryGirl.create(:application_letter, :accepted, user: @user2, event: @event)
 
     @user3 = FactoryGirl.create(:user, email: 'eee@example.com')
     @profile3 = FactoryGirl.create(:profile, user: @user3, birth_date: 19.years.ago)
-    @application3 = FactoryGirl.create(:application_letter_accepted, user: @user3, event: @event)
+    @application3 = FactoryGirl.create(:application_letter, :accepted, user: @user3, event: @event)
     @agreement3 = FactoryGirl.create(:agreement_letter, user: @user3, event: @event)
 
     @user4 = FactoryGirl.create(:user, email: 'ddd@example.com')
     @profile4 = FactoryGirl.create(:profile, user: @user4, birth_date: 16.years.ago)
-    @application4 = FactoryGirl.create(:application_letter_accepted, user: @user4, event: @event)
+    @application4 = FactoryGirl.create(:application_letter, :accepted, user: @user4, event: @event)
 
     @user5 = FactoryGirl.create(:user, email: 'bbb@example.com')
     @profile5 = FactoryGirl.create(:profile, user: @user5, birth_date: 20.years.ago)
-    @application5 = FactoryGirl.create(:application_letter_accepted, user: @user5, event: @event)
+    @application5 = FactoryGirl.create(:application_letter, :accepted, user: @user5, event: @event)
 
     @user6 = FactoryGirl.create(:user, email: 'abc@example.com')
 
     @profile6 = FactoryGirl.create(:profile, user: @user6, birth_date: 16.years.ago)
-    @application6 = FactoryGirl.create(:application_letter_accepted, user: @user6, event: @event)
+    @application6 = FactoryGirl.create(:application_letter, :accepted, user: @user6, event: @event)
     @agreement6 = FactoryGirl.create(:agreement_letter, user: @user6, event: @event)
     #2,4,6,1,5,3
   expect(@event.participants_by_agreement_letter).to eq([@user2, @user4, @user6, @user1, @user5, @user3])
@@ -75,7 +75,7 @@ describe Event do
 
   it "checks if there are unclassified applications_letters" do
     event = FactoryGirl.create(:event)
-    accepted_application_letter = FactoryGirl.create(:application_letter_accepted, :event => event, :user => FactoryGirl.create(:user))
+    accepted_application_letter = FactoryGirl.create(:application_letter, :accepted, :event => event, :user => FactoryGirl.create(:user))
     event.application_letters.push(accepted_application_letter)
     expect(event.applications_classified?).to eq(true)
 
@@ -86,12 +86,12 @@ describe Event do
 
   it "computes the email addresses of the accepted and the rejected applications" do
     event = FactoryGirl.create(:event, :in_selection_phase_with_no_mails_sent)
-    accepted_application_letter_1 = FactoryGirl.create(:application_letter_accepted, :event => event, :user => FactoryGirl.create(:user))
-    accepted_application_letter_2 = FactoryGirl.create(:application_letter_accepted, :event => event, :user => FactoryGirl.create(:user))
-    accepted_application_letter_3 = FactoryGirl.create(:application_letter_accepted, :event => event, :user => FactoryGirl.create(:user))
-    accepted_application_letter_4 = FactoryGirl.create(:application_letter_accepted, status_notification_sent: true, event: event, user: FactoryGirl.create(:user))
-    rejected_application_letter_1 = FactoryGirl.create(:application_letter_rejected, :event => event, :user => FactoryGirl.create(:user))
-    rejected_application_letter_2 = FactoryGirl.create(:application_letter_rejected, status_notification_sent: true, :event => event, :user => FactoryGirl.create(:user))
+    accepted_application_letter_1 = FactoryGirl.create(:application_letter, :accepted, :event => event, :user => FactoryGirl.create(:user))
+    accepted_application_letter_2 = FactoryGirl.create(:application_letter, :accepted, :event => event, :user => FactoryGirl.create(:user))
+    accepted_application_letter_3 = FactoryGirl.create(:application_letter, :accepted, :event => event, :user => FactoryGirl.create(:user))
+    accepted_application_letter_4 = FactoryGirl.create(:application_letter, :accepted, status_notification_sent: true, event: event, user: FactoryGirl.create(:user))
+    rejected_application_letter_1 = FactoryGirl.create(:application_letter, :rejected, :event => event, :user => FactoryGirl.create(:user))
+    rejected_application_letter_2 = FactoryGirl.create(:application_letter, :rejected, status_notification_sent: true, :event => event, :user => FactoryGirl.create(:user))
 
     [accepted_application_letter_1, accepted_application_letter_2, accepted_application_letter_3, accepted_application_letter_4, rejected_application_letter_1, rejected_application_letter_2].each { |letter| event.application_letters.push(letter) }
 
@@ -145,8 +145,8 @@ describe Event do
 
   it "returns the event's participants" do
     event = FactoryGirl.build(:event)
-    FactoryGirl.create(:application_letter_rejected, event: event)
-    accepted_letter = FactoryGirl.create(:application_letter_accepted, event: event)
+    FactoryGirl.create(:application_letter, :rejected, event: event)
+    accepted_letter = FactoryGirl.create(:application_letter, :accepted, event: event)
     expect(event.participants).to eq [accepted_letter.user]
   end
 
@@ -178,19 +178,19 @@ describe Event do
   it "computes the number of occupied places" do
     event = FactoryGirl.create(:event)
     application_letter = FactoryGirl.create(:application_letter, user: FactoryGirl.create(:user), event: event)
-    FactoryGirl.create(:application_letter_accepted, user: FactoryGirl.create(:user), event: event)
+    FactoryGirl.create(:application_letter, :accepted, user: FactoryGirl.create(:user), event: event)
     expect(event.compute_occupied_places).to eq(1)
-    FactoryGirl.create(:application_letter_accepted, user: FactoryGirl.create(:user), event: event)
+    FactoryGirl.create(:application_letter, :accepted, user: FactoryGirl.create(:user), event: event)
     expect(event.compute_occupied_places).to eq(2)
   end
 
   it "computes whether there are applications with no status notification sent yet" do
     event = FactoryGirl.create(:event, :in_selection_phase_with_no_mails_sent)
-    FactoryGirl.create(:application_letter_accepted, user: FactoryGirl.create(:user), event: event)
+    FactoryGirl.create(:application_letter, :accepted, user: FactoryGirl.create(:user), event: event)
     expect(event.has_participants_without_status_notification?(:accepted)).to eq(true)
-    FactoryGirl.create(:application_letter_rejected, :with_mail_sent, user: FactoryGirl.create(:user), event: event)
+    FactoryGirl.create(:application_letter, :rejected, :with_mail_sent, user: FactoryGirl.create(:user), event: event)
     expect(event.has_participants_without_status_notification?(:rejected)).to eq(false)
-    FactoryGirl.create(:application_letter_rejected, user: FactoryGirl.create(:user), event: event)
+    FactoryGirl.create(:application_letter, :rejected, user: FactoryGirl.create(:user), event: event)
     expect(event.has_participants_without_status_notification?(:rejected)).to eq(true)
   end
 
@@ -208,10 +208,10 @@ describe Event do
     event = FactoryGirl.build(:event)
     expect(event.has_alternative_application_letters?).to be false
 
-    event.application_letters.push(FactoryGirl.build(:application_letter_accepted))
+    event.application_letters.push(FactoryGirl.build(:application_letter, :accepted))
     expect(event.has_alternative_application_letters?).to be false
 
-    event.application_letters.push(FactoryGirl.build(:application_letter_alternative))
+    event.application_letters.push(FactoryGirl.build(:application_letter, :alternative))
     expect(event.has_alternative_application_letters?).to be true
   end
 
@@ -219,12 +219,12 @@ describe Event do
     @event = FactoryGirl.create(:event)
     @user1 = FactoryGirl.create(:user, email:'a@b.com')
     @profile1 = FactoryGirl.create(:profile, user: @user1, birth_date: 15.years.ago, first_name:'Corny')
-    @application1 = FactoryGirl.create(:application_letter_accepted, user: @user1, event: @event)
+    @application1 = FactoryGirl.create(:application_letter, :accepted, user: @user1, event: @event)
     @agreement1 = FactoryGirl.create(:agreement_letter, user: @user1, event: @event)
 
     @user2 = FactoryGirl.create(:user, email:'b@c.com')
     @profile2 = FactoryGirl.create(:profile, user: @user2, birth_date: 16.years.ago, first_name:'John')
-    @application2 = FactoryGirl.create(:application_letter_accepted, user: @user2, event: @event)
+    @application2 = FactoryGirl.create(:application_letter, :accepted, user: @user2, event: @event)
 
     expect(@event.application_letters_ordered('first_name','asc')).to eq([@application1,@application2])
   end
@@ -233,12 +233,12 @@ describe Event do
     @event = FactoryGirl.create(:event)
     @user1 = FactoryGirl.create(:user, email:'a@b.com')
     @profile1 = FactoryGirl.create(:profile, user: @user1, birth_date: 15.years.ago, first_name:'Corny')
-    @application1 = FactoryGirl.create(:application_letter_accepted, user: @user1, event: @event)
+    @application1 = FactoryGirl.create(:application_letter, :accepted, user: @user1, event: @event)
     @agreement1 = FactoryGirl.create(:agreement_letter, user: @user1, event: @event)
 
     @user2 = FactoryGirl.create(:user, email:'b@c.com')
     @profile2 = FactoryGirl.create(:profile, user: @user2, birth_date: 16.years.ago, first_name:'John')
-    @application2 = FactoryGirl.create(:application_letter_accepted, user: @user2, event: @event)
+    @application2 = FactoryGirl.create(:application_letter, :accepted, user: @user2, event: @event)
 
     expect(@event.application_letters_ordered('unknown','desc')).to eq([@application2,@application1])
   end
@@ -316,10 +316,10 @@ describe Event do
   context "with valid accepted applications" do
     before :each do
       @event = FactoryGirl.create(:event)
-      @accepted_application_letter_1 = FactoryGirl.create(:application_letter_accepted, :event => @event)
-      @accepted_application_letter_2 = FactoryGirl.create(:application_letter_accepted, :event => @event)
-      @accepted_application_letter_3 = FactoryGirl.create(:application_letter_accepted, :event => @event)
-      @rejected_application_letter = FactoryGirl.create(:application_letter_rejected, :event => @event)
+      @accepted_application_letter_1 = FactoryGirl.create(:application_letter, :accepted, :event => @event)
+      @accepted_application_letter_2 = FactoryGirl.create(:application_letter, :accepted, :event => @event)
+      @accepted_application_letter_3 = FactoryGirl.create(:application_letter, :accepted, :event => @event)
+      @rejected_application_letter = FactoryGirl.create(:application_letter, :rejected, :event => @event)
     end
 
     it "computes the email addresses of all participants" do
