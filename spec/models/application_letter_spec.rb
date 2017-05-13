@@ -65,7 +65,7 @@ describe ApplicationLetter do
 
   %i[canceled alternative pending].each do | new_status |
     it "cannot update the status in execution phase from rejected into #{new_status}" do
-      application = FactoryGirl.create(:application_letter_rejected)
+      application = FactoryGirl.create(:application_letter, :rejected)
       application.event = FactoryGirl.create(:event, :in_execution_phase)
       application.status = new_status
       expect(application).to_not be_valid
@@ -73,7 +73,7 @@ describe ApplicationLetter do
   end
 
   it "can be canceled (only) if it was accepted before in execution phase" do
-    application = FactoryGirl.create(:application_letter_accepted)
+    application = FactoryGirl.create(:application_letter, :accepted)
     application.event = FactoryGirl.create(:event, :in_execution_phase)
     %i[accepted alternative pending rejected].each do | new_status |
       application.status = new_status
@@ -84,7 +84,7 @@ describe ApplicationLetter do
   end
 
   it "can be promoted to accepted if it was alternative before in execution phase" do
-    application = FactoryGirl.create(:application_letter_alternative)
+    application = FactoryGirl.create(:application_letter, :alternative)
     application.event = FactoryGirl.create(:event, :in_execution_phase)
     %i[alternative canceled pending rejected].each do | new_status |
       application.status = new_status
@@ -95,7 +95,7 @@ describe ApplicationLetter do
   end
 
   it "can be promoted to accepted if it was rejected before in execution phase when there are no alternative applications" do
-    application = FactoryGirl.create(:application_letter_rejected)
+    application = FactoryGirl.create(:application_letter, :rejected)
     application.event = FactoryGirl.create(:event, :in_execution_phase)
     %i[alternative canceled pending rejected].each do | new_status |
       application.status = new_status
@@ -106,9 +106,9 @@ describe ApplicationLetter do
   end
 
   it "cannot be promoted to accepted if it was rejected before in execution phase when there are alternative applications" do
-    application = FactoryGirl.create(:application_letter_rejected)
+    application = FactoryGirl.create(:application_letter, :rejected)
     application.event = FactoryGirl.create(:event, :in_execution_phase)
-    application.event.application_letters.push(FactoryGirl.create(:application_letter_alternative))
+    application.event.application_letters.push(FactoryGirl.create(:application_letter, :alternative))
     %i[alternative canceled pending rejected accepted].each do | new_status |
       application.status = new_status
       expect(application).to_not be_valid
@@ -133,7 +133,7 @@ describe ApplicationLetter do
   end
 
   it "can be updated if status is changed and participant selection is not locked" do
-    application = FactoryGirl.build(:application_letter_deadline_over)
+    application = FactoryGirl.build(:application_letter, :deadline_over)
     application.event.acceptances_have_been_sent = false
     application.event.rejections_have_been_sent = false
     expect(application.event.participant_selection_locked).to be(false)
@@ -142,7 +142,7 @@ describe ApplicationLetter do
   end
 
   it "can be updated if status is changed"  do
-     application = FactoryGirl.build(:application_letter_deadline_over)
+     application = FactoryGirl.build(:application_letter, :deadline_over)
      application.status = :rejected
      expect(application).to be_valid
   end
@@ -159,7 +159,7 @@ describe ApplicationLetter do
   it "returns if deadline is over" do
     application = FactoryGirl.build(:application_letter)
     application.event.application_deadline = Date.tomorrow
-    application_over = FactoryGirl.build(:application_letter_deadline_over)
+    application_over = FactoryGirl.build(:application_letter, :deadline_over)
     application_without_event = FactoryGirl.build(:application_letter)
     application_without_event.event = nil
     expect(application.after_deadline?).to be(false)

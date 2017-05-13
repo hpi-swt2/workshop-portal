@@ -10,7 +10,7 @@ RSpec.feature "Event participants overview", :type => :feature do
     login(:organizer)
     @user = FactoryGirl.create(:user)
     @profile = FactoryGirl.create(:profile, user: @user)
-    @application_letter = FactoryGirl.create(:application_letter_accepted, user: @user, event: @event)
+    @application_letter = FactoryGirl.create(:application_letter, :accepted, user: @user, event: @event)
     visit event_participants_path(@event)
     select I18n.t("participant_groups.options.#{ParticipantGroup::GROUPS[9]}"), from: "participant_group[group]", match: :first, visible: false
     expect(page).to have_select('participant_group_group', { selected: I18n.t("participant_groups.options.#{ParticipantGroup::GROUPS[9]}"), match: :first, visible: false })
@@ -21,7 +21,7 @@ RSpec.feature "Event participants overview", :type => :feature do
     for i in 1..5
       user = FactoryGirl.create(:user)
       profile = FactoryGirl.create(:profile, user: user, last_name: i.to_s)
-      application_letter = FactoryGirl.create(:application_letter_accepted, user: user, event: @event)
+      application_letter = FactoryGirl.create(:application_letter, :accepted, user: user, event: @event)
       participant_group = FactoryGirl.create(:participant_group, user: user, event: @event, group: i)
     end
 
@@ -93,7 +93,7 @@ RSpec.feature "Event participants overview", :type => :feature do
       user = FactoryGirl.create(:user)
       @users.push(user)
       profile = FactoryGirl.create(:profile, user: user, last_name: i.to_s)
-      application_letter = FactoryGirl.create(:application_letter_accepted, user: user, event: @event)
+      application_letter = FactoryGirl.create(:application_letter, :accepted, user: user, event: @event)
       participant_group = FactoryGirl.create(:participant_group, user: user, event: @event, group: i)
     end
   end
