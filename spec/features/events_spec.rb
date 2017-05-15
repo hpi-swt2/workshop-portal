@@ -72,7 +72,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     2.times do |n|
       @pupil = FactoryGirl.create(:profile)
       @pupil.user.role = :pupil
-      FactoryGirl.create(:application_letter_accepted, :event => @event, :user => @pupil.user)
+      FactoryGirl.create(:application_letter, :accepted, :event => @event, :user => @pupil.user)
     end
     visit event_path(@event)
     expect(page).to have_css('button[disabled]', text: I18n.t('events.applicants_overview.sending_acceptances'))
@@ -87,7 +87,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     2.times do |n|
       @pupil = FactoryGirl.create(:profile)
       @pupil.user.role = :pupil
-      FactoryGirl.create(:application_letter_accepted, :event => @event, :user => @pupil.user)
+      FactoryGirl.create(:application_letter, :accepted, :event => @event, :user => @pupil.user)
     end
     visit event_path(@event)
     click_button I18n.t('events.applicants_overview.sending_acceptances')
@@ -105,7 +105,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     2.times do |n|
       @pupil = FactoryGirl.create(:profile)
       @pupil.user.role = :pupil
-      FactoryGirl.create(:application_letter_rejected, :event => @event, :user => @pupil.user)
+      FactoryGirl.create(:application_letter, :rejected, :event => @event, :user => @pupil.user)
     end
     visit event_path(@event)
     click_button I18n.t('events.applicants_overview.sending_rejections')
@@ -125,7 +125,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     2.times do |i| #2 to also test negative free places, those are fine
       @pupil = FactoryGirl.create(:profile)
       @pupil.user.role = :pupil
-      @application_letter = FactoryGirl.create(:application_letter_accepted, event: @event, user: @pupil.user)
+      @application_letter = FactoryGirl.create(:application_letter, :accepted, event: @event, user: @pupil.user)
       visit event_path(@event)
       expect(page).to have_text(I18n.t "free_places", count: (@event.max_participants).to_i - (i+1), scope: [:events, :applicants_overview])
       expect(page).to have_text(I18n.t "occupied_places", count: (i+1), scope: [:events, :applicants_overview])
@@ -285,7 +285,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
   scenario "logged in as Organizer I can send alternative emails (treated like rejections) and by that change the status notification flag" do
     login(:organizer)
     event = FactoryGirl.create(:event_with_accepted_applications, :in_selection_phase_with_no_mails_sent, :with_no_status_notification_sent)
-    application = FactoryGirl.create(:application_letter_alternative, event: event, user: FactoryGirl.build(:user))
+    application = FactoryGirl.create(:application_letter, :alternative, event: event, user: FactoryGirl.build(:user))
     visit event_path(event)
     click_button(I18n.t("events.applicants_overview.sending_rejections"))
     expect(page).to have_current_path(event_email_show_path(event_id: event.id), only_path: true)
@@ -312,7 +312,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     @user = FactoryGirl.create(:user)
     @profile = FactoryGirl.create(:profile, user: @user, birth_date: 15.years.ago)
     @event = FactoryGirl.create(:event)
-    @application = FactoryGirl.create(:application_letter_accepted, user: @user, event: @event)
+    @application = FactoryGirl.create(:application_letter, :accepted, user: @user, event: @event)
     @agreement = FactoryGirl.create(:agreement_letter, user: @user, event: @event)
     visit event_participants_path(@event)
     check 'select_all_participants'
