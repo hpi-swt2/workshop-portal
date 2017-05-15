@@ -34,9 +34,9 @@ describe EmailTemplate do
   end
 
   it "returns correct templates by status" do
-    accepted_template = FactoryGirl.create(:email_template, :acceptance)
-    rejected_template = FactoryGirl.create(:email_template, :rejection)
-    expect(EmailTemplate.with_status(:acceptance)).to eq([accepted_template])
-    expect(EmailTemplate.with_status(:rejection)).to eq([rejected_template])
+    acceptance_template = FactoryGirl.create(:email_template, :acceptance)
+    rejection_template = FactoryGirl.create(:email_template, :rejection)
+    expect(EmailTemplate.with_status(:acceptance)).to eq([acceptance_template])
+    expect(EmailTemplate.with_status(:rejection)).to eq([rejection_template])
   end
 end

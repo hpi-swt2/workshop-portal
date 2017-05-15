@@ -4,11 +4,17 @@ class EmailsController < ApplicationController
     authorize! :send_email, Email
     @event = Event.find(params[:event_id])
 
-    @templates = EmailTemplate.with_status(get_email_template_status)
-    application_letter_status = get_corresponding_application_letter_status
-    @addresses = @event.email_addresses_of_type_without_notification_sent(application_letter_status)
-    if (get_email_template_status == :rejection) && (@event.has_participants_without_status_notification?(:alternative))
-      @addresses.append(@event.email_addresses_of_type_without_notification_sent(:alternative))
+    status = get_status
+    @templates = EmailTemplate.with_status(status)
+    if status == :acceptance
+      @addresses = @event.email_addresses_of_type_without_notification_sent(:accepted)
+    elsif (status == :rejection)
+      @addresses = @event.email_addresses_of_type_without_notification_sent(:rejected)
+      if @event.has_participants_without_status_notification?(:alternative)
+        @addresses.append(@event.email_addresses_of_type_without_notification_sent(:alternative))
+      end  
+    else 
+      @addresses = []
     end
 
     @email = Email.new(hide_recipients: true, reply_to: Rails.configuration.reply_to_address, recipients: @addresses.join(','),
@@ -40,27 +46,17 @@ class EmailsController < ApplicationController
   def send_application_result_email
     @email = Email.new(email_params)
     @event = Event.find(params[:event_id])
-    status = get_email_template_status
+    status = get_status
     if @email.valid?
-      application_letter_status = get_corresponding_application_letter_status
-      if application_letter_status == :accepted
-        @email.send_email_with_ical_and_agreement_letter @event
-      else
-        @email.send_email
+      @attachments = []
+      if status == :acceptance
+        @attachments.push(@event.get_ical_attachment)
+        @attachments.push(AgreementLetter.get_attachment)
       end
 
-      if status == :acceptance
-        @event.set_status_notification_flag_for_applications_with_status(application_letter_status)
-        @event.acceptances_have_been_sent = true
-        if not (@event.has_participants_without_status_notification?(:rejected) || @event.has_participants_without_status_notification?(:alternative))
-          @event.rejections_have_been_sent = true
-        end
-      elsif status == :rejection
-        @event.rejections_have_been_sent = true
-        @event.set_status_notification_flag_for_applications_with_status(application_letter_status)
-        @event.set_status_notification_flag_for_applications_with_status(:alternative)
-      end
-      @event.save
+      @email.send_email(@attachments)
+
+      update_event(@event)
 
       redirect_to @event, notice: t('emails.submit.sending_successful')
     else
@@ -87,7 +83,7 @@ class EmailsController < ApplicationController
   def save_template
     @email = Email.new(email_params)
 
-    @template = EmailTemplate.new({ status: get_email_template_status, hide_recipients: @email.hide_recipients,
+    @template = EmailTemplate.new({ status: get_status, hide_recipients: @email.hide_recipients,
                                     subject: @email.subject, content: @email.content })
 
     if @email.validates_presence_of(:subject, :content) && @template.save
@@ -96,22 +92,30 @@ class EmailsController < ApplicationController
       flash.now[:alert] = t('emails.submit.saving_failed')
     end
     @event = Event.find(params[:event_id])
-    @templates = EmailTemplate.with_status(get_email_template_status)
+    @templates = EmailTemplate.with_status(get_status)
 
     @send_generic = false
     render :email
   end
 
-  def get_email_template_status
-    params[:status] ? params[:status].to_sym : :default
+  def update_event(event)
+    status = get_status
+    if status == :acceptance
+      event.set_status_notification_flag_for_applications_with_status(:accepted)
+      event.acceptances_have_been_sent = true
+      if not (event.has_participants_without_status_notification?(:rejected) || @event.has_participants_without_status_notification?(:alternative))
+        event.rejections_have_been_sent = true
+      end
+    elsif get_status == :rejection
+      event.rejections_have_been_sent = true
+      event.set_status_notification_flag_for_applications_with_status(:rejected)
+      event.set_status_notification_flag_for_applications_with_status(:alternative)
+    end
+    event.save
   end
 
-  def get_corresponding_application_letter_status
-    return case params[:status]
-      when "acceptance" then :accepted
-      when "rejection" then :rejected
-      else :accepted
-      end
+  def get_status
+    params[:status] ? params[:status].to_sym : :default
   end
 
   # Only allow a trusted parameter "white list" through.
