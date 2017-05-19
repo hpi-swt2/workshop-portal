@@ -30,8 +30,8 @@ FactoryGirl.define do
         end
 
         trait :which_is_surrounding_today do
-            start_date Date.current.next_day(3)
-            end_date Date.current.prev_day(2)
+            start_date Date.current.prev_day(3)
+            end_date Date.current.next_day(2)
         end
 
         trait :on_single_day do
