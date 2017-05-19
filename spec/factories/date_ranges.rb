@@ -24,6 +24,16 @@ FactoryGirl.define do
             end_date Date.yesterday
         end
 
+        trait :with_future_dates do
+            start_date Date.current.next_day(3)
+            end_date Date.current.next_day(6)
+        end
+
+        trait :which_is_surrounding_today do
+            start_date Date.current.next_day(3)
+            end_date Date.current.prev_day(2)
+        end
+
         trait :on_single_day do
             start_date Date.tomorrow
             end_date Date.tomorrow
