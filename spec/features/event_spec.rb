@@ -135,12 +135,12 @@ describe "Event", type: :feature do
       end
     end
 
-    it "should not allow dates in the past" do
+    it "should allow dates in the past" do
       visit new_event_path
       fill_in "event[date_ranges_attributes][][start_date]", with: Date.yesterday.prev_day
       fill_in "event[date_ranges_attributes][][end_date]", with: Date.yesterday
       click_button I18n.t('.events.form.create')
-      expect(page).to have_text('Anfangs-Datum darf nicht in der Vergangenheit liegen')
+      expect(page).to_not have_text(I18n.t('errors.form_invalid.one'))
     end
 
     it "should not allow an end date before a start date" do
