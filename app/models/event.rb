@@ -28,6 +28,8 @@ class Event < ActiveRecord::Base
   has_many :participant_groups
   has_many :date_ranges
   accepts_nested_attributes_for :date_ranges
+  validates_presence_of :name
+  validates_presence_of :description
   validates :max_participants, numericality: { only_integer: true, greater_than: 0 }
   validate :has_date_ranges
   validates_presence_of :application_deadline
