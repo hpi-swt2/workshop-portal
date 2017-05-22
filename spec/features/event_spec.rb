@@ -123,11 +123,13 @@ describe "Event", type: :feature do
 
   describe "create page" do
     before :each do
-        login_as(FactoryGirl.create(:user, role: :organizer), :scope => :user)
+      login_as(FactoryGirl.create(:user, role: :organizer), :scope => :user)
+      visit new_event_path
+      fill_in 'event_name', :with => 'Testevent Name'
+      fill_in 'event_description', :with => 'Loooooong description, which is really helpful'
     end
     I18n.t(".events.type").each do |type|
       it "should allow picking the #{type[1]} type" do
-        visit new_event_path
         fill_in "Maximale Teilnehmerzahl", :with => 25
         choose(type[1])
         click_button I18n.t('.events.form.create')
@@ -136,7 +138,6 @@ describe "Event", type: :feature do
     end
 
     it "should not allow dates in the past" do
-      visit new_event_path
       fill_in "event[date_ranges_attributes][][start_date]", with: Date.yesterday.prev_day
       fill_in "event[date_ranges_attributes][][end_date]", with: Date.yesterday
       click_button I18n.t('.events.form.create')
@@ -144,7 +145,6 @@ describe "Event", type: :feature do
     end
 
     it "should not allow an end date before a start date" do
-      visit new_event_path
       fill_in "event[date_ranges_attributes][][start_date]", with: Date.current
       fill_in "event[date_ranges_attributes][][end_date]", with: Date.current.prev_day(2)
       click_button I18n.t('.events.form.create')
@@ -153,8 +153,6 @@ describe "Event", type: :feature do
     end
 
     it "should allow entering multiple time spans", js: true do
-      visit new_event_path
-
       first_from = Date.tomorrow.next_day(1)
       first_to = Date.tomorrow.next_day(2)
 
@@ -176,11 +174,9 @@ describe "Event", type: :feature do
       expect(page).to have_text (DateRange.new start_date: first_from, end_date: first_to)
       expect(page).to have_text (DateRange.new start_date: second_from, end_date: second_to)
     end
-    it "should save application deadline" do
-      visit new_event_path
 
+    it "should save application deadline" do
       deadline = Date.tomorrow
-      fill_in "event_name", :with => "Event Name"
       fill_in "event_max_participants", :with => 12
       fill_in "event_application_deadline", :with => I18n.l(deadline)
       fill_in "event[date_ranges_attributes][][start_date]", :with => Date.current.next_day(2)
@@ -190,9 +186,8 @@ describe "Event", type: :feature do
 
       expect(page).to have_text("Bewerbungsschluss " + I18n.l(deadline))
     end
-    it "should not allow an application deadline after the start of the event" do
-      visit new_event_path
 
+    it "should not allow an application deadline after the start of the event" do
       fill_in "event_max_participants", :with => 12
       fill_in "event_application_deadline", :with => Date.tomorrow
       fill_in "event[date_ranges_attributes][][start_date]", :with => Date.current
@@ -203,8 +198,6 @@ describe "Event", type: :feature do
     end
 
     it "should not display errors on date ranges twice", js: true do
-      visit new_event_path
-
       fill_in "Maximale Teilnehmerzahl", :with => 25
 
       within page.find("#event-date-pickers").all("div")[0] do
@@ -226,8 +219,6 @@ describe "Event", type: :feature do
     end
 
     it "should allow to add custom fields", js: true do
-      visit new_event_path
-
       click_link I18n.t "events.form.add_field"
       within page.find("#custom-application-fields").all(".input-group")[0] do
         fill_in "event[custom_application_fields][]", with: "Lieblingsfarbe"

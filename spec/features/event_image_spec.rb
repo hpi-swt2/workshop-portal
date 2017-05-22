@@ -10,6 +10,8 @@ describe "Event pictures", type: :feature do
       login_as(FactoryGirl.create(:user, role: :organizer), :scope => :user)
       visit new_event_path
       choose I18n.t "events.form.draft.publish"
+      fill_in 'event_name', :with => 'Test Name'
+      fill_in 'event_description', :with => 'Loooong test description with helpful information'
       fill_in "Maximale Teilnehmerzahl", :with => 25
       fill_in "event[date_ranges_attributes][][start_date]", :with => I18n.l(Date.tomorrow.next_day(2))
       fill_in "event[date_ranges_attributes][][end_date]", :with => I18n.l(Date.tomorrow.next_day(3))
