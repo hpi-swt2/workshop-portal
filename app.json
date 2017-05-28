@@ -1,6 +1,7 @@
 {
   "name": "workshop-portal",
   "scripts": {
+    "postdeploy": "bundle exec rake db:schema:load db:seed"
   },
   "env": {
     "LANG": {
