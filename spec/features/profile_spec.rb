@@ -96,6 +96,38 @@ RSpec.feature "Upload letter of agreement", :type => :feature do
   end
 end
 
+RSpec.feature "Visit page with special role", :type => :feature do
+  before :each do
+    @profile = FactoryGirl.create(:profile)
+    @user = FactoryGirl.create(:user, role: :pupil, profile: @profile)
+    @event = FactoryGirl.create(:event)
+    @application_letter = FactoryGirl.create(:application_letter_accepted, user: @user, event: @event)
+    login_as(@user, scope: :user)
+    visit profile_path(@user.profile)
+  end
+
+  %i[organizer admin].each do |role|
+    scenario "logged in as #{role} I can see the mail address" do
+      login(role)
+      expect(page).to have_link(@profile.user.email, :href => 'mailto:' + @profile.user.email)
+    end
+  end
+
+  %i[coach pupil].each do |role|
+    scenario "logged in as #{role} I cannot see the mail address" do
+      login(role)
+      expect(page).to_not have_link(@profile.user.email, :href => 'mailto:' + @profile.user.email)
+    end
+  end
+
+  def login(role)
+    @profile_own = FactoryGirl.create(:profile)
+    @profile_own.user.role = role
+    login_as(@profile_own.user, :scope => :user)
+    visit profile_path(@user.profile)
+  end
+end
+
 RSpec.feature "Profile adaptation", :type => :feature do
   scenario "user leaves out required fields" do
     @profile = FactoryGirl.create(:profile)
