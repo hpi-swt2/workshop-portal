@@ -16,7 +16,7 @@ describe "Event", type: :feature do
 
     it "should not list past events" do
       current_event = FactoryGirl.create :event
-      past_event = FactoryGirl.create :event, :in_the_past_valid
+      past_event = FactoryGirl.create :event, :in_the_past
 
       visit events_path
       expect(page).to have_text(current_event.name)
@@ -113,7 +113,7 @@ describe "Event", type: :feature do
   describe "archive page" do
     it "should list past events" do
       current_event = FactoryGirl.create :event
-      past_event = FactoryGirl.create :event, :in_the_past_valid
+      past_event = FactoryGirl.create :event, :in_the_past
 
       visit events_archive_path
       expect(page).to have_text(past_event.name)
