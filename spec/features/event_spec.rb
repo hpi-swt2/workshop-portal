@@ -135,14 +135,6 @@ describe "Event", type: :feature do
       end
     end
 
-    it "should allow dates in the past" do
-      visit new_event_path
-      fill_in "event[date_ranges_attributes][][start_date]", with: Date.yesterday.prev_day
-      fill_in "event[date_ranges_attributes][][end_date]", with: Date.yesterday
-      click_button I18n.t('.events.form.create')
-      expect(page).to_not have_text(I18n.t('errors.form_invalid.one'))
-    end
-
     it "should not allow an end date before a start date" do
       visit new_event_path
       fill_in "event[date_ranges_attributes][][start_date]", with: Date.current
@@ -337,6 +329,16 @@ describe "Event", type: :feature do
       click_button I18n.t('.events.form.update')
 
       expect(page).to have_text (DateRange.new start_date: date_start, end_date: date_end)
+    end
+
+    it "should allow editing past events" do
+      login_as(FactoryGirl.create(:user, role: :organizer), :scope => :user)
+      event = FactoryGirl.create(:event)
+      visit edit_event_path(event.id)
+      fill_in "event[date_ranges_attributes][][start_date]", with: Date.yesterday.prev_day
+      fill_in "event[date_ranges_attributes][][end_date]", with: Date.yesterday
+      click_button I18n.t('events.form.update')
+      expect(page).to_not have_text(I18n.t('errors.form_invalid.one'))
     end
   end
 
