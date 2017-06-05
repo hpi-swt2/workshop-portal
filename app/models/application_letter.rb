@@ -17,7 +17,7 @@ class ApplicationLetter < ActiveRecord::Base
   has_many :application_notes
   serialize :custom_application_fields, Array
 
-  validates :user, :event, :motivation, :emergency_number,:organisation, presence: true
+  validates_presence_of :user, :event, :motivation, :emergency_number, :organisation
   #Use 0 as default for hidden event applications
   validates :vegetarian, :vegan, :allergic, inclusion: { in: [true, false] }
   validates :vegetarian, :vegan, :allergic, exclusion: { in: [nil] }
