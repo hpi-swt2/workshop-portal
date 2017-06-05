@@ -12,8 +12,7 @@ class Profile < ActiveRecord::Base
   
   belongs_to :user
 
-  validates :user, presence: true
-  validates_presence_of :first_name, :last_name, :gender, :birth_date, :street_name, :zip_code, :city, :state, :country
+  validates_presence_of :user, :first_name, :last_name, :gender, :birth_date, :street_name, :zip_code, :city, :state, :country
   validate :birthdate_not_in_future
   validates_inclusion_of :gender, in: POSSIBLE_GENDERS
 
