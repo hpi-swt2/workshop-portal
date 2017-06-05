@@ -16,12 +16,15 @@
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #  name                   :string
+#  provider               :string
+#  uid                    :string
 #
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
+         :recoverable, :rememberable, :trackable, :validatable,
+         :omniauthable, :omniauth_providers => [:hpiopenid]
 
   has_one :profile
   has_many :agreement_letters
@@ -40,6 +43,19 @@ class User < ActiveRecord::Base
 
   def set_default_role
     self.role ||= :pupil
+  end
+
+  def self.from_omniauth(auth)
+    where(provider: auth.provider, uid: auth.uid).first_or_create! do |user|
+      user.email = auth.info.email
+      user.password = Devise.friendly_token[0,20]
+      user.role = :coach
+      # user.name = auth.info.first_name + " " + auth.info.last_name
+
+      # If you are using confirmable and the provider(s) you use validate emails,
+      # uncomment the line below to skip the confirmation emails.
+      # user.skip_confirmation!
+    end
   end
 
   def name

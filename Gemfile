@@ -35,7 +35,9 @@ gem 'jquery-ui-rails'
 # Authentication
 gem 'devise'
 # openID Authentication
-gem 'devise_openid_authenticatable'
+#gem 'devise_openid_authenticatable'
+gem 'omniauth'
+gem 'omniauth-openid'
 
 # Use Bootstrap (app/assets/stylesheets) for app styling
 # Also provides some nifty helpers:
