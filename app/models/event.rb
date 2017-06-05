@@ -28,9 +28,9 @@ class Event < ActiveRecord::Base
   has_many :participant_groups
   has_many :date_ranges
   accepts_nested_attributes_for :date_ranges
+  validates_presence_of :name, :description, :application_deadline
   validates :max_participants, numericality: { only_integer: true, greater_than: 0 }
   validate :has_date_ranges
-  validates_presence_of :application_deadline
   validate :application_deadline_before_start_of_event
   validates :hidden, inclusion: { in: [true, false] }
   validates :hidden, exclusion: { in: [nil] }
