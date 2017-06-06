@@ -1,13 +1,17 @@
 
 @footer-bg: lighten(#F7B21C, 30%);
 
+@footer-spacing: 36px;
+@footer-height: 120px;
+
 footer {
-    margin-top: 36px;
-    padding-top: 36px;
+    margin-top: @footer-spacing;
+    padding-top: @footer-spacing;
     padding-bottom: 20px;
     text-align: center;
     color: rgba(0, 0, 0, 0.3);
     background-color: @footer-bg;
+    height: @footer-height;
 }
 footer .container {
     max-width: 600px;
@@ -16,3 +20,13 @@ footer .ignore {
     color: @footer-bg;
 }
  
+.page-wrap {
+  min-height: 100%;
+  margin-bottom: -@footer-spacing - @footer-height;
+}
+.page-wrap:after {
+  content: "";
+  display: block;
+  height: @footer-spacing + @footer-height;
+}
+
