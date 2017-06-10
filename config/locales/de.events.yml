@@ -140,7 +140,7 @@ de:
       custom_application_fields_cant_be_changed_later: "Die eigenen Felder für die Bewerbung können nach dem ersten Speichern nicht mehr geändert werden."
       add_timespan: "Zeitspanne hinzufügen"
       draft:
-        save: "Speichern"
+        save: "Als Entwurf speichern"
         publish: "Veröffentlichen"
     email:
       templates: "Vorlagen"

@@ -9,7 +9,6 @@ describe "Event pictures", type: :feature do
     before :each do
       login_as(FactoryGirl.create(:user, role: :organizer), :scope => :user)
       visit new_event_path
-      choose I18n.t "events.form.draft.publish"
       fill_in "Maximale Teilnehmerzahl", :with => 25
       fill_in "event[date_ranges_attributes][][start_date]", :with => I18n.l(Date.tomorrow.next_day(2))
       fill_in "event[date_ranges_attributes][][end_date]", :with => I18n.l(Date.tomorrow.next_day(3))
@@ -27,12 +26,12 @@ describe "Event pictures", type: :feature do
     end
 
     it "should not change the image if validation for a new image fails" do
-      click_button I18n.t(".events.form.create")
+      click_button "create"
       previous_image = Event.last.image
 
       visit edit_event_path(Event.last)
       attach_file "event[custom_image]", File.join(Rails.root + 'spec/testfiles/too_small_image.png')
-      click_button I18n.t('.events.form.update')
+      click_button "create"
 
       expect(Event.last.image).to eq(previous_image)
       # assert that our invalid image wasn't added as an option

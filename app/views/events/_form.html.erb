@@ -99,9 +99,13 @@
   <div class="form-group">
     <div class="col-lg-offset-2 col-lg-10">
       <% if @event.new_record? %>
-        <%= f.submit t('.create'), :name => 'create', :class => 'btn btn-primary', :id => 'create_event' %>
+        <%= f.submit t('events.form.draft.publish'), :name => 'create', :class => 'btn btn-primary', :id => 'create' %>
+        <%= f.submit t('events.form.draft.save'), :name => 'save_draft', :class => 'btn btn-secondary', :id => 'save_event_draft' %>
       <% else %>
         <%= f.submit t('.update'), :name => 'update', :class => 'btn btn-primary' %>
+        <% if not @event.published? %>
+          <%= f.submit t('events.form.draft.publish'), :name => 'publish', :class => 'btn btn-primary' %>
+        <% end %>
       <% end %>
       <% unless @event.new_record? %>
         <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
