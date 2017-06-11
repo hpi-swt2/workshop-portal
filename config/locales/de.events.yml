@@ -142,6 +142,7 @@ de:
       draft:
         save: "Als Entwurf speichern"
         publish: "Veröffentlichen"
+        update_and_publish: "Aktualisieren & Veröffentlichen"
     email:
       templates: "Vorlagen"
     applications_pdf:

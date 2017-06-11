@@ -130,7 +130,7 @@ describe "Event", type: :feature do
         visit new_event_path
         fill_in "Maximale Teilnehmerzahl", :with => 25
         choose(type[1])
-        click_button I18n.t('.events.form.create')
+        click_button "create" 
         expect(page).to have_text(type[1])
       end
     end
@@ -139,7 +139,7 @@ describe "Event", type: :feature do
       visit new_event_path
       fill_in "event[date_ranges_attributes][][start_date]", with: Date.yesterday.prev_day
       fill_in "event[date_ranges_attributes][][end_date]", with: Date.yesterday
-      click_button I18n.t('.events.form.create')
+      click_button "create" 
       expect(page).to have_text('Anfangs-Datum darf nicht in der Vergangenheit liegen')
     end
 
@@ -147,7 +147,7 @@ describe "Event", type: :feature do
       visit new_event_path
       fill_in "event[date_ranges_attributes][][start_date]", with: Date.current
       fill_in "event[date_ranges_attributes][][end_date]", with: Date.current.prev_day(2)
-      click_button I18n.t('.events.form.create')
+      click_button "create" 
 
       expect(page).to have_text('End-Datum kann nicht vor Start-Datum liegen')
     end
@@ -171,7 +171,7 @@ describe "Event", type: :feature do
         fill_in "event[date_ranges_attributes][][end_date]", with: I18n.l(second_to)
       end
       fill_in "event_application_deadline", :with => I18n.l(Date.tomorrow)
-      click_button I18n.t('.events.form.create')
+      click_button "create" 
 
       expect(page).to have_text (DateRange.new start_date: first_from, end_date: first_to)
       expect(page).to have_text (DateRange.new start_date: second_from, end_date: second_to)
@@ -186,7 +186,7 @@ describe "Event", type: :feature do
       fill_in "event[date_ranges_attributes][][start_date]", :with => Date.current.next_day(2)
       fill_in "event[date_ranges_attributes][][end_date]", :with => Date.current.next_day(3)
 
-      click_button I18n.t('.events.form.create')
+      click_button "create" 
 
       expect(page).to have_text("Bewerbungsschluss " + I18n.l(deadline))
     end
@@ -197,7 +197,7 @@ describe "Event", type: :feature do
       fill_in "event_application_deadline", :with => Date.tomorrow
       fill_in "event[date_ranges_attributes][][start_date]", :with => Date.current
 
-      click_button I18n.t('.events.form.create')
+      click_button "create" 
 
       expect(page).to have_text("Bewerbungsschluss muss vor Beginn der Veranstaltung liegen")
     end
@@ -219,7 +219,7 @@ describe "Event", type: :feature do
         fill_in "event[date_ranges_attributes][][end_date]", with: I18n.l(Date.yesterday)
       end
 
-      click_button I18n.t(".events.form.create")
+      click_button "create" 
 
       expect(page).to have_css("div.has-error")
       expect(page).to have_content("kann nicht vor Start-Datum liegen", count: 1)
@@ -243,7 +243,7 @@ describe "Event", type: :feature do
       fill_in "event[date_ranges_attributes][][end_date]", :with => I18n.l(Date.tomorrow.next_day(3))
       fill_in "event_application_deadline", :with => I18n.l(Date.tomorrow)
 
-      click_button I18n.t(".events.form.create")
+      click_button "create" 
 
       expect(page).to have_text("Lieblingsfarbe")
       expect(page).to have_text("Lieblings 'Friends' Charakter")

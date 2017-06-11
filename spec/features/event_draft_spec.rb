@@ -14,6 +14,17 @@ RSpec.feature "Draft events", :type => :feature do
     fill_in "event[date_ranges_attributes][][end_date]", with: Date.current.next_day(3)
     choose I18n.t "events.type.public"
   end
+  
+  scenario "User creates event and publishes it" do
+    click_button I18n.t "events.form.draft.publish"
+
+    expect(page).to have_css(".alert.success") 
+    
+    # The event should be visible in the events list
+    login(:pupil)
+    visit events_path
+    expect(page).to have_text(@event.name)
+  end
 
   scenario "User saves a draft event, but doesn't publish it" do
     click_button I18n.t "events.form.draft.save"
@@ -39,6 +50,20 @@ RSpec.feature "Draft events", :type => :feature do
     login(:pupil)
     visit events_path
     expect(page).to have_text(@event.name)
+  end
+
+  scenario "User updates a saved draft event, but does now publish it" do
+    click_button I18n.t "events.form.draft.save"
+
+    visit edit_event_path(@event)
+    click_button "update"
+
+    expect(page).to have_css(".alert-success")
+
+    # The event should still not be visible in the events list
+    login(:pupil)
+    visit events_path
+    expect(page).to_not have_text(@event.name)
   end
 
   def login(role)

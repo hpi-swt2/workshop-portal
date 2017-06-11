@@ -100,14 +100,12 @@
     <div class="col-lg-offset-2 col-lg-10">
       <% if @event.new_record? %>
         <%= f.submit t('events.form.draft.publish'), :name => 'create', :class => 'btn btn-primary', :id => 'create' %>
-        <%= f.submit t('events.form.draft.save'), :name => 'save_draft', :class => 'btn btn-secondary', :id => 'save_event_draft' %>
+        <%= f.submit t('events.form.draft.save'), :name => 'save_draft', :class => 'btn btn-secondary', :id => 'save_draft' %>
       <% else %>
-        <%= f.submit t('.update'), :name => 'update', :class => 'btn btn-primary' %>
+        <%= f.submit t('.update'), :name => 'update', :class => 'btn btn-primary', :id => 'update' %>
         <% if not @event.published? %>
-          <%= f.submit t('events.form.draft.publish'), :name => 'publish', :class => 'btn btn-primary' %>
+          <%= f.submit t('events.form.draft.update_and_publish'), :name => 'publish', :class => 'btn btn-primary', :id => 'update_and_publish' %>
         <% end %>
-      <% end %>
-      <% unless @event.new_record? %>
         <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
             event_path(@event),
             :method => 'delete',

@@ -18,10 +18,10 @@ describe "Event pictures", type: :feature do
     it "should correctly set an image even if first validation fails" do
       fill_in "Maximale Teilnehmerzahl", :with => nil
       attach_file "event[custom_image]", File.join(Rails.root + 'spec/testfiles/image_upload_test.png')
-      click_button I18n.t(".events.form.create")
+      click_button "create"
 
       fill_in "Maximale Teilnehmerzahl", :with => 25
-      click_button I18n.t(".events.form.create")
+      click_button "create"
       expect(Event.last.image).to be_present
     end
 
@@ -31,7 +31,7 @@ describe "Event pictures", type: :feature do
 
       visit edit_event_path(Event.last)
       attach_file "event[custom_image]", File.join(Rails.root + 'spec/testfiles/too_small_image.png')
-      click_button "create"
+      click_button "update"
 
       expect(Event.last.image).to eq(previous_image)
       # assert that our invalid image wasn't added as an option
@@ -40,32 +40,32 @@ describe "Event pictures", type: :feature do
 
     it "should allow uploading images" do
       attach_file "event[custom_image]", File.join(Rails.root + 'spec/testfiles/image_upload_test.png')
-      click_button I18n.t(".events.form.create")
+      click_button "create"
     end
 
     it "should not allow uploading images that are too small" do
       attach_file "event[custom_image]", File.join(Rails.root + 'spec/testfiles/too_small_image.png')
-      click_button I18n.t(".events.form.create")
+      click_button "create"
       expect(page).to have_css('.has-error', text: I18n.t("events.errors.image_too_small"))
     end
 
     it "should allow picking a stock image" do
       image = stock_photo_path
       choose(path_to_id(image))
-      click_button I18n.t(".events.form.create")
+      click_button "create"
       visit edit_event_path(Event.last)
       expect(page).to have_css('.active.btn input', id: path_to_id(image))
     end
 
     it "should preselect a stock image" do
-      click_button I18n.t(".events.form.create")
+      click_button "create"
       expect(Event.last.image).to be_present
     end
 
     it "should show a custom image in the list, even after selecting a stock image" do
       # got to the new page and upload a custom image
       attach_file "event[custom_image]", File.join(Rails.root + 'spec/testfiles/image_upload_test.png')
-      click_button I18n.t(".events.form.create")
+      click_button "create"
 
       custom_image = Event.last.custom_image_url(:list_view)
       stock_image = stock_photo_path
@@ -100,7 +100,7 @@ describe "Event pictures", type: :feature do
 
     it "should only have a single custom image, even when a new one is uploaded" do
       attach_file "event[custom_image]", File.join(Rails.root + 'spec/testfiles/image_upload_test.png')
-      click_button I18n.t(".events.form.create")
+      click_button "create" 
 
       first_image = Event.last.custom_image_url(:list_view)
 
