@@ -104,7 +104,7 @@
       <% else %>
         <% if not @event.published? %>
           <%= f.submit t('events.form.draft.update_and_publish'), :name => 'publish', :class => 'btn btn-primary', :id => 'update_and_publish' %>
-        <%= f.submit t('events.form.draft.update'), :name => 'update', :class => 'btn btn-secondary', :id => 'update_draft' %>
+          <%= f.submit t('events.form.draft.update'), :name => 'update', :class => 'btn btn-secondary', :id => 'update_draft' %>
         <% end %>
         <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
             event_path(@event),
