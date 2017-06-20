@@ -28,7 +28,7 @@ de:
       unlock_instructions:
         subject: "Anleitung um Deinen Account freizuschalten"
     omniauth_callbacks:
-      failure: "Du konntest nicht Deinem %{kind}-Account angemeldet werden, weil '%{reason}'."
+      failure: "Du konntest nicht mit Deinem %{kind}-Account angemeldet werden. Fehler: '%{reason}'."
       success: "Du hast Dich erfolgreich mit Deinem %{kind}-Account angemeldet."
     passwords:
       no_token: "Du kannst diese Seite nur von dem Link aus einer E-Mail zum Passwort-Zurücksetzen aufrufen. Wenn du einen solchen Link aufgerufen hast stelle bitte sicher, dass du die vollständige Adresse aufrufst."
