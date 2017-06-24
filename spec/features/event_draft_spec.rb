@@ -18,7 +18,7 @@ RSpec.feature "Draft events", :type => :feature do
   scenario "User creates event and publishes it" do
     click_button I18n.t "events.form.draft.publish"
 
-    expect(page).to have_css(".alert.success") 
+    expect(page).to have_css(".alert-success") 
     
     # The event should be visible in the events list
     login(:pupil)
@@ -52,11 +52,11 @@ RSpec.feature "Draft events", :type => :feature do
     expect(page).to have_text(@event.name)
   end
 
-  scenario "User updates a saved draft event, but does now publish it" do
+  scenario "User updates a saved draft event, but does not publish it" do
     click_button I18n.t "events.form.draft.save"
 
     visit edit_event_path(@event)
-    click_button "update"
+    click_button "update_draft"
 
     expect(page).to have_css(".alert-success")
 

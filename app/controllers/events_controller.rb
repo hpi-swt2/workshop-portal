@@ -264,7 +264,11 @@ class EventsController < ApplicationController
     end
 
     def event_params
-      params.require(:event).permit(:name, :description, :image, :custom_image, :custom_image_cache, :max_participants, :organizer, :knowledge_level, :application_deadline, :published, :hidden, :custom_application_fields => [], date_ranges_attributes: [:start_date, :end_date, :id])
+      parameters = params.require(:event).permit(:name, :description, :image, :custom_image, :custom_image_cache, :max_participants, :organizer, :knowledge_level, :application_deadline, :hidden, :custom_application_fields => [], date_ranges_attributes: [:start_date, :end_date, :id])
+      if params[:create].present? or params[:update_and_publish].present?
+        parameters[:published] = true
+      end
+      parameters
     end
 
     def add_event_query_conditions(query)

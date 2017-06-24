@@ -103,8 +103,10 @@
         <%= f.submit t('events.form.draft.save'), :name => 'save_draft', :class => 'btn btn-secondary', :id => 'save_draft' %>
       <% else %>
         <% if not @event.published? %>
-          <%= f.submit t('events.form.draft.update_and_publish'), :name => 'publish', :class => 'btn btn-primary', :id => 'update_and_publish' %>
-          <%= f.submit t('events.form.draft.update'), :name => 'update', :class => 'btn btn-secondary', :id => 'update_draft' %>
+          <%= f.submit t('events.form.draft.update_and_publish'), :name => 'update_and_publish', :class => 'btn btn-primary', :id => 'update_and_publish' %>
+          <%= f.submit t('events.form.draft.update'), :name => 'update_draft', :class => 'btn btn-secondary', :id => 'update_draft' %>
+        <% else %> 
+          <%= f.submit t('events.form.update'), :name => 'update', :class => 'btn btn-primary', :id => 'update' %>
         <% end %>
         <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
             event_path(@event),
