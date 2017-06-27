@@ -13,7 +13,7 @@
 class AgreementLetter < ActiveRecord::Base
   belongs_to :user
   belongs_to :event
-  validates :user, :event, :path, presence: true
+  validates_presence_of :user, :event, :path
   MAX_SIZE = 300_000_000
   ALLOWED_MIMETYPE = "application/pdf"
   STORAGE_DIR = Rails.root.join('storage', 'agreement_letters')

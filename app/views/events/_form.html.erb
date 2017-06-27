@@ -3,7 +3,7 @@
   <%= render partial: "shared/error_message", locals: {entity: @event} %>
 
     <div class="form-group">
-      <%= f.label :type, :class => 'control-label col-lg-2' %>
+      <%= f.label :type, :class => 'control-label col-lg-2 required' %>
       <div class="btn-group col-lg-10" data-toggle="buttons">
         <label class="btn btn-default <%= 'active' if not @event.hidden %>" id="public_type">
           <%= f.radio_button :hidden, false %>
@@ -17,7 +17,7 @@
       </div>
     </div>
     <div class="form-group">
-      <%= f.label :published, :class => 'control-label col-lg-2' %>
+      <%= f.label :published, :class => 'control-label col-lg-2 required' %>
       <div class="btn-group col-lg-10" data-toggle="buttons">
         <label class="btn btn-default <%= 'active' if not @event.published %>" id="save_draft_option">
           <%= f.radio_button :published, false %>
@@ -31,7 +31,7 @@
       </div>
     </div>
   <div class="form-group">
-    <%= f.label :name, :class => 'control-label col-lg-2' %>
+    <%= f.label :name, :class => 'control-label col-lg-2 required' %>
     <div class="col-lg-10">
       <%= f.text_field :name, :class => 'form-control' %>
       <%=f.error_span(:name) %>
@@ -39,9 +39,9 @@
   </div>
 
   <div class="form-group">
-    <%= f.label :description, :class => 'control-label col-lg-2' %>
+    <%= f.label :description, :class => 'control-label col-lg-2 required' %>
     <div class="col-lg-10">
-      <%= f.text_area :description, :class => 'form-control', :id => 'description',  :placeholder => '', :rows => 20, :spellcheck => "false" %>
+      <%= f.text_area :description, :class => 'form-control',  :placeholder => '', :rows => 20, :spellcheck => "false" %>
       <script>
         var EVENT_DESCRIPTION_PLACEHOLDER = '<%= I18n.t "events.description_placeholder" %>';
       </script>
@@ -51,14 +51,14 @@
   </div>
 
     <div class="form-group">
-      <%= f.label :max_participants, :class => 'control-label col-lg-2' %>
+      <%= f.label :max_participants, :class => 'control-label col-lg-2 required' %>
       <div class="col-lg-10">
         <%= f.text_field :max_participants, :class => 'form-control' %>
         <%= f.error_span(:max_participants) %>
       </div>
     </div>
     <div class="form-group">
-      <%= f.label :date_ranges, :class => 'control-label col-lg-2' %>
+      <%= f.label :date_ranges, :class => 'control-label col-lg-2 required' %>
       <div class="col-lg-10 <%= 'has-error' unless @event.errors.messages[:date_ranges].empty? %>" id="event-date-pickers">
         <% def date_picker_template(start_date = Date.current, end_date = Date.current)
           start_picker = text_field_tag "event[date_ranges_attributes][][start_date]", (I18n.l start_date),
@@ -102,7 +102,7 @@
       </div>
     </div>
     <div class="form-group">
-      <%= f.label :application_deadline, :class => 'control-label col-lg-2' %>
+      <%= f.label :application_deadline, :class => 'control-label col-lg-2 required' %>
       <div class="col-lg-10">
         <%= f.text_field :application_deadline, :"data-enable-datepicker" => 'true', value: ((I18n.l  @event.application_deadline) if @event.application_deadline.present?), class: "form-control" %>
         <%=f.error_span(:application_deadline) %>
