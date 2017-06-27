@@ -32,7 +32,7 @@ RSpec::Steps.steps "Demo" do
   it 'should let organizer fill out event creation page', js: true do
     choose I18n.t "events.type.public"
     fill_in 'event_name', with: 'BwInf-Camp'
-    fill_in 'description', with: '[von hpi website geklaut]'
+    fill_in 'event_description', with: '[von hpi website geklaut]'
     fill_in 'event_max_participants', with: 25
     fill_in "event[date_ranges_attributes][][start_date]", with: I18n.l(Date.new(2019, 01, 20))
     fill_in "event[date_ranges_attributes][][end_date]", with: I18n.l(Date.new(2019, 01, 22))

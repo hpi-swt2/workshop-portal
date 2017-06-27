@@ -105,7 +105,7 @@ RSpec.describe "application_letters/show", type: :view do
   it "doesnt render an accept button for rejected applications in execution phase when there are alternative applications" do
     @application_letter.status = :rejected
     @application_letter.event = FactoryGirl.create(:event, :in_execution_phase)
-    @application_letter.event.application_letters.push(FactoryGirl.create(:application_letter_alternative))
+    @application_letter.event.application_letters.push(FactoryGirl.create(:application_letter, :alternative))
     assign(:has_free_places, @application_letter.event.compute_free_places > 0)
     render
     expect(rendered).to_not have_link(I18n.t('application_status.actions.accept'), href: update_application_letter_status_path(@application_letter, 'application_letter[status]': :accepted))

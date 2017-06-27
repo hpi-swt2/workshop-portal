@@ -28,9 +28,9 @@ class Event < ActiveRecord::Base
   has_many :participant_groups
   has_many :date_ranges
   accepts_nested_attributes_for :date_ranges
+  validates_presence_of :name, :description, :application_deadline
   validates :max_participants, numericality: { only_integer: true, greater_than: 0 }
   validate :has_date_ranges
-  validates_presence_of :application_deadline
   validate :application_deadline_before_start_of_event
   validates :hidden, inclusion: { in: [true, false] }
   validates :hidden, exclusion: { in: [nil] }
@@ -365,6 +365,25 @@ class Event < ActiveRecord::Base
       .sort_by(&:start_date)
   end
 
+  # Returns the date_ranges of the event in ical format
+  #
+  # @param none
+  # @return ical attachment of date_ranges
+  def get_ical_attachment
+    cal = Icalendar::Calendar.new
+    for date_range in date_ranges do
+      cal.event do |e|
+        e.dtstart     = date_range.start_date
+        e.dtend       = date_range.end_date
+        e.summary     = name
+        e.description = description
+        e.url         = Rails.application.routes.url_helpers.event_path(self)
+      end
+    end
+
+    {name: (I18n.t 'emails.ical_attachment'), content: cal.to_ical}
+  end
+
   protected
 
   # Returns a string of all email addresses of accepted applications
@@ -437,4 +456,5 @@ class Event < ActiveRecord::Base
     end
     return participant1.email <=> participant2.email
   end
+
 end

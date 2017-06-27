@@ -20,7 +20,7 @@ RSpec.describe "application_letters/edit", type: :view do
   end
 
   it "renders a warning when the application deadline is over" do
-    @application_letter = assign(:application_letter, FactoryGirl.build(:application_letter_deadline_over))
+    @application_letter = assign(:application_letter, FactoryGirl.build(:application_letter, :deadline_over))
     render
     expect(rendered).to have_content(I18n.t("application_letters.form.warning"))
   end

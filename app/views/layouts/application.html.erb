@@ -18,6 +18,9 @@
   <%= csrf_meta_tags %>
 </head>
 <body <%= 'class="wsp-home"'.html_safe if current_page?('/') %>>
+
+<div class="page-wrap">
+
 <%# https://github.com/seyhunak/twitter-bootstrap-rails#using-helpers %>
 <%= nav_bar :brand => image_tag("hpi-workshop-200.png"), responsive: true, fixed: :top do %>
    <%= menu_group pull: :right do %>
@@ -52,15 +55,18 @@
     <%= yield %>
   <% end %>
 
-  <footer>
-    <div class="container">
-        <%= link_to t('footer.imprint'), imprint_path %> |
-        <%= t 'footer.hoster_link_html' %>
-      <div><%= t 'footer.copyright' %></div>
-      <span class="ignore"><%= t "footer.ignore" %></span>
-    </div>
-  </footer>
 </main>
+
+</div>
+
+<footer>
+  <div class="container">
+      <%= link_to t('footer.imprint'), imprint_path %> |
+      <%= t 'footer.hoster_link_html' %>
+    <div><%= t 'footer.copyright' %></div>
+    <span class="ignore"><%= t "footer.ignore" %></span>
+  </div>
+</footer>
 
 <%= image_tag "loader.svg", class: "loader" %>
 

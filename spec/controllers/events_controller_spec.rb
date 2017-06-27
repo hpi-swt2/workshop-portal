@@ -286,23 +286,23 @@ RSpec.describe EventsController, type: :controller do
 
       user = FactoryGirl.create(:user)
       profile = FactoryGirl.create(:profile, user: user, last_name: "Peter")
-      application_letter = FactoryGirl.create(:application_letter_accepted,
+      application_letter = FactoryGirl.create(:application_letter, :accepted,
         user: user, event: event, vegan: true)
       user = FactoryGirl.create(:user)
       profile = FactoryGirl.create(:profile, user: user, last_name: "Paul")
-      application_letter = FactoryGirl.create(:application_letter_accepted,
+      application_letter = FactoryGirl.create(:application_letter, :accepted,
         user: user, event: event, vegan: true, allergies: "many")
       user = FactoryGirl.create(:user)
       profile = FactoryGirl.create(:profile, user: user, last_name: "Mary")
-      application_letter = FactoryGirl.create(:application_letter_accepted,
+      application_letter = FactoryGirl.create(:application_letter, :accepted,
         user: user, event: event, vegetarian: true)
       user = FactoryGirl.create(:user)
       profile = FactoryGirl.create(:profile, user: user, last_name: "Otti")
-      application_letter = FactoryGirl.create(:application_letter_accepted,
+      application_letter = FactoryGirl.create(:application_letter, :accepted,
         user: user, event: event, vegetarian: true, allergies: "many")
       user = FactoryGirl.create(:user)
       profile = FactoryGirl.create(:profile, user: user, last_name: "Benno")
-      application_letter = FactoryGirl.create(:application_letter_accepted,
+      application_letter = FactoryGirl.create(:application_letter, :accepted,
         user: user, event: event)
 
       response = get :print_applications_eating_habits, id: event.to_param, session: valid_session
@@ -343,7 +343,7 @@ RSpec.describe EventsController, type: :controller do
     it "displays the selected participants' names" do
       users = 12.times.collect do
         user = FactoryGirl.create(:user_with_profile)
-        FactoryGirl.create(:application_letter_accepted, user: user, event: @event)
+        FactoryGirl.create(:application_letter, :accepted, user: user, event: @event)
         user
       end
       @params[:selected_ids] = users.collect { |user| user.id }
@@ -358,8 +358,8 @@ RSpec.describe EventsController, type: :controller do
       rejected_participant = FactoryGirl.create(:user_with_profile)
       non_participant = FactoryGirl.create(:user_with_profile)
       users = [participant, rejected_participant, non_participant]
-      FactoryGirl.create(:application_letter_accepted, user: participant, event: @event)
-      FactoryGirl.create(:application_letter_rejected, user: rejected_participant, event: @event)
+      FactoryGirl.create(:application_letter, :accepted, user: participant, event: @event)
+      FactoryGirl.create(:application_letter, :rejected, user: rejected_participant, event: @event)
       @params[:selected_ids] = users.collect { |user| user.id }
 
       rendered_pdf = post :print_badges, @params
@@ -376,7 +376,7 @@ RSpec.describe EventsController, type: :controller do
     it "does not cut off the participant's name" do
       profile = FactoryGirl.create(:profile, :long_name)
       participant = FactoryGirl.create(:user, profile: profile)
-      FactoryGirl.create(:application_letter_accepted, user: participant, event: @event)
+      FactoryGirl.create(:application_letter, :accepted, user: participant, event: @event)
       @params[:selected_ids] = [participant.id]
 
       rendered_pdf = post :print_badges, @params
@@ -571,7 +571,7 @@ RSpec.describe EventsController, type: :controller do
 
     it "includes at last one page per application" do
       FactoryGirl.create(:application_letter, event: @event,)
-      FactoryGirl.create(:application_letter2, event: @event,)
+      FactoryGirl.create(:application_letter, :alternative_data, event: @event)
       User.find_each { |u| FactoryGirl.create(:profile, user: u) }
       get :print_applications, id: @event.to_param, session: valid_session
       page_analysis = PDF::Inspector::Page.analyze(response.body)
@@ -579,7 +579,7 @@ RSpec.describe EventsController, type: :controller do
     end
 
     it "extends long applications over several pages" do
-      FactoryGirl.create(:application_letter_long, event: @event,)
+      FactoryGirl.create(:application_letter, :long_motivation, event: @event,)
       User.find_each { |u| FactoryGirl.create(:profile, user: u) }
       get :print_applications, id: @event.to_param, session: valid_session
       page_analysis = PDF::Inspector::Page.analyze(response.body)

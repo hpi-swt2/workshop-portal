@@ -15,7 +15,7 @@ RSpec.describe EmailsController, type: :controller do
 
     context "with valid accepted applications" do
       before :each do
-        @application = FactoryGirl.create(:application_letter_accepted, event: @event, user: FactoryGirl.build(:user))
+        @application = FactoryGirl.create(:application_letter, :accepted, event: @event)
         @template = FactoryGirl.create(:email_template, :acceptance)
       end
 
@@ -33,7 +33,7 @@ RSpec.describe EmailsController, type: :controller do
 
     context "with valid rejected applications" do
       before :each do
-        @application = FactoryGirl.create(:application_letter_rejected, event: @event, user: FactoryGirl.build(:user))
+        @application = FactoryGirl.create(:application_letter, :rejected, event: @event)
         @template = FactoryGirl.create(:email_template, :rejection)
       end
 
@@ -62,8 +62,8 @@ RSpec.describe EmailsController, type: :controller do
         }.to change{ActionMailer::Base.deliveries.count}.by(1)
       end
 
-      it "sends an Email with ical and pdf attachement for accepted applications" do
-        post :submit_application_result, send: I18n.t('.emails.email_form.send'), event_id: @event.id, email: @email, status: 'acceptance'
+      it "sends an Email with ical and agreement pdf attachement for accepted applications" do
+        post :submit_application_result, send: I18n.t('.emails.email_form.send'), event_id: @event.id, email: @email, status: :acceptance
 
         mail = ActionMailer::Base.deliveries.last
         expect(mail.attachments.size).to eq(2)
@@ -72,7 +72,7 @@ RSpec.describe EmailsController, type: :controller do
       end
 
       it "does not send an Email with ical attachement for rejected applications" do
-        post :submit_application_result, send: I18n.t('.emails.email_form.send'), event_id: @event.id, email: @email, status: 'rejection'
+        post :submit_application_result, send: I18n.t('.emails.email_form.send'), event_id: @event.id, email: @email, status: :rejection
 
         mail = ActionMailer::Base.deliveries.last
         expect(mail.attachments.size).to eq(0)

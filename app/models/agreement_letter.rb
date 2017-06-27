@@ -13,7 +13,7 @@
 class AgreementLetter < ActiveRecord::Base
   belongs_to :user
   belongs_to :event
-  validates :user, :event, :path, presence: true
+  validates_presence_of :user, :event, :path
   MAX_SIZE = 300_000_000
   ALLOWED_MIMETYPE = "application/pdf"
   STORAGE_DIR = Rails.root.join('storage', 'agreement_letters')
@@ -102,5 +102,12 @@ class AgreementLetter < ActiveRecord::Base
     rescue PDF::Reader::UnsupportedFeatureError, PDF::Reader::MalformedPDFError
       true
     end
+  end
+
+  def self.get_attachment
+    {
+        name: (I18n.t 'emails.agreement_letter_attachment'),
+        content: File.read(Rails.configuration.empty_agreement_letter_path)
+    }
   end
 end

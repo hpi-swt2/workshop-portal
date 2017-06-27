@@ -231,7 +231,7 @@ class EventsController < ApplicationController
     data.unshift([
      I18n.t('controllers.events.participants_pdf.first_name'),
      I18n.t('controllers.events.participants_pdf.last_name'),
-     I18n.t('controllers.events.participants_pdf.first_name'),
+     I18n.t('controllers.events.participants_pdf.date_of_birth'),
      I18n.t('controllers.events.participants_pdf.allergies')
     ])
 
