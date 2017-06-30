@@ -212,7 +212,7 @@ describe 'Event', type: :feature do
         fill_in "event[date_ranges_attributes][][end_date]", with: I18n.l(Date.yesterday)
       end
 
-      click_button I18n.t('events.form.create')
+      click_button I18n.t('events.form.draft.publish')
 
       expect(page).to have_css('div.has-error')
       expect(page).to have_content('kann nicht vor Start-Datum liegen', count: 1)

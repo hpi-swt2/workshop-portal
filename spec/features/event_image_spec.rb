@@ -9,14 +9,9 @@ describe 'Event pictures', type: :feature do
     before :each do
       login_as(FactoryGirl.create(:user, role: :organizer), :scope => :user)
       visit new_event_path
-<<<<<<< HEAD
-      fill_in 'Maximale Teilnehmerzahl', :with => 25
-=======
-      choose I18n.t 'events.form.draft.publish'
       fill_in 'event_name', :with => 'Test Name'
       fill_in 'event_description', :with => 'Loooong test description with helpful information'
       fill_in 'Maximale Teilnehmerzahl', :with => 25
->>>>>>> dev
       fill_in "event[date_ranges_attributes][][start_date]", :with => I18n.l(Date.tomorrow.next_day(2))
       fill_in "event[date_ranges_attributes][][end_date]", :with => I18n.l(Date.tomorrow.next_day(3))
       fill_in 'event_application_deadline', :with => I18n.l(Date.tomorrow)
@@ -28,12 +23,12 @@ describe 'Event pictures', type: :feature do
       click_button 'create'
 
       fill_in 'Maximale Teilnehmerzahl', :with => 25
-      click_button I18n.t('events.form.create')
+      click_button I18n.t('events.form.draft.publish')
       expect(Event.last.image).to be_present
     end
 
     it 'should not change the image if validation for a new image fails' do
-      click_button I18n.t('events.form.create')
+      click_button I18n.t('events.form.draft.publish')
       previous_image = Event.last.image
 
       visit edit_event_path(Event.last)
