@@ -328,6 +328,7 @@ describe 'Event', type: :feature do
       login_as(FactoryGirl.create(:user, role: :organizer), :scope => :user)
       event = FactoryGirl.create(:event)
       visit edit_event_path(event.id)
+      fill_in 'event_application_deadline', :with => Date.yesterday.prev_day(5)
       fill_in "event[date_ranges_attributes][][start_date]", with: Date.yesterday.prev_day
       fill_in "event[date_ranges_attributes][][end_date]", with: Date.yesterday
       click_button I18n.t('events.form.update')
