@@ -19,7 +19,7 @@ describe DateRange do
   end
 
   it "validates a date range from the past" do
-    past_dates = FactoryGirl.build(:date_range, :with_past_dates)
+    past_dates = FactoryGirl.build(:date_range, :in_the_past)
     expect(past_dates).to be_valid
   end
 
