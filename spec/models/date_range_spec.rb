@@ -8,9 +8,19 @@ describe DateRange do
     expect(date_range.event_id).to eq(event.id)
   end
 
-  it "does not validate with dateRanges in the past" do
-    pastDates = FactoryGirl.build(:date_range, :with_past_dates)
-    expect(pastDates).to_not be_valid
+  it "validates a date range from the future" do
+    future_dates = FactoryGirl.build(:date_range, :with_future_dates)
+    expect(future_dates).to be_valid
+  end
+
+  it "validates a date range that is now" do
+    current_date_range = FactoryGirl.build(:date_range, :which_is_surrounding_today)
+    expect(current_date_range).to be_valid
+  end
+
+  it "validates a date range from the past" do
+    past_dates = FactoryGirl.build(:date_range, :in_the_past)
+    expect(past_dates).to be_valid
   end
 
   it "should not have a negative range" do

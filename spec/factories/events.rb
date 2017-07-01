@@ -26,12 +26,12 @@ FactoryGirl.define do
     hidden false
     published true
 
-    trait :in_the_past_valid do
+    trait :in_the_past do
       after(:build) do |event|
-        event.date_ranges = [FactoryGirl.create(:date_range, :in_the_past_valid)]
+        event.date_ranges = [FactoryGirl.create(:date_range, :in_the_past)]
+        event.application_deadline = Date.yesterday.prev_day(10)
       end
       name "Past Event"
-      to_create {|instance| instance.save(validate: false) }
     end
 
     trait :with_two_date_ranges do

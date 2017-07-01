@@ -195,7 +195,7 @@ describe Event do
   end
 
   it "returns all Events running now and in the future" do
-    event_past = FactoryGirl.create(:event, :in_the_past_valid)
+    event_past = FactoryGirl.create(:event, :in_the_past)
     event_today = FactoryGirl.create(:event, :is_only_today)
     event_future = FactoryGirl.create(:event, :is_only_tomorrow)
 
