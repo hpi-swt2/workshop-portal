@@ -9,7 +9,7 @@ RSpec.describe ApplicationController, type: :controller do
         event_in_the_future = FactoryGirl.create(:event, :with_two_date_ranges)
         event_today = FactoryGirl.create(:event, :is_only_today)
         event_tomorrow = FactoryGirl.create(:event, :is_only_tomorrow)
-        event_past = FactoryGirl.create(:event, :in_the_past_valid)
+        event_past = FactoryGirl.create(:event, :in_the_past)
         
         get :index
 
