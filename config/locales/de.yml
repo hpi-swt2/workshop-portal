@@ -65,6 +65,7 @@ de:
     ignore: "Companion Cube <3"
     imprint: "Impressum"
     hoster_link_html: "<a href='https://hpi.de/'>Hasso-Plattner-Institut</a>"
+    source_link_html: "<a href='https://github.com/hpi-schuelerklub/workshop-portal'>GitHub</a>"
   imprint:
     managing_directors: "Vertretungsberechtigte Geschäftsführer:"
     editor: "Redaktion:"
