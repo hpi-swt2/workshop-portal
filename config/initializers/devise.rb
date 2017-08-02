@@ -248,6 +248,20 @@ Devise.setup do |config|
   # Add a new OmniAuth provider. Check the wiki for more information on setting
   # up on your models and hooks.
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', scope: 'user,public_repo'
+  config.omniauth :openid,
+                  :name => 'hpiopenid',
+                  :identifier => 'https://openid.hpi.uni-potsdam.de/serve',
+                  :required => [
+                      OmniAuth::Strategies::OpenID::AX[:email],
+                      # While being supported, the following two fields would require a profile
+                      # to save the name. A profile, however, cannot be created without an address, etc.
+                      #OmniAuth::Strategies::OpenID::AX[:first_name],
+                      #OmniAuth::Strategies::OpenID::AX[:last_name],
+                  ],
+                  :optional => []
+
+  require "openid/fetchers"
+  OpenID.fetcher.ca_file = "/etc/ssl/certs/ca-certificates.crt"
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or

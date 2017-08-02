@@ -19,11 +19,14 @@
  *= require owl.animate
 **/
 
+html, body {
+  height: 100%;
+}
+
 label.required:after {
     content:" *";
     color: red
 }
-
 
 body, footer, main, .front-section {
     width: 100%;
