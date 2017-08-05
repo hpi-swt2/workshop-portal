@@ -77,7 +77,9 @@ gem 'cancancan'
 gem 'has_scope'
 
 # Static code analysis
-gem 'rubocop', '~> 0.29.1'
+gem 'rubocop', '~> 0.49.1'
+
+gem 'rubocop-rails'
 
 # DSL for building forms
 # See https://github.com/plataformatec/simple_form
@@ -165,7 +167,7 @@ group :test do
   # Explicitly set parser version, to remove warnings
   # Might lead to problems with other gems that require higher parser versions
   # In that case, update to a newer Ruby version
-  gem 'parser', '~> 2.2.2.5'
+  gem 'parser', '~> 2.3.3.1'
   # Stubbing external calls by blocking traffic with WebMock.disable_net_connect! or allow:
   # gem 'webmock'
 

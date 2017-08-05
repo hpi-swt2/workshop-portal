@@ -1,0 +1,14 @@
+#inherit_from: .rubocop_todo.yml
+
+AllCops:
+  TargetRubyVersion: 2.2
+  Exclude:
+    - 'db/**/*'
+    - 'config/**/*'
+    - 'bin/*'
+    - 'Rakefile'
+    - 'Vagrantfile'
+    - 'vendor/**/*'
+
+Rails:
+  Enabled: true
