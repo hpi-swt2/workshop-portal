@@ -29,7 +29,7 @@ RSpec.feature "Account creation vis HPI OpenID", :type => :feature do
     expect(page).to have_css(".alert-success")
 
     user = User.find_by_email(@email)
-    expect(user.role).to eq('coach')
+    expect(user.role).to eq(:pupil.to_s)
     expect(user.provider).to eq(@provider)
     expect(user.uid).to eq(@uid)
   end
