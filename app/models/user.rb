@@ -33,7 +33,7 @@ class User < ActiveRecord::Base
 
   before_create :set_default_role
 
-  ROLES = %i[pupil coach organizer admin].freeze
+  ROLES = %i(pupil coach organizer admin).freeze
 
   def role?(base_role)
     return false unless role

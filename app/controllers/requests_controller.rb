@@ -1,7 +1,7 @@
 class RequestsController < ApplicationController
   load_and_authorize_resource
-  skip_authorize_resource only: %i[new create]
-  before_action :set_request, only: %i[show edit update destroy accept]
+  skip_authorize_resource only: %i(new create)
+  before_action :set_request, only: %i(show edit update destroy accept)
 
   # GET /requests
   def index

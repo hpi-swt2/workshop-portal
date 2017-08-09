@@ -11,8 +11,8 @@ class Request < ActiveRecord::Base
   validates :number_of_participants, numericality: { only_integer: true, greater_than: 0 }, allow_nil: :true
   validates_format_of :email, with: Devise.email_regexp
 
-  enum form_of_address: %i[mr mrs prefer_to_omit]
-  enum status: %i[open accepted declined] # per database declaration, the first value is default
+  enum form_of_address: %i(mr mrs prefer_to_omit)
+  enum status: %i(open accepted declined) # per database declaration, the first value is default
 
   def name
     "#{first_name} #{last_name}"

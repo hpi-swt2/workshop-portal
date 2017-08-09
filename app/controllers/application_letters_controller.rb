@@ -2,7 +2,7 @@ class ApplicationLettersController < ApplicationController
   load_and_authorize_resource param_method: :application_params
   skip_authorize_resource only: :new
 
-  before_action :set_application, only: %i[show edit update destroy check]
+  before_action :set_application, only: %i(show edit update destroy check)
 
   # GET /applications
   def index

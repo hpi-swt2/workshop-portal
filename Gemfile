@@ -77,9 +77,7 @@ gem 'cancancan'
 gem 'has_scope'
 
 # Static code analysis
-gem 'rubocop', '~> 0.49.1'
-
-gem 'rubocop-rails'
+gem 'rubocop', '0.46'
 
 # DSL for building forms
 # See https://github.com/plataformatec/simple_form

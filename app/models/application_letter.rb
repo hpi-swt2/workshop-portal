@@ -33,7 +33,7 @@ class ApplicationLetter < ActiveRecord::Base
   # @param none
   # @return [Array <String>] array of selectable statuses
   def self.selectable_statuses
-    %w[accepted rejected pending alternative]
+    %w(accepted rejected pending alternative)
   end
 
   # Checks if the deadline is over

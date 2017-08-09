@@ -9,9 +9,9 @@ require 'event_image_upload_helper'
 class EventsController < ApplicationController
   include EventImageUploadHelper
   load_and_authorize_resource
-  skip_authorize_resource only: %i[badges download_agreement_letters send_participants_email]
-  before_action :set_event, only: %i[show edit update destroy participants
-                                     participants_pdf print_applications print_applications_eating_habits badges print_badges]
+  skip_authorize_resource only: %i(badges download_agreement_letters send_participants_email)
+  before_action :set_event, only: %i(show edit update destroy participants
+                                     participants_pdf print_applications print_applications_eating_habits badges print_badges)
 
   # GET /events
   def index
@@ -264,7 +264,7 @@ class EventsController < ApplicationController
   end
 
   def event_params
-    params.require(:event).permit(:name, :description, :image, :custom_image, :custom_image_cache, :max_participants, :organizer, :knowledge_level, :application_deadline, :published, :hidden, custom_application_fields: [], date_ranges_attributes: %i[start_date end_date id])
+    params.require(:event).permit(:name, :description, :image, :custom_image, :custom_image_cache, :max_participants, :organizer, :knowledge_level, :application_deadline, :published, :hidden, custom_application_fields: [], date_ranges_attributes: %i(start_date end_date id))
   end
 
   def add_event_query_conditions(query)
