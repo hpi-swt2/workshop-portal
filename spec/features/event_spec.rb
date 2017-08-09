@@ -341,14 +341,14 @@ describe 'Event', type: :feature do
       login_as(FactoryGirl.create(:user, role: :organizer), :scope => :user)
       @event = FactoryGirl.create(:event)
       @users = 12.times.collect do
-        user = FactoryGirl.create(:user_with_profile)
+        user = FactoryGirl.create(:user)
         FactoryGirl.create(:application_letter, :accepted, user: user, event: @event)
         user
       end
       visit badges_event_path(@event)
     end
 
-    it 'creates a pdf with the selected names' do
+    it 'creates a pdf with the selected names' do # TODO: refactor test
       @users.each do |u|
         find(:css, "#selected_ids_[value='#{u.id}']").set(true) if u.id.even?
       end
@@ -369,9 +369,9 @@ describe 'Event', type: :feature do
       select(I18n.t('events.badges.last_name'))
       click_button I18n.t('events.badges.print')
       strings = PDF::Inspector::Text.analyze(page.body).strings
-      @users.each do |u|
-        expect(strings).to include(u.profile.last_name)
-        expect(strings).not_to include(u.profile.first_name)
+      @application_letters.each do |application_letter|
+        expect(strings).to include(application_letter.last_name)
+        expect(strings).not_to include(application_letter.first_name)
       end
     end
 

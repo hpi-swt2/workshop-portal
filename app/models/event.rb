@@ -212,7 +212,7 @@ class Event < ActiveRecord::Base
   #
   # @return [Array<Array<String, Int>>]
   def participants_with_id
-    participants.map{|participant| [participant.profile.name, participant.id]}
+    application_letters.map{|application_letter| [application_letter.name, application_letter.user.id]}
   end
 
   # Returns a list of group names and their id
@@ -315,12 +315,12 @@ class Event < ActiveRecord::Base
               when "email"
                 "users.email"
               when "birth_date", "first_name", "last_name"
-                "profiles." + field
+                field
               else
                 "users.email"
             end
     order_by = 'asc' unless order_by == 'asc' || order_by == 'desc'
-    application_letters.joins(user: :profile).order(field + ' ' + order_by)
+    application_letters.joins(user: :profile).order(field + ' ' + order_by) # TODO: by someone SQL-able
   end
 
   # Make sure any assignment coming from the controller

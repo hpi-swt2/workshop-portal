@@ -83,6 +83,7 @@ RSpec.feature "Account creation", :type => :feature do
     expect(page).to have_css(".alert-success")
   end
 
+=begin
   scenario "User has no profile and visits user settings page" do
     user = FactoryGirl.create(:user)
     login_as(user)
@@ -96,7 +97,7 @@ RSpec.feature "Account creation", :type => :feature do
   end
 
   scenario "User changes profile on user settings page" do
-    user = FactoryGirl.create(:user_with_profile)
+    user = FactoryGirl.create(:user)
     login_as(user)
     new_name = "Günther"
 
@@ -111,7 +112,7 @@ RSpec.feature "Account creation", :type => :feature do
   end
 
   scenario "User changes profile on user settings page but provides invalid data" do
-    user = FactoryGirl.create(:user_with_profile)
+    user = FactoryGirl.create(:user)
     login_as(user)
 
     # Go to /users/edit
@@ -121,6 +122,7 @@ RSpec.feature "Account creation", :type => :feature do
 
     expect(page).to have_css(".alert-danger")
   end
+=end
 
   scenario "User visits the 'user settings' page after having already logged off" do
     user = FactoryGirl.create(:user)
@@ -194,29 +196,27 @@ RSpec.feature "Role management page", :type => :feature do
   end
 
   it "can search for users" do
-    max1 = FactoryGirl.create(:user)
-    max1.profile = FactoryGirl.create(:profile, first_name: "Max")
-    max2 = FactoryGirl.create(:user)
-    max2.profile = FactoryGirl.create(:profile, first_name: "Max")
-    user3 = FactoryGirl.create(:user_with_profile)
+    max1 = FactoryGirl.create :user, first_name: "Max"
+    max2 = FactoryGirl.create :user, first_name: "Max"
+    user3 = FactoryGirl.create :user
     login(:admin)
     visit users_path
 
-    expect(page).to have_text(max1.profile.last_name)
-    expect(page).to have_text(max2.profile.last_name)
-    expect(page).to have_text(user3.profile.last_name)
+    expect(page).to have_text(max1.last_name)
+    expect(page).to have_text(max2.last_name)
+    expect(page).to have_text(user3.last_name)
 
     fill_in :search, with: "Max"
     find('#search-button').click
 
-    expect(page).to have_text(max1.profile.last_name)
-    expect(page).to have_text(max2.profile.last_name)
-    expect(page).to_not have_text(user3.profile.last_name)
+    expect(page).to have_text(max1.last_name)
+    expect(page).to have_text(max2.last_name)
+    expect(page).to_not have_text(user3.last_name)
   end
 
   def login(role)
-    @profile = FactoryGirl.create(:profile)
-    @profile.user.role = role
-    login_as(@profile.user, :scope => :user)
+    @user = FactoryGirl.create :user
+    @user.role = role
+    login_as(@user, :scope => :user)
   end
 end

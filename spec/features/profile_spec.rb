@@ -2,8 +2,8 @@ require "rails_helper"
 
 RSpec.feature "Upload letter of agreement", :type => :feature do
   before :each do
-    @profile = FactoryGirl.create(:profile, first_name: "Felix")
-    @user = FactoryGirl.create(:user, role: :pupil, profile: @profile)
+    # @profile = FactoryGirl.create(:profile, first_name: "Felix")
+    @user = FactoryGirl.create(:user, role: :pupil)
     @event = FactoryGirl.create(:event, name: "Testname", acceptances_have_been_sent: true)
     @application_letter = FactoryGirl.create(:application_letter, :accepted, user: @user, event: @event)
     login_as(@user, scope: :user)
@@ -96,6 +96,7 @@ RSpec.feature "Upload letter of agreement", :type => :feature do
   end
 end
 
+=begin
 RSpec.feature "Profile adaptation", :type => :feature do
   scenario "user leaves out required fields" do
     @profile = FactoryGirl.create(:profile)
@@ -139,3 +140,4 @@ RSpec.feature "Profile adaptation", :type => :feature do
     expect(page).to have_css(".has-error", count: 3)
   end
 end
+=end

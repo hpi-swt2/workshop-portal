@@ -221,9 +221,9 @@ class EventsController < ApplicationController
 
     data = @application_letters.collect do |application_letter|
       [
-        application_letter.user.profile.first_name,
-        application_letter.user.profile.last_name,
-        application_letter.user.profile.birth_date,
+        application_letter.first_name,
+        application_letter.last_name,
+        application_letter.birth_date,
         application_letter.allergies
       ]
     end

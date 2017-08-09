@@ -354,9 +354,9 @@ describe Event do
 
     it "computes the name and id of all participants" do
       expect(@event.participants_with_id).to include(
-          [@accepted_application_letter_1.user.profile.name, @accepted_application_letter_1.user.id],
-          [@accepted_application_letter_2.user.profile.name, @accepted_application_letter_2.user.id],
-          [@accepted_application_letter_3.user.profile.name, @accepted_application_letter_3.user.id],
+          [@accepted_application_letter_1.name, @accepted_application_letter_1.user.id],
+          [@accepted_application_letter_2.name, @accepted_application_letter_2.user.id],
+          [@accepted_application_letter_3.name, @accepted_application_letter_3.user.id],
         )
     end
   end

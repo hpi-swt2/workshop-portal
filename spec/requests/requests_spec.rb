@@ -8,8 +8,7 @@ RSpec.describe "Requests", type: :request do
     end
 
     it "shows the page for users with the right permissions" do
-      profile = FactoryGirl.create(:profile)
-      coach = FactoryGirl.create(:user, role: :coach, profile: profile)
+      coach = FactoryGirl.create :user, role: :coach
       login_as(coach, scope: :user)
       get requests_path
       expect(response).to have_http_status(200)

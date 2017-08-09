@@ -26,10 +26,11 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable,
          :omniauthable, :omniauth_providers => [:hpiopenid]
 
-  has_one :profile
   has_many :agreement_letters
   has_many :application_letters
   has_many :participant_groups
+
+  belongs_to :user
 
   before_create :set_default_role
 
@@ -58,8 +59,12 @@ class User < ActiveRecord::Base
     end
   end
 
+  # Returns the full name of the user if the first and last name exist, otherwise return email
+  #
+  # @param none
+  # @return [String] of name
   def name
-    return profile.name if profile
+    return first_name + " " +  last_name if first_name && last_name
     email
   end
 
@@ -151,7 +156,7 @@ class User < ActiveRecord::Base
   #
   # @param pattern to search for
   # @return [Array<User>] all users with pattern in their name
-  def self.search(pattern)
+  def self.search(pattern) # TODO: by SQL capable person. BTW, this is the only usage of with_profiles
     with_profiles.where("profiles.first_name LIKE ? or profiles.last_name LIKE ?", "%#{pattern}%", "%#{pattern}%")
   end
 
@@ -161,6 +166,6 @@ class User < ActiveRecord::Base
   # @return [Array<User>] all users including their profile information
   def self.with_profiles()
     joins("LEFT JOIN profiles ON users.id = profiles.user_id")
-         .order('profiles.first_name, profiles.last_name, users.email ASC')
+         .order('profiles.first_name, profiles.last_name, users.email ASC') # TODO: probably remove this or just order it?
   end
 end

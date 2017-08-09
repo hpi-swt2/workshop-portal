@@ -69,8 +69,8 @@ class ApplicationsPDF
                 t("events.applicants_overview.accepted_rejected"),
                 ApplicationLetter.human_attribute_name(:status)]]
       data += @event.application_letters.map do |a|
-        [a.user.profile.name,
-         t("profiles.genders.#{a.user.profile.gender}"),
+        [a.name,
+         t("profiles.genders.#{a.gender}"),
          a.applicant_age_when_event_starts,
          "#{a.user.accepted_applications_count(@event)} / #{a.user.rejected_applications_count(@event)}",
          t("application_status.#{a.status}")]
@@ -116,7 +116,7 @@ class ApplicationsPDF
     end
 
     def applicants_detail_data(application_letter)
-      [[Profile.human_attribute_name(:gender)+":", t("profiles.genders.#{application_letter.user.profile.gender}")],
+      [[Profile.human_attribute_name(:gender)+":", t("profiles.genders.#{application_letter.gender}")],
        [t('application_letters.show.age_when_event_starts')+":", application_letter.applicant_age_when_event_starts],
        [User.human_attribute_name(:accepted_application_count)+":", application_letter.user.accepted_applications_count(@event)],
        [User.human_attribute_name(:rejected_application_count)+":", application_letter.user.rejected_applications_count(@event)],
@@ -124,7 +124,7 @@ class ApplicationsPDF
     end
 
     def create_main_header(application_letter)
-        text t("application_letters.application_page.title", name: application_letter.user.profile.name), size: 20
+        text t("application_letters.application_page.title", name: application_letter.name), size: 20
         text t("application_letters.application_page.for", event: @event.name), size: 14
         stroke_horizontal_rule
     end
@@ -133,7 +133,7 @@ class ApplicationsPDF
       repeat(first_page + 1..last_page) do
         bounding_box [bounds.left, bounds.top], width: bounds.width do
           text @event.name
-          text_box application_letter.user.profile.name, align: :right
+          text_box application_letter.name, align: :right
           stroke_horizontal_rule
         end
       end

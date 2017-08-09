@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "profiles/_upload_form", type: :view do
+RSpec.describe "profiles/_upload_form", type: :view do # TODO: Why is the url profiles/* ?!
   it "renders the upload form" do
     event = FactoryGirl.create(:event)
     agreement_letter = nil

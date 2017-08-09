@@ -36,8 +36,7 @@ describe 'workshop requests', type: :feature do
       expect(page).not_to have_text(@request.topic_of_workshop)
       expect(page).to have_text(I18n.t('unauthorized.manage.all'))
 
-      profile = FactoryGirl.create(:profile)
-      pupil = FactoryGirl.create(:user, role: :pupil, profile: profile)
+      pupil = FactoryGirl.create :user, role: :pupil
       login_as(pupil, scope: :user)
 
       visit requests_path
@@ -48,13 +47,12 @@ describe 'workshop requests', type: :feature do
 
   context 'as a coach or organizer' do
     it 'should show the index page' do
-      profile = FactoryGirl.create(:profile)
-      coach = FactoryGirl.create(:user, role: :coach, profile: profile)
+      coach = FactoryGirl.create :user, role: :coach
       login_as(coach, scope: :user)
       visit requests_path
       expect(page).to have_text(@request.topic_of_workshop)
 
-      organizer = FactoryGirl.create(:user, role: :organizer, profile: profile)
+      organizer = FactoryGirl.create :user, role: :organizer
       login_as(organizer, scope: :user)
       visit requests_path
       expect(page).to have_text(@request.topic_of_workshop)
@@ -64,8 +62,7 @@ describe 'workshop requests', type: :feature do
   describe 'show page' do
     context 'as an organizer' do
       before(:each) do
-        profile = FactoryGirl.create(:profile)
-        organizer = FactoryGirl.create(:user, role: :organizer, profile: profile)
+        organizer = FactoryGirl.create :user, role: :organizer
         login_as(organizer, scope: :user)
       end
 

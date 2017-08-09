@@ -8,6 +8,7 @@
 #  updated_at :datetime         not null
 #
 class Profile < ActiveRecord::Base
+=begin
   POSSIBLE_GENDERS = ['male', 'female', 'other']
   
   belongs_to :user
@@ -82,4 +83,5 @@ class Profile < ActiveRecord::Base
       errors.add(:birth_date, I18n.t('profiles.validation.birthday_in_future'))
     end
   end
+=end
 end

@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe "events/show", type: :view do
   before(:each) do
     @event = assign(:event, FactoryGirl.create(:event, :with_two_date_ranges))
-    @application_letter = FactoryGirl.create(:application_letter, user: FactoryGirl.create(:user_with_profile, role: :organizer), event: @event)
+    @application_letter = FactoryGirl.create(:application_letter, user: FactoryGirl.create(:user, role: :organizer), event: @event)
     @application_letters = @event.application_letters
     @material_files = ["spec/testfiles/actual.pdf"]
     assign(:has_free_places, @event.compute_free_places > 0)
@@ -73,9 +73,9 @@ RSpec.describe "events/show", type: :view do
 
   it "displays applicants information" do
     render
-    expect(rendered).to have_css("td", :text => @application_letter.user.profile.name)
-    expect(rendered).to have_css("td", :text => I18n.t("profiles.genders.#{@application_letter.user.profile.gender}"))
-    expect(rendered).to have_css("td", :text => @application_letter.user.profile.age_at_time(@event.start_date))
+    expect(rendered).to have_css("td", :text => @application_letter.name)
+    expect(rendered).to have_css("td", :text => I18n.t("profiles.genders.#{@application_letter.gender}"))
+    expect(rendered).to have_css("td", :text => @application_letter.age_at_time(@event.start_date))
   end
 
   it "logged in as organizer it renders radio buttons for accept reject pending and alternative, but not canceled in selection phase" do

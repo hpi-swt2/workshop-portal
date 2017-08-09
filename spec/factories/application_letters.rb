@@ -19,7 +19,7 @@ FactoryGirl.define do
     vegan false
     status :pending
     allergies "Many"
-    association :user, factory: :user_with_profile
+    association :user# , factory: :user TODO
     event
     annotation "Some"
     custom_application_fields ["Value 1", "Value 2", "Value 3"]
