@@ -280,19 +280,19 @@ RSpec.describe EventsController, type: :controller do
       sign_in FactoryGirl.create(:user, role: :organizer)
       event = Event.create! valid_attributes
 
-      user = FactoryGirl.create user: user, last_name: "Peter"
+      user = FactoryGirl.create :user, last_name: "Peter"
       application_letter = FactoryGirl.create :application_letter, :accepted,
         user: user, event: event, vegan: true
-      user = FactoryGirl.create user: user, last_name: "Paul"
+      user = FactoryGirl.create :user, user, last_name: "Paul"
       application_letter = FactoryGirl.create :application_letter, :accepted,
         user: user, event: event, vegan: true, allergies: "many"
-      user = FactoryGirl.create user: user, last_name: "Mary"
+      user = FactoryGirl.create :user, user, last_name: "Mary"
       application_letter = FactoryGirl.create :application_letter, :accepted,
         user: user, event: event, vegetarian: true
-      user = FactoryGirl.create user: user, last_name: "Otti"
+      user = FactoryGirl.create :user, user, last_name: "Otti"
       application_letter = FactoryGirl.create :application_letter, :accepted,
         user: user, event: event, vegetarian: true, allergies: "many"
-      user = FactoryGirl.create user: user, last_name: "Benno"
+      user = FactoryGirl.create :user, user, last_name: "Benno"
       application_letter = FactoryGirl.create :application_letter, :accepted,
         user: user, event: event
 

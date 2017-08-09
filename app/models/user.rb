@@ -130,8 +130,7 @@ class User < ActiveRecord::Base
   # @param given_event [Event], age [Integer]
   # @return [Boolean]
   def older_than_required_age_at_start_date_of_event?(given_event, age)
-    return false unless self.profile
-    age_at_event_start = self.profile.age_at_time(given_event.start_date)
+    age_at_event_start = given_event.application_letters.find_by(user: self).age_at_time(given_event.start_date)
 	  return age_at_event_start >= age
   end
 

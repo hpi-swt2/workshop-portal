@@ -1,3 +1,4 @@
+=begin
 class ProfilesController < ApplicationController
   load_and_authorize_resource
 
@@ -65,3 +66,4 @@ class ProfilesController < ApplicationController
       params.require(:profile).permit(Profile.allowed_params)
     end
 end
+=end
