@@ -33,7 +33,7 @@ describe EmailTemplate do
     expect { FactoryGirl.build(:email_template, status: 42) }.to raise_error(ArgumentError)
   end
 
-  it "returns correct templates by status" do
+  it "returns correct templates by status", js: true do
     acceptance_template = FactoryGirl.create(:email_template, :acceptance)
     rejection_template = FactoryGirl.create(:email_template, :rejection)
     expect(EmailTemplate.with_status(:acceptance)).to eq([acceptance_template])
