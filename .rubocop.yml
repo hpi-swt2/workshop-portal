@@ -3,12 +3,10 @@
 AllCops:
   TargetRubyVersion: 2.2
   Exclude:
+    - 'spec/**/*'
     - 'db/**/*'
     - 'config/**/*'
     - 'bin/*'
     - 'Rakefile'
     - 'Vagrantfile'
     - 'vendor/**/*'
-
-Rails:
-  Enabled: true

@@ -5,11 +5,12 @@ class ApplicationNotesController < ApplicationController
     if @application_note.valid?
       redirect_to application_letter_path(@application_letter)
     else
-      render "application_letters/show"
+      render 'application_letters/show'
     end
   end
 
   private
+
   def notes_params
     params.require(:application_note).permit(:note)
   end
