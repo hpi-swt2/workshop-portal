@@ -21,11 +21,10 @@ module ApplicationHelper
 
   def request_menu_item
     if can? :index, Request
-      item = (menu_item t(:requests, scope: 'navbar'), requests_path)
+      (menu_item t(:requests, scope: 'navbar'), requests_path)
     else
-      item = (menu_item t(:new_request, scope: 'navbar'), new_request_path)
+      (menu_item t(:new_request, scope: 'navbar'), new_request_path)
     end
-    item
   end
 
   # Render the given string as markdown
