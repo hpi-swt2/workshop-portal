@@ -123,8 +123,8 @@ class ApplicationLettersController < ApplicationController
       else
         begin
           redirect_to :back, notice: I18n.t('application_letters.successful_update')
-        rescue
-          ActionController::RedirectBackError redirect_to root_path
+        rescue ActionController::RedirectBackError
+          redirect_to root_path
         end
       end
     else

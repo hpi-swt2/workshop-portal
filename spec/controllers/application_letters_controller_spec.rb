@@ -30,7 +30,8 @@ RSpec.describe ApplicationLettersController, type: :controller do
   let(:valid_session) { {} }
 
   before(:each) do
-    request.env['HTTP_REFERER'] = root_url
+    request.env['HTTP_REFERER'] = events_archive_url  # Totally irrelevant, because the standard redirect url is already
+                                                      # tested in another test branch
   end
 
   context "with an existing application letter" do
@@ -167,6 +168,12 @@ RSpec.describe ApplicationLettersController, type: :controller do
         it "redirects back" do
           put :update_status, id: @application.to_param, application_letter: new_status, session: valid_session
           expect(response).to redirect_to(request.env['HTTP_REFERER'])
+        end
+
+        it "redirects to root if no referer is set" do
+          request.env['HTTP_REFERER'] = nil
+          put :update_status, id: @application.to_param, application_letter: new_status, session: valid_session
+          expect(response).to redirect_to root_path
         end
       end
 
