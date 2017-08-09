@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170605080836) do
+ActiveRecord::Schema.define(version: 20170809175941) do
 
   create_table "agreement_letters", force: :cascade do |t|
     t.integer  "user_id",    null: false
@@ -39,6 +39,14 @@ ActiveRecord::Schema.define(version: 20170605080836) do
     t.text     "annotation"
     t.string   "organisation"
     t.boolean  "status_notification_sent",  default: false, null: false
+    t.string   "first_name"
+    t.string   "last_name"
+    t.date     "birth_date"
+    t.string   "street_name"
+    t.string   "zip_code"
+    t.string   "city"
+    t.string   "country"
+    t.text     "discovery_of_site"
   end
 
   add_index "application_letters", ["event_id"], name: "index_application_letters_on_event_id"
@@ -97,24 +105,6 @@ ActiveRecord::Schema.define(version: 20170605080836) do
   add_index "participant_groups", ["event_id"], name: "index_participant_groups_on_event_id"
   add_index "participant_groups", ["user_id"], name: "index_participant_groups_on_user_id"
 
-  create_table "profiles", force: :cascade do |t|
-    t.integer  "user_id",           null: false
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
-    t.string   "first_name"
-    t.string   "last_name"
-    t.string   "gender"
-    t.date     "birth_date"
-    t.string   "street_name"
-    t.string   "zip_code"
-    t.string   "city"
-    t.string   "state"
-    t.string   "country"
-    t.text     "discovery_of_site"
-  end
-
-  add_index "profiles", ["user_id"], name: "index_profiles_on_user_id"
-
   create_table "requests", force: :cascade do |t|
     t.datetime "created_at",                         null: false
     t.datetime "updated_at",                         null: false
@@ -151,6 +141,8 @@ ActiveRecord::Schema.define(version: 20170605080836) do
     t.string   "role"
     t.string   "provider"
     t.string   "uid"
+    t.string   "first_name"
+    t.string   "last_name"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true
