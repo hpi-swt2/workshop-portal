@@ -38,7 +38,7 @@ class User < ActiveRecord::Base
   def role?(base_role)
     return false unless role
 
-    ROLES.index(base_role) <= ROLES.index(role.to_sym)
+    ROLES.index(base_role) == ROLES.index(role.to_sym)
   end
 
   def set_default_role
