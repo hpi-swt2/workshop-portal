@@ -41,10 +41,12 @@ ActiveRecord::Schema.define(version: 20170809175941) do
     t.boolean  "status_notification_sent",  default: false, null: false
     t.string   "first_name"
     t.string   "last_name"
+    t.string   "gender"
     t.date     "birth_date"
     t.string   "street_name"
     t.string   "zip_code"
     t.string   "city"
+    t.string   "state"
     t.string   "country"
     t.text     "discovery_of_site"
   end
