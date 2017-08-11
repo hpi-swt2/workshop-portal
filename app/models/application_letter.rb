@@ -129,7 +129,7 @@ class ApplicationLetter < ActiveRecord::Base
     end
   end
   
-  # Since EatingHabits are persited in booleans we need to generate a 
+  # Since EatingHabits are persisted in booleans we need to generate a
   # EatingHabitStateCode to allow sorting
   # US 28_4.5
    
