@@ -49,15 +49,13 @@
 
 <h3><%= t('.my_personal_data') %></h3>
 <dl>
-  <dt><%= Profile.human_attribute_name(:name) %>:</dt>
-  <dd><%= @application_letter.user.profile.name %></dd>
-  <dt><%= Profile.human_attribute_name(:gender) %>:</dt>
-  <dd><%= t "profiles.genders.#{@application_letter.user.profile.gender}"  %></dd>
-  <dt><%= Profile.human_attribute_name(:birth_date) %>:</dt>
-  <dd><%= l(@application_letter.user.profile.birth_date) %></dd>
-  <dt><%= Profile.human_attribute_name(:address) %>:</dt>
-  <dd><%= @application_letter.user.profile.address %></dd>
-</dl>
-<%= link_to t('.edit', :default => t("helpers.links.edit")),
-              edit_profile_path(@application_letter.user.profile), id: 'edit_profile_link', class: 'btn btn-default' %>
+  <dt><%= Application_letter.human_attribute_name(:name) %>:</dt>
+  <dd><%= @application_letter.name %></dd>
+  <dt><%= Application_letter.human_attribute_name(:gender) %>:</dt>
+  <dd><%= t "profiles.genders.#{@application_letter.gender}"  %></dd>
+  <dt><%= Application_letter.human_attribute_name(:birth_date) %>:</dt>
+  <dd><%= l(@application_letter.birth_date) %></dd>
+  <dt><%= Application_letter.human_attribute_name(:address) %>:</dt>
+  <dd><%= @application_letter.address %></dd>
+</dl> <!-- TODO: search for missing </dl> -->
 </div>
