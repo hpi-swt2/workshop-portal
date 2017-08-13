@@ -2,12 +2,13 @@
 #
 # Table name: email_templates
 #
-#  id                     :integer          not null, primary key
-#  status                 :integer          not null
-#  hide_recipients        :boolean          not null
-#  subject                :string           not null
-#  content                :string           nol null
+#  id              :integer          not null, primary key
+#  status          :integer
+#  subject         :string
+#  content         :text
+#  hide_recipients :boolean
 #
+
 class EmailTemplate < ActiveRecord::Base
 
   enum status: { default: 0, acceptance: 1, rejection: 2 }

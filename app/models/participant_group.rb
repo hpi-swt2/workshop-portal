@@ -2,11 +2,17 @@
 #
 # Table name: participant_groups
 #
-#  id           	 :integer          not null, primary key
-#  user_letter_id  :integer          not null, secondary key
-#  user_letter_id  :integer          not null, secondary key
-#  group           :integer          not null
+#  id       :integer          not null, primary key
+#  user_id  :integer
+#  event_id :integer
+#  group    :integer          not null
 #
+# Indexes
+#
+#  index_participant_groups_on_event_id  (event_id)
+#  index_participant_groups_on_user_id   (user_id)
+#
+
 class ParticipantGroup < ActiveRecord::Base
 
   belongs_to :user

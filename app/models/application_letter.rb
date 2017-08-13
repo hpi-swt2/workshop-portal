@@ -2,14 +2,28 @@
 #
 # Table name: application_letters
 #
-#  id          :integer          not null, primary key
-#  motivation  :string
-#  user_id     :integer          not null
-#  event_id    :integer          not null
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  status      :integer          not null
+#  id                        :integer          not null, primary key
+#  motivation                :string
+#  user_id                   :integer          not null
+#  event_id                  :integer          not null
+#  created_at                :datetime         not null
+#  updated_at                :datetime         not null
+#  status                    :integer          default(2), not null
+#  emergency_number          :string
+#  vegetarian                :boolean
+#  vegan                     :boolean
+#  allergies                 :string
+#  custom_application_fields :text
+#  annotation                :text
+#  organisation              :string
+#  status_notification_sent  :boolean          default(FALSE), not null
 #
+# Indexes
+#
+#  index_application_letters_on_event_id  (event_id)
+#  index_application_letters_on_user_id   (user_id)
+#
+
 class ApplicationLetter < ActiveRecord::Base
   belongs_to :user
   belongs_to :event
