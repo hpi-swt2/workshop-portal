@@ -1,7 +1,6 @@
 require './db/sample_data/agreement_letters'
 require './db/sample_data/application_letters'
 require './db/sample_data/events'
-require './db/sample_data/profiles'
 require './db/sample_data/requests'
 require './db/sample_data/users'
 require './db/sample_data/email_templates'
@@ -31,19 +30,6 @@ def add_sample_data
   users[:organizer] = user_organizer
   users[:hpi_admin] = user_admin
 
-  profiles = Hash.new
-  profiles[:pupil] = profile_pupil(users[:pupil])
-  profiles[:teacher] = profile_teacher(users[:teacher])
-  profiles[:applicant] = profile_applicant(users[:applicant])
-
-  profiles[:tobi] = profile_tobi(users[:tobi])
-  profiles[:tobi] = profile_tobi(users[:tobi])
-  profiles[:lisa] = profile_lisa(users[:lisa])
-  profiles[:max]  = profile_pupil_max(users[:max])
-  profiles[:organizer] = profile_organizer(users[:organizer])
-  profiles[:coach]  = profile_coach(users[:coach])
-  profiles[:admin] = profile_admin(users[:hpi_admin])
-
   application_letters = Hash.new
   application_letters[:applicant_gongakrobatik] = application_letter_applicant_gongakrobatik(users[:applicant], events[:gongakrobatik])
   application_letters[:applicant_gongakrobatik_past_deadline] = application_letter_applicant_gongakrobatik(users[:tobi], events[:past_deadline_event])
@@ -71,7 +57,7 @@ def add_sample_data
   email_templates[:acceptance_template] = email_template_acceptance
   email_templates[:rejection_template] = email_template_rejection
 
-  [events, users, profiles, application_letters, requests, agreement_letters, email_templates].each do |models|
+  [events, users, application_letters, requests, agreement_letters, email_templates].each do |models|
     save_models(models)
   end
   

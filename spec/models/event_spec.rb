@@ -36,32 +36,26 @@ describe Event do
 
   it "sorts participants in the expected order" do
     @event = FactoryGirl.create(:event)
-    @user1 = FactoryGirl.create(:user, email: 'ghk@example.com')
-    @profile1 = FactoryGirl.create(:profile, user: @user1, birth_date: 15.years.ago)
+    @user1 = FactoryGirl.create(:user, email: 'ghk@example.com', birth_date: 15.years.ago)
     @application1 = FactoryGirl.create(:application_letter, :accepted, user: @user1, event: @event)
     @agreement1 = FactoryGirl.create(:agreement_letter, user: @user1, event: @event)
 
-    @user2 = FactoryGirl.create(:user, email: 'bba@example.com')
-    @profile2 = FactoryGirl.create(:profile, user: @user2, birth_date: 16.years.ago)
+    @user2 = FactoryGirl.create(:user, email: 'bba@example.com', birth_date: 16.years.ago)
     @application2 = FactoryGirl.create(:application_letter, :accepted, user: @user2, event: @event)
 
-    @user3 = FactoryGirl.create(:user, email: 'eee@example.com')
-    @profile3 = FactoryGirl.create(:profile, user: @user3, birth_date: 19.years.ago)
+    @user3 = FactoryGirl.create(:user, email: 'eee@example.com', birth_date: 19.years.ago)
     @application3 = FactoryGirl.create(:application_letter, :accepted, user: @user3, event: @event)
     @agreement3 = FactoryGirl.create(:agreement_letter, user: @user3, event: @event)
 
-    @user4 = FactoryGirl.create(:user, email: 'ddd@example.com')
-    @profile4 = FactoryGirl.create(:profile, user: @user4, birth_date: 16.years.ago)
+    @user4 = FactoryGirl.create(:user, email: 'ddd@example.com', birth_date: 16.years.ago)
     @application4 = FactoryGirl.create(:application_letter, :accepted, user: @user4, event: @event)
 
-    @user5 = FactoryGirl.create(:user, email: 'bbb@example.com')
-    @profile5 = FactoryGirl.create(:profile, user: @user5, birth_date: 20.years.ago)
+    @user5 = FactoryGirl.create(:user, email: 'bbb@example.com', birth_date: 20.years.ago)
     @application5 = FactoryGirl.create(:application_letter, :accepted, user: @user5, event: @event)
 
     @user6 = FactoryGirl.create(:user, email: 'abc@example.com')
 
-    @profile6 = FactoryGirl.create(:profile, user: @user6, birth_date: 16.years.ago)
-    @application6 = FactoryGirl.create(:application_letter, :accepted, user: @user6, event: @event)
+    @application6 = FactoryGirl.create(:application_letter, :accepted, user: @user6, event: @event, birth_date: 16.years.ago)
     @agreement6 = FactoryGirl.create(:agreement_letter, user: @user6, event: @event)
     #2,4,6,1,5,3
   expect(@event.participants_by_agreement_letter).to eq([@user2, @user4, @user6, @user1, @user5, @user3])
@@ -218,13 +212,11 @@ describe Event do
   it "generates an application letter list ordered by first name" do
     @event = FactoryGirl.create(:event)
     @user1 = FactoryGirl.create(:user, email:'a@b.com')
-    @profile1 = FactoryGirl.create(:profile, user: @user1, birth_date: 15.years.ago, first_name:'Corny')
-    @application1 = FactoryGirl.create(:application_letter, :accepted, user: @user1, event: @event)
+    @application1 = FactoryGirl.create(:application_letter, :accepted, user: @user1, event: @event, birth_date: 15.years.ago, first_name:'Corny')
     @agreement1 = FactoryGirl.create(:agreement_letter, user: @user1, event: @event)
 
     @user2 = FactoryGirl.create(:user, email:'b@c.com')
-    @profile2 = FactoryGirl.create(:profile, user: @user2, birth_date: 16.years.ago, first_name:'John')
-    @application2 = FactoryGirl.create(:application_letter, :accepted, user: @user2, event: @event)
+    @application2 = FactoryGirl.create(:application_letter, :accepted, user: @user2, event: @event, birth_date: 16.years.ago, first_name:'John')
 
     expect(@event.application_letters_ordered('first_name','asc')).to eq([@application1,@application2])
   end
@@ -232,13 +224,11 @@ describe Event do
   it "generates an application letter list ordered by anything else" do
     @event = FactoryGirl.create(:event)
     @user1 = FactoryGirl.create(:user, email:'a@b.com')
-    @profile1 = FactoryGirl.create(:profile, user: @user1, birth_date: 15.years.ago, first_name:'Corny')
-    @application1 = FactoryGirl.create(:application_letter, :accepted, user: @user1, event: @event)
+    @application1 = FactoryGirl.create(:application_letter, :accepted, user: @user1, event: @event, birth_date: 15.years.ago, first_name:'Corny')
     @agreement1 = FactoryGirl.create(:agreement_letter, user: @user1, event: @event)
 
     @user2 = FactoryGirl.create(:user, email:'b@c.com')
-    @profile2 = FactoryGirl.create(:profile, user: @user2, birth_date: 16.years.ago, first_name:'John')
-    @application2 = FactoryGirl.create(:application_letter, :accepted, user: @user2, event: @event)
+    @application2 = FactoryGirl.create(:application_letter, :accepted, user: @user2, event: @event, birth_date: 16.years.ago, first_name:'John')
 
     expect(@event.application_letters_ordered('unknown','desc')).to eq([@application2,@application1])
   end
@@ -354,9 +344,9 @@ describe Event do
 
     it "computes the name and id of all participants" do
       expect(@event.participants_with_id).to include(
-          [@accepted_application_letter_1.user.profile.name, @accepted_application_letter_1.user.id],
-          [@accepted_application_letter_2.user.profile.name, @accepted_application_letter_2.user.id],
-          [@accepted_application_letter_3.user.profile.name, @accepted_application_letter_3.user.id],
+          [@accepted_application_letter_1.name, @accepted_application_letter_1.user.id],
+          [@accepted_application_letter_2.name, @accepted_application_letter_2.user.id],
+          [@accepted_application_letter_3.name, @accepted_application_letter_3.user.id],
         )
     end
   end

@@ -12,6 +12,15 @@
 #
 FactoryGirl.define do
   factory :application_letter do
+    first_name "Hendrik"
+    last_name "Schüler"
+    gender "male"
+    birth_date Date.parse('1995.11.29')
+    street_name "Rudolf-Breitscheid-Str. 52"
+    zip_code "14482"
+    city "Potsdam"
+    state "Brandenburg"
+    country "Deutschland"
     motivation "None"
     emergency_number "01234567891"
     organisation "Schule am Griebnitzsee"
@@ -19,7 +28,7 @@ FactoryGirl.define do
     vegan false
     status :pending
     allergies "Many"
-    association :user, factory: :user_with_profile
+    association :user# , factory: :user TODO
     event
     annotation "Some"
     custom_application_fields ["Value 1", "Value 2", "Value 3"]

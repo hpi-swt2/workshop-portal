@@ -25,13 +25,18 @@
 #
 
 class ApplicationLetter < ActiveRecord::Base
+  POSSIBLE_GENDERS = ['male', 'female', 'other']
+
   belongs_to :user
   belongs_to :event
 
   has_many :application_notes
   serialize :custom_application_fields, Array
 
-  validates_presence_of :user, :event, :motivation, :emergency_number, :organisation
+  validates_presence_of :user, :event, :motivation, :emergency_number, :organisation, :first_name, :last_name, :gender,
+                        :birth_date, :street_name, :zip_code, :city, :state, :country
+  validates_inclusion_of :gender, in: POSSIBLE_GENDERS
+  validate :birthdate_not_in_future
   #Use 0 as default for hidden event applications
   validates :vegetarian, :vegan, :allergic, inclusion: { in: [true, false] }
   validates :vegetarian, :vegan, :allergic, exclusion: { in: [nil] }
@@ -42,6 +47,54 @@ class ApplicationLetter < ActiveRecord::Base
   enum status: {accepted: 1, rejected: 0, pending: 2, alternative: 3, canceled: 4}
   validates :status, inclusion: { in: statuses.keys }
 
+  # Returns true if the user is 18 years old or older
+  #
+  # @param none
+  # @return [Boolean] whether the user is an adult
+  def adult?()
+    self.birth_date.in_time_zone <= 18.years.ago
+  end
+
+  # Returns the age of the user based on the current date
+  #
+  # @param none
+  # @return [Int] for age as number of years
+  def age
+    return age_at_time(Time.zone.now)
+  end
+
+  # Returns the age of the user based on the given date
+  #
+  # @param none
+  # @return [Int] for age as number of years
+  def age_at_time (given_date)
+    given_date_is_before_birth_date = given_date.month > birth_date.month || (given_date.month == birth_date.month && given_date.day >= birth_date.day)
+    return given_date.year - birth_date.year - (given_date_is_before_birth_date ? 0 : 1)
+  end
+
+  # Returns the full name of the user
+  #
+  # @param none
+  # @return [String] of name
+  def name
+    first_name + " " +  last_name
+  end
+
+  # Returns the address of the user
+  # in format: Street, Zip-Code City, State, Country
+  #
+  # @param none
+  # @return [String] of address
+  def address
+    street_name + ", " + zip_code + " " +  city + ", " + state + ", " + country
+  end
+
+  private
+  def birthdate_not_in_future
+    if birth_date.present? and birth_date.in_time_zone > Date.current
+      errors.add(:birth_date, I18n.t('profiles.validation.birthday_in_future'))
+    end
+  end
 
   # Returns an array of selectable statuses
   #
@@ -90,7 +143,7 @@ class ApplicationLetter < ActiveRecord::Base
     end
   end
   
-  # Since EatingHabits are persited in booleans we need to generate a 
+  # Since EatingHabits are persisted in booleans we need to generate a
   # EatingHabitStateCode to allow sorting
   # US 28_4.5
    
@@ -146,7 +199,7 @@ class ApplicationLetter < ActiveRecord::Base
   # @param none
   # @return [Int] for age as number of years
   def applicant_age_when_event_starts
-    user.profile.age_at_time(event.start_date)
+    age_at_time(event.start_date)
   end
 
   # Returns an array of eating habits (including allergies, vegan and vegetarian)
@@ -163,5 +216,21 @@ class ApplicationLetter < ActiveRecord::Base
 
   def allergic
     not allergies.empty?
+  end
+
+  # Returns a list of allowed parameters.
+  #
+  # @param none
+  # @return [Symbol] List of parameters
+  def self.allowed_params
+    [:first_name, :last_name, :gender, :birth_date, :street_name, :zip_code, :city, :state, :country, :discovery_of_site] # TODO:
+  end
+
+  # Returns an array containing the allowed methods to sort by
+  #
+  # @param none
+  # @return [Symbol] List of methods
+  def self.allowed_sort_methods
+    ApplicationLetter.allowed_params + [:address, :name, :age]
   end
 end

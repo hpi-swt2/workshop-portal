@@ -1,3 +1,4 @@
+=begin
 require 'rails_helper'
 
 RSpec.describe "profiles/show", type: :view do
@@ -20,3 +21,4 @@ RSpec.describe "profiles/show", type: :view do
     end
   end
 end
+=end

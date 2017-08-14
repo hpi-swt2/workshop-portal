@@ -84,7 +84,7 @@ RSpec.describe ApplicationLettersController, type: :controller do
       end
 
       it "sets the flashes if agreement_letters are missing" do
-        user = FactoryGirl.create(:user_with_profile)
+        user = FactoryGirl.create(:user)
         event = FactoryGirl.create(:event, acceptances_have_been_sent: true)
         FactoryGirl.create(:application_letter, :accepted, user: user, event: event)
         sign_in(user)
@@ -199,7 +199,7 @@ RSpec.describe ApplicationLettersController, type: :controller do
 
   describe "GET #new" do
     it "sets the title text to 'Anmeldung aktualisieren' for hidden events" do
-      sign_in FactoryGirl.create(:user_with_profile, role: :pupil)
+      sign_in FactoryGirl.create(:user, role: :pupil)
       @event = FactoryGirl.create(:event, hidden: true)
       get :new, session: valid_session, event_id: @event.id
       expect(assigns(:submit_button_text)).to match I18n.t('application_letters.helpers.submit.create')
@@ -208,7 +208,7 @@ RSpec.describe ApplicationLettersController, type: :controller do
 
   describe "POST #create" do
     before :each do
-      sign_in FactoryGirl.create(:profile).user
+      sign_in FactoryGirl.create :user
     end
     context "with valid params" do
       it "creates a new Application" do

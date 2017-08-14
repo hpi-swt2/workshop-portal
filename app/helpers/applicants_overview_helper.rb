@@ -13,10 +13,10 @@ module ApplicantsOverviewHelper
   def sort_application_letters
     
     if params[:sort]
-      unless Profile.allowed_sort_methods.include? params[:sort].to_sym
+      unless ApplicationLetter.allowed_sort_methods.include? params[:sort].to_sym
         raise CanCan::AccessDenied
       else
-        @application_letters.sort_by! {|l| l.user.profile.send(params[:sort]) }
+        @application_letters.sort_by! {|l| l.send(params[:sort]) }
       end
     end
 

@@ -6,8 +6,8 @@ RSpec.describe "application_letters/check", type: :view do
     @application_letter = assign(:application_letter, FactoryGirl.create(:application_letter))
   end
 
-  it "should show an upload form for an agreement letter for profiles with an age of <18 and accepted application" do
-    @user = FactoryGirl.create(:user_with_profile)
+  it "should show an upload form for an agreement letter for users with an age of <18 and accepted application" do
+    @user = FactoryGirl.create(:user)
     event = FactoryGirl.create(:event)
     @application_letter = FactoryGirl.create(:application_letter, status: :accepted, user: @user, event: event)
     event.application_deadline = Date.yesterday
@@ -20,7 +20,7 @@ RSpec.describe "application_letters/check", type: :view do
   end
 
   it "should not show an upload form for an agreement letter without accepted application" do
-    @user = FactoryGirl.create(:user_with_profile)
+    @user = FactoryGirl.create(:user)
     event = FactoryGirl.create(:event)
     @application_letter = FactoryGirl.create(:application_letter, user: @user, event: event)
     assign(:application_letter, @application_letter)
@@ -57,15 +57,17 @@ RSpec.describe "application_letters/check", type: :view do
 
     it "renders applicant's attributes" do
       expect(rendered).to have_css('h3', text: I18n.t('application_letters.check.my_personal_data'))
-      expect(rendered).to have_text(@application_letter.user.profile.name)
-      expect(rendered).to have_text(I18n.t('profiles.genders.' + @application_letter.user.profile.gender))
-      expect(rendered).to have_text(I18n.l(@application_letter.user.profile.birth_date))
-      expect(rendered).to have_text(@application_letter.user.profile.address)
+      expect(rendered).to have_text(@application_letter.name)
+      expect(rendered).to have_text(I18n.t('profiles.genders.' + @application_letter.gender))
+      expect(rendered).to have_text(I18n.l(@application_letter.birth_date))
+      expect(rendered).to have_text(@application_letter.address)
     end
 
+=begin
     it "renders link to edit profile" do
       expect(rendered).to have_link(id: 'edit_profile_link', href: edit_profile_path(@application_letter.user.profile))
     end
+=end
   end
 
   context "with application deadline exceeded" do

@@ -32,13 +32,15 @@ describe User do
     expect(user).to_not be_valid
   end
 
+=begin
   it "has a username described by either email or profile name if it exists" do
     user = FactoryGirl.build(:user, email: 'email@example.com')
     expect(user.name).to eq 'email@example.com'
 
-    user = FactoryGirl.build(:user_with_profile)
+    user = FactoryGirl.build(:user)
     expect(user.name).to eq user.profile.name
   end
+=end
 
   it "returns the users events" do
 	user = FactoryGirl.build(:user)
@@ -120,9 +122,8 @@ describe User do
   end
 
   it "filters for users with Max in their name" do
-    max = FactoryGirl.create(:user)
-    max.profile = FactoryGirl.create(:profile, first_name: "Max")
-    user3 = FactoryGirl.create(:user_with_profile)
+    max = FactoryGirl.create :user, first_name: "Max"
+    user3 = FactoryGirl.create :user
 
     expect(User.search("Max")).to include(max)
     expect(User.search("Max")).to_not include(user3)

@@ -34,7 +34,6 @@ Rails.application.routes.draw do
       get 'send_participants_email'
     end
   end
-  resources :profiles, except: [:index, :destroy]
 
   devise_scope :user do
     get "/users/sign_up" => redirect("/users/sign_in")

@@ -1,3 +1,4 @@
+=begin
 require 'rails_helper'
 
 RSpec.describe "profiles/edit", type: :view do
@@ -27,3 +28,4 @@ RSpec.describe "profiles/edit", type: :view do
       expect(rendered).to have_css('.required', minimum: 10)
   end
 end
+=end

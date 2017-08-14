@@ -22,11 +22,13 @@ class ApplicationLettersController < ApplicationController
       flash[:event_id] = params[:event_id]
       flash.keep(:event_id)
       return redirect_to user_session_path, :alert => message
+=begin
     elsif not current_user.profile.present?
       message = I18n.t('application_letters.fill_in_profile_before_creation')
       flash[:event_id] = params[:event_id]
       flash.keep(:event_id)
       return redirect_to new_profile_path, :alert => message
+=end
     end
 
     @application_letter = ApplicationLetter.new
@@ -84,10 +86,10 @@ class ApplicationLettersController < ApplicationController
         :recipients => current_user.email,
         :reply_to => Rails.configuration.reply_to_address,
         :subject => I18n.t('controllers.application_letters.confirmation_mail.subject'),
-        :content => I18n.t("controllers.application_letters.confirmation_mail.content_#{current_user.profile.gender}",
+        :content => I18n.t("controllers.application_letters.confirmation_mail.content_#{@application_letter.gender}", #TODO: Fall für 'andere'
                            :seminar_name => seminar_name,
-                           :first_name => current_user.profile.first_name,
-                           :last_name => current_user.profile.last_name,
+                           :first_name => @application_letter.first_name,
+                           :last_name => @application_letter.last_name,
                            :event_link => application_letters_url)
     }
     @email = Email.new(email_params)

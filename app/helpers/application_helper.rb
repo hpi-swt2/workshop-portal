@@ -57,10 +57,12 @@ module ApplicationHelper
     o = ''
     # everyone gets settings
     o << (menu_item t(:settings, scope: 'navbar'), edit_user_registration_path)
+=begin
     # everyone gets their profile, if it exists
     unless current_user.profile.present?
       o << (menu_item t(:create_profile, scope: 'navbar'), new_profile_path)
     end
+=end
     # pupils get their applications
     if current_user.role == "pupil"
       o << (menu_item t(:my_events, scope: 'navbar'), application_letters_path)

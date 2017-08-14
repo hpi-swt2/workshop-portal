@@ -4,7 +4,7 @@ require "rails_helper"
 # Registration is handled by the Devise gem - no need to test that!
 # However, some custom additions need to be tested.
 describe "Registration", type: :feature do
-  it "redirect me to the profile creation page after registration" do
+  it "redirect me to the event page after registration" do
     visit new_user_session_path
 
     # Create new account
@@ -14,7 +14,7 @@ describe "Registration", type: :feature do
     fill_in "sign_up_password_confirmation", with: password
     find('#sign_up_submit').click
 
-    page.assert_current_path new_profile_path
+    page.assert_current_path events_path
   end
 end
 

@@ -100,8 +100,8 @@ describe "Sending emails to applicants", type: :feature do
 
 
   def login(role)
-    @profile = FactoryGirl.create(:profile)
-    @profile.user.role = role
-    login_as(@profile.user, :scope => :user)
+    @user = FactoryGirl.create :user
+    @user.role = role
+    login_as(@user, :scope => :user)
   end
 end

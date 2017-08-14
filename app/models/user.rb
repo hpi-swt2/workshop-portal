@@ -32,10 +32,11 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable,
          :omniauthable, :omniauth_providers => [:hpiopenid]
 
-  has_one :profile
   has_many :agreement_letters
   has_many :application_letters
   has_many :participant_groups
+
+  belongs_to :user
 
   before_create :set_default_role
 
@@ -64,8 +65,12 @@ class User < ActiveRecord::Base
     end
   end
 
+  # Returns the full name of the user if the first and last name exist, otherwise return email
+  #
+  # @param none
+  # @return [String] of name
   def name
-    return profile.name if profile
+    return first_name + " " +  last_name if first_name && last_name
     email
   end
 
@@ -131,8 +136,7 @@ class User < ActiveRecord::Base
   # @param given_event [Event], age [Integer]
   # @return [Boolean]
   def older_than_required_age_at_start_date_of_event?(given_event, age)
-    return false unless self.profile
-    age_at_event_start = self.profile.age_at_time(given_event.start_date)
+    age_at_event_start = given_event.application_letters.find_by(user: self).age_at_time(given_event.start_date)
 	  return age_at_event_start >= age
   end
 
@@ -157,7 +161,7 @@ class User < ActiveRecord::Base
   #
   # @param pattern to search for
   # @return [Array<User>] all users with pattern in their name
-  def self.search(pattern)
+  def self.search(pattern) # TODO: by SQL capable person. BTW, this is the only usage of with_profiles
     with_profiles.where("profiles.first_name LIKE ? or profiles.last_name LIKE ?", "%#{pattern}%", "%#{pattern}%")
   end
 
@@ -167,6 +171,6 @@ class User < ActiveRecord::Base
   # @return [Array<User>] all users including their profile information
   def self.with_profiles()
     joins("LEFT JOIN profiles ON users.id = profiles.user_id")
-         .order('profiles.first_name, profiles.last_name, users.email ASC')
+         .order('profiles.first_name, profiles.last_name, users.email ASC') # TODO: probably remove this or just order it?
   end
 end

@@ -187,7 +187,7 @@ RSpec.describe EventsController, type: :controller do
         let(:valid_attributes) { FactoryGirl.attributes_for(:event_with_accepted_applications) }
         
         before :each do
-          @user = FactoryGirl.create(:user_with_profile, role: :admin)
+          @user = FactoryGirl.create(:user, role: :admin)
           sign_in @user
         end
 
@@ -204,7 +204,7 @@ RSpec.describe EventsController, type: :controller do
 
     describe "GET #send_participants_email" do
       before :each do
-        @user = FactoryGirl.create(:user_with_profile, role: :admin)
+        @user = FactoryGirl.create(:user, role: :admin)
         sign_in @user
       end
       it "should assign a new email to accepted applications as @email" do
@@ -215,7 +215,7 @@ RSpec.describe EventsController, type: :controller do
 
     describe "GET #accept_all_applicants" do
         before :each do
-          @user = FactoryGirl.create(:user_with_profile, role: :organizer)
+          @user = FactoryGirl.create(:user, role: :organizer)
           sign_in @user
         end
       it "should redirect to the event" do
@@ -228,7 +228,7 @@ RSpec.describe EventsController, type: :controller do
   describe "GET #show for private event as pupil"
     it "should redirect to new application letter page" do
       @event = FactoryGirl.create(:event, hidden: true)
-      @user = FactoryGirl.create(:user_with_profile, role: :pupil)
+      @user = FactoryGirl.create(:user, role: :pupil)
       sign_in @user
 
       get :show, id: @event.to_param, session: valid_session
@@ -238,7 +238,7 @@ RSpec.describe EventsController, type: :controller do
   describe "GET #participants_pdf" do
     let(:valid_attributes) { FactoryGirl.attributes_for(:event_with_accepted_applications) }
     before :each do
-      @user = FactoryGirl.create(:user_with_profile, role: :organizer)
+      @user = FactoryGirl.create(:user, role: :organizer)
       sign_in @user
     end
 
@@ -250,8 +250,7 @@ RSpec.describe EventsController, type: :controller do
 
     it "should return an pdf with the name of the user" do
       event = Event.create! valid_attributes
-      profile = FactoryGirl.create(:profile)
-      user = FactoryGirl.create(:user, profile: profile)
+      user = FactoryGirl.create(:user)
       application_letter = FactoryGirl.create(:application_letter, status: ApplicationLetter.statuses[:accepted], event: event, user: user)
       response = get :participants_pdf, id: event.to_param, session: valid_session
       expect(response.content_type).to eq('application/pdf')
@@ -259,7 +258,7 @@ RSpec.describe EventsController, type: :controller do
       pdf = PDF::Inspector::Text.analyze(response.body)
       expect(pdf.strings).to include("Vorname")
       expect(pdf.strings).to include("Nachname")
-      expect(pdf.strings).to include(application_letter.user.profile.first_name)
+      expect(pdf.strings).to include(application_letter.user.first_name)
     end
   end
 
@@ -269,10 +268,8 @@ RSpec.describe EventsController, type: :controller do
 
     it "should return an pdf" do
       sign_in FactoryGirl.create(:user, role: :organizer)
-      #login(:organizer)
       event = Event.create! valid_attributes
-      profile = FactoryGirl.create(:profile)
-      user = FactoryGirl.create(:user, profile: profile)
+      user = FactoryGirl.create :user
       application_letter = FactoryGirl.create(:application_letter, status: ApplicationLetter.statuses[:accepted], event: event, user: user)
       get :print_applications_eating_habits, id: event.to_param, session: valid_session
       target = event_path(event) + "/print_applications_eating_habits"
@@ -281,29 +278,23 @@ RSpec.describe EventsController, type: :controller do
 
     it "should return an pdf with the eating habits of the user" do
       sign_in FactoryGirl.create(:user, role: :organizer)
-      #login(:organizer)
       event = Event.create! valid_attributes
 
-      user = FactoryGirl.create(:user)
-      profile = FactoryGirl.create(:profile, user: user, last_name: "Peter")
-      application_letter = FactoryGirl.create(:application_letter, :accepted,
-        user: user, event: event, vegan: true)
-      user = FactoryGirl.create(:user)
-      profile = FactoryGirl.create(:profile, user: user, last_name: "Paul")
-      application_letter = FactoryGirl.create(:application_letter, :accepted,
-        user: user, event: event, vegan: true, allergies: "many")
-      user = FactoryGirl.create(:user)
-      profile = FactoryGirl.create(:profile, user: user, last_name: "Mary")
-      application_letter = FactoryGirl.create(:application_letter, :accepted,
-        user: user, event: event, vegetarian: true)
-      user = FactoryGirl.create(:user)
-      profile = FactoryGirl.create(:profile, user: user, last_name: "Otti")
-      application_letter = FactoryGirl.create(:application_letter, :accepted,
-        user: user, event: event, vegetarian: true, allergies: "many")
-      user = FactoryGirl.create(:user)
-      profile = FactoryGirl.create(:profile, user: user, last_name: "Benno")
-      application_letter = FactoryGirl.create(:application_letter, :accepted,
-        user: user, event: event)
+      user = FactoryGirl.create :user, last_name: "Peter"
+      application_letter = FactoryGirl.create :application_letter, :accepted,
+        user: user, event: event, vegan: true
+      user = FactoryGirl.create :user, last_name: "Paul"
+      application_letter = FactoryGirl.create :application_letter, :accepted,
+        user: user, event: event, vegan: true, allergies: "many"
+      user = FactoryGirl.create :user, last_name: "Mary"
+      application_letter = FactoryGirl.create :application_letter, :accepted,
+        user: user, event: event, vegetarian: true
+      user = FactoryGirl.create :user, last_name: "Otti"
+      application_letter = FactoryGirl.create :application_letter, :accepted,
+        user: user, event: event, vegetarian: true, allergies: "many"
+      user = FactoryGirl.create :user, last_name: "Benno"
+      application_letter = FactoryGirl.create :application_letter, :accepted,
+        user: user, event: event
 
       response = get :print_applications_eating_habits, id: event.to_param, session: valid_session
       expect(response.content_type).to eq('application/pdf')
@@ -342,7 +333,7 @@ RSpec.describe EventsController, type: :controller do
 
     it "displays the selected participants' names" do
       users = 12.times.collect do
-        user = FactoryGirl.create(:user_with_profile)
+        user = FactoryGirl.create(:user)
         FactoryGirl.create(:application_letter, :accepted, user: user, event: @event)
         user
       end
@@ -350,13 +341,13 @@ RSpec.describe EventsController, type: :controller do
 
       rendered_pdf = post :print_badges, @params
       text = PDF::Inspector::Text.analyze(rendered_pdf.body).strings.join(' ')
-      users.each { |user| expect(text).to include(user.profile.name) }
+      users.each { |user| expect(text).to include(user.name) }
     end
 
     it "does not create badges for users who are not participants" do
-      participant = FactoryGirl.create(:user_with_profile)
-      rejected_participant = FactoryGirl.create(:user_with_profile)
-      non_participant = FactoryGirl.create(:user_with_profile)
+      participant = FactoryGirl.create(:user)
+      rejected_participant = FactoryGirl.create(:user)
+      non_participant = FactoryGirl.create(:user)
       users = [participant, rejected_participant, non_participant]
       FactoryGirl.create(:application_letter, :accepted, user: participant, event: @event)
       FactoryGirl.create(:application_letter, :rejected, user: rejected_participant, event: @event)
@@ -364,9 +355,9 @@ RSpec.describe EventsController, type: :controller do
 
       rendered_pdf = post :print_badges, @params
       text = PDF::Inspector::Text.analyze(rendered_pdf.body).strings.join(' ')
-      expect(text).to include(participant.profile.name)
-      expect(text).not_to include(rejected_participant.profile.name)
-      expect(text).not_to include(non_participant.profile.name)
+      expect(text).to include(participant.name)
+      expect(text).not_to include(rejected_participant.name)
+      expect(text).not_to include(non_participant.name)
     end
 
     it "does not break when no user is selected" do
@@ -374,14 +365,13 @@ RSpec.describe EventsController, type: :controller do
     end
 
     it "does not cut off the participant's name" do
-      profile = FactoryGirl.create(:profile, :long_name)
-      participant = FactoryGirl.create(:user, profile: profile)
+      participant = FactoryGirl.create :user
       FactoryGirl.create(:application_letter, :accepted, user: participant, event: @event)
       @params[:selected_ids] = [participant.id]
 
       rendered_pdf = post :print_badges, @params
       text = PDF::Inspector::Text.analyze(rendered_pdf.body).strings.join(' ')
-      expect(text).to include(participant.profile.name)
+      expect(text).to include(participant.name)
     end
   end
 
@@ -421,7 +411,7 @@ RSpec.describe EventsController, type: :controller do
 
   describe "POST #download_material" do
     before :each do
-      @user = FactoryGirl.create(:user_with_profile, role: :coach)
+      @user = FactoryGirl.create(:user, role: :coach)
       sign_in @user
 
       filepath = Rails.root.join('spec/testfiles/actual.pdf')
@@ -548,16 +538,16 @@ RSpec.describe EventsController, type: :controller do
     it "shows an overview of all and details of every application" do
       al = FactoryGirl.create(:application_letter, event: @event,)
       FactoryGirl.create(:application_note, application_letter_id: al.id)
-      User.find_each { |u| FactoryGirl.create(:profile, user: u) }
+      User.find_each # TODO { |u| FactoryGirl.create(:profile, user: u) }
       get :print_applications, id: @event.to_param, session: valid_session
       analysis = PDF::Inspector::Text.analyze response.body
       text = analysis.strings.join(' ')
       @event.application_letters.each do |a|
         expect(text).to include(
-          a.user.profile.name,
-          a.user.profile.age_at_time(@event.start_date).to_s,
-          I18n.t("profiles.genders.#{a.user.profile.gender}"),
-          a.user.accepted_applications_count(@event).to_s,
+          a.user.name,
+          a.age_at_time(@event.start_date).to_s, # TODO: Add logic to application_letter
+          I18n.t("users.genders.#{a.gender}"), # TODO: add field to application_letter, move translation
+          a.user.accepted_applications_count(@event).to_s, # TODO: Remove field
           a.user.rejected_applications_count(@event).to_s,
           I18n.t("application_status.#{a.status}"),
           a.motivation,
@@ -572,7 +562,7 @@ RSpec.describe EventsController, type: :controller do
     it "includes at last one page per application" do
       FactoryGirl.create(:application_letter, event: @event,)
       FactoryGirl.create(:application_letter, :alternative_data, event: @event)
-      User.find_each { |u| FactoryGirl.create(:profile, user: u) }
+      User.find_each # { |u| FactoryGirl.create(:profile, user: u) }
       get :print_applications, id: @event.to_param, session: valid_session
       page_analysis = PDF::Inspector::Page.analyze(response.body)
       expect(page_analysis.pages.size).to be >= 3
@@ -580,7 +570,7 @@ RSpec.describe EventsController, type: :controller do
 
     it "extends long applications over several pages" do
       FactoryGirl.create(:application_letter, :long_motivation, event: @event,)
-      User.find_each { |u| FactoryGirl.create(:profile, user: u) }
+      User.find_each # { |u| FactoryGirl.create(:profile, user: u) }
       get :print_applications, id: @event.to_param, session: valid_session
       page_analysis = PDF::Inspector::Page.analyze(response.body)
       expect(page_analysis.pages.size).to be >= 3
@@ -588,8 +578,8 @@ RSpec.describe EventsController, type: :controller do
   end
 
   def login(role)
-    @profile = FactoryGirl.create(:profile)
-    @profile.user.role = role
-    login_as(@profile.user, :scope => :user)
+    @user = FactoryGirl.create(:user)
+    @user.role = role
+    login_as(@user, :scope => :user)
   end
 end

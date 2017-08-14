@@ -70,8 +70,8 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     login(:organizer)
     @event.update!(max_participants: 1)
     2.times do |n|
-      @pupil = FactoryGirl.create(:profile)
-      @pupil.user.role = :pupil
+      @pupil = FactoryGirl.create :user
+      @pupil.role = :pupil
       FactoryGirl.create(:application_letter, :accepted, :event => @event, :user => @pupil.user)
     end
     visit event_path(@event)
@@ -85,8 +85,8 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     login(:organizer)
     @event.update!(max_participants: 2)
     2.times do |n|
-      @pupil = FactoryGirl.create(:profile)
-      @pupil.user.role = :pupil
+      @pupil = FactoryGirl.create :user
+      @pupil.role = :pupil
       FactoryGirl.create(:application_letter, :accepted, :event => @event, :user => @pupil.user)
     end
     visit event_path(@event)
@@ -103,8 +103,8 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     login(:organizer)
     @event.update!(max_participants: 2)
     2.times do |n|
-      @pupil = FactoryGirl.create(:profile)
-      @pupil.user.role = :pupil
+      @pupil = FactoryGirl.create :user
+      @pupil.role = :pupil
       FactoryGirl.create(:application_letter, :rejected, :event => @event, :user => @pupil.user)
     end
     visit event_path(@event)
@@ -123,8 +123,8 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     expect(page).to have_text(I18n.t "free_places", count: (@event.max_participants).to_i, scope: [:events, :applicants_overview])
     expect(page).to have_text(I18n.t "occupied_places", count: 0, scope: [:events, :applicants_overview])
     2.times do |i| #2 to also test negative free places, those are fine
-      @pupil = FactoryGirl.create(:profile)
-      @pupil.user.role = :pupil
+      @pupil = FactoryGirl.create :user
+      @pupil.role = :pupil
       @application_letter = FactoryGirl.create(:application_letter, :accepted, event: @event, user: @pupil.user)
       visit event_path(@event)
       expect(page).to have_text(I18n.t "free_places", count: (@event.max_participants).to_i - (i+1), scope: [:events, :applicants_overview])
@@ -164,8 +164,8 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     [[true, true], [true, false], [false, true]].each do |acceptances_have_been_sent, rejections_have_been_sent|
       @event.acceptances_have_been_sent = acceptances_have_been_sent
       @event.rejections_have_been_sent = rejections_have_been_sent
-      @pupil = FactoryGirl.create(:profile)
-      @application_letter = FactoryGirl.create(:application_letter, event: @event, user: @pupil.user)
+      @pupil = FactoryGirl.create :user
+      @application_letter = FactoryGirl.create(:application_letter, event: @event, user: @pupil)
       visit event_path(@event)
       ApplicationLetter.statuses.keys.each do |new_status|
         if new_status != @application_letter.status
@@ -309,10 +309,9 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
 
   scenario "logged in as Organizer and viewing the participants page all checkboxes are checked when pressing the \"check all\" button", js: true do
     login(:organizer)
-    @user = FactoryGirl.create(:user)
-    @profile = FactoryGirl.create(:profile, user: @user, birth_date: 15.years.ago)
+    @user = FactoryGirl.create :user
     @event = FactoryGirl.create(:event)
-    @application = FactoryGirl.create(:application_letter, :accepted, user: @user, event: @event)
+    @application = FactoryGirl.create(:application_letter, :accepted, birth_date: 15.years.ago, user: @user, event: @event)
     @agreement = FactoryGirl.create(:agreement_letter, user: @user, event: @event)
     visit event_participants_path(@event)
     check 'select_all_participants'
@@ -366,7 +365,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
 
   scenario "logged in as Coach I can see application status" do
     login(:coach)
-    @pupil = FactoryGirl.create(:profile)
+    @pupil = FactoryGirl.create :user
     @application_letter = FactoryGirl.create(:application_letter, event: @event, user: @pupil.user)
     visit event_path(@event)
     expect(page).to have_text(I18n.t "application_status.#{@application_letter.status}")
@@ -379,14 +378,14 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
 
     table = page.find(:xpath, '//table[@id="applicants"]')
     @event.application_letters.each do |application_letter|
-      expect(table).to have_text(application_letter.user.profile.name)
+      expect(table).to have_text(application_letter.name)
     end
 
     ['name', 'gender'].each do |attribute|
       link_name = I18n.t("activerecord.attributes.profile.#{attribute}")
       click_link link_name
-      sorted_by_attribute = @event.application_letters.to_a.sort_by { |letter| letter.user.profile.send(attribute) }
-      names = sorted_by_attribute.map {|l| l.user.profile.name }
+      sorted_by_attribute = @event.application_letters.to_a.sort_by { |letter| letter.send(attribute) }
+      names = sorted_by_attribute.map {|l| l.name }
       expect(page).to contain_ordered(names)
 
       click_link link_name # again
@@ -396,7 +395,7 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     link_name = I18n.t('events.applicants_overview.age_when_event_starts')
     click_link link_name
     sorted_by_attribute = @event.application_letters.to_a.sort_by { |letter| letter.send(attribute) }
-    names = sorted_by_attribute.map {|l| l.user.profile.name }
+    names = sorted_by_attribute.map {|l| l.name }
     expect(page).to contain_ordered(names)
 
     click_link link_name # again
@@ -411,8 +410,8 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     click_button I18n.t 'events.applicants_overview.filter_by'
     check I18n.t 'application_status.accepted'
     click_button I18n.t 'events.applicants_overview.filter'
-    accepted_names = @event.application_letters.to_a.select { |l| l.status.to_sym == :accepted }.map {|l| l.user.profile.name}
-    not_accepted_names = @event.application_letters.to_a.select { |l| l.status.to_sym != :accepted }.map {|l| l.user.profile.name}
+    accepted_names = @event.application_letters.to_a.select { |l| l.status.to_sym == :accepted }.map {|l| l.name}
+    not_accepted_names = @event.application_letters.to_a.select { |l| l.status.to_sym != :accepted }.map {|l| l.name}
 
     expect(page).to have_every_text(accepted_names)
     expect(page).to have_no_text(not_accepted_names)
@@ -423,9 +422,9 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
 
     sorted_accepted_names = @event.application_letters
       .to_a
-      .sort_by { |letter| letter.user.profile.name }
+      .sort_by { |letter| letter.name }
       .select { |letter| letter.status.to_sym == :accepted }
-      .map {|letter| letter.user.profile.name }
+      .map {|letter| letter.name }
     expect(page).to contain_ordered(sorted_accepted_names)
 
     # list all others
@@ -442,8 +441,8 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
   end
 
   def login(role)
-    @profile = FactoryGirl.create(:profile)
-    @profile.user.role = role
-    login_as(@profile.user, :scope => :user)
+    user = FactoryGirl.create :user
+    @user.role = role
+    login_as(@user, :scope => :user)
   end
 end

@@ -117,12 +117,12 @@ class BadgesPDF
 
     def create_name(participant, y)
       case @name_format
-      when "first"
-        name = participant.profile.first_name
-      when "last"
-        name = participant.profile.last_name
+      when 'first'
+        name = participant.first_name
+      when 'last'
+        name = participant.last_name
       else
-        name = participant.profile.name
+        name = participant.name
       end
 
       text_box name,

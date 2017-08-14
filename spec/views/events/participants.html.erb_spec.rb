@@ -15,9 +15,8 @@ RSpec.describe "events/participants", type: :view do
 
   it "detects missing agreement letters" do
     @user = FactoryGirl.create(:user)
-    @profile = FactoryGirl.create(:profile, user: @user, birth_date: 15.years.ago)
     @event = FactoryGirl.create(:event)
-    @application = FactoryGirl.create(:application_letter, :accepted, user: @user, event: @event)
+    @application = FactoryGirl.create(:application_letter, :accepted,  birth_date: 15.years.ago, user: @user, event: @event)
     assign(:event, @event)
     assign(:participants, @event.participants)
     render
@@ -26,9 +25,8 @@ RSpec.describe "events/participants", type: :view do
 
   it "detects available agreement letters" do
     @user = FactoryGirl.create(:user)
-    @profile = FactoryGirl.create(:profile, user: @user, birth_date: 15.years.ago)
     @event = FactoryGirl.create(:event)
-    @application = FactoryGirl.create(:application_letter, :accepted, user: @user, event: @event)
+    @application = FactoryGirl.create(:application_letter, :accepted, birth_date: 15.years.ago, user: @user, event: @event)
     @agreement = FactoryGirl.create(:agreement_letter, user: @user, event: @event)
     assign(:event, @event)
     assign(:participants, @event.participants)
@@ -39,9 +37,8 @@ RSpec.describe "events/participants", type: :view do
 
   it "detects when agreement letters are unnecessary" do
     @user = FactoryGirl.create(:user)
-    @profile = FactoryGirl.create(:profile, user: @user, birth_date: 19.years.ago)
     @event = FactoryGirl.create(:event)
-    @application = FactoryGirl.create(:application_letter, :accepted, user: @user, event: @event)
+    @application = FactoryGirl.create(:application_letter, :accepted, birth_date: 19.years.ago, user: @user, event: @event)
     @agreement = FactoryGirl.create(:agreement_letter, user: @user, event: @event)
     assign(:event, @event)
     assign(:participants, @event.participants)
@@ -85,7 +82,6 @@ RSpec.describe "events/participants", type: :view do
 
   it "displays correct groups" do
     @user = FactoryGirl.create(:user)
-    @profile = FactoryGirl.create(:profile, user: @user)
     @event = FactoryGirl.create(:event)
     @application_letter = FactoryGirl.create(:application_letter, :accepted, user: @user, event: @event)
     @participant_group = FactoryGirl.create(:participant_group, user: @user, event: @event)
@@ -97,7 +93,6 @@ RSpec.describe "events/participants", type: :view do
 
   it "displays select element with all options" do
     @user = FactoryGirl.create(:user)
-    @profile = FactoryGirl.create(:profile, user: @user)
     @event = FactoryGirl.create(:event)
     @application_letter = FactoryGirl.create(:application_letter, :accepted, user: @user, event: @event)
     @participant_group = FactoryGirl.create(:participant_group, user: @user, event: @event)
@@ -120,9 +115,9 @@ RSpec.describe "events/participants", type: :view do
   end
 
   it "allows selection of participants in the modal" do
-    application_letter = FactoryGirl.create(:application_letter, user: FactoryGirl.create(:user_with_profile, role: :organizer), event: @event, status: 1)
+    application_letter = FactoryGirl.create(:application_letter, user: FactoryGirl.create(:user, role: :organizer), event: @event, status: 1)
     @event.application_letters.push(application_letter)
     render
-    expect(rendered).to have_select('users', :with_options => [application_letter.user.profile.name])
+    expect(rendered).to have_select('users', :with_options => [application_letter.name])
   end
 end

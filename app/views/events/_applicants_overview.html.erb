@@ -8,10 +8,10 @@
     <thead>
     <tr>
       <th>
-        <%= sort_caret(Profile.human_attribute_name(:name), :name) %>
+        <%= sort_caret(ApplicationLetter.human_attribute_name(:name), :name) %> <%# TODO: test wether it works %>
       </th>
       <th>
-        <%= sort_caret(Profile.human_attribute_name(:gender), :gender) %>
+        <%= sort_caret(ApplicationLetter.human_attribute_name(:gender), :gender) %> <%# TODO: test wether it works %>
       </th>
       <th style="max-width: 100px">
         <%= sort_caret(( t('.age_when_event_starts')), :age ) %>
@@ -36,11 +36,11 @@
     </thead>
     <tbody>
     <% sort_application_letters
-       @application_letters.select {|l| l.user.profile }.each do | application_letter |%>
+       @application_letters.each do | application_letter |%>
         <tr>
-          <td><%= application_letter.user.profile.name %></td>
-          <td><%= t("profiles.genders.#{application_letter.user.profile.gender}") %></td>
-          <td><%= application_letter.user.profile.age_at_time(@event.start_date)  %> </td>
+          <td><%= application_letter.name %></td>
+          <td><%= t("profiles.genders.#{application_letter.gender}") %></td>
+          <td><%= application_letter.age_at_time(@event.start_date)  %> </td>
           <td><%= application_letter.user.accepted_applications_count(@event) %> / <%= application_letter.user.rejected_applications_count(@event) %></td>
           <td>
             <%= render :partial => 'application_letters/application_selective', locals: {application_letter: application_letter} %>

@@ -8,6 +8,7 @@
 #  updated_at :datetime         not null
 #
 
+=begin
 FactoryGirl.define do
   factory :profile do
     sequence(:first_name) { "Karl#{rand(1..100)}" }
@@ -46,3 +47,4 @@ FactoryGirl.define do
   end
 
 end
+=end

@@ -8,6 +8,7 @@
 #  updated_at :datetime         not null
 #
 
+=begin
 require 'rails_helper'
 
 describe Profile do
@@ -68,3 +69,4 @@ describe Profile do
     expect(profile).to_not be_valid
   end
 end
+=end

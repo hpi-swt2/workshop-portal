@@ -5,6 +5,7 @@ require "cancan/matchers"
 
 describe User do
   %i[pupil coach].each do |role|
+=begin
     it "can create its profile" do
       user = FactoryGirl.create(:user, role: role)
       ability = Ability.new(user)
@@ -37,10 +38,10 @@ describe User do
       expect(ability).to_not be_able_to(:update, another_profile)
       expect(ability).to_not be_able_to(:destroy, another_profile)
     end
+=end
 
     it "can create its application" do
-      user = FactoryGirl.create(:user, role: role)
-      FactoryGirl.create(:profile, user: user)
+      user = FactoryGirl.create :user, role: role
       ability = Ability.new(user)
 
       expect(ability).to be_able_to(:new, ApplicationLetter)
@@ -208,21 +209,14 @@ describe User do
     expect(ability).to be_able_to(:manage, :all)
   end
 
-  it "can only read profiles and applications as organizer" do
-    user = FactoryGirl.create(:user, role: :organizer)
-    another_user = FactoryGirl.create(:user)
-    another_profile = FactoryGirl.create(:profile, user: another_user)
+  it "can only read applications as organizer" do
+    user = FactoryGirl.create :user, role: :organizer
+    another_user = FactoryGirl.create :user
     another_application = FactoryGirl.create(:application_letter, user: another_user)
     ability = Ability.new(user)
 
-    expect(ability).to be_able_to(:index, Profile)
-    expect(ability).to be_able_to(:show, another_profile)
     expect(ability).to be_able_to(:index, ApplicationLetter)
     expect(ability).to be_able_to(:show, another_application)
-
-    expect(ability).to_not be_able_to(:edit, another_profile)
-    expect(ability).to_not be_able_to(:update, another_profile)
-    expect(ability).to_not be_able_to(:destroy, another_profile)
 
     expect(ability).to_not be_able_to(:edit, another_application)
     expect(ability).to_not be_able_to(:update, another_application)

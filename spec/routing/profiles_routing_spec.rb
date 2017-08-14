@@ -1,3 +1,4 @@
+=begin
 require "rails_helper"
 
 RSpec.describe ProfilesController, type: :routing do
@@ -33,3 +34,4 @@ RSpec.describe ProfilesController, type: :routing do
 
   end
 end
+=end

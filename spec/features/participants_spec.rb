@@ -8,8 +8,7 @@ RSpec.feature "Event participants overview", :type => :feature do
 
   scenario "logged in as Organizer I can sucessfully select a group for a participant", js: true do
     login(:organizer)
-    @user = FactoryGirl.create(:user)
-    @profile = FactoryGirl.create(:profile, user: @user)
+    @user = FactoryGirl.create :user
     @application_letter = FactoryGirl.create(:application_letter, :accepted, user: @user, event: @event)
     visit event_participants_path(@event)
     select I18n.t("participant_groups.options.#{ParticipantGroup::GROUPS[9]}"), from: "participant_group[group]", match: :first, visible: false
@@ -19,8 +18,7 @@ RSpec.feature "Event participants overview", :type => :feature do
   scenario "logged in as Organizer I can see a table with the participants and sort them by group" do
     login(:organizer)
     for i in 1..5
-      user = FactoryGirl.create(:user)
-      profile = FactoryGirl.create(:profile, user: user, last_name: i.to_s)
+      user = FactoryGirl.create :user, last_name: i.to_s
       application_letter = FactoryGirl.create(:application_letter, :accepted, user: user, event: @event)
       participant_group = FactoryGirl.create(:participant_group, user: user, event: @event, group: i)
     end
@@ -28,8 +26,8 @@ RSpec.feature "Event participants overview", :type => :feature do
     visit event_participants_path(@event)
 
     table = page.find('table')
-    @event.participants.each do |participant|
-      expect(table).to have_text(participant.profile.name)
+    @event.application_letters.each do |application_letter|
+      expect(table).to have_text(application_letter.name)
     end
 
     link_name = I18n.t("activerecord.attributes.participant_group.group")
@@ -79,9 +77,9 @@ RSpec.feature "Event participants overview", :type => :feature do
   end
 
   def login(role)
-    @profile = FactoryGirl.create(:profile)
-    @profile.user.role = role
-    login_as(@profile.user, :scope => :user)
+    @user = FactoryGirl.create :user
+    @user.role = role
+    login_as(@user, :scope => :user)
   end
 end
 
@@ -92,7 +90,7 @@ RSpec.feature "Event participants overview", :type => :feature do
     for i in 1..5
       user = FactoryGirl.create(:user)
       @users.push(user)
-      profile = FactoryGirl.create(:profile, user: user, last_name: i.to_s)
+      user = FactoryGirl.create :user, last_name: i.to_s
       application_letter = FactoryGirl.create(:application_letter, :accepted, user: user, event: @event)
       participant_group = FactoryGirl.create(:participant_group, user: user, event: @event, group: i)
     end
@@ -125,8 +123,8 @@ RSpec.feature "Event participants overview", :type => :feature do
   end
 
   def login(role)
-    @profile = FactoryGirl.create(:profile)
-    @profile.user.role = role
-    login_as(@profile.user, :scope => :user)
+    @user = FactoryGirl.create :user
+    @user.role = role
+    login_as(@user, :scope => :user)
   end
 end
