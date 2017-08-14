@@ -2,11 +2,26 @@
 #
 # Table name: profiles
 #
-#  id         :integer          not null, primary key
-#  user_id    :integer          not null
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id                :integer          not null, primary key
+#  user_id           :integer          not null
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#  first_name        :string
+#  last_name         :string
+#  gender            :string
+#  birth_date        :date
+#  street_name       :string
+#  zip_code          :string
+#  city              :string
+#  state             :string
+#  country           :string
+#  discovery_of_site :text
 #
+# Indexes
+#
+#  index_profiles_on_user_id  (user_id)
+#
+
 class Profile < ActiveRecord::Base
   POSSIBLE_GENDERS = ['male', 'female', 'other']
   
