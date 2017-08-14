@@ -2,10 +2,26 @@
 #
 # Table name: requests
 #
-#  id         :integer          not null, primary key
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id                     :integer          not null, primary key
+#  created_at             :datetime         not null
+#  updated_at             :datetime         not null
+#  form_of_address        :integer
+#  first_name             :string
+#  last_name              :string
+#  phone_number           :string
+#  street                 :string
+#  email                  :string
+#  topic_of_workshop      :text
+#  time_period            :text
+#  number_of_participants :integer
+#  knowledge_level        :string
+#  annotations            :text
+#  status                 :integer          default(0)
+#  zip_code_city          :string
+#  contact_person         :string
+#  notes                  :text
 #
+
 class Request < ActiveRecord::Base
   
   validates_presence_of :form_of_address, :last_name, :first_name, :phone_number, :street, :zip_code_city, :email, :topic_of_workshop
