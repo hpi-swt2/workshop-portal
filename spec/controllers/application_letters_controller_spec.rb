@@ -48,19 +48,19 @@ RSpec.describe ApplicationLettersController, type: :controller do
 
     describe "GET #show" do
       it "assigns the requested application as @application" do
-        get :show, id: @application.to_param
+        get :show, params: {id: @application.to_param}
         expect(assigns(:application_letter)).to eq(@application)
       end
 
       it "assigns the free places status as @has_free_places" do
-        get :show, id: @application.to_param
+        get :show, params: {id: @application.to_param}
         expect(assigns(:has_free_places)).to eq(@application.event.compute_free_places > 0)
       end
     end
 
     describe "GET #edit" do
       it "assigns the requested application as @application" do
-        get :edit, id: @application.to_param, session: valid_session
+        get :edit, params: {id: @application.to_param, session: valid_session}
         expect(assigns(:application_letter)).to eq(@application)
       end
 
@@ -68,19 +68,19 @@ RSpec.describe ApplicationLettersController, type: :controller do
         @event = FactoryGirl.create(:event, hidden: true)
         @application_letter = FactoryGirl.create(:application_letter, event_id: @event.id)
         sign_in @application_letter.user
-        get :edit, id: @application_letter.id, session: valid_session
+        get :edit, params: {id: @application_letter.id, session: valid_session}
         expect(assigns(:submit_button_text)).to match I18n.t('application_letters.helpers.submit.update')
       end
     end
 
     describe "GET #check" do
       it "assigns the requested application as @application" do
-        get :check, id: @application.to_param, session: valid_session
+        get :check, params: {id: @application.to_param, session: valid_session}
         expect(assigns(:application_letter)).to eq(@application)
       end
 
       it "assigns the application deadline status as @application_deadline_exceeded" do
-        get :check, id: @application.to_param, session: valid_session
+        get :check, params: {id: @application.to_param, session: valid_session}
         expect(assigns(:application_deadline_exceeded)).to eq(@application.after_deadline?)
       end
 
@@ -90,14 +90,14 @@ RSpec.describe ApplicationLettersController, type: :controller do
         FactoryGirl.create(:application_letter, :accepted, user: user, event: event)
         sign_in(user)
 
-        get :check, id: @application.to_param
+        get :check, params: {id: @application.to_param}
         expect(flash.now["warning"]).to_not be_empty
       end
     end
 
     describe "GET #new" do
       it "assigns a new application as @application" do
-        get :new, session: valid_session
+        get :new, params: {session: valid_session}
         expect(assigns(:application_letter)).to be_a_new(ApplicationLetter)
       end
     end
@@ -117,31 +117,31 @@ RSpec.describe ApplicationLettersController, type: :controller do
         }
 
         it "updates the requested application" do
-          put :update, id: @application.to_param, application_letter: new_attributes, session: valid_session
+          put :update, params: {id: @application.to_param, application_letter: new_attributes, session: valid_session}
           @application.reload
           expect(@application.motivation).to eq(new_attributes[:motivation])
           expect(@application.annotation).to eq(new_attributes[:annotation])
         end
 
         it "assigns the requested application as @application" do
-          put :update, id: @application.to_param, application_letter: valid_attributes, session: valid_session
+          put :update, params: {id: @application.to_param, application_letter: valid_attributes, session: valid_session}
           expect(assigns(:application_letter)).to eq(@application)
         end
 
         it "redirects to application checking page" do
-          put :update, id: @application.to_param, application_letter: valid_attributes, session: valid_session
+          put :update, params: {id: @application.to_param, application_letter: valid_attributes, session: valid_session}
           expect(response).to redirect_to(check_application_letter_path(@application))
         end
       end
 
       context "with invalid params" do
         it "assigns the application as @application" do
-          put :update, id: @application.to_param, application_letter: invalid_attributes, session: valid_session
+          put :update, params: {id: @application.to_param, application_letter: invalid_attributes, session: valid_session}
           expect(assigns(:application_letter)).to eq(@application)
         end
 
         it "re-renders the 'edit' template" do
-          put :update, id: @application.to_param, application_letter: invalid_attributes, session: valid_session
+          put :update, params: {id: @application.to_param, application_letter: invalid_attributes, session: valid_session}
           expect(response).to render_template("edit")
         end
       end
@@ -155,36 +155,36 @@ RSpec.describe ApplicationLettersController, type: :controller do
         let(:new_status) { {status: 'accepted'} }
 
         it "assigns the requested application as @application" do
-          put :update_status, id: @application.to_param, application_letter: new_status, session: valid_session
+          put :update_status, params: {id: @application.to_param, application_letter: new_status, session: valid_session}
           expect(assigns(:application_letter)).to eq(@application)
         end
 
         it "updates the status" do
-          put :update_status, id: @application.to_param, application_letter: new_status, session: valid_session
+          put :update_status, params: {id: @application.to_param, application_letter: new_status, session: valid_session}
           @application.reload
           expect(@application.status).to eq(new_status[:status])
         end
 
         it "redirects back" do
-          put :update_status, id: @application.to_param, application_letter: new_status, session: valid_session
+          put :update_status, params: {id: @application.to_param, application_letter: new_status, session: valid_session}
           expect(response).to redirect_to(request.env['HTTP_REFERER'])
         end
 
         it "redirects to root if no referer is set" do
           request.env['HTTP_REFERER'] = nil
-          put :update_status, id: @application.to_param, application_letter: new_status, session: valid_session
+          put :update_status, params: {id: @application.to_param, application_letter: new_status, session: valid_session}
           expect(response).to redirect_to root_path
         end
       end
 
       context "with invalid params" do
         it "assigns the application as @application" do
-          put :update_status, id: @application.to_param, application_letter: {status: nil}, session: valid_session
+          put :update_status, params: {id: @application.to_param, application_letter: {status: nil}, session: valid_session}
           expect(assigns(:application_letter)).to eq(@application)
         end
 
         it "re-renders the 'edit' template" do
-          put :update_status, id: @application.to_param, application_letter: {status: nil}, session: valid_session
+          put :update_status, params: {id: @application.to_param, application_letter: {status: nil}, session: valid_session}
           expect(response).to render_template("edit")
         end
       end
@@ -193,12 +193,12 @@ RSpec.describe ApplicationLettersController, type: :controller do
     describe "DELETE #destroy" do
       it "destroys the requested application" do
         expect {
-          delete :destroy, id: @application.to_param, session: valid_session
+          delete :destroy, params: {id: @application.to_param, session: valid_session}
         }.to change(ApplicationLetter, :count).by(-1)
       end
 
       it "redirects to the applications list" do
-        delete :destroy, id: @application.to_param, session: valid_session
+        delete :destroy, params: {id: @application.to_param, session: valid_session}
         expect(response).to redirect_to(application_letters_url)
       end
     end
@@ -208,7 +208,7 @@ RSpec.describe ApplicationLettersController, type: :controller do
     it "sets the title text to 'Anmeldung aktualisieren' for hidden events" do
       sign_in FactoryGirl.create(:user_with_profile, role: :pupil)
       @event = FactoryGirl.create(:event, hidden: true)
-      get :new, session: valid_session, event_id: @event.id
+      get :new, params: {session: valid_session, event_id: @event.id}
       expect(assigns(:submit_button_text)).to match I18n.t('application_letters.helpers.submit.create')
     end
   end
@@ -220,43 +220,43 @@ RSpec.describe ApplicationLettersController, type: :controller do
     context "with valid params" do
       it "creates a new Application" do
         expect {
-          post :create, application_letter: valid_attributes, session: valid_session
+          post :create, params: {application_letter: valid_attributes, session: valid_session}
         }.to change(ApplicationLetter, :count).by(1)
       end
 
       it "sends an Email" do
         expect {
-          post :create, application_letter: valid_attributes, session: valid_session
+          post :create, params: {application_letter: valid_attributes, session: valid_session}
         }.to change{ActionMailer::Base.deliveries.count}.by(1)
       end
 
       it "assigns a newly created application as @application" do
-        post :create, application_letter: valid_attributes, session: valid_session
+        post :create, params: {application_letter: valid_attributes, session: valid_session}
         expect(assigns(:application_letter)).to be_a(ApplicationLetter)
         expect(assigns(:application_letter)).to be_persisted
       end
 
       it "redirects to the checking page for the created application" do
-        post :create, application_letter: valid_attributes, session: valid_session
+        post :create, params: {application_letter: valid_attributes, session: valid_session}
         expect(response).to redirect_to(check_application_letter_path(ApplicationLetter.last))
       end
     end
 
     context "with invalid params" do
       it "assigns a newly created but unsaved application as @application_letter" do
-        post :create, application_letter: invalid_attributes, session: valid_session
+        post :create, params: {application_letter: invalid_attributes, session: valid_session}
         expect(assigns(:application_letter)).to be_a_new(ApplicationLetter)
       end
 
       it "re-renders the 'new' template" do
-        post :create, application_letter: invalid_attributes, session: valid_session
+        post :create, params: {application_letter: invalid_attributes, session: valid_session}
         expect(response).to render_template("new")
       end
 
       it "re-renders the 'new' template for hidden events with title 'Anmeldung'" do
         @event = FactoryGirl.create(:event, hidden: true)
         @application_letter = FactoryGirl.build(:application_letter, motivation: nil, event_id: @event.id).attributes.merge(status: :pending)
-        post :create, application_letter: @application_letter, session: valid_session
+        post :create, params: {application_letter: @application_letter, session: valid_session}
         expect(assigns(:submit_button_text)).to match I18n.t('application_letters.helpers.submit.create')
       end
     end

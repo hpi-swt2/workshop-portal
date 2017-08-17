@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 ruby '2.2.2'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.2.7.1'
+gem 'rails', '=5.0.0'
 # Use SCSS for stylesheets
 # gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
@@ -128,6 +128,7 @@ group :development, :test do
   gem 'poltergeist'
   gem 'rspec-rails', '~> 3.6'
   gem 'rspec-steps', '~> 2.1.1'
+  gem 'rails-controller-testing'
   # gem 'database_cleaner'
   gem 'factory_girl_rails'
 end

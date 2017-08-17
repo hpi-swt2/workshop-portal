@@ -18,14 +18,14 @@ RSpec.describe UsersController, type: :controller do
 
       it "can update the role of a pupil to coach" do
         @test_user = FactoryGirl.create(:user, role: :pupil)
-        put :update_role, id: @test_user.id, user: {role: "coach"}
+        put :update_role, params: {id: @test_user.id, user: {role: "coach"}}
         @test_user.reload
         expect(@test_user.role).to eq("coach")
       end
 
       it "cannot update the role of an admin" do
         @test_user = FactoryGirl.create(:user, role: :admin)
-        put :update_role, id: @test_user.id, user: {role: "coach"}
+        put :update_role, params: {id: @test_user.id, user: {role: "coach"}}
         @test_user.reload
         expect(@test_user.role).to eq("admin")
       end
@@ -33,7 +33,7 @@ RSpec.describe UsersController, type: :controller do
       it "cannot update role to admin" do
         @test_user = FactoryGirl.create(:user, role: :coach)
         @test_user.role = "pupil"
-        put :update_role, id: @test_user.id, user: {role: "admin"}
+        put :update_role, params: {id: @test_user.id, user: {role: "admin"}}
         @test_user.reload
         expect(@test_user.role).to eq("coach")
       end
@@ -47,14 +47,14 @@ RSpec.describe UsersController, type: :controller do
 
       it "can update the role of a pupil to coach" do
         @test_user = FactoryGirl.create(:user, role: :pupil)
-        put :update_role, id: @test_user.id, user: {role: "coach"}
+        put :update_role, params: {id: @test_user.id, user: {role: "coach"}}
         @test_user.reload
         expect(@test_user.role).to eq("coach")
       end
 
       it "can update the role of an admin" do
         @test_user = FactoryGirl.create(:user, role: :admin)
-        put :update_role, id: @test_user.id, user: {role: "coach"}
+        put :update_role, params: {id: @test_user.id, user: {role: "coach"}}
         @test_user.reload
         expect(@test_user.role).to eq("coach")
       end
@@ -62,7 +62,7 @@ RSpec.describe UsersController, type: :controller do
       it "can update role to admin" do
         @test_user = FactoryGirl.create(:user, role: :coach)
         @test_user.role = "pupil"
-        put :update_role, id: @test_user.id, user: {role: "admin"}
+        put :update_role, params: {id: @test_user.id, user: {role: "admin"}}
         @test_user.reload
         expect(@test_user.role).to eq("admin")
       end
