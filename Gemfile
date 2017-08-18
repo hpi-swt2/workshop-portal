@@ -126,9 +126,9 @@ group :development, :test do
   gem 'capybara', '~> 2.5'
   gem 'database_cleaner'
   gem 'poltergeist'
+  gem 'rails-controller-testing'
   gem 'rspec-rails', '~> 3.6'
   gem 'rspec-steps', '~> 2.1.1'
-  gem 'rails-controller-testing'
   # gem 'database_cleaner'
   gem 'factory_girl_rails'
 end
