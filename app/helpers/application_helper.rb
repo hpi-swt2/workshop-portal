@@ -5,27 +5,26 @@ require 'redcarpet/render_strip'
 # except paragraphs
 class MarkdownRenderTruncate < Redcarpet::Render::Base
   def paragraph(text)
-    CGI::escapeHTML(text) + ' '
+    CGI.escapeHTML(text) + ' '
   end
 
-  def link(link, title, content)
-    CGI::escapeHTML(content)
+  def link(_link, _title, content)
+    CGI.escapeHTML(content)
   end
 end
 
 module ApplicationHelper
   def menu_items
     (menu_item t(:events, scope: 'navbar'), events_path) +
-    request_menu_item
+      request_menu_item
   end
 
   def request_menu_item
     if can? :index, Request
-      item = (menu_item t(:requests, scope: 'navbar'), requests_path)
+      (menu_item t(:requests, scope: 'navbar'), requests_path)
     else
-      item = (menu_item t(:new_request, scope: 'navbar'), new_request_path)
+      (menu_item t(:new_request, scope: 'navbar'), new_request_path)
     end
-    item
   end
 
   # Render the given string as markdown
@@ -36,21 +35,17 @@ module ApplicationHelper
   def markdown(text, truncatable = false)
     renderer = truncatable ?
       MarkdownRenderTruncate.new :
-      Redcarpet::Render::HTML.new({
-        filter_html: true,
-        hard_wrap: true,
-        tables: true,
-        strikethrough: true,
-        link_attributes: { rel: 'nofollow', target: "_blank" },
-        space_after_headers: true,
-        fenced_code_blocks: true
-      })
+      Redcarpet::Render::HTML.new(filter_html: true,
+                                  hard_wrap: true,
+                                  tables: true,
+                                  strikethrough: true,
+                                  link_attributes: { rel: 'nofollow', target: '_blank' },
+                                  space_after_headers: true,
+                                  fenced_code_blocks: true)
 
-    Redcarpet::Markdown.new(renderer, {
-      autolink: true,
-      superscript: true,
-      disable_indented_code_blocks: true
-    }).render(text).html_safe
+    Redcarpet::Markdown.new(renderer, autolink: true,
+                                      superscript: true,
+                                      disable_indented_code_blocks: true).render(text).html_safe
   end
 
   def dropdown_items
@@ -62,15 +57,15 @@ module ApplicationHelper
       o << (menu_item t(:create_profile, scope: 'navbar'), new_profile_path)
     end
     # pupils get their applications
-    if current_user.role == "pupil"
+    if current_user.role == 'pupil'
       o << (menu_item t(:my_events, scope: 'navbar'), application_letters_path)
     end
     # admins get user management
-    if current_user.role == "admin" || current_user.role == "organizer"
+    if current_user.role == 'admin' || current_user.role == 'organizer'
       o << (menu_item t(:user_management, scope: 'navbar'), users_path)
     end
     # everyone gets logout
-    o << (menu_item t(:logout, scope: 'navbar'), destroy_user_session_path, :method => :delete)
+    o << (menu_item t(:logout, scope: 'navbar'), destroy_user_session_path, method: :delete)
 
     o.html_safe
   end

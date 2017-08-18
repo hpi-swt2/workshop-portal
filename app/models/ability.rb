@@ -34,55 +34,52 @@ class Ability
     # Even guests can see the apply button
     # This is revoked for coaches and organizers below.
     can :view_apply_button, Event
-    can [:show, :index, :archive], Event
-
+    can %i(show index archive), Event
 
     if user.role? :pupil
       # Pupils can only edit their own profiles
-      can [:new, :create], Profile
-      can [:index, :show, :edit, :update, :destroy], Profile, user: { id: user.id }
+      can %i(new create), Profile
+      can %i(index show edit update destroy), Profile, user: { id: user.id }
       # Pupils can only edit their own applications
-      if user.profile.present?
-        can [:new, :create], ApplicationLetter
-      end
-      can [:index, :show, :edit, :update, :check, :destroy], ApplicationLetter, user: { id: user.id }
+      can %i(new create), ApplicationLetter if user.profile.present?
+      can %i(index show edit update check destroy), ApplicationLetter, user: { id: user.id }
       # Pupils can upload their letters of agreement
       can [:create], AgreementLetter
-      can [:new, :create], Request
+      can %i(new create), Request
       cannot :view_personal_details, ApplicationLetter, user: { id: !user.id }
     end
     if user.role? :coach
       # Coaches can view Applications and participants for and view, upload and download materials for Event
-      can [:view_applicants, :view_participants, :view_material, :upload_material, :print_applications, :download_material], Event
-      can [:view_and_add_notes, :show], ApplicationLetter
-      can [:show, :index], Request
+      can %i(view_applicants view_participants view_material upload_material print_applications download_material), Event
+      can %i(view_and_add_notes show), ApplicationLetter
+      can %i(show index), Request
       cannot :view_apply_button, Event
       cannot :check, ApplicationLetter
     end
     if user.role? :organizer
-      can [:index, :show], Profile
-      can [:index, :show, :view_and_add_notes, :update_status], ApplicationLetter
+      can %i(index show), Profile
+      can %i(index show view_and_add_notes update_status), ApplicationLetter
       cannot :update, ApplicationLetter
-      can [:view_applicants, :edit_applicants, :view_participants, :print_applications,
-           :manage, :view_material, :upload_material, :print_agreement_letters, :download_material,
-           :view_unpublished, :show_eating_habits, :print_applications_eating_habits, :view_hidden], Event
+      can %i(view_applicants edit_applicants view_participants print_applications
+             manage view_material upload_material print_agreement_letters download_material
+             view_unpublished show_eating_habits print_applications_eating_habits view_hidden), Event
       can :send_email, Email
-      can [:manage, :set_contact_person, :set_notes], Request
+      can %i(manage set_contact_person set_notes), Request
       cannot :apply, Event
       cannot :view_apply_button, Event
-      can [:edit, :update, :destroy], Event
+      can %i(edit update destroy), Event
       can [:update], ParticipantGroup
 
       # Organizers can update user roles of pupil, coach and organizer, but cannot manage admins and cannot update a role to admin
-      can :manage, User, role: ["pupil", "coach", "organizer"]
-      cannot :update_role, User, role: "admin"
+      can :manage, User, role: %w(pupil coach organizer)
+      cannot :update_role, User, role: 'admin'
       cannot :update_role_to_admin, User
     end
     if user.role? :admin
       can :manage, :all
 
       can :view_delete_button, ApplicationLetter
-      cannot [:edit, :update], ApplicationLetter
+      cannot %i(edit update), ApplicationLetter
     end
   end
 end

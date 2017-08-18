@@ -15,7 +15,7 @@ class AgreementLettersController < ApplicationController
 
     if @agreement_letter.save && @agreement_letter.save_file(file)
       redirect_to check_application_letter_path(application_letter),
-                  notice: t("agreement_letters.upload_success")
+                  notice: t('agreement_letters.upload_success')
     else
       redirect_to check_application_letter_path(application_letter),
                   alert: @agreement_letter.errors.full_messages

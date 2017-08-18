@@ -30,7 +30,7 @@ class User < ActiveRecord::Base
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable,
-         :omniauthable, :omniauth_providers => [:hpiopenid]
+         :omniauthable, omniauth_providers: [:hpiopenid]
 
   has_one :profile
   has_many :agreement_letters
@@ -39,7 +39,7 @@ class User < ActiveRecord::Base
 
   before_create :set_default_role
 
-  ROLES = %i[pupil coach organizer admin]
+  ROLES = %i(pupil coach organizer admin).freeze
 
   def role?(base_role)
     return false unless role
@@ -54,7 +54,7 @@ class User < ActiveRecord::Base
   def self.from_omniauth(auth)
     where(provider: auth.provider, uid: auth.uid).first_or_create! do |user|
       user.email = auth.info.email
-      user.password = Devise.friendly_token[0,20]
+      user.password = Devise.friendly_token[0, 20]
       user.role = :pupil
       # user.name = auth.info.first_name + " " + auth.info.last_name
 
@@ -75,7 +75,7 @@ class User < ActiveRecord::Base
   # @return [Array<Event>] the user's events
   def events
     accepted_applications = application_letters.where(status: ApplicationLetter.statuses[:accepted])
-    accepted_applications.collect { |a| a.event }
+    accepted_applications.collect(&:event)
   end
 
   # Returns true iff. user has submitted an application letter for the given event
@@ -83,7 +83,7 @@ class User < ActiveRecord::Base
   # @param [Event] given_event
   # @return [Boolean]
   def application_letter_for_event?(given_event)
-    return !self.application_letter_for_event(given_event).nil?
+    !application_letter_for_event(given_event).nil?
   end
 
   # Returns the application letter the user has submitted for given_event. Returns Nil if no such letter exists.
@@ -91,15 +91,15 @@ class User < ActiveRecord::Base
   # @param [Event] given_event
   # @return [ApplicationLetter, Nil]
   def application_letter_for_event(given_event)
-    return self.application_letters.find{ |letter| letter.event == given_event }
+    application_letters.find { |letter| letter.event == given_event }
   end
 
-  #Returns the events, for which a user has not uploaded an agreement letter
+  # Returns the events, for which a user has not uploaded an agreement letter
   #
   # @param none
   # @return [Array<Event>]
   def events_with_missing_agreement_letters
-    events.select{ |e| (AgreementLetter.where(user_id: self.id, event_id: e.id).blank? and requires_agreement_letter_for_event?(e))}
+    events.select { |e| (AgreementLetter.where(user_id: id, event_id: e.id).blank? && requires_agreement_letter_for_event?(e)) }
   end
 
   # Returns true iff. user has submitted an agreement_letter for the given event
@@ -107,7 +107,7 @@ class User < ActiveRecord::Base
   # @param [Event] given_event
   # @return [Boolean]
   def agreement_letter_for_event?(given_event)
-    return !self.agreement_letter_for_event(given_event).nil?
+    !agreement_letter_for_event(given_event).nil?
   end
 
   # Returns the agreement letter the user has submitted for given_event. Returns Nil if no such letter exists.
@@ -115,7 +115,7 @@ class User < ActiveRecord::Base
   # @param [Event] given_event
   # @return [AgreementLetter, Nil]
   def agreement_letter_for_event(given_event)
-    return self.agreement_letters.find{ |letter| letter.event == given_event }
+    agreement_letters.find { |letter| letter.event == given_event }
   end
 
   # Returns true iff. user is at least 18 years old at the start date of given_event
@@ -123,7 +123,7 @@ class User < ActiveRecord::Base
   # @param [Event] given_event
   # @return [Boolean]
   def requires_agreement_letter_for_event?(given_event)
-    return (not self.older_than_required_age_at_start_date_of_event?(given_event, 18))
+    !older_than_required_age_at_start_date_of_event?(given_event, 18)
   end
 
   # Returns true iff. the age of user is age or more at the start_date of given_event. Returns false if age of user is unknown.
@@ -131,9 +131,9 @@ class User < ActiveRecord::Base
   # @param given_event [Event], age [Integer]
   # @return [Boolean]
   def older_than_required_age_at_start_date_of_event?(given_event, age)
-    return false unless self.profile
-    age_at_event_start = self.profile.age_at_time(given_event.start_date)
-	  return age_at_event_start >= age
+    return false unless profile
+    age_at_event_start = profile.age_at_time(given_event.start_date)
+    age_at_event_start >= age
   end
 
   # Returns the number of accepted applications from the user without counting status of current event application
@@ -142,7 +142,7 @@ class User < ActiveRecord::Base
   # @return [Int] of number of currently accepted applications
   def accepted_applications_count(event)
     ApplicationLetter.where(user_id: id, status: ApplicationLetter.statuses[:accepted])
-        .where.not(event: event).count()
+                     .where.not(event: event).count
   end
 
   # Returns the number of rejected applications from the user without counting status of current event application
@@ -150,7 +150,7 @@ class User < ActiveRecord::Base
   # @param current event (which application status will be excluded)
   # @return [Int] of number of currently rejected applications
   def rejected_applications_count(event)
-    ApplicationLetter.where(user_id: id, status: ApplicationLetter.statuses[:rejected]).where.not(event: event).count()
+    ApplicationLetter.where(user_id: id, status: ApplicationLetter.statuses[:rejected]).where.not(event: event).count
   end
 
   # Searches all users with last/first_name containing pattern
@@ -158,15 +158,15 @@ class User < ActiveRecord::Base
   # @param pattern to search for
   # @return [Array<User>] all users with pattern in their name
   def self.search(pattern)
-    with_profiles.where("profiles.first_name LIKE ? or profiles.last_name LIKE ?", "%#{pattern}%", "%#{pattern}%")
+    with_profiles.where('profiles.first_name LIKE ? or profiles.last_name LIKE ?', "%#{pattern}%", "%#{pattern}%")
   end
 
   # Provides access to profile information
   # and orders users by first, last name and email (if user has no profile)
   #
   # @return [Array<User>] all users including their profile information
-  def self.with_profiles()
-    joins("LEFT JOIN profiles ON users.id = profiles.user_id")
-         .order('profiles.first_name, profiles.last_name, users.email ASC')
+  def self.with_profiles
+    joins('LEFT JOIN profiles ON users.id = profiles.user_id')
+      .order('profiles.first_name, profiles.last_name, users.email ASC')
   end
 end

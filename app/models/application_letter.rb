@@ -32,23 +32,22 @@ class ApplicationLetter < ActiveRecord::Base
   serialize :custom_application_fields, Array
 
   validates_presence_of :user, :event, :motivation, :emergency_number, :organisation
-  #Use 0 as default for hidden event applications
+  # Use 0 as default for hidden event applications
   validates :vegetarian, :vegan, :allergic, inclusion: { in: [true, false] }
   validates :vegetarian, :vegan, :allergic, exclusion: { in: [nil] }
-  validate :deadline_cannot_be_in_the_past, :if => Proc.new { |letter| !(letter.status_changed? || letter.status_notification_sent_changed?) }
-  validate :status_notification_sent_cannot_be_changed, :if => Proc.new { |letter| letter.status_notification_sent_changed? }
-  validate :status_cannot_be_changed, :if => Proc.new { |letter| letter.status_changed? }
+  validate :deadline_cannot_be_in_the_past, if: proc { |letter| !(letter.status_changed? || letter.status_notification_sent_changed?) }
+  validate :status_notification_sent_cannot_be_changed, if: proc { |letter| letter.status_notification_sent_changed? }
+  validate :status_cannot_be_changed, if: proc { |letter| letter.status_changed? }
 
-  enum status: {accepted: 1, rejected: 0, pending: 2, alternative: 3, canceled: 4}
+  enum status: { accepted: 1, rejected: 0, pending: 2, alternative: 3, canceled: 4 }
   validates :status, inclusion: { in: statuses.keys }
-
 
   # Returns an array of selectable statuses
   #
   # @param none
   # @return [Array <String>] array of selectable statuses
   def self.selectable_statuses
-    ["accepted","rejected","pending","alternative"]
+    %w(accepted rejected pending alternative)
   end
 
   # Checks if the deadline is over
@@ -86,21 +85,21 @@ class ApplicationLetter < ActiveRecord::Base
   # Adds error
   def deadline_cannot_be_in_the_past
     if after_deadline?
-      errors.add(:event, I18n.t("application_letters.form.warning"))
+      errors.add(:event, I18n.t('application_letters.form.warning'))
     end
   end
-  
-  # Since EatingHabits are persited in booleans we need to generate a 
+
+  # Since EatingHabits are persited in booleans we need to generate a
   # EatingHabitStateCode to allow sorting
   # US 28_4.5
-   
-   def get_eating_habit_state
-     eating_habit_state = 0
-     eating_habit_state += 4 if vegetarian
-     eating_habit_state += 5 if vegan
-     eating_habit_state += 99 if allergic
-     return eating_habit_state
-   end
+
+  def get_eating_habit_state
+    eating_habit_state = 0
+    eating_habit_state += 4 if vegetarian
+    eating_habit_state += 5 if vegan
+    eating_habit_state += 99 if allergic
+    eating_habit_state
+  end
 
   # Chooses right status based on status and event deadline
   #
@@ -108,20 +107,20 @@ class ApplicationLetter < ActiveRecord::Base
   # @return [String] to display on the website
   def status_type
     case ApplicationLetter.statuses[status]
-      when ApplicationLetter.statuses[:accepted]
-        return I18n.t("application_status.accepted")
-      when ApplicationLetter.statuses[:rejected]
-        return I18n.t("application_status.rejected")
-      when ApplicationLetter.statuses[:pending]
-        if after_deadline?
-          return I18n.t("application_status.pending_after_deadline")
-        else
-          return I18n.t("application_status.pending_before_deadline")
-        end
-      when ApplicationLetter.statuses[:canceled]
-        return I18n.t("application_status.canceled")
+    when ApplicationLetter.statuses[:accepted]
+      I18n.t('application_status.accepted')
+    when ApplicationLetter.statuses[:rejected]
+      I18n.t('application_status.rejected')
+    when ApplicationLetter.statuses[:pending]
+      if after_deadline?
+        I18n.t('application_status.pending_after_deadline')
       else
-        return I18n.t("application_status.alternative")
+        I18n.t('application_status.pending_before_deadline')
+      end
+    when ApplicationLetter.statuses[:canceled]
+      I18n.t('application_status.canceled')
+    else
+      I18n.t('application_status.alternative')
     end
   end
 
@@ -154,7 +153,7 @@ class ApplicationLetter < ActiveRecord::Base
   # @param none
   # @return [Array <String>] array of eating habits, empty if none
   def eating_habits
-    habits = Array.new
+    habits = []
     habits.push(ApplicationLetter.human_attribute_name(:vegetarian)) if vegetarian
     habits.push(ApplicationLetter.human_attribute_name(:vegan)) if vegan
     habits.push(ApplicationLetter.human_attribute_name(:allergies)) if allergic
@@ -162,6 +161,6 @@ class ApplicationLetter < ActiveRecord::Base
   end
 
   def allergic
-    not allergies.empty?
+    !allergies.empty?
   end
 end

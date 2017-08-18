@@ -16,10 +16,10 @@ class EventImageUploader < CarrierWave::Uploader::Base
 
   # Fill in the upload sizes once the image has been uploaded, so that
   # our model can use them for validation
-  def capture_size_before_cache(new_file) 
+  def capture_size_before_cache(new_file)
     # Only do this once, to the original version
     if version_name.blank?
-        @upload_width, @upload_height = `identify -format "%wx %h" #{new_file.path}`.split(/x/).map { |dim| dim.to_i }
+      @upload_width, @upload_height = `identify -format "%wx %h" #{new_file.path}`.split(/x/).map(&:to_i)
     end
   end
 
@@ -39,5 +39,4 @@ class EventImageUploader < CarrierWave::Uploader::Base
   def extension_whitelist
     %w(jpg jpeg gif png)
   end
-
 end

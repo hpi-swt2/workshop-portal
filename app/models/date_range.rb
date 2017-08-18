@@ -16,7 +16,6 @@
 
 #
 class DateRange < ActiveRecord::Base
-
   belongs_to :event
 
   validate :validate_end_not_before_start

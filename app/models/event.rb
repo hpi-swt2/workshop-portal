@@ -48,7 +48,7 @@ class Event < ActiveRecord::Base
   # if we uploaded a custom image, we want it to be synced to the "official"
   # image slot. only do this if we actually uploaded one and that image is valid
   def update_image
-    if custom_image.filename.present? and errors[:custom_image].empty?
+    if custom_image.filename.present? && errors[:custom_image].empty?
       self.image = '/' + custom_image.list_view.store_path
     end
   end
@@ -59,11 +59,10 @@ class Event < ActiveRecord::Base
     if custom_image.upload_width.present? &&
        custom_image.upload_height.present? &&
        (custom_image.upload_width < 200 || custom_image.upload_height < 155)
-      errors.add(:custom_image, I18n.t("events.errors.image_too_small"))
+      errors.add(:custom_image, I18n.t('events.errors.image_too_small'))
       custom_image.remove!
     end
   end
-
 
   # Returns all participants for this event in following order:
   # 1. All participants that have to submit an letter of agreement but did not yet do so, ordered by name.
@@ -73,8 +72,8 @@ class Event < ActiveRecord::Base
   # @param none
   # @return [Array<User>] the event's participants in that order.
   def participants_by_agreement_letter
-    @participants = self.participants
-    @participants.sort { |x, y| self.compare_participants_by_agreement(x,y) }
+    @participants = participants
+    @participants.sort { |x, y| compare_participants_by_agreement(x, y) }
   end
 
   # Checks if the participant selection is locked
@@ -87,12 +86,12 @@ class Event < ActiveRecord::Base
 
   # @return the minimum start_date over all date ranges
   def start_date
-    (date_ranges.min { |a,b| a.start_date <=> b.start_date }).start_date
+    date_ranges.min_by(&:start_date).start_date
   end
 
   # @return the minimum end_date over all date ranges
   def end_date
-    (date_ranges.max { |a,b| a.end_date <=> b.end_date }).end_date
+    date_ranges.max_by(&:end_date).end_date
   end
 
   # @return whether this event appears unreasonably long as defined by
@@ -106,7 +105,7 @@ class Event < ActiveRecord::Base
     errors.add(:date_ranges, I18n.t('date_range.errors.no_timespan')) if date_ranges.blank?
   end
 
-  #validate that application deadline is before the start of the event
+  # validate that application deadline is before the start of the event
   def application_deadline_before_start_of_event
     errors.add(:application_deadline, I18n.t('events.errors.application_deadline_before_start_of_event')) if application_deadline.present? && !date_ranges.blank? && application_deadline > start_date
   end
@@ -125,7 +124,7 @@ class Event < ActiveRecord::Base
   # @return [Array<User>] the event's participants
   def participants
     accepted_applications = application_letters.where(status: ApplicationLetter.statuses[:accepted])
-    accepted_applications.collect { |a| a.user }
+    accepted_applications.collect(&:user)
   end
 
   # Returns the participant group for this event for a given participant (user). If it doesn't exist, it is created
@@ -133,7 +132,7 @@ class Event < ActiveRecord::Base
   # @param user [User] the user whose participant group we want
   # @return [ParticipantGroup] the user's participant group
   def participant_group_for(user)
-    participant_group = self.participant_groups.find_by(user: user)
+    participant_group = participant_groups.find_by(user: user)
     if participant_group.nil?
       participant_group = ParticipantGroup.create(event: self, user: user, group: ParticipantGroup::GROUPS.default)
     end
@@ -145,7 +144,7 @@ class Event < ActiveRecord::Base
   # @param user [User] the user whose agreement letter we want
   # @return [AgreementLetter, nil] the user's agreement letter or nil
   def agreement_letter_for(user)
-    self.agreement_letters.where(user: user).take
+    agreement_letters.where(user: user).take
   end
 
   # Returns whether all application_letters are classified or not
@@ -160,12 +159,10 @@ class Event < ActiveRecord::Base
   #
   # @return [String] the translated tooltip text or nil if mails can be sent
   def send_mails_tooltip
-    if not applications_classified?
+    if !applications_classified?
       I18n.t 'events.applicants_overview.unclassified_applications_left'
     elsif compute_free_places < 0
       I18n.t 'events.applicants_overview.maximum_number_of_participants_exeeded'
-    else
-      nil
     end
   end
 
@@ -182,7 +179,7 @@ class Event < ActiveRecord::Base
   # @param status [Type] the desired application status the flag should be set for
   # @return none
   def set_status_notification_flag_for_applications_with_status(status)
-    applications = application_letters.select {|application| application.status == status.to_s}
+    applications = application_letters.select { |application| application.status == status.to_s }
     applications.each do |application_letter|
       application_letter.update(status_notification_sent: true)
     end
@@ -205,11 +202,11 @@ class Event < ActiveRecord::Base
   # @return [Email] new email
   def generate_participants_email(all, groups, users)
     Email.new(
-        :hide_recipients => false,
-        :recipients => email_addresses_of_participants(all, groups, users),
-        :reply_to => '',
-        :subject => '',
-        :content => ''
+      hide_recipients: false,
+      recipients: email_addresses_of_participants(all, groups, users),
+      reply_to: '',
+      subject: '',
+      content: ''
     )
   end
 
@@ -217,17 +214,17 @@ class Event < ActiveRecord::Base
   #
   # @return [Array<Array<String, Int>>]
   def participants_with_id
-    participants.map{|participant| [participant.profile.name, participant.id]}
+    participants.map { |participant| [participant.profile.name, participant.id] }
   end
 
   # Returns a list of group names and their id
   #
   # @return Array<Array<String, Int>>
   def groups_with_id
-    existing = ParticipantGroup::GROUPS.select do |group_id,_|
-      group_id != 0 && participant_groups.where(:group => group_id).any?
+    existing = ParticipantGroup::GROUPS.select do |group_id, _|
+      group_id != 0 && participant_groups.where(group: group_id).any?
     end
-    existing.map do |group_id,color_code|
+    existing.map do |group_id, color_code|
       [I18n.t("participant_groups.options.#{color_code}"), group_id]
     end
   end
@@ -261,7 +258,7 @@ class Event < ActiveRecord::Base
   # @param none
   # @return [Symbol] state
   def phase
-    return :draft if !published
+    return :draft unless published
     return :application if published && !after_deadline?
     return :selection if published && after_deadline? && !(acceptances_have_been_sent && rejections_have_been_sent)
     return :execution if published && after_deadline? && acceptances_have_been_sent && rejections_have_been_sent
@@ -281,7 +278,7 @@ class Event < ActiveRecord::Base
   # @return string containing the label or nil
   def application_deadline_label
     days = (application_deadline - Date.current).to_i
-    return I18n.t('events.notices.deadline_approaching', count: days) if days <= 7 and days >= 0
+    return I18n.t('events.notices.deadline_approaching', count: days) if days <= 7 && days >= 0
   end
 
   # Uses the start date to determine whether or not this event is in the past (or more
@@ -289,7 +286,7 @@ class Event < ActiveRecord::Base
   #
   # @return boolean if it's in the past
   def is_past
-    return start_date < Date.current
+    start_date < Date.current
   end
 
   # Returns a label that describes the duration of the event in days,
@@ -317,12 +314,12 @@ class Event < ActiveRecord::Base
   # @return [ApplicationLetter] the application letters found
   def application_letters_ordered(field, order_by)
     field = case field
-              when "email"
-                "users.email"
-              when "birth_date", "first_name", "last_name"
-                "profiles." + field
-              else
-                "users.email"
+            when 'email'
+              'users.email'
+            when 'birth_date', 'first_name', 'last_name'
+              'profiles.' + field
+            else
+              'users.email'
             end
     order_by = 'asc' unless order_by == 'asc' || order_by == 'desc'
     application_letters.joins(user: :profile).order(field + ' ' + order_by)
@@ -331,7 +328,7 @@ class Event < ActiveRecord::Base
   # Make sure any assignment coming from the controller
   # replaces all date ranges instead of adding new ones
   def date_ranges_attributes=(*args)
-    self.date_ranges.clear
+    date_ranges.clear
     super(*args)
   end
 
@@ -339,7 +336,7 @@ class Event < ActiveRecord::Base
   #
   # @return [String] path in the material storage
   def material_path
-    File.join("storage/materials/", self.id.to_s + "_event")
+    File.join('storage/materials/', id.to_s + '_event')
   end
 
   # Make sure we add errors from our date_range children
@@ -353,8 +350,8 @@ class Event < ActiveRecord::Base
     end
   end
 
-  scope :draft_is, ->(status) { where("not published = ?", status) }
-  scope :hidden_is, ->(status) { where("hidden = ?", status) }
+  scope :draft_is, ->(status) { where('not published = ?', status) }
+  scope :hidden_is, ->(status) { where('hidden = ?', status) }
   scope :with_date_ranges, -> { joins(:date_ranges).group('events.id').order('MIN(start_date)') }
   scope :future, -> { with_date_ranges.having('date(MAX(end_date)) > ?', Time.zone.yesterday.end_of_day) }
   scope :past, -> { with_date_ranges.having('date(MAX(end_date)) < ?', Time.zone.now.end_of_day) }
@@ -386,7 +383,7 @@ class Event < ActiveRecord::Base
       end
     end
 
-    {name: (I18n.t 'emails.ical_attachment'), content: cal.to_ical}
+    { name: (I18n.t 'emails.ical_attachment'), content: cal.to_ical }
   end
 
   protected
@@ -396,30 +393,28 @@ class Event < ActiveRecord::Base
   # @param none
   # @return [String] Concatenation of all email addresses of accepted applications, seperated by ','
   def email_addresses_of_accepted_applicants
-    participants.collect { |user| user.email }.join(',')
+    participants.collect(&:email).join(',')
   end
 
   # Returns a list of email addresses of all participants that are in one of the given groups
   #
   # @return [String]
   def email_addresses_of_groups(groups)
-    if groups.nil?
-      groups = []
-    end
-    groups.reduce([]) {|addresses, group| addresses + email_addresses_of_group(group)}.uniq
+    groups = [] if groups.nil?
+    groups.reduce([]) { |addresses, group| addresses + email_addresses_of_group(group) }.uniq
   end
 
   # Returns a list of email addresses of all participants that are in this exact group
   #
   # @return [String]
   def email_addresses_of_group(group)
-    participant_groups.where(:group => group).map {|participant_group| participant_group.user.email}
+    participant_groups.where(group: group).map { |participant_group| participant_group.user.email }
   end
 
   # Returns a list of email addresses
   def email_addresses_of_users(users)
     user = User.where(id: users)
-    user.map{ |user| user.email }
+    user.map(&:email)
   end
 
   # Returns all email addresses of user that fit the given criteria
@@ -447,19 +442,14 @@ class Event < ActiveRecord::Base
       end
       return 1
     end
-    unless participant2.requires_agreement_letter_for_event?(self)
-      return -1
-    end
+    return -1 unless participant2.requires_agreement_letter_for_event?(self)
     if participant1.agreement_letter_for_event?(self)
       if participant2.agreement_letter_for_event?(self)
         return participant1.email <=> participant2.email
       end
       return 1
     end
-    if participant2.agreement_letter_for_event?(self)
-      return -1
-    end
-    return participant1.email <=> participant2.email
+    return -1 if participant2.agreement_letter_for_event?(self)
+    participant1.email <=> participant2.email
   end
-
 end

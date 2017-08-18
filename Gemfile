@@ -35,20 +35,20 @@ gem 'jquery-ui-rails'
 # Authentication
 gem 'devise'
 # openID Authentication
-#gem 'devise_openid_authenticatable'
+# gem 'devise_openid_authenticatable'
 gem 'omniauth'
 gem 'omniauth-openid'
 
 # Use Bootstrap (app/assets/stylesheets) for app styling
 # Also provides some nifty helpers:
 # https://github.com/seyhunak/twitter-bootstrap-rails#using-helpers
-gem "therubyracer"
-#gem 'less-rails-bootstrap'
+gem 'therubyracer'
+# gem 'less-rails-bootstrap'
 # less-rails requires an older sprockets
-gem "sprockets", '3.6.3'
-gem "less-rails"
-gem 'twitter-bootstrap-rails'
+gem 'less-rails'
 gem 'ref'
+gem 'sprockets', '3.6.3'
+gem 'twitter-bootstrap-rails'
 # Boostrap-syle view for devise
 gem 'devise-bootstrap-views'
 # Integrates Bootstrap Tooltip library with Rails asset pipeline
@@ -63,10 +63,10 @@ gem 'bootstrap-datepicker-rails'
 gem 'airbrake'
 
 # to parse date parameters from ui
-gem "delocalize"
+gem 'delocalize'
 # American style month/day/year parsing for ruby 1.9
 # https://github.com/jeremyevans/ruby-american_date
-gem "american_date"
+gem 'american_date'
 
 # Authorisation library, define who is allowed what
 # See https://github.com/CanCanCommunity/cancancan
@@ -77,7 +77,7 @@ gem 'cancancan'
 gem 'has_scope'
 
 # Static code analysis
-gem 'rubocop', '~> 0.29.1'
+gem 'rubocop', '0.46'
 
 # DSL for building forms
 # See https://github.com/plataformatec/simple_form
@@ -91,15 +91,15 @@ gem 'owlcarousel-rails', github: 'acrogenesis/owlcarousel-rails', branch: 'OwlCa
 gem 'coveralls', require: false
 
 # pdf generation
+gem 'combine_pdf'
 gem 'prawn'
 gem 'prawn-table'
-gem 'combine_pdf'
 
-#zip generation
+# zip generation
 gem 'rubyzip', require: 'zip'
 
 # pdf inspection
-gem 'pdf-inspector', require: "pdf/inspector"
+gem 'pdf-inspector', require: 'pdf/inspector'
 
 # Simple, Heroku-friendly Rails app configuration using ENV and a single YAML file
 gem 'figaro'
@@ -107,7 +107,7 @@ gem 'figaro'
 # Allow ORM functionality in plain ruby models
 gem 'active_attr'
 
-#to only display a limited number of items on an index page
+# to only display a limited number of items on an index page
 gem 'will_paginate-bootstrap'
 
 # Markdown renderer
@@ -123,11 +123,11 @@ gem 'icalendar'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
+  gem 'capybara', '~> 2.5'
+  gem 'database_cleaner'
+  gem 'poltergeist'
   gem 'rspec-rails', '~> 3.6'
   gem 'rspec-steps', '~> 2.1.1'
-  gem 'capybara', '~> 2.5'
-  gem 'poltergeist'
-  gem 'database_cleaner'
   # gem 'database_cleaner'
   gem 'factory_girl_rails'
 end
@@ -160,17 +160,15 @@ end
 
 group :test do
   # Coverage information
+  gem 'codeclimate-test-reporter', '~> 1.0.0'
   gem 'simplecov'
-  gem "codeclimate-test-reporter", "~> 1.0.0"
   # Explicitly set parser version, to remove warnings
   # Might lead to problems with other gems that require higher parser versions
   # In that case, update to a newer Ruby version
-  gem 'parser', '~> 2.2.2.5'
+  gem 'parser', '~> 2.3.3.1'
   # Stubbing external calls by blocking traffic with WebMock.disable_net_connect! or allow:
   # gem 'webmock'
-
 end
-
 
 group :production do
   # Use Puma web server

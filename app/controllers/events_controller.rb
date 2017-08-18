@@ -4,15 +4,14 @@ require 'pdf_generation/participants_pdf'
 require 'rubygems'
 require 'zip'
 require 'carrierwave'
-require "event_image_upload_helper"
+require 'event_image_upload_helper'
 
 class EventsController < ApplicationController
   include EventImageUploadHelper
   load_and_authorize_resource
-  skip_authorize_resource :only => [:badges, :download_agreement_letters, :send_participants_email]
-  before_action :set_event, only: [:show, :edit, :update, :destroy, :participants,
-    :participants_pdf, :print_applications, :print_applications_eating_habits, :badges, :print_badges]
-
+  skip_authorize_resource only: %i(badges download_agreement_letters send_participants_email)
+  before_action :set_event, only: %i(show edit update destroy participants
+                                     participants_pdf print_applications print_applications_eating_habits badges print_badges)
 
   # GET /events
   def index
@@ -25,8 +24,8 @@ class EventsController < ApplicationController
 
   # GET /events/1
   def show
-    if @event.hidden and !can? :view_hidden, Event
-      redirect_to new_application_letter_path(:event_id => @event.id)
+    if @event.hidden && !can?(:view_hidden, Event)
+      redirect_to new_application_letter_path(event_id: @event.id)
     end
     @free_places = @event.compute_free_places
     @occupied_places = @event.compute_occupied_places
@@ -91,12 +90,12 @@ class EventsController < ApplicationController
     selected_participants &= @participants
     if selected_participants.empty?
       flash.now[:error] = I18n.t('events.badges.no_users_selected')
-      render 'badges' and return
+      render('badges') && return
     end
 
     begin
       pdf = BadgesPDF.generate(@event, selected_participants, name_format, show_color, show_organisation, logo)
-      send_data pdf, filename: "badges.pdf", type: "application/pdf", disposition: "inline"
+      send_data pdf, filename: 'badges.pdf', type: 'application/pdf', disposition: 'inline'
     rescue Prawn::Errors::UnsupportedImageType
       flash.now[:error] = I18n.t('events.badges.wrong_file_format')
       render 'badges'
@@ -112,12 +111,12 @@ class EventsController < ApplicationController
   # GET /events/1/print_applications
   def print_applications
     pdf = ApplicationsPDF.generate(@event)
-    send_data pdf, filename: "applications_#{@event.name}_#{Date.today}.pdf", type: "application/pdf", disposition: "inline"
+    send_data pdf, filename: "applications_#{@event.name}_#{Date.today}.pdf", type: 'application/pdf', disposition: 'inline'
   end
 
   def print_applications_eating_habits
     pdf = ParticipantsPDF.generate(@event)
-    send_data pdf, filename: "applications_eating_habits_#{@event.name}_#{Date.today}.pdf", type: "application/pdf", disposition: "inline"
+    send_data pdf, filename: "applications_eating_habits_#{@event.name}_#{Date.today}.pdf", type: 'application/pdf', disposition: 'inline'
   end
 
   # GET /events/1/accept-all-applicants
@@ -131,21 +130,21 @@ class EventsController < ApplicationController
   def send_participants_email
     authorize! :send_email, Email
     event = Event.find(params[:id])
-    @email = event.generate_participants_email(params[:all],params[:groups], params[:users])
+    @email = event.generate_participants_email(params[:all], params[:groups], params[:users])
     @templates = []
     @send_generic = true
     render '/emails/email'
   end
 
-  #POST /events/1/participants/agreement_letters
+  # POST /events/1/participants/agreement_letters
   # creates either a zip or a pdf containing all agreement letters for all selected participants
   def download_agreement_letters
     @event = Event.find(params[:id])
-    if not params.has_key?(:selected_participants)
-      redirect_to event_participants_url(@event), notice: I18n.t('events.agreement_letters_download.notices.no_participants_selected') and return
+    unless params.key?(:selected_participants)
+      redirect_to(event_participants_url(@event), notice: I18n.t('events.agreement_letters_download.notices.no_participants_selected')) && return
     end
     authorize! :print_agreement_letters, @event
-    if params[:download_type] == "zip"
+    if params[:download_type] == 'zip'
       filename = "agreement_letters_#{@event.name}_#{Date.today}.zip"
       temp_file = Tempfile.new(filename)
       number_of_files = 0
@@ -158,23 +157,23 @@ class EventsController < ApplicationController
 
             unless agreement_letter.nil?
               number_of_files += 1
-              zipfile.add(number_of_files.to_s + "_" + user.name + ".pdf", agreement_letter.path)
+              zipfile.add(number_of_files.to_s + '_' + user.name + '.pdf', agreement_letter.path)
             end
           end
         end
         zip_data = File.read(temp_file.path)
         if number_of_files != 0
-          send_data(zip_data, :type => 'application/zip', :filename => filename)
+          send_data(zip_data, type: 'application/zip', filename: filename)
         end
       ensure
         temp_file.close
         temp_file.unlink
       end
       if number_of_files == 0
-        redirect_to event_participants_url(@event), notice: I18n.t('events.agreement_letters_download.notices.no_agreement_letters') and return
+        redirect_to(event_participants_url(@event), notice: I18n.t('events.agreement_letters_download.notices.no_agreement_letters')) && return
       end
     end
-    if params[:download_type] == "pdf"
+    if params[:download_type] == 'pdf'
       empty = true
       pdf = CombinePDF.new
       params[:selected_participants].each do |participant_id|
@@ -185,9 +184,9 @@ class EventsController < ApplicationController
         end
       end
       if empty
-        redirect_to event_participants_url(@event), notice: I18n.t('events.agreement_letters_download.notices.no_agreement_letters') and return
+        redirect_to(event_participants_url(@event), notice: I18n.t('events.agreement_letters_download.notices.no_agreement_letters')) && return
       end
-      send_data pdf.to_pdf, filename: "agreement_letters_#{@event.name}_#{Date.today}.pdf", type: "application/pdf", disposition: "inline" unless pdf.nil?
+      send_data pdf.to_pdf, filename: "agreement_letters_#{@event.name}_#{Date.today}.pdf", type: 'application/pdf', disposition: 'inline' unless pdf.nil?
     end
   end
 
@@ -195,29 +194,29 @@ class EventsController < ApplicationController
   def upload_material
     event = Event.find(params[:event_id])
     material_path = event.material_path
-    Dir.mkdir(material_path) unless File.exists?(material_path)
+    Dir.mkdir(material_path) unless File.exist?(material_path)
 
     file = params[:file_upload]
     unless is_file?(file)
-      redirect_to event_path(event), alert: t("events.material_area.no_file_given")
+      redirect_to event_path(event), alert: t('events.material_area.no_file_given')
       return false
     end
     begin
-      File.write(File.join(material_path, file.original_filename), file.read, mode: "wb")
+      File.write(File.join(material_path, file.original_filename), file.read, mode: 'wb')
     rescue IOError
-      redirect_to event_path(event), alert: I18n.t("events.material_area.saving_fails")
+      redirect_to event_path(event), alert: I18n.t('events.material_area.saving_fails')
       return false
     end
-    redirect_to event_path(event), notice: I18n.t("events.material_area.success_message")
+    redirect_to event_path(event), notice: I18n.t('events.material_area.success_message')
   end
 
   # GET /event/1/participants_pdf
   def participants_pdf
-    default = {:order_by => 'email', :order_direction => 'asc'}
+    default = { order_by: 'email', order_direction: 'asc' }
     default = default.merge(params)
 
     @application_letters = @event.application_letters_ordered(default[:order_by], default[:order_direction])
-                               .where(:status => ApplicationLetter.statuses[:accepted])
+                                 .where(status: ApplicationLetter.statuses[:accepted])
 
     data = @application_letters.collect do |application_letter|
       [
@@ -229,74 +228,75 @@ class EventsController < ApplicationController
     end
 
     data.unshift([
-     I18n.t('controllers.events.participants_pdf.first_name'),
-     I18n.t('controllers.events.participants_pdf.last_name'),
-     I18n.t('controllers.events.participants_pdf.date_of_birth'),
-     I18n.t('controllers.events.participants_pdf.allergies')
-    ])
+                   I18n.t('controllers.events.participants_pdf.first_name'),
+                   I18n.t('controllers.events.participants_pdf.last_name'),
+                   I18n.t('controllers.events.participants_pdf.date_of_birth'),
+                   I18n.t('controllers.events.participants_pdf.allergies')
+                 ])
 
     name = @event.name
-    doc = Prawn::Document.new(:page_size => 'A4') do
-      text "Teilnehmerliste - " + name
+    doc = Prawn::Document.new(page_size: 'A4') do
+      text 'Teilnehmerliste - ' + name
       table(data, width: bounds.width)
     end
 
-    send_data doc.render, :filename => "participants.pdf", :type => "application/pdf", disposition: "inline"
+    send_data doc.render, filename: 'participants.pdf', type: 'application/pdf', disposition: 'inline'
   end
 
   # POST /events/1/download_material
   def download_material
     event = Event.find(params[:event_id])
-    unless params.has_key?(:file)
-      redirect_to event_path(event), alert: I18n.t('events.material_area.no_file_given') and return
+    unless params.key?(:file)
+      redirect_to(event_path(event), alert: I18n.t('events.material_area.no_file_given')) && return
     end
 
     file_full_path = File.join(event.material_path, params[:file])
-    unless File.exists?(file_full_path)
-      redirect_to event_path(event), alert: t("events.material_area.download_file_not_found") and return
+    unless File.exist?(file_full_path)
+      redirect_to(event_path(event), alert: t('events.material_area.download_file_not_found')) && return
     end
-    send_file file_full_path, :x_sendfile => true
+    send_file file_full_path, x_sendfile: true
   end
 
   private
-    def set_event
-      @event = Event.find(params[:id])
-    end
 
-    def event_params
-      params.require(:event).permit(:name, :description, :image, :custom_image, :custom_image_cache, :max_participants, :organizer, :knowledge_level, :application_deadline, :published, :hidden, :custom_application_fields => [], date_ranges_attributes: [:start_date, :end_date, :id])
-    end
+  def set_event
+    @event = Event.find(params[:id])
+  end
 
-    def add_event_query_conditions(query)
-      conditions = {}
-      conditions[:hidden] = false unless can? :view_hidden, Event
-      conditions[:published] = true unless can? :view_unpublished, Event
-      query.where(conditions)
-    end
+  def event_params
+    params.require(:event).permit(:name, :description, :image, :custom_image, :custom_image_cache, :max_participants, :organizer, :knowledge_level, :application_deadline, :published, :hidden, custom_application_fields: [], date_ranges_attributes: %i(start_date end_date id))
+  end
 
-    def filter_application_letters(application_letters)
-      application_letters = application_letters.to_a
-      filters = (params[:filter] || {}).select { |k, v| v == '1' }.map{ |k, v| k.to_s }
-      if filters.count > 0  # skip filtering if no filters have been set
-        application_letters.keep_if { |l| filters.include?(l.status) }
-      end
-      application_letters
-    end
+  def add_event_query_conditions(query)
+    conditions = {}
+    conditions[:hidden] = false unless can? :view_hidden, Event
+    conditions[:published] = true unless can? :view_unpublished, Event
+    query.where(conditions)
+  end
 
-    # Checks if a file is valid and not empty
-    #
-    # @param [ActionDispatch::Http::UploadedFile] is a file object
-    # @return [Boolean] whether @file is a valid file
-    def is_file?(file)
-      file.respond_to?(:open) && file.respond_to?(:content_type) && file.respond_to?(:size)
+  def filter_application_letters(application_letters)
+    application_letters = application_letters.to_a
+    filters = (params[:filter] || {}).select { |_k, v| v == '1' }.map { |k, _v| k.to_s }
+    if filters.count > 0 # skip filtering if no filters have been set
+      application_letters.keep_if { |l| filters.include?(l.status) }
     end
+    application_letters
+  end
 
-    # Gets all file names stored in the material storage of the event
-    #
-    # @param [Event]
-    # @return [Array of Strings]
-    def get_material_files(event)
-      material_path = event.material_path
-      File.exists?(material_path) ? Dir.glob(File.join(material_path, "*")) : []
-    end
+  # Checks if a file is valid and not empty
+  #
+  # @param [ActionDispatch::Http::UploadedFile] is a file object
+  # @return [Boolean] whether @file is a valid file
+  def is_file?(file)
+    file.respond_to?(:open) && file.respond_to?(:content_type) && file.respond_to?(:size)
+  end
+
+  # Gets all file names stored in the material storage of the event
+  #
+  # @param [Event]
+  # @return [Array of Strings]
+  def get_material_files(event)
+    material_path = event.material_path
+    File.exist?(material_path) ? Dir.glob(File.join(material_path, '*')) : []
+  end
 end

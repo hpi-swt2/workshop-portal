@@ -20,7 +20,7 @@ class AgreementLetter < ActiveRecord::Base
   belongs_to :event
   validates_presence_of :user, :event, :path
   MAX_SIZE = 300_000_000
-  ALLOWED_MIMETYPE = "application/pdf"
+  ALLOWED_MIMETYPE = 'application/pdf'.freeze
   STORAGE_DIR = Rails.root.join('storage', 'agreement_letters')
 
   # Generates a unique filename for an AgreementLetter's file
@@ -38,14 +38,14 @@ class AgreementLetter < ActiveRecord::Base
   # @return [Boolean] whether saving the file was saved
   def save_file(file)
     unless valid_file?(file)
-      self.destroy
+      destroy
       return false
     end
     begin
       File.write(path, file.read, mode: 'wb')
       true
     rescue IOError
-      self.destroy
+      destroy
       errors.add(I18n.t('agreement_letters.file_error'), I18n.t('agreement_letters.write_failed'))
       false
     end
@@ -70,49 +70,48 @@ class AgreementLetter < ActiveRecord::Base
   end
 
   private
-    def valid_file?(file)
-      if !is_file?(file)
-        errors.add(I18n.t('agreement_letters.file_error'), I18n.t("agreement_letters.not_a_file"))
-        false
-      elsif too_big?(file)
-        errors.add(I18n.t('agreement_letters.file_error'), I18n.t("agreement_letters.file_too_big"))
-        false
-      elsif wrong_filetype?(file)
-        errors.add(I18n.t('agreement_letters.file_error'), I18n.t("agreement_letters.wrong_filetype"))
-        false
-      elsif unable_to_open?(file)
-        errors.add(I18n.t('agreement_letters.file_error'), I18n.t("agreement_letters.corrupt_document"))
-        false
-      else
-        true
-      end
-    end
-    
-    def is_file?(file)
-      file.respond_to?(:open) && file.respond_to?(:content_type) && file.respond_to?(:size)
-    end
 
-    def too_big?(file)
-      file.size > MAX_SIZE
-    end
-
-    def wrong_filetype?(file)
-      file.content_type != ALLOWED_MIMETYPE
-    end
-
-  def unable_to_open? file
-    begin
-      PDF::Inspector::Page.analyze_file(file.open)
+  def valid_file?(file)
+    if !is_file?(file)
+      errors.add(I18n.t('agreement_letters.file_error'), I18n.t('agreement_letters.not_a_file'))
       false
-    rescue PDF::Reader::UnsupportedFeatureError, PDF::Reader::MalformedPDFError
+    elsif too_big?(file)
+      errors.add(I18n.t('agreement_letters.file_error'), I18n.t('agreement_letters.file_too_big'))
+      false
+    elsif wrong_filetype?(file)
+      errors.add(I18n.t('agreement_letters.file_error'), I18n.t('agreement_letters.wrong_filetype'))
+      false
+    elsif unable_to_open?(file)
+      errors.add(I18n.t('agreement_letters.file_error'), I18n.t('agreement_letters.corrupt_document'))
+      false
+    else
       true
     end
   end
 
+  def is_file?(file)
+    file.respond_to?(:open) && file.respond_to?(:content_type) && file.respond_to?(:size)
+  end
+
+  def too_big?(file)
+    file.size > MAX_SIZE
+  end
+
+  def wrong_filetype?(file)
+    file.content_type != ALLOWED_MIMETYPE
+  end
+
+  def unable_to_open?(file)
+    PDF::Inspector::Page.analyze_file(file.open)
+    false
+  rescue PDF::Reader::UnsupportedFeatureError, PDF::Reader::MalformedPDFError
+    true
+  end
+
   def self.get_attachment
     {
-        name: (I18n.t 'emails.agreement_letter_attachment'),
-        content: File.read(Rails.configuration.empty_agreement_letter_path)
+      name: (I18n.t 'emails.agreement_letter_attachment'),
+      content: File.read(Rails.configuration.empty_agreement_letter_path)
     }
   end
 end

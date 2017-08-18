@@ -8,10 +8,10 @@ class PortalMailer < ApplicationMailer
   # @param some_attachments - array of hashes with name and content
   # @return [ActionMailer::MessageDelivery] a mail object with the given parameters.
   def generic_email(recipients, reply_to, subject, content, attached_files = [])
-    attached_files.each do | attachment |
+    attached_files.each do |attachment|
       attachments[attachment[:name]] = attachment[:content]
     end
-    mail(to: recipients, reply_to: reply_to, subject: subject) do | format |
+    mail(to: recipients, reply_to: reply_to, subject: subject) do |format|
       format.html { markdown content }
       format.text { content }
     end
