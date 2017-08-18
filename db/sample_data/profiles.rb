@@ -65,7 +65,7 @@ def profile_tobi(user)
   Profile.new(
     user: user,
     first_name: "Tobias",
-    last_name: "Dürschmid",
+    last_name: "Lastname",
     gender: "male",
     birth_date: Date.parse('1995.08.31'),
     street_name: "Stahnsdorfer Str.",
@@ -125,7 +125,7 @@ def profile_lisa(user)
   Profile.new(
       user: user,
       first_name: "Lisa",
-      last_name: "Ihde",
+      last_name: "Otherlastname",
       gender: "female",
       birth_date: Date.parse('1996.09.21'),
       street_name: "Stahnsdorfer Str.",

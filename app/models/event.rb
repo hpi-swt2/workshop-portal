@@ -4,15 +4,20 @@
 #
 #  id                         :integer          not null, primary key
 #  name                       :string
-#  description                :string
+#  description                :text
 #  max_participants           :integer
-#  date_ranges                :Collection
-#  published                  :boolean
 #  created_at                 :datetime         not null
 #  updated_at                 :datetime         not null
-#  acceptances_have_been_sent :boolean
-#  rejections_have_been_sent  :boolean
-#  hidden                     :boolean
+#  published                  :boolean          default(FALSE)
+#  organizer                  :string
+#  knowledge_level            :string
+#  application_deadline       :date
+#  custom_application_fields  :text
+#  hidden                     :boolean          default(FALSE)
+#  image                      :string
+#  rejections_have_been_sent  :boolean          default(FALSE)
+#  acceptances_have_been_sent :boolean          default(FALSE)
+#  custom_image               :string
 #
 
 class Event < ActiveRecord::Base
