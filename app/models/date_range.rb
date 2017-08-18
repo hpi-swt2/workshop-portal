@@ -2,12 +2,17 @@
 #
 # Table name: date_ranges
 #
-#  id               :integer          not null, primary key
-#  event_id         :integer          index
-#  start_date       :date
-#  end_date         :date
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
+#  id         :integer          not null, primary key
+#  start_date :date
+#  end_date   :date
+#  event_id   :integer
+#  created_at :datetime
+#  updated_at :datetime
+#
+# Indexes
+#
+#  index_date_ranges_on_event_id  (event_id)
+#
 
 #
 class DateRange < ActiveRecord::Base
