@@ -212,10 +212,10 @@ class EventsController < ApplicationController
 
   # GET /event/1/participants_pdf
   def participants_pdf
-    default = { order_by: 'email', order_direction: 'asc' }
-    default = default.merge(params.to_h)
+    params[:order_by] ||= 'email'
+    params[:order_direction] ||= 'asc'
 
-    @application_letters = @event.application_letters_ordered(default[:order_by], default[:order_direction])
+    @application_letters = @event.application_letters_ordered(params[:order_by], params[:order_direction])
                                  .where(status: ApplicationLetter.statuses[:accepted])
 
     data = @application_letters.collect do |application_letter|
