@@ -461,19 +461,19 @@ RSpec.describe EventsController, type: :controller do
 
       it "creates a new Event" do
         expect {
-          post :create, valid_attributes_post, session: valid_session
+          post :create, params: valid_attributes_post.merge(session: valid_session)
         }.to change(Event, :count).by(1)
       end
 
       it "assigns a newly created event as @event" do
-        post :create, valid_attributes_post, session: valid_session
+        post :create, params: valid_attributes_post.merge(session: valid_session)
         expect(assigns(:event)).to be_a(Event)
         expect(assigns(:event)).to be_persisted
       end
 
 
       it "saves optional attributes" do
-        post :create, valid_attributes_post, session: valid_session
+        post :create, params: valid_attributes_post.merge(session: valid_session)
         event = Event.create! valid_attributes
         expect(assigns(:event).organizer).to eq(event.organizer)
         expect(assigns(:event).knowledge_level).to eq(event.knowledge_level)
@@ -481,7 +481,7 @@ RSpec.describe EventsController, type: :controller do
       end
 
       it "redirects to the created event" do
-        post :create, valid_attributes_post, session: valid_session
+        post :create, params: valid_attributes_post.merge(session: valid_session)
         expect(response).to redirect_to(Event.last)
       end
     end
@@ -501,7 +501,7 @@ RSpec.describe EventsController, type: :controller do
 
     it "should attach correct date ranges to the event entity" do
       sign_in FactoryGirl.create(:user, role: :organizer)
-      post :create, valid_attributes_post, session: valid_session
+      post :create, params: valid_attributes_post, session: valid_session
       expect(assigns(:event)).to be_a(Event)
       expect(assigns(:event)).to be_persisted
       expect(assigns(:event).date_ranges).to_not be_empty

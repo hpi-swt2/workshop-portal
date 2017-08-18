@@ -13,7 +13,7 @@ RSpec.describe AgreementLettersController, type: :controller do
     end
 
     it "redirects to user profile" do
-      post :create, { letter_upload: @file, event_id: @event.id }
+      post :create, params: { letter_upload: @file, event_id: @event.id }
       expect(response).to redirect_to(check_application_letter_path(ApplicationLetter.where(user_id: @user.id, event_id: @event.id).first))
     end
 
