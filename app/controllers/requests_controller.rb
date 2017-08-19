@@ -44,7 +44,7 @@ class RequestsController < ApplicationController
   def set_contact_person
     @request = Request.find(params[:request_id])
     update_params = contact_person_params
-    if !update_params[:contact_person].nil? && @request.update(update_params)
+    if !update_params[:contact_person].empty? && @request.update(update_params)
       redirect_to @request, notice: I18n.t('requests.notice.was_updated')
     else
       render :show
@@ -54,7 +54,7 @@ class RequestsController < ApplicationController
   def set_notes
     @request = Request.find(params[:request_id])
     update_params = notes_params
-    if !update_params[:notes].nil? && @request.update(update_params)
+    if !update_params[:notes].empty? && @request.update(update_params)
       redirect_to @request, notice: I18n.t('requests.notice.was_updated')
     else
       render :show
