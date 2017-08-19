@@ -168,7 +168,7 @@ RSpec.describe RequestsController, type: :controller do
       context "with invalid params" do
         it "re-renders the 'show' template" do
           patch path, params: {request_id: @a_request.to_param, request: invalid_attributes, session: valid_session}
-          expect(response).to redirect_to(request_path(@a_request))
+          expect(response).to render_template('show')
         end
       end
     end
