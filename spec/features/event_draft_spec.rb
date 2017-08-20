@@ -56,7 +56,7 @@ RSpec.feature 'Draft events', :type => :feature do
     click_button I18n.t 'events.form.draft.save'
 
     visit edit_event_path(@event)
-    click_button 'update_draft'
+    click_button I18n.t 'events.form.draft.update'
 
     expect(page).to have_css(".alert-success")
 
