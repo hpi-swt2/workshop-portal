@@ -16,5 +16,7 @@
   <dd><%= mail_to @profile.user.email %></dd>
 </dl>
 
-<%= link_to t('.edit', :default => t("helpers.links.edit")),
+<% if can? :edit, @profile %>
+    <%= link_to t('.edit', :default => t("helpers.links.edit")),
               edit_profile_path(@profile), :class => 'btn btn-default' %>
+<% end %>
