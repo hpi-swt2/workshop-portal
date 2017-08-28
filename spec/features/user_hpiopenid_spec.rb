@@ -1,7 +1,7 @@
 require "rails_helper"
 
 # https://www.relishapp.com/rspec/rspec-rails/v/3-5/docs/feature-specs/feature-spec
-RSpec.feature "Account creation vis HPI OpenID", :type => :feature do
+RSpec.feature "Account creation via HPI OpenID", :type => :feature do
   before(:each) do
     user = 'christian.flach'
     @email = user + '@student.hpi.de'
@@ -22,7 +22,7 @@ RSpec.feature "Account creation vis HPI OpenID", :type => :feature do
                                                                  })
   end
 
-  scenario "User creates an account via HPI OpenID" do
+  scenario 'User creates an account via HPI OpenID' do
     visit new_user_registration_path
     click_link I18n.t('devise.shared.links.sign_in_with_provider', :provider => 'HPI OpenID')
 
@@ -34,7 +34,7 @@ RSpec.feature "Account creation vis HPI OpenID", :type => :feature do
     expect(user.uid).to eq(@uid)
   end
 
-  scenario "User logs in via HPI OpenID" do
+  scenario 'User logs in via HPI OpenID' do
     FactoryGirl.create(:user, email: @email, provider: @provider, uid: @uid)
 
     visit new_user_registration_path
@@ -42,4 +42,21 @@ RSpec.feature "Account creation vis HPI OpenID", :type => :feature do
 
     expect(page).to have_css(".alert-success")
   end
+
+  ['', nil].each {|invalid_email|
+    scenario "Account creation fails with #{invalid_email}" do
+      OmniAuth.config.mock_auth[:hpiopenid] = OmniAuth::AuthHash.new({
+                                                                         :provider => @provider,
+                                                                         :uid => @uid,
+                                                                         :info => {
+                                                                             :email => invalid_email
+                                                                         }
+                                                                     })
+      visit new_user_registration_path
+      click_link I18n.t('devise.shared.links.sign_in_with_provider', :provider => 'HPI OpenID')
+
+      expect(page).to have_css(".alert-danger")
+      expect(page).to have_text (I18n.t('users.openid.missing_email'))
+    end
+  }
 end
