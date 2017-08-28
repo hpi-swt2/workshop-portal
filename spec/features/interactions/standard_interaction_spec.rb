@@ -31,7 +31,6 @@ RSpec::Steps.steps "Demo" do
 
   it 'should let organizer fill out event creation page', js: true do
     choose I18n.t "events.type.public"
-    choose I18n.t "events.form.draft.publish"
     fill_in 'event_name', with: 'BwInf-Camp'
     fill_in 'event_description', with: '[von hpi website geklaut]'
     fill_in 'event_max_participants', with: 25
@@ -41,7 +40,7 @@ RSpec::Steps.steps "Demo" do
     fill_in 'event_knowledge_level', with: 'Fortgeschrittene'
     fill_in 'event_application_deadline', with: I18n.l(Date.new(2019, 01, 12))
     #TODO: Add custom variable application fields
-    click_button 'create_event'
+    click_button I18n.t 'events.form.draft.publish'
     expect(page).to_not have_text I18n.t('errors.form_invalid.one')
     expect(page).to_not have_text I18n.t('errors.form_invalid.other')
   end

@@ -1,6 +1,6 @@
 class Users::RegistrationsController < Devise::RegistrationsController
-# before_action :configure_sign_up_params, only: [:create]
-# before_action :configure_account_update_params, only: [:update]
+  # before_action :configure_sign_up_params, only: [:create]
+  # before_action :configure_account_update_params, only: [:update]
 
   # GET /resource/sign_up
   # def new
@@ -22,7 +22,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     else
       clean_up_passwords resource
       set_minimum_password_length
-      resource.errors.full_messages.each {|x| flash["error"] = x}
+      resource.errors.full_messages.each { |x| flash['error'] = x }
       redirect_to new_user_session_path(resource)
     end
   end
@@ -34,7 +34,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # PUT /resource
   def update
-    unless params.fetch(:user, false) and params[:user].fetch(:profile, false)
+    unless params.fetch(:user, false) && params[:user].fetch(:profile, false)
       return super
     end
     @user = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
@@ -46,7 +46,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
       render :edit
     end
   end
-
 
   # DELETE /resource
   # def destroy
@@ -83,7 +82,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     stored_location = stored_location_for(resource)
     if stored_location
       referrer = Rails.application.routes.recognize_path(stored_location)
-      if referrer[:controller] == "application_letters" and referrer[:action] == "new"
+      if referrer[:controller] == 'application_letters' && referrer[:action] == 'new'
         # This comes from a application letter creation page -> redirect user there.
         return stored_location
       end

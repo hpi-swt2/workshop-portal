@@ -29,10 +29,11 @@ RSpec.describe 'events/edit', type: :view do
     assert_select 'a[data-method="delete"]'
   end
 
-  it "should have an update button for events that haven't been published" do
+  it "should have an update and a publish button for events that haven't been published" do
     @event = assign(:event, FactoryGirl.create(:event, published: false))
     render
-    assert_select "input[name=update]"
+    assert_select "input[name=update_draft]"
+    assert_select "input[name=update_and_publish]"
   end
 
   it "shouldn't have a create button, but should have a update button for events that have already been published" do

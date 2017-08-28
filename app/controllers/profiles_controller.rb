@@ -1,11 +1,10 @@
 class ProfilesController < ApplicationController
   load_and_authorize_resource
 
-  before_action :set_profile, only: [:show, :edit, :update, :destroy]
+  before_action :set_profile, only: %i(show edit update destroy)
 
   # GET /profiles/1
-  def show
-  end
+  def show; end
 
   # GET /profiles/new
   def new
@@ -31,7 +30,7 @@ class ProfilesController < ApplicationController
 
     if @profile.save
       if flash[:event_id]
-        redirect_to new_application_letter_path(:event_id => flash[:event_id]), notice: I18n.t('profiles.successful_creation')
+        redirect_to new_application_letter_path(event_id: flash[:event_id]), notice: I18n.t('profiles.successful_creation')
       else
         redirect_to edit_user_registration_path, notice: I18n.t('profiles.successful_creation')
       end
@@ -55,13 +54,14 @@ class ProfilesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_profile
-      @profile = Profile.find(params[:id])
-    end
 
-    # Only allow a trusted parameter "white list" through.
-    def profile_params
-      params.require(:profile).permit(Profile.allowed_params)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_profile
+    @profile = Profile.find(params[:id])
+  end
+
+  # Only allow a trusted parameter "white list" through.
+  def profile_params
+    params.require(:profile).permit(Profile.allowed_params)
+  end
 end
