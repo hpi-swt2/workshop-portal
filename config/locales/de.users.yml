@@ -17,6 +17,8 @@ de:
       admin: "Administrator"
     email:
       edit: "E-Mail bearbeiten"
+    openid:
+      missing_email: "Du musst uns bei deinem OpenID-Provider die Verwendung deiner Emailadresse erlauben, damit wir deinen Account zuordnen können. Besuche ggf. https://openid.hpi.uni-potsdam.de/managedattributes um alle Häkchen bei deiner Emailadressse zu setzen."
 
 
   activerecord:
