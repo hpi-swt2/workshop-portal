@@ -16,20 +16,6 @@
         <%= f.error_span(:hidden) %>
       </div>
     </div>
-    <div class="form-group">
-      <%= f.label :published, :class => 'control-label col-lg-2 required' %>
-      <div class="btn-group col-lg-10" data-toggle="buttons">
-        <label class="btn btn-default <%= 'active' if not @event.published %>" id="save_draft_option">
-          <%= f.radio_button :published, false %>
-          <%= I18n.t :"events.form.draft.save" %>
-        </label>
-        <label class="btn btn-default <%= 'active' if @event.published %>" id="publish_event_option">
-          <%= f.radio_button :published, true %>
-          <%= I18n.t :"events.form.draft.publish" %>
-        </label>
-        <%= f.error_span(:published) %>
-      </div>
-    </div>
   <div class="form-group">
     <%= f.label :name, :class => 'control-label col-lg-2 required' %>
     <div class="col-lg-10">
@@ -113,11 +99,15 @@
   <div class="form-group">
     <div class="col-lg-offset-2 col-lg-10">
       <% if @event.new_record? %>
-        <%= f.submit t('.create'), :name => 'create', :class => 'btn btn-primary', :id => 'create_event' %>
+        <%= f.submit t('events.form.draft.publish'), :name => 'create', :class => 'btn btn-primary', :id => 'create' %>
+        <%= f.submit t('events.form.draft.save'), :name => 'save_draft', :class => 'btn btn-secondary', :id => 'save_draft' %>
       <% else %>
-        <%= f.submit t('.update'), :name => 'update', :class => 'btn btn-primary' %>
-      <% end %>
-      <% unless @event.new_record? %>
+        <% if not @event.published? %>
+          <%= f.submit t('events.form.draft.update_and_publish'), :name => 'update_and_publish', :class => 'btn btn-primary', :id => 'update_and_publish' %>
+          <%= f.submit t('events.form.draft.update'), :name => 'update_draft', :class => 'btn btn-secondary', :id => 'update_draft' %>
+        <% else %>
+          <%= f.submit t('events.form.update'), :name => 'update', :class => 'btn btn-primary', :id => 'update' %>
+        <% end %>
         <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
             event_path(@event),
             :method => 'delete',
