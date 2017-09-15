@@ -3,7 +3,7 @@ module ApplicantsOverviewHelper
     is_sorted_ascending = (params[:sort] == attr.to_s) && params[:order] != 'descending'
     url = "?sort=#{attr}" \
           "#{'&order=descending' if is_sorted_ascending}" \
-          "#{'&' + params[:filter].each { |k, v| "filter[#{h(k)}]=#{h(v)}" }.flatten.join('&') if params[:filter]}"
+          "#{'&' + params[:filter].to_unsafe_h.map { |k, v| "filter[#{h(k)}]=#{h(v)}" }.join('&') if params[:filter]}"
 
     "<a class=\"#{'dropup' if is_sorted_ascending}\" href=\"#{url}\">
       #{label} <span class=\"caret\"></span>
