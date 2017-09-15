@@ -294,7 +294,7 @@ class EventsController < ApplicationController
   def filter_application_letters(application_letters)
     application_letters = application_letters.to_a
     filters = (params[:filter] || {}).select { |_k, v| v == '1' }.transform_keys(&:to_s)
-    if !filters.empty? # skip filtering if no filters have been set
+    unless filters.empty? # skip filtering if no filters have been set
       application_letters.keep_if { |l| filters.include?(l.status) }
     end
     application_letters
