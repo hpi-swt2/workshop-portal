@@ -4,8 +4,8 @@ A Ruby on Rails app to manage workshops
 
 Branch | Travis CI  | Code Analysis | Heroku Deploy | Errbit
 ------ | ---------- | ------------- | ------------- | ------
-production  | [![Build Status](https://travis-ci.org/hpi-schuelerklub/workshop-portal.svg?branch=production)](https://travis-ci.org/hpi-schuelerklub/workshop-portal) | [![Coverage Status](https://coveralls.io/repos/github/hpi-swt2/workshop-portal/badge.svg?branch=production)](https://coveralls.io/github/hpi-swt2/workshop-portal?branch=production) [![Code Climate](https://codeclimate.com/github/hpi-swt2/workshop-portal/badges/gpa.svg)](https://codeclimate.com/github/hpi-swt2/workshop-portal/issues) | [![Heroku](https://heroku-badge.herokuapp.com/?app=workshop-portal)](http://workshop-portal.herokuapp.com/) [[link]](http://workshop-portal.herokuapp.com/) | [[link]](http://swt2-errbit-2016.herokuapp.com/) | 
-dev  | [![Build Status](https://travis-ci.org/hpi-schuelerklub/workshop-portal.svg?branch=dev)](https://travis-ci.org/hpi-schuelerklub/workshop-portal) | [![Coverage Status](https://coveralls.io/repos/github/hpi-swt2/workshop-portal/badge.svg?branch=dev)](https://coveralls.io/github/hpi-swt2/workshop-portal?branch=dev) | [![Heroku](https://heroku-badge.herokuapp.com/?app=workshop-portal-dev)](http://workshop-portal-dev.herokuapp.com/) [[link]](http://workshop-portal-dev.herokuapp.com/) |
+production  | [![Build Status](https://travis-ci.org/hpi-schuelerklub/workshop-portal.svg?branch=production)](https://travis-ci.org/hpi-schuelerklub/workshop-portal) | [![Coverage Status](https://coveralls.io/repos/github/hpi-schuelerklub/workshop-portal/badge.svg?branch=production)](https://coveralls.io/github/hpi-schuelerklub/workshop-portal?branch=production) [![Code Climate](https://codeclimate.com/github/hpi-schuelerklub/workshop-portal/badges/gpa.svg)](https://codeclimate.com/github/hpi-schuelerklub/workshop-portal/issues) | [![Heroku](https://heroku-badge.herokuapp.com/?app=workshop-portal&svg=1)](http://workshop-portal.herokuapp.com/) [[link]](http://workshop-portal.herokuapp.com/) | [[link]](http://swt2-errbit-2016.herokuapp.com/) | 
+dev  | [![Build Status](https://travis-ci.org/hpi-schuelerklub/workshop-portal.svg?branch=dev)](https://travis-ci.org/hpi-schuelerklub/workshop-portal) | [![Coverage Status](https://coveralls.io/repos/github/hpi-schuelerklub/workshop-portal/badge.svg?branch=dev)](https://coveralls.io/github/hpi-schuelerklub/workshop-portal?branch=dev) | [![Heroku](https://heroku-badge.herokuapp.com/?app=workshop-portal-dev&svg=1)](http://workshop-portal-dev.herokuapp.com/) [[link]](http://workshop-portal-dev.herokuapp.com/) |
 
 When all tests succeed on Travis CI, the application is deployed to Heroku. Click the badges for detailed info. <br>
 The uptime of the deployed applications can be tracked [here](https://stats.uptimerobot.com/pg2gDuQZQ). <br>
@@ -13,7 +13,7 @@ Errors that occur while using the deployed production branch on Heroku are logge
 
 ## Local Setup
 
-* `bundle install` Install the required Ruby gem dependencies defined in the [Gemfile](https://github.com/hpi-swt2/workshop-portal/blob/production/Gemfile)
+* `bundle install` Install the required Ruby gem dependencies defined in the [Gemfile](https://github.com/hpi-schuelerklub/workshop-portal/blob/production/Gemfile)
 * `cp database.sqlite.yml database.yml` Select database config (for development we recommend SQLite) 
 * `rake db:create db:migrate db:seed` Setup database, run migrations, seed the database with defaults
 * `rails s` Start the Rails development server (By default runs on _localhost:3000_)
