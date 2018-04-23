@@ -4,7 +4,7 @@ de:
   requests:
     templates:
       headline: "Beispiel-Anfragen"
-      lead_paragraph: "In diesem Bereich könnt ihr eigene Veranstaltungen, Workshops und Themen vorschlagen. Ihr wisst nicht, was ihr schreiben sollt? Inspiration findet ihr in den orange-farbenen Boxen!"  
+      lead_paragraph: "In diesem Bereich könnt ihr eigene Veranstaltungen, Workshops und Themen vorschlagen. Ihr wisst nicht, was ihr schreiben sollt? Inspiration findet ihr in den orange-farbenen Boxen!"
       duration: "Dauer"
       size: "Gruppengröße"
       target_group: "Zielgruppe"
@@ -38,8 +38,8 @@ de:
         duration: "mind. 6h, mit Implementierung mind. 8h"
         size: "nach Absprache, mind. 10 Schüler/innen, max. 40 Schüler/innen"
         target_group: "Programmier-Einsteiger und Fortgeschrittene, ca. ab Klasse 10"
-        content: "Typische Probleme der Informatik stecken überall im Alltag: Wie liefert ein Postbote am besten seine Pakete aus? Wie setzt man Mitarbeiter in seinem Unternehmen ein, so dass alle glücklich sind? Wie packt man die Artikel einer Bestellung möglichst platzsparend in einen Karton? Der Workshop bietet den Schülerinnen und Schülern Einblicke in typische Problemstellungen der Algorithmik und stellt sie vor die Aufgabe, gute Algorithmen für diese Probleme zu finden. Gruppen mit Programmierkenntnisse können ihre Lösungen anschließend in Java implementieren, ansonsten macht auch das theoretische Bearbeiten der Aufgaben viel Spaß." 
-    intro_text: "Wenn Sie einen Workshop am HPI durchführen wollen, füllen Sie bitte das folgende Formular aus. Die weitere Planung und Kommunikation wird über E-Mail erfolgen."
+        content: "Typische Probleme der Informatik stecken überall im Alltag: Wie liefert ein Postbote am besten seine Pakete aus? Wie setzt man Mitarbeiter in seinem Unternehmen ein, so dass alle glücklich sind? Wie packt man die Artikel einer Bestellung möglichst platzsparend in einen Karton? Der Workshop bietet den Schülerinnen und Schülern Einblicke in typische Problemstellungen der Algorithmik und stellt sie vor die Aufgabe, gute Algorithmen für diese Probleme zu finden. Gruppen mit Programmierkenntnisse können ihre Lösungen anschließend in Java implementieren, ansonsten macht auch das theoretische Bearbeiten der Aufgaben viel Spaß."
+    intro_text: "Wenn Sie Interesse an einem vom HPI veranstalteten Workshop für Ihre Gruppe haben, füllen Sie bitte das folgende Formular aus. Die weitere Planung und Kommunikation wird über E-Mail erfolgen."
     new:
       title: "Neue Anfrage stellen"
     workshop_information: "Informationen über den gewünschten Workshop"
