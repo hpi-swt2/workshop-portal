@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170605080836) do
+ActiveRecord::Schema.define(version: 20180423170641) do
 
   create_table "agreement_letters", force: :cascade do |t|
     t.integer  "user_id",    null: false
@@ -70,6 +70,16 @@ ActiveRecord::Schema.define(version: 20170605080836) do
     t.boolean "hide_recipients"
   end
 
+  create_table "emails", force: :cascade do |t|
+    t.boolean  "hide_recipients"
+    t.string   "recipients"
+    t.string   "reply_to"
+    t.string   "subject"
+    t.string   "content"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
   create_table "events", force: :cascade do |t|
     t.string   "name"
     t.text     "description"
@@ -82,9 +92,9 @@ ActiveRecord::Schema.define(version: 20170605080836) do
     t.date     "application_deadline"
     t.text     "custom_application_fields"
     t.boolean  "hidden",                     default: false
-    t.string   "image"
     t.boolean  "rejections_have_been_sent",  default: false
     t.boolean  "acceptances_have_been_sent", default: false
+    t.string   "image"
     t.string   "custom_image"
   end
 
@@ -122,7 +132,7 @@ ActiveRecord::Schema.define(version: 20170605080836) do
     t.string   "first_name"
     t.string   "last_name"
     t.string   "phone_number"
-    t.string   "street"
+    t.string   "school_street"
     t.string   "email"
     t.text     "topic_of_workshop"
     t.text     "time_period"
@@ -130,9 +140,10 @@ ActiveRecord::Schema.define(version: 20170605080836) do
     t.string   "knowledge_level"
     t.text     "annotations"
     t.integer  "status",                 default: 0
-    t.string   "zip_code_city"
+    t.string   "school_zip_code_city"
     t.string   "contact_person"
     t.text     "notes"
+    t.string   "grade"
   end
 
   create_table "users", force: :cascade do |t|

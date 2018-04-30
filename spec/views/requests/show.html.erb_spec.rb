@@ -12,12 +12,13 @@ RSpec.describe "requests/show", type: :view do
     expect(rendered).to have_text(@aRequest.last_name)
     expect(rendered).to have_link(href: "mailto:#{@aRequest.email}")
     expect(rendered).to have_text(@aRequest.phone_number)
-    expect(rendered).to have_text(@aRequest.street)
+    expect(rendered).to have_text(@aRequest.school_street)
     expect(rendered).to have_text(@aRequest.time_period)
     expect(rendered).to have_text(@aRequest.knowledge_level)
-    expect(rendered).to have_text(@aRequest.zip_code_city)
+    expect(rendered).to have_text(@aRequest.school_zip_code_city)
     expect(rendered).to have_text(@aRequest.contact_person)
     expect(rendered).to have_text(@aRequest.number_of_participants)
+    expect(rendered).to have_text(@aRequest.grade)
     expect(rendered).to have_text(I18n.t(@aRequest.status, scope: 'activerecord.attributes.request.statuses'))
   end
 
