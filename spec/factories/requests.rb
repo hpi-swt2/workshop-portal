@@ -23,6 +23,7 @@
 #  grade                  :string
 #
 
+
 FactoryGirl.define do
   factory :request do
     form_of_address :mrs
@@ -35,6 +36,7 @@ FactoryGirl.define do
     topic_of_workshop "Hardware-Entwicklung mit einem CAD-System"
     number_of_participants 12
     grade "8. Klasse"
+    knowledge_level "Haben gerade mit Java-Kara angefangen"
     status :open
     annotations "Notes about this workshop"
     time_period "Zwischen Ende Januar und Mitte März"
