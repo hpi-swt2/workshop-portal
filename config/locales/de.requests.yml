@@ -43,7 +43,8 @@ de:
     new:
       title: "Neue Anfrage stellen"
     workshop_information: "Informationen über den gewünschten Workshop"
-    personal_information: "Persönliche Daten"
+    teacher_information: "Lehrerinformationen"
+    school_information: "Schulinformationen"
     form_of_addresses:
       mr: "Herr"
       mrs: "Frau"
@@ -55,6 +56,7 @@ de:
       set_notes: "Notizen speichern"
     hints:
       please_enter_two_topics: "Bitte 2 Wünsche angeben"
+      please_be_descriptive: "Bitte seien Sie so genau wie möglich, diese Angabe hilft uns den Workshop besser zu gestalten."
     notice:
       was_created: "Ihre Anfrage wurde erfolgreich abgesendet"
       was_updated: "Die Anfrage wurde aktualisiert"
@@ -78,14 +80,15 @@ de:
       request:
         first_name: "Vorname"
         last_name: "Nachname"
-        phone_number: "Telefonnummer"
-        street: "Straße und Hausnummer"
-        zip_code_city: "PLZ und Stadt"
+        phone_number: "Mobiltelefonnummer"
+        school_street: "Straße und Hausnummer"
+        school_zip_code_city: "PLZ und Stadt"
         email: "E-Mail-Adresse"
         topic_of_workshop: "Thema des Workshops"
         time_period: "Zeitrahmen"
         number_of_participants: "Teilnehmeranzahl"
         knowledge_level: "Kenntnisstand"
+        grade: "Klassenstufe"
         annotations: "Anmerkungen"
         id: "Nummer"
         created_at: "Erstellt am"
