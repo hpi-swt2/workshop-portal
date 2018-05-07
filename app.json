@@ -17,20 +17,26 @@
       "required": true
     },
     "SECRET_KEY_BASE": {
+      "generator": "secret"
+    },
+    "SMTP_HOST": {
       "required": true
     },
-    "SENDGRID_PASSWORD": {
+    "SMTP_PASSWORD": {
       "required": true
     },
-    "SENDGRID_USERNAME": {
+    "SMTP_USER": {
       "required": true
-    }
+    },
+    "HEROKU_APP_NAME": {
+      "required": true
+    },
+    "DISABLE_DATABASE_ENVIRONMENT_CHECK": "1"
   },
   "formation": {
   },
   "addons": [
-    "heroku-postgresql",
-    "sendgrid"
+    "heroku-postgresql"
   ],
   "buildpacks": [
     {
