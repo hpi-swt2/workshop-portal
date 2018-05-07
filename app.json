@@ -30,7 +30,8 @@
     },
     "HEROKU_APP_NAME": {
       "required": true
-    }
+    },
+    "DISABLE_DATABASE_ENVIRONMENT_CHECK": "1"
   },
   "formation": {
   },
