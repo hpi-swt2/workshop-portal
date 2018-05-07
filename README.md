@@ -50,7 +50,7 @@ echo "gem: --no-document" >> ~/.gemrc # disable docs for gems
 bundle install # install dependencies
 gem install pg # required for Postgres usage
 cp config/database.psql.yml config/database.yml # in case you want to use Postgres
-cp config/database.sqlite.yml config/database.yml # in case you want to user SQLite
+cp config/database.sqlite.yml config/database.yml # in case you want to use SQLite
 exit # restart the session, required step
 vagrant ssh # reconnect to the VM
 cd hpi-swt2
