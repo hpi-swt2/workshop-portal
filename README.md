@@ -27,9 +27,7 @@ A Ruby on Rails app to manage workshops
 [hsd]: https://heroku-badge.herokuapp.com/?app=workshopportal-dev&svg=1
 
 
-When all tests succeed on Travis CI, the application is deployed to Heroku. Click the badges for detailed info. <br>
-The uptime of the deployed applications can be tracked [here](https://stats.uptimerobot.com/pg2gDuQZQ). <br>
-Errors that occur while using the deployed production branch on Heroku are logged to the [Errbit](http://swt2-errbit-2016.herokuapp.com/) error catcher, you can sign in with your Github account.
+When all tests succeed on Travis CI, the application is deployed to Heroku. Click the badges for detailed info.
 
 ## Local Setup
 
