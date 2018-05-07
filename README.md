@@ -4,8 +4,8 @@ A Ruby on Rails app to manage workshops
 
 | Branch     | Travis CI                   | Code Analysis                                                    | Heroku Deploy         | 
 | ---------- | --------------------------- | ---------------------------------------------------------------- | --------------------- | 
-| production | [![Build Status][tsp]][tup] | [![Coverage Status][covsp]][covup] [![Code Climate][ccsd]][ccud] | [![Heroku][hsp]][hup] |
-| dev        | [![Build Status][tsd]][tud] | [![Coverage Status][covsd]][covud]                               | [![Heroku][hsp]][hud] |
+| production | [![Build Status][tsp]][tup] | [![Coverage Status][covsp]][covup]                               | [![Heroku][hsp]][hup] |
+| dev        | [![Build Status][tsd]][tud] | [![Coverage Status][covsd]][covud] [![Code Climate][ccsd]][ccud] | [![Heroku][hsp]][hud] |
 
 <!-- There is no way to specify a branch directly, see https://github.com/travis-ci/travis-ci/issues/1996 -->
 [tup]: https://travis-ci.org/hpi-schuelerklub/workshop-portal/branches
@@ -25,7 +25,6 @@ A Ruby on Rails app to manage workshops
 [hud]: http://workshopportal-dev.herokuapp.com/
 [hsp]: https://heroku-badge.herokuapp.com/?app=workshopportal&svg=1
 [hsd]: https://heroku-badge.herokuapp.com/?app=workshopportal-dev&svg=1
-
 
 
 When all tests succeed on Travis CI, the application is deployed to Heroku. Click the badges for detailed info. <br>
