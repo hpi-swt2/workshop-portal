@@ -1,4 +1,4 @@
-class AddPrivateDataToProfile < ActiveRecord::Migration
+class AddPrivateDataToProfile < ActiveRecord::Migration[4.2]
   def change
     add_column :profiles, :first_name, :string
     add_column :profiles, :last_name, :string
