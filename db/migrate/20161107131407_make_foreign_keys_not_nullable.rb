@@ -1,4 +1,4 @@
-class MakeForeignKeysNotNullable < ActiveRecord::Migration
+class MakeForeignKeysNotNullable < ActiveRecord::Migration[4.2]
   def change
     change_column_null(:application_letters, :user_id, false)
     change_column_null(:application_letters, :workshop_id, false)

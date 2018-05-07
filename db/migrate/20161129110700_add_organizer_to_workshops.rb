@@ -1,4 +1,4 @@
-class AddOrganizerToWorkshops < ActiveRecord::Migration
+class AddOrganizerToWorkshops < ActiveRecord::Migration[4.2]
   def self.up
     add_column :events, :organizer, :string unless column_exists?(:events, :organizer)
   end

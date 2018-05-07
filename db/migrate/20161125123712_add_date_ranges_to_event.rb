@@ -1,4 +1,4 @@
-class AddDateRangesToEvent < ActiveRecord::Migration
+class AddDateRangesToEvent < ActiveRecord::Migration[4.2]
   def change
     create_table :date_ranges do |t|
       t.date :start_date
