@@ -2,10 +2,31 @@
 
 A Ruby on Rails app to manage workshops
 
-Branch | Travis CI  | Code Analysis | Heroku Deploy | Errbit
------- | ---------- | ------------- | ------------- | ------
-production  | [![Build Status](https://travis-ci.org/hpi-schuelerklub/workshop-portal.svg?branch=production)](https://travis-ci.org/hpi-schuelerklub/workshop-portal) | [![Coverage Status](https://coveralls.io/repos/github/hpi-schuelerklub/workshop-portal/badge.svg?branch=production)](https://coveralls.io/github/hpi-schuelerklub/workshop-portal?branch=production) [![Code Climate](https://codeclimate.com/github/hpi-schuelerklub/workshop-portal/badges/gpa.svg)](https://codeclimate.com/github/hpi-schuelerklub/workshop-portal/issues) | [![Heroku](https://heroku-badge.herokuapp.com/?app=workshop-portal&svg=1)](http://workshop-portal.herokuapp.com/) [[link]](http://workshop-portal.herokuapp.com/) | [[link]](http://swt2-errbit-2016.herokuapp.com/) | 
-dev  | [![Build Status](https://travis-ci.org/hpi-schuelerklub/workshop-portal.svg?branch=dev)](https://travis-ci.org/hpi-schuelerklub/workshop-portal) | [![Coverage Status](https://coveralls.io/repos/github/hpi-schuelerklub/workshop-portal/badge.svg?branch=dev)](https://coveralls.io/github/hpi-schuelerklub/workshop-portal?branch=dev) | [![Heroku](https://heroku-badge.herokuapp.com/?app=workshop-portal-dev&svg=1)](http://workshop-portal-dev.herokuapp.com/) [[link]](http://workshop-portal-dev.herokuapp.com/) |
+| Branch     | Travis CI                   | Code Analysis                                                    | Heroku Deploy         | 
+| ---------- | --------------------------- | ---------------------------------------------------------------- | --------------------- | 
+| production | [![Build Status][tsp]][tup] | [![Coverage Status][covsp]][covup] [![Code Climate][ccsd]][ccud] | [![Heroku][hsp]][hup] |
+| dev        | [![Build Status][tsd]][tud] | [![Coverage Status][covsd]][covud]                               | [![Heroku][hsp]][hud] |
+
+<!-- There is no way to specify a branch directly, see https://github.com/travis-ci/travis-ci/issues/1996 -->
+[tup]: https://travis-ci.org/hpi-schuelerklub/workshop-portal/branches
+[tud]: https://travis-ci.org/hpi-schuelerklub/workshop-portal/branches
+[tsp]: https://travis-ci.org/hpi-schuelerklub/workshop-portal.svg?branch=production
+[tsd]: https://travis-ci.org/hpi-schuelerklub/workshop-portal.svg?branch=dev
+
+[covup]: https://coveralls.io/github/hpi-schuelerklub/workshop-portal?branch=production
+[covud]: https://coveralls.io/github/hpi-schuelerklub/workshop-portal?branch=dev
+[covsp]: https://coveralls.io/repos/github/hpi-schuelerklub/workshop-portal/badge.svg?branch=production
+[covsd]: https://coveralls.io/repos/github/hpi-schuelerklub/workshop-portal/badge.svg?branch=dev
+
+[ccud]: https://codeclimate.com/github/hpi-schuelerklub/workshop-portal/issues
+[ccsd]: https://codeclimate.com/github/hpi-schuelerklub/workshop-portal/badges/gpa.svg
+
+[hup]: http://workshopportal.herokuapp.com/
+[hud]: http://workshopportal-dev.herokuapp.com/
+[hsp]: https://heroku-badge.herokuapp.com/?app=workshopportal&svg=1
+[hsd]: https://heroku-badge.herokuapp.com/?app=workshopportal-dev&svg=1
+
+
 
 When all tests succeed on Travis CI, the application is deployed to Heroku. Click the badges for detailed info. <br>
 The uptime of the deployed applications can be tracked [here](https://stats.uptimerobot.com/pg2gDuQZQ). <br>
