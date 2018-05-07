@@ -39,6 +39,8 @@ RSpec.describe "requests/new", type: :view do
       assert_select "textarea#request_knowledge_level[name=?]", "request[knowledge_level]"
       assert_select "textarea#request_annotations[name=?]", "request[annotations]"
       assert_select "input#request_grade[name=?]", "request[grade]"
+      assert_select "checkbox#request_campus_tour[name=?]", "request[campus_tour]"
+      assert_select "checkbox#request_study_info[name=?]", "request[study_info]"
     end
   end
 end
