@@ -38,6 +38,16 @@
       </div>
     </div>
 
+    <% [:campus_tour, :study_info].each do |attribute_name| %>
+        <div class="form-group">
+          <%= f.label attribute_name, :class => 'control-label col-lg-2 ' %>
+          <div class="col-10">
+            <%= f.check_box attribute_name, :class => 'form-control' %>
+            <%= f.error_span(attribute_name) %>
+          </div>
+        </div>
+    <% end %>
+
     <h3><%=t 'requests.teacher_information' %></h3>
 
     <div class="form-group">

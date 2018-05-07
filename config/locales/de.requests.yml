@@ -90,6 +90,8 @@ de:
         knowledge_level: "Kenntnisstand"
         grade: "Klassenstufe"
         annotations: "Anmerkungen"
+        campus_tour: "Möchten Sie eine Tour des HPI Campus?"
+        study_info: "Möchten Sie weitere Informationen zum Studium am HPI?"
         id: "Nummer"
         created_at: "Erstellt am"
         contact_person: "Ansprechpartner"

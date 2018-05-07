@@ -16,13 +16,14 @@
 #  number_of_participants :integer
 #  knowledge_level        :string
 #  annotations            :text
-#  status                 :integer          default(0)
+#  status                 :integer          default("open")
 #  school_zip_code_city   :string
 #  contact_person         :string
 #  notes                  :text
 #  grade                  :string
+#  study_info             :boolean
+#  campus_tour            :boolean
 #
-
 
 FactoryGirl.define do
   factory :request do
@@ -40,5 +41,7 @@ FactoryGirl.define do
     status :open
     annotations "Notes about this workshop"
     time_period "Zwischen Ende Januar und Mitte März"
+    campus_tour false
+    study_info true
   end
 end
