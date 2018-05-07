@@ -13,12 +13,12 @@ RSpec.describe AgreementLettersController, type: :controller do
     end
 
     it "redirects to user profile" do
-      post :create, { letter_upload: @file, event_id: @event.id }
+      post :create, params: { letter_upload: @file, event_id: @event.id }
       expect(response).to redirect_to(check_application_letter_path(ApplicationLetter.where(user_id: @user.id, event_id: @event.id).first))
     end
 
     it "saves a file's path in the database" do
-      post :create, { letter_upload: @file, event_id: @event.id }
+      post :create, params: { letter_upload: @file, event_id: @event.id }
       @agreement_letter = assigns(:agreement_letter)
       AgreementLetter.where(
           user: @user,
@@ -41,17 +41,17 @@ RSpec.describe AgreementLettersController, type: :controller do
     end
 
     it "updates existing db entry when replacing a file" do
-      post :create, { letter_upload: @file, event_id: @event.id }
+      post :create, params: { letter_upload: @file, event_id: @event.id }
       expect(AgreementLetter.where(user: @user, event: @event).size).to eq 1
-      post :create, { letter_upload: @another_file, event_id: @event.id }
+      post :create, params: { letter_upload: @another_file, event_id: @event.id }
       expect(AgreementLetter.where(user: @user, event: @event).size).to eq 1
     end
 
     it "overwrites file when user uploads to same event twice" do
-      post :create, { letter_upload: @file, event_id: @event.id }
+      post :create, params: { letter_upload: @file, event_id: @event.id }
       @agreement_letter = assigns(:agreement_letter)
       expect(File.size(@agreement_letter.path)).to eq @file.size
-      post :create, { letter_upload: @another_file, event_id: @event.id }
+      post :create, params: { letter_upload: @another_file, event_id: @event.id }
       expect(File.exists?(@agreement_letter.path)).to be true
       expect(File.size(@agreement_letter.path)).to eq @another_file.size
     end
