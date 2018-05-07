@@ -19,12 +19,15 @@
     "SECRET_KEY_BASE": {
       "required": true
     },
-    "SENDGRID_PASSWORD": {
+    "SMTP_HOST": {
       "required": true
     },
-    "SENDGRID_USERNAME": {
+    "SMTP_PASSWORD": {
       "required": true
-    }
+    },
+    "SMTP_USER": {
+      "required": true
+    },
   },
   "formation": {
   },
