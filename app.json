@@ -17,7 +17,7 @@
       "required": true
     },
     "SECRET_KEY_BASE": {
-      "required": true
+      "generator": "secret"
     },
     "SMTP_HOST": {
       "required": true
