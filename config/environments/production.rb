@@ -79,6 +79,8 @@ Rails.application.configure do
 
   if ENV['RAILS_HOST'].present?
     config.action_mailer.default_url_options = { :host => ENV['RAILS_HOST'], :port => ENV['RAILS_PORT'] }
+  elsif ENV['HEROKU_APP_NAME'].present?
+    config.action_mailer.default_url_options = {:host => "https://#{ENV['HEROKU_APP_NAME']}.herokuapp.com", :port => 80 }
   end
 
   config.action_mailer.delivery_method = :smtp
