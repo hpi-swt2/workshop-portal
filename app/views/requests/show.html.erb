@@ -9,6 +9,8 @@
   <dd><%= @request.topic_of_workshop %></dd>
   <dt><strong><%= model_class.human_attribute_name(:number_of_participants) %>:</strong></dt>
   <dd><%= @request.number_of_participants %></dd>
+  <dt><strong><%= t('requests.previous_knowledge') %>:</strong></dt>
+  <dd><%= @request.number_of_participants_with_previous_knowledge %></dd>
   <dt><strong><%= model_class.human_attribute_name(:time_period) %>:</strong></dt>
   <dd><%= @request.time_period %></dd>
   <dt><strong><%= model_class.human_attribute_name(:knowledge_level) %>:</strong></dt>

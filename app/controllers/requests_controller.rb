@@ -93,6 +93,7 @@ class RequestsController < ApplicationController
                                     :time_period,
                                     :email,
                                     :number_of_participants,
+                                    :number_of_participants_with_previous_knowledge,
                                     :knowledge_level,
                                     :annotations,
                                     :grade,

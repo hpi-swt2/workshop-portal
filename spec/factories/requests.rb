@@ -2,27 +2,28 @@
 #
 # Table name: requests
 #
-#  id                     :integer          not null, primary key
-#  created_at             :datetime         not null
-#  updated_at             :datetime         not null
-#  form_of_address        :integer
-#  first_name             :string
-#  last_name              :string
-#  phone_number           :string
-#  school_street          :string
-#  email                  :string
-#  topic_of_workshop      :text
-#  time_period            :text
-#  number_of_participants :integer
-#  knowledge_level        :string
-#  annotations            :text
-#  status                 :integer          default("open")
-#  school_zip_code_city   :string
-#  contact_person         :string
-#  notes                  :text
-#  grade                  :string
-#  study_info             :boolean
-#  campus_tour            :boolean
+#  id                                             :integer          not null, primary key
+#  created_at                                     :datetime         not null
+#  updated_at                                     :datetime         not null
+#  form_of_address                                :integer
+#  first_name                                     :string
+#  last_name                                      :string
+#  phone_number                                   :string
+#  school_street                                  :string
+#  email                                          :string
+#  topic_of_workshop                              :text
+#  time_period                                    :text
+#  number_of_participants                         :integer
+#  knowledge_level                                :string
+#  annotations                                    :text
+#  status                                         :integer          default("open")
+#  school_zip_code_city                           :string
+#  contact_person                                 :string
+#  notes                                          :text
+#  grade                                          :string
+#  study_info                                     :boolean
+#  campus_tour                                    :boolean
+#  number_of_participants_with_previous_knowledge :integer
 #
 
 FactoryGirl.define do
@@ -36,6 +37,7 @@ FactoryGirl.define do
     email "mustermann@example.de"
     topic_of_workshop "Hardware-Entwicklung mit einem CAD-System"
     number_of_participants 12
+    number_of_participants_with_previous_knowledge 5
     grade "8. Klasse"
     knowledge_level "Haben gerade mit Java-Kara angefangen"
     status :open

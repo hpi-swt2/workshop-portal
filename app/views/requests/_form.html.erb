@@ -12,7 +12,7 @@
       </div>
     </div>
 
-    <% [:time_period, :number_of_participants, :grade].each do |attribute_name| %>
+    <% [:time_period, :number_of_participants].each do |attribute_name| %>
         <div class="form-group">
           <%= f.label attribute_name, :class => 'control-label col-lg-2 ' %>
           <div class="col-lg-10">
@@ -21,6 +21,23 @@
           </div>
         </div>
     <% end %>
+
+    <div class="form-group">
+      <%= f.label 'previous_knowledge_label', t('requests.previous_knowledge'), :class => 'control-label col-lg-2' %>
+      <div class="col-lg-10">
+        <%= f.text_field :number_of_participants_with_previous_knowledge, :class => 'form-control' %>
+        <span class="help-block"> <%= t('requests.hints.previous_knowledge') %> </span>
+        <%= f.error_span(:number_of_participants_with_previous_knowledge) %>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :grade, :class => 'control-label col-lg-2' %>
+      <div class="col-lg-10">
+        <%= f.text_field :grade, :class => 'form-control' %>
+        <%= f.error_span(:grade) %>
+      </div>
+    </div>
 
     <div class="form-group">
       <%= f.label :knowledge_level, :class => 'control-label col-lg-2' %>
