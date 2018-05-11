@@ -19,8 +19,8 @@ RSpec.describe "requests/show", type: :view do
     expect(rendered).to have_text(@aRequest.contact_person)
     expect(rendered).to have_text(@aRequest.number_of_participants)
     expect(rendered).to have_text(@aRequest.grade)
-    expect(rendered).to have_text(@aRequest.campus_tour)
-    expect(rendered).to have_text(@aRequest.study_info)
+    expect(rendered).to have_text(@aRequest.campus_tour ? t('yes') : t('no'))
+    expect(rendered).to have_text(@aRequest.study_info ? t('yes') : t('no'))
     expect(rendered).to have_text(I18n.t(@aRequest.status, scope: 'activerecord.attributes.request.statuses'))
   end
 

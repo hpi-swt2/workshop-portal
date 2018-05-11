@@ -95,7 +95,9 @@ class RequestsController < ApplicationController
                                     :number_of_participants,
                                     :knowledge_level,
                                     :annotations,
-                                    :grade)
+                                    :grade,
+                                    :study_info,
+                                    :campus_tour)
   end
 
   def contact_person_params

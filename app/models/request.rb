@@ -16,11 +16,13 @@
 #  number_of_participants :integer
 #  knowledge_level        :string
 #  annotations            :text
-#  status                 :integer          default(0)
+#  status                 :integer          default("open")
 #  school_zip_code_city   :string
 #  contact_person         :string
 #  notes                  :text
 #  grade                  :string
+#  study_info             :boolean
+#  campus_tour            :boolean
 #
 
 class Request < ActiveRecord::Base

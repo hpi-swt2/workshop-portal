@@ -45,6 +45,12 @@ de:
     workshop_information: "Informationen über den gewünschten Workshop"
     teacher_information: "Lehrerinformationen"
     school_information: "Schulinformationen"
+    campus_tour:
+      long: "Möchten Sie eine Tour des HPI Campus?"
+      short: "Campustour erwünscht"
+    study_info:
+      long: "Möchten Sie weitere Informationen zum Studium am HPI?"
+      short: "Studieninformationen erwünscht"
     form_of_addresses:
       mr: "Herr"
       mrs: "Frau"
@@ -90,8 +96,8 @@ de:
         knowledge_level: "Kenntnisstand"
         grade: "Klassenstufe"
         annotations: "Anmerkungen"
-        campus_tour: "Möchten Sie eine Tour des HPI Campus?"
-        study_info: "Möchten Sie weitere Informationen zum Studium am HPI?"
+        campus_tour: "Campustour"
+        study_info: "Studieninformationen"
         id: "Nummer"
         created_at: "Erstellt am"
         contact_person: "Ansprechpartner"
