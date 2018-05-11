@@ -51,6 +51,7 @@ de:
     study_info:
       long: "Möchten Sie weitere Informationen zum Studium am HPI?"
       short: "Studieninformationen erwünscht"
+    previous_knowledge: "... davon mit Vorkenntnissen"
     form_of_addresses:
       mr: "Herr"
       mrs: "Frau"
@@ -63,6 +64,7 @@ de:
     hints:
       please_enter_two_topics: "Bitte 2 Wünsche angeben"
       please_be_descriptive: "Bitte seien Sie so genau wie möglich, diese Angabe hilft uns den Workshop besser zu gestalten."
+      previous_knowledge: "Wie viele der Schüler haben schon Vorkenntnisse? Zum Beispiel durch Informatikkurse oder AGs"
     notice:
       was_created: "Ihre Anfrage wurde erfolgreich abgesendet"
       was_updated: "Die Anfrage wurde aktualisiert"
@@ -93,6 +95,7 @@ de:
         topic_of_workshop: "Thema des Workshops"
         time_period: "Zeitrahmen"
         number_of_participants: "Teilnehmeranzahl"
+        number_of_participants_with_previous_knowledge: "Teilnehmeranzahl mit Vorkenntnissen"
         knowledge_level: "Kenntnisstand"
         grade: "Klassenstufe"
         annotations: "Anmerkungen"

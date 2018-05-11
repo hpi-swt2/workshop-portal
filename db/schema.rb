@@ -10,11 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180507190832) do
+ActiveRecord::Schema.define(version: 20180511192952) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-  enable_extension "hstore"
 
   create_table "agreement_letters", id: :serial, force: :cascade do |t|
     t.integer "user_id", null: false
@@ -133,6 +132,7 @@ ActiveRecord::Schema.define(version: 20180507190832) do
     t.string "grade"
     t.boolean "study_info"
     t.boolean "campus_tour"
+    t.integer "number_of_participants_with_previous_knowledge"
   end
 
   create_table "users", id: :serial, force: :cascade do |t|
