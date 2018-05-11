@@ -38,16 +38,20 @@
       </div>
     </div>
 
-    <div class="form-check">
-        <%= f.label 'campus_tour_label', I18n.t('requests.campus_tour.long'), :class => 'control-label ' %>
-        <%= f.check_box :campus_tour, :class => 'checkbox' %>
-        <%= f.error_span(:campus_tour) %>
+    <div class="row">
+        <div class="col-lg-10 col-lg-offset-2">
+            <%= f.label 'campus_tour_label', I18n.t('requests.campus_tour.long'), :class => 'control-label ' %>
+            <%= f.check_box :campus_tour, :class => 'checkbox' %>
+            <%= f.error_span(:campus_tour) %>
+        </div>
     </div>
 
-    <div class="form-check">
-        <%= f.label 'study_info_label', I18n.t('requests.study_info.long'), :class => 'control-label ' %>
-        <%= f.check_box :study_info, :class => 'checkbox' %>
-        <%= f.error_span(:study_info) %>
+    <div class="row">
+        <div class="col-lg-10 col-lg-offset-2">
+            <%= f.label 'study_info_label', I18n.t('requests.study_info.long'), :class => 'control-label ' %>
+            <%= f.check_box :study_info, :class => 'checkbox' %>
+            <%= f.error_span(:study_info) %>
+        </div>
     </div>
 
     <h3><%=t 'requests.teacher_information' %></h3>
