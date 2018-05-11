@@ -36,6 +36,7 @@ RSpec.describe "requests/new", type: :view do
       assert_select "input#request_topic_of_workshop[name=?]", "request[topic_of_workshop]"
       assert_select "input#request_time_period[name=?]", "request[time_period]"
       assert_select "input#request_number_of_participants[name=?]", "request[number_of_participants]"
+      assert_select "input#request_number_of_participants_with_previous_knowledge[name=?]", "request[number_of_participants_with_previous_knowledge]"
       assert_select "textarea#request_knowledge_level[name=?]", "request[knowledge_level]"
       assert_select "textarea#request_annotations[name=?]", "request[annotations]"
       assert_select "input#request_grade[name=?]", "request[grade]"
