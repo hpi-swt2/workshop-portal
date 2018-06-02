@@ -41,7 +41,8 @@ Rails.application.routes.draw do
   end
   devise_for :users, :controllers => {
       :registrations => "users/registrations",
-      :omniauth_callbacks => "users/omniauth_callbacks"
+      :omniauth_callbacks => "users/omniauth_callbacks",
+      :confirmations => "users/confirmations"
   }
   resources :users, only: [:index] # index page for devise users
   patch 'users/:id/role' => 'users#update_role', as: :update_user_role
