@@ -4,7 +4,7 @@ class Ability
   def initialize(user)
     # Define abilities for the passed in user here. For example:
     #
-    #   user ||= User.new # guest user (not logged in)
+    #   user ||= User.new # guest user [not logged in]
     #   if user.admin?
     #     can :manage, :all
     #   else
@@ -29,56 +29,56 @@ class Ability
     # See the wiki for details:
     # https://github.com/CanCanCommunity/cancancan/wiki/Defining-Abilities
 
-    user ||= User.new # guest user (not logged in)
+    user ||= User.new # guest user [not logged in]
 
     # Even guests can see the apply button
     # This is revoked for coaches and organizers below.
-    can %i(view_apply_button), Event
-    can %i(show index archive), Event
+    can %i[view_apply_button], Event
+    can %i[show index archive], Event
 
     if user.role? :pupil
       # Pupils can only edit their own profiles
-      can %i(new create), Profile
-      can %i(index show edit update destroy), Profile, user: { id: user.id }
+      can %i[new create], Profile
+      can %i[index show edit update destroy], Profile, user: { id: user.id }
       # Pupils can only edit their own applications
-      can %i(new create), ApplicationLetter if user.profile.present?
-      can %i(index show edit update check destroy view_personal_details), ApplicationLetter, user: { id: user.id }
+      can %i[new create], ApplicationLetter if user.profile.present?
+      can %i[index show edit update check destroy view_personal_details], ApplicationLetter, user: { id: user.id }
       # Pupils can upload their letters of agreement
       can :create, AgreementLetter
-      can %i(new create), Request
+      can %i[new create], Request
 
     elsif user.role? :coach
       # Coaches can only edit their own profiles
-      can %i(new create), Profile
-      can %i(index show edit update destroy), Profile, user: { id: user.id }
+      can %i[new create], Profile
+      can %i[index show edit update destroy], Profile, user: { id: user.id }
 
       # Coaches can view Applications and participants for and view, upload and download materials for Event
-      can %i(view_applicants view_participants view_material upload_material print_applications download_material), Event
-      can %i(view_and_add_notes show), ApplicationLetter
-      can %i(show index), Request
-      cannot %i(apply view_apply_button), Event
+      can %i[view_applicants view_participants view_material upload_material print_applications download_material], Event
+      can %i[view_and_add_notes show], ApplicationLetter
+      can %i[show index], Request
+      cannot %i[apply view_apply_button], Event
 
     elsif user.role? :organizer
       # Organizers can only edit their own profiles
-      can %i(new create index show), Profile
-      can %i(edit update destroy), Profile, user: { id: user.id }
-      can %i(manage set_contact_person set_notes show index), Request
-      can %i(index show view_and_add_notes update_status), ApplicationLetter
-      can %i(manage view_applicants edit_applicants view_participants print_applications view_material 
-           upload_material print_agreement_letters download_material view_unpublished show_eating_habits
-           print_applications_eating_habits view_hidden edit update destroy), Event
-      cannot %i(apply view_apply_button), Event
+      can %i[new create index show], Profile
+      can %i[edit update destroy], Profile, user: { id: user.id }
+      can %i[manage set_contact_person set_notes show index], Request
+      can %i[index show view_and_add_notes update_status], ApplicationLetter
+      can %i[manage view_applicants edit_applicants view_participants print_applications view_material
+             upload_material print_agreement_letters download_material view_unpublished show_eating_habits
+             print_applications_eating_habits view_hidden edit update destroy], Event
+      cannot %i[apply view_apply_button], Event
       can :send_email, Email
       can :update, ParticipantGroup
 
       # Organizers can update user roles of pupil, coach and organizer, but cannot manage admins and cannot update a role to admin
-      can :manage, User, role: %w(pupil coach organizer)
+      can :manage, User, role: %w[pupil coach organizer]
       cannot :update_role, User, role: 'admin'
       cannot :update_role_to_admin, User
 
     elsif user.role? :admin
       can :manage, :all
-      cannot %i(edit update), ApplicationLetter
+      cannot %i[edit update], ApplicationLetter
     end
   end
 end
