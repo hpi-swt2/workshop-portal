@@ -26,6 +26,9 @@ de:
   unauthorized:
       manage:
         all: "Du bist nicht authorisiert diese Aktion auszuführen."
+  # The following two keys need to be enclosed in quotes.
+  # Otherwise the YAML parsers tries to be smart about it
+  # and replace yes by true and no by false.
   "yes": "Ja"
   "no": "Nein"
   navbar:
