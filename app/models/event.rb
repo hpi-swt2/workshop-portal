@@ -3,21 +3,21 @@
 # Table name: events
 #
 #  id                         :integer          not null, primary key
-#  name                       :string
-#  description                :text
-#  max_participants           :integer
-#  created_at                 :datetime         not null
-#  updated_at                 :datetime         not null
-#  published                  :boolean          default(FALSE)
-#  organizer                  :string
-#  knowledge_level            :string
+#  acceptances_have_been_sent :boolean          default(FALSE)
 #  application_deadline       :date
 #  custom_application_fields  :text
+#  custom_image               :string
+#  description                :text
 #  hidden                     :boolean          default(FALSE)
 #  image                      :string
+#  knowledge_level            :string
+#  max_participants           :integer
+#  name                       :string
+#  organizer                  :string
+#  published                  :boolean          default(FALSE)
 #  rejections_have_been_sent  :boolean          default(FALSE)
-#  acceptances_have_been_sent :boolean          default(FALSE)
-#  custom_image               :string
+#  created_at                 :datetime         not null
+#  updated_at                 :datetime         not null
 #
 
 class Event < ActiveRecord::Base

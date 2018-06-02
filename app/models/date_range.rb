@@ -3,11 +3,11 @@
 # Table name: date_ranges
 #
 #  id         :integer          not null, primary key
-#  start_date :date
 #  end_date   :date
-#  event_id   :integer
+#  start_date :date
 #  created_at :datetime
 #  updated_at :datetime
+#  event_id   :integer
 #
 # Indexes
 #

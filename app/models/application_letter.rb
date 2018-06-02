@@ -3,20 +3,20 @@
 # Table name: application_letters
 #
 #  id                        :integer          not null, primary key
+#  allergies                 :string
+#  annotation                :text
+#  custom_application_fields :text
+#  emergency_number          :string
 #  motivation                :string
-#  user_id                   :integer          not null
-#  event_id                  :integer          not null
+#  organisation              :string
+#  status                    :integer          default("pending"), not null
+#  status_notification_sent  :boolean          default(FALSE), not null
+#  vegan                     :boolean
+#  vegetarian                :boolean
 #  created_at                :datetime         not null
 #  updated_at                :datetime         not null
-#  status                    :integer          default("pending"), not null
-#  emergency_number          :string
-#  vegetarian                :boolean
-#  vegan                     :boolean
-#  allergies                 :string
-#  custom_application_fields :text
-#  annotation                :text
-#  organisation              :string
-#  status_notification_sent  :boolean          default(FALSE), not null
+#  event_id                  :integer          not null
+#  user_id                   :integer          not null
 #
 # Indexes
 #
