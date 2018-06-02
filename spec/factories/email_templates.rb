@@ -2,12 +2,13 @@
 #
 # Table name: email_templates
 #
-#  id               :integer          not null, primary key
-#  status           :integer(enum)    not null
-#  hide_recipients  :boolean          not null
-#  subject          :string           not null
-#  content          :string           not null
+#  id              :integer          not null, primary key
+#  content         :text
+#  hide_recipients :boolean
+#  status          :integer
+#  subject         :string
 #
+
 FactoryGirl.define do
   factory :email_template do
     status :acceptance

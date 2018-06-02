@@ -2,13 +2,22 @@
 #
 # Table name: events
 #
-#  id               :integer          not null, primary key
-#  name             :string
-#  description      :string
-#  max_participants :integer
-#  active           :boolean
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
+#  id                         :integer          not null, primary key
+#  acceptances_have_been_sent :boolean          default(FALSE)
+#  application_deadline       :date
+#  custom_application_fields  :text
+#  custom_image               :string
+#  description                :text
+#  hidden                     :boolean          default(FALSE)
+#  image                      :string
+#  knowledge_level            :string
+#  max_participants           :integer
+#  name                       :string
+#  organizer                  :string
+#  published                  :boolean          default(FALSE)
+#  rejections_have_been_sent  :boolean          default(FALSE)
+#  created_at                 :datetime         not null
+#  updated_at                 :datetime         not null
 #
 
 require 'rails_helper'

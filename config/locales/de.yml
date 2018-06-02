@@ -49,13 +49,14 @@ de:
         remember_me: "Eingeloggt bleiben"
   midnight: "Mitternacht"
   start_page:
-    welcome_to: "Herzlich Willkommen im"
+    welcome_to: "Herzlich Willkommen beim"
     workshop_portal_hpi_html: "Workshop<div class='row spacer-15'></div>Portal des HPI."
     register_now: "Registrieren"
     place_request: "Anfrage stellen"
     all_events: 'Alle Veranstaltungen'
     intro_text_html: "Bist Du interessiert an IT-Systems-Engineering, Design Thinking oder Entrepreneurship? Dann bist Du hier bei uns genau richtig. Hier findest du spannende Camps und Workshops des Hasso-Plattner-Instituts für Schülerinnen und Schüler sowie Berufstätige, die eine Abwechslung zum normalen Alltag suchen.<br>Schau doch mal bei uns vorbei!"
     intro_text_events: "Hier findest du einen Überblick der kommenden Veranstaltungen am Hasso-Plattner-Institut. Beispielsweise können sich Schülerinnen und Schüler bei den Veranstaltungen der Schülerakademie gezielt über den Studiengang \"IT-Systems Engineering\" oder allgemein über das Informatikstudium und neue Technologien informieren."
+    request_workshop: "Workshop anfragen"
     intro_text_requests: "Das HPI organisiert auch individualisierte Workshops, beispielsweise für Schülerinnen und Schüler, die besonders interessiert an Informatik sind oder für Unternehmen, die ihre Mitarbeiter weiterbilden möchte."
     outro_text_requests: "Mit einer gewissen zeitlichen Flexibilität und etwas zeitlichem Vorlauf können wir meist alle Anfragen verwirklichen."
     website_name: "Workshop Portal"
