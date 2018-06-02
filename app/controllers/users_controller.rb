@@ -16,7 +16,7 @@ class UsersController < ApplicationController
     authorize! :update_role_to_admin, @user if user_params[:role] == 'admin'
 
     if @user.update(user_params)
-      redirect_to :back, notice: I18n.t('users.successful_role_update')
+      redirect_back(fallback_location: root_path, notice: I18n.t('users.successful_role_update'))
     end
   end
 

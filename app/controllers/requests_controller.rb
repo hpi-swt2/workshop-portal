@@ -44,7 +44,7 @@ class RequestsController < ApplicationController
   def set_contact_person
     @request = Request.find(params[:request_id])
     update_params = contact_person_params
-    if !update_params[:contact_person].nil? && @request.update(update_params)
+    if !update_params[:contact_person].empty? && @request.update(update_params)
       redirect_to @request, notice: I18n.t('requests.notice.was_updated')
     else
       render :show
@@ -54,7 +54,7 @@ class RequestsController < ApplicationController
   def set_notes
     @request = Request.find(params[:request_id])
     update_params = notes_params
-    if !update_params[:notes].nil? && @request.update(update_params)
+    if !update_params[:notes].empty? && @request.update(update_params)
       redirect_to @request, notice: I18n.t('requests.notice.was_updated')
     else
       render :show
@@ -83,7 +83,19 @@ class RequestsController < ApplicationController
 
   # Only allow a trusted parameter "white list" through.
   def request_params
-    params.require(:request).permit(:form_of_address, :first_name, :last_name, :phone_number, :street, :zip_code_city, :topic_of_workshop, :time_period, :email, :number_of_participants, :knowledge_level, :annotations)
+    params.require(:request).permit(:form_of_address,
+                                    :first_name,
+                                    :last_name,
+                                    :phone_number,
+                                    :school_street,
+                                    :school_zip_code_city,
+                                    :topic_of_workshop,
+                                    :time_period,
+                                    :email,
+                                    :number_of_participants,
+                                    :knowledge_level,
+                                    :annotations,
+                                    :grade)
   end
 
   def contact_person_params

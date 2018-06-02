@@ -28,24 +28,24 @@ RSpec.describe ParticipantGroupsController, type: :controller do
         let(:new_group) { {group: 9} }
 
         it "assigns the requested participant group as @participant_group" do
-          put :update, id: @participant_group.to_param, participant_group: new_group, session: valid_session
+          put :update, params: {id: @participant_group.to_param, participant_group: new_group, session: valid_session}
           expect(assigns(:participant_group)).to eq(@participant_group)
         end
 
         it "updates the group" do
-          put :update, id: @participant_group.to_param, participant_group: new_group, session: valid_session
+          put :update, params: {id: @participant_group.to_param, participant_group: new_group, session: valid_session}
           @participant_group.reload
           expect(@participant_group.group).to eq(new_group[:group])
         end
 
         it "redirects back" do
-          put :update, id: @participant_group.to_param, participant_group: new_group, session: valid_session
+          put :update, params: {id: @participant_group.to_param, participant_group: new_group, session: valid_session}
           expect(response).to redirect_to(request.env['HTTP_REFERER'])
         end
 
         it "redirects to root when HTTP_REFERER invalid" do
           request.env['HTTP_REFERER'] = nil
-          put :update, id: @participant_group.to_param, participant_group: new_group, session: valid_session
+          put :update, params: {id: @participant_group.to_param, participant_group: new_group, session: valid_session}
           expect(response).to redirect_to(root_path)
         end
       end
@@ -53,12 +53,12 @@ RSpec.describe ParticipantGroupsController, type: :controller do
       context "with invalid params" do
         let(:invalid_group) { {group: nil} }
         it "assigns the requested participant group as @participant_group" do
-          put :update, id: @participant_group.to_param, participant_group: invalid_group, session: valid_session
+          put :update, params: {id: @participant_group.to_param, participant_group: invalid_group, session: valid_session}
           expect(assigns(:participant_group)).to eq(@participant_group)
         end
 
         it "does not update the group" do
-          put :update, id: @participant_group.to_param, participant_group: invalid_group, session: valid_session
+          put :update, params: {id: @participant_group.to_param, participant_group: invalid_group, session: valid_session}
           expect(@participant_group.group).to_not eq(invalid_group[:group])
         end
       end

@@ -1,4 +1,4 @@
-class CreateApplicationNotes < ActiveRecord::Migration
+class CreateApplicationNotes < ActiveRecord::Migration[4.2]
   def change
     create_table :application_notes do |t|
       t.text :note

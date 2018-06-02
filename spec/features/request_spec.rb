@@ -11,8 +11,8 @@ describe 'workshop requests', type: :feature do
       fill_in I18n.t('activerecord.attributes.request.first_name'), :with => 'Martina'
       fill_in I18n.t('activerecord.attributes.request.last_name'), :with => 'Mustermann'
       fill_in I18n.t('activerecord.attributes.request.phone_number'), :with => '0123456789'
-      fill_in I18n.t('activerecord.attributes.request.street'), :with => 'Musterstraße 3'
-      fill_in I18n.t('activerecord.attributes.request.zip_code_city'), :with => '12345 Musterstadt'
+      fill_in I18n.t('activerecord.attributes.request.school_street'), :with => 'Musterstraße 3'
+      fill_in I18n.t('activerecord.attributes.request.school_zip_code_city'), :with => '12345 Musterstadt'
       fill_in I18n.t('activerecord.attributes.request.email'), :with => 'martina@mustermann.de'
       fill_in I18n.t('activerecord.attributes.request.topic_of_workshop'), :with => 'Musterthema'
     end
