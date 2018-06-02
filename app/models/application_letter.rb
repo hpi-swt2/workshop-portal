@@ -3,32 +3,37 @@
 # Table name: application_letters
 #
 #  id                        :integer          not null, primary key
+#  allergies                 :string
+#  annotation                :text
+#  custom_application_fields :text
+#  emergency_number          :string
 #  motivation                :string
-#  user_id                   :integer          not null
-#  event_id                  :integer          not null
+#  organisation              :string
+#  status                    :integer          default("pending"), not null
+#  status_notification_sent  :boolean          default(FALSE), not null
+#  vegan                     :boolean
+#  vegetarian                :boolean
 #  created_at                :datetime         not null
 #  updated_at                :datetime         not null
-#  status                    :integer          default(2), not null
-#  emergency_number          :string
-#  vegetarian                :boolean
-#  vegan                     :boolean
-#  allergies                 :string
-#  custom_application_fields :text
-#  annotation                :text
-#  organisation              :string
-#  status_notification_sent  :boolean          default(FALSE), not null
+#  event_id                  :integer          not null
+#  user_id                   :integer          not null
 #
 # Indexes
 #
 #  index_application_letters_on_event_id  (event_id)
 #  index_application_letters_on_user_id   (user_id)
 #
+# Foreign Keys
+#
+#  fk_rails_...  (event_id => events.id)
+#  fk_rails_...  (user_id => users.id)
+#
 
 class ApplicationLetter < ActiveRecord::Base
   belongs_to :user
   belongs_to :event
 
-  has_many :application_notes
+  has_many :application_notes, dependent: :destroy
   serialize :custom_application_fields, Array
 
   validates_presence_of :user, :event, :motivation, :emergency_number, :organisation
