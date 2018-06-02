@@ -20,12 +20,11 @@
 <dl>
   <dt><%= ApplicationLetter.human_attribute_name(:motivation) %>:</dt>
   <dd id="application-motivation" data-orig-text="<%= simple_format(@application_letter.motivation) %>">
-    <%= truncate simple_format(@application_letter.motivation), length: 300 do
-      link_to I18n.t('events.list.read_on'),
+    <%= simple_format(truncate @application_letter.motivation, length: 300, escape: false) %>
+    <%=  link_to I18n.t('events.list.read_on'),
         'javascript:jQuery("#application-motivation")
-          .text(jQuery("#application-motivation")
-            .attr("data-orig-text")); void(0)'
-      end %>
+          .html(jQuery("#application-motivation")
+            .attr("data-orig-text")); void(0)' %>
   </dd>
   <dt><%= ApplicationLetter.human_attribute_name(:organisation) %>:</dt>
   <dd><%= @application_letter.organisation %></dd>
