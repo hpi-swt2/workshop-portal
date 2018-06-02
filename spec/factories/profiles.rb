@@ -2,10 +2,24 @@
 #
 # Table name: profiles
 #
-#  id         :integer          not null, primary key
-#  user_id    :integer          not null
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id                :integer          not null, primary key
+#  birth_date        :date
+#  city              :string
+#  country           :string
+#  discovery_of_site :text
+#  first_name        :string
+#  gender            :string
+#  last_name         :string
+#  state             :string
+#  street_name       :string
+#  zip_code          :string
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#  user_id           :integer          not null
+#
+# Indexes
+#
+#  index_profiles_on_user_id  (user_id)
 #
 
 FactoryGirl.define do

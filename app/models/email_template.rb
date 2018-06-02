@@ -3,10 +3,10 @@
 # Table name: email_templates
 #
 #  id              :integer          not null, primary key
-#  status          :integer
-#  subject         :string
 #  content         :text
 #  hide_recipients :boolean
+#  status          :integer
+#  subject         :string
 #
 
 class EmailTemplate < ActiveRecord::Base
