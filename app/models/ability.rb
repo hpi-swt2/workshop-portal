@@ -4,7 +4,7 @@ class Ability
   def initialize(user)
     # Define abilities for the passed in user here. For example:
     #
-    #   user ||= User.new # guest user [not logged in]
+    #   user ||= User.new # guest user (not logged in)
     #   if user.admin?
     #     can :manage, :all
     #   else
@@ -29,7 +29,7 @@ class Ability
     # See the wiki for details:
     # https://github.com/CanCanCommunity/cancancan/wiki/Defining-Abilities
 
-    user ||= User.new # guest user [not logged in]
+    user ||= User.new # guest user (not logged in)
 
     # Even guests can see the apply button
     # This is revoked for coaches and organizers below.
@@ -44,7 +44,7 @@ class Ability
       can %i[new create], ApplicationLetter if user.profile.present?
       can %i[index show edit update check destroy view_personal_details], ApplicationLetter, user: { id: user.id }
       # Pupils can upload their letters of agreement
-      can :create, AgreementLetter
+      can %i[create], AgreementLetter
       can %i[new create], Request
 
     elsif user.role? :coach
@@ -68,16 +68,16 @@ class Ability
              upload_material print_agreement_letters download_material view_unpublished show_eating_habits
              print_applications_eating_habits view_hidden edit update destroy], Event
       cannot %i[apply view_apply_button], Event
-      can :send_email, Email
-      can :update, ParticipantGroup
+      can %i[send_email], Email
+      can %i[update], ParticipantGroup
 
       # Organizers can update user roles of pupil, coach and organizer, but cannot manage admins and cannot update a role to admin
-      can :manage, User, role: %w[pupil coach organizer]
-      cannot :update_role, User, role: 'admin'
-      cannot :update_role_to_admin, User
+      can %i[manage], User, role: %w[pupil coach organizer]
+      cannot %i[update_role], User, role: 'admin'
+      cannot %i[update_role_to_admin], User
 
     elsif user.role? :admin
-      can :manage, :all
+      can %i[manage], :all
       cannot %i[edit update], ApplicationLetter
     end
   end
