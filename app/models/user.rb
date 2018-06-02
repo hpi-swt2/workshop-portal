@@ -43,7 +43,7 @@ class User < ActiveRecord::Base
 
   def role?(base_role)
     return false unless role
-    raise "invalid role: " + base_role unless ROLES.include?(base_role)
+    raise 'invalid role: ' + base_role unless ROLES.include?(base_role)
 
     base_role.to_sym == role.to_sym
   end
