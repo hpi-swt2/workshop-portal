@@ -9,7 +9,10 @@ def request_hardware_entwicklung
     email: "mustermann@example.de",
     topic_of_workshop: "Hardware-Entwicklung mit einem CAD-System",
     number_of_participants: 12,
+    number_of_participants_with_previous_knowledge: 5,
     grade: "8. Klasse",
+    study_info: true,
+    campus_tour: false,
     status: :open
   )
 end
