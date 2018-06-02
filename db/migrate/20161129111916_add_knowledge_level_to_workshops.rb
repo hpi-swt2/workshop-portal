@@ -1,4 +1,4 @@
-class AddKnowledgeLevelToWorkshops < ActiveRecord::Migration
+class AddKnowledgeLevelToWorkshops < ActiveRecord::Migration[4.2]
   def self.up
     add_column :events, :knowledge_level, :string unless column_exists?(:events, :knowledge_level)
   end

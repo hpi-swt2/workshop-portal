@@ -1,4 +1,4 @@
-class AddAdditionalInformationToApplicationLetter < ActiveRecord::Migration
+class AddAdditionalInformationToApplicationLetter < ActiveRecord::Migration[4.2]
   def change
     add_column :application_letters, :grade, :integer
     add_column :application_letters, :experience, :string

@@ -212,10 +212,10 @@ class EventsController < ApplicationController
 
   # GET /event/1/participants_pdf
   def participants_pdf
-    default = { order_by: 'email', order_direction: 'asc' }
-    default = default.merge(params)
+    params[:order_by] ||= 'email'
+    params[:order_direction] ||= 'asc'
 
-    @application_letters = @event.application_letters_ordered(default[:order_by], default[:order_direction])
+    @application_letters = @event.application_letters_ordered(params[:order_by], params[:order_direction])
                                  .where(status: ApplicationLetter.statuses[:accepted])
 
     data = @application_letters.collect do |application_letter|
@@ -293,8 +293,8 @@ class EventsController < ApplicationController
 
   def filter_application_letters(application_letters)
     application_letters = application_letters.to_a
-    filters = (params[:filter] || {}).select { |_k, v| v == '1' }.map { |k, _v| k.to_s }
-    if filters.count > 0 # skip filtering if no filters have been set
+    filters = (params[:filter] || {}).select { |_k, v| v == '1' }.transform_keys(&:to_s)
+    unless filters.empty? # skip filtering if no filters have been set
       application_letters.keep_if { |l| filters.include?(l.status) }
     end
     application_letters

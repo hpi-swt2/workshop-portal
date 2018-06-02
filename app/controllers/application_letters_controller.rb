@@ -121,11 +121,7 @@ class ApplicationLettersController < ApplicationController
           mail_tooltip: @application_letter.event.send_mails_tooltip
         }
       else
-        begin
-          redirect_to :back, notice: I18n.t('application_letters.successful_update')
-        rescue ActionController::RedirectBackError
-          redirect_to root_path
-        end
+        redirect_back(fallback_location: root_path, notice: I18n.t('application_letters.successful_update'))
       end
     else
       render :edit

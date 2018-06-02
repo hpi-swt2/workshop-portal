@@ -40,21 +40,21 @@ RSpec.describe ProfilesController, type: :controller do
 
     describe "GET #show" do
       it "assigns the requested profile as @profile" do
-        get :show, id: @profile.to_param, session: valid_session
+        get :show, params: {id: @profile.to_param, session: valid_session}
         expect(assigns(:profile)).to eq(@profile)
       end
     end
 
     describe "GET #new" do
       it "assigns a new profile as @profile" do
-        get :new, params: {}, session: valid_session
+        get :new, params: {session: valid_session}
         expect(assigns(:profile)).to be_a_new(Profile)
       end
     end
 
     describe "GET #edit" do
       it "assigns the requested profile as @profile" do
-        get :edit, id: @profile.to_param, session: valid_session
+        get :edit, params: {id: @profile.to_param, session: valid_session}
         expect(assigns(:profile)).to eq(@profile)
       end
     end
@@ -76,30 +76,30 @@ RSpec.describe ProfilesController, type: :controller do
         }
 
         it "updates the requested profile" do
-          put :update, id: @profile.to_param, profile: new_attributes, session: valid_session
+          put :update, params: {id: @profile.to_param, profile: new_attributes, session: valid_session}
           @profile.reload
           expect(@profile.street_name).to eq(new_attributes[:street_name])
         end
 
         it "assigns the requested profile as @profile" do
-          put :update, id: @profile.to_param, profile: valid_attributes, session: valid_session
+          put :update, params: {id: @profile.to_param, profile: valid_attributes, session: valid_session}
           expect(assigns(:profile)).to eq(@profile)
         end
 
         it "redirects to the profile" do
-          put :update, id: @profile.to_param, profile: valid_attributes, session: valid_session
+          put :update, params: {id: @profile.to_param, profile: valid_attributes, session: valid_session}
           expect(response).to redirect_to(@profile)
         end
       end
 
       context "with invalid params" do
         it "assigns the profile as @profile" do
-          put :update, id: @profile.to_param, profile: invalid_attributes, session: valid_session
+          put :update, params: {id: @profile.to_param, profile: invalid_attributes, session: valid_session}
           expect(assigns(:profile)).to eq(@profile)
         end
 
         it "re-renders the 'edit' template" do
-          put :update, id: @profile.to_param, profile: invalid_attributes, session: valid_session
+          put :update, params: {id: @profile.to_param, profile: invalid_attributes, session: valid_session}
           expect(response).to render_template("edit")
         end
       end
@@ -111,35 +111,35 @@ RSpec.describe ProfilesController, type: :controller do
       it "creates a new Profile" do
         sign_in FactoryGirl.create(:user)
         expect {
-          post :create, profile: valid_attributes, session: valid_session
+          post :create, params: {profile: valid_attributes, session: valid_session}
         }.to change(Profile, :count).by(1)
       end
 
       it "doesn't create two Profiles" do
         sign_in FactoryGirl.create(:user)
         expect {
-          post :create, profile: valid_attributes, session: valid_session
+          post :create, params: {profile: valid_attributes, session: valid_session}
         }.to change(Profile, :count).by(1)
 
         expect {
-          post :create, profile: valid_attributes, session: valid_session
+          post :create, params: {profile: valid_attributes, session: valid_session}
         }.to_not change(Profile, :count)
         expect(response).to redirect_to(Profile.last)
 
-        get :new, profile: valid_attributes, session: valid_session
+        get :new, params: {profile: valid_attributes, session: valid_session}
         expect(response).to redirect_to(Profile.last)
       end
 
       it "assigns a newly created profile as @profile" do
         sign_in FactoryGirl.create(:user)
-        post :create, profile: valid_attributes, session: valid_session
+        post :create, params: {profile: valid_attributes, session: valid_session}
         expect(assigns(:profile)).to be_a(Profile)
         expect(assigns(:profile)).to be_persisted
       end
 
       it "redirects to the created profile" do
         sign_in FactoryGirl.create(:user)
-        post :create, profile: valid_attributes, session: valid_session
+        post :create, params: {profile: valid_attributes, session: valid_session}
         expect(response).to redirect_to(edit_user_registration_path)
       end
     end
@@ -147,13 +147,13 @@ RSpec.describe ProfilesController, type: :controller do
     context "with invalid params" do
       it "assigns a newly created but unsaved profile as @profile" do
         sign_in FactoryGirl.create(:user)
-        post :create, profile: invalid_attributes, session: valid_session
+        post :create, params: {profile: invalid_attributes, session: valid_session}
         expect(assigns(:profile)).to be_a_new(Profile)
       end
 
       it "re-renders the 'new' template" do
         sign_in FactoryGirl.create(:user)
-        post :create, profile: invalid_attributes, session: valid_session
+        post :create, params: {profile: invalid_attributes, session: valid_session}
         expect(response).to render_template("new")
       end
     end
