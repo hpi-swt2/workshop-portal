@@ -4,9 +4,9 @@
 #
 #  id                    :integer          not null, primary key
 #  note                  :text
-#  application_letter_id :integer
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
+#  application_letter_id :integer
 #
 # Indexes
 #

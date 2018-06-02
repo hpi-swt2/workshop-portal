@@ -3,21 +3,21 @@
 # Table name: users
 #
 #  id                     :integer          not null, primary key
+#  current_sign_in_at     :datetime
+#  current_sign_in_ip     :string
 #  email                  :string           default(""), not null
 #  encrypted_password     :string           default(""), not null
-#  reset_password_token   :string
-#  reset_password_sent_at :datetime
-#  remember_created_at    :datetime
-#  sign_in_count          :integer          default(0), not null
-#  current_sign_in_at     :datetime
 #  last_sign_in_at        :datetime
-#  current_sign_in_ip     :string
 #  last_sign_in_ip        :string
+#  provider               :string
+#  remember_created_at    :datetime
+#  reset_password_sent_at :datetime
+#  reset_password_token   :string
+#  role                   :string
+#  sign_in_count          :integer          default(0), not null
+#  uid                    :string
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
-#  role                   :string
-#  provider               :string
-#  uid                    :string
 #
 # Indexes
 #
@@ -43,7 +43,7 @@ class User < ActiveRecord::Base
 
   def role?(base_role)
     return false unless role
-    raise "invalid role: " + base_role unless ROLES.include?(base_role)
+    raise 'invalid role: ' + base_role unless ROLES.include?(base_role)
 
     base_role.to_sym == role.to_sym
   end

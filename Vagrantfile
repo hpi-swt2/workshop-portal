@@ -27,5 +27,6 @@ Vagrant.configure("2") do |config|
     apt-get update
     apt-get install -y phantomjs
     apt-get install -y imagemagick
+    echo "cd hpi-swt2" >> /home/vagrant/.bashrc
   SHELL
 end
