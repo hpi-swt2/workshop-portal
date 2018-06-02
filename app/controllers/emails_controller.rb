@@ -1,5 +1,4 @@
 class EmailsController < ApplicationController
-
   def show
     authorize! :send_email, Email
     @event = Event.find(params[:event_id])
@@ -8,12 +7,12 @@ class EmailsController < ApplicationController
     @templates = EmailTemplate.with_status(status)
     if status == :acceptance
       @addresses = @event.email_addresses_of_type_without_notification_sent(:accepted)
-    elsif (status == :rejection)
+    elsif status == :rejection
       @addresses = @event.email_addresses_of_type_without_notification_sent(:rejected)
       if @event.has_participants_without_status_notification?(:alternative)
         @addresses.append(@event.email_addresses_of_type_without_notification_sent(:alternative))
-      end  
-    else 
+      end
+    else
       @addresses = []
     end
 
@@ -36,9 +35,7 @@ class EmailsController < ApplicationController
     authorize! :send_email, Email
     @templates = []
     @event = Event.find(params[:id])
-    if params[:send]
-      send_generic
-    end
+    send_generic if params[:send]
   end
 
   private
@@ -83,8 +80,8 @@ class EmailsController < ApplicationController
   def save_template
     @email = Email.new(email_params)
 
-    @template = EmailTemplate.new({ status: get_status, hide_recipients: @email.hide_recipients,
-                                    subject: @email.subject, content: @email.content })
+    @template = EmailTemplate.new(status: get_status, hide_recipients: @email.hide_recipients,
+                                  subject: @email.subject, content: @email.content)
 
     if @email.validates_presence_of(:subject, :content) && @template.save
       flash.now[:success] = t('emails.submit.saving_successful')
@@ -103,7 +100,7 @@ class EmailsController < ApplicationController
     if status == :acceptance
       event.set_status_notification_flag_for_applications_with_status(:accepted)
       event.acceptances_have_been_sent = true
-      if not (event.has_participants_without_status_notification?(:rejected) || @event.has_participants_without_status_notification?(:alternative))
+      unless event.has_participants_without_status_notification?(:rejected) || @event.has_participants_without_status_notification?(:alternative)
         event.rejections_have_been_sent = true
       end
     elsif get_status == :rejection

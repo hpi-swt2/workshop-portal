@@ -1,7 +1,7 @@
 class RequestsController < ApplicationController
   load_and_authorize_resource
-  skip_authorize_resource only: [:new, :create]
-  before_action :set_request, only: [:show, :edit, :update, :destroy, :accept]
+  skip_authorize_resource only: %i(new create)
+  before_action :set_request, only: %i(show edit update destroy accept)
 
   # GET /requests
   def index
@@ -10,8 +10,7 @@ class RequestsController < ApplicationController
   end
 
   # GET /requests/1
-  def show
-  end
+  def show; end
 
   # GET /requests/new
   def new
@@ -19,8 +18,7 @@ class RequestsController < ApplicationController
   end
 
   # GET /requests/1/edit
-  def edit
-  end
+  def edit; end
 
   # POST /requests
   def create
@@ -46,7 +44,7 @@ class RequestsController < ApplicationController
   def set_contact_person
     @request = Request.find(params[:request_id])
     update_params = contact_person_params
-    if !update_params[:contact_person].nil? and @request.update(update_params)
+    if !update_params[:contact_person].nil? && @request.update(update_params)
       redirect_to @request, notice: I18n.t('requests.notice.was_updated')
     else
       render :show
@@ -56,7 +54,7 @@ class RequestsController < ApplicationController
   def set_notes
     @request = Request.find(params[:request_id])
     update_params = notes_params
-    if !update_params[:notes].nil? and @request.update(update_params)
+    if !update_params[:notes].nil? && @request.update(update_params)
       redirect_to @request, notice: I18n.t('requests.notice.was_updated')
     else
       render :show
@@ -66,7 +64,7 @@ class RequestsController < ApplicationController
   # DELETE /requests/1
   def destroy
     @request.destroy
-    redirect_to requests_url, notice:I18n.t('requests.notice.was_deleted')
+    redirect_to requests_url, notice: I18n.t('requests.notice.was_deleted')
   end
 
   def accept
@@ -77,21 +75,22 @@ class RequestsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_request
-      @request = Request.find(params[:id])
-    end
 
-    # Only allow a trusted parameter "white list" through.
-    def request_params
-      params.require(:request).permit(:form_of_address, :first_name, :last_name, :phone_number, :street, :zip_code_city, :topic_of_workshop, :time_period, :email, :number_of_participants, :knowledge_level, :annotations)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_request
+    @request = Request.find(params[:id])
+  end
 
-    def contact_person_params
-      params.require(:request).permit(:contact_person)
-    end
+  # Only allow a trusted parameter "white list" through.
+  def request_params
+    params.require(:request).permit(:form_of_address, :first_name, :last_name, :phone_number, :street, :zip_code_city, :topic_of_workshop, :time_period, :email, :number_of_participants, :knowledge_level, :annotations)
+  end
 
-    def notes_params
-      params.require(:request).permit(:notes)
-    end
+  def contact_person_params
+    params.require(:request).permit(:contact_person)
+  end
+
+  def notes_params
+    params.require(:request).permit(:notes)
+  end
 end
