@@ -2,14 +2,28 @@
 #
 # Table name: application_letters
 #
-#  id          :integer          not null, primary key
-#  motivation  :string
-#  user_id     :integer          not null
-#  event_id    :integer          not null
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  status      :integer          not null
+#  id                        :integer          not null, primary key
+#  allergies                 :string
+#  annotation                :text
+#  custom_application_fields :text
+#  emergency_number          :string
+#  motivation                :string
+#  organisation              :string
+#  status                    :integer          default("pending"), not null
+#  status_notification_sent  :boolean          default(FALSE), not null
+#  vegan                     :boolean
+#  vegetarian                :boolean
+#  created_at                :datetime         not null
+#  updated_at                :datetime         not null
+#  event_id                  :integer          not null
+#  user_id                   :integer          not null
 #
+# Indexes
+#
+#  index_application_letters_on_event_id  (event_id)
+#  index_application_letters_on_user_id   (user_id)
+#
+
 FactoryGirl.define do
   factory :application_letter do
     motivation "None"
