@@ -19,8 +19,8 @@
 <h3><%= t('.my_application') %></h3>
 <dl>
   <dt><%= ApplicationLetter.human_attribute_name(:motivation) %>:</dt>
-  <dd id="application-motivation" data-orig-text="<%= @application_letter.motivation %>">
-    <%= truncate @application_letter.motivation, length: 300 do
+  <dd id="application-motivation" data-orig-text="<%= simple_format(@application_letter.motivation) %>">
+    <%= truncate simple_format(@application_letter.motivation), length: 300 do
       link_to I18n.t('events.list.read_on'),
         'javascript:jQuery("#application-motivation")
           .text(jQuery("#application-motivation")
