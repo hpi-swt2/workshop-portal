@@ -39,7 +39,7 @@
 
 <p>
   <h5><%= ApplicationLetter.human_attribute_name(:motivation) %></h5>
-  <%= @application_letter.motivation %>
+  <%= simple_format(@application_letter.motivation) %>
 </p>
 <% unless @application_letter.annotation.nil? %>
   <p>
