@@ -4,6 +4,28 @@ require 'rails_helper'
 require "cancan/matchers"
 
 describe User do
+
+  it "pupil can create its application" do
+    user = FactoryGirl.create(:user, role: :pupil)
+    FactoryGirl.create(:profile, user: user)
+    ability = Ability.new(user)
+
+    expect(ability).to be_able_to(:new, ApplicationLetter)
+    expect(ability).to be_able_to(:create, ApplicationLetter)
+  end
+
+  it "pupil can access its application" do
+    user = FactoryGirl.create(:user, role: :pupil)
+    application = FactoryGirl.create(:application_letter, user: user)
+    ability = Ability.new(user)
+
+    expect(ability).to be_able_to(:edit, application)
+    expect(ability).to be_able_to(:show, application)
+    expect(ability).to be_able_to(:index, application)
+    expect(ability).to be_able_to(:update, application)
+    expect(ability).to be_able_to(:destroy, application)
+  end
+
   %i[pupil coach].each do |role|
     it "can create its profile" do
       user = FactoryGirl.create(:user, role: role)
@@ -36,27 +58,6 @@ describe User do
       expect(ability).to_not be_able_to(:show, another_profile)
       expect(ability).to_not be_able_to(:update, another_profile)
       expect(ability).to_not be_able_to(:destroy, another_profile)
-    end
-
-    it "can create its application" do
-      user = FactoryGirl.create(:user, role: role)
-      FactoryGirl.create(:profile, user: user)
-      ability = Ability.new(user)
-
-      expect(ability).to be_able_to(:new, ApplicationLetter)
-      expect(ability).to be_able_to(:create, ApplicationLetter)
-    end
-
-    it "can access its application" do
-      user = FactoryGirl.create(:user, role: role)
-      application = FactoryGirl.create(:application_letter, user: user)
-      ability = Ability.new(user)
-
-      expect(ability).to be_able_to(:edit, application)
-      expect(ability).to be_able_to(:show, application)
-      expect(ability).to be_able_to(:index, application)
-      expect(ability).to be_able_to(:update, application)
-      expect(ability).to be_able_to(:destroy, application)
     end
 
     it "cannot access another user's application" do

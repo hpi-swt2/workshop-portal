@@ -39,12 +39,13 @@ class User < ActiveRecord::Base
 
   before_create :set_default_role
 
-  ROLES = %i(pupil coach organizer admin).freeze
+  ROLES = %i[pupil coach organizer admin].freeze
 
   def role?(base_role)
     return false unless role
+    raise 'invalid role: ' + base_role unless ROLES.include?(base_role)
 
-    ROLES.index(base_role) <= ROLES.index(role.to_sym)
+    base_role.to_sym == role.to_sym
   end
 
   def set_default_role
