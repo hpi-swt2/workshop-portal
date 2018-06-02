@@ -3,9 +3,9 @@
 # Table name: participant_groups
 #
 #  id       :integer          not null, primary key
-#  user_id  :integer
-#  event_id :integer
 #  group    :integer          not null
+#  event_id :integer
+#  user_id  :integer
 #
 # Indexes
 #

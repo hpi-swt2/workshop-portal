@@ -3,26 +3,25 @@
 # Table name: requests
 #
 #  id                     :integer          not null, primary key
-#  created_at             :datetime         not null
-#  updated_at             :datetime         not null
-#  form_of_address        :integer
+#  annotations            :text
+#  contact_person         :string
+#  email                  :string
 #  first_name             :string
+#  form_of_address        :integer
+#  grade                  :string
+#  knowledge_level        :string
 #  last_name              :string
+#  notes                  :text
+#  number_of_participants :integer
 #  phone_number           :string
 #  school_street          :string
-#  email                  :string
-#  topic_of_workshop      :text
-#  time_period            :text
-#  number_of_participants :integer
-#  knowledge_level        :string
-#  annotations            :text
-#  status                 :integer          default(0)
 #  school_zip_code_city   :string
-#  contact_person         :string
-#  notes                  :text
-#  grade                  :string
+#  status                 :integer          default("open")
+#  time_period            :text
+#  topic_of_workshop      :text
+#  created_at             :datetime         not null
+#  updated_at             :datetime         not null
 #
-
 
 FactoryGirl.define do
   factory :request do

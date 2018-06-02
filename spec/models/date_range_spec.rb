@@ -1,3 +1,19 @@
+# == Schema Information
+#
+# Table name: date_ranges
+#
+#  id         :integer          not null, primary key
+#  end_date   :date
+#  start_date :date
+#  created_at :datetime
+#  updated_at :datetime
+#  event_id   :integer
+#
+# Indexes
+#
+#  index_date_ranges_on_event_id  (event_id)
+#
+
 require 'rails_helper'
 
 describe DateRange do
