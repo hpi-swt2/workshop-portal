@@ -9,12 +9,18 @@
   <dd><%= @request.topic_of_workshop %></dd>
   <dt><strong><%= model_class.human_attribute_name(:number_of_participants) %>:</strong></dt>
   <dd><%= @request.number_of_participants %></dd>
+  <dt><strong><%= t('requests.previous_knowledge') %>:</strong></dt>
+  <dd><%= @request.number_of_participants_with_previous_knowledge %></dd>
   <dt><strong><%= model_class.human_attribute_name(:time_period) %>:</strong></dt>
   <dd><%= @request.time_period %></dd>
   <dt><strong><%= model_class.human_attribute_name(:knowledge_level) %>:</strong></dt>
   <dd><%= simple_format(@request.knowledge_level) %></dd>
   <dt><strong><%= model_class.human_attribute_name(:grade) %>:</strong></dt>
   <dd><%= @request.grade %></dd>
+  <dt><strong><%= t('requests.campus_tour.short') %>:</strong></dt>
+  <dd><%= @request.campus_tour ? t('yes') : t('no') %></dd>
+  <dt><strong><%= t('requests.study_info.short') %>:</strong></dt>
+  <dd><%= @request.study_info ? t('yes') : t('no') %></dd>
   <dt><strong><%= model_class.human_attribute_name(:status) %>:</strong></dt>
   <dd><%= t(@request.status, scope: 'activerecord.attributes.request.statuses') %></dd>
   <% if can? :view_annotations, @request %>

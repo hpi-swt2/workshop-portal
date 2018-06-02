@@ -93,9 +93,12 @@ class RequestsController < ApplicationController
                                     :time_period,
                                     :email,
                                     :number_of_participants,
+                                    :number_of_participants_with_previous_knowledge,
                                     :knowledge_level,
                                     :annotations,
-                                    :grade)
+                                    :grade,
+                                    :study_info,
+                                    :campus_tour)
   end
 
   def contact_person_params
