@@ -10,3 +10,4 @@ AllCops:
     - 'Rakefile'
     - 'Vagrantfile'
     - 'vendor/**/*'
+    - 'lib/tasks/*'

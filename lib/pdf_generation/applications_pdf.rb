@@ -40,7 +40,7 @@ class ApplicationsPDF
     end
     unless @event.application_letters.empty?
       table overview_table_data,
-            header: 2, position: :center, row_colors: %w(F9F9F9 FFFFFF) do
+            header: 2, position: :center, row_colors: %w[F9F9F9 FFFFFF] do
         cells.borders = []
         row(1).borders = [:bottom]
         row(1).font_style = :bold

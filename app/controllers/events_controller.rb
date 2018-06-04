@@ -9,9 +9,9 @@ require 'event_image_upload_helper'
 class EventsController < ApplicationController
   include EventImageUploadHelper
   load_and_authorize_resource
-  skip_authorize_resource only: %i(badges download_agreement_letters send_participants_email)
-  before_action :set_event, only: %i(show edit update destroy participants
-                                     participants_pdf print_applications print_applications_eating_habits badges print_badges)
+  skip_authorize_resource only: %i[badges download_agreement_letters send_participants_email]
+  before_action :set_event, only: %i[show edit update destroy participants
+                                     participants_pdf print_applications print_applications_eating_habits badges print_badges]
 
   # GET /events
   def index
@@ -272,7 +272,7 @@ class EventsController < ApplicationController
       :application_deadline,
       :hidden,
       custom_application_fields: [],
-      date_ranges_attributes: [:start_date, :end_date, :id]
+      date_ranges_attributes: %i[start_date end_date id]
     )
     if params[:create].present? || params[:update_and_publish].present?
       parameters[:published] = true
