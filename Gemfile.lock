@@ -1,11 +1,3 @@
-GIT
-  remote: git://github.com/acrogenesis/owlcarousel-rails.git
-  revision: 2dd679c61b795fa08003994c74d140c214781141
-  branch: OwlCarousel2
-  specs:
-    owlcarousel-rails (1.1.3.3)
-      jquery-rails
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -172,6 +164,7 @@ GEM
       omniauth (~> 1.0)
       rack-openid (~> 1.3.1)
     orm_adapter (0.5.0)
+    owlcarousel-rails (2.2.3.5)
     parser (2.3.3.1)
       ast (~> 2.2)
     pdf-core (0.7.0)
@@ -367,7 +360,7 @@ DEPENDENCIES
   mini_magick
   omniauth
   omniauth-openid
-  owlcarousel-rails!
+  owlcarousel-rails
   parser (~> 2.3.3.1)
   pdf-inspector
   pg

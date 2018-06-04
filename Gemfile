@@ -85,7 +85,7 @@ gem 'rubocop', '0.46'
 
 # OWl Carousel for nice Slideshows
 # https://github.com/acrogenesis/owlcarousel-rails
-gem 'owlcarousel-rails', github: 'acrogenesis/owlcarousel-rails', branch: 'OwlCarousel2'
+gem 'owlcarousel-rails'
 
 # coveralls.io
 gem 'coveralls', require: false
