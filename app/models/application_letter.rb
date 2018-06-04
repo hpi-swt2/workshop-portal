@@ -23,11 +23,6 @@
 #  index_application_letters_on_event_id  (event_id)
 #  index_application_letters_on_user_id   (user_id)
 #
-# Foreign Keys
-#
-#  fk_rails_...  (event_id => events.id)
-#  fk_rails_...  (user_id => users.id)
-#
 
 class ApplicationLetter < ActiveRecord::Base
   belongs_to :user
