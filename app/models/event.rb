@@ -321,7 +321,7 @@ class Event < ActiveRecord::Base
             else
               'users.email'
             end
-    order_by = 'asc' unless order_by == 'asc' || order_by == 'desc'
+    order_by = 'asc' unless order_by == 'desc'
     application_letters.joins(user: :profile).order(field + ' ' + order_by)
   end
 

@@ -23,7 +23,7 @@
 #
 
 class Profile < ActiveRecord::Base
-  POSSIBLE_GENDERS = %w(male female other).freeze
+  POSSIBLE_GENDERS = %w[male female other].freeze
 
   belongs_to :user
 
@@ -78,7 +78,7 @@ class Profile < ActiveRecord::Base
   # @param none
   # @return [Symbol] List of parameters
   def self.allowed_params
-    %i(first_name last_name gender birth_date street_name zip_code city state country discovery_of_site)
+    %i[first_name last_name gender birth_date street_name zip_code city state country discovery_of_site]
   end
 
   # Returns an array containing the allowed methods to sort by
@@ -86,7 +86,7 @@ class Profile < ActiveRecord::Base
   # @param none
   # @return [Symbol] List of methods
   def self.allowed_sort_methods
-    Profile.allowed_params + %i(address name age)
+    Profile.allowed_params + %i[address name age]
   end
 
   private
