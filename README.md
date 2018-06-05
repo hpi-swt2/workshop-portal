@@ -45,15 +45,8 @@ Please keep in mind that this method may lead to a loss in performance, due to t
 ```
 vagrant up # bring up the VM
 vagrant ssh # login using SSH
-cd hpi-swt2
-echo "gem: --no-document" >> ~/.gemrc # disable docs for gems
 bundle install # install dependencies
-gem install pg # required for Postgres usage
-cp config/database.psql.yml config/database.yml # in case you want to use Postgres
-cp config/database.sqlite.yml config/database.yml # in case you want to use SQLite
-exit # restart the session, required step
-vagrant ssh # reconnect to the VM
-cd hpi-swt2
+rbenv rehash # reload newly installed binaries
 rails s -b 0 # start the rails server
 # the -b part is necessary since the app is running in a VM and would
 # otherwise drop the requests coming from the host OS

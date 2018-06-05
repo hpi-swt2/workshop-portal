@@ -28,5 +28,6 @@ Vagrant.configure("2") do |config|
     apt-get install -y phantomjs
     apt-get install -y imagemagick
     echo "cd hpi-swt2" >> /home/vagrant/.bashrc
+    echo "gem: --no-document" >> /home/vagrant/.gemrc # disable docs for gems
   SHELL
 end
