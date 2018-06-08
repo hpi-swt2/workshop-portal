@@ -35,6 +35,7 @@ FactoryGirl.define do
     sequence(:email) { |n| "test@example#{n}.com" }
     password "test123"
     role :pupil
+    confirmed_at Time.now
     factory :user_with_profile do
       after(:build) do |user|
           build(:profile, user: user)
