@@ -12,10 +12,7 @@
 
 ActiveRecord::Schema.define(version: 20180602123530) do
 
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
-
-  create_table "agreement_letters", id: :serial, force: :cascade do |t|
+  create_table "agreement_letters", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "event_id", null: false
     t.string "path", null: false
@@ -25,7 +22,7 @@ ActiveRecord::Schema.define(version: 20180602123530) do
     t.index ["user_id"], name: "index_agreement_letters_on_user_id"
   end
 
-  create_table "application_letters", id: :serial, force: :cascade do |t|
+  create_table "application_letters", force: :cascade do |t|
     t.string "motivation"
     t.integer "user_id", null: false
     t.integer "event_id", null: false
@@ -44,7 +41,7 @@ ActiveRecord::Schema.define(version: 20180602123530) do
     t.index ["user_id"], name: "index_application_letters_on_user_id"
   end
 
-  create_table "application_notes", id: :serial, force: :cascade do |t|
+  create_table "application_notes", force: :cascade do |t|
     t.text "note"
     t.integer "application_letter_id"
     t.datetime "created_at", null: false
@@ -52,7 +49,7 @@ ActiveRecord::Schema.define(version: 20180602123530) do
     t.index ["application_letter_id"], name: "index_application_notes_on_application_letter_id"
   end
 
-  create_table "date_ranges", id: :serial, force: :cascade do |t|
+  create_table "date_ranges", force: :cascade do |t|
     t.date "start_date"
     t.date "end_date"
     t.integer "event_id"
@@ -61,14 +58,14 @@ ActiveRecord::Schema.define(version: 20180602123530) do
     t.index ["event_id"], name: "index_date_ranges_on_event_id"
   end
 
-  create_table "email_templates", id: :serial, force: :cascade do |t|
+  create_table "email_templates", force: :cascade do |t|
     t.integer "status"
     t.string "subject"
     t.text "content"
     t.boolean "hide_recipients"
   end
 
-  create_table "events", id: :serial, force: :cascade do |t|
+  create_table "events", force: :cascade do |t|
     t.string "name"
     t.text "description"
     t.integer "max_participants"
@@ -86,7 +83,7 @@ ActiveRecord::Schema.define(version: 20180602123530) do
     t.string "custom_image"
   end
 
-  create_table "participant_groups", id: :serial, force: :cascade do |t|
+  create_table "participant_groups", force: :cascade do |t|
     t.integer "user_id"
     t.integer "event_id"
     t.integer "group", null: false
@@ -94,7 +91,7 @@ ActiveRecord::Schema.define(version: 20180602123530) do
     t.index ["user_id"], name: "index_participant_groups_on_user_id"
   end
 
-  create_table "profiles", id: :serial, force: :cascade do |t|
+  create_table "profiles", force: :cascade do |t|
     t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -111,7 +108,7 @@ ActiveRecord::Schema.define(version: 20180602123530) do
     t.index ["user_id"], name: "index_profiles_on_user_id"
   end
 
-  create_table "requests", id: :serial, force: :cascade do |t|
+  create_table "requests", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "form_of_address"
@@ -135,7 +132,7 @@ ActiveRecord::Schema.define(version: 20180602123530) do
     t.integer "number_of_participants_with_previous_knowledge"
   end
 
-  create_table "users", id: :serial, force: :cascade do |t|
+  create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
@@ -160,12 +157,4 @@ ActiveRecord::Schema.define(version: 20180602123530) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  add_foreign_key "agreement_letters", "events"
-  add_foreign_key "agreement_letters", "users"
-  add_foreign_key "application_letters", "events"
-  add_foreign_key "application_letters", "users"
-  add_foreign_key "application_notes", "application_letters"
-  add_foreign_key "participant_groups", "events"
-  add_foreign_key "participant_groups", "users"
-  add_foreign_key "profiles", "users"
 end
