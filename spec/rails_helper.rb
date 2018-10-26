@@ -51,6 +51,7 @@ RSpec.configure do |config|
   config.include Warden::Test::Helpers
   config.include Devise::Test::ControllerHelpers, :type => :controller
   config.include Devise::Test::ControllerHelpers, :type => :view
+  config.include LoginMacros, type: :feature
 
   # Reset warden after each test
   config.after :each do

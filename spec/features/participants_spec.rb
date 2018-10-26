@@ -77,12 +77,6 @@ RSpec.feature "Event participants overview", :type => :feature do
     expect(page.body).to contain_ordered(expected_order.reverse)
 
   end
-
-  def login(role)
-    @profile = FactoryGirl.create(:profile)
-    @profile.user.role = role
-    login_as(@profile.user, :scope => :user)
-  end
 end
 
 RSpec.feature "Event participants overview", :type => :feature do
@@ -122,11 +116,5 @@ RSpec.feature "Event participants overview", :type => :feature do
     fill_in('email_content', with: 'Content')
     expect{click_button I18n.t('emails.email_form.send')}.to change{ActionMailer::Base.deliveries.count}.by(0)
     expect(page).to have_text(I18n.t('emails.submit.sending_failed'))
-  end
-
-  def login(role)
-    @profile = FactoryGirl.create(:profile)
-    @profile.user.role = role
-    login_as(@profile.user, :scope => :user)
   end
 end
