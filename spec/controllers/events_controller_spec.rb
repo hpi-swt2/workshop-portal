@@ -586,10 +586,4 @@ RSpec.describe EventsController, type: :controller do
       expect(page_analysis.pages.size).to be >= 3
     end
   end
-
-  def login(role)
-    @profile = FactoryGirl.create(:profile)
-    @profile.user.role = role
-    login_as(@profile.user, :scope => :user)
-  end
 end

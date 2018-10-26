@@ -213,10 +213,4 @@ RSpec.feature "Role management page", :type => :feature do
     expect(page).to have_text(max2.profile.last_name)
     expect(page).to_not have_text(user3.profile.last_name)
   end
-
-  def login(role)
-    @profile = FactoryGirl.create(:profile)
-    @profile.user.role = role
-    login_as(@profile.user, :scope => :user)
-  end
 end

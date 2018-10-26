@@ -440,10 +440,4 @@ RSpec.feature "Event application letters overview on event page", :type => :feat
     expect(page).to have_every_text(not_accepted_names)
     expect(page).to have_no_text(accepted_names)
   end
-
-  def login(role)
-    @profile = FactoryGirl.create(:profile)
-    @profile.user.role = role
-    login_as(@profile.user, :scope => :user)
-  end
 end

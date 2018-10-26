@@ -97,11 +97,4 @@ describe "Sending emails to applicants", type: :feature do
     expect(page.find('#email_subject').value).to eq(@template.subject)
     expect(page.find('#email_content').value).to eq(@template.content)
   end
-
-
-  def login(role)
-    @profile = FactoryGirl.create(:profile)
-    @profile.user.role = role
-    login_as(@profile.user, :scope => :user)
-  end
 end
